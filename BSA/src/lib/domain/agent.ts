@@ -289,6 +289,22 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
 
   // ---- CHECK: compliance gate (deterministic) ----
   const gate = complianceGate(recommendation, requirementResults, conflicts, mandatory, req.required, citationValid);
+  // Enforce withholding once, before any consumer receives the case pack.
+  // Keep evidence and gate checks, but never return rejected advice or drafts.
+  if (gate.result === "FAIL") {
+    recommendation = "NONE";
+    alternative = null;
+    draft = null;
+    reasons.splice(0, reasons.length, "Recommendation withheld by the compliance gate; evidence only.");
+    for (const step of trace) {
+      if (step.phase === "RECOMMEND") {
+        step.title = "Proposal withheld by the compliance gate";
+        step.summary = "The rejected outcome, reasons, alternative and pharmacy draft are withheld. Review the evidence and failed checks instead.";
+        step.items = [];
+        step.status = "fail";
+      }
+    }
+  }
   trace.push({
     phase: "CHECK",
     title: "Compliance gate (code the model cannot influence)",
@@ -309,7 +325,9 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     phase: "HAND_OFF",
     title: "Present the complete case to the operator",
     cls: "human",
-    summary: "Evidence, the cited rule, conflicts, the recommendation and its alternative, the confidence signals and the gate result are written to the case pack. The operator accepts, amends, requests information, refers back or escalates. The agent's part ends here.",
+    summary: gate.result === "FAIL"
+      ? "Evidence, the cited rule, conflicts, confidence signals and failed gate checks are available. The recommendation, alternative and draft are withheld. A human decision with a reason is required."
+      : "Evidence, the cited rule, conflicts, the recommendation and its alternative, the confidence signals and the gate result are written to the case pack. The operator accepts, amends, requests information, refers back or escalates. The agent's part ends here.",
     items: [`Decision record prepared (append-only). Pinned: Tariff ${version?.version ?? "n/a"}, agent ${AGENT_VERSION}`],
     toolCalls: [{ tool: "write_decision_record", productionService: "Azure Cosmos DB (append-only)", cls: "deterministic", input: { caseId: c.id }, outputSummary: "Case pack appended; awaiting human decision", sourceLabel: "In-memory record", durationMs: 15, status: "ok" }],
     status: "ok",

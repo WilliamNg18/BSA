@@ -11,7 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { PageSection } from "@/components/page-section";
 import { ErrorState } from "@/components/states";
 import { CaseHeader } from "@/components/demo/case-header";
-import { BoundaryTag, KeyValue, REC_META, RecommendationBadge, StatusDot } from "@/components/demo/labels";
+import { BoundaryTag, KeyValue, RecommendationBadge, StatusDot } from "@/components/demo/labels";
+import { REC_META } from "@/components/demo/label-meta";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { CompositeBadge, SignalList } from "@/components/demo/signals";
 import { runAgent } from "@/lib/domain/agent";
@@ -41,7 +42,8 @@ export function CasePackPage() {
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
   const recordDecision = useAppStore((s) => s.recordDecision);
-  const existing = useAppStore((s) => s.records.filter((r) => r.caseId === id));
+  const records = useAppStore((s) => s.records);
+  const existing = useMemo(() => records.filter((r) => r.caseId === id), [records, id]);
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
   const [decision, setDecision] = useState<HumanDecision | null>(null);
   const [reason, setReason] = useState("");
@@ -51,8 +53,8 @@ export function CasePackPage() {
   }
 
   const showRecommendation = pack.agentInvoked && pack.recommendation !== "ABSTAIN" && pack.recommendation !== "NONE" && pack.gate.result === "PASS";
-  const suggested = suggestedFor(pack.recommendation);
-  const chosen = decision ?? suggested;
+  const suggested = showRecommendation ? suggestedFor(pack.recommendation) : "ESCALATE";
+  const chosen = !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
   const isOverride = showRecommendation && chosen !== suggested && !(chosen === "ACCEPT");
   const needsReason = isOverride || !showRecommendation;
   const decided = state === "human_decision_recorded";
@@ -256,7 +258,7 @@ export function CasePackPage() {
               <RadioGroup value={chosen} onValueChange={(v) => setDecision(v as HumanDecision)} aria-label="Decision" className="grid gap-2 sm:grid-cols-2">
                 {DECISIONS.map((d) => (
                   <div key={d.value} className="flex items-start gap-2 rounded-md border p-2.5">
-                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" />
+                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "ACCEPT" || d.value === "AMEND")} />
                     <Label htmlFor={`d-${d.value}`} className="flex flex-col gap-0.5 font-normal">
                       <span className="font-medium">{d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
                       <span className="text-xs text-muted-foreground">{d.help}</span>
@@ -266,7 +268,7 @@ export function CasePackPage() {
               </RadioGroup>
               <div className="space-y-1.5">
                 <Label htmlFor="reason">{needsReason ? "Reason (required)" : "Reason (optional)"}</Label>
-                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Why you are departing from the recommendation. This is the most valuable data the system collects." : "Optional note for the record."} aria-required={needsReason} />
+                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Why you are departing from the recommendation. This is the most valuable data the system collects." : needsReason ? "Explain your decision based on the evidence." : "Optional note for the record."} aria-required={needsReason} />
               </div>
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision

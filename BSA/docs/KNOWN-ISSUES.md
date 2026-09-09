@@ -1,33 +1,89 @@
-# Known issues and rough edges in the initial build (v0.6)
+---
+title: Known issues and remaining verification
+description: PR1 review fixes, local verification limits and deferred prototype work.
+ms.date: 2026-09-09
+---
 
-The initial build was assembled in a sandbox without a browser. It was verified by type-checking, a build, a server-side render of every route and logic tests on the six cases, but **never visually inspected**. Treat everything below as a starting list, not a complete one, and run the application before trusting any screen.
+## PR1 review fix status
 
-## Certain
+Local Windows verification now includes 71 passing unit tests and 259 passing
+Chromium browser tests. Typecheck, lint and build pass, with the existing Vite
+large-chunk warning still present. See [qa-pr1.md](qa-pr1.md) for commands,
+coverage and release limits. These are not hosted or Linux CI results.
 
-1. **Never seen in a browser.** Spacing, wrapping, overflow, colour balance and dark-mode contrast have not been checked by eye on any screen. Expect long strings in tables (tool inputs, clause text, routing reasons) to wrap badly or overflow on narrow widths.
-2. **Handwriting fonts are assumed.** `src/components/demo/prescription-form.tsx` asks for `Segoe Script`, `Bradley Hand` or `Comic Sans MS` for handwritten endorsements. None ships with the application, so on most machines the "handwritten" note renders in a generic cursive or in the fallback sans. The poor scan (Case D) relies on a CSS blur and rotation that may look crude. Replace with a bundled open-licence handwriting face or an SVG treatment.
-3. **Fixed colours in places.** Several components use fixed Tailwind colours (`bg-teal-50`, `bg-amber-50`, `bg-rose-50`, `text-slate-*`) for alerts, banners and the presenter bar, with hand-added `dark:` variants. Some combinations will fall below 4.5:1 contrast in dark mode. Move accents onto tokens or audit every pair.
-4. **Pharmacy interpretation is a regex.** The pharmacy check's `interpret()` recognises the endorsement type by keyword, a date by a `d/m` or `d/m/y` pattern and initials as a two-or-three capital-letter token. It will misread ordinary text (for example a batch code) as initials and does not agree with the scripted readings used on the NHSBSA side. Either share one interpretation function across both sides or make the mock visibly a mock.
-5. **Trace replay timing is fixed.** Steps reveal every 900 ms with no pause, no per-step step-through and no keyboard shortcut. The replay also restarts from zero whenever the case pack recomputes.
-6. **The Evaluation page is illustrative.** Every figure is invented and labelled synthetic. There is no chart, only tables; the go/reshape/stop section is prose. It reads as a placeholder next to the real logic elsewhere.
-7. **No unit tests.** The rules, gate, composite and case outcomes are pinned only by an ad hoc script run once during development. Add tests before refactoring.
-8. **Queue filler rows are dead.** Six rows exist only to fill the queue and have no case pages; clicking them does nothing useful. Either give them minimal case packs or make them clearly non-interactive.
-9. **Overview counts double as marketing.** "Average evidence-assembly time" is a synthetic constant plus tool latencies; it should be labelled more plainly or removed.
-10. **The seeded record uses a fixed timestamp** (2026-09-03) and the cases use fixed `receivedAt` and `minutesInQueue` values, so the queue never ages. Consider deriving from the current date so the demonstration always looks like today.
-11. **Bundle is one chunk (~750 kB minified).** No code splitting; first load on a slow connection is noticeable. Split by route.
-12. **No favicon, no Open Graph metadata, no print stylesheet.** The case pack is exactly the kind of screen someone will try to print.
-13. **Not-found page is generic.** It does not offer the six known cases.
-14. **Presenter bar overlaps content** at the foot of the page on short viewports; the main area does not reserve space for it when it is open.
-15. **Discussion sheet prompts match routes by prefix** (`/case` matches every case route), so the same prompts appear on the trace, pack and record views.
+* Gate FAIL now returns `NONE`, no alternative and no pharmacy draft. Rejected
+	proposal reasons and trace content are replaced with withholding notices.
+	Evidence and failed deterministic checks remain available. The pure gate is
+	unchanged. The human default is Escalate with a mandatory reason; accepting
+	or amending a nonexistent recommendation is disabled.
+* Queue, case pack, trace, new human records and rule-version replay consume
+	the sanitised result. The neutral "No recommendation" label no longer
+	incorrectly says that the agent was not run after a gate failure.
+* Eager route imports are restored. First visits to secondary routes after a
+	fresh Overview load and disconnection pass without further network requests.
+	This covers navigation within the loaded session, not an offline page reload.
+* Existing stable case selectors, route-boundary recovery, assistance-off queue
+	and pharmacy controls, and normal six-case outcomes pass regression tests.
+	The old absence-of-unit-tests statement is no longer applicable.
 
-## Likely
+## Remaining release and performance work
 
-- Focus order after "Record decision" navigates to the record page without moving focus to the new heading.
-- Toast messages (sonner) are not announced consistently by screen readers.
-- Table headers do not stick when tables scroll horizontally on small screens.
-- The synthetic form's SVG text does not scale its font when the figure is narrow, so labels collide in the right-hand column of the case pack on tablets.
-- The header wraps into three lines between 768 and 1024 px because the navigation and the three controls compete for width.
+* Linux clean installation and CI execution, deployed Pages home and trace deep
+	links, and fresh unauthenticated hosted access are NOT VERIFIED in this run.
+	No redesign is authorised until deployed tests pass.
+* Step 7 performance work is deferred. Route splitting is removed from PR1,
+	not replaced with an idle preload. Any later splitting must retain the
+	offline regression and define when route assets are available. The local
+	build reports 756.35 kB main JavaScript (234.10 kB gzip), plus CSS and fonts.
+	The 500 kB Vite warning remains; zero-warning and first-load performance
+	targets are not met or claimed. Lighthouse was not run.
+* Automated route and overflow checks cover 360, 768, 1024 and 1440 px in
+	light and dark. Twelve axe audits cover six surfaces at 1440 px. This does
+	not complete manual visual, keyboard, screen-reader or WCAG-conformance
+	assessment, nor a before-and-after screenshot set.
 
-## Deliberately not built (see the Architecture page)
+## Remaining prototype rough edges
 
-Real capture integration; a live queue; the model call (the interpretation step is scripted); pricing (never, by design); authentication, networking, secrets and lineage; dispensing-system integration; monitoring dashboards; calibrated confidence thresholds.
+These are retained for later work, not expanded into PR1 redesign.
+
+* Handwriting still relies on platform cursive fonts in
+	[../src/components/demo/prescription-form.tsx](../src/components/demo/prescription-form.tsx).
+	No handwriting font is bundled; the poor scan uses blur and rotation.
+* Fixed accent colours remain. Targeted contrast fixes and the passing axe
+	sample do not establish that every colour pair and interaction state meets
+	contrast requirements.
+* Pharmacy `interpret()` remains a keyword, date and initials regex mock.
+	It can mistake ordinary text for initials and is not equivalent to the
+	scripted case readings. The interface labels the interpretation as mocked.
+* Trace steps reveal every 900 ms without pause or manual step-through.
+	Recomputing the pack stops replay and shows all steps. Richer controls are
+	deferred; current Replay, Show all and Clear controls are tested.
+* Evaluation figures and assembly time remain illustrative synthetic values,
+	not measured operational performance.
+* The seeded record timestamp, received times and queue durations are fixed.
+	The queue does not age. Six filler rows remain non-interactive and labelled
+	"Filler row"; expanding them into cases is outside this fix.
+* Favicon, Open Graph metadata and print styling remain follow-up work.
+* The generic not-found screen offers a tested home link but no case shortcuts.
+* Presenter-bar overlap on short viewports still needs manual review; this run
+	verifies beat navigation, not every overlap condition.
+
+## Manual checks still needed
+
+* Heading focus after recording a decision and navigating to its record
+* Screen-reader announcement of toast messages and trace replay
+* Sticky table-header behaviour during horizontal scrolling
+* Form-label legibility in narrow case-pack columns
+* Header wrapping and content visibility with presenter controls open
+
+Discussion prompts already distinguish pack, trace and record routes; the
+previous prefix-only issue is removed from the outstanding list. The existing
+browser regression verifies the relevant prompts on each case view.
+
+## Deliberately not built in the static application
+
+Real capture integration; a live queue; a real model call; payment calculation
+or approval; durable records and lineage; dispensing-system integration;
+monitoring dashboards; calibrated confidence thresholds. The prototype uses
+synthetic inputs and in-memory human records. Hosted infrastructure or identity
+behaviour is not verified by these local tests.

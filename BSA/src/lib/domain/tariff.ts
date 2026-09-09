@@ -92,6 +92,10 @@ export const TARIFF_VERSIONS: TariffVersion[] = [
 ];
 
 export function versionForDate(isoDate: string): TariffVersion | null {
+  // Compare canonical calendar dates only, never partial dates or timestamps.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) return null;
+  const date = new Date(`${isoDate}T00:00:00Z`);
+  if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== isoDate) return null;
   return (
     TARIFF_VERSIONS.find(
       (v) => isoDate >= v.effectiveFrom && isoDate <= v.effectiveTo,

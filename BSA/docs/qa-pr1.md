@@ -1,0 +1,252 @@
+---
+title: PR1 review fix verification
+description: Final local and hosted PR1 acceptance, corrected supplemental assertion, Pages exception and screenshot evidence.
+ms.date: 2026-09-09
+---
+
+## Scope and disposition
+
+PR1 local verification PASSED: 71 unit tests and 259 Chromium browser tests,
+including 12 axe audits. Requested hosted acceptance PASSED on the actual,
+unmodified Azure site for source commit
+`a9b3f8543d58771d5c6c8adaefd078338714c639`. Latest Linux CI is green for
+`a9b3f85`, as confirmed by the user; CI was not queried again during this
+report-only update.
+
+GitHub Pages remains unavailable for this private repository under its current
+plan. The previous Pages enablement attempt returned HTTP 422; it is not a
+successful deployment or a verified Pages route. The user approved Azure as
+the PR1 hosted-acceptance exception. This is not completion of the wider
+redesign, performance or manual-accessibility definition of done.
+
+The historical
+[../../.copilot-tracking/pr/pr-reference-log.md](../../.copilot-tracking/pr/pr-reference-log.md)
+remains unchanged. Its earlier blocker and verification-gap statements are
+superseded only where the later evidence below addresses them. This update
+changed the two requested reports and copied nine existing hosted PNGs only.
+No application, workflow, Git, deployment, account or archive operations were
+performed. Test and hosted results below are existing evidence, not new runs.
+
+## Changes verified
+
+* [../src/lib/domain/agent.ts](../src/lib/domain/agent.ts) sanitises the result
+  immediately after the pure compliance gate. FAIL returns recommendation
+  `NONE`, null alternative and draft, and a withholding notice instead of
+  proposal reasons. The RECOMMEND trace retains its phase but removes the
+  rejected outcome and draft, labels the proposal withheld and reports failure.
+  The hand-off is evidence-only. Evidence, conflicts, signals, requirements and
+  gate checks remain available. The pure gate was not changed.
+* Case-pack defaults use Escalate when no permitted recommendation exists.
+  Accept and Amend are disabled in that state. Recording needs at least eight
+  trimmed reason characters. New human records carry `NONE`, not the rejected
+  proposal. Existing historical records are not rewritten.
+* Queue and replay consume the sanitised result. Replay explicitly identifies
+  gate FAIL and does not show the normal Case B success guidance in that state.
+  The shared `NONE` badge says "No recommendation", which is valid both when
+  assistance is off and when a proposal has been withheld.
+* [../src/routes.tsx](../src/routes.tsx) restores eager page imports. The lazy
+  route Suspense wrapper is removed; the pathname-keyed error boundary remains.
+  No preload, service worker, production debug endpoint or new dependency was
+  added. Route splitting and performance optimisation are deferred to Step 7.
+
+## Executed local verification
+
+The local commands below ran from the nested BSA application on Windows on 2026-09-09,
+using the existing installed dependencies. Browser tests build production
+assets and preview locally at `http://localhost:4173/BSA/`; both build and
+preview receive `VITE_BASE=/BSA/`. The preview server is not reused.
+
+* `npm run check`: exit 0. Application, tooling and test TypeScript checks and
+  ESLint passed. Vite 7.3.6 built successfully with its large-chunk warning.
+  This command does not run unit or browser tests.
+* `npm test`: exit 0; 71 passed across three unit files, zero failed.
+  Breakdown: 26 agent/store, 30 rules and 15 tariff cases.
+* `npm run test:e2e -- --project=chromium`: the raw output reports 259 passed.
+  Its delegated summary contradicted the raw log, so it was not accepted as
+  authoritative exit-code evidence.
+* `npm run test:e2e -- --project=chromium --reporter=dot,html`: an independent
+  repeat confirmed exit 0 and 259 passed in about 1.7 minutes. Zero failed,
+  skipped or retried tests; retries are disabled. The last-run metadata reports
+  `passed` with an empty failed-test list. Counts below are per run, not the
+  sum of both runs.
+* `git diff --check`: exit 0, with no whitespace errors. Git emitted local
+  LF-to-CRLF conversion notices; no Git configuration was changed.
+* Editor diagnostics for application source and tests: no errors reported.
+
+The latest local browser artifact is
+[../playwright-report/index.html](../playwright-report/index.html).
+The independent final run at `a9b3f85` is summarised in
+[../../.copilot-tracking/final-qa-a9b3f85/verified-summary.json](../../.copilot-tracking/final-qa-a9b3f85/verified-summary.json):
+check, unit and E2E exit 0; 259 expected, zero unexpected, skipped or flaky
+browser results. Its earlier Azure failure remains historical failed evidence,
+not a hosted pass; the later hosted results below supersede that assessment.
+The initial raw command logs were retained outside the repository in the
+temporary run directory identified by `run-20260909-194445`. Report artifacts
+are regenerated by later test runs and do not prove a hosted deployment.
+
+## Coverage and exact browser counts
+
+* 220 route tests: 208 direct route combinations (26 routes, four widths, two
+  themes), nine invalid-case recoveries, one unknown-route recovery, one primary
+  navigation/skip-link test and one repeated-case-view test.
+* Eight control tests: replay, pharmacy advisory flow, mandatory override
+  reason, July replay/reset, assistance-off cases, D/E stop paths, presenter
+  and discussion controls, and queue filtering.
+* Fourteen assistance regressions: one all-row queue test, twelve pharmacy
+  availability/scenario combinations and one edit/restoration test.
+* One served-bundle render-fault regression: the shell survives and navigation
+  recovers. Only its expected injected render error and boundary log are allowed.
+* Three new gate-FAIL browser regressions: A, B and C each start in a fresh
+  context. A network response transformation changes only the selected
+  synthetic prescriber to "Illegible" in the served JavaScript. The test
+  asserts exactly one replacement. The real, unchanged gate rejects it.
+* One new offline regression: after Overview, fonts and initial requests finish,
+  the fresh context disconnects before any secondary route visit. HTTP cache
+  is disabled by request routing. All primary routes and every A-F pack,
+  trace and record load via client navigation with zero additional requests.
+* Twelve axe audits: Overview, Pharmacy, Queue, Case pack, Trace and seeded
+  Decision record, each in light and dark at 1440 px. Each reports zero
+  violations for the configured WCAG tags. These twelve are included in 259.
+
+The gate tests verify no actionable queue badge, no case-pack alternative or
+draft, an Escalate default, disabled Accept/Amend, and rejection of empty,
+seven-character and whitespace-padded seven-character reasons. They verify
+the full trace and each replayed step withhold outcome/draft, then record a
+reasoned escalation and check July, August and September replays remain
+evidence-only. Returning to the queue preserves the human record and exposes
+no proposal. Shared fixtures reject unexpected console, page, request and HTTP
+errors rather than treating boundary fallbacks as successful renders.
+
+Six gate-FAIL unit variants cover A/B/C under July and August. They verify
+sanitisation, preserved evidence and conflicts, failed mandatory-field checks,
+unchanged input fixtures, deterministic reruns, and no session-state or record
+mutation by the agent. Existing normal six-case and July behaviour remains
+pinned. Replacing one weak gate test with these six increases unit count from
+66 to 71; adding three gate tests and one offline test raises E2E from 255 to
+259.
+
+## Latest hosted acceptance
+
+Target: [Azure demonstration](https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/).
+The authoritative consolidation is
+[../../.copilot-tracking/hosted-pr1/verification-report.json](../../.copilot-tracking/hosted-pr1/verification-report.json).
+Fresh headless Chromium used no sign-in or stored authentication, a 1440 x 1000
+light viewport and the real remote bundle. There was no response fulfilment,
+source injection or store injection. The existing verifier remained unchanged
+on disk; only its in-memory execution received a 60-second navigation timeout.
+Its action timeout remained 12 seconds. The main run allowed GET/HEAD and
+blocked non-read requests; supplemental and follow-up runs used no interception.
+
+| Execution on 2026-09-09 | Result | Checks | Screenshots |
+|---|---|---|---|
+| Main hosted run, 19:25:54-19:27:19 UTC | PASS, exit 0 | 32 passed: 27 routes and five behaviour groups | 44 |
+| Supplemental run | FAIL, exit 1, retained | 10 passed, one incorrect harness expectation | 10 |
+| Corrected follow-up, 19:33:09-19:33:17 UTC | PASS, exit 0 | Four passed | Three |
+
+These are separate executions, not 46 unique passing acceptance tests. The
+supplemental FAIL has not been relabelled PASS. The three result manifests
+record 57 screenshots in total and no console, page, request or HTTP errors.
+Failed inline execution wrappers are not counted as browser passes.
+
+### Behaviour verified on the remote application
+
+* All eight static routes, all 18 pack/trace/record routes for A-F, and the
+  unknown-route fallback returned HTTP 200 with the expected heading,
+  synthetic banner and primary navigation. This includes direct Azure deep
+  links, not deployed Pages sub-path verification.
+* B showed Dated not met, `REFER_BACK` and gate PASS. Empty, seven-character
+  and whitespace-padded seven-character override reasons were rejected.
+  A valid `AMEND` created `DR-000873`, pinned August, and July replay returned
+  `SUFFICIENT` without rewriting the human audit.
+* D named all three abstention reasons: no retrieved governing provision,
+  image quality 0.31 below 0.60, and only one of three readings agreeing.
+  Its gate read NOT RUN.
+* E ended after two deterministic trace steps with no agent invocation and
+  no model call, including when the global flag was off.
+* Flag-off coverage included all 12 queue rows (six fillers), six packs,
+  six traces, six audit/replay views and all three pharmacy scenarios.
+  Case evidence and queue states remained; submission remained enabled;
+  recommendations returned when enabled. New flag-off records had `NONE`.
+  Historical B and F recommendations remained in their audit records.
+
+### Corrected supplemental assertion
+
+The supplemental harness incorrectly expected E's trace to say
+"Agent recommendations switched off; evidence only". In
+[SPEC.md](SPEC.md#6-the-agent-pipeline-agentts-toolsts-keep-the-sequence-the-classification-and-the-stop-conditions),
+Stop 1 deterministic clearance precedes Stop 2 flag-off handling. E correctly
+said "Cleared by rules; agent not invoked" and "No model was called."
+This was a test expectation error, not an application fix.
+
+The four passing follow-up checks verified that trace, E's evidence-only human
+record and July replay, B's unchanged on-flag `AMEND` audit while both replay
+recommendations were suppressed, and restoration of July `SUFFICIENT` when
+recommendations were re-enabled. The failed supplemental artifact is preserved
+alongside the successful follow-up in
+[../../.copilot-tracking/hosted-pr1/supplemental-results.json](../../.copilot-tracking/hosted-pr1/supplemental-results.json)
+and [../../.copilot-tracking/hosted-pr1/followup-results.json](../../.copilot-tracking/hosted-pr1/followup-results.json).
+
+### Asset identity and hosting exception
+
+Actual browser response bodies matched a fresh root-base (`/`) build byte for
+byte: JavaScript 756,349 bytes, SHA-256
+`0ae1a3847f754458c5d6125b4453d30082c07e9cb32a53444f6f26d15c470ec1`;
+CSS 123,128 bytes, SHA-256
+`d41fd41bd6d6f525fa4cb05d3236e4ddbffc4e9ac4c87872bae4e15cd43726ce`.
+This establishes deployed asset identity, not a hosted forced gate-FAIL test.
+
+CI green at `a9b3f85` and the user-approved Azure exception are separate from
+Pages deployment status. The Pages HTTP 422 remains unresolved. The pending
+local guard is in the root workflow,
+[../../.github/workflows/deploy.yml](../../.github/workflows/deploy.yml):
+`if: vars.PAGES_ENABLED == 'true'` on the Pages build job. Reusable tests remain
+unconditional; deploy depends on build. That existing root-workflow change was
+left untouched, is not covered by the `a9b3f85` CI claim, and does not establish
+Pages availability. No repository variable or plan was changed here.
+
+## Hosted screenshot index
+
+Nine original PNGs were reviewed and copied byte-for-byte into this documentation
+tree, with matching source/destination SHA-256 hashes. The first eight are from
+the passing main hosted run; the last is from the passing corrected follow-up.
+They are hosted light-desktop evidence, not local previews or before/after
+redesign comparisons. Existing transient toast/menu states are unretouched.
+The PR body uses repository-relative paths to these same files; they must be
+included in the PR branch before GitHub reviewers can retrieve them. This
+report-only update did not stage, commit or upload them.
+
+| View | Original hosted screenshot |
+|---|---|
+| Overview | [qa/pr1/route-overview.png](qa/pr1/route-overview.png) |
+| Pharmacy, missing information | [qa/pr1/route-pharmacy.png](qa/pr1/route-pharmacy.png) |
+| B pack, missing date and gate PASS | [qa/pr1/B-missing-date-gate-pass.png](qa/pr1/B-missing-date-gate-pass.png) |
+| B complete trace | [qa/pr1/route-case-EX-24112-trace.png](qa/pr1/route-case-EX-24112-trace.png) |
+| B human audit and July SUFFICIENT replay | [qa/pr1/B-july-sufficient.png](qa/pr1/B-july-sufficient.png) |
+| D three reasons and gate NOT RUN | [qa/pr1/D-three-reasons-no-gate.png](qa/pr1/D-three-reasons-no-gate.png) |
+| Flag-off queue including fillers | [qa/pr1/flag-off-queue-including-fillers.png](qa/pr1/flag-off-queue-including-fillers.png) |
+| Flag-off pharmacy, submission allowed | [qa/pr1/pharmacy-global-off-Information-missing.png](qa/pr1/pharmacy-global-off-Information-missing.png) |
+| E corrected deterministic-first flag-off trace | [qa/pr1/followup-E-flag-off-trace.png](qa/pr1/followup-E-flag-off-trace.png) |
+
+## Explicit limitations and deferred work
+
+* The build is not warning-free. Main JavaScript is 756.35 kB minified and
+  234.10 kB gzip; CSS is 123.13 kB and 19.25 kB gzip, with fonts additional.
+  No first-load performance target or Lighthouse score is claimed. Step 7
+  must address performance without breaking offline-once-loaded navigation.
+* Offline coverage is local navigation in an already-loaded session. Cold
+  offline startup, offline reload and durable offline storage are not verified
+  or implemented by this change. Azure online deep links passed separately.
+* Gate injection coverage is three scenarios in the default Chromium viewport
+  and theme, not a cross-product of every fault, theme, viewport and input.
+  The twelve axe tests use normal inputs, not the injected gate-FAIL screens.
+* No new dependency installation, CI query or dependency audit was performed
+  for this report update. Linux CI green is user-confirmed. Pages home and
+  deep links remain unavailable/unverified; the approved exception is Azure,
+  not a claim that local `/BSA/` success proves deployed Pages behaviour.
+* Hosted checks did not repeat the full responsive, dark-mode, axe or offline
+  suite, or inject a forced gate FAIL. Bundle markers are not behavioural
+  gate-FAIL evidence. The 12 axe audits and injected gate tests are local.
+* No manual screen-reader certification, comprehensive visual review,
+  before-and-after screenshot collection or redesign was performed. The nine
+  selected hosted screenshots do not complete that wider definition of done.
+

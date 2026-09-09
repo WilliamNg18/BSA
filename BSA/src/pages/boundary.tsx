@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PageSection } from "@/components/page-section";
-import { BOUNDARY_META, BoundaryTag } from "@/components/demo/labels";
+import { BoundaryTag } from "@/components/demo/labels";
+import { BOUNDARY_META } from "@/components/demo/label-meta";
 import { BOUNDARY_ROWS } from "@/lib/domain/content";
 import type { BoundaryClass } from "@/lib/domain/types";
 

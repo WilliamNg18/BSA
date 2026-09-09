@@ -142,7 +142,7 @@ export function compositeFrom(signals: Signals): Composite {
     reasons.push(`Image quality ${signals.imageQuality.toFixed(2)} is below the ${QUALITY_THRESHOLD.toFixed(2)} threshold`);
     abstain = true;
   }
-  if (signals.sampleAgreement.total > 0 && signals.sampleAgreement.agree < AGREEMENT_THRESHOLD) {
+  if (signals.sampleAgreement.agree < AGREEMENT_THRESHOLD) {
     reasons.push(`Only ${signals.sampleAgreement.agree} of ${signals.sampleAgreement.total} readings agree`);
     abstain = true;
   }
@@ -189,8 +189,9 @@ export function complianceGate(
 /** Citation validation: the quoted span must exist in the clause of the version in force. */
 export function validateCitation(clause: TariffClause | null, version: TariffVersion | null, quoted: string): boolean | null {
   if (!clause || !version) return null;
-  const exists = version.clauses.some((c) => c.id === clause.id);
-  return exists && clause.text.includes(quoted);
+  if (!quoted.trim()) return false;
+  const retrieved = version.clauses.find((c) => c.id === clause.id);
+  return Boolean(retrieved && retrieved.text.includes(quoted) && clause.text.includes(quoted));
 }
 
 /** Pricing is out of scope for the agent and for this prototype. */

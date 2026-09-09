@@ -42,7 +42,13 @@
   &::-webkit-scrollbar { display: none; }
 }
 
-@custom-variant dark (&:is(.dark *));
+/* Keep dark utilities in sync with the OS-driven dark tokens below. */
+@custom-variant dark {
+  &:where(.dark, .dark *) { @slot; }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not(.light), :root:not(.light) *) { @slot; }
+  }
+}
 
 :root {
   --background: oklch(1 0 0);

@@ -6,7 +6,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PageSection } from "@/components/page-section";
 import { EmptyState } from "@/components/states";
-import { RecommendationBadge, STATE_META, StateBadge, SyntheticTag } from "@/components/demo/labels";
+import { RecommendationBadge, StateBadge, SyntheticTag } from "@/components/demo/labels";
+import { STATE_META } from "@/components/demo/label-meta";
 import { CompositeBadge, SignalList } from "@/components/demo/signals";
 import { runAgent } from "@/lib/domain/agent";
 import { CASES, QUEUE_FILLER } from "@/lib/domain/cases";
@@ -117,7 +118,7 @@ export function QueuePage() {
                         : "Synthetic row"}
                     </TableCell>
                     <TableCell className="whitespace-normal align-top">
-                      {r.pack ? <RecommendationBadge rec={r.pack.recommendation} className="text-xs" /> : <span className="text-sm">{"recommendation" in r ? r.recommendation : ""}</span>}
+                      {!agentEnabled || r.pack ? <RecommendationBadge rec={agentEnabled && r.pack ? r.pack.recommendation : "NONE"} className="text-xs" /> : <span className="text-sm">{"recommendation" in r ? r.recommendation : ""}</span>}
                     </TableCell>
                     <TableCell className="whitespace-normal align-top">
                       {r.pack && r.pack.agentInvoked ? (

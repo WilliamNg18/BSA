@@ -22,11 +22,12 @@ export function DecisionRecordPage() {
   const { id } = useParams();
   const c = caseById(id);
   const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
-  const records = useAppStore((s) => s.records.filter((r) => r.caseId === id));
+  const allRecords = useAppStore((s) => s.records);
+  const records = useMemo(() => allRecords.filter((r) => r.caseId === id), [allRecords, id]);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const [replayVersion, setReplayVersion] = useState<string>("");
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
-  const replay = useMemo(() => (c && replayVersion ? runAgent(c, { agentEnabled: true, tariffVersion: replayVersion }) : null), [c, replayVersion]);
+  const replay = useMemo(() => (c && replayVersion ? runAgent(c, { agentEnabled, tariffVersion: replayVersion }) : null), [c, replayVersion, agentEnabled]);
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
@@ -97,6 +98,7 @@ export function DecisionRecordPage() {
                     <CardDescription>{TARIFF_VERSIONS.find((v) => v.version === replayVersion)?.changeNote}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
+                    {replay.gate.result === "FAIL" && <p>Recommendation withheld by the compliance gate. Evidence only; gate FAIL.</p>}
                     <div className="grid gap-2 sm:grid-cols-2">
                       <div className="rounded-md bg-muted/50 p-2.5">
                         <p className="text-xs text-muted-foreground">Original ({pack.tariffLabel})</p>
@@ -119,14 +121,18 @@ export function DecisionRecordPage() {
                       ))}
                     </ul>
                     <p className="text-xs text-muted-foreground">
-                      {replay.recommendation !== pack.recommendation
+                      {replay.gate.result === "FAIL"
+                        ? "No actionable recommendation is available under this version."
+                        : replay.recommendation !== pack.recommendation
                         ? "The recommendation changes with the rule while the reading of the note does not. This is why a rules engine would need re-coding every month and why the record pins the version."
                         : "The recommendation is unchanged under this version."}
                     </p>
                   </CardContent>
                 </Card>
               ) : (
-                <p className="text-sm text-muted-foreground">Choose a version to replay. For case B, July 2026 required initials only, so the same note is sufficient under July and insufficient under August.</p>
+                <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL"
+                  ? "Recommendation withheld by the compliance gate. Choose a version to review the evidence and checks, not to bypass the gate."
+                  : "Choose a version to replay. For case B, July 2026 required initials only, so the same note is sufficient under July and insufficient under August."}</p>
               )}
             </div>
           </PageSection>
