@@ -22,6 +22,8 @@ jobs:
 
   build:
     needs: tests
+    # Enable after the repository plan supports Pages. Azure is the current demo host.
+    if: vars.PAGES_ENABLED == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
