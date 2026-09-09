@@ -1,6 +1,24 @@
-# Functional specification: Prescription Exception Case Builder (v0.6, the initial proof of concept)
+---
+title: Functional specification for Prescription Exception Case Builder
+description: Original v0.6 behaviour with phase 1 presentation UI removal and retained product controls.
+ms.date: 2026-09-09
+---
 
-This document describes what the initial application does, screen by screen and rule by rule, so that it can be rebuilt to a higher standard without losing anything that matters. Where a behaviour is a design decision rather than an accident, it is marked **Keep**. Where the initial build is known to be weak, see `KNOWN-ISSUES.md`.
+## Phase 1 scope
+
+Phase 1 removes Presenter mode, Discussion mode, their presentation-only state
+and content exports, the header subtitle and the `/notes` route. Rehearsal,
+discussion, delivery and recovery content now lives in [demo-script.md](demo-script.md).
+This explicitly supersedes the older requirement in [TASK.md](TASK.md) to keep
+those presentation controls. The product shield and name, current navigation,
+agent switch, immediate Reset demo, synthetic banner and principle remain.
+
+Reset confirmation is planned for the next PR. Grouped navigation, a dedicated
+toggle-comparison experience, header restructuring, baseline modelling and
+domain-rule changes are not part of phase 1. Remaining sections retain the
+original functional contract except where this phase or the merged crash and
+gate fixes are called out. See [KNOWN-ISSUES.md](KNOWN-ISSUES.md) for verification
+limits and deferred work.
 
 Everything in the application is synthetic. There are no real prescriptions, patients, pharmacies, contractor codes or rulebook text. The Drug Tariff wording is a paraphrase written for the demonstration.
 
@@ -31,7 +49,7 @@ A `Boundary` page lists every action with its class and the reason for the class
 
 ## 3. Information architecture
 
-Header (sticky) on every page: product name, subtitle "NHSBSA capability demonstration · synthetic data", primary navigation, and three controls (section 10). Beneath the header a permanent amber banner: "Synthetic demonstration data throughout. This prototype does not calculate or approve payments, and nothing here is a claim about NHSBSA's real performance." (Keep.)
+Header (sticky) on every page: product shield and name, existing primary navigation, Agent recommendations switch and Reset demo (section 10). The former subtitle is removed; the layout is not restructured in phase 1. Beneath the header a permanent amber banner: "Synthetic demonstration data throughout. This prototype does not calculate or approve payments, and nothing here is a claim about NHSBSA's real performance." (Keep.)
 
 | Route | Screen | Contents |
 |---|---|---|
@@ -45,8 +63,7 @@ Header (sticky) on every page: product name, subtitle "NHSBSA capability demonst
 | `/boundary` | Agent, deterministic code, human decision | Section 2 |
 | `/assumptions` | Assumptions register | Section 14 |
 | `/architecture` | Technical architecture and the path to production | Section 15 |
-| `/notes` | Presenter notes | Section 16 |
-| `*` | Not found | Friendly not-found state with a link back to the queue |
+| `*` | Not found | Friendly not-found state with a Go home link, including the removed `/notes` path |
 
 Case pages share a header: synthetic-case tag, state badge, "Back to queue", title, one-paragraph intro, and a three-tab strip (trace, case pack, record).
 
@@ -177,12 +194,13 @@ Right: **Prescription image** (synthetic form drawn as SVG with the located regi
   - Footnote: a check on a typed field, not a scan; nothing is scanned at the pharmacy.
 - In the initial build the interpretation of the typed field is a small deterministic mock (`interpret()`: type from keyword, date from a d/m(/y) pattern, initials from a 2 to 3 capital-letter token). In production it is the same constrained model call the NHSBSA side uses.
 
-## 10. Header controls (Keep all three)
+## 10. Header controls after phase 1
 
-- **Agent recommendations on/off** (feature flag): off shows the fail-open path on every case (evidence only, no recommendation, state unchanged); the queue behaves as today.
-- **Presenter mode**: a dark bar at the foot of the screen with seven timed beats (0:00 to 10:00), each with a title, a "say" script and a **Go to** button that navigates to the beat's route; previous/next; exit.
-- **Discussion mode**: a side sheet with discussion prompts relevant to the current route and challenge cards (twelve question-and-answer pairs) for likely objections.
-- **Reset demo**: restores every case to its initial state, clears session decision records (the seeded DR-000871 remains), turns the agent flag on.
+- Agent recommendations on/off (feature flag): off shows the fail-open path on every case (evidence only, no recommendation, state unchanged). Queue recommendations, including filler rows, are withheld. Pharmacy assistance is also withheld without blocking submission. Historical human records are unchanged; rule-version replay follows the current flag.
+- Reset demo: immediately restores every case to its initial state, clears session decision records (the seeded DR-000871 remains) and turns the agent flag on. Pharmacy-local fields and the selected replay version are not reset by this store action. Confirmation is deferred to the next PR.
+
+There are no Presenter mode or Discussion mode buttons, bar, sheet, timers or
+beat controls. The reference script is documentation, not a route or a header link.
 
 ## 11. Overview counts (computed, synthetic, labelled)
 
@@ -204,9 +222,13 @@ A register of eight assumptions, each with statement, why it matters, evidence, 
 
 "The flow, once" as a monospace diagram (existing estate, ingress, tier-0 pre-checks, agent with tools and a constrained model call, gate, append-only record, operator surface, human decision, pharmacy channel, evaluation gates, observability; pricing never enters; patient identity redacted before any model call). A component table (component; in this prototype; in production; NHSBSA owns; status Built for real / Mocked / Not built). The tool-contract table (section 6). "Deliberately not built" and "Why the prototype is shaped this way".
 
-## 16. Presenter notes (`/notes`)
+## 16. Demonstration guide outside the application
 
-Ten minutes, seven beats; what to ask in the first fifteen minutes after the demonstration; challenge cards; startup speed inside a regulated body (delivery approach); likely failure points in the interview and how to recover; setup and run; deliberately not built.
+[demo-script.md](demo-script.md) retains seven timed beats with what to say and
+show, all twelve discussion prompts and twelve challenge answers, the delivery
+sequence, ownership, failure recovery, setup and deliberate omissions. It uses
+the current control labels and marks future controls as planned. `/notes` no
+longer has a page or navigation link and resolves to Page not found.
 
 ## 17. Accessibility and interaction conventions (Keep and improve)
 

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { BookOpenCheck, ClipboardList, HomeIcon, Inbox, Layers, ListChecks, Presentation, Store, type LucideIcon } from "lucide-react";
+import { BookOpenCheck, ClipboardList, HomeIcon, Inbox, Layers, ListChecks, Store, type LucideIcon } from "lucide-react";
 import { HomePage } from "@/pages/home";
 import { ArchitecturePage } from "@/pages/architecture";
 import { AssumptionsPage } from "@/pages/assumptions";
@@ -8,7 +8,6 @@ import { CasePackPage } from "@/pages/case-pack";
 import { CaseTracePage } from "@/pages/case-trace";
 import { DecisionRecordPage } from "@/pages/decision-record";
 import { EvaluationPage } from "@/pages/evaluation";
-import { NotesPage } from "@/pages/notes";
 import { PharmacyPage } from "@/pages/pharmacy";
 import { QueuePage } from "@/pages/queue";
 
@@ -38,5 +37,4 @@ export const routes: AppRoute[] = [
   { path: "/boundary", element: <BoundaryPage />, label: "Boundary", icon: Layers },
   { path: "/assumptions", element: <AssumptionsPage />, label: "Assumptions", icon: ListChecks },
   { path: "/architecture", element: <ArchitecturePage />, label: "Architecture", icon: ClipboardList },
-  { path: "/notes", element: <NotesPage />, label: "Presenter notes", icon: Presentation },
 ];

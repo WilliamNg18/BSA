@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { MessageSquareText, Presentation, RotateCcw, ShieldCheck } from "lucide-react";
+import { RotateCcw, ShieldCheck } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -9,14 +9,10 @@ import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
 export function TopNav() {
-  const { agentEnabled, presenterMode, discussionMode, setAgentEnabled, setPresenterMode, setDiscussionMode, resetDemo } = useAppStore(
+  const { agentEnabled, setAgentEnabled, resetDemo } = useAppStore(
     useShallow((s) => ({
       agentEnabled: s.agentEnabled,
-      presenterMode: s.presenterMode,
-      discussionMode: s.discussionMode,
       setAgentEnabled: s.setAgentEnabled,
-      setPresenterMode: s.setPresenterMode,
-      setDiscussionMode: s.setDiscussionMode,
       resetDemo: s.resetDemo,
     })),
   );
@@ -37,7 +33,6 @@ export function TopNav() {
           </span>
           <div className="leading-tight">
             <p className="text-sm font-semibold">Prescription Exception Case Builder</p>
-            <p className="text-xs text-muted-foreground">NHSBSA capability demonstration · synthetic data</p>
           </div>
         </div>
         <nav aria-label="Primary" className="order-3 -mx-1 flex w-full flex-wrap gap-1 md:order-none md:mx-0 md:w-auto md:flex-1">
@@ -62,26 +57,6 @@ export function TopNav() {
             <Switch id="agent-flag" checked={agentEnabled} onCheckedChange={setAgentEnabled} className="data-[state=checked]:bg-teal-700" />
             <Label htmlFor="agent-flag" className="text-xs">Agent recommendations {agentEnabled ? "on" : "off"}</Label>
           </div>
-          <Button
-            type="button"
-            size="sm"
-            variant={presenterMode ? "default" : "outline"}
-            aria-pressed={presenterMode}
-            onClick={() => setPresenterMode(!presenterMode)}
-            className={cn(presenterMode && "bg-teal-700 text-white hover:bg-teal-800")}
-          >
-            <Presentation aria-hidden="true" /> Presenter mode
-          </Button>
-          <Button
-            type="button"
-            size="sm"
-            variant={discussionMode ? "default" : "outline"}
-            aria-pressed={discussionMode}
-            onClick={() => setDiscussionMode(!discussionMode)}
-            className={cn(discussionMode && "bg-teal-700 text-white hover:bg-teal-800")}
-          >
-            <MessageSquareText aria-hidden="true" /> Discussion mode
-          </Button>
           <Button type="button" size="sm" variant="ghost" onClick={resetDemo}>
             <RotateCcw aria-hidden="true" /> Reset demo
           </Button>
