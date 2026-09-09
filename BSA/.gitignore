@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.azure/
+.vite-cache/
+*.log
+.DS_Store

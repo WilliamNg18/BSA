@@ -1,0 +1,11 @@
+# Local tooling and generated artifacts are not part of the archived application.
+.venv/
+.copilot-tracking/
+**/node_modules/
+**/dist/
+**/.azure/
+**/*.build.out
+**/preflight-*.bicepparam
+**/test-results/
+**/playwright-report/
+**/coverage/
