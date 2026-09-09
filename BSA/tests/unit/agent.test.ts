@@ -116,13 +116,36 @@ describe("governance and fail-open paths", () => {
     expect(pack.trace.at(-1)?.cls).toBe("human");
   });
 
-  it("withholds a gate-failing proposal and its draft", () => {
-    const c = structuredClone(CASES[1]);
+  it.each(CASES.slice(0, 3).flatMap((c) => ["2026-08", "2026-07"].map((tariffVersion) => ({ c, tariffVersion }))))(
+    "withholds $c.scenario advice from every consumer under $tariffVersion on gate FAIL",
+    ({ c: original, tariffVersion }) => {
+    const before = structuredClone(original);
+    const baseline = runAgent(original, { tariffVersion });
+    expect(baseline.gate.result).toBe("PASS");
+    expect(baseline.recommendation).not.toBe("NONE");
+    const states = useAppStore.getState().caseStates;
+    const records = useAppStore.getState().records;
+    const c = structuredClone(original);
     c.extracted.prescriber = "Illegible";
-    const pack = runAgent(c);
-    expect(pack.gate.result).toBe("FAIL");
-    expect(pack.state).toBe("operator_review_required");
-    expect(pack.draftToPharmacy).toBeNull();
+    const pack = runAgent(c, { tariffVersion });
+    expect(pack).toMatchObject({ gate: { result: "FAIL" }, state: "operator_review_required",
+      recommendation: "NONE", alternative: null, draftToPharmacy: null,
+      reasons: ["Recommendation withheld by the compliance gate; evidence only."] });
+    expect(pack.gate.checks).toContainEqual(expect.objectContaining({ name: "Mandatory fields present", pass: false }));
+    expect(pack.evidence).toEqual(baseline.evidence);
+    expect(pack.requirementResults).toEqual(baseline.requirementResults);
+    expect(pack.conflicts).toEqual(baseline.conflicts);
+    expect(pack.signals).toEqual(baseline.signals);
+    expect(pack.trace.map((step) => step.phase)).toEqual(baseline.trace.map((step) => step.phase));
+    const withheld = pack.trace.find((step) => step.phase === "RECOMMEND");
+    expect(withheld).toMatchObject({ title: "Proposal withheld by the compliance gate", status: "fail", items: [], toolCalls: [] });
+    for (const reason of baseline.reasons) expect(JSON.stringify(pack.trace)).not.toContain(reason);
+    if (baseline.draftToPharmacy) expect(JSON.stringify(pack)).not.toContain(baseline.draftToPharmacy);
+    expect(pack.trace.at(-1)?.summary).toContain("recommendation, alternative and draft are withheld");
+    expect(useAppStore.getState().caseStates).toBe(states);
+    expect(useAppStore.getState().records).toBe(records);
+    expect(original).toEqual(before);
+    expect(runAgent(original, { tariffVersion })).toEqual(baseline);
   });
 
   it("cannot retrieve a rule for an unknown replay version", () => {

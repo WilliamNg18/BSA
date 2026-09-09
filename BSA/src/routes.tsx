@@ -1,17 +1,16 @@
-import { lazy, type ReactElement } from "react";
+import type { ReactElement } from "react";
 import { BookOpenCheck, ClipboardList, HomeIcon, Inbox, Layers, ListChecks, Presentation, Store, type LucideIcon } from "lucide-react";
 import { HomePage } from "@/pages/home";
-
-const ArchitecturePage = lazy(() => import("@/pages/architecture").then((m) => ({ default: m.ArchitecturePage })));
-const AssumptionsPage = lazy(() => import("@/pages/assumptions").then((m) => ({ default: m.AssumptionsPage })));
-const BoundaryPage = lazy(() => import("@/pages/boundary").then((m) => ({ default: m.BoundaryPage })));
-const CasePackPage = lazy(() => import("@/pages/case-pack").then((m) => ({ default: m.CasePackPage })));
-const CaseTracePage = lazy(() => import("@/pages/case-trace").then((m) => ({ default: m.CaseTracePage })));
-const DecisionRecordPage = lazy(() => import("@/pages/decision-record").then((m) => ({ default: m.DecisionRecordPage })));
-const EvaluationPage = lazy(() => import("@/pages/evaluation").then((m) => ({ default: m.EvaluationPage })));
-const NotesPage = lazy(() => import("@/pages/notes").then((m) => ({ default: m.NotesPage })));
-const PharmacyPage = lazy(() => import("@/pages/pharmacy").then((m) => ({ default: m.PharmacyPage })));
-const QueuePage = lazy(() => import("@/pages/queue").then((m) => ({ default: m.QueuePage })));
+import { ArchitecturePage } from "@/pages/architecture";
+import { AssumptionsPage } from "@/pages/assumptions";
+import { BoundaryPage } from "@/pages/boundary";
+import { CasePackPage } from "@/pages/case-pack";
+import { CaseTracePage } from "@/pages/case-trace";
+import { DecisionRecordPage } from "@/pages/decision-record";
+import { EvaluationPage } from "@/pages/evaluation";
+import { NotesPage } from "@/pages/notes";
+import { PharmacyPage } from "@/pages/pharmacy";
+import { QueuePage } from "@/pages/queue";
 
 export interface AppRoute {
   /** "/" is the index route; others are paths under the shell. */

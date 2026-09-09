@@ -98,6 +98,7 @@ export function DecisionRecordPage() {
                     <CardDescription>{TARIFF_VERSIONS.find((v) => v.version === replayVersion)?.changeNote}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
+                    {replay.gate.result === "FAIL" && <p>Recommendation withheld by the compliance gate. Evidence only; gate FAIL.</p>}
                     <div className="grid gap-2 sm:grid-cols-2">
                       <div className="rounded-md bg-muted/50 p-2.5">
                         <p className="text-xs text-muted-foreground">Original ({pack.tariffLabel})</p>
@@ -120,14 +121,18 @@ export function DecisionRecordPage() {
                       ))}
                     </ul>
                     <p className="text-xs text-muted-foreground">
-                      {replay.recommendation !== pack.recommendation
+                      {replay.gate.result === "FAIL"
+                        ? "No actionable recommendation is available under this version."
+                        : replay.recommendation !== pack.recommendation
                         ? "The recommendation changes with the rule while the reading of the note does not. This is why a rules engine would need re-coding every month and why the record pins the version."
                         : "The recommendation is unchanged under this version."}
                     </p>
                   </CardContent>
                 </Card>
               ) : (
-                <p className="text-sm text-muted-foreground">Choose a version to replay. For case B, July 2026 required initials only, so the same note is sufficient under July and insufficient under August.</p>
+                <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL"
+                  ? "Recommendation withheld by the compliance gate. Choose a version to review the evidence and checks, not to bypass the gate."
+                  : "Choose a version to replay. For case B, July 2026 required initials only, so the same note is sufficient under July and insufficient under August."}</p>
               )}
             </div>
           </PageSection>

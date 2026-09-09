@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import { Toaster } from "@/components/ui/sonner";
@@ -6,7 +5,6 @@ import { DiscussionSheet } from "@/components/demo/discussion-sheet";
 import { PresenterBar } from "@/components/demo/presenter-bar";
 import { TopNav } from "@/components/demo/top-nav";
 import { RouteErrorBoundary } from "@/components/route-error-boundary";
-import { LoadingState } from "@/components/states";
 
 // Minimal app shell — provides only the layout frame: it owns the single
 // `min-h-screen`, mounts the <Toaster/>, and plays a subtle entrance on each
@@ -33,9 +31,7 @@ export function AppShell() {
           className="flex-1 px-4 py-6 md:px-6"
         >
           <RouteErrorBoundary key={pathname} pathname={pathname}>
-            <Suspense fallback={<LoadingState />}>
-              <Outlet />
-            </Suspense>
+            <Outlet />
           </RouteErrorBoundary>
         </motion.div>
       </main>

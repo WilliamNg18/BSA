@@ -83,7 +83,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
   await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("No recommendation (agent not run)", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(2);
   await expect(page.getByText("REFER BACK by Demo operator", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "Reset demo", exact: true }).click();
   await expect(page.getByRole("switch", { name: "Agent recommendations on", exact: true })).toBeChecked();
@@ -107,7 +107,7 @@ test("agent flag hides recommendations on every case without changing case state
   for (const c of cases) {
     await page.locator(`a[href='/BSA/case/${c.id}']`).first().click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
-    await expect(page.getByText("No recommendation (agent not run)", { exact: true })).toBeVisible();
+    await expect(page.getByText("No recommendation", { exact: true })).toBeVisible();
     await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
     await expect(stateCells).toHaveText(states);

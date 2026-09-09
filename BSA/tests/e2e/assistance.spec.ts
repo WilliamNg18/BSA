@@ -19,14 +19,14 @@ test("queue hides all filler recommendations without changing evidence, states o
   await expect(fillerRows.locator("td:nth-child(4)")).toHaveText(QUEUE_FILLER.map((f) => f.recommendation));
 
   await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
-  await expect(recommendations).toHaveText(Array<string>(12).fill("No recommendation (agent not run)"));
+  await expect(recommendations).toHaveText(Array<string>(12).fill("No recommendation"));
   await expect(states).toHaveText(originalStates);
   await expect(times).toHaveText(originalTimes);
   await expect(fillerRows.locator("td:nth-child(3)")).toHaveText(Array<string>(6).fill("Synthetic row"));
   await expect(rows.filter({ hasText: "Case pack" }).locator("td:nth-child(3)")).toHaveText(Array<string>(6).fill("Pre-checks only"));
   await page.getByRole("radio", { name: "Agent abstained", exact: true }).click();
   await expect(rows).toHaveCount(2);
-  await expect(recommendations).toHaveText(Array<string>(2).fill("No recommendation (agent not run)"));
+  await expect(recommendations).toHaveText(Array<string>(2).fill("No recommendation"));
   await page.getByRole("radio", { name: "All", exact: true }).click();
   await expect(states).toHaveText(originalStates);
 

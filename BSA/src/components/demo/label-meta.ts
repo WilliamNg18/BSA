@@ -21,5 +21,5 @@ export const REC_META: Record<Recommendation, { label: string; className: string
   REFER_BACK: { label: "Refer back with the exact fix", className: "bg-amber-700 text-white" },
   REQUEST_INFORMATION: { label: "Request information from the pharmacy", className: "bg-orange-700 text-white" },
   ABSTAIN: { label: "Abstained: no recommendation", className: "bg-rose-700 text-white" },
-  NONE: { label: "No recommendation (agent not run)", className: "bg-slate-600 text-white" },
+  NONE: { label: "No recommendation", className: "bg-slate-600 text-white" },
 };
