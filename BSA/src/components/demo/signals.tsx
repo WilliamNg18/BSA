@@ -9,7 +9,7 @@ import type { Composite, Signals } from "@/lib/domain/types";
 export function CompositeBadge({ composite, className }: { composite: Composite; className?: string }) {
   const meta = {
     high: { label: "High confidence", cls: "bg-emerald-700 text-white" },
-    medium: { label: "Medium confidence", cls: "bg-amber-600 text-white" },
+    medium: { label: "Medium confidence", cls: "bg-amber-700 text-white" },
     low: { label: "Low confidence", cls: "bg-orange-700 text-white" },
     abstain: { label: "Abstained", cls: "bg-rose-700 text-white" },
   }[composite.level];

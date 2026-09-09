@@ -22,11 +22,12 @@ export function DecisionRecordPage() {
   const { id } = useParams();
   const c = caseById(id);
   const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
-  const records = useAppStore((s) => s.records.filter((r) => r.caseId === id));
+  const allRecords = useAppStore((s) => s.records);
+  const records = useMemo(() => allRecords.filter((r) => r.caseId === id), [allRecords, id]);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const [replayVersion, setReplayVersion] = useState<string>("");
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
-  const replay = useMemo(() => (c && replayVersion ? runAgent(c, { agentEnabled: true, tariffVersion: replayVersion }) : null), [c, replayVersion]);
+  const replay = useMemo(() => (c && replayVersion ? runAgent(c, { agentEnabled, tariffVersion: replayVersion }) : null), [c, replayVersion, agentEnabled]);
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;

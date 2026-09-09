@@ -15,6 +15,7 @@ import { productByCode } from "@/lib/domain/reference";
 import { endorsementRequired, evaluateRequirements, mandatoryFieldsCheck } from "@/lib/domain/rules";
 import { versionForDate } from "@/lib/domain/tariff";
 import type { EndorsementFacts } from "@/lib/domain/types";
+import { useAppStore } from "@/lib/store";
 
 // Pharmacy pre-submission check. ADVISORY ONLY. Nothing on this screen can block
 // a submission. The interpretation of the typed endorsement is a deterministic
@@ -40,10 +41,12 @@ function interpret(text: string): EndorsementFacts {
 }
 
 export function PharmacyPage() {
+  const agentEnabled = useAppStore((s) => s.agentEnabled);
   const [scenario, setScenario] = useState<"A" | "B" | "D">("B");
   const [agentAvailable, setAgentAvailable] = useState(true);
   const [edited, setEdited] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState<string | null>(null);
+  const assistanceEnabled = agentEnabled && agentAvailable;
 
   const c = useMemo(() => {
     const id = scenario === "A" ? "EX-24107" : scenario === "B" ? "EX-24112" : "EX-24123";
@@ -61,7 +64,7 @@ export function PharmacyPage() {
   const unreadable = c.imageQuality < 0.6 || !product;
 
   let status: Status;
-  if (!agentAvailable || unreadable || facts.type === "UNKNOWN") status = "unable";
+  if (!assistanceEnabled || unreadable || facts.type === "UNKNOWN") status = "unable";
   else if (req.required && results.some((r) => r.met === false)) status = "missing";
   else status = "ready";
 
@@ -87,7 +90,7 @@ export function PharmacyPage() {
       <div className="flex flex-wrap items-center gap-4">
         <div>
           <p className="mb-1 text-xs font-medium text-muted-foreground">Scenario</p>
-          <ToggleGroup type="single" value={scenario} onValueChange={(v) => v && setScenario(v as "A" | "B" | "D")} aria-label="Choose a scenario">
+          <ToggleGroup type="single" value={scenario} onValueChange={(v) => v && setScenario(v as "A" | "B" | "D")} aria-label="Choose a scenario" className="flex-wrap justify-start">
             <ToggleGroupItem value="A" className="data-[state=on]:bg-teal-700 data-[state=on]:text-white">Complete endorsement</ToggleGroupItem>
             <ToggleGroupItem value="B" className="data-[state=on]:bg-teal-700 data-[state=on]:text-white">Information missing</ToggleGroupItem>
             <ToggleGroupItem value="D" className="data-[state=on]:bg-teal-700 data-[state=on]:text-white">Unreadable form</ToggleGroupItem>
@@ -145,7 +148,7 @@ export function PharmacyPage() {
               <CardDescription>
                 {status === "ready" && "The endorsement appears to satisfy the rule in force on the dispensing date. Submit as normal; NHSBSA's own checks still apply."}
                 {status === "missing" && `The endorsement appears to need: ${missingLabels.join("; ")}. Correcting it now avoids a referral weeks later.`}
-                {status === "unable" && (!agentAvailable ? "The agent is not available. Continue with submission as normal; NHSBSA processes the item exactly as today." : "The form could not be read well enough, or the endorsement type was not recognised. Continue with submission as normal; the item will be checked by a person at NHSBSA.")}
+                {status === "unable" && (!agentEnabled ? "Agent recommendations are switched off. Continue with submission as normal; NHSBSA processes the item exactly as today." : !agentAvailable ? "The agent is not available. Continue with submission as normal; NHSBSA processes the item exactly as today." : "The form could not be read well enough, or the endorsement type was not recognised. Continue with submission as normal; the item will be checked by a person at NHSBSA.")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -159,7 +162,7 @@ export function PharmacyPage() {
                 </ul>
                 <p className="mt-1 text-xs text-muted-foreground">{req.reason}</p>
               </div>
-              {agentAvailable && !unreadable && clause && version && (
+              {assistanceEnabled && !unreadable && clause && version && (
                 <div>
                   <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Rule retrieved for {c.extracted.dispensingDate} <BoundaryTag cls="agent" short /></h3>
                   <blockquote className="rounded-md border-l-4 border-teal-600 bg-muted/40 p-3 text-sm">
