@@ -8,7 +8,7 @@ export const TOUR_CONTENT = {
     { chapter: 1, title: "The referred-back subset", prose: "Approximately 85,000 items return monthly for clarification. This subset is not the whole operator queue. Rulebook publication does not establish rule-change frequency." },
     { chapter: 3, title: "The exception pipeline", prose: "Keep capture and pricing unchanged. Build evidence for uncertain exceptions, retain manual abstention, and let a human decide. Workflow pain points are assumptions." },
     { chapter: 4, title: "A bounded proposal", prose: "The agent gathers and recommends; code validates; humans decide. Missing evidence requires abstention. No payments are calculated or approved." },
-    { chapter: 6, title: "Decide on evidence", prose: "Test handling time and repeat work against accuracy guardrails. Separate pharmacy benefits. Agree when to proceed, reshape or stop." },
+    { chapter: 7, title: "Decide on evidence", prose: "Test handling time and repeat work against accuracy guardrails. Separate pharmacy benefits. Agree when to proceed, reshape or stop." },
   ],
   keyFigures: [
     { id: "annual-items", value: "Approximately 1.1 billion", label: "Primary-care items per year in England", qualifier: "Items, not physical forms. Reporting year unspecified; not independently verified." },

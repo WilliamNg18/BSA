@@ -30,7 +30,7 @@ export async function navigatePrimary(page: Page, label: string) {
     destination = await link.getAttribute("href") as string;
     await link.click();
   } else {
-    const group = ["Pharmacy check", "Exception queue"].includes(label) ? "Operations" : "How it works";
+    const group = ["Pharmacy check", "Pharmacy claims", "Exception queue"].includes(label) ? "Operations" : "How it works";
     const trigger = nav.getByRole("button", { name: group, exact: true });
     await trigger.click();
     // The modal menu hides the navigation from the accessibility tree while

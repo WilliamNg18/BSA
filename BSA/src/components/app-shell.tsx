@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useSearchParams } from "react-router-dom";
 import { motion, useReducedMotion } from "motion/react";
 import { AssistanceTransition } from "@/components/demo/assistance-transition";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +8,8 @@ import { TopNav } from "@/components/demo/top-nav";
 import { RouteErrorBoundary } from "@/components/route-error-boundary";
 import { TourRail } from "@/components/demo/tour-rail";
 import { Button } from "@/components/ui/button";
+import { NhsbsaViewLink } from "@/components/demo/case-links";
+import { FollowBanner } from "@/components/demo/follow-banner";
 
 // Minimal app shell — provides only the layout frame: it owns the single
 // `min-h-screen`, mounts the <Toaster/>, and plays a subtle entrance on each
@@ -19,14 +21,15 @@ import { Button } from "@/components/ui/button";
 // Pages fill <main flex-1> with `h-full`; never add `min-h-screen` inside a page.
 export function AppShell() {
   const { pathname, hash } = useLocation();
+  const [searchParams] = useSearchParams();
   const reduced = useReducedMotion();
   const [tourVisible, setTourVisible] = useState(true);
   const [disclaimerOpen, setDisclaimerOpen] = useState(true);
   const [resetEpoch, setResetEpoch] = useState(0);
   useEffect(() => {
-    // The pharmacy substop and queue chapter have no fragment. Only location
-    // changes move focus; edits, flag changes and reset must retain control focus.
-    if ((!hash && pathname !== "/pharmacy" && pathname !== "/queue") || hash === "#main-content") return;
+    // The pharmacy substop, queue and claims chapters have no fragment. Only
+    // location changes move focus; edits, flag changes and reset keep control focus.
+    if ((!hash && pathname !== "/pharmacy" && pathname !== "/queue" && pathname !== "/pharmacy/claims") || hash === "#main-content") return;
     const heading = document.querySelector<HTMLElement>("[data-tour-heading]");
     heading?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -61,6 +64,17 @@ export function AppShell() {
             <p className="mt-1 text-sm text-muted-foreground" data-tour-prose>Explore the synthetic queue. Workload simulation remains planned; no measured capacity or savings result is implied.</p>
           </section>}
           {pathname === "/pharmacy" && <p className="mx-auto mb-6 max-w-7xl rounded-lg border p-3 text-sm">4. Pharmacy example · Existing advisory mock, not a deployed integration or a shared live model.</p>}
+          {pathname === "/pharmacy/claims" && <section aria-label="Tour chapter 6" className="mx-auto mb-6 max-w-7xl space-y-3 rounded-lg border border-dashed bg-muted/30 p-4">
+            <h2 className="font-semibold">6. What the pharmacy sees · Existing claims mock, not a deployed integration.</h2>
+            {searchParams.get("case") ? (
+              <>
+                <FollowBanner caseId={searchParams.get("case")!} />
+                <NhsbsaViewLink caseId={searchParams.get("case")!} />
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground" data-tour-prose>Open a case from the queue to see its pharmacy-side claim here.</p>
+            )}
+          </section>}
           <RouteErrorBoundary key={pathname} pathname={pathname}>
             <Outlet />
           </RouteErrorBoundary>

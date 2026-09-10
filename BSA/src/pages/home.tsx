@@ -68,9 +68,12 @@ export function HomePage() {
       </>}
       {chapterNumber === 4 && <>
         <TwoPlacesDiagram enabled={agentEnabled} />
-        <Button asChild variant="outline"><Link to="/pharmacy">Open existing pharmacy example</Link></Button>
+        <div className="flex flex-wrap gap-3">
+          <Button asChild variant="outline"><Link to="/pharmacy">Open existing pharmacy example</Link></Button>
+          <Button asChild variant="outline"><Link to="/pharmacy/claims">Open what the pharmacy sees next</Link></Button>
+        </div>
       </>}
-      {chapterNumber === 6 && <>
+      {chapterNumber === 7 && <>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>
           <div><dt className="text-xs text-muted-foreground">Requested history</dt><dd className="mt-1 font-medium">Two years · Item-level reasons</dd></div>

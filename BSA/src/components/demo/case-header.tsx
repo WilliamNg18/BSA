@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { StateBadge, SyntheticTag } from "@/components/demo/labels";
+import { PharmacyViewLink } from "@/components/demo/case-links";
+import { FollowBanner } from "@/components/demo/follow-banner";
 import type { CaseState, ExceptionCase } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
 
@@ -17,9 +19,11 @@ export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state
         <SyntheticTag>Synthetic case {c.scenario} · {c.id}</SyntheticTag>
         <StateBadge state={state} />
         <Button asChild size="sm" variant="ghost"><Link to="/queue">Back to queue</Link></Button>
+        <PharmacyViewLink caseId={c.id} />
       </div>
       <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
       <p className="max-w-3xl text-muted-foreground">{intro}</p>
+      <FollowBanner caseId={c.id} />
       <nav aria-label="Case views" className="flex flex-wrap gap-1 border-b">
         {tabs.map((t) => {
           const active = pathname === t.to;

@@ -3,9 +3,9 @@ import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-na
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 
 describe("tour navigation contract", () => {
-  it("has six chapters and a reversible pharmacy substop", () => {
-    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 4, 5, 6]);
-    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#cases", "/#two-places", "/pharmacy", "/queue", "/#close"]);
+  it("has seven chapters and a reversible pharmacy substop", () => {
+    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 4, 5, 6, 7]);
+    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
   });
   it.each(TOUR_STOPS.map((stop, index) => ({ ...stop, index })))("resolves $to", ({ to, index }) => {
     const url = new URL(to, "https://example.test");

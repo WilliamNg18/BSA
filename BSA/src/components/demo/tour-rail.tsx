@@ -11,6 +11,7 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
   const index = tourStopIndex(pathname, hash);
   const stop = TOUR_STOPS[index];
   const last = index === TOUR_STOPS.length - 1;
+  const totalChapters = TOUR_STOPS[TOUR_STOPS.length - 1].chapter;
 
   useLayoutEffect(() => {
     if (!visible) return;
@@ -43,7 +44,7 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="min-w-0 flex-1 justify-start px-2" aria-label="Choose tour chapter">
-              <span className="truncate" aria-live="polite">{stop ? `${stop.chapter}/6 · ${stop.label}` : "Explore · Start the tour"}</span><ChevronDown className="shrink-0" aria-hidden="true" />
+              <span className="truncate" aria-live="polite">{stop ? `${stop.chapter}/${totalChapters} · ${stop.label}` : "Explore · Start the tour"}</span><ChevronDown className="shrink-0" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">

@@ -48,11 +48,14 @@ for (const enabled of [true, false]) {
     for (const [index, stop] of TOUR_STOPS.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).click();
       await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${stop.to.replace("/#", "#")}`);
-      await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
+      await expect(rail).toContainText(`${stop.chapter}/7 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
-      if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+      // Stream C's Task 9 page will own a focusable heading for the claims
+      // chapter; until then this shell chapter box does not compete for focus.
+      if (index > 0 && stop.to !== "/pharmacy/claims") await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       if (stop.chapter === 2) await expect(page.getByRole("region", { name: "Monthly workload calculator" })).toBeVisible();
       if (stop.chapter === 5) await expect(page.getByRole("heading", { name: "5. The queue · Simulation planned", exact: true })).toBeVisible();
+      if (stop.chapter === 6) await expect(page.getByRole("heading", { name: "6. What the pharmacy sees · Existing claims mock, not a deployed integration.", exact: true })).toBeVisible();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
     for (let index = TOUR_STOPS.length - 2; index >= 0; index--) {
@@ -60,21 +63,21 @@ for (const enabled of [true, false]) {
       await page.keyboard.press("Enter");
       await expect(rail).toContainText(TOUR_STOPS[index].label);
       await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
-      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+      if (TOUR_STOPS[index].to !== "/pharmacy/claims") await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     }
     // Exercise the same full route sequence in both directions via shortcuts.
     for (const direction of [1, -1]) {
       for (let index = direction === 1 ? 1 : TOUR_STOPS.length - 2; index >= 0 && index < TOUR_STOPS.length; index += direction) {
         await page.keyboard.press(direction === 1 ? "Alt+ArrowRight" : "Alt+ArrowLeft");
         await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
-        await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+        if (TOUR_STOPS[index].to !== "/pharmacy/claims") await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
         await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
       }
     }
     await page.keyboard.press("Alt+ArrowRight");
     await expect(page).toHaveURL(/#month$/);
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await expect(page.getByRole("menuitem")).toHaveCount(6);
+    await expect(page.getByRole("menuitem")).toHaveCount(7);
     await page.getByRole("menuitem", { name: "4. One agent, two places", exact: true }).click();
     await expect(page).toHaveURL(/#two-places$/);
     await expect(page.locator("[data-two-places]")).toContainText(`Agent ${enabled ? "On" : "Off"}`);
@@ -214,7 +217,7 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page).toHaveURL(/#cases$/);
   await page.getByRole("button", { name: "Restore tour", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("3/6");
+  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("3/7");
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
   await expect(page.locator("[data-principle]")).toBeVisible();

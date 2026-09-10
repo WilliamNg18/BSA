@@ -31,7 +31,7 @@ async function expectReferralMarkers(page: Page, ready: boolean) {
 
 async function pipeline(page: Page) {
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await expect(page.getByRole("menuitem")).toHaveCount(6);
+  await expect(page.getByRole("menuitem")).toHaveCount(7);
   await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
   await expect(page).toHaveURL(/#cases$/);
 }
