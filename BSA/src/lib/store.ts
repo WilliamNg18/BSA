@@ -31,11 +31,12 @@ import { create } from "zustand";
 //   const items = useAppStore((s) => s.items);      // read (targeted re-render)
 //   const addItem = useAppStore((s) => s.addItem);  // action (stable reference)
 
-import { CASES } from "@/lib/domain/cases";
+import { CASES, caseById } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
-import type { LifecycleSlice } from "@/lib/domain/lifecycle";
+import type { Actor, CaseLifecycle, HistoryEvent, LifecycleSlice, LifecycleState, PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
+import { seededLifecycles } from "@/lib/domain/lifecycle-seed";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -98,16 +99,155 @@ function decisionMatches(recommendation: Recommendation, decision: HumanDecision
   return false;
 }
 
-export const useAppStore = create<AppState>((set, get) => ({
-  // Contract freeze only. Stream B owns implementation; no page calls these yet.
-  lifecycles: {},
+// Shared case lifecycle. Transitions are validated deterministic code; only a
+// pharmacy, an operator or code changes a state. The agent never does, and paid
+// is a synthetic state attributed to existing pricing, not a payment approval.
+
+const ALLOWED_TRANSITIONS: Record<LifecycleState, readonly LifecycleState[]> = {
+  submitted: ["in_review"],
+  in_review: ["information_requested", "referred_back", "paid", "escalated"],
+  information_requested: ["resubmitted"],
+  referred_back: ["resubmitted"],
+  resubmitted: ["in_review"],
+  paid: [],
+  escalated: ["information_requested", "referred_back", "paid"],
+};
+
+const DECISION_TARGETS: Record<HumanDecision, LifecycleState> = {
+  ACCEPT: "paid",
+  AMEND: "paid",
+  REQUEST_INFORMATION: "information_requested",
+  REFER_BACK: "referred_back",
+  ESCALATE: "escalated",
+};
+
+/** Minimum reason length, matching the recorded-decision rule. */
+const MIN_REASON = 8;
+
+function cleanText(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+/** Immutable copy so a caller cannot change a stored snapshot after the event. */
+function copyPrecheck(precheck: PharmacyPrecheckSnapshot | undefined): PharmacyPrecheckSnapshot | null {
+  if (!precheck) return null;
+  return Object.freeze({
+    ...precheck,
+    facts: precheck.facts ? Object.freeze({ ...precheck.facts }) : null,
+    checks: Object.freeze(precheck.checks.map((check) => Object.freeze({ ...check }))),
+  });
+}
+
+function appendEvent(lifecycle: CaseLifecycle, event: HistoryEvent): CaseLifecycle {
+  return Object.freeze({
+    ...lifecycle,
+    state: event.to,
+    history: Object.freeze([...lifecycle.history, Object.freeze(event)]) as HistoryEvent[],
+  });
+}
+
+interface TransitionInput {
+  caseId: string;
+  from: readonly LifecycleState[];
+  to: LifecycleState;
+  actor: Actor;
+  message: string;
+  precheck?: PharmacyPrecheckSnapshot;
+  exactFix?: string;
+}
+
+function lifecycleEvent(
+  from: LifecycleState | null,
+  to: LifecycleState,
+  actor: Actor,
+  message: string,
+  snapshot: PharmacyPrecheckSnapshot | null,
+  exactFix?: string,
+): HistoryEvent {
+  return {
+    at: new Date().toISOString(),
+    actor,
+    from,
+    to,
+    message,
+    ...(snapshot?.clauseId ? { clauseId: snapshot.clauseId } : {}),
+    ...(snapshot?.tariffVersion ? { tariffVersion: snapshot.tariffVersion } : {}),
+    ...(exactFix ? { exactFix } : {}),
+  };
+}
+
+export const useAppStore = create<AppState>((set, get) => {
+  /** Applies a validated transition, or rejects it and leaves history untouched. */
+  const transition = (input: TransitionInput): void => {
+    const current = get().lifecycles[input.caseId];
+    if (!current) return;
+    if (!input.from.includes(current.state)) return;
+    if (!ALLOWED_TRANSITIONS[current.state].includes(input.to)) return;
+    const event = lifecycleEvent(current.state, input.to, input.actor, input.message, copyPrecheck(input.precheck), input.exactFix);
+    set((s) => ({ lifecycles: { ...s.lifecycles, [input.caseId]: appendEvent(current, event) } }));
+  };
+
+  return {
+  lifecycles: seededLifecycles(),
   followedCaseId: null,
-  submitFromPharmacy: () => { throw new Error("not implemented"); },
-  arriveInQueue: () => { throw new Error("not implemented"); },
-  recordOperatorDecision: () => { throw new Error("not implemented"); },
-  resubmitFromPharmacy: () => { throw new Error("not implemented"); },
-  sendConfirmation: () => { throw new Error("not implemented"); },
-  followCase: () => { throw new Error("not implemented"); },
+  submitFromPharmacy: (caseId, endorsementText, precheck) => {
+    const id = cleanText(caseId);
+    const text = cleanText(endorsementText);
+    if (!id || !text) return;
+    if (get().lifecycles[id]) return;
+    const pharmacyCode = caseById(id)?.pharmacy.contractorCode;
+    if (!pharmacyCode) return;
+    const event = lifecycleEvent(null, "submitted", "pharmacy", `Claim submitted with endorsement ${text}`, copyPrecheck(precheck));
+    const lifecycle: CaseLifecycle = Object.freeze({
+      caseId: id,
+      pharmacyCode,
+      state: "submitted",
+      history: Object.freeze([Object.freeze(event)]) as HistoryEvent[],
+    });
+    set((s) => ({ lifecycles: { ...s.lifecycles, [id]: lifecycle } }));
+  },
+  arriveInQueue: (caseId) => {
+    const id = cleanText(caseId);
+    if (!id) return;
+    transition({ caseId: id, from: ["submitted", "resubmitted"], to: "in_review", actor: "code", message: "Routed to the exception queue for operator review." });
+  },
+  recordOperatorDecision: (caseId, decision, reason, draft) => {
+    const id = cleanText(caseId);
+    const why = cleanText(reason);
+    const to = DECISION_TARGETS[decision];
+    if (!id || !to || !why || why.length < MIN_REASON) return;
+    transition({
+      caseId: id,
+      from: ["in_review", "escalated"],
+      to,
+      actor: "operator",
+      message: `Operator recorded ${decision}: ${why}`,
+      exactFix: cleanText(draft) ?? undefined,
+    });
+  },
+  resubmitFromPharmacy: (caseId, endorsementText, precheck) => {
+    const id = cleanText(caseId);
+    const text = cleanText(endorsementText);
+    if (!id || !text) return;
+    transition({ caseId: id, from: ["referred_back"], to: "resubmitted", actor: "pharmacy", message: `Corrected and resubmitted with endorsement ${text}`, precheck });
+  },
+  sendConfirmation: (caseId, text) => {
+    const id = cleanText(caseId);
+    const confirmation = cleanText(text);
+    if (!id || !confirmation) return;
+    transition({ caseId: id, from: ["information_requested"], to: "resubmitted", actor: "pharmacy", message: `Confirmation sent: ${confirmation}` });
+  },
+  followCase: (caseId) => {
+    if (caseId === null) {
+      set({ followedCaseId: null });
+      return;
+    }
+    const id = cleanText(caseId);
+    if (!id || !get().lifecycles[id]) return;
+    set({ followedCaseId: id });
+  },
   caseStates: initialStates(),
   records: seededRecords(),
   agentEnabled: false,
@@ -138,5 +278,6 @@ export const useAppStore = create<AppState>((set, get) => ({
     return record;
   },
   setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
-  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
-}));
+  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), lifecycles: seededLifecycles(), followedCaseId: null }),
+  };
+});

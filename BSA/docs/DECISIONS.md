@@ -53,3 +53,20 @@ Only new cross-stream tests may be tagged pending-integration and temporarily
 skipped before integration. Never weaken or skip existing regression tests.
 Tasks 5-7 lack a current detailed brief in the repository; Task 4 remains the
 only implemented Stream A increment until their exact requirements are available.
+## 2026-09-10: Lifecycle transitions and re-entry points
+
+Submission creates a lifecycle only for a case that is not already tracked;
+a corrected claim re-enters through resubmission after a refer back, and an
+answer re-enters through confirmation after a request for information. Only code
+routes a claim into review, only an operator records a decision and only a
+pharmacy submits, resubmits or confirms. Accept and amend reach the synthetic
+paid state attributed to existing pricing. Reject agent actors, direct jumps to
+paid and any further transition after payment.
+
+## 2026-09-10: Rejected mutations stay silent
+
+Invalid case identifiers, empty text, reasons under eight characters and
+disallowed transitions leave the record and its history unchanged rather than
+throwing, so a demonstration cannot break mid-conversation. Records, history
+arrays and events are frozen, so a caller that tries to write to them fails.
+Reject in-place edits and history rewrites; history is append-only.

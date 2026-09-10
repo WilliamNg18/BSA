@@ -13,7 +13,7 @@ ms.date: 2026-09-10
 * [ ] Task 5
 * [ ] Task 6
 * [ ] Task 7
-* [ ] Task 8: Shared case lifecycle and append-only history in the store
+* [x] Task 8: Shared case lifecycle and append-only history in the store (Stream B)
 * [ ] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state
 * [ ] Task 10: Live round trip with Follow this item banner and Switch side
 * [ ] Task 11: Tour chapter "What the pharmacy sees" after the queue; two-places chapter updated
@@ -35,6 +35,29 @@ these local checks; its immutable hash will be posted in the stream issues.
 See [contracts](parallel-contracts.md)
 for ownership, signatures, branch names and integration order. Stream A proceeds
 with Task 4 only after this freeze; its local gates are not yet run.
+
+## Task 8 gates and implementation
+
+Stream B implemented the frozen lifecycle slice in the store with a deterministic
+seeding module and its unit tests. No page, navigation or claims file changed.
+Local check exit 0 with the existing large-chunk warning, and 400 units in ten
+files passed, including seventeen store tests. Stream B owns no browser tests;
+the browser suite remains Stream E's integration gate.
+
+The seeded synthetic month covers the five existing pharmacies and distributes
+the six canonical cases under their own contractor codes, alongside the six
+queue fillers. Submissions fall in August and arrivals follow the existing
+received times. Case E is released to existing pricing by code without a model
+call, case F stays referred back by an operator, and A, B, C and D await an
+operator in review.
+
+Transitions are validated: a pharmacy submits, resubmits after a refer back or
+confirms after a request for information; code routes into review; an operator
+records the decision. Accept and amend reach the synthetic paid state. No event
+carries an agent actor. Precheck snapshots are copied, records and history are
+frozen, history is append-only and Reset restores the seeded month and clears
+the followed case. Invalid identifiers, empty text, short reasons and disallowed
+transitions leave state and history unchanged.
 
 ## Task 1 gates
 
