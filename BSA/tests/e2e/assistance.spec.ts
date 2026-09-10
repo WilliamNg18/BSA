@@ -1,4 +1,4 @@
-import { captureCheckpoint, expect, test } from "./fixtures";
+import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
 import { QUEUE_FILLER } from "../../src/lib/domain/cases";
 
 test("queue hides all filler recommendations without changing evidence, states or human decisions", async ({ page }) => {
@@ -18,7 +18,7 @@ test("queue hides all filler recommendations without changing evidence, states o
   await expect(fillerRows).toHaveCount(6);
   await expect(fillerRows.locator("td:nth-child(4)")).toHaveText(QUEUE_FILLER.map((f) => f.recommendation));
 
-  await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
+  await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(recommendations).toHaveText(Array<string>(12).fill("No recommendation"));
   await expect(states).toHaveText(originalStates);
   await expect(times).toHaveText(originalTimes);
@@ -30,7 +30,7 @@ test("queue hides all filler recommendations without changing evidence, states o
   await page.getByRole("radio", { name: "All", exact: true }).click();
   await expect(states).toHaveText(originalStates);
 
-  await page.getByRole("switch", { name: "Agent recommendations off", exact: true }).click();
+  await page.getByRole("switch", { name: "Agent: Off", exact: true }).click();
   await expect(recommendations).toHaveText(originalRecommendations);
   await expect(states).toHaveText(originalStates);
   await expect(times).toHaveText(originalTimes);
@@ -56,7 +56,7 @@ for (const scenario of [
         const endorsement = await field.inputValue();
         const checks = page.getByRole("heading", { name: /^Deterministic checks/ }).locator("..");
         const evidence = await checks.innerText();
-        if (!globalEnabled) await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
+        if (!globalEnabled) await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
         if (!localAvailable) await page.getByRole("switch", { name: "Agent available", exact: true }).click();
         const assistanceEnabled = globalEnabled && localAvailable;
         await expect(status).toHaveText(assistanceEnabled ? scenario.status : "Agent unable to determine");
@@ -89,11 +89,11 @@ for (const scenario of [
 test("pharmacy keeps edits and local availability across global assistance changes", async ({ page }) => {
   await page.goto("queue");
   await expect(page.locator("tbody > tr")).toHaveCount(12);
-  await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
-  await page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Pharmacy check", exact: true }).click();
+  await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
+  await navigatePrimary(page, "Pharmacy check");
   const status = page.getByRole("status").filter({ hasText: /^(Information may be missing|Ready to submit|Agent unable to determine)$/ });
   const local = page.getByRole("switch", { name: "Agent available", exact: true });
-  const global = page.getByRole("switch", { name: /^Agent recommendations (on|off)$/ });
+  const global = page.getByRole("switch", { name: /^Agent: (On|Off)$/ });
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
   await expect(status).toHaveText("Agent unable to determine");
   await expect(local).toBeChecked();

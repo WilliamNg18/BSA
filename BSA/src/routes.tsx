@@ -20,6 +20,7 @@ export interface AppRoute {
    *  add one). Omit for detail/utility routes that aren't top-level nav targets. */
   label?: string;
   icon?: LucideIcon;
+  group?: "Overview" | "Operations" | "How it works";
 }
 
 // Single source of truth for routes. Add a page = add ONE entry here.
@@ -27,14 +28,14 @@ export interface AppRoute {
 // map over `routes` (e.g. filter to entries with a `label`) so the router and
 // the nav can never drift out of sync. `not-found` is wired in App.tsx.
 export const routes: AppRoute[] = [
-  { path: "/", element: <HomePage />, label: "Overview", icon: HomeIcon },
-  { path: "/pharmacy", element: <PharmacyPage />, label: "Pharmacy check", icon: Store },
-  { path: "/queue", element: <QueuePage />, label: "Exception queue", icon: Inbox },
+  { path: "/", element: <HomePage />, label: "Overview", icon: HomeIcon, group: "Overview" },
+  { path: "/pharmacy", element: <PharmacyPage />, label: "Pharmacy check", icon: Store, group: "Operations" },
+  { path: "/queue", element: <QueuePage />, label: "Exception queue", icon: Inbox, group: "Operations" },
   { path: "/case/:id", element: <CasePackPage /> },
   { path: "/case/:id/trace", element: <CaseTracePage /> },
   { path: "/case/:id/record", element: <DecisionRecordPage /> },
-  { path: "/evaluation", element: <EvaluationPage />, label: "Evaluation", icon: BookOpenCheck },
-  { path: "/boundary", element: <BoundaryPage />, label: "Boundary", icon: Layers },
-  { path: "/assumptions", element: <AssumptionsPage />, label: "Assumptions", icon: ListChecks },
-  { path: "/architecture", element: <ArchitecturePage />, label: "Architecture", icon: ClipboardList },
+  { path: "/evaluation", element: <EvaluationPage />, label: "Evaluation", icon: BookOpenCheck, group: "How it works" },
+  { path: "/boundary", element: <BoundaryPage />, label: "Boundary", icon: Layers, group: "How it works" },
+  { path: "/assumptions", element: <AssumptionsPage />, label: "Assumptions", icon: ListChecks, group: "How it works" },
+  { path: "/architecture", element: <ArchitecturePage />, label: "Architecture", icon: ClipboardList, group: "How it works" },
 ];

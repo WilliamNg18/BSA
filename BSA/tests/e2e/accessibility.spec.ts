@@ -8,6 +8,11 @@ const surfaces = [
   ["Decision record", "case/EX-24088/record"],
 ];
 
+// All Overview chapters in both assistance states. Existing scene-On is above.
+const tourSurfaces = ["scene", "month", "cases", "two-places", "close"].flatMap((chapter) =>
+  [true, false].filter((enabled) => chapter !== "scene" || !enabled).map((enabled) => ({ chapter, enabled })),
+);
+
 for (const colorScheme of ["light", "dark"] as const) {
   test.describe(`accessibility ${colorScheme}`, () => {
     test.use({ colorScheme, viewport: { width: 1440, height: 1000 } });
@@ -23,6 +28,17 @@ for (const colorScheme of ["light", "dark"] as const) {
         expect(results.violations, JSON.stringify(results.violations.map((v) => ({
           id: v.id, impact: v.impact, nodes: v.nodes.map((n) => ({ target: n.target, summary: n.failureSummary })),
         })), null, 2)).toEqual([]);
+      });
+    }
+    for (const { chapter, enabled } of tourSurfaces) {
+      test(`axe Overview ${chapter} agent=${enabled}`, async ({ page }, testInfo) => {
+        await page.goto(`./#${chapter}`);
+        if (!enabled) await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
+        await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+        await page.evaluate(() => document.fonts.ready);
+        const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
+        await testInfo.attach("axe-results", { body: JSON.stringify(results, null, 2), contentType: "application/json" });
+        expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
       });
     }
   });

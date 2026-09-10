@@ -1,4 +1,4 @@
-import { cases, expect, staticRoutes, test } from "./fixtures";
+import { cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
 
 const caseRoutes = cases.flatMap((c) => [
   { path: `case/${c.id}`, title: `Operator case pack: ${c.title}` },
@@ -14,7 +14,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         test(`deep link ${route.path || "overview"}`, async ({ page }, testInfo) => {
           await page.goto(route.path || "./");
           await expect(page.getByRole("heading", { level: 1, name: route.title, exact: true })).toBeVisible();
-          await expect(page.getByRole("banner")).toContainText("Synthetic demonstration data throughout.");
+          await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
           await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
           await expect(page.getByRole("button", { name: /Presenter mode|Discussion mode/ })).toHaveCount(0);
           await expect(page.getByRole("complementary", { name: "Presenter walkthrough" })).toHaveCount(0);
@@ -51,7 +51,7 @@ for (const path of ["missing-page", "notes"]) {
     await page.goto(path);
     await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
     await expect(page.getByText("This view could not be loaded", { exact: true })).toHaveCount(0);
-    await expect(page.getByRole("banner")).toContainText("Synthetic demonstration data throughout.");
+    await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
     await page.screenshot({ path: testInfo.outputPath("not-found.png"), fullPage: true });
     await page.getByRole("link", { name: "Go home" }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(staticRoutes[0].title);
@@ -63,10 +63,9 @@ test("primary links navigate within the Pages base and keyboard skip link reache
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#main-content$/);
-  const nav = page.getByRole("navigation", { name: "Primary" });
+  await expect(page.getByRole("main")).toBeFocused();
   for (const [index, label] of ["Overview", "Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture"].entries()) {
-    await nav.getByRole("link", { name: label, exact: true }).click();
+    await navigatePrimary(page, label);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(staticRoutes[index].title);
   }
 });

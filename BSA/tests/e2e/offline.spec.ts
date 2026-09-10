@@ -1,4 +1,4 @@
-import { cases, expect, staticRoutes, test } from "./fixtures";
+import { cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
 
 test("fresh Overview supports first visits to every route after disconnection", async ({ page, context }) => {
   // A fresh test context has never visited a secondary route. Routing disables
@@ -12,15 +12,14 @@ test("fresh Overview supports first visits to every route after disconnection", 
   page.on("request", (request) => offlineRequests.push(request.url()));
   await context.setOffline(true);
   try {
-    const nav = page.getByRole("navigation", { name: "Primary" });
     const labels = ["Overview", "Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture"];
-    await expect(nav.getByRole("link")).toHaveCount(labels.length);
+    await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
     await expect(page.getByRole("button", { name: /Presenter mode|Discussion mode/ })).toHaveCount(0);
     for (const [index, label] of labels.entries()) {
-      await nav.getByRole("link", { name: label, exact: true }).click();
+      await navigatePrimary(page, label);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(staticRoutes[index].title);
     }
-    await nav.getByRole("link", { name: "Exception queue", exact: true }).click();
+    await navigatePrimary(page, "Exception queue");
     for (const c of cases) {
       await page.locator(`a[href='/BSA/case/${c.id}']`).first().click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);

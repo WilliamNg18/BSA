@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { confirmReset } from "./fixtures";
 
 // This test deliberately faults a served production bundle, never the source.
 // Unlike the normal fixture it expects ONLY the injected error and boundary log.
@@ -30,12 +31,12 @@ test("a view failure preserves the shell, logs its pathname and resets on naviga
   await page.goto("case/EX-24112");
   expect(injected).toBe(true);
   await expect(page.getByRole("heading", { name: "This view could not be loaded", exact: true })).toBeVisible();
-  await expect(page.getByRole("banner")).toContainText("Synthetic demonstration data throughout.");
+  await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
-  await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
-  await expect(page.getByRole("switch", { name: "Agent recommendations off", exact: true })).not.toBeChecked();
-  await page.getByRole("button", { name: "Reset demo", exact: true }).click();
-  await expect(page.getByRole("switch", { name: "Agent recommendations on", exact: true })).toBeChecked();
+  await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
+  await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
+  await confirmReset(page);
+  await expect(page.getByRole("switch", { name: "Agent: On", exact: true })).toBeChecked();
   await expect(page.getByRole("button", { name: /Presenter mode|Discussion mode/ })).toHaveCount(0);
   expect(errors.some((error) => error.includes("[View Error] /case/EX-24112"))).toBe(true);
   expect(errors.length).toBeGreaterThan(0);
