@@ -190,94 +190,94 @@ export const useAppStore = create<AppState>((set, get) => {
   };
 
   return {
-  lifecycles: seededLifecycles(),
-  followedCaseId: null,
-  submitFromPharmacy: (caseId, endorsementText, precheck) => {
-    const id = cleanText(caseId);
-    const text = cleanText(endorsementText);
-    if (!id || !text) return;
-    if (get().lifecycles[id]) return;
-    const pharmacyCode = caseById(id)?.pharmacy.contractorCode;
-    if (!pharmacyCode) return;
-    const event = lifecycleEvent(null, "submitted", "pharmacy", `Claim submitted with endorsement ${text}`, copyPrecheck(precheck));
-    const lifecycle: CaseLifecycle = Object.freeze({
-      caseId: id,
-      pharmacyCode,
-      state: "submitted",
-      history: Object.freeze([Object.freeze(event)]) as HistoryEvent[],
-    });
-    set((s) => ({ lifecycles: { ...s.lifecycles, [id]: lifecycle } }));
-  },
-  arriveInQueue: (caseId) => {
-    const id = cleanText(caseId);
-    if (!id) return;
-    transition({ caseId: id, from: ["submitted", "resubmitted"], to: "in_review", actor: "code", message: "Routed to the exception queue for operator review." });
-  },
-  recordOperatorDecision: (caseId, decision, reason, draft) => {
-    const id = cleanText(caseId);
-    const why = cleanText(reason);
-    const to = DECISION_TARGETS[decision];
-    if (!id || !to || !why || why.length < MIN_REASON) return;
-    transition({
-      caseId: id,
-      from: ["in_review", "escalated"],
-      to,
-      actor: "operator",
-      message: `Operator recorded ${decision}: ${why}`,
-      exactFix: cleanText(draft) ?? undefined,
-    });
-  },
-  resubmitFromPharmacy: (caseId, endorsementText, precheck) => {
-    const id = cleanText(caseId);
-    const text = cleanText(endorsementText);
-    if (!id || !text) return;
-    transition({ caseId: id, from: ["referred_back"], to: "resubmitted", actor: "pharmacy", message: `Corrected and resubmitted with endorsement ${text}`, precheck });
-  },
-  sendConfirmation: (caseId, text) => {
-    const id = cleanText(caseId);
-    const confirmation = cleanText(text);
-    if (!id || !confirmation) return;
-    transition({ caseId: id, from: ["information_requested"], to: "resubmitted", actor: "pharmacy", message: `Confirmation sent: ${confirmation}` });
-  },
-  followCase: (caseId) => {
-    if (caseId === null) {
-      set({ followedCaseId: null });
-      return;
-    }
-    const id = cleanText(caseId);
-    if (!id || !get().lifecycles[id]) return;
-    set({ followedCaseId: id });
-  },
-  caseStates: initialStates(),
-  records: seededRecords(),
-  agentEnabled: false,
-  baselineInputs: baselineDraft(BASELINE_DEFAULTS),
-  setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
-  recordDecision: (input) => {
-    const n = get().records.length + 872;
-    const record: DecisionRecord = {
-      id: `DR-${String(n).padStart(6, "0")}`,
-      caseId: input.caseId,
-      timestamp: new Date().toISOString().slice(0, 19),
-      tariffVersion: input.tariffVersion,
-      agentVersion: input.agentVersion,
-      inputs: input.inputs,
-      sources: input.sources,
-      checks: input.checks,
-      recommendation: input.recommendation,
-      decision: input.decision,
-      isOverride: !decisionMatches(input.recommendation, input.decision),
-      overrideReason: input.overrideReason,
-      operator: "Demo operator",
-      synthetic: true,
-    };
-    set((s) => ({
-      records: [...s.records, record],
-      caseStates: { ...s.caseStates, [input.caseId]: "human_decision_recorded" },
-    }));
-    return record;
-  },
-  setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
-  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), lifecycles: seededLifecycles(), followedCaseId: null }),
+    lifecycles: seededLifecycles(),
+    followedCaseId: null,
+    submitFromPharmacy: (caseId, endorsementText, precheck) => {
+      const id = cleanText(caseId);
+      const text = cleanText(endorsementText);
+      if (!id || !text) return;
+      if (get().lifecycles[id]) return;
+      const pharmacyCode = caseById(id)?.pharmacy.contractorCode;
+      if (!pharmacyCode) return;
+      const event = lifecycleEvent(null, "submitted", "pharmacy", `Claim submitted with endorsement ${text}`, copyPrecheck(precheck));
+      const lifecycle: CaseLifecycle = Object.freeze({
+        caseId: id,
+        pharmacyCode,
+        state: "submitted",
+        history: Object.freeze([Object.freeze(event)]) as HistoryEvent[],
+      });
+      set((s) => ({ lifecycles: { ...s.lifecycles, [id]: lifecycle } }));
+    },
+    arriveInQueue: (caseId) => {
+      const id = cleanText(caseId);
+      if (!id) return;
+      transition({ caseId: id, from: ["submitted", "resubmitted"], to: "in_review", actor: "code", message: "Routed to the exception queue for operator review." });
+    },
+    recordOperatorDecision: (caseId, decision, reason, draft) => {
+      const id = cleanText(caseId);
+      const why = cleanText(reason);
+      const to = DECISION_TARGETS[decision];
+      if (!id || !to || !why || why.length < MIN_REASON) return;
+      transition({
+        caseId: id,
+        from: ["in_review", "escalated"],
+        to,
+        actor: "operator",
+        message: `Operator recorded ${decision}: ${why}`,
+        exactFix: cleanText(draft) ?? undefined,
+      });
+    },
+    resubmitFromPharmacy: (caseId, endorsementText, precheck) => {
+      const id = cleanText(caseId);
+      const text = cleanText(endorsementText);
+      if (!id || !text) return;
+      transition({ caseId: id, from: ["referred_back"], to: "resubmitted", actor: "pharmacy", message: `Corrected and resubmitted with endorsement ${text}`, precheck });
+    },
+    sendConfirmation: (caseId, text) => {
+      const id = cleanText(caseId);
+      const confirmation = cleanText(text);
+      if (!id || !confirmation) return;
+      transition({ caseId: id, from: ["information_requested"], to: "resubmitted", actor: "pharmacy", message: `Confirmation sent: ${confirmation}` });
+    },
+    followCase: (caseId) => {
+      if (caseId === null) {
+        set({ followedCaseId: null });
+        return;
+      }
+      const id = cleanText(caseId);
+      if (!id || !get().lifecycles[id]) return;
+      set({ followedCaseId: id });
+    },
+    caseStates: initialStates(),
+    records: seededRecords(),
+    agentEnabled: false,
+    baselineInputs: baselineDraft(BASELINE_DEFAULTS),
+    setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
+    recordDecision: (input) => {
+      const n = get().records.length + 872;
+      const record: DecisionRecord = {
+        id: `DR-${String(n).padStart(6, "0")}`,
+        caseId: input.caseId,
+        timestamp: new Date().toISOString().slice(0, 19),
+        tariffVersion: input.tariffVersion,
+        agentVersion: input.agentVersion,
+        inputs: input.inputs,
+        sources: input.sources,
+        checks: input.checks,
+        recommendation: input.recommendation,
+        decision: input.decision,
+        isOverride: !decisionMatches(input.recommendation, input.decision),
+        overrideReason: input.overrideReason,
+        operator: "Demo operator",
+        synthetic: true,
+      };
+      set((s) => ({
+        records: [...s.records, record],
+        caseStates: { ...s.caseStates, [input.caseId]: "human_decision_recorded" },
+      }));
+      return record;
+    },
+    setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
+    resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), lifecycles: seededLifecycles(), followedCaseId: null }),
   };
 });
