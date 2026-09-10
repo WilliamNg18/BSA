@@ -6,6 +6,30 @@ export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: st
   await testInfo.attach(name, { path, contentType: "image/png" });
 }
 
+export async function navigatePrimary(page: Page, label: string) {
+  const nav = page.getByRole("navigation", { name: "Primary", exact: true });
+  const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
+  if (await mobile.isVisible()) {
+    await mobile.click();
+    await page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true }).click();
+    await expect(page.getByRole("dialog", { name: "Navigation", exact: true })).toHaveCount(0);
+  } else if (label === "Overview") {
+    await nav.getByRole("link", { name: label, exact: true }).click();
+  } else {
+    const group = ["Pharmacy check", "Exception queue"].includes(label) ? "Operations" : "How it works";
+    await nav.getByRole("button", { name: group, exact: true }).click();
+    await page.getByRole("menuitem", { name: label, exact: true }).click();
+  }
+}
+
+export async function confirmReset(page: Page) {
+  await page.getByRole("button", { name: "Reset demo", exact: true }).click();
+  const dialog = page.getByRole("alertdialog", { name: "Reset demonstration?", exact: true });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: "Reset demonstration", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+}
+
 export const test = base.extend<{ browserErrors: string[] }>({
   browserErrors: [async ({ page }, use) => {
     const errors: string[] = [];
@@ -34,7 +58,7 @@ export const cases = [
 ];
 
 export const staticRoutes = [
-  { path: "", title: "85,000 times a month, a person decides what the machine could not" },
+  { path: "", title: "The referred-back subset" },
   { path: "pharmacy", title: "Pharmacy pre-submission check" },
   { path: "queue", title: "NHSBSA exception queue" },
   { path: "evaluation", title: "Evaluation and guardrails" },

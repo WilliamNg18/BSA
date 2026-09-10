@@ -1,4 +1,4 @@
-import { captureCheckpoint, cases, expect, test } from "./fixtures";
+import { captureCheckpoint, cases, confirmReset, expect, test } from "./fixtures";
 
 for (const caseId of ["EX-24107", "EX-24112"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
@@ -93,13 +93,13 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("Replayed under July 2026", { exact: true })).toBeVisible();
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-july-sufficient");
-  await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
+  await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toHaveCount(0);
   await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(2);
   await expect(page.getByText("REFER BACK by Demo operator", { exact: false })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-july-assistance-off");
-  await page.getByRole("button", { name: "Reset demo", exact: true }).click();
-  await expect(page.getByRole("switch", { name: "Agent recommendations on", exact: true })).toBeChecked();
+  await confirmReset(page);
+  await expect(page.getByRole("switch", { name: "Agent: On", exact: true })).toBeChecked();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Open the case pack", exact: true }).click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
@@ -115,7 +115,7 @@ test("agent flag hides recommendations on every case without changing case state
   await expect(rows).toHaveCount(12);
   const stateCells = rows.locator("td:nth-child(6)");
   const states = await stateCells.allTextContents();
-  await page.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
+  await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(stateCells).toHaveText(states);
   await captureCheckpoint(page, testInfo, "queue-assistance-off");
   for (const c of cases) {
@@ -127,7 +127,7 @@ test("agent flag hides recommendations on every case without changing case state
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
     await expect(stateCells).toHaveText(states);
   }
-  await page.getByRole("button", { name: "Reset demo", exact: true }).click();
+  await confirmReset(page);
   await expect(stateCells).toHaveText(states);
 });
 
@@ -150,20 +150,22 @@ test("product header retains working controls without presentation UI", async ({
   const header = page.getByRole("banner");
   await expect(header).toContainText("Prescription Exception Case Builder");
   await expect(header.locator("svg.lucide-shield-check")).toBeVisible();
-  await expect(header).toContainText("Synthetic demonstration data throughout.");
+  await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
   await expect(page.getByText("The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.", { exact: false })).toBeVisible();
-  await expect(header.getByRole("button")).toHaveCount(1);
   await expect(header.getByRole("switch")).toHaveCount(1);
-  await expect(header.getByRole("navigation", { name: "Primary" }).getByRole("link")).toHaveCount(7);
+  const nav = header.getByRole("navigation", { name: "Primary" });
+  await expect(nav.getByRole("link", { name: "Overview", exact: true })).toBeVisible();
+  await expect(nav.getByRole("button", { name: "Operations", exact: true })).toBeVisible();
+  await expect(nav.getByRole("button", { name: "How it works", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: /Presenter mode|Discussion mode/ })).toHaveCount(0);
   await expect(page.getByRole("complementary", { name: "Presenter walkthrough" })).toHaveCount(0);
   await expect(page.getByRole("dialog", { name: "Discussion mode", exact: true })).toHaveCount(0);
   await expect(page.locator("a[href$='/notes']")).toHaveCount(0);
   await expect(header).not.toContainText("NHSBSA capability demonstration · synthetic data");
-  await header.getByRole("switch", { name: "Agent recommendations on", exact: true }).click();
-  await expect(header.getByRole("switch", { name: "Agent recommendations off", exact: true })).not.toBeChecked();
-  await header.getByRole("button", { name: "Reset demo", exact: true }).click();
-  await expect(header.getByRole("switch", { name: "Agent recommendations on", exact: true })).toBeChecked();
+  await header.getByRole("switch", { name: "Agent: On", exact: true }).click();
+  await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
+  await confirmReset(page);
+  await expect(header.getByRole("switch", { name: "Agent: On", exact: true })).toBeChecked();
   await expect(page.getByRole("alertdialog")).toHaveCount(0);
   await header.screenshot({ path: testInfo.outputPath("after-header.png") });
 });

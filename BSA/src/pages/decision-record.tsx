@@ -12,6 +12,7 @@ import { runAgent } from "@/lib/domain/agent";
 import { caseById } from "@/lib/domain/cases";
 import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { useAppStore } from "@/lib/store";
+import { agentVersionLabel } from "@/lib/service-display";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -58,7 +59,7 @@ export function DecisionRecordPage() {
               <KeyValue k="Inputs considered" v={<ul className="list-disc pl-4">{latest.inputs.map((i) => <li key={i}>{i}</li>)}</ul>} />
               <KeyValue k="Evidence sources accessed" v={latest.sources.join("; ")} />
               <KeyValue k="Rule version used" v={`Drug Tariff ${latest.tariffVersion}`} />
-              <KeyValue k="Agent version" v={latest.agentVersion} />
+              <KeyValue k="Agent version" v={agentVersionLabel(latest.agentVersion)} />
               <KeyValue
                 k="Deterministic checks completed"
                 v={

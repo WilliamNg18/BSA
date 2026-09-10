@@ -1,8 +1,82 @@
 ---
 title: Known issues and remaining verification
-description: Phase 1 presentation UI removal, retained crash fixes, verification limits and deferred prototype work.
-ms.date: 2026-09-09
+description: Tour foundation verification, retained crash fixes, source limitations and deferred prototype work.
+ms.date: 2026-09-10
 ---
+
+## Tour foundation current scope
+
+The new tour replaces the old Overview headline and operating KPI cards with
+registry-backed chapters 1, 3, 4 and 6. Chapter 2 calculator and chapter 5 queue
+simulation are explicitly planned, not implemented. The minimal prerequisite
+grouped header is 56 px, with a mobile sheet, Agent: On/Off tooltip and confirmed
+Reset demo. The amber disclosure collapses only its details; the principle and
+synthetic label remain. Tour/disclosure choices stay in memory only.
+
+The source registry and domain rules/fixtures are unchanged. Source
+discrepancies, case-letter mapping and deferred numerical migration are in
+[source-review.md](source-review.md). Legacy pharmacy/evaluation/architecture
+copy is not universally migrated or endorsed by this PR. A common live service,
+manual baseline, calculator, simulation and new manual/pharmacy views remain
+unbuilt. Earlier phase sections below are historical and do not describe these
+new header/reset/tour semantics.
+
+### Tour validation status
+
+Initial check found one Fast Refresh export warning, fixed by keeping the
+locator-format helper private. All original 93 unit tests passed before adding
+24 tour/source-disclosure tests. The first full production run passed 291/294:
+all 30 axe audits passed; three tour harness assumptions failed (router trailing
+slash, focus after an intentional flag toggle and retained hash-navigation state).
+Those were corrected without relaxing any domain/gate assertions. The targeted
+tour rerun passed 23/23.
+
+Visual review then identified a tooltip/switch `data-state` collision. The
+tooltip now wraps the switch rather than overwriting its checked-state styling.
+An explicit state-attribute regression was added. The skip link now preserves
+tour fragments while focusing main. The scene diagram branches between
+straightforward pricing and operator handling rather than implying every item
+passes through both paths.
+
+Final Windows production verification after those fixes:
+
+| Check | Result |
+|---|---|
+| `npm run check` | PASS, exit 0; typecheck/lint clean; existing Vite large-chunk warning remains |
+| `npm test` | PASS, exit 0; 117 tests in six files, including the original 93 and 24 new tour/disclosure tests |
+| Full production Chromium E2E | PASS, exit 0; 294 tests in 3.2 minutes; no failures, retries or skips |
+| Axe | PASS; 30 audits included in the E2E total, zero violations |
+| `git diff --check` | PASS, exit 0; Windows LF-to-CRLF notices, no whitespace errors |
+| Selected QA captures | 20 PNGs saved for review, not committed |
+
+The 294 E2E tests comprise 213 route tests, nine control tests, 14 assistance
+tests, three forced gate-failure tests, one injected crash-boundary test, one
+fresh-session offline-navigation test, 23 tour tests and 30 axe audits. The
+production build and preview use `/BSA/`; no reused development server masks
+asset or sub-path behaviour. Tour header checks cover all seven requested
+widths in light/dark and On/Off. All five Overview chapters are axe-audited in
+both assistance states/themes; Pharmacy, Queue, Case pack, Trace and the seeded
+record retain both-theme audits.
+
+The check build reports 873.76 kB JavaScript (273.02 kB gzip) and 123.27 kB CSS
+(19.29 kB gzip), plus fonts. This is larger than the earlier 716.58 kB baseline:
+the registry and new navigation components are eagerly bundled. The 500 kB
+warning was not hidden or raised. Performance optimisation and Lighthouse
+remain deferred; zero-warning/first-load performance goals are not met.
+
+Selected desktop scene/cases and phone On/Off diagram/manual/close captures
+were visually reviewed. The final switch renders its checked teal track and
+the scene branches correctly. Browser inspection independently confirmed the
+switch's checked attribute and computed colour; integrated-browser pointer
+interaction was unreliable, so the automated production suite is the evidence
+for navigation and keyboard behaviour.
+
+Selected screenshots are in [qa/tour-foundation/README.md](qa/tour-foundation/README.md).
+No source binary, account, Git reference or deployment was changed. No commits,
+pushes or merges were performed. Local Chromium and automated axe checks do not
+establish hosted behaviour, Linux CI, cross-browser support, screen-reader
+operation or full WCAG conformance. The existing large-bundle warning remains
+a separate performance issue.
 
 ## Phase 1 presentation UI removal
 

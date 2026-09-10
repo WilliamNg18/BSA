@@ -1,7 +1,7 @@
 ---
 title: Demo script and discussion guide
-description: Seven timed beats, current controls, discussion questions, challenge answers and recovery guidance for the synthetic prototype.
-ms.date: 2026-09-09
+description: Current six-chapter tour, built and planned scope, source qualifications and historical rehearsal material.
+ms.date: 2026-09-10
 ---
 
 ## Scope and setup
@@ -14,28 +14,79 @@ services or sign-in are needed for the local demo.
 
 Open this guide beside the application. Presenter mode, its timer and beat
 buttons, Discussion mode and the `/notes` page have been removed in phase 1.
-Use the existing primary navigation and case-view links instead. There is no
-Start or Go to screen control in the current application.
+Use the tour rail, grouped navigation and case-view links instead. Start on
+an off-tour route returns to scene. There is no presenter timer or discussion
+panel in the application.
 
-The header retains the product shield and name, the Agent recommendations
-on/off switch and Reset demo. Reset demo immediately restores seeded case
-states, removes session-created human records, retains DR-000871 and turns
-recommendations on. It does not reset pharmacy-local edits or the locally
-selected replay version. Restore resets the current pharmacy endorsement.
-Reset confirmation is planned for the next PR, not implemented here.
+The header keeps the product shield/home link, Agent: On/Off with an
+explanatory tooltip and Reset demo. Reset requires confirmation: Keep working
+or Escape cancels unchanged; Reset demonstration restores seeded case states,
+removes session-created records, retains DR-000871 and turns Agent on. It also
+resets current-route local fields/replay selection and reopens the tour and
+disclaimer. The route remains unchanged. Restore on Pharmacy resets only its
+current endorsement.
 
-Primary navigation is still Overview, Pharmacy check, Exception queue,
-Evaluation, Boundary, Assumptions and Architecture. Grouped navigation and a
-dedicated toggle-comparison experience are planned, not current controls.
-Header restructuring, baseline modelling and domain-rule changes are outside
-this phase.
+Navigation groups are Overview, Operations and How it works. Operations holds
+Pharmacy check and Exception queue. How it works holds Evaluation, Boundary,
+Assumptions and Architecture. Below 1024 px use Open navigation. The single
+header row is 56 px tall; the full product name remains accessible when only
+the shield is visible.
 
 Keep the synthetic banner and governing principle in view:
 
 > The agent gathers evidence and recommends. Deterministic code validates and
 > calculates. A human decides. The prototype does not calculate or approve payments.
 
-## Ten minutes, seven beats
+## Current tour: six chapters, seven stops
+
+1. Open `/#scene`. The three figures are attributed by the supplied documents,
+   not externally verified. Approximately 85,000 describes referrals only;
+   the total operator queue is unknown. The 99.85% figure is a target. Open
+   figure/source disclosures for caveats, named publications and paragraph
+   locators. Monthly publication does not prove monthly endorsement changes.
+   Agent has no effect on scene.
+2. Next opens `/#month`: calculator planned, no results. Do not describe a
+   working calculator, baseline model or quantified benefit.
+3. Next opens `/#cases`. On shows the actual synthetic A-D engine results:
+   SUFFICIENT; REFER_BACK with a date required beside the initials;
+   REQUEST_INFORMATION with 56/84 unresolved; ABSTAIN with no provision,
+   low quality and disagreeing readings. Expand the outcome evidence for
+   exact reasons. Off shows neutral manual-review tasks without timings or
+   work counts. These are assumptions, not measured current practice.
+4. Next opens `/#two-places`. Compare On/Off in the accessible pharmacy and
+   NHSBSA flows. A common future service is a proposal, not an implemented
+   shared model. Existing pharmacy pre-check capability is unknown. Next
+   visits the existing `/pharmacy` advisory mock, still within chapter 4.
+   It is not a newly built split view or deployed integration. Continue with
+   submission remains available regardless of assistance.
+5. Next opens `/queue`. The existing synthetic queue still works; its tour
+   introduction explicitly says Simulation planned. Do not describe a working
+   workload simulation or a measured change in capacity.
+6. Next opens `/#close`. First request two years of referral reasons to test
+   concentration. Open the five PDF assumptions and seven PDF questions.
+   The questions reproduce that PDF, not the pack's different six-question
+   list. Agree evidence and stop thresholds before any assisted deployment.
+
+Back reverses the same sequence, including Pharmacy. The chapter menu has six
+entries. Alt+ArrowLeft/Right work outside fields and menus without conflicting
+modifiers. Dismiss tour removes the rail; Restore tour in the footer brings it
+back at the current route. Collapse only the amber disclosure details if
+needed; the synthetic label and principle remain. These choices do not survive
+a reload. The skip link focuses main without changing the selected chapter.
+
+Cases are synthetic, not independent clinical or operational evidence. The
+interpretation step is scripted, the gate is code, and humans retain decisions.
+There is no payment calculation or approval. For source discrepancies and the
+canonical-case mapping, see [source-review.md](source-review.md).
+
+## Historical ten-minute rehearsal: seven beats
+
+The following older script is retained for reference, not current tour copy.
+Its old headline, queue counts, unqualified current-state wording, personal
+disclosure and immediate-reset instructions are superseded by the current
+tour above. Do not reuse those claims without the source qualifications.
+Later challenge, recovery and archived material remains historical unless
+explicitly aligned with the current scope above.
 
 End on the decisions and evidence needed next, not on "any questions?".
 Timings are rehearsal guidance, not an application timer.

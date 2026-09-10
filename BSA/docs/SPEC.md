@@ -1,32 +1,40 @@
 ---
 title: Functional specification for Prescription Exception Case Builder
-description: Original v0.6 behaviour with phase 1 presentation UI removal and retained product controls.
-ms.date: 2026-09-09
+description: Tour foundation, source qualifications, grouped navigation and retained synthetic case behaviour.
+ms.date: 2026-09-10
 ---
 
-## Phase 1 scope
+## Tour foundation scope
 
-Phase 1 removes Presenter mode, Discussion mode, their presentation-only state
-and content exports, the header subtitle and the `/notes` route. Rehearsal,
-discussion, delivery and recovery content now lives in [demo-script.md](demo-script.md).
-This explicitly supersedes the older requirement in [TASK.md](TASK.md) to keep
-those presentation controls. The product shield and name, current navigation,
-agent switch, immediate Reset demo, synthetic banner and principle remain.
+This increment builds the guided tour, chapters 1, 3, 4 and 6, with explicit
+placeholders for the chapter 2 calculator and chapter 5 workload simulation.
+It includes the minimum navigation prerequisite: a single-row grouped header,
+mobile sheet, prominent Agent control and confirmed Reset demo. It does not
+implement the full later header/comparison redesign, a manual baseline model,
+new manual case views, a new pharmacy split view, or a simulation.
 
-Reset confirmation is planned for the next PR. Grouped navigation, a dedicated
-toggle-comparison experience, header restructuring, baseline modelling and
-domain-rule changes are not part of phase 1. Remaining sections retain the
-original functional contract except where this phase or the merged crash and
-gate fixes are called out. See [KNOWN-ISSUES.md](KNOWN-ISSUES.md) for verification
-limits and deferred work.
+Presenter mode, Discussion mode, their state, the subtitle and `/notes` remain
+removed. This supersedes those older requirements in [TASK.md](TASK.md).
+The existing source registry is consumed without modification. Domain rules,
+fixtures, gate semantics and six canonical outcomes are unchanged. See
+[source-review.md](source-review.md) for attribution limits, discrepancies,
+case mapping and the remaining numerical-copy migration.
 
-Everything in the application is synthetic. There are no real prescriptions, patients, pharmacies, contractor codes or rulebook text. The Drug Tariff wording is a paraphrase written for the demonstration.
+Cases and operational results are synthetic. The tour separately labels
+document-attributed public figures, assumptions and design proposals. No real
+prescriptions, patients or authentic Drug Tariff text are introduced. Runtime
+data stays local, with no public-document fetching.
 
 ---
 
 ## 1. Purpose
 
-NHS Business Services Authority (NHSBSA) prices around 1.1 billion prescription items a year, almost all of them automatically: scanning, character recognition and pricing already exist. A small share (public sources suggest around 85,000 items a month) cannot be priced because a pharmacy's endorsement fails a rule in the Drug Tariff, a rulebook that changes every month. Each of those items goes to an operator who must find the image, look up the product, check the claim against the ledger, find the rule in force on the dispensing date and judge a handwritten note against it.
+The supplied documents attribute approximately 1.1 billion primary-care items
+annually to NHSBSA and approximately 85,000 referred-back items monthly to
+Community Pharmacy England. Referrals are a subset, not the whole operator
+queue. These publications were not independently verified. The Drug Tariff
+is described as republished monthly; the frequency of endorsement-affecting
+changes and the current operator evidence-assembly workflow need validation.
 
 The application demonstrates a **governed AI agent that builds that case and recommends, while a person decides**. It is a capability demonstration for a conversation, not a system for NHSBSA to run.
 
@@ -49,11 +57,45 @@ A `Boundary` page lists every action with its class and the reason for the class
 
 ## 3. Information architecture
 
-Header (sticky) on every page: product shield and name, existing primary navigation, Agent recommendations switch and Reset demo (section 10). The former subtitle is removed; the layout is not restructured in phase 1. Beneath the header a permanent amber banner: "Synthetic demonstration data throughout. This prototype does not calculate or approve payments, and nothing here is a claim about NHSBSA's real performance." (Keep.)
+The sticky header is 56 px tall. Route metadata groups Overview, Operations
+(Pharmacy check, Exception queue), and How it works (Evaluation, Boundary,
+Assumptions, Architecture). Below 1024 px, a keyboard-operable mobile sheet
+contains all groups. The shield links home, with an accessible full product
+name at every width. Visible product text is abbreviated on tablets and
+shield-only on phones. Agent: On/Off and Reset remain in the same row.
+
+The tour rail pins immediately beneath the header. Back, Next, a six-chapter
+menu and Dismiss tour are keyboard accessible. Alt+ArrowLeft/Right navigate
+only outside editable fields, menus and dialogs, without Ctrl, Meta, Shift,
+composition, repeat or an already-handled event. The footer restores a
+dismissed rail at the current route. Unknown/detail routes show Start instead
+of falsely claiming a chapter. Nothing about tour visibility is persisted.
+
+The amber synthetic label remains on every route. Its detail paragraph can
+be collapsed for the session; the governing principle cannot be collapsed.
+The skip link focuses main without replacing a tour fragment. Chapter
+navigation focuses its heading and returns to the top.
+
+| Chapter | Route | Built in this increment |
+|---|---|---|
+| 1 | `/#scene` | Three qualified figures and existing-process branches; Agent has no effect |
+| 2 | `/#month` | Explicit planned calculator placeholder, no calculated results |
+| 3 | `/#cases` | A-D engine outcomes On; neutral illustrative manual tasks Off |
+| 4 | `/#two-places` then `/pharmacy` | Accessible proposal diagrams and existing advisory pharmacy substop |
+| 5 | `/queue` | Explicit planned simulation notice above the existing synthetic queue |
+| 6 | `/#close` | First data test, five PDF assumptions and seven exact PDF questions |
+
+Next visits the pharmacy substop before chapter 5; Back reverses that exact
+sequence. The chapter menu has six entries, not seven. Only one Overview
+chapter renders at a time. Bare home and unrecognised home fragments show
+scene. Chapter narrative title plus prose is at most 40 words; concise data
+labels, controls and expanded disclosures are separate. The seven-question
+disclosure is explicitly exempt. Source disclosures name claim class, named
+source, supplied document, and PDF section or DOCX part/paragraph identifiers.
 
 | Route | Screen | Contents |
 |---|---|---|
-| `/` | Overview | Headline "85,000 times a month, a person decides what the machine could not"; two-paragraph framing; principle line; seven operating counts (section 11); two entry cards (pharmacy check, exception queue); the four demonstration cases A to D; the four boundary tags |
+| `/` | Overview | Fragment-driven tour chapters described above; no old headline or operating KPI cards |
 | `/pharmacy` | Pharmacy pre-submission check | Section 9 |
 | `/queue` | NHSBSA exception queue | Section 12 |
 | `/case/:id/trace` | Case-building trace | Section 6: the agent's observable workflow, step by step, with a replay control |
@@ -194,17 +236,32 @@ Right: **Prescription image** (synthetic form drawn as SVG with the located regi
   - Footnote: a check on a typed field, not a scan; nothing is scanned at the pharmacy.
 - In the initial build the interpretation of the typed field is a small deterministic mock (`interpret()`: type from keyword, date from a d/m(/y) pattern, initials from a 2 to 3 capital-letter token). In production it is the same constrained model call the NHSBSA side uses.
 
-## 10. Header controls after phase 1
+## 10. Header controls after tour foundation
 
 - Agent recommendations on/off (feature flag): off shows the fail-open path on every case (evidence only, no recommendation, state unchanged). Queue recommendations, including filler rows, are withheld. Pharmacy assistance is also withheld without blocking submission. Historical human records are unchanged; rule-version replay follows the current flag.
-- Reset demo: immediately restores every case to its initial state, clears session decision records (the seeded DR-000871 remains) and turns the agent flag on. Pharmacy-local fields and the selected replay version are not reset by this store action. Confirmation is deferred to the next PR.
+- Agent: On/Off is the visible and accessible control label. Its tooltip explains synthetic assistance, evidence-only Off and unchanged scene facts. Historical records stay unchanged.
+- Reset demo opens a confirmation dialog. Keep working or Escape changes nothing. Reset demonstration restores seeded case states and records, turns Agent on, restores tour/disclaimer visibility and remounts the current route to reset local pharmacy fields and replay selection. DR-000871 remains. The current route/fragment is retained. No record is persisted or payment affected.
 
 There are no Presenter mode or Discussion mode buttons, bar, sheet, timers or
 beat controls. The reference script is documentation, not a route or a header link.
 
-## 11. Overview counts (computed, synthetic, labelled)
+## 11. Overview figures and case summaries
 
-Cases in the exception queue (12 = six cases plus six fillers); Ready for operator review (agent_review_complete + operator_review_required); Requiring more evidence; Agent abstained; Cleared by rules, no model call; Average evidence-assembly time (mean `assemblySeconds` over cases A to D and F, with the note "Manual baseline: NHSBSA input needed"); Human override rate (overrides / recorded decisions, "0 of 0" until a decision is recorded). All update live as cases are worked.
+Scene consumes the registry's three key figures: approximately 1.1 billion
+annual items, approximately 85,000 monthly referred-back items, and the stated
+99.85% PPIA/PPPA target. Qualifications distinguish items from forms, referrals
+from all exceptions, approximation from exact arithmetic, and targets from
+achievement. No savings or operational-count headline is shown.
+
+The A-D summaries invoke `runAgent` with the current flag. On shows the actual
+recommendation and gate, B's missing-date fix, C's unresolved source values,
+and D's three failed abstention signals with exact reasons in disclosure.
+Off shows manual review tasks, with no fabricated minutes or effort counts.
+Those tasks are illustrative assumptions, not observed NHSBSA practice.
+All case links open the existing case pack; no new manual pack is built.
+
+Other routes retain existing synthetic numbers pending a separate numerical
+copy/source migration. This PR does not claim universal registry coverage.
 
 ## 12. Exception queue (`/queue`)
 
