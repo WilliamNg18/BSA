@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageSection } from "@/components/page-section";
 import { EvidenceClassTag } from "@/components/demo/labels";
+import { BaselineAssumptions } from "@/components/demo/baseline-assumptions";
 import { ASSUMPTIONS } from "@/lib/domain/content";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,8 @@ export function AssumptionsPage() {
           <EvidenceClassTag kind="Requires customer validation" />
         </div>
       </div>
+
+      <BaselineAssumptions register />
 
       <PageSection title="Register" description="The first four decide whether an agent is genuinely required. The rest decide how it would be built.">
         <ol className="grid gap-4 lg:grid-cols-2">

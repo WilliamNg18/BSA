@@ -32,6 +32,8 @@ import { create } from "zustand";
 //   const addItem = useAppStore((s) => s.addItem);  // action (stable reference)
 
 import { CASES } from "@/lib/domain/cases";
+import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
+import { BASELINE_DEFAULTS } from "@/lib/domain/baseline-defaults";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
@@ -68,6 +70,8 @@ interface AppState {
   caseStates: Record<string, CaseState>;
   records: DecisionRecord[];
   agentEnabled: boolean;
+  baselineInputs: BaselineDraft;
+  setBaselineInput: (field: BaselineField, value: string) => void;
   recordDecision: (input: {
     caseId: string;
     tariffVersion: string;
@@ -97,6 +101,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   caseStates: initialStates(),
   records: seededRecords(),
   agentEnabled: true,
+  baselineInputs: baselineDraft(BASELINE_DEFAULTS),
+  setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
   recordDecision: (input) => {
     const n = get().records.length + 872;
     const record: DecisionRecord = {
@@ -122,5 +128,5 @@ export const useAppStore = create<AppState>((set, get) => ({
     return record;
   },
   setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
-  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: true }),
+  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: true, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
 }));

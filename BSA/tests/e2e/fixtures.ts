@@ -1,4 +1,11 @@
 import { test as base, expect, type Page, type TestInfo } from "@playwright/test";
+import { writeFile } from "node:fs/promises";
+
+export async function captureJson(testInfo: TestInfo, name: string, value: unknown) {
+  const path = testInfo.outputPath(`${name}.json`);
+  await writeFile(path, JSON.stringify(value, null, 2));
+  await testInfo.attach(name, { path, contentType: "application/json" });
+}
 
 export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: string) {
   const path = testInfo.outputPath(`${name}.png`);
@@ -8,18 +15,41 @@ export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: st
 
 export async function navigatePrimary(page: Page, label: string) {
   const nav = page.getByRole("navigation", { name: "Primary", exact: true });
+  await expect(nav).toBeVisible();
   const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
+  let destination: string;
   if (await mobile.isVisible()) {
     await mobile.click();
-    await page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true }).click();
+    const link = page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true });
+    await expect(link).toBeVisible();
+    destination = await link.getAttribute("href") as string;
+    await link.click();
     await expect(page.getByRole("dialog", { name: "Navigation", exact: true })).toHaveCount(0);
   } else if (label === "Overview") {
-    await nav.getByRole("link", { name: label, exact: true }).click();
+    const link = nav.getByRole("link", { name: label, exact: true });
+    destination = await link.getAttribute("href") as string;
+    await link.click();
   } else {
     const group = ["Pharmacy check", "Exception queue"].includes(label) ? "Operations" : "How it works";
-    await nav.getByRole("button", { name: group, exact: true }).click();
-    await page.getByRole("menuitem", { name: label, exact: true }).click();
+    const trigger = nav.getByRole("button", { name: group, exact: true });
+    await trigger.click();
+    // The modal menu hides the navigation from the accessibility tree while
+    // open; await the exposed menu, not its now aria-hidden trigger.
+    await expect(page.getByRole("menu")).toBeVisible();
+    const item = page.getByRole("menuitem", { name: label, exact: true });
+    await expect(item).toBeVisible();
+    destination = await item.getAttribute("href") as string;
+    // Radix focuses the menu during opening. Await item focus and activate by
+    // keyboard rather than racing the opening menu's pointer/position changes.
+    await item.focus();
+    await expect(item).toBeFocused();
+    await item.press("Enter");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await expect(page.getByRole("menu")).toHaveCount(0);
   }
+  expect(destination).toBeTruthy();
+  await expect(page).toHaveURL(new URL(destination, page.url()).href);
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
 }
 
 export async function confirmReset(page: Page) {

@@ -22,7 +22,7 @@ The header keeps the product shield/home link, Agent: On/Off with an
 explanatory tooltip and Reset demo. Reset requires confirmation: Keep working
 or Escape cancels unchanged; Reset demonstration restores seeded case states,
 removes session-created records, retains DR-000871 and turns Agent on. It also
-resets current-route local fields/replay selection and reopens the tour and
+restores calculator defaults, resets current-route local fields/replay selection and reopens the tour and
 disclaimer. The route remains unchanged. Restore on Pharmacy resets only its
 current endorsement.
 
@@ -45,8 +45,19 @@ Keep the synthetic banner and governing principle in view:
    figure/source disclosures for caveats, named publications and paragraph
    locators. Monthly publication does not prove monthly endorsement changes.
    Agent has no effect on scene.
-2. Next opens `/#month`: calculator planned, no results. Do not describe a
-   working calculator, baseline model or quantified benefit.
+2. Next opens `/#month`: an editable scenario calculator, not measured savings.
+   Today is an assumed manual baseline: five minutes gathering and two judging.
+   Change volume to 12 to see two pharmacy-caught, two rule-cleared, two
+   abstained and six built for human review. Rates apply sequentially: 2/12
+   incoming, 2/10 remaining, then 2/8 uncleared. The pharmacy rate assumes
+   missing date/invoice information could be corrected, not measured effectiveness.
+   Expand assumptions for source O23, seed row IDs, formulas and exclusions.
+   The approximate 85,000 default is a referred-back proxy, not total exceptions;
+   one million divided by twelve is approximately 83,333.33 instead. Assembly
+   latency comes from active synthetic A/B/C packs, not operator time. Off
+   highlights Today and hides assisted estimates. Visit Assumptions and return:
+   inputs survive navigation. Confirm Reset to restore all inputs and Agent On.
+   No new human decisions, pricing, payment approvals or real savings are shown.
 3. Next opens `/#cases`. On shows the actual synthetic A-D engine results:
    SUFFICIENT; REFER_BACK with a date required beside the initials;
    REQUEST_INFORMATION with 56/84 unresolved; ABSTAIN with no provision,

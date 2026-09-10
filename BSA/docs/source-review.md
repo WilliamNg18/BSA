@@ -77,14 +77,32 @@ Gate FAIL still withholds advice centrally; no domain gate is changed.
 | First test | PDF-A01 and D-STOP |
 | Discovery lists | `TOUR_CONTENT.assumptionsDisclosure` and `questionsDisclosure` |
 
-## Phase status and exclusions
+## Chapter 2 addition
+
+The calculator now consumes the same qualifications without modifying the
+canonical source registry. Its approximate 85,000 monthly default is pinned
+by a unit test to O23; full research records are not newly imported into the
+browser. O24/N01 retain the subset and annual/monthly discrepancy. A03/A10
+support validation needs, not the invented five/two-minute default durations.
+
+The current seed queue supplies synthetic proportions with explicit sequential
+denominators (2/12 pre-check candidates, 2/10 cleared, 2/8 abstained). The
+pharmacy-catch proxy assumes missing date/invoice information is correctable;
+it is not a measured effectiveness claim. Only active recommended canonical
+A/B/C supply engine latency and the 3/3 validated-citation sample. D/E do not
+acquire a citation. Historical records stay historical; fillers supply metadata
+only, never invented engine runs. See [SPEC.md](SPEC.md#chapter-2-baseline-model)
+for formulas, default IDs, rounding, bounds and exclusions.
+
+## Tour foundation status and remaining exclusions
 
 Built here: qualified scene, A-D summaries, On/Off proposal diagrams, PDF-first
 close, six-chapter rail with pharmacy substop, 56 px grouped header/mobile sheet,
 Agent tooltip, confirmed reset and session-only disclosure/rail visibility.
 
-Planned, not built: calculator, workload simulation, a manual baseline model,
-manual case views, a new pharmacy split/comparison experience, a shared live
+The Chapter 2 calculator and pure manual baseline arithmetic are now built.
+Planned, not built: workload simulation, manual case views,
+a new pharmacy split/comparison experience, a shared live
 service, and the broader next-phase navigation/presentation work. Existing
 pharmacy and queue screens are destinations, not evidence those future features
 exist. No source correction silently changes canonical outcomes.

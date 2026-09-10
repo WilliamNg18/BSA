@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "./fixtures";
+import { captureJson, expect, test } from "./fixtures";
 
 // Every existing audit surface, both themes and both assistance states.
 // No tag filter: landmark and other best-practice rules must run as well as WCAG.
@@ -24,7 +24,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         await expect(scope.locator("#synthetic-disclaimer")).toBeVisible();
         await expect(scope.locator("[data-principle]")).toBeVisible();
         const results = await new AxeBuilder({ page }).analyze();
-        await testInfo.attach("axe-results", { body: JSON.stringify(results, null, 2), contentType: "application/json" });
+        await captureJson(testInfo, "axe-results", results);
         expect(results.violations, JSON.stringify(results.violations.map((v) => ({
           id: v.id, impact: v.impact, nodes: v.nodes.map((n) => ({ target: n.target, summary: n.failureSummary })),
         })), null, 2)).toEqual([]);

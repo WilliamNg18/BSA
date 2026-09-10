@@ -1,17 +1,17 @@
 ---
 title: Functional specification for Prescription Exception Case Builder
-description: Tour foundation, source qualifications, grouped navigation and retained synthetic case behaviour.
+description: Guided tour, Chapter 2 scenario calculator, qualified assumptions and retained synthetic case behaviour.
 ms.date: 2026-09-10
 ---
 
-## Tour foundation scope
+## Current increment scope
 
-This increment builds the guided tour, chapters 1, 3, 4 and 6, with explicit
-placeholders for the chapter 2 calculator and chapter 5 workload simulation.
-It includes the minimum navigation prerequisite: a single-row grouped header,
-mobile sheet, prominent Agent control and confirmed Reset demo. It does not
-implement the full later header/comparison redesign, a manual baseline model,
-new manual case views, a new pharmacy split view, or a simulation.
+This increment adds only the Chapter 2 calculator and reusable pure baseline
+arithmetic to the existing guided tour. It includes an in-memory input slice
+and a shared calculator disclosure on Assumptions. The existing header,
+template, chapters 1/3/4/6, pharmacy and queue interfaces are unchanged.
+Chapter 5 workload simulation remains planned. No new manual case views,
+pharmacy split view, backend or shared live model is implemented.
 
 Presenter mode, Discussion mode, their state, the subtitle and `/notes` remain
 removed. This supersedes those older requirements in [TASK.md](TASK.md).
@@ -79,7 +79,7 @@ navigation focuses its heading and returns to the top.
 | Chapter | Route | Built in this increment |
 |---|---|---|
 | 1 | `/#scene` | Three qualified figures and existing-process branches; Agent has no effect |
-| 2 | `/#month` | Explicit planned calculator placeholder, no calculated results |
+| 2 | `/#month` | Editable synthetic workload calculator; qualified manual/assisted estimates |
 | 3 | `/#cases` | A-D engine outcomes On; neutral illustrative manual tasks Off |
 | 4 | `/#two-places` then `/pharmacy` | Accessible proposal diagrams and existing advisory pharmacy substop |
 | 5 | `/queue` | Explicit planned simulation notice above the existing synthetic queue |
@@ -110,6 +110,88 @@ source, supplied document, and PDF section or DOCX part/paragraph identifiers.
 Case pages share a header: synthetic-case tag, state badge, "Back to queue", title, one-paragraph intro, and a three-tab strip (trace, case pack, record).
 
 ## 4. Domain model
+
+### Chapter 2 baseline model
+
+[baseline.ts](../src/lib/domain/baseline.ts) contains pure typed validation,
+cohort arithmetic and generated summary copy. Its default provenance is in
+[baseline-defaults.ts](../src/lib/domain/baseline-defaults.ts). Neither changes
+cases, rules, gates, recommendations or human decisions. These are scenario
+estimates, not measured savings, real current practice or an operational forecast.
+
+| Input | Default and provenance |
+|---|---|
+| V, monthly volume proxy | 85,000, pinned by test to O23's approximate referred-back subset; not all exceptions |
+| g, gathering minutes/item | 5, editable design assumption; A03/A10 motivate observation but supply no duration |
+| j, judging minutes/item | 2, editable design assumption; not measured NHSBSA time |
+| p, pharmacy pre-check share | 2/12 incoming seed rows: B EX-24112 has an unmet date requirement; filler EX-24109 explicitly lacks invoice price |
+| c, rule-cleared share | 2/10 after those candidates: E EX-24101 and filler EX-24098 |
+| a, abstention share | 2/8 after candidates and clearances: D EX-24123 and filler EX-24120 |
+| Assembly seconds/item | Mean of current engine assemblySeconds for active recommended A/B/C, not a measured latency |
+
+The seed queue contains six canonical cases and six metadata-only fillers.
+There are no filler model runs. Pharmacy effectiveness is an explicit scenario
+assumption, not a measured catch rate or evidence of existing pharmacy checks.
+Conflict and unreadable rows are not counted as pharmacy catches. Historical
+F and the recorded filler are excluded from catches and timing samples. They
+remain in the residual scaling pool without inventing new packs or decisions.
+Defaults do not change when an operator records a session decision.
+
+O23 is attributed to Community Pharmacy England by the supplied pack,
+P0694-P0695, not externally verified. O24 distinguishes referrals from the
+unknown total operator queue. N01: 1,000,000 / 12 is approximately 83,333.33,
+not exactly 85,000. Scaling this deliberately mixed synthetic queue with that
+referral proxy does not estimate real operational cohorts.
+
+With p/c/a converted from percentages to fractions, the disjoint counts are:
+
+* P = round(V * p), pharmacy-caught
+* C = round((V - P) * c), rule-cleared
+* A = round((V - P - C) * a), abstained
+* B = V - P - C - A, built for human review
+
+Rounding uses the nearest integer, halves up. Each cohort is removed before
+the next denominator is calculated. P + C + A + B equals V exactly. At the
+defaults these are 14,167 / 14,167 / 14,167 / 42,499 respectively.
+
+Today gathering = V * g; Today judging = V * j. With agent gathering = A * g;
+With agent judging = (A + B) * j. Operator hours divide each combined minute
+total by 60. Default Today: 425,000 gathering minutes and 170,000 judging
+minutes, or 9,916.7 displayed operator hours. With agent: 70,835 gathering
+minutes and 113,332 judging minutes, or 3,069.5 displayed operator hours.
+No subtraction is presented as a measured saving.
+
+Expected per-item time before decision for built items = j + assemblySeconds/60;
+abstained = g + j. Assembly is machine latency, never added to operator hours
+or priced as labour. Queue delay, parallelism, extra failed-assembly latency
+and pharmacy effort are excluded. Pharmacy-caught and rule-cleared items
+assume no NHSBSA human touch. Built items require human review. Per-item
+assumptions remain labelled even when a cohort is empty; zero volume yields
+zero monthly hours and zero cohort counts.
+
+Validated citations cover only 3/3 active recommended canonical A/B/C packs,
+not all decisions or all scaled built items. D has no provision; E has no
+citation or model call. No payment, price, approval or human decision is output.
+
+The six input fields retain raw text in the global memory-only calculator
+slice across route navigation. Blank, negative, non-finite, malformed,
+out-of-range and fractional-volume inputs suppress estimates with associated
+field errors. Volume accepts whole numbers 0-1,000,000,000; minutes accept
+decimals 0-1,440; all three percentages accept decimals 0-100. Plain decimal
+syntax only, no thousands separators or exponents. Internal assembly input
+validation accepts finite seconds 0-3,600; the UI derives it, not an editable
+stopwatch claim. Bounded arithmetic stays within safe numerical magnitudes.
+
+Agent Off highlights Today and hides assisted metrics and summary cohorts;
+the accessible existing header switch restores them with inputs retained.
+Reset demonstration restores inputs and Agent On via the store as well as
+the existing route remount. Reload returns defaults; no storage is added.
+The permanent note requires replacing assumptions with validated NHSBSA
+figures. Expanded disclosure lists defaults/current values, exact default
+denominators, source IDs, formula and the Assumptions link. Display rounding
+does not change the full-precision rates retained in inputs.
+
+### Existing case model
 
 Types live in `src/lib/domain/types.ts`. The important ones:
 
@@ -240,7 +322,7 @@ Right: **Prescription image** (synthetic form drawn as SVG with the located regi
 
 - Agent recommendations on/off (feature flag): off shows the fail-open path on every case (evidence only, no recommendation, state unchanged). Queue recommendations, including filler rows, are withheld. Pharmacy assistance is also withheld without blocking submission. Historical human records are unchanged; rule-version replay follows the current flag.
 - Agent: On/Off is the visible and accessible control label. Its tooltip explains synthetic assistance, evidence-only Off and unchanged scene facts. Historical records stay unchanged.
-- Reset demo opens a confirmation dialog. Keep working or Escape changes nothing. Reset demonstration restores seeded case states and records, turns Agent on, restores tour/disclaimer visibility and remounts the current route to reset local pharmacy fields and replay selection. DR-000871 remains. The current route/fragment is retained. No record is persisted or payment affected.
+- Reset demo opens a confirmation dialog. Keep working or Escape changes nothing. Reset demonstration restores seeded case states and records and calculator inputs, turns Agent on, restores tour/disclaimer visibility and remounts the current route to reset local pharmacy fields and replay selection. DR-000871 remains. The current route/fragment is retained. No record is persisted or payment affected.
 
 There are no Presenter mode or Discussion mode buttons, bar, sheet, timers or
 beat controls. The reference script is documentation, not a route or a header link.

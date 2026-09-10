@@ -91,6 +91,8 @@ test("pharmacy keeps edits and local availability across global assistance chang
   await expect(page.locator("tbody > tr")).toHaveCount(12);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
+  await expect(page).toHaveURL(/\/pharmacy$/);
+  await expect(page.getByRole("heading", { name: "Pharmacy pre-submission check", exact: true })).toBeVisible();
   const status = page.getByRole("status").filter({ hasText: /^(Information may be missing|Ready to submit|Agent unable to determine)$/ });
   const local = page.getByRole("switch", { name: "Agent available", exact: true });
   const global = page.getByRole("switch", { name: /^Agent: (On|Off)$/ });
@@ -99,10 +101,13 @@ test("pharmacy keeps edits and local availability across global assistance chang
   await expect(local).toBeChecked();
   await field.fill("NCSO RK 21/08/26");
   await local.click();
+  await expect(local).not.toBeChecked();
   await local.click();
+  await expect(local).toBeChecked();
   await expect(status).toHaveText("Agent unable to determine");
   await expect(page.getByRole("heading", { name: /^Rule retrieved for/ })).toHaveCount(0);
   await local.click();
+  await expect(local).not.toBeChecked();
   await global.click();
   await expect(local).not.toBeChecked();
   await expect(status).toHaveText("Agent unable to determine");

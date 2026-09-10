@@ -4,9 +4,52 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
-## Tour foundation current scope
+## Chapter 2 calculator current scope
 
-The new tour replaces the old Overview headline and operating KPI cards with
+Chapter 2 now includes pure scenario arithmetic, validated editable volume,
+gathering/judging minutes and sequential percentages. Defaults/current values,
+source qualifications and cohort denominators are disclosed in the calculator
+and Assumptions. Inputs persist across routes only in memory; confirmed Reset
+restores them and Agent On. Off highlights the manual scenario and hides
+assisted estimates. No case states or history change through calculator edits.
+
+The approximately 85,000 referred-back default is only a scale proxy, not total
+exceptions. The 2/12 pharmacy rate is a synthetic missing-information scenario,
+not measured effectiveness. Gathering/judging defaults are invented assumptions.
+Machine latency is engine-derived but synthetic, not included in operator hours.
+The comparison excludes pharmacy effort, queue delay, parallelism and extra
+failed-assembly latency. None of these estimates is a real saving or decision.
+
+Only Chapter 2 and its reusable assumptions model are implemented here.
+The header/template, canonical fixtures, rules, gate, registry and existing
+pharmacy/queue/case interfaces remain unchanged. Queue simulation, new pharmacy
+split views, manual case views, actual baseline observation and shared live
+services remain deferred. Earlier phase results below are historical.
+
+Calculator verification and selected images are recorded in
+[qa/calculator/README.md](qa/calculator/README.md). Post-fix raw logs record
+check and unit commands exiting 0; 239 unit tests pass in nine files. Full
+production Chromium passes 345 tests in 4.2 minutes with exit 0 using the
+console reporter. Its 48 unique all-default-rule axe audits have zero
+violations; attachment copies are not additional audits. Independent targeted
+review confirms 107 unit tests and 38 browser tests passing with exit 0.
+The [final scoped review](../../.copilot-tracking/pr-calculator/final-review.md)
+separates those checks from the recorded full-suite results.
+
+Earlier 222-unit/327-browser results and failed episodes remain historical in
+the QA record and unchanged prior review. These include HTML reporter EBUSY
+(lock owner not established), an intermittent pharmacy navigation failure,
+and initial fix-validation failures. Later passing runs do not erase them or
+prove the HTML reporter lock resolved. The reload test uses /BSA/ rather than
+Vite preview's unsupported slashless /BSA entry; that hosting limitation was
+not fixed by this calculator increment. Local verification does not
+establish hosted/CI behaviour, cross-browser support, manual screen-reader
+operation, NHSBSA outcomes or full WCAG conformance. The existing Vite large
+chunk warning remains; no Lighthouse or zero-warning performance claim.
+
+## Historical tour foundation scope
+
+The tour foundation replaced the old Overview headline and operating KPI cards with
 registry-backed chapters 1, 3, 4 and 6. Chapter 2 calculator and chapter 5 queue
 simulation are explicitly planned, not implemented. The minimal prerequisite
 grouped header is 56 px, with a mobile sheet, Agent: On/Off tooltip and confirmed
@@ -17,8 +60,8 @@ The source registry and domain rules/fixtures are unchanged. Source
 discrepancies, case-letter mapping and deferred numerical migration are in
 [source-review.md](source-review.md). Legacy pharmacy/evaluation/architecture
 copy is not universally migrated or endorsed by this PR. A common live service,
-manual baseline, calculator, simulation and new manual/pharmacy views remain
-unbuilt. Earlier phase sections below are historical and do not describe these
+manual baseline and calculator were unbuilt at that stage, as were simulation
+and new manual/pharmacy views. Earlier phase sections below are historical and do not describe these
 new header/reset/tour semantics.
 
 ### Tour validation status
