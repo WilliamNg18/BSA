@@ -13,7 +13,9 @@ test("fresh Overview supports first visits to every route after disconnection", 
   await context.setOffline(true);
   try {
     const nav = page.getByRole("navigation", { name: "Primary" });
-    const labels = ["Overview", "Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture", "Presenter notes"];
+    const labels = ["Overview", "Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture"];
+    await expect(nav.getByRole("link")).toHaveCount(labels.length);
+    await expect(page.getByRole("button", { name: /Presenter mode|Discussion mode/ })).toHaveCount(0);
     for (const [index, label] of labels.entries()) {
       await nav.getByRole("link", { name: label, exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(staticRoutes[index].title);

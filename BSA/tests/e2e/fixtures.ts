@@ -1,4 +1,10 @@
-import { test as base, expect } from "@playwright/test";
+import { test as base, expect, type Page, type TestInfo } from "@playwright/test";
+
+export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: string) {
+  const path = testInfo.outputPath(`${name}.png`);
+  await page.screenshot({ path, fullPage: true });
+  await testInfo.attach(name, { path, contentType: "image/png" });
+}
 
 export const test = base.extend<{ browserErrors: string[] }>({
   browserErrors: [async ({ page }, use) => {
@@ -35,5 +41,4 @@ export const staticRoutes = [
   { path: "boundary", title: "Agent, deterministic code, human decision" },
   { path: "assumptions", title: "The assumptions that decide whether an agent is needed" },
   { path: "architecture", title: "Technical architecture and the path to production" },
-  { path: "notes", title: "Presenter notes" },
 ];

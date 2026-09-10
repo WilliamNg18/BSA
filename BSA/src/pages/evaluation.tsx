@@ -109,7 +109,6 @@ export function EvaluationPage() {
         </ol>
         <div className="flex flex-wrap gap-2">
           <Button asChild className="bg-teal-700 text-white hover:bg-teal-800"><Link to="/assumptions">The assumptions this tests</Link></Button>
-          <Button asChild variant="outline"><Link to="/notes">Presenter notes and challenge cards</Link></Button>
         </div>
       </PageSection>
     </div>

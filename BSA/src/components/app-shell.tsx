@@ -1,8 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 import { Toaster } from "@/components/ui/sonner";
-import { DiscussionSheet } from "@/components/demo/discussion-sheet";
-import { PresenterBar } from "@/components/demo/presenter-bar";
 import { TopNav } from "@/components/demo/top-nav";
 import { RouteErrorBoundary } from "@/components/route-error-boundary";
 
@@ -35,8 +33,6 @@ export function AppShell() {
           </RouteErrorBoundary>
         </motion.div>
       </main>
-      <PresenterBar />
-      <DiscussionSheet />
       <Toaster />
     </div>
   );

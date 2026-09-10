@@ -68,9 +68,6 @@ interface AppState {
   caseStates: Record<string, CaseState>;
   records: DecisionRecord[];
   agentEnabled: boolean;
-  presenterMode: boolean;
-  discussionMode: boolean;
-  presenterBeat: number;
   recordDecision: (input: {
     caseId: string;
     tariffVersion: string;
@@ -83,9 +80,6 @@ interface AppState {
     overrideReason: string | null;
   }) => DecisionRecord;
   setAgentEnabled: (on: boolean) => void;
-  setPresenterMode: (on: boolean) => void;
-  setDiscussionMode: (on: boolean) => void;
-  setPresenterBeat: (beat: number) => void;
   resetDemo: () => void;
 }
 
@@ -103,9 +97,6 @@ export const useAppStore = create<AppState>((set, get) => ({
   caseStates: initialStates(),
   records: seededRecords(),
   agentEnabled: true,
-  presenterMode: false,
-  discussionMode: false,
-  presenterBeat: 0,
   recordDecision: (input) => {
     const n = get().records.length + 872;
     const record: DecisionRecord = {
@@ -131,8 +122,5 @@ export const useAppStore = create<AppState>((set, get) => ({
     return record;
   },
   setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
-  setPresenterMode: (presenterMode) => set({ presenterMode }),
-  setDiscussionMode: (discussionMode) => set({ discussionMode }),
-  setPresenterBeat: (presenterBeat) => set({ presenterBeat }),
-  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: true, presenterBeat: 0 }),
+  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: true }),
 }));

@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { captureCheckpoint, expect, test } from "./fixtures";
 import { QUEUE_FILLER } from "../../src/lib/domain/cases";
 
 test("queue hides all filler recommendations without changing evidence, states or human decisions", async ({ page }) => {
@@ -47,7 +47,7 @@ for (const scenario of [
 ]) {
   for (const globalEnabled of [true, false]) {
     for (const localAvailable of [true, false]) {
-      test(`pharmacy ${scenario.name}: global=${globalEnabled}, local=${localAvailable} remains advisory`, async ({ page }) => {
+      test(`pharmacy ${scenario.name}: global=${globalEnabled}, local=${localAvailable} remains advisory`, async ({ page }, testInfo) => {
         await page.goto("pharmacy");
         await page.getByRole("radio", { name: scenario.name, exact: true }).click();
         const status = page.getByRole("status").filter({ hasText: /^(Information may be missing|Ready to submit|Agent unable to determine)$/ });
@@ -77,6 +77,7 @@ for (const scenario of [
         }
         const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
         await expect(submit).toBeEnabled();
+        await captureCheckpoint(page, testInfo, "pharmacy-assistance-state");
         await submit.click();
         await expect(page.getByRole("status").filter({ hasText: "Submitted (synthetic)." })).toBeVisible();
         await expect(submit).toBeEnabled();
