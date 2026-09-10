@@ -3,7 +3,7 @@ import { BASELINE_FIELDS, GATHERING_STEPS, baselineDraft, baselineSummary, calcu
 import { BASELINE_PROVENANCE } from "../../src/lib/domain/baseline-defaults";
 import { CASES, QUEUE_FILLER } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
-import { SOURCE_CLAIMS } from "../../src/lib/domain/source-claims";
+import { SOURCE_CLAIMS } from "../../data/reference/source-audit";
 import { useAppStore } from "../../src/lib/store";
 
 describe("baseline source and synthetic default provenance", () => {
@@ -20,7 +20,7 @@ describe("baseline source and synthetic default provenance", () => {
     const derived = SOURCE_CLAIMS.find((claim) => claim.id === "N01")!.numbers[0];
     expect(BASELINE_VOLUME_REFERENCE.annual).toBe(annual.value);
     expect(BASELINE_VOLUME_REFERENCE.annual / BASELINE_VOLUME_REFERENCE.monthsPerYear).toBe(derived.value);
-    expect(baselineDefaultCopy(BASELINE_DEFAULTS).volumeSource).toContain("1,000,000 / 12 = approximately 83,333.33, not exactly 85,000");
+    expect(baselineDefaultCopy(BASELINE_DEFAULTS).volumeContext).toContain("1,000,000 annual referrals / 12 = approximately 83,333.33 monthly, not exactly 85,000");
   });
 
   it("derives sequential percentages from the twelve seed rows without reclassifying recorded history", () => {
@@ -259,7 +259,7 @@ describe("calculator session slice", () => {
     expect(useAppStore.getState().records).toBe(store.records);
     store.resetDemo();
     expect(useAppStore.getState().baselineInputs).toEqual(baselineDraft(BASELINE_DEFAULTS));
-    expect(useAppStore.getState().agentEnabled).toBe(true);
+    expect(useAppStore.getState().agentEnabled).toBe(false);
     expect(useAppStore.getState().records.map((r) => r.id)).toEqual(["DR-000871"]);
   });
 });

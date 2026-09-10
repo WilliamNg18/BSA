@@ -18,9 +18,7 @@ export function AssumptionsPage() {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">The assumptions that decide whether an agent is needed</h1>
         <p className="max-w-3xl text-muted-foreground">
-          Each assumption states why it was made, what supports it, how NHSBSA would validate it, what changes if it is wrong, and whether being wrong kills, reshapes or
-          leaves the proposition intact. Public means supported by public sources; Experience means my judgement from comparable estates, which stays an assumption until
-          NHSBSA's data confirms it.
+          Validate the premises, evidence access and operational value. Comparable-estate experience is an assumption, not proof of current NHSBSA practice.
         </p>
         <div className="flex flex-wrap gap-2">
           <EvidenceClassTag kind="Publicly supported" />
@@ -72,8 +70,8 @@ export function AssumptionsPage() {
       <PageSection title="How the prototype's own claims are classified" description="Used throughout the interface.">
         <ul className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
           {[
-            ["Publicly supported", "NHSBSA processes about 1.1 billion items a year, already scans, reads and prices automatically, routes endorsement and handwritten items to an operator, and samples accuracy monthly against a 99.85 per cent target. Around one million items were referred back in 2024/25 (Community Pharmacy England). Manage Your Service is mandatory for month-end submission and returns referred-back items digitally."],
-            ["Reasoned assumption", "Operators assemble evidence by hand from separate systems; the queue tool can surface a recommendation; item-level history exists; the Drug Tariff can be ingested monthly."],
+            ["Publicly supported", "Published processing context and approximate referral figures. Targets are not achieved performance; submission channels and implementation details need validation."],
+            ["Reasoned assumption", "Manual assembly, separate systems, accessible history and integration feasibility require observation and validation."],
             ["Synthetic demonstration", "Every case, prescription, pharmacy, product code, price, reading, confidence signal, metric and record shown here."],
             ["Proposed design decision", "Agent recommends, code validates and calculates, human decides; deterministic gate; structural confidence; abstain below threshold; fail open; one kernel for both surfaces."],
             ["Requires customer validation", "Cost per operator touch; assembly-versus-judgement time split; inter-operator agreement; second-referral rate; the claim-amendment window; what may reach a model."],

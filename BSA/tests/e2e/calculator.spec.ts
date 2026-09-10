@@ -10,6 +10,7 @@ async function expandSteps(page: Page) {
 
 test("all seven live steps, review, judging and deficiency edits drive the same scene model", async ({ page }, testInfo) => {
   await page.goto("./#month");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.locator("[data-gathering-breakdown]")).not.toHaveAttribute("open", "");
   await expandSteps(page);
   const edited = { ...BASELINE_DEFAULTS, volume: 120 };
@@ -66,6 +67,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       test.use({ colorScheme, viewport: { width, height: 1000 } });
       test("accessible four-cohort ribbons conserve width including empty paths and reflow", async ({ page }, testInfo) => {
         await page.goto("./#month");
+        await page.getByRole("banner").getByRole("switch").setChecked(true);
         const image = page.getByRole("img", { name: /Proportional monthly scenario flow/ });
         await expect(image).toBeVisible();
         for (const volume of [85000, 0, 1, 120, 1000000000]) {
@@ -101,6 +103,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 
 test("calculator live edits, flag, route persistence, history, reset and rail", async ({ page }) => {
   await page.goto("./#month");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expandSteps(page);
   const summary = page.locator("[data-baseline-summary]");
   await expect(summary).toHaveText(baselineSummary(calculateBaseline(BASELINE_DEFAULTS), true));
@@ -112,9 +115,9 @@ test("calculator live edits, flag, route persistence, history, reset and rail", 
   await expect(summary).toHaveText(baselineSummary(calculateBaseline(edited), false));
   await expect(page.locator("[data-cohort]")).toHaveCount(0);
   await expect(page.locator("[data-baseline-today]")).toHaveClass(/ring-2/);
-  await page.getByText("Calculator assumptions, sources and formula", { exact: true }).click();
+  await page.getByText("Calculator assumptions and formula", { exact: true }).click();
   await page.getByRole("link", { name: "Open assumptions register" }).click();
-  await page.getByText("Calculator assumptions, sources and formula", { exact: true }).click();
+  await page.getByText("Calculator assumptions and formula", { exact: true }).click();
   await expect(page.getByRole("list", { name: "Calculator defaults and current inputs" })).toContainText("Current: 3.5");
   await page.getByRole("link", { name: "Return to calculator" }).click();
   await expect(page.getByLabel("Monthly volume proxy", { exact: true })).toHaveValue("12");
@@ -134,7 +137,7 @@ test("calculator live edits, flag, route persistence, history, reset and rail", 
   await expect(page.getByLabel("Monthly volume proxy", { exact: true })).toHaveValue("12");
   await confirmReset(page);
   await expect(page).toHaveURL(/#month$/);
-  await expect(page.getByRole("banner").getByRole("switch")).toBeChecked();
+  await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
   for (const { key, label } of BASELINE_FIELDS) await expect(page.getByLabel(label, { exact: true })).toHaveValue(String(BASELINE_DEFAULTS[key]));
   const rail = page.getByRole("navigation", { name: "Guided tour" });
   await rail.getByRole("button", { name: "Next", exact: true }).click();
@@ -145,6 +148,7 @@ test("calculator live edits, flag, route persistence, history, reset and rail", 
 
 test("invalid input is retained, labelled and suppresses results; zero and 100% work", async ({ page }) => {
   await page.goto("./#month");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expandSteps(page);
   for (const { key, label, max } of BASELINE_FIELDS) {
     const field = page.getByLabel(label, { exact: true });
@@ -162,7 +166,7 @@ test("invalid input is retained, labelled and suppresses results; zero and 100% 
   await expect(volume).toHaveAttribute("aria-invalid", "true");
   await volume.fill("");
   await navigatePrimary(page, "Assumptions");
-  await page.getByText("Calculator assumptions, sources and formula", { exact: true }).click();
+  await page.getByText("Calculator assumptions and formula", { exact: true }).click();
   await page.getByRole("link", { name: "Return to calculator" }).click();
   await expandSteps(page);
   await expect(volume).toHaveValue("");
@@ -224,11 +228,15 @@ for (const colorScheme of ["light", "dark"] as const) {
         }
         await expect(page.locator("[data-baseline-today], [data-cohort]")).toHaveCount(0);
         for (const surface of ["calculator", "register"]) {
+          // Both routes contain this disclosure. Wait for navigation to commit
+          // before opening it, rather than clicking the outgoing route's node.
+          await expect(page).toHaveURL(surface === "calculator" ? /#month$/ : /\/assumptions$/);
+          if (surface === "register") await expect(page.getByRole("heading", { level: 1 })).toHaveText("The assumptions that decide whether an agent is needed");
           const disclosure = page.locator("[data-baseline-assumptions]");
+          await expect(disclosure).not.toHaveAttribute("open", "");
           await disclosure.locator("summary").first().click();
           await expect(disclosure).toHaveAttribute("open", "");
-          await disclosure.getByText("Calculator documentary sources", { exact: true }).click();
-          await expect(disclosure.locator('[data-claim-id="O23"]')).toBeVisible();
+          await expect(disclosure).not.toContainText(/\.pdf|\.docx|source:/i);
           for (const { key } of BASELINE_FIELDS) {
             const current = disclosure.locator(`[data-current-input="${key}"]`);
             await expect(current).toContainText("display shortened; 400 characters");
@@ -259,7 +267,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         await expect(page.locator("[data-baseline-today], [data-cohort]")).toHaveCount(0);
         await confirmReset(page);
         for (const { key, label } of BASELINE_FIELDS) await expect(page.getByLabel(label, { exact: true })).toHaveValue(String(BASELINE_DEFAULTS[key]));
-        await expect(page.locator("[data-baseline-summary]")).toHaveText(baselineSummary(calculateBaseline(BASELINE_DEFAULTS), true));
+        await expect(page.locator("[data-baseline-summary]")).toHaveText(baselineSummary(calculateBaseline(BASELINE_DEFAULTS), false));
       });
     });
   }
@@ -276,13 +284,12 @@ for (const colorScheme of ["light", "dark"] as const) {
           await captureCheckpoint(page, testInfo, `month-${width}-${colorScheme}-${enabled ? "on" : "off"}`);
         }
         await page.setViewportSize({ width: 1440, height: 1000 });
-        await page.getByText("Calculator assumptions, sources and formula", { exact: true }).click();
+        await page.getByText("Calculator assumptions and formula", { exact: true }).click();
         await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/12");
         await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/10");
         await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/8");
-        await page.getByText("Calculator documentary sources", { exact: true }).click();
-        await expect(page.locator('[data-claim-id="O23"]')).toContainText("Community Pharmacy England");
-        await expect(page.locator('[data-claim-id="O23"]')).toContainText("P0694–P0695");
+        await expect(page.locator("[data-baseline-assumptions]")).toContainText("83,333.33");
+        await expect(page.locator("[data-baseline-assumptions]")).not.toContainText(/\.pdf|\.docx|source:/i);
         for (const invalid of [false, true]) {
           if (invalid) await page.getByLabel("Find form minutes / item", { exact: true }).fill("");
           const results = await new AxeBuilder({ page }).analyze();

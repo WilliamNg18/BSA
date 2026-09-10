@@ -7,6 +7,8 @@ import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
 import { BaselineFlow } from "./baseline-flow";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { AnimatedNumber } from "./animated-number";
+import { PainMarker } from "./pain-marker";
 
 const number = (value: number) => formatBaselineNumber(value, 1);
 
@@ -21,13 +23,13 @@ export function BaselineCalculator() {
     <Input id={`baseline-${key}`} type="text" inputMode={integer ? "numeric" : "decimal"} autoComplete="off" spellCheck={false}
       value={draft[key]} onChange={(event) => setInput(key, event.target.value)} aria-invalid={Boolean(errors[key])}
       aria-describedby={`baseline-${key}-hint${errors[key] ? ` baseline-${key}-error` : ""}`} />
-    <p id={`baseline-${key}-hint`} className="text-xs text-muted-foreground">{hint}</p>
+    <span id={`baseline-${key}-hint`} className="block text-xs text-muted-foreground">{hint}</span>
     {errors[key] && <p id={`baseline-${key}-error`} className="text-sm text-destructive">{errors[key]}</p>}
   </div>;
 
   return <section aria-label="Monthly workload calculator" className="min-w-0 space-y-5">
     <p className="rounded-lg border border-amber-600/40 bg-amber-500/10 p-3 text-sm font-medium">Estimates only. Replace these assumptions with validated NHSBSA figures.</p>
-    <fieldset className="min-w-0 rounded-xl border bg-card p-5">
+    <fieldset data-prose="scenario inputs" className="min-w-0 rounded-xl border bg-card p-5">
       <legend className="px-2 text-sm font-semibold">Edit the scenario</legend>
       <div className="mb-4 flex flex-wrap items-center gap-2"><BoundaryTag cls="deterministic" /><span className="text-xs text-muted-foreground">Local arithmetic · No operational forecast</span></div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -37,7 +39,7 @@ export function BaselineCalculator() {
         <summary className="cursor-pointer font-semibold">Seven-step gathering breakdown · Synthetic minutes{GATHERING_STEPS.some(({ key }) => errors[key]) ? " · Check invalid inputs" : ""}</summary>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{BASELINE_FIELDS.filter(({ key }) => isGatheringStep(key)).map(renderField)}</div>
       </details>
-      {result && <p className="mt-3 text-sm" data-gathering-total>Manual gathering: {number(result.manualGatheringMinutes)} minutes / item, sum of seven synthetic assumptions.</p>}
+      {result && <div className="mt-3 text-sm" data-gathering-total>Manual gathering: {number(result.manualGatheringMinutes)} minutes / item, sum of seven synthetic assumptions.</div>}
       <p className="mt-4 text-xs text-muted-foreground">{baselineDefaultCopy(BASELINE_DEFAULTS).volumeNote}</p>
     </fieldset>
 
@@ -46,7 +48,7 @@ export function BaselineCalculator() {
         <section aria-label="Today manual scenario" data-baseline-today className={cn("space-y-4 rounded-xl border bg-card p-5", !enabled && "ring-2 ring-primary")}>
           <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-xl font-semibold">Today</h2><BoundaryTag cls="human" /></div>
           <p className="text-sm text-muted-foreground">Manual scenario assumption · Not real today</p>
-          <p className="text-3xl font-semibold tabular-nums">{number(result.today.operatorHours)} <span className="text-sm font-normal">reference operator hours / month</span></p>
+          <p className="text-3xl font-semibold tabular-nums"><AnimatedNumber value={result.today.operatorHours} /> <span className="text-sm font-normal">reference operator hours / month</span></p>
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between gap-3"><dt>Gathering</dt><dd>{number(result.today.gatheringMinutes / 60)} hours</dd></div>
             <div className="flex justify-between gap-3"><dt>Judging</dt><dd>{number(result.today.judgingMinutes / 60)} hours</dd></div>
@@ -59,7 +61,7 @@ export function BaselineCalculator() {
           <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-xl font-semibold">With agent</h2><BoundaryTag cls="agent" /></div>
           {enabled ? <>
             <p className="text-sm text-muted-foreground">Synthetic scenario · Human decisions retained</p>
-            <p className="text-3xl font-semibold tabular-nums">{number(result.withAgent.operatorHours)} <span className="text-sm font-normal">reference operator hours / month</span></p>
+            <p className="text-3xl font-semibold tabular-nums"><AnimatedNumber value={result.withAgent.operatorHours} /> <span className="text-sm font-normal">reference operator hours / month</span></p>
             <dl className="space-y-3 text-sm">
               <div className="flex justify-between gap-3"><dt>Gathering</dt><dd>{number(result.withAgent.gatheringMinutes / 60)} hours</dd></div>
               <div className="flex justify-between gap-3"><dt>Judging</dt><dd>{number(result.withAgent.judgingMinutes / 60)} hours</dd></div>
@@ -69,20 +71,21 @@ export function BaselineCalculator() {
               <div className="flex justify-between gap-3"><dt>Abstained · Manual fallback</dt><dd data-cohort="abstained">{number(result.abstained)}</dd></div>
               <div className="flex justify-between gap-3"><dt>Built · Human review</dt><dd data-cohort="built">{number(result.built)}</dd></div>
             </dl>
-            <p className="text-xs text-muted-foreground">Pharmacy avoidance is a count, not operator savings. Pharmacy effort is excluded; this comparison does not establish causal net time savings.</p>
-          </> : <p className="text-sm" data-baseline-off>Agent Off. Today is highlighted; With agent estimates are hidden. Use Agent: Off in the header to restore the comparison. Inputs are retained.</p>}
+            <p className="text-xs text-muted-foreground">Pharmacy avoidance is count-only. Pharmacy effort excluded; no causal savings claim.</p>
+          </> : <p className="text-sm" data-baseline-off>Agent Off. Today is highlighted; assisted estimates hidden. Enable assistance in the header to compare. Inputs are retained.</p>}
+          <PainMarker resolved={enabled} pain="Manual gathering assumed" resolution="Assisted review assumed; judging unchanged" />
         </section>
       </div>
-      <p className="text-sm">Fixed reference-cohort comparison assumption: judging is V × j / 60 hours on both sides, even when routing changes. No judgement savings are attributed to pharmacy avoidance.</p>
-      <p className="text-sm">Today referrals equal scenario volume, using the referred-back subset as a proxy. Actual total exceptions are unknown; assisted referrals use editable deficiency assumptions.</p>
+      <section data-prose="comparison boundary"><h2 className="font-semibold">Comparison boundary</h2><p>Judging remains V × j / 60 hours on both sides. Pharmacy avoidance creates no assumed judgement savings.</p></section>
+      <section data-prose="referral boundary"><h2 className="font-semibold">Referral boundary</h2><p>Today referrals equal scenario volume, not total exceptions. Assisted referrals use editable deficiency assumptions.</p></section>
       {enabled && <BaselineFlow result={result} />}
       {enabled && <section aria-label="Assembly latency, not operator effort" className="rounded-xl border p-4 text-sm">
         <h2 className="font-semibold">Assembly latency, not operator effort</h2>
-        <p className="mt-2">{number(result.assemblySeconds)} seconds / built item, derived from the synthetic engine. Not added to operator hours.</p>
-        <p className="mt-1">Expected time before decision: built {number(result.builtBeforeDecisionMinutes)} minutes (synthetic review + judging + assembly); abstained {number(result.abstainBeforeDecisionMinutes)} minutes (synthetic gathering + judging). Per-item assumptions, even when a cohort is empty; queue delay excluded.</p>
+        <dl className="mt-2 space-y-2"><div><dt>Synthetic engine latency</dt><dd><AnimatedNumber value={result.assemblySeconds} /> seconds / built item</dd></div><div><dt>Expected time before decision</dt><dd>Built: {number(result.builtBeforeDecisionMinutes)} minutes; abstained: {number(result.abstainBeforeDecisionMinutes)} minutes</dd></div></dl>
+        <p className="mt-1">Per-item assumptions apply even to empty cohorts. Queue delay excluded; machine latency is not operator effort.</p>
       </section>}
     </> : <p className="rounded-lg border p-4 text-sm">Enter valid assumptions in every field to show estimates. No previous result is retained.</p>}
-    <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-muted-foreground" data-baseline-summary>{result ? baselineSummary(result, enabled) : "Calculator estimates unavailable: check the highlighted inputs."}</p>
+    <section data-prose="scenario summary" className="rounded-lg border p-4"><h2 className="mb-2 font-semibold">Scenario summary</h2><p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-muted-foreground" data-baseline-summary>{result ? baselineSummary(result, enabled) : "Calculator estimates unavailable: check the highlighted inputs."}</p></section>
     <section aria-label="Scenario cohort definitions" className="rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">What the cohorts mean</h2>
       <dl className="mt-3 grid gap-4 sm:grid-cols-2">

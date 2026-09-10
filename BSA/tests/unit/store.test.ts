@@ -37,7 +37,7 @@ describe("product-only session state", () => {
     expect(useAppStore.getState().caseStates).toBe(recorded.caseStates);
     expect(useAppStore.getState().records).toBe(recorded.records);
     useAppStore.getState().resetDemo();
-    expect(useAppStore.getState().agentEnabled).toBe(true);
+    expect(useAppStore.getState().agentEnabled).toBe(false);
     expect(useAppStore.getState().caseStates).toEqual(Object.fromEntries(CASES.map((c) => [c.id, c.initialState])));
     expect(useAppStore.getState().records).toEqual(seed.records);
     expect(useAppStore.getState().records.map((r) => r.id)).toEqual(["DR-000871"]);

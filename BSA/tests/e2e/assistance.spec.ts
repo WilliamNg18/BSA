@@ -3,6 +3,7 @@ import { QUEUE_FILLER } from "../../src/lib/domain/cases";
 
 test("queue hides all filler recommendations without changing evidence, states or human decisions", async ({ page }) => {
   await page.goto("case/EX-24112");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
@@ -49,6 +50,7 @@ for (const scenario of [
     for (const localAvailable of [true, false]) {
       test(`pharmacy ${scenario.name}: global=${globalEnabled}, local=${localAvailable} remains advisory`, async ({ page }, testInfo) => {
         await page.goto("pharmacy");
+        await page.getByRole("banner").getByRole("switch").setChecked(true);
         await page.getByRole("radio", { name: scenario.name, exact: true }).click();
         const status = page.getByRole("status").filter({ hasText: /^(Information may be missing|Ready to submit|Agent unable to determine)$/ });
         await expect(status).toHaveText(scenario.status);
@@ -88,6 +90,7 @@ for (const scenario of [
 
 test("pharmacy keeps edits and local availability across global assistance changes", async ({ page }) => {
   await page.goto("queue");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.locator("tbody > tr")).toHaveCount(12);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");

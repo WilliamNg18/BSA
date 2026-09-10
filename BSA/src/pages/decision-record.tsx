@@ -42,14 +42,14 @@ export function DecisionRecordPage() {
         c={c}
         state={state}
         title={`Decision and audit record: ${c.title}`}
-        intro="Any decision can be reconstructed from its record without asking the operator or the engineer: inputs, sources, rule version, agent version, deterministic checks, the recommendation, the human decision and any override reason. Replay re-runs the case under a different month's rule."
+        intro="Review evidence, versions, checks and the recorded human decision. Replay compares synthetic rule versions without changing history."
       />
 
       {!latest ? (
         <EmptyState
           icon={History}
           title="No human decision recorded yet"
-          description="The agent's case pack exists, but the record is complete only when an operator has decided. Record a decision from the case pack."
+          description="Record a human decision from the case pack to complete the session audit."
           action={<Button asChild className="bg-teal-700 text-white hover:bg-teal-800"><Link to={`/case/${c.id}`}>Open the case pack</Link></Button>}
         />
       ) : (
@@ -57,7 +57,7 @@ export function DecisionRecordPage() {
           <PageSection title={`Record ${latest.id}`} description={`Written ${latest.timestamp.replace("T", " ")} · append-only · ${latest.synthetic ? "synthetic" : ""}`}>
             <dl className="grid gap-2">
               <KeyValue k="Inputs considered" v={<ul className="list-disc pl-4">{latest.inputs.map((i) => <li key={i}>{i}</li>)}</ul>} />
-              <KeyValue k="Evidence sources accessed" v={latest.sources.join("; ")} />
+              <KeyValue k="Evidence accessed" v={<ul>{latest.sources.map((origin) => <li key={origin}>{origin}</li>)}</ul>} />
               <KeyValue k="Rule version used" v={`Drug Tariff ${latest.tariffVersion}`} />
               <KeyValue k="Agent version" v={agentVersionLabel(latest.agentVersion)} />
               <KeyValue
@@ -78,7 +78,7 @@ export function DecisionRecordPage() {
             {records.length > 1 && <p className="text-xs text-muted-foreground">{records.length} records exist for this case; the latest is shown. Earlier records are never altered.</p>}
           </PageSection>
 
-          <PageSection title="Replay under a different rule version" description="Same evidence, same readings; only the rule changes. Shows why every decision is pinned to the version in force on the dispensing date.">
+          <PageSection title="Replay under a different rule version" description="Counterfactual replay; original evidence and history remain unchanged.">
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <label htmlFor="replay-version" className="text-sm">Replay with</label>
@@ -125,7 +125,7 @@ export function DecisionRecordPage() {
                       {replay.gate.result === "FAIL"
                         ? "No actionable recommendation is available under this version."
                         : replay.recommendation !== pack.recommendation
-                        ? "The recommendation changes with the rule while the reading of the note does not. This is why a rules engine would need re-coding every month and why the record pins the version."
+                        ? "Same reading, different synthetic requirement. The record pins its original version; replay does not rewrite history or prove monthly recoding is necessary."
                         : "The recommendation is unchanged under this version."}
                     </p>
                   </CardContent>
@@ -133,7 +133,7 @@ export function DecisionRecordPage() {
               ) : (
                 <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL"
                   ? "Recommendation withheld by the compliance gate. Choose a version to review the evidence and checks, not to bypass the gate."
-                  : "Choose a version to replay. For case B, July 2026 required initials only, so the same note is sufficient under July and insufficient under August."}</p>
+                  : "Choose a version. Synthetic July requires initials; August also requires a date."}</p>
               )}
             </div>
           </PageSection>
@@ -142,9 +142,7 @@ export function DecisionRecordPage() {
 
       <PageSection title="What this record deliberately is not" description="Auditability, not theatre.">
         <p className="max-w-3xl text-sm text-muted-foreground">
-          An append-only store with the versions pinned is enough for an auditor to reconstruct the decision in minutes. No distributed ledger, no cryptographic
-          ceremony. In production the record lives in an append-only container with a change feed, so patterns (overrides by reason, abstentions by cause,
-          all cases under a Tariff version) are a query rather than an investigation.
+          Records are session-only, not durable production audit storage. Retention, access controls and reconstruction performance require validation.
         </p>
       </PageSection>
     </div>

@@ -76,9 +76,7 @@ export function PharmacyPage() {
         <SyntheticTag>Synthetic pharmacy, synthetic prescription, synthetic claim</SyntheticTag>
         <h1 tabIndex={-1} data-tour-heading className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2">Pharmacy pre-submission check</h1>
         <p className="max-w-3xl text-muted-foreground">
-          {c.pharmacy.name} ({c.pharmacy.contractorCode}) is preparing this month's claim. Before it is sent, the same agent that works NHSBSA's queue checks the
-          endorsement against the rule in force on the dispensing date and says exactly what is missing. In production this runs where the claim is
-          submitted, through NHSBSA's own Manage Your Service portal, and later inside dispensing software.
+          A synthetic advisory check before submission. Local keyword/date rules demonstrate guidance, not a deployed shared service or a payment guarantee.
         </p>
         <Alert className="border-teal-300 bg-teal-50 dark:border-teal-800 dark:bg-teal-950">
           <CheckCircle2 className="text-teal-700" aria-hidden="true" />
@@ -103,7 +101,7 @@ export function PharmacyPage() {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <PageSection title="The prescription as the pharmacy sees it" description="Extracted information and what the pharmacy has entered.">
+          <PageSection title="The prescription as the pharmacy sees it" description="Extracted information and pharmacy entries.">
           <PrescriptionForm c={c} highlight={["item", "endorsement"]} />
           <dl className="grid gap-2 sm:grid-cols-2">
             <KeyValue k="Product" v={product ? `${product.name} (pack ${product.packSize})` : "Could not be resolved from the read"} />
@@ -145,14 +143,14 @@ export function PharmacyPage() {
                   {status === "ready" ? "Ready to submit" : status === "missing" ? "Information may be missing" : "Agent unable to determine"}
                 </span>
               </CardTitle>
-              <CardDescription>
+              <CardDescription data-prose="advisory status">
                 {status === "ready" && "The endorsement appears to satisfy the rule in force on the dispensing date. Submit as normal; NHSBSA's own checks still apply."}
-                {status === "missing" && `The endorsement appears to need: ${missingLabels.join("; ")}. Correcting it now avoids a referral weeks later.`}
-                {status === "unable" && (!agentEnabled ? "Agent recommendations are switched off. Continue with submission as normal; NHSBSA processes the item exactly as today." : !agentAvailable ? "The agent is not available. Continue with submission as normal; NHSBSA processes the item exactly as today." : "The form could not be read well enough, or the endorsement type was not recognised. Continue with submission as normal; the item will be checked by a person at NHSBSA.")}
+                {status === "missing" && `The endorsement appears to need: ${missingLabels.join("; ")}. Correction may prevent rework; submission remains available.`}
+                {status === "unable" && (!agentEnabled ? "Agent recommendations are switched off. Continue with submission as normal; NHSBSA processes the item exactly as today." : !agentAvailable ? "The agent is not available. Continue with submission as normal; NHSBSA processes the item exactly as today." : "The form or endorsement could not be interpreted safely. Continue with submission as normal; a person reviews the item.")}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
+              <section data-prose="pre-submission checks" className="rounded-md border p-3">
                 <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Deterministic checks <BoundaryTag cls="deterministic" short /></h3>
                 <ul className="space-y-1 text-sm">
                   <li className="flex justify-between gap-3 rounded-md border px-2.5 py-1.5"><span>Endorsement required this month?</span><span className="font-medium">{req.required === null ? "Unknown" : req.required ? "Yes" : "No"}</span></li>
@@ -161,12 +159,12 @@ export function PharmacyPage() {
                   ))}
                 </ul>
                 <p className="mt-1 text-xs text-muted-foreground">{req.reason}</p>
-              </div>
+              </section>
               {assistanceEnabled && !unreadable && clause && version && (
-                <div>
+                <section data-prose="applicable synthetic rule" className="rounded-md border p-3">
                   <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Rule retrieved for {c.extracted.dispensingDate} <BoundaryTag cls="agent" short /></h3>
                   <blockquote className="rounded-md border-l-4 border-teal-600 bg-muted/40 p-3 text-sm">
-                    <p className="font-medium">{clause.part}, {clause.title} ({version.label})</p>
+                    <h4 className="font-medium">{clause.part}, {clause.title} ({version.label})</h4>
                     <p className="mt-1 text-muted-foreground">"{clause.text}"</p>
                   </blockquote>
                   <ul className="mt-2 grid gap-1 text-sm sm:grid-cols-2">
@@ -177,8 +175,8 @@ export function PharmacyPage() {
                       </li>
                     ))}
                   </ul>
-                  <p className="mt-2 text-xs text-muted-foreground">Reading of the note (mocked interpretation): {facts.note}</p>
-                </div>
+                  <dl className="mt-2 text-xs text-muted-foreground"><dt>Reading of the note (mocked interpretation):</dt><dd>{facts.note}</dd></dl>
+                </section>
               )}
               <div className="flex flex-wrap gap-2">
                 <Button
@@ -197,7 +195,7 @@ export function PharmacyPage() {
               </div>
               {submitted === c.id && (
                 <p role="status" className="rounded-md bg-emerald-50 p-2.5 text-sm text-emerald-900 dark:bg-emerald-950 dark:text-emerald-100">
-                  Submitted (synthetic). The result of this check travels with the claim, so if the item still reaches an operator the case starts pre-built. Nothing here changed what NHSBSA will pay.
+                  Submitted (synthetic). No claim was sent and no payment changed. Downstream sharing remains a proposed integration.
                 </p>
               )}
               <p className="text-xs text-muted-foreground">The agent advises but does not block submission. A check on a typed field, not a scan; nothing is scanned at the pharmacy.</p>

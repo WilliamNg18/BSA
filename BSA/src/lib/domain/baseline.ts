@@ -1,5 +1,6 @@
 /** Pure scenario arithmetic. No case mutations, decisions, pricing or measured savings. */
 import { BASELINE_PROVENANCE as provenance } from "./baseline-defaults";
+import { PUBLIC_FACTS } from "./public-facts";
 
 export interface BaselineInputs {
   volume: number;
@@ -28,7 +29,7 @@ export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) =
 
 // All numeric scenario defaults live here. The companion module derives only
 // fixture provenance; neither module imports the private research register.
-export const BASELINE_VOLUME_REFERENCE = Object.freeze({ monthly: 85_000, annual: 1_000_000, monthsPerYear: 12 });
+export const BASELINE_VOLUME_REFERENCE = Object.freeze({ monthly: PUBLIC_FACTS.monthlyReferrals, annual: PUBLIC_FACTS.annualReferrals, monthsPerYear: 12 });
 export const BASELINE_DEFAULTS: Readonly<BaselineInputs> = Object.freeze({
   volume: BASELINE_VOLUME_REFERENCE.monthly,
   findFormMinutes: 0.5,
@@ -183,8 +184,8 @@ export function baselineDefaultCopy(defaults: Readonly<BaselineInputs>) {
   const n = formatBaselineNumber;
   const reference = BASELINE_VOLUME_REFERENCE;
   return {
-    volumeNote: `Volume default: ${n(defaults.volume)} items/month. O23's approximately ${n(reference.monthly)} referred-back items/month is a scale proxy, not total exceptions. Rates are synthetic scenario assumptions, not measured effectiveness.`,
-    volumeSource: `Volume: O23 attributes approximately ${n(reference.monthly)} referred-back items/month to Community Pharmacy England through the supplied pack. Used only as a scenario scale proxy, not total exceptions. O24: the total operator queue is unknown. N01: ${n(reference.annual)} / ${n(reference.monthsPerYear)} = approximately ${n(reference.annual / reference.monthsPerYear, 2)}, not exactly ${n(reference.monthly)}. No external verification.`,
-    manualAssumptions: `Gathering ${n(manualGatheringMinutes(defaults))} minutes across seven steps, built review ${n(defaults.builtReviewMinutes)} minutes and judging ${n(defaults.judgingMinutes)} minutes: editable synthetic assumptions, not document measurements. A03/A10 motivate workflow validation, not these durations.`,
+    volumeNote: `Volume default: ${n(defaults.volume)} items/month. Approximate referral-subset scale proxy, not total exceptions. Rates are synthetic assumptions, not measured effectiveness.`,
+    volumeContext: `${n(reference.annual)} annual referrals / ${n(reference.monthsPerYear)} = approximately ${n(reference.annual / reference.monthsPerYear, 2)} monthly, not exactly ${n(reference.monthly)}. Approximate figures; total operator volume unknown.`,
+    manualAssumptions: `Gathering ${n(manualGatheringMinutes(defaults))}, built review ${n(defaults.builtReviewMinutes)}, judging ${n(defaults.judgingMinutes)} minutes: editable synthetic assumptions, not measurements.`,
   };
 }

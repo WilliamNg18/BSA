@@ -17,8 +17,7 @@ export function EvaluationPage() {
         <SyntheticTag>Illustrative results on synthetic cases. Not measured against NHSBSA data.</SyntheticTag>
         <h1 className="text-2xl font-semibold tracking-tight">Evaluation and guardrails</h1>
         <p className="max-w-3xl text-muted-foreground">
-          How the prototype would be judged before it influenced any live work. The scoreboard below shows the shape of the evidence, with synthetic values.
-          In shadow mode every figure is measured against operators' own decisions, per exception category and per print or handwritten slice.
+          Illustrative evaluation, not measured performance. Compare against adjudicated decisions and timed baselines before assisted use; inspect category and input-quality differences.
         </p>
       </div>
 
@@ -81,7 +80,7 @@ export function EvaluationPage() {
           <Card className="border-emerald-600">
             <CardHeader className="pb-2">
               <CardTitle className="text-base">PPIA, PPPA, ACV and NCV do not move</CardTitle>
-              <CardDescription>The agent never prices and never disposes; the gate withholds any outcome the rule does not permit; a human decides every case. NHSBSA's monthly re-processing sample measures accuracy exactly as it does today. Any deterioration in assisted mode is a stop condition.</CardDescription>
+              <CardDescription>Code gates recommendations; humans decide. Measure payment accuracy during assisted use. Deterioration is a stop condition, not something design alone prevents.</CardDescription>
             </CardHeader>
           </Card>
         </PageSection>
@@ -90,7 +89,7 @@ export function EvaluationPage() {
             <CardHeader className="pb-2">
               <CardTitle className="text-base">Recommendation: reshape, then proceed to shadow mode on one pattern</CardTitle>
               <CardDescription>
-                Printed NCSO endorsements would be the first pattern: high agreement, low abstention. Handwritten NCSO items proceed only because the agent abstains rather than guesses. Specials and out-of-pocket expenses fall outside validated coverage and are excluded until the evaluation set covers them. Two NHSBSA inputs are still missing before any go decision: the inter-operator agreement ceiling and the timed handling baseline.
+                Validate printed NCSO first. Unvalidated categories remain excluded. Establish operator agreement, handwriting safety and timed handling before any go decision.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -101,8 +100,8 @@ export function EvaluationPage() {
         <ol className="grid gap-2 md:grid-cols-3">
           {DELIVERY_SEQUENCE.map((d) => (
             <li key={d.step} className="rounded-lg border p-3">
-              <p className="text-xs font-medium text-teal-800 dark:text-teal-300">Step {d.step} · {d.weeks}</p>
-              <p className="font-medium">{d.title}</p>
+              <span className="text-xs font-medium text-teal-800 dark:text-teal-300">Step {d.step} · {d.weeks}</span>
+              <h3 className="font-medium">{d.title}</h3>
               <p className="text-sm text-muted-foreground">{d.detail}</p>
             </li>
           ))}

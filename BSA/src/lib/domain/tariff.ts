@@ -21,8 +21,8 @@ function clauseSet(withDate: boolean): TariffClause[] {
       title: "Clause 9: No cheaper stock obtainable (NCSO)",
       endorsementType: "NCSO",
       text: withDate
-        ? "Where a price concession has been granted for the month of dispensing, the contractor may claim the concession price by endorsing the item NCSO. The endorsement shall be initialled and dated by or on behalf of the contractor."
-        : "Where a price concession has been granted for the month of dispensing, the contractor may claim the concession price by endorsing the item NCSO. The endorsement shall be initialled by or on behalf of the contractor.",
+        ? "Dispensing-month concession: endorse NCSO, initialled and dated by or on behalf of the contractor."
+        : "Dispensing-month concession: endorse NCSO, initialled by or on behalf of the contractor.",
       requirements: withDate
         ? [R.present, R.initialled, R.dated]
         : [R.present, R.initialled],
@@ -40,7 +40,7 @@ function clauseSet(withDate: boolean): TariffClause[] {
       part: "Part II",
       title: "Clause 12: Out-of-pocket expenses (XP)",
       endorsementType: "XP",
-      text: "Exceptional expenses incurred in obtaining a product may be claimed by endorsing XP with the amount and reason. Claims above the stated threshold require the invoice.",
+      text: "For exceptional product expenses, endorse XP with amount and reason. Above the stated threshold, include the invoice.",
       requirements: [R.present, R.initialled],
     },
     {

@@ -3,6 +3,7 @@ import { captureCheckpoint, cases, confirmReset, expect, test } from "./fixtures
 for (const caseId of ["EX-24107", "EX-24112"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
   await page.goto(`case/${caseId}/trace`);
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   const trace = page.getByRole("list", { name: "Agent trace", exact: true });
   const steps = trace.locator(":scope > li");
   await expect(trace).toHaveAttribute("aria-live", "polite");
@@ -11,9 +12,9 @@ test(`${caseId} trace replay announces one step at a time, Show all and Clear wo
   await page.getByRole("button", { name: "Clear", exact: true }).click();
   await expect(steps).toHaveCount(0);
   await page.getByRole("button", { name: "Replay step by step" }).click();
-  await expect(steps).toHaveCount(0);
+  await expect(steps).toHaveCount(1);
   for (let step = 1; step <= 9; step++) {
-    await page.clock.runFor(900);
+    if (step > 1) await page.getByRole("button", { name: "Next step", exact: true }).click();
     await expect(steps).toHaveCount(step);
     if (step === 1) await captureCheckpoint(page, testInfo, `${caseId}-replay-first-step`);
   }
@@ -27,6 +28,7 @@ test(`${caseId} trace replay announces one step at a time, Show all and Clear wo
 
 test("pharmacy is advisory for missing, corrected, complete, unreadable and unavailable inputs", async ({ page }, testInfo) => {
   await page.goto("pharmacy");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   const status = page.getByRole("status").filter({ hasText: /^(Information may be missing|Ready to submit|Agent unable to determine)$/ });
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
   await expect(status).toHaveText("Information may be missing");
@@ -58,6 +60,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and unav
 
 test("override requires eight trimmed characters then writes and preserves a human record", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Missing or insufficient information");
   await captureCheckpoint(page, testInfo, "b-pack");
   await page.getByRole("radio", { name: /^Amend / }).click();
@@ -84,6 +87,7 @@ test("override requires eight trimmed characters then writes and preserves a hum
 
 test("recommended B decision replays under July; flag off applies to replay; Reset restores seed", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
@@ -99,7 +103,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("REFER BACK by Demo operator", { exact: false })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-july-assistance-off");
   await confirmReset(page);
-  await expect(page.getByRole("switch", { name: "Agent: On", exact: true })).toBeChecked();
+  await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Open the case pack", exact: true }).click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
@@ -111,6 +115,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
 
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {
   await page.goto("queue");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   const rows = page.locator("tbody > tr");
   await expect(rows).toHaveCount(12);
   const stateCells = rows.locator("td:nth-child(6)");
@@ -133,6 +138,7 @@ test("agent flag hides recommendations on every case without changing case state
 
 test("D shows its three abstention reasons; E has no agent trace", async ({ page }, testInfo) => {
   await page.goto("case/EX-24123");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   const abstention = page.getByRole("alert");
   await expect(abstention).toContainText("The agent abstained");
   await expect(abstention.locator("li")).toHaveCount(3);
@@ -147,6 +153,7 @@ test("D shows its three abstention reasons; E has no agent trace", async ({ page
 
 test("product header retains working controls without presentation UI", async ({ page }, testInfo) => {
   await page.goto("./");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   const header = page.getByRole("banner");
   await expect(header).toContainText("Prescription Exception Case Builder");
   await expect(header.locator("svg.lucide-shield-check")).toBeVisible();
@@ -165,7 +172,7 @@ test("product header retains working controls without presentation UI", async ({
   await header.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await confirmReset(page);
-  await expect(header.getByRole("switch", { name: "Agent: On", exact: true })).toBeChecked();
+  await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByRole("alertdialog")).toHaveCount(0);
   await header.screenshot({ path: testInfo.outputPath("after-header.png") });
 });

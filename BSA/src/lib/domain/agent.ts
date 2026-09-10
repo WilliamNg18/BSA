@@ -63,11 +63,11 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
   const claim = toolLookupClaim(c);
 
   evidence.push(
-    { id: "e-claim", source: "Claim ledger", field: "Claimed", value: `qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, "${c.claim.endorsementText || "no endorsement"}"`, provenance: `${c.claim.submittedVia}, case ${c.id}`, cls: "existing" },
-    { id: "e-fields", source: "Existing capture", field: "Extracted", value: `${c.extracted.productText}, qty ${c.extracted.quantity ?? "?"}, endorsement "${c.extracted.endorsementText || "none"}"`, provenance: `Field confidence: product ${c.extracted.productConfidence.toFixed(2)}, quantity ${c.extracted.quantityConfidence.toFixed(2)}, endorsement ${c.extracted.endorsementConfidence.toFixed(2)}`, cls: "existing" },
+    { id: "e-claim", origin: "Claim ledger", field: "Claimed", value: `qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, "${c.claim.endorsementText || "no endorsement"}"`, provenance: `${c.claim.submittedVia}, case ${c.id}`, cls: "existing" },
+    { id: "e-fields", origin: "Existing capture", field: "Extracted", value: `${c.extracted.productText}, qty ${c.extracted.quantity ?? "?"}, endorsement "${c.extracted.endorsementText || "none"}"`, provenance: `Field confidence: product ${c.extracted.productConfidence.toFixed(2)}, quantity ${c.extracted.quantityConfidence.toFixed(2)}, endorsement ${c.extracted.endorsementConfidence.toFixed(2)}`, cls: "existing" },
   );
   if (lookup.product) {
-    evidence.push({ id: "e-product", source: "Product master data", field: "Product", value: `${lookup.product.name}, pack ${lookup.product.packSize}, basic price £${lookup.product.basicPrice.toFixed(2)}`, provenance: `code ${lookup.product.code}`, cls: "deterministic" });
+    evidence.push({ id: "e-product", origin: "Product master data", field: "Product", value: `${lookup.product.name}, pack ${lookup.product.packSize}, basic price £${lookup.product.basicPrice.toFixed(2)}`, provenance: `code ${lookup.product.code}`, cls: "deterministic" });
   }
 
   trace.push({
@@ -134,7 +134,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     phase: "PLAN",
     title: "Plan the unknowns for this item",
     cls: "agent",
-    summary: `Routing reason: ${c.routingReason}. The agent decides which questions must be answered and which tools can answer them.`,
+    summary: `Routing reason: ${c.routingReason}. Plan questions and read-only evidence lookups.`,
     items: questions,
     toolCalls: [],
     status: "ok",
@@ -145,8 +145,8 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
   const itemRegion = toolReadImageRegion(c, "item");
   const history = toolCheckHistory(c);
   evidence.push(
-    { id: "e-region", source: "Form image", field: "Endorsement margin", value: `"${region.text || "unreadable"}"`, provenance: `Region located by layout model; read confidence ${region.confidence.toFixed(2)}`, cls: "existing" },
-    { id: "e-history", source: "Case history", field: "Contractor history", value: `${history.history.referralsLast90Days} referrals in 90 days`, provenance: history.history.lastReasons.join("; ") || "No recent referrals", cls: "existing" },
+    { id: "e-region", origin: "Form image", field: "Endorsement margin", value: `"${region.text || "unreadable"}"`, provenance: `Region located by layout model; read confidence ${region.confidence.toFixed(2)}`, cls: "existing" },
+    { id: "e-history", origin: "Case history", field: "Contractor history", value: `${history.history.referralsLast90Days} referrals in 90 days`, provenance: history.history.lastReasons.join("; ") || "No recent referrals", cls: "existing" },
   );
   trace.push({
     phase: "GATHER",
@@ -173,10 +173,10 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
   const clause = retrieval.clause;
   const concession = version && lookup.product ? version.concessions.find((k) => k.productCode === lookup.product?.code) ?? null : null;
   if (clause && version) {
-    evidence.push({ id: "e-rule", source: "Drug Tariff (versioned corpus)", field: `${clause.part}, ${clause.title}`, value: `"${clause.text}"`, provenance: `${version.label} (effective ${version.effectiveFrom} to ${version.effectiveTo})`, cls: "agent" });
+    evidence.push({ id: "e-rule", origin: "Drug Tariff (versioned corpus)", field: `${clause.part}, ${clause.title}`, value: `"${clause.text}"`, provenance: `${version.label} (effective ${version.effectiveFrom} to ${version.effectiveTo})`, cls: "agent" });
   }
   if (concession) {
-    evidence.push({ id: "e-concession", source: "Drug Tariff (versioned corpus)", field: "Concession price", value: `£${concession.price.toFixed(2)} for ${version?.label}`, provenance: `Product ${concession.productCode}`, cls: "deterministic" });
+    evidence.push({ id: "e-concession", origin: "Drug Tariff (versioned corpus)", field: "Concession price", value: `£${concession.price.toFixed(2)} for ${version?.label}`, provenance: `Product ${concession.productCode}`, cls: "deterministic" });
   }
   trace.push({
     phase: "RETRIEVE",
@@ -184,7 +184,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     cls: "agent",
     summary: clause && version
       ? `${version.label} was in force on ${c.extracted.dispensingDate}. ${clause.title} governs an ${clause.endorsementType} endorsement.`
-      : `No provision could be retrieved for endorsement type "${endorsementType}" on ${c.extracted.dispensingDate}. Without a retrieved rule the agent may not cite one from memory.`,
+      : `No provision retrieved for "${endorsementType}" on ${c.extracted.dispensingDate}. No citation from memory; abstention required.`,
     items: clause ? [`Requirements: ${clause.requirements.map((r) => r.label).join("; ")}`, `Quoted: "${clause.text}"`] : ["Retrieval returned nothing usable"],
     toolCalls: [retrieval.call],
     status: clause ? "ok" : "fail",
@@ -201,7 +201,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
       : `${conflicts.length} disagreement${conflicts.length === 1 ? "" : "s"} found. The agent flags each with both values and does not choose between them.`,
     items: conflicts.length === 0
       ? [`Quantity ${c.extracted.quantity ?? "?"} = claim ${c.claim.quantity}`, `Amount £${c.claim.amountClaimed.toFixed(2)}${concession ? ` = concession £${concession.price.toFixed(2)}` : ""}`]
-      : conflicts.map((k) => `${k.field}: ${k.values.map((v) => `${v.source} says ${v.value}`).join("; ")}`),
+      : conflicts.map((k) => `${k.field}: ${k.values.map((v) => `${v.origin} says ${v.value}`).join("; ")}`),
     toolCalls: [],
     status: conflicts.length === 0 ? "ok" : "warn",
   });
@@ -213,7 +213,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     phase: "ASSESS",
     title: "Interpret the note and test it against the rule",
     cls: "agent",
-    summary: `Three independent readings of the free text (mocked in the prototype; a constrained model call in production). ${agreement.agree} of ${agreement.total} agree${facts ? `: ${facts.note}` : "."} Requirement checks are then code, not judgement.`,
+    summary: `Three scripted readings: ${agreement.agree} of ${agreement.total} agree. Requirement checks use code, not model judgement.`,
     items: [
       ...c.readings.map((r, i) => `Reading ${i + 1}: ${r.note} [${r.type}${r.initialled === null ? "" : r.initialled ? ", initialled" : ", not initialled"}${r.dated === null ? "" : r.dated ? ", dated" : ", not dated"}]`),
       ...requirementResults.map((r) => `${r.met === true ? "Met" : r.met === false ? "Not met" : "Unknown"}: ${r.requirement.label}`),
@@ -249,7 +249,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
       phase: "ABSTAIN",
       title: "Abstain: the evidence does not support a recommendation",
       cls: "agent",
-      summary: "The agent does not guess. It names the signals that failed and hands the item to the operator exactly as today. No payment or case outcome is changed.",
+      summary: "Failed signals require abstention, not guessing. Evidence passes to a human; payments and case outcomes remain unchanged.",
       items: abstainReasons,
       toolCalls: [],
       status: "fail",
@@ -261,18 +261,18 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
       recommendation = "REQUEST_INFORMATION";
       reasons.push("Sources disagree on a material field; the operator should confirm the quantity dispensed before any outcome.");
       if (!anyUnmet && clause) reasons.push(`The endorsement itself satisfies ${clause.title}.`);
-      alternative = { outcome: "REFER_BACK", note: "Refer back would add a payment cycle for the pharmacy when the endorsement is complete; only justified if the quantity cannot be confirmed from evidence NHSBSA already holds." };
-      draft = `We need to confirm the quantity dispensed for ${lookup.product?.name ?? "this item"} dispensed on ${c.extracted.dispensingDate}. The form shows ${c.extracted.quantity}, but the claim states ${c.claim.quantity}. Please confirm the quantity supplied.`;
+      alternative = { outcome: "REFER_BACK", note: "Refer back only if existing evidence cannot confirm quantity; the endorsement itself is complete." };
+      draft = `The form shows quantity ${c.extracted.quantity}; the claim states ${c.claim.quantity}. Please confirm the quantity supplied for this item.`;
     } else if (anyUnmet && clause) {
       recommendation = "REFER_BACK";
       const missing = requirementResults.filter((r) => r.met === false).map((r) => r.requirement.label.toLowerCase());
-      reasons.push(`${clause.title} (${version?.label}) requires the endorsement to be ${clause.requirements.filter((r) => r.id !== "endorsement_present").map((r) => r.label.toLowerCase()).join(" and ")}. The note is ${facts?.note ?? "incomplete"}`);
+      reasons.push("The endorsement does not meet every retrieved requirement. Review the checks and missing information.");
       reasons.push(`Missing: ${missing.join("; ")}.`);
       alternative = { outcome: "SUFFICIENT", note: "Not permitted: the gate blocks SUFFICIENT while a requirement of the clause is unmet." };
-      draft = `Item: ${lookup.product?.name ?? c.extracted.productText}, dispensed ${c.extracted.dispensingDate}. Your NCSO endorsement is initialled but not dated. Under ${clause.part} ${clause.title.split(":")[0]} (${version?.label}) an NCSO endorsement must be initialled and dated. Please add the date beside the initials and resubmit; nothing else is needed.`;
+      draft = "Please add the date beside the initials and resubmit. No other correction is needed for this synthetic endorsement.";
     } else {
       recommendation = "SUFFICIENT";
-      reasons.push(clause ? `Every requirement of ${clause.title} (${version?.label}) is met: ${facts?.note ?? ""}` : "No endorsement was required for this item.");
+      reasons.push(clause ? "Every retrieved endorsement requirement is met." : "No endorsement was required for this item.");
       reasons.push("Sources agree on product, quantity and amount.");
       alternative = { outcome: "REFER_BACK", note: "Would delay payment by a cycle with no rule requiring it." };
     }
@@ -280,7 +280,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
       phase: "RECOMMEND",
       title: `Recommend: ${recommendation.replace("_", " ").toLowerCase()}`,
       cls: "agent",
-      summary: reasons.join(" "),
+      summary: "Review the recommendation, requirement checks and any unresolved conflicts. A human decides.",
       items: draft ? [`Draft to pharmacy: "${draft}"`] : [],
       toolCalls: [],
       status: "ok",
@@ -326,8 +326,8 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     title: "Present the complete case to the operator",
     cls: "human",
     summary: gate.result === "FAIL"
-      ? "Evidence, the cited rule, conflicts, confidence signals and failed gate checks are available. The recommendation, alternative and draft are withheld. A human decision with a reason is required."
-      : "Evidence, the cited rule, conflicts, the recommendation and its alternative, the confidence signals and the gate result are written to the case pack. The operator accepts, amends, requests information, refers back or escalates. The agent's part ends here.",
+      ? "Evidence and failed checks remain available. Recommendation, alternative and draft are withheld. A human decision with a reason is required."
+      : "Review evidence, rule, conflicts, signals and gate checks. Accept, amend, request information, refer back or escalate; the human decides.",
     items: [`Decision record prepared (append-only). Pinned: Tariff ${version?.version ?? "n/a"}, agent ${AGENT_VERSION}`],
     toolCalls: [{ tool: "write_decision_record", productionService: "Azure Cosmos DB (append-only)", cls: "deterministic", input: { caseId: c.id }, outputSummary: "Case pack appended; awaiting human decision", sourceLabel: "In-memory record", durationMs: 15, status: "ok" }],
     status: "ok",

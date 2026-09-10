@@ -38,8 +38,8 @@ describe("six synthetic outcomes", () => {
     const pack = runAgent(CASES[2]);
     expect(pack.conflicts).toHaveLength(1);
     expect(pack.conflicts[0]).toMatchObject({ field: "Quantity", material: true, values: [
-      { source: "Form image (capture)", value: "56" },
-      { source: "Claim message / ledger", value: "84" },
+      { origin: "Form image (capture)", value: "56" },
+      { origin: "Claim message / ledger", value: "84" },
     ] });
     expect(CASES[2].extracted.quantity).toBe(56);
     expect(CASES[2].claim.quantity).toBe(84);
@@ -105,7 +105,7 @@ describe("governance and fail-open paths", () => {
     store.setAgentEnabled(false);
     store.resetDemo();
     expect(useAppStore.getState().records).toEqual(originalRecords);
-    expect(useAppStore.getState().agentEnabled).toBe(true);
+    expect(useAppStore.getState().agentEnabled).toBe(false);
     expect(useAppStore.getState().caseStates).toEqual(Object.fromEntries(CASES.map((c) => [c.id, c.initialState])));
   });
 
@@ -141,7 +141,7 @@ describe("governance and fail-open paths", () => {
     expect(withheld).toMatchObject({ title: "Proposal withheld by the compliance gate", status: "fail", items: [], toolCalls: [] });
     for (const reason of baseline.reasons) expect(JSON.stringify(pack.trace)).not.toContain(reason);
     if (baseline.draftToPharmacy) expect(JSON.stringify(pack)).not.toContain(baseline.draftToPharmacy);
-    expect(pack.trace.at(-1)?.summary).toContain("recommendation, alternative and draft are withheld");
+    expect(pack.trace.at(-1)?.summary).toMatch(/recommendation, alternative and draft are withheld/i);
     expect(useAppStore.getState().caseStates).toBe(states);
     expect(useAppStore.getState().records).toBe(records);
     expect(original).toEqual(before);

@@ -4,7 +4,34 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
-## Task 1 current scope
+## Task 2 local verification and remaining gaps
+
+Task 2 local gates now pass: check exit 0; 383 units in nine files; all 376
+production Chromium tests in 4.7 minutes, exit 0; 48 axe audits, zero violations.
+The earlier nine failures comprised invalid calculator definition-list markup,
+live reduced-motion handling, trace label punctuation and a default-On test
+assumption. A subsequent disclosure-navigation race was fixed by awaiting the
+destination route before opening its identically named disclosure. Failed
+artifacts were retained; see [progress](../../PROGRESS.md).
+
+Client attribution is now one chapter-one footer, with documentary audit
+material outside the client. Default and Reset are Off. This supersedes
+historical source-disclosure and reset-On descriptions below. Case outcomes,
+gate predicates, evidence and calculator arithmetic remain unchanged.
+
+The 25-word check covers narrative panels and 31 route surfaces in both flag
+states with disclosures expanded. It is not exhaustive coverage of every
+input/state combination, nor a total-word budget for structured tables and
+forms. Long raw invalid-input previews remain explicitly shortened, with full
+values retained in inputs; evidence is not truncated to meet the copy cap.
+
+The existing bundle warning remains: 783.59 kB JS, 240.75 kB gzip. No full
+WCAG, zero-warning, performance or manual screen-reader claim. Only Chromium
+was run. Task 2 commit, remote CI and hosted verification are pending. Tasks
+3-7 are not implemented here. Task 1 remote CI/hosted gates are user-reported
+in progress, not repeated by this local-only verification.
+
+## Historical Task 1 scope
 
 The current [Task 1 model](task-1-baseline-model.md) supersedes the earlier
 aggregate gathering and reduced-judging formulas below. Seven synthetic steps,

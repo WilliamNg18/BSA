@@ -80,8 +80,8 @@ export function reconcile(
     conflicts.push({
       field: "Quantity",
       values: [
-        { source: "Form image (capture)", value: String(extracted.quantity) },
-        { source: "Claim message / ledger", value: String(claimQuantity) },
+        { origin: "Form image (capture)", value: String(extracted.quantity) },
+        { origin: "Claim message / ledger", value: String(claimQuantity) },
       ],
       material: true,
       note: "The amount payable scales with quantity, so this disagreement is material. Flagged for the operator; not resolved by the agent.",
@@ -91,8 +91,8 @@ export function reconcile(
     conflicts.push({
       field: "Product",
       values: [
-        { source: "Form image (capture)", value: extracted.productCode },
-        { source: "Claim message / ledger", value: claimProductCode },
+        { origin: "Form image (capture)", value: extracted.productCode },
+        { origin: "Claim message / ledger", value: claimProductCode },
       ],
       material: true,
       note: "Different products would price differently.",
@@ -102,8 +102,8 @@ export function reconcile(
     conflicts.push({
       field: "Amount claimed",
       values: [
-        { source: "Claim message / ledger", value: `£${claimAmount.toFixed(2)}` },
-        { source: "Concession price (Tariff)", value: `£${concessionPrice.toFixed(2)}` },
+        { origin: "Claim message / ledger", value: `£${claimAmount.toFixed(2)}` },
+        { origin: "Concession price (Tariff)", value: `£${concessionPrice.toFixed(2)}` },
       ],
       material: true,
       note: "Claimed amount does not match the concession price for the month.",

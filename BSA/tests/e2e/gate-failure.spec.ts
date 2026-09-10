@@ -26,6 +26,7 @@ for (const c of cases.slice(0, 3)) {
     });
 
     await page.goto("queue");
+    await page.getByRole("banner").getByRole("switch").setChecked(true);
     await expect(page.locator("tbody > tr")).toHaveCount(12);
     expect(injections).toBe(1);
     const row = page.getByRole("row").filter({ hasText: c.id });
@@ -59,7 +60,7 @@ for (const c of cases.slice(0, 3)) {
     await page.clock.install();
     await page.getByRole("button", { name: "Replay step by step" }).click();
     for (let step = 1; step <= 9; step++) {
-      await page.clock.runFor(900);
+      if (step > 1) await page.getByRole("button", { name: "Next step", exact: true }).click();
       await expect(trace.locator(":scope > li")).toHaveCount(step);
       await expect(trace).not.toContainText("Recommend:");
       await expect(trace).not.toContainText("Draft to pharmacy:");

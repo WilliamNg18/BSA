@@ -13,6 +13,7 @@ import { caseById } from "@/lib/domain/cases";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
+import { useReducedMotion } from "motion/react";
 
 // The key agentic screen: the observable workflow. Evidence, actions, tool
 // results and decision boundaries are shown. No private model reasoning is
@@ -27,6 +28,7 @@ export function CaseTracePage() {
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
   const [revealed, setRevealed] = useState<number>(0);
   const [playing, setPlaying] = useState(false);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     setRevealed(pack ? pack.trace.length : 0);
@@ -56,13 +58,14 @@ export function CaseTracePage() {
         c={c}
         state={state}
         title={`How the case was built: ${c.title}`}
-        intro={`${c.purpose} The trace below is the agent's observable workflow: what it planned, which tools it called, what came back, where deterministic code took over, and where it stopped.`}
+        intro="Inspect planned actions, evidence, tool results, deterministic checks and stop conditions. Interpretation is scripted; this trace exposes no private model reasoning."
       />
 
       <div className="flex flex-wrap items-center gap-2">
-        <Button type="button" className="bg-teal-700 text-white hover:bg-teal-800" onClick={() => { setRevealed(0); setPlaying(true); }}>
+        <Button type="button" className="bg-teal-700 text-white hover:bg-teal-800" onClick={() => { setRevealed(reduced ? 1 : 0); setPlaying(!reduced); }}>
           <Play aria-hidden="true" /> Replay step by step
         </Button>
+        {reduced && revealed < pack.trace.length && <Button type="button" variant="outline" onClick={() => setRevealed((n) => Math.min(n + 1, pack.trace.length))}>Next step</Button>}
         <Button type="button" variant="outline" onClick={() => { setPlaying(false); setRevealed(pack.trace.length); }}>
           <FastForward aria-hidden="true" /> Show all
         </Button>
@@ -89,9 +92,13 @@ export function CaseTracePage() {
               <CardContent className="space-y-3">
                 <p className="text-sm">{step.summary}</p>
                 {step.items.length > 0 && (
-                  <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                    {step.items.map((it, k) => <li key={k}>{it.replace(pack.agentVersion, agentVersionLabel(pack.agentVersion))}</li>)}
-                  </ul>
+                  <dl className="grid gap-2 text-sm text-muted-foreground" aria-label="Trace evidence and checks">
+                    {step.items.map((it, k) => {
+                      const text = it.replace(pack.agentVersion, agentVersionLabel(pack.agentVersion));
+                      const colon = text.indexOf(":");
+                      return <div key={k} className="rounded-md border p-2"><dt className="font-medium">{colon < 0 ? `Finding ${k + 1}` : `${text.slice(0, colon)}: `}</dt><dd>{colon < 0 ? text : text.slice(colon + 1).trim()}</dd></div>;
+                    })}
+                  </dl>
                 )}
                 {step.toolCalls.length > 0 && (
                   <div className="overflow-x-auto rounded-md border" role="region" aria-label={`Tool calls in step ${i + 1}`} tabIndex={0}>
@@ -101,7 +108,7 @@ export function CaseTracePage() {
                           <TableHead>Tool</TableHead>
                           <TableHead>Input</TableHead>
                           <TableHead>Result</TableHead>
-                          <TableHead>Source</TableHead>
+                          <TableHead>Evidence</TableHead>
                           <TableHead>Production service</TableHead>
                           <TableHead className="text-right">ms</TableHead>
                         </TableRow>

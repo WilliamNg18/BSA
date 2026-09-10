@@ -194,14 +194,14 @@ export interface GateCheck {
 
 export interface Conflict {
   field: string;
-  values: { source: string; value: string }[];
+  values: { origin: string; value: string }[];
   material: boolean;
   note: string;
 }
 
 export interface EvidenceItem {
   id: string;
-  source: string;
+  origin: string;
   field: string;
   value: string;
   provenance: string;

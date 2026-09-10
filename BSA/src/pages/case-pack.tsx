@@ -74,7 +74,7 @@ export function CasePackPage() {
         `Claim: qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, ${c.claim.submittedVia}`,
         `Image ${c.id}.tif, quality ${c.imageQuality.toFixed(2)}`,
       ],
-      sources: Array.from(new Set(pack.evidence.map((e) => e.source))),
+      sources: Array.from(new Set(pack.evidence.map((e) => e.origin))),
       checks: pack.gate.checks,
       recommendation: pack.recommendation,
       decision: chosen,
@@ -90,7 +90,7 @@ export function CasePackPage() {
         c={c}
         state={state}
         title={`Operator case pack: ${c.title}`}
-        intro="Everything the operator needs on one screen: the form with the region highlighted, the extracted fields, product and claim data, the rule in force, any conflicts, the recommendation and its alternative, the signals behind it, the gate result and the draft note. The operator decides."
+        intro="Review the form, evidence, applicable rule, conflicts and gate checks. Assistance recommends only; the operator decides."
       />
 
       {!pack.agentInvoked && (
@@ -134,24 +134,24 @@ export function CasePackPage() {
               <CardContent className="space-y-4">
                 {showRecommendation && (
                   <>
-                    <div>
+                    <section data-prose="recommendation reasons" className="rounded-md border p-3">
                       <h3 className="mb-1 text-sm font-semibold">Reasons</h3>
                       <ul className="list-disc space-y-1 pl-5 text-sm">{pack.reasons.map((r) => <li key={r}>{r}</li>)}</ul>
-                    </div>
+                    </section>
                     {pack.alternative && (
-                      <div className="rounded-md bg-muted/50 p-3 text-sm">
+                      <section data-prose="alternative" className="rounded-md bg-muted/50 p-3 text-sm">
                         <h3 className="font-semibold">Alternative considered: {REC_META[pack.alternative.outcome].label}</h3>
                         <p className="text-muted-foreground">{pack.alternative.note}</p>
-                      </div>
+                      </section>
                     )}
                   </>
                 )}
-                <div>
+                <section data-prose="confidence explanation" className="rounded-md border p-3">
                   <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Confidence signals <BoundaryTag cls="deterministic" short /></h3>
                   <SignalList signals={pack.signals} />
-                  <p className="mt-1 text-xs text-muted-foreground">Composite: {pack.composite.reasons.join("; ")}.</p>
-                </div>
-                <div>
+                  <ul className="mt-1 text-xs text-muted-foreground" aria-label="Composite reasons">{pack.composite.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
+                </section>
+                <section data-prose="gate checks" className="rounded-md border p-3">
                   <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Deterministic check results <BoundaryTag cls="deterministic" short /></h3>
                   <ul className="space-y-1 text-sm">
                     {pack.gate.checks.map((k) => (
@@ -161,13 +161,13 @@ export function CasePackPage() {
                       </li>
                     ))}
                   </ul>
-                </div>
+                </section>
                 {pack.draftToPharmacy && (
-                  <div>
+                  <section data-prose="pharmacy draft" className="rounded-md border p-3">
                     <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Draft explanation to the pharmacy <BoundaryTag cls="agent" short /></h3>
                     <blockquote className="rounded-md border-l-4 border-teal-600 bg-muted/40 p-3 text-sm">{pack.draftToPharmacy}</blockquote>
-                    <p className="mt-1 text-xs text-muted-foreground">Grounded in the decision record only; the operator reviews before it leaves.</p>
-                  </div>
+                    <span className="mt-1 text-xs text-muted-foreground">Draft · Human review required</span>
+                  </section>
                 )}
               </CardContent>
             </Card>
@@ -178,7 +178,7 @@ export function CasePackPage() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base">{pack.clause.part}, {pack.clause.title}</CardTitle>
-                  <CardDescription>Effective {pack.tariffLabel} · citation {pack.citationValid ? "validated against the corpus" : "not validated"} · synthetic paraphrase of the rulebook</CardDescription>
+                  <CardDescription data-copy="label">Effective {pack.tariffLabel} · citation {pack.citationValid ? "validated against the corpus" : "not validated"} · synthetic paraphrase of the rulebook</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <blockquote className="border-l-4 border-sky-600 pl-3 text-sm">"{pack.clause.text}"</blockquote>
@@ -193,7 +193,7 @@ export function CasePackPage() {
                 </CardContent>
               </Card>
             ) : (
-              <p className="text-sm text-muted-foreground">Without a retrieved provision the agent may not cite a rule from memory, so no recommendation is possible.</p>
+              <p className="text-sm text-muted-foreground">No citation from memory; no recommendation without a retrieved provision.</p>
             )}
           </PageSection>
 
@@ -204,8 +204,8 @@ export function CasePackPage() {
               <ul className="space-y-2">
                 {pack.conflicts.map((k) => (
                   <li key={k.field} className="rounded-md border border-amber-500 bg-amber-50 p-3 text-sm dark:bg-amber-950">
-                    <p className="font-semibold">{k.field} {k.material && <span className="ml-1 rounded bg-amber-600 px-1.5 py-0.5 text-xs text-white">material</span>}</p>
-                    <ul className="mt-1 grid gap-1 sm:grid-cols-2">{k.values.map((v) => <li key={v.source} className="rounded bg-background px-2 py-1"><span className="text-muted-foreground">{v.source}:</span> <span className="font-medium">{v.value}</span></li>)}</ul>
+                    <h3 className="font-semibold">{k.field} {k.material && <span className="ml-1 rounded bg-amber-600 px-1.5 py-0.5 text-xs text-white">material</span>}</h3>
+                    <ul className="mt-1 grid gap-1 sm:grid-cols-2">{k.values.map((v) => <li key={v.origin} className="rounded bg-background px-2 py-1"><span className="text-muted-foreground">{v.origin}:</span> <span className="font-medium">{v.value}</span></li>)}</ul>
                     <p className="mt-1 text-muted-foreground">{k.note}</p>
                   </li>
                 ))}
@@ -239,7 +239,7 @@ export function CasePackPage() {
                     <BoundaryTag cls={e.cls} short />
                   </div>
                   <p>{e.value}</p>
-                  <p className="text-xs text-muted-foreground">{e.source} · {e.provenance}</p>
+                  <p className="text-xs text-muted-foreground">Evidence: {e.origin} · {e.provenance}</p>
                 </li>
               ))}
             </ul>
@@ -273,7 +273,7 @@ export function CasePackPage() {
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision
               </Button>
-              <p className="text-xs text-muted-foreground">Nothing is paid or approved here. In production the decision releases the item to NHSBSA's existing deterministic pricing or returns it to the pharmacy; this prototype only writes the record.</p>
+              <p className="text-xs text-muted-foreground">This prototype writes a session record only. No payments or approvals; existing systems retain pricing and referral responsibility.</p>
             </CardContent>
           )}
         </Card>

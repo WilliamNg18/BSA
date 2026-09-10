@@ -18,7 +18,7 @@ export function PageSection({
   className?: string;
 }) {
   return (
-    <section className={cn("space-y-4", className)}>
+    <section data-prose="panel" className={cn("space-y-4", className)}>
       {(title || description || action) && (
         <div className="flex items-start justify-between gap-4">
           {(title || description) && (

@@ -26,7 +26,8 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e -- --project=chromium
+      # Full production suite includes rendered copy caps, source no-leak and all-rule axe.
+      - run: npm run test:e2e -- --project=chromium --reporter=dot,html
       - uses: actions/upload-artifact@v4
         if: always()
         with:

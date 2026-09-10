@@ -1,6 +1,7 @@
 import { ArrowDown, FileSearch, Store, UserCheck } from "lucide-react";
 import { BoundaryTag } from "@/components/demo/labels";
 import type { BoundaryClass } from "@/lib/domain/types";
+import { PainMarker } from "./pain-marker";
 
 function Flow({ title, steps }: { title: string; steps: readonly { label: string; cls: BoundaryClass }[] }) {
   return <section className="rounded-xl border bg-card p-5" aria-label={title}>
@@ -15,8 +16,8 @@ function Flow({ title, steps }: { title: string; steps: readonly { label: string
 }
 
 export function SceneDiagram() {
-  return <section className="rounded-xl border bg-card p-5" aria-label="Existing process described by the documents">
-    <h2 className="mb-4 font-semibold">Existing process described by the documents</h2>
+  return <section className="rounded-xl border bg-card p-5" aria-label="Existing process context">
+    <h2 className="mb-4 font-semibold">Existing process context</h2>
     <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3 text-sm"><span>Capture and field extraction</span><BoundaryTag cls="existing" /></div>
     <ArrowDown className="mx-auto my-3 size-4 text-muted-foreground" aria-hidden="true" />
     <ul aria-label="Alternative processing paths" className="grid gap-3 sm:grid-cols-2">
@@ -32,6 +33,7 @@ export function TwoPlacesDiagram({ enabled }: { enabled: boolean }) {
       <span>Proposed shared service · Agent {enabled ? "On" : "Off"}</span>
       <span className="flex items-center gap-2"><UserCheck className="size-4" aria-hidden="true" />Human decision at both ends</span>
     </div>
+    <PainMarker resolved={enabled} pain="Manual evidence gathering" resolution="Proposed shared evidence; human review retained" />
     <div className="grid gap-4 lg:grid-cols-2">
       <Flow title="Pharmacy · Before submission" steps={[
         { label: "Endorsement entry", cls: "human" },
@@ -48,7 +50,7 @@ export function TwoPlacesDiagram({ enabled }: { enabled: boolean }) {
     </div>
     <details className="rounded-lg border p-3 text-sm">
       <summary className="cursor-pointer font-medium">Implementation and current-state assumptions</summary>
-      <p className="mt-3 text-muted-foreground">A shared service is proposed, not deployed. The existing pharmacy screen uses a keyword/date mock; the case engine uses scripted readings. Neither calls a model. Existing pharmacy pre-check capabilities are unknown. Off is an illustrative manual path, not measured NHSBSA practice.</p>
+      <p className="mt-3 text-muted-foreground">Shared service: proposed, not deployed. Both screens use local mocks, not models. Existing pharmacy checks and manual practice need validation.</p>
     </details>
   </div>;
 }

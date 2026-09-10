@@ -33,10 +33,11 @@ test("a view failure preserves the shell, logs its pathname and resets on naviga
   await expect(page.getByRole("heading", { name: "This view could not be loaded", exact: true })).toBeVisible();
   await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
-  await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
-  await confirmReset(page);
+  await page.getByRole("switch", { name: "Agent: Off", exact: true }).click();
   await expect(page.getByRole("switch", { name: "Agent: On", exact: true })).toBeChecked();
+  await confirmReset(page);
+  await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByRole("button", { name: /Presenter mode|Discussion mode/ })).toHaveCount(0);
   expect(errors.some((error) => error.includes("[View Error] /case/EX-24112"))).toBe(true);
   expect(errors.length).toBeGreaterThan(0);

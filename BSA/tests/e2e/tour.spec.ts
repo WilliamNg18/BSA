@@ -1,6 +1,6 @@
 import { confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
-import { TOUR_CONTENT } from "../../src/lib/domain/source-claims";
+import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { BASELINE_FIELDS } from "../../src/lib/domain/baseline";
@@ -14,7 +14,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         const header = page.getByRole("banner");
         const rail = page.getByRole("navigation", { name: "Guided tour" });
         for (const enabled of [true, false]) {
-          if (!enabled) await header.getByRole("switch", { name: "Agent: On" }).click();
+          await header.getByRole("switch").setChecked(enabled);
           const box = await header.boundingBox();
           await expect(header.getByRole("switch")).toHaveAttribute("data-state", enabled ? "checked" : "unchecked");
           expect(box?.height).toBeLessThanOrEqual(64);
@@ -42,7 +42,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 for (const enabled of [true, false]) {
   test(`@tour-focus tour forwards and backwards, chapter menu, pharmacy substop: agent=${enabled}`, async ({ page }) => {
     await page.goto("./#scene");
-    if (!enabled) await page.getByRole("switch", { name: "Agent: On" }).click();
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const rail = page.getByRole("navigation", { name: "Guided tour" });
     await expect(rail.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
     for (const [index, stop] of TOUR_STOPS.entries()) {
@@ -146,7 +146,7 @@ for (const enabled of [true, false]) {
         await expect(reset).toBeFocused();
         await expect(page).toHaveURL(url);
         await expect(heading).not.toBeFocused();
-        await expect(flag).toBeChecked({ checked: action === "Reset demonstration" || enabled });
+        await expect(flag).toBeChecked({ checked: action !== "Reset demonstration" && enabled });
       }
     });
   }
@@ -154,7 +154,8 @@ for (const enabled of [true, false]) {
 
 test("documentary scene figures are invariant; A–D match runAgent and off is neutral manual work", async ({ page }) => {
   await page.goto("./#scene");
-  const scene = page.getByRole("list", { name: "Document-attributed key figures" });
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  const scene = page.getByRole("list", { name: "Public context figures" });
   const before = await scene.innerText();
   await page.getByRole("switch", { name: "Agent: On" }).click();
   await expect(scene).toHaveText(before, { useInnerText: true });
@@ -184,28 +185,23 @@ test("documentary scene figures are invariant; A–D match runAgent and off is n
   await expect(page.locator("[data-outcome]")).toHaveCount(4);
 });
 
-test("source classes, named authorities and document locators are keyboard accessible", async ({ page }) => {
+test("one sourcing footer and concise qualifications replace documentary disclosures", async ({ page }) => {
   await page.goto("./#scene");
   await expect(page.locator("[data-key-figure]")).toHaveCount(3);
-  const disclosure = page.locator('[data-key-figure="annual-items"] [data-source-disclosure]');
-  await disclosure.locator("summary").focus();
-  await page.keyboard.press("Enter");
-  await expect(disclosure).toContainText("Document-attributed public fact (not externally verified)");
-  await expect(disclosure.getByRole("list", { name: "Named sources for O02" })).toContainText("NHSBSA, How we process prescriptions");
-  await expect(disclosure.getByRole("list", { name: "Document locators for O02" })).toContainText("word/document.xml · P0686–P0687");
-  await expect(disclosure).toContainText("nhsbsa-FINAL-complete-pack-v5.docx");
+  await expect(page.locator('footer[aria-label="Sources"]')).toHaveText(`Sources: ${SOURCES_FOOTER}`);
+  await expect(page.locator("[data-source-disclosure]")).toHaveCount(0);
   const referrals = page.locator('[data-key-figure="monthly-referrals"]');
-  await referrals.getByText("Figure qualification", { exact: true }).click();
+  await referrals.getByText("Figure qualification", { exact: true }).focus();
+  await page.keyboard.press("Enter");
   await expect(referrals).toContainText("approximately 83,333, not exactly 85,000");
   await page.goto("./#close");
   await page.getByText(TOUR_CONTENT.questionsDisclosure.title, { exact: true }).click();
-  const questions = page.getByRole("list", { name: "Seven PDF discovery questions" }).locator(":scope > li");
+  const questions = page.getByRole("list", { name: "Seven discovery questions" }).locator(":scope > li");
   await expect(questions).toHaveCount(7);
   for (const [index, question] of TOUR_CONTENT.questionsDisclosure.questions.entries()) await expect(questions.nth(index).locator(":scope > p")).toHaveText(question.text);
-  await questions.last().locator("summary").click();
-  await expect(questions.last()).toContainText("PDF page 1 · WHAT I WOULD ASK IN THE FIRST FIFTEEN MINUTES");
+  await expect(page.locator("main")).not.toContainText(/\.pdf|\.docx|P0686|source:/i);
   await page.getByText(TOUR_CONTENT.assumptionsDisclosure.title, { exact: true }).click();
-  await expect(page.getByText("Nothing repeatable to build; stop.", { exact: false })).toBeVisible();
+  await expect(page.getByText("Stop if no repeatable pattern.", { exact: false })).toBeVisible();
 });
 
 test("dismissal is session-only; principle remains; restore resumes; reload restores defaults", async ({ page }) => {
@@ -229,6 +225,7 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
 
 test("reset cancel and Escape preserve edits and records; confirm resets local and global state", async ({ page }) => {
   await page.goto("case/EX-24112");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
@@ -247,7 +244,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   }
   await confirmReset(page);
   await expect(field).toHaveValue(seed);
-  await expect(page.getByRole("switch", { name: "Agent: On" })).toBeChecked();
+  await expect(page.getByRole("switch", { name: "Agent: Off" })).not.toBeChecked();
   await navigatePrimary(page, "Exception queue");
   await page.locator("a[href='/BSA/case/EX-24112']").first().click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
@@ -255,6 +252,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
 
 test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmation dialogs", async ({ page }) => {
   await page.goto("pharmacy");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
   await field.focus();
   await page.keyboard.press("Alt+ArrowRight");
@@ -293,7 +291,7 @@ test("unknown routes do not claim a tour chapter and retain start and home recov
   await expect(page).toHaveURL(/#scene$/);
 });
 
-test("chapter prose stays within forty words in both states; selected QA screenshots", async ({ page }, testInfo) => {
+test("chapter narrative stays within 25 words in both states; selected QA screenshots", async ({ page }, testInfo) => {
   test.setTimeout(60_000);
   for (const width of [1440, 360]) {
     await page.setViewportSize({ width, height: 1000 });
@@ -303,8 +301,8 @@ test("chapter prose stays within forty words in both states; selected QA screens
       for (const enabled of [true, false]) {
         // Hash navigation preserves session state, unlike a full page reload.
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-        const prose = await page.locator("[data-tour-prose]").innerText();
-        expect(prose.trim().split(/\s+/).length).toBeLessThanOrEqual(40);
+        const prose = await page.locator("[data-tour-prose] > p").innerText();
+        expect(prose.trim().split(/\s+/).length).toBeLessThanOrEqual(25);
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
         await page.screenshot({ path: testInfo.outputPath(`${fragment}-${width}-${width === 1440 ? "light" : "dark"}-${enabled ? "on" : "off"}.png`), fullPage: true });
       }

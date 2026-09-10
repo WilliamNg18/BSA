@@ -10,7 +10,7 @@ export function BaselineFlow({ result }: { result: BaselineResult }) {
     { key: "built", label: "Built for human review", count: result.built, colour: "fill-primary" },
   ];
   let offset = 0;
-  return <figure className="min-w-0 rounded-xl border bg-card p-4" aria-labelledby={`${id}-caption`}>
+  return <figure data-prose="cohort flow" className="min-w-0 rounded-xl border bg-card p-4" aria-labelledby={`${id}-caption`}>
     <figcaption id={`${id}-caption`} className="font-semibold">Scenario flow · Four disjoint cohorts</figcaption>
     <svg viewBox="0 0 640 360" className="mt-3 block h-auto w-full" role="img" aria-labelledby={`${id}-title ${id}-description`} data-baseline-flow>
       <title id={`${id}-title`}>Proportional monthly scenario flow</title>

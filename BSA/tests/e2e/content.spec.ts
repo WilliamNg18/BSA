@@ -1,0 +1,123 @@
+import { cases, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
+
+/** Executes in the rendered page: no source-code word counting or truncation. */
+function auditProse() {
+  const panelSelector = '[data-prose], section, article, details, [data-slot="card"], li, dd, dl > div';
+  const words = (text: string) => (text.match(/[\p{L}\p{N}]+(?:['’/.,-][\p{L}\p{N}]+)*/gu) ?? []).length;
+  const visible = (el: Element) => el.getClientRects().length > 0 && !el.closest('[hidden], [aria-hidden="true"]');
+  const groups = new Map<Element, string[]>();
+  const failures: { kind: string; words: number; text: string }[] = [];
+  // Narrative is found independently of data-prose. Semantic headings, control
+  // labels, tables of values and tagged status/number labels are not paragraphs.
+  const candidates = Array.from(document.querySelectorAll('p, blockquote, [data-slot="card-description"], [data-slot="alert-description"], [data-copy="label"], li'));
+  for (const element of candidates) {
+    if (!visible(element) || element.closest('nav, [role="listbox"]')) continue;
+    if (element.matches('li') && element.querySelector('p, blockquote, dl, li, h2, h3')) continue;
+    if (element.matches('blockquote, [data-slot="alert-description"]') && element.querySelector('p, ul, dl')) continue;
+    const text = (element as HTMLElement).innerText.trim();
+    const count = words(text);
+    if (count > 25) failures.push({ kind: "paragraph", words: count, text });
+    // Labels and structured table values have an individual cap too: adding
+    // a badge, link or label attribute must never exempt an oversized paragraph.
+    if (element.closest('table, [role="tooltip"], [data-copy="label"]') || element.querySelector('[data-slot="badge"]')) continue;
+    const owner = element.matches('li, [data-prose]') ? element : element.parentElement?.closest(panelSelector) ?? element.parentElement!;
+    const texts = groups.get(owner) ?? [];
+    texts.push(text);
+    groups.set(owner, texts);
+  }
+  // Structured data is not aggregated as narrative, but cannot conceal a long
+  // paragraph by changing its tag from p to dd.
+  for (const element of document.querySelectorAll('dd')) {
+    if (!visible(element) || element.querySelector('p, dl, ul')) continue;
+    const text = (element as HTMLElement).innerText.trim();
+    if (words(text) > 25) failures.push({ kind: "structured-prose", words: words(text), text });
+  }
+  // Catch prose disguised as a plain div/span, including alert/status copy.
+  // Inspect direct text nodes only, avoiding duplicate descendant paragraphs.
+  for (const element of document.querySelectorAll('main div, main span, main td')) {
+    if (!visible(element) || element.closest('button, label, [role="switch"]')) continue;
+    const text = Array.from(element.childNodes).filter((node) => node.nodeType === Node.TEXT_NODE).map((node) => node.textContent).join(" ").trim();
+    if (words(text) > 25) failures.push({ kind: "unmarked-prose", words: words(text), text });
+  }
+  for (const [panel, texts] of groups) {
+    const text = texts.join(" ");
+    if (words(text) > 25) failures.push({ kind: `panel:${panel.getAttribute("data-prose") ?? panel.tagName}`, words: words(text), text });
+  }
+  return { paragraphs: candidates.filter(visible).length, panels: groups.size, failures };
+}
+
+test("copy cap positive controls reject long prose and split-paragraph evasion", async ({ page }) => {
+  await page.setContent(`<main><section data-prose="test"><h1>Heading excluded</h1><p>${"word ".repeat(26)}</p></section><section><p>${"word ".repeat(15)}</p><p>${"word ".repeat(15)}</p></section><p data-copy="label">${"label ".repeat(26)}</p><p><span data-slot="badge">Status</span>${"badge ".repeat(26)}</p><ul><li><a href="#">Link</a>${"linked ".repeat(26)}</li></ul><div>${"untagged ".repeat(26)}</div><dl><dd>${"definition ".repeat(26)}</dd></dl></main>`);
+  const result = await page.evaluate(auditProse);
+  expect(result.failures).toEqual(expect.arrayContaining([
+    expect.objectContaining({ kind: "paragraph", words: 26 }),
+    expect.objectContaining({ kind: "panel:SECTION", words: 30 }),
+    expect.objectContaining({ kind: "paragraph", text: expect.stringContaining("label label") }),
+    expect.objectContaining({ kind: "paragraph", text: expect.stringContaining("badge badge") }),
+    expect.objectContaining({ kind: "paragraph", text: expect.stringContaining("linked linked") }),
+    expect.objectContaining({ kind: "unmarked-prose", words: 26 }),
+    expect.objectContaining({ kind: "structured-prose", words: 26 }),
+  ]));
+});
+
+for (const enabled of [false, true]) {
+  test(`rendered copy cap all routes, expanded panels, assistance=${enabled}`, async ({ page }, testInfo) => {
+    test.setTimeout(120_000);
+    const routes = [...staticRoutes.map((r) => r.path || "./#scene"), ...["month", "cases", "two-places", "close"].map((c) => `./#${c}`), ...cases.flatMap(({ id }) => [`case/${id}`, `case/${id}/trace`, `case/${id}/record`]), "unknown-page", "case/UNKNOWN"];
+    const results = [];
+    for (const route of routes) {
+      await page.goto(route);
+      await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+      await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
+      await expect(page.locator("body")).not.toContainText(/source:|\.pdf\b|\.docx?\b|William Ng|Embrace the Change|complete-pack/i);
+      const result = await page.evaluate(auditProse);
+      results.push({ route, ...result });
+    }
+    await captureJson(testInfo, "rendered-copy", results);
+    expect(results.flatMap(({ route, failures }) => failures.map((f) => ({ route, ...f })))).toEqual([]);
+  });
+}
+
+test("fresh session and reset are Off; shared transition is presentation-only and reversible", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("queue");
+  const flag = page.getByRole("banner").getByRole("switch");
+  await expect(flag).not.toBeChecked();
+  const states = await page.locator('tbody tr td:nth-child(6)').allTextContents();
+  await page.clock.install({ time: new Date("2026-09-10T12:00:00Z") });
+  await page.clock.pauseAt(new Date("2026-09-10T12:00:10Z"));
+  await flag.setChecked(true);
+  const host = page.locator('[data-assistance-host]');
+  await expect(host).toHaveAttribute("data-phase", "preparing");
+  await expect(page.getByRole("status").filter({ hasText: "Preparing assistance" })).toBeVisible();
+  await page.clock.runFor(1999);
+  await expect(host).toHaveAttribute("data-phase", "preparing");
+  await page.clock.runFor(1);
+  await expect(host).toHaveAttribute("data-phase", "assisted");
+  await flag.setChecked(false);
+  await expect(host).toHaveAttribute("data-phase", "preparing");
+  await page.clock.runFor(2000);
+  await expect(host).toHaveAttribute("data-phase", "manual");
+  await expect(page.locator('tbody tr td:nth-child(6)')).toHaveText(states);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await flag.setChecked(true);
+  await expect(host).toHaveAttribute("data-phase", "assisted");
+  await flag.setChecked(false);
+  await expect(host).toHaveAttribute("data-phase", "manual");
+  await flag.setChecked(true);
+  await confirmReset(page);
+  await expect(flag).not.toBeChecked();
+  await expect(host).toHaveAttribute("data-phase", "manual");
+  await expect(page.locator('tbody tr td:nth-child(6)')).toHaveText(states);
+});
+
+test("pain markers provide keyboard text and do not resolve abstention", async ({ page }) => {
+  await page.goto("./#cases");
+  const marker = page.locator('[data-case="B"] [data-pain-marker]');
+  await marker.focus();
+  await expect(marker).toBeFocused();
+  await expect(page.getByRole("tooltip")).toContainText("Evidence needs review");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
+  await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
+});

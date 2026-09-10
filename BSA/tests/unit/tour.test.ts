@@ -1,8 +1,6 @@
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
-import { SourceDisclosure } from "../../src/components/demo/source-disclosure";
+import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 
 describe("tour navigation contract", () => {
   it("has six chapters and a reversible pharmacy substop", () => {
@@ -31,21 +29,14 @@ describe("tour navigation contract", () => {
   });
 });
 
-describe("source disclosure boundary", () => {
-  it("names class, source document, attribution and paragraph without raw source prose", () => {
-    const html = renderToStaticMarkup(createElement(SourceDisclosure, { claimIds: ["O02", "O02", "PDF-A01"] }));
-    expect(html.match(/data-claim-id="O02"/g)).toHaveLength(1);
-    expect(html).toContain("Document-attributed public fact");
-    expect(html).toContain("NHSBSA, How we process prescriptions");
-    expect(html).toContain("nhsbsa-FINAL-complete-pack-v5.docx");
-    expect(html).toContain("P0686–P0687");
-    expect(html).toContain("PDF page 1");
-    expect(html).not.toContain("~1.1bn prescription items processed");
+describe("curated display boundary", () => {
+  it("retains the single exact sourcing statement", () => {
+    expect(SOURCES_FOOTER).toBe("Public information (NHSBSA and Community Pharmacy England publications) and stated assumptions. All operational data on this site is synthetic.");
   });
-  it("withholds unknown, personal, contradictory and reference-only claims", () => {
-    const html = renderToStaticMarkup(createElement(SourceDisclosure, { claimIds: ["missing", "PERSONAL01", "X02", "D-SHARED"] }));
-    expect(html).not.toContain("data-claim-id");
-    expect(html).not.toContain("ACCENTURE");
-    expect(html).not.toContain("priced correctly");
+  it("caps every chapter and discovery question without documentary exemptions", () => {
+    for (const text of [...TOUR_CONTENT.chapters.map((c) => c.prose), ...TOUR_CONTENT.questionsDisclosure.questions.map((q) => q.text)]) {
+      expect(text.split(/\s+/).length).toBeLessThanOrEqual(25);
+      expect(text).not.toMatch(/\.pdf|\.docx|source:|supplied document/i);
+    }
   });
 });

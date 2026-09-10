@@ -100,7 +100,7 @@ function decisionMatches(recommendation: Recommendation, decision: HumanDecision
 export const useAppStore = create<AppState>((set, get) => ({
   caseStates: initialStates(),
   records: seededRecords(),
-  agentEnabled: true,
+  agentEnabled: false,
   baselineInputs: baselineDraft(BASELINE_DEFAULTS),
   setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
   recordDecision: (input) => {
@@ -128,5 +128,5 @@ export const useAppStore = create<AppState>((set, get) => ({
     return record;
   },
   setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
-  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: true, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
+  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
 }));

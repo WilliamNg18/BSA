@@ -17,11 +17,7 @@ export function BoundaryPage() {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">Agent, deterministic code, human decision</h1>
         <p className="max-w-3xl text-muted-foreground">
-          Every action in this prototype is one of four things. Knowing which is most of the design: an agent is used only where planning, tool use, interpretation of
-          free text, reconciliation and abstention are genuinely needed, and never where a rule or a person should decide.
-        </p>
-        <p className="rounded-md border-l-4 border-teal-700 bg-teal-50 px-3 py-2 text-sm font-medium text-teal-950 dark:bg-teal-950 dark:text-teal-100">
-          The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.
+          Classify every action. Use interpretation only where justified; deterministic rules and human authority remain separate.
         </p>
       </div>
 

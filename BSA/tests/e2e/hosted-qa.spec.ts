@@ -27,7 +27,7 @@ for (const enabled of [true, false]) {
           await expect(dialog).toHaveCount(0);
           await expect(trigger).toBeFocused();
           await expect(field).toHaveValue(action === "Reset demonstration" ? seed : "NCSO RK 21/08/26");
-          await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: action === "Reset demonstration" || enabled });
+          await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: action !== "Reset demonstration" && enabled });
           await expect(page).toHaveURL(/\/pharmacy$/);
         }
       });

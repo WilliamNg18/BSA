@@ -6,6 +6,27 @@ ms.date: 2026-09-10
 
 ## Current increment scope
 
+Task 2 now supersedes the historical presentation requirements below: fresh
+sessions and confirmed Reset start Agent Off; On requires opt-in. Documentary
+filenames, inline documentary citations and source-prefixed labels are removed
+from client code. One chapter-one Sources footer remains; the complete audit
+is retained outside the client in [the offline register](../data/reference/source-audit.ts).
+Synthetic operational rule citations, evidence and gate checks remain visible.
+
+Narrative paragraphs/panels have a 25-word cap, including expanded disclosures.
+Headings, controls and structured numeric/status fields are separate, not a
+blanket exemption for long prose. The CI check searches every client file;
+the full browser suite checks rendered copy with positive evasion controls.
+A shared two-second presentation transition and keyboard-readable pain markers
+never write case state. Reduced-motion users receive immediate changes.
+Tasks 3-7, including a new pipeline, pharmacy split views, queue simulation
+and manual case views, remain deferred. The existing trace replay remains.
+Local checks pass: 383 units, 376 Chromium tests and 48 axe audits with zero
+violations. Commit, Task 2 CI and hosting remain pending; see
+[progress](../../PROGRESS.md) for evidence and limitations.
+
+### Historical Task 1 increment
+
 Task 1 replaces the earlier aggregate calculator model with seven editable
 synthetic gathering steps, editable built review, identical reference-cohort
 judging, bounded referral assumptions and a proportional four-cohort flow.

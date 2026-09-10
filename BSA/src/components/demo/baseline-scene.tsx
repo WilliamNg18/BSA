@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
-import { formatBaselineNumber as n } from "@/lib/domain/baseline";
+import { AnimatedNumber } from "./animated-number";
 import { useAppStore } from "@/lib/store";
 
 export function BaselineScene() {
@@ -8,14 +8,14 @@ export function BaselineScene() {
   const enabled = useAppStore((s) => s.agentEnabled);
   return <section aria-label="Shared scenario estimates" className="space-y-3 rounded-xl border bg-card p-5" data-scene-estimates>
     <h2 className="font-semibold">Estimated reference workload · Synthetic assumptions</h2>
-    <p className="text-sm text-muted-foreground">Same inputs and arithmetic as the calculator. Referred-subset volume proxy, not actual exceptions; judging stays fixed across the comparison.</p>
+    <p className="text-sm text-muted-foreground">Shared calculator inputs. Referred-subset proxy, not actual exceptions; judging stays fixed.</p>
     {result ? <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-      <div><dt>Scenario items</dt><dd data-scene-volume>{n(result.volume)}</dd></div>
-      <div><dt>Today gathering hours</dt><dd data-scene-gathering>{n(result.today.gatheringMinutes / 60, 1)}</dd></div>
-      <div><dt>Judging hours · Both sides</dt><dd data-scene-judging>{n(result.today.judgingMinutes / 60, 1)}</dd></div>
+      <div><dt>Scenario items</dt><dd data-scene-volume><AnimatedNumber value={result.volume} digits={0} /></dd></div>
+      <div><dt>Today gathering hours</dt><dd data-scene-gathering><AnimatedNumber value={result.today.gatheringMinutes / 60} /></dd></div>
+      <div><dt>Judging hours · Both sides</dt><dd data-scene-judging><AnimatedNumber value={result.today.judgingMinutes / 60} /></dd></div>
       {enabled && <>
-        <div><dt>With agent gathering hours</dt><dd data-scene-with-gathering>{n(result.withAgent.gatheringMinutes / 60, 1)}</dd></div>
-        <div><dt>With agent referrals · Assumed</dt><dd data-scene-referrals>{n(result.referrals.withAgent)}</dd></div>
+        <div><dt>With agent gathering hours</dt><dd data-scene-with-gathering><AnimatedNumber value={result.withAgent.gatheringMinutes / 60} /></dd></div>
+        <div><dt>With agent referrals · Assumed</dt><dd data-scene-referrals><AnimatedNumber value={result.referrals.withAgent} digits={0} /></dd></div>
       </>}
     </dl> : <p role="status">Scenario estimates unavailable: correct the calculator inputs.</p>}
     {!enabled && <p className="text-sm">Agent Off. Assisted estimates hidden; inputs retained.</p>}

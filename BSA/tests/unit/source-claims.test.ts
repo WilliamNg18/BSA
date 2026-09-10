@@ -5,7 +5,7 @@ import {
   SOURCE_DOCUMENTS, SOURCE_NAMES, SOURCE_REGISTRY_COVERAGE, TOUR_CONTENT,
   SOURCE_AUDIT_EXCLUSIONS, SOURCE_DISPLAY_CLAIMS,
   type SourceClaim,
-} from '../../src/lib/domain/source-claims'
+} from '../../data/reference/source-audit'
 import { CASES } from '../../src/lib/domain/cases'
 
 function required(id: string): SourceClaim {

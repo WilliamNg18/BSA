@@ -18,8 +18,7 @@ export function ArchitecturePage() {
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">Technical architecture and the path to production</h1>
         <p className="max-w-3xl text-muted-foreground">
-          The prototype runs entirely in the browser on synthetic data so the demonstration cannot fail live and nothing leaves the room. Each component maps to a production
-          service; the contracts between them are what NHSBSA would own. Technology follows constraint: every service is here because something in NHSBSA's process demands it.
+          Offline synthetic prototype. Production mappings are proposals, not verified estate capabilities; integration, security and operational reliability need validation.
         </p>
       </div>
 
@@ -116,11 +115,11 @@ NEW: EXCEPTION CASE BUILDER (inside the existing accredited landing zone, UK reg
         </PageSection>
         <PageSection title="Why the prototype is shaped this way" description="Speed from testing the highest-risk assumption early.">
           <ul className="space-y-1.5 text-sm">
-            <li className="rounded-md border p-2.5"><span className="font-medium">Offline and deterministic</span> so the demonstration cannot fail live and no data leaves the browser. The interpretation step is scripted; production replaces it with three sampled, constrained model calls and nothing else changes.</li>
-            <li className="rounded-md border p-2.5"><span className="font-medium">Real rules, real gate, real composite.</span> The parts an auditor would challenge are the parts built as code here, and they are the same code that would ship.</li>
-            <li className="rounded-md border p-2.5"><span className="font-medium">Feature flag.</span> Turning agent recommendations off in the header shows the fail-open path: the operator sees evidence only, and the queue behaves as today.</li>
-            <li className="rounded-md border p-2.5"><span className="font-medium">Versioned corpus.</span> Three monthly versions of the synthetic rulebook, so the effect of a monthly change can be replayed on the record page.</li>
-            <li className="rounded-md border p-2.5"><span className="font-medium">Contracts visible.</span> The tool table above is the integration specification NHSBSA's engineers would review first.</li>
+            <li className="rounded-md border p-2.5"><h3 className="font-medium">Offline and deterministic</h3><p>Scripted interpretation; no runtime data leaves the browser. Production model integration requires separate validation.</p></li>
+            <li className="rounded-md border p-2.5"><h3 className="font-medium">Executable controls</h3><p>Synthetic rules, gate and composite are code. Production requirements still need independent review.</p></li>
+            <li className="rounded-md border p-2.5"><h3 className="font-medium">Feature flag</h3><p>Off withholds assistance, not evidence or human authority. Case state and records remain unchanged.</p></li>
+            <li className="rounded-md border p-2.5"><h3 className="font-medium">Versioned corpus</h3><p>Three synthetic monthly versions support counterfactual replay without rewriting history.</p></li>
+            <li className="rounded-md border p-2.5"><h3 className="font-medium">Visible contracts</h3><p>Review tool contracts and access constraints before planning integration.</p></li>
           </ul>
         </PageSection>
       </div>
