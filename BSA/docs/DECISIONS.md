@@ -53,3 +53,14 @@ Only new cross-stream tests may be tagged pending-integration and temporarily
 skipped before integration. Never weaken or skip existing regression tests.
 Tasks 5-7 lack a current detailed brief in the repository; Task 4 remains the
 only implemented Stream A increment until their exact requirements are available.
+
+## 2026-09-10: Stream E splits contract checks from pending-integration evidence
+
+Stream E's new tests are split rather than skipped wholesale: assertions the
+frozen contract already supports (empty lifecycles/followedCaseId, throwing
+methods, exact states/labels) run now as real coverage; the round-trip
+behaviour and Playwright scenarios that need B's store and A/C/D's UI stay
+pending-integration and skipped. Reject leaving the whole file skipped, since
+that would forgo real, currently verifiable contract coverage; reject running
+the behavioural scenarios now, since they would fail against unimplemented
+UI/store rather than proving Task 10/13.

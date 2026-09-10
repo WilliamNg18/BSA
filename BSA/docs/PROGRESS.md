@@ -36,6 +36,26 @@ See [contracts](parallel-contracts.md)
 for ownership, signatures, branch names and integration order. Stream A proceeds
 with Task 4 only after this freeze; its local gates are not yet run.
 
+## Stream E: pending-integration round-trip tests
+
+Stream E (stream-e-verify) authored its owned new tests against the frozen
+contract before any of B/A/C/D exist on this branch: [tests/unit/lifecycle-roundtrip.test.ts](../../tests/unit/lifecycle-roundtrip.test.ts)
+and [tests/e2e/round-trip.spec.ts](../../tests/e2e/round-trip.spec.ts). The unit
+file's frozen-contract checks run now and pass (lifecycles empty, followedCaseId
+null, all six methods throw `not implemented`, the seven states and labels are
+exact). Its pure round trip and the whole Playwright file are tagged
+pending-integration and skipped, because the Follow banner, Switch side control,
+pharmacy submit/resubmit UI and the store's real transitions belong to D, A/D
+and B respectively and are not implemented yet.
+
+Local check exit 0; 388 units in ten files passed (2 new, 1 skipped); the full
+production Chromium suite (386 existing browser tests plus the 4 new
+pending-integration round-trip tests, all skipped) ran clean at 390 total,
+386 passed/4 skipped, in 9.9 minutes, exit 0. No existing test was edited,
+skipped or weakened. Tasks 10 and 13 remain unticked above: per
+[contracts](parallel-contracts.md), Stream E unskips these tests and records
+axe/screenshot evidence only after B, then A/C/D, merge, and ticks 10/13 then.
+
 ## Task 1 gates
 
 Task 1 commit ad7d5d8. User-reported CI 34515828351 and 27 hosted checks passed.
