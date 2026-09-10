@@ -2,8 +2,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BoundaryTag } from "./labels";
 import { BaselineAssumptions } from "./baseline-assumptions";
-import { BASELINE_FIELDS, baselineSummary, calculateBaseline, formatBaselineNumber, parseBaselineDraft } from "@/lib/domain/baseline";
-import { BASELINE_DEFAULTS, baselineDefaultCopy } from "@/lib/domain/baseline-defaults";
+import { BASELINE_FIELDS, GATHERING_STEPS, baselineSummary, formatBaselineNumber, BASELINE_DEFAULTS, baselineDefaultCopy } from "@/lib/domain/baseline";
+import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
+import { BaselineFlow } from "./baseline-flow";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
@@ -13,8 +14,16 @@ export function BaselineCalculator() {
   const draft = useAppStore((s) => s.baselineInputs);
   const setInput = useAppStore((s) => s.setBaselineInput);
   const enabled = useAppStore((s) => s.agentEnabled);
-  const { input, errors } = parseBaselineDraft(draft, BASELINE_DEFAULTS.assemblySeconds);
-  const result = input ? calculateBaseline(input) : null;
+  const { result, errors } = useBaselineScenario();
+  const isGatheringStep = (key: string) => GATHERING_STEPS.some((step) => step.key === key);
+  const renderField = ({ key, label, hint, integer }: typeof BASELINE_FIELDS[number]) => <div key={key} className="min-w-0 space-y-2">
+    <Label htmlFor={`baseline-${key}`}>{label}</Label>
+    <Input id={`baseline-${key}`} type="text" inputMode={integer ? "numeric" : "decimal"} autoComplete="off" spellCheck={false}
+      value={draft[key]} onChange={(event) => setInput(key, event.target.value)} aria-invalid={Boolean(errors[key])}
+      aria-describedby={`baseline-${key}-hint${errors[key] ? ` baseline-${key}-error` : ""}`} />
+    <p id={`baseline-${key}-hint`} className="text-xs text-muted-foreground">{hint}</p>
+    {errors[key] && <p id={`baseline-${key}-error`} className="text-sm text-destructive">{errors[key]}</p>}
+  </div>;
 
   return <section aria-label="Monthly workload calculator" className="min-w-0 space-y-5">
     <p className="rounded-lg border border-amber-600/40 bg-amber-500/10 p-3 text-sm font-medium">Estimates only. Replace these assumptions with validated NHSBSA figures.</p>
@@ -22,15 +31,13 @@ export function BaselineCalculator() {
       <legend className="px-2 text-sm font-semibold">Edit the scenario</legend>
       <div className="mb-4 flex flex-wrap items-center gap-2"><BoundaryTag cls="deterministic" /><span className="text-xs text-muted-foreground">Local arithmetic · No operational forecast</span></div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {BASELINE_FIELDS.map(({ key, label, hint, integer }) => <div key={key} className="min-w-0 space-y-2">
-          <Label htmlFor={`baseline-${key}`}>{label}</Label>
-          <Input id={`baseline-${key}`} type="text" inputMode={integer ? "numeric" : "decimal"} autoComplete="off" spellCheck={false}
-            value={draft[key]} onChange={(event) => setInput(key, event.target.value)} aria-invalid={Boolean(errors[key])}
-            aria-describedby={`baseline-${key}-hint${errors[key] ? ` baseline-${key}-error` : ""}`} />
-          <p id={`baseline-${key}-hint`} className="text-xs text-muted-foreground">{hint}</p>
-          {errors[key] && <p id={`baseline-${key}-error`} className="text-sm text-destructive">{errors[key]}</p>}
-        </div>)}
+        {BASELINE_FIELDS.filter(({ key }) => !isGatheringStep(key)).map(renderField)}
       </div>
+      <details className="mt-5 min-w-0 rounded-lg border p-4" data-gathering-breakdown>
+        <summary className="cursor-pointer font-semibold">Seven-step gathering breakdown · Synthetic minutes{GATHERING_STEPS.some(({ key }) => errors[key]) ? " · Check invalid inputs" : ""}</summary>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{BASELINE_FIELDS.filter(({ key }) => isGatheringStep(key)).map(renderField)}</div>
+      </details>
+      {result && <p className="mt-3 text-sm" data-gathering-total>Manual gathering: {number(result.manualGatheringMinutes)} minutes / item, sum of seven synthetic assumptions.</p>}
       <p className="mt-4 text-xs text-muted-foreground">{baselineDefaultCopy(BASELINE_DEFAULTS).volumeNote}</p>
     </fieldset>
 
@@ -39,10 +46,11 @@ export function BaselineCalculator() {
         <section aria-label="Today manual scenario" data-baseline-today className={cn("space-y-4 rounded-xl border bg-card p-5", !enabled && "ring-2 ring-primary")}>
           <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-xl font-semibold">Today</h2><BoundaryTag cls="human" /></div>
           <p className="text-sm text-muted-foreground">Manual scenario assumption · Not real today</p>
-          <p className="text-3xl font-semibold tabular-nums">{number(result.today.operatorHours)} <span className="text-sm font-normal">operator hours / month</span></p>
+          <p className="text-3xl font-semibold tabular-nums">{number(result.today.operatorHours)} <span className="text-sm font-normal">reference operator hours / month</span></p>
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between gap-3"><dt>Gathering</dt><dd>{number(result.today.gatheringMinutes / 60)} hours</dd></div>
             <div className="flex justify-between gap-3"><dt>Judging</dt><dd>{number(result.today.judgingMinutes / 60)} hours</dd></div>
+            <div className="flex justify-between gap-3"><dt>Referrals · Scenario proxy</dt><dd data-referrals-today>{number(result.referrals.today)}</dd></div>
             <div className="flex justify-between gap-3 border-t pt-3"><dt>Manual review</dt><dd>{number(result.volume)} items</dd></div>
             <div><dt>Expected time before decision</dt><dd className="mt-1 font-medium">{number(result.abstainBeforeDecisionMinutes)} minutes / item</dd></div>
           </dl>
@@ -51,26 +59,39 @@ export function BaselineCalculator() {
           <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="text-xl font-semibold">With agent</h2><BoundaryTag cls="agent" /></div>
           {enabled ? <>
             <p className="text-sm text-muted-foreground">Synthetic scenario · Human decisions retained</p>
-            <p className="text-3xl font-semibold tabular-nums">{number(result.withAgent.operatorHours)} <span className="text-sm font-normal">operator hours / month</span></p>
+            <p className="text-3xl font-semibold tabular-nums">{number(result.withAgent.operatorHours)} <span className="text-sm font-normal">reference operator hours / month</span></p>
             <dl className="space-y-3 text-sm">
               <div className="flex justify-between gap-3"><dt>Gathering</dt><dd>{number(result.withAgent.gatheringMinutes / 60)} hours</dd></div>
               <div className="flex justify-between gap-3"><dt>Judging</dt><dd>{number(result.withAgent.judgingMinutes / 60)} hours</dd></div>
+              <div className="flex justify-between gap-3"><dt>Referrals · Assumed</dt><dd data-referrals-with>{number(result.referrals.withAgent)}</dd></div>
               <div className="flex justify-between gap-3 border-t pt-3"><dt>Pharmacy-caught (assumed)</dt><dd data-cohort="pharmacy">{number(result.pharmacyCaught)}</dd></div>
               <div className="flex justify-between gap-3"><dt>Rule-cleared · No human</dt><dd data-cohort="cleared">{number(result.cleared)}</dd></div>
               <div className="flex justify-between gap-3"><dt>Abstained · Manual fallback</dt><dd data-cohort="abstained">{number(result.abstained)}</dd></div>
               <div className="flex justify-between gap-3"><dt>Built · Human review</dt><dd data-cohort="built">{number(result.built)}</dd></div>
             </dl>
-            <p className="text-xs text-muted-foreground">No NHSBSA human touch assumed for pharmacy-caught or rule-cleared items. Pharmacy effort excluded.</p>
+            <p className="text-xs text-muted-foreground">Pharmacy avoidance is a count, not operator savings. Pharmacy effort is excluded; this comparison does not establish causal net time savings.</p>
           </> : <p className="text-sm" data-baseline-off>Agent Off. Today is highlighted; With agent estimates are hidden. Use Agent: Off in the header to restore the comparison. Inputs are retained.</p>}
         </section>
       </div>
+      <p className="text-sm">Fixed reference-cohort comparison assumption: judging is V × j / 60 hours on both sides, even when routing changes. No judgement savings are attributed to pharmacy avoidance.</p>
+      <p className="text-sm">Today referrals equal scenario volume, using the referred-back subset as a proxy. Actual total exceptions are unknown; assisted referrals use editable deficiency assumptions.</p>
+      {enabled && <BaselineFlow result={result} />}
       {enabled && <section aria-label="Assembly latency, not operator effort" className="rounded-xl border p-4 text-sm">
         <h2 className="font-semibold">Assembly latency, not operator effort</h2>
         <p className="mt-2">{number(result.assemblySeconds)} seconds / built item, derived from the synthetic engine. Not added to operator hours.</p>
-        <p className="mt-1">Expected time before decision: built {number(result.builtBeforeDecisionMinutes)} minutes (judging + assembly); abstained {number(result.abstainBeforeDecisionMinutes)} minutes (gathering + judging). Per-item assumptions, even when a cohort is empty; queue delay excluded.</p>
+        <p className="mt-1">Expected time before decision: built {number(result.builtBeforeDecisionMinutes)} minutes (synthetic review + judging + assembly); abstained {number(result.abstainBeforeDecisionMinutes)} minutes (synthetic gathering + judging). Per-item assumptions, even when a cohort is empty; queue delay excluded.</p>
       </section>}
     </> : <p className="rounded-lg border p-4 text-sm">Enter valid assumptions in every field to show estimates. No previous result is retained.</p>}
     <p role="status" aria-live="polite" aria-atomic="true" className="text-sm text-muted-foreground" data-baseline-summary>{result ? baselineSummary(result, enabled) : "Calculator estimates unavailable: check the highlighted inputs."}</p>
+    <section aria-label="Scenario cohort definitions" className="rounded-xl border p-4 text-sm">
+      <h2 className="font-semibold">What the cohorts mean</h2>
+      <dl className="mt-3 grid gap-4 sm:grid-cols-2">
+        <div><dt className="font-medium">Pharmacy-caught</dt><dd>Assumed caught and corrected before submission, so never enters the NHSBSA queue. Avoidance count only.</dd></div>
+        <div><dt className="font-medium">Rule-cleared</dt><dd>Code establishes certainty without a person touching the case. Existing pricing is unchanged; no AI or model call.</dd></div>
+        <div><dt className="font-medium">Abstained</dt><dd>Cannot safely interpret or find a provision. Reasons accompany the hand-off; the existing manual path remains unchanged.</dd></div>
+        <div><dt className="font-medium">Case built</dt><dd>Evidence and recommendation pass through the deterministic compliance gate. A human reviews and decides; the agent never approves or prices.</dd></div>
+      </dl>
+    </section>
     <BaselineAssumptions />
   </section>;
 }

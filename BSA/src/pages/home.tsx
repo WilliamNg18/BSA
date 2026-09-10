@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
 import { SourceDisclosure } from "@/components/demo/source-disclosure";
 import { BaselineCalculator } from "@/components/demo/baseline-calculator";
+import { BaselineScene } from "@/components/demo/baseline-scene";
 import { SceneDiagram, TwoPlacesDiagram } from "@/components/demo/tour-diagrams";
 import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
@@ -32,6 +33,7 @@ export function HomePage() {
             <SourceDisclosure claimIds={figure.claimIds} label={`Sources: ${figure.label}`} />
           </li>)}
         </ul>
+        <BaselineScene />
         <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
           <SceneDiagram />
           <section className="space-y-4 rounded-xl border bg-muted/30 p-5" aria-label="Rulebook context">

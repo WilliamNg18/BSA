@@ -21,7 +21,9 @@ export function AppShell() {
   const [disclaimerOpen, setDisclaimerOpen] = useState(true);
   const [resetEpoch, setResetEpoch] = useState(0);
   useEffect(() => {
-    if (!hash || hash === "#main-content") return;
+    // The pharmacy substop and queue chapter have no fragment. Only location
+    // changes move focus; edits, flag changes and reset must retain control focus.
+    if ((!hash && pathname !== "/pharmacy" && pathname !== "/queue") || hash === "#main-content") return;
     const heading = document.querySelector<HTMLElement>("[data-tour-heading]");
     heading?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });

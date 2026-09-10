@@ -6,12 +6,14 @@ ms.date: 2026-09-10
 
 ## Current increment scope
 
-This increment adds only the Chapter 2 calculator and reusable pure baseline
-arithmetic to the existing guided tour. It includes an in-memory input slice
-and a shared calculator disclosure on Assumptions. The existing header,
-template, chapters 1/3/4/6, pharmacy and queue interfaces are unchanged.
-Chapter 5 workload simulation remains planned. No new manual case views,
-pharmacy split view, backend or shared live model is implemented.
+Task 1 replaces the earlier aggregate calculator model with seven editable
+synthetic gathering steps, editable built review, identical reference-cohort
+judging, bounded referral assumptions and a proportional four-cohort flow.
+Chapter 1 now consumes the same live scenario selector. The existing header,
+chapters 3/4/6, pharmacy and queue interfaces are unchanged. Tasks 2-7,
+including animation, remain unimplemented. No backend or automatic decisions
+are added. The current formulas and defaults are specified in
+[the Task 1 model](task-1-baseline-model.md).
 
 Presenter mode, Discussion mode, their state, the subtitle and `/notes` remain
 removed. This supersedes those older requirements in [TASK.md](TASK.md).
@@ -78,7 +80,7 @@ navigation focuses its heading and returns to the top.
 
 | Chapter | Route | Built in this increment |
 |---|---|---|
-| 1 | `/#scene` | Three qualified figures and existing-process branches; Agent has no effect |
+| 1 | `/#scene` | Three qualified documentary figures, existing-process branches and shared synthetic estimates; Off hides assisted estimates only |
 | 2 | `/#month` | Editable synthetic workload calculator; qualified manual/assisted estimates |
 | 3 | `/#cases` | A-D engine outcomes On; neutral illustrative manual tasks Off |
 | 4 | `/#two-places` then `/pharmacy` | Accessible proposal diagrams and existing advisory pharmacy substop |
@@ -112,6 +114,17 @@ Case pages share a header: synthetic-case tag, state badge, "Back to queue", tit
 ## 4. Domain model
 
 ### Chapter 2 baseline model
+
+The current Task 1 model is defined in
+[task-1-baseline-model.md](task-1-baseline-model.md). It supersedes the
+historical aggregate-minute formulas and six-input count below. Local
+verification is separate from pending Azure deployment; Azure is the
+user-approved target after private Pages returned HTTP 422.
+
+### Historical calculator model before Task 1
+
+The following retained description records the previous increment, not
+current arithmetic or current UI expectations.
 
 [baseline.ts](../src/lib/domain/baseline.ts) contains pure typed validation,
 cohort arithmetic and generated summary copy. Its default provenance is in

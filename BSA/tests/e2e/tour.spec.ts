@@ -3,6 +3,7 @@ import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { TOUR_CONTENT } from "../../src/lib/domain/source-claims";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
+import { BASELINE_FIELDS } from "../../src/lib/domain/baseline";
 
 for (const colorScheme of ["light", "dark"] as const) {
   for (const width of [360, 768, 960, 1024, 1280, 1440, 1920]) {
@@ -39,7 +40,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 }
 
 for (const enabled of [true, false]) {
-  test(`tour forwards and backwards, chapter menu, pharmacy substop: agent=${enabled}`, async ({ page }) => {
+  test(`@tour-focus tour forwards and backwards, chapter menu, pharmacy substop: agent=${enabled}`, async ({ page }) => {
     await page.goto("./#scene");
     if (!enabled) await page.getByRole("switch", { name: "Agent: On" }).click();
     const rail = page.getByRole("navigation", { name: "Guided tour" });
@@ -49,15 +50,26 @@ for (const enabled of [true, false]) {
       await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${stop.to.replace("/#", "#")}`);
       await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
-      if (index > 0 && stop.to.includes("#")) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+      if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       if (stop.chapter === 2) await expect(page.getByRole("region", { name: "Monthly workload calculator" })).toBeVisible();
       if (stop.chapter === 5) await expect(page.getByRole("heading", { name: "5. The queue · Simulation planned", exact: true })).toBeVisible();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
     for (let index = TOUR_STOPS.length - 2; index >= 0; index--) {
-      await page.keyboard.press("Alt+ArrowLeft");
+      await rail.getByRole("button", { name: "Back", exact: true }).focus();
+      await page.keyboard.press("Enter");
       await expect(rail).toContainText(TOUR_STOPS[index].label);
       await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
+      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    }
+    // Exercise the same full route sequence in both directions via shortcuts.
+    for (const direction of [1, -1]) {
+      for (let index = direction === 1 ? 1 : TOUR_STOPS.length - 2; index >= 0 && index < TOUR_STOPS.length; index += direction) {
+        await page.keyboard.press(direction === 1 ? "Alt+ArrowRight" : "Alt+ArrowLeft");
+        await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
+        await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+        await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
+      }
     }
     await page.keyboard.press("Alt+ArrowRight");
     await expect(page).toHaveURL(/#month$/);
@@ -73,14 +85,80 @@ for (const enabled of [true, false]) {
     await rail.getByRole("button", { name: "Back", exact: true }).click();
     await expect(page).toHaveURL(/#two-places$/);
   });
+
+  for (const route of ["./#month", "pharmacy", "queue"]) {
+    test(`@tour-focus controls retain focus through edits, toggles and reset: ${route} agent=${enabled}`, async ({ page }) => {
+      await page.goto(route);
+      const heading = page.getByRole("heading", { level: 1 });
+      await expect(heading).toBeFocused();
+      const url = page.url();
+      const flag = page.getByRole("banner").getByRole("switch");
+      await flag.focus();
+      await flag.setChecked(enabled);
+      await expect(flag).toBeFocused();
+
+      if (route !== "queue") {
+        if (route === "./#month") await page.locator("[data-gathering-breakdown] > summary").click();
+        const fields = route === "pharmacy"
+          ? [page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" })]
+          : await page.getByRole("region", { name: "Monthly workload calculator" }).getByRole("textbox").all();
+        expect(fields).toHaveLength(route === "pharmacy" ? 1 : BASELINE_FIELDS.length);
+        for (const field of fields) {
+          await field.fill(route === "pharmacy" ? "NCSO RK" : "12");
+          await field.press("End");
+          await field.press("3");
+          await expect(field).toHaveValue(route === "pharmacy" ? "NCSO RK3" : "123");
+          for (const key of ["Alt+ArrowRight", "Alt+ArrowLeft"]) {
+            await field.press(key);
+            await expect(page).toHaveURL(url);
+            await expect(field).toBeFocused();
+          }
+        }
+      } else {
+        const filter = page.getByRole("radio", { name: "Agent abstained", exact: true });
+        await filter.focus();
+        await filter.press("Space");
+        await expect(filter).toBeChecked();
+        await expect(filter).toBeFocused();
+      }
+
+      await flag.focus();
+      await flag.press("Space");
+      await expect(flag).toBeChecked({ checked: !enabled });
+      await expect(flag).toBeFocused();
+      await flag.press("Space");
+      await expect(flag).toBeChecked({ checked: enabled });
+      await expect(flag).toBeFocused();
+
+      const reset = page.getByRole("button", { name: "Reset demo", exact: true });
+      for (const action of ["Escape", "Keep working", "Reset demonstration"]) {
+        await reset.focus();
+        await reset.press("Enter");
+        const dialog = page.getByRole("alertdialog");
+        const cancel = dialog.getByRole("button", { name: "Keep working", exact: true });
+        await expect(cancel).toBeFocused();
+        await page.keyboard.press("Alt+ArrowRight");
+        await expect(page).toHaveURL(url);
+        await expect(cancel).toBeFocused();
+        if (action === "Escape") await page.keyboard.press("Escape");
+        else await dialog.getByRole("button", { name: action, exact: true }).press("Enter");
+        await expect(dialog).toHaveCount(0);
+        await expect(reset).toBeFocused();
+        await expect(page).toHaveURL(url);
+        await expect(heading).not.toBeFocused();
+        await expect(flag).toBeChecked({ checked: action === "Reset demonstration" || enabled });
+      }
+    });
+  }
 }
 
-test("scene is invariant; A–D match runAgent and off is neutral manual work", async ({ page }) => {
+test("documentary scene figures are invariant; A–D match runAgent and off is neutral manual work", async ({ page }) => {
   await page.goto("./#scene");
-  const scene = page.locator("[data-tour-chapter]");
+  const scene = page.getByRole("list", { name: "Document-attributed key figures" });
   const before = await scene.innerText();
   await page.getByRole("switch", { name: "Agent: On" }).click();
   await expect(scene).toHaveText(before, { useInnerText: true });
+  await expect(page.locator("[data-scene-with-gathering], [data-scene-referrals]")).toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: Off" }).click();
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
   await page.getByRole("menuitem", { name: "3. Four cases", exact: true }).click();

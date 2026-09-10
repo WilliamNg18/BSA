@@ -33,7 +33,7 @@ import { create } from "zustand";
 
 import { CASES } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
-import { BASELINE_DEFAULTS } from "@/lib/domain/baseline-defaults";
+import { BASELINE_DEFAULTS } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
 
 // Session state for the prototype. Everything is in memory: the preview runs in

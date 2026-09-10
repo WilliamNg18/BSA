@@ -1,11 +1,22 @@
 /** Pure scenario arithmetic. No case mutations, decisions, pricing or measured savings. */
+import { BASELINE_PROVENANCE as provenance } from "./baseline-defaults";
+
 export interface BaselineInputs {
   volume: number;
-  gatheringMinutes: number;
+  findFormMinutes: number;
+  readEndorsementMinutes: number;
+  productPackMinutes: number;
+  claimRecordsMinutes: number;
+  tariffVersionClauseMinutes: number;
+  compareSourcesMinutes: number;
+  recordReasonMinutes: number;
+  builtReviewMinutes: number;
   judgingMinutes: number;
   precheckPercent: number;
   clearedPercent: number;
   abstainPercent: number;
+  deficientBuiltPercent: number;
+  deficientAbstainPercent: number;
   assemblySeconds: number;
 }
 
@@ -15,13 +26,52 @@ export type BaselineDraft = Record<BaselineField, string>;
 export const BASELINE_LIMITS = { volume: 1_000_000_000, minutes: 1440, percent: 100, assemblySeconds: 3600 } as const;
 export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) => value.toLocaleString("en-GB", { maximumFractionDigits });
 
+// All numeric scenario defaults live here. The companion module derives only
+// fixture provenance; neither module imports the private research register.
+export const BASELINE_VOLUME_REFERENCE = Object.freeze({ monthly: 85_000, annual: 1_000_000, monthsPerYear: 12 });
+export const BASELINE_DEFAULTS: Readonly<BaselineInputs> = Object.freeze({
+  volume: BASELINE_VOLUME_REFERENCE.monthly,
+  findFormMinutes: 0.5,
+  readEndorsementMinutes: 0.75,
+  productPackMinutes: 0.5,
+  claimRecordsMinutes: 0.5,
+  tariffVersionClauseMinutes: 1,
+  compareSourcesMinutes: 0.75,
+  recordReasonMinutes: 1,
+  builtReviewMinutes: 1,
+  judgingMinutes: 2,
+  precheckPercent: provenance.pharmacy.numerator / provenance.pharmacy.denominator * 100,
+  clearedPercent: provenance.cleared.numerator / provenance.cleared.denominator * 100,
+  abstainPercent: provenance.abstain.numerator / provenance.abstain.denominator * 100,
+  deficientBuiltPercent: 25,
+  deficientAbstainPercent: 50,
+  assemblySeconds: provenance.assembly.totalSeconds / provenance.assembly.denominator,
+});
+
+export const GATHERING_STEPS = [
+  { key: "findFormMinutes", label: "Find form minutes / item" },
+  { key: "readEndorsementMinutes", label: "Read endorsement minutes / item" },
+  { key: "productPackMinutes", label: "Product and pack minutes / item" },
+  { key: "claimRecordsMinutes", label: "Claim records minutes / item" },
+  { key: "tariffVersionClauseMinutes", label: "Tariff version and clause minutes / item" },
+  { key: "compareSourcesMinutes", label: "Compare sources minutes / item" },
+  { key: "recordReasonMinutes", label: "Record reason minutes / item" },
+] as const satisfies readonly { key: keyof BaselineInputs; label: string }[];
+
+export function manualGatheringMinutes(input: BaselineInputs): number {
+  return GATHERING_STEPS.reduce((sum, { key }) => sum + input[key], 0);
+}
+
 export const BASELINE_FIELDS = ([
   { key: "volume", label: "Monthly volume proxy", max: BASELINE_LIMITS.volume, integer: true, hint: "Items · Whole number" },
-  { key: "gatheringMinutes", label: "Gathering minutes / item", max: BASELINE_LIMITS.minutes, integer: false, hint: "Manual assumption · Minutes" },
-  { key: "judgingMinutes", label: "Judging minutes / item", max: BASELINE_LIMITS.minutes, integer: false, hint: "Manual assumption · Minutes" },
+  ...GATHERING_STEPS.map((step) => ({ ...step, max: BASELINE_LIMITS.minutes, integer: false, hint: "Synthetic assumption · Minutes" })),
+  { key: "builtReviewMinutes", label: "Built case review minutes / item", max: BASELINE_LIMITS.minutes, integer: false, hint: "Synthetic assumption · Evidence review, separate from judging" },
+  { key: "judgingMinutes", label: "Judging minutes / item", max: BASELINE_LIMITS.minutes, integer: false, hint: "Synthetic assumption · Same reference cohort on both sides" },
   { key: "precheckPercent", label: "Pharmacy pre-check %", max: BASELINE_LIMITS.percent, integer: false, hint: "Share of incoming volume" },
   { key: "clearedPercent", label: "Rule-cleared %", max: BASELINE_LIMITS.percent, integer: false, hint: "Share remaining after pharmacy pre-check" },
   { key: "abstainPercent", label: "Abstention %", max: BASELINE_LIMITS.percent, integer: false, hint: "Share of the uncleared remainder" },
+  { key: "deficientBuiltPercent", label: "Deficient built share %", max: BASELINE_LIMITS.percent, integer: false, hint: "Synthetic assumption · Share of built items referred back" },
+  { key: "deficientAbstainPercent", label: "Deficient abstained share %", max: BASELINE_LIMITS.percent, integer: false, hint: "Synthetic assumption · Share of abstained items referred back" },
 ] as const satisfies readonly { key: BaselineField; label: string; max: number; integer: boolean; hint: string }[]).map((field) => ({
   ...field, hint: `${field.hint} · 0 to ${formatBaselineNumber(field.max)}`,
 }));
@@ -38,10 +88,7 @@ export function baselineErrors(input: BaselineInputs): Partial<Record<keyof Base
 }
 
 export function parseBaselineDraft(draft: BaselineDraft, assemblySeconds: number) {
-  const input: BaselineInputs = {
-    volume: NaN, gatheringMinutes: NaN, judgingMinutes: NaN,
-    precheckPercent: NaN, clearedPercent: NaN, abstainPercent: NaN, assemblySeconds,
-  };
+  const input = { ...BASELINE_DEFAULTS, assemblySeconds };
   // Plain decimals only: blank strings never become zero; no exponent/hex coercion.
   for (const { key, integer, max } of BASELINE_FIELDS) {
     const text = draft[key].trim();
@@ -65,6 +112,7 @@ export function baselineDraft(input: BaselineInputs): BaselineDraft {
 
 export interface BaselineResult {
   volume: number;
+  manualGatheringMinutes: number;
   pharmacyCaught: number;
   cleared: number;
   abstained: number;
@@ -74,11 +122,14 @@ export interface BaselineResult {
   builtBeforeDecisionMinutes: number;
   abstainBeforeDecisionMinutes: number;
   assemblySeconds: number;
+  referrals: { today: number; withAgent: number; built: number; abstained: number };
+  firstTimeEndorsementAccuracyPercent: number | null;
 }
 
 export function calculateBaseline(input: BaselineInputs): BaselineResult {
   if (Object.keys(baselineErrors(input)).length) throw new RangeError("Invalid baseline assumptions");
-  const { volume, gatheringMinutes: g, judgingMinutes: j, assemblySeconds } = input;
+  const { volume, judgingMinutes: j, builtReviewMinutes: review, assemblySeconds } = input;
+  const g = manualGatheringMinutes(input);
   // Each rounded cohort is removed before calculating the next denominator.
   const pharmacyCaught = Math.round(volume * (input.precheckPercent / 100));
   const remaining = volume - pharmacyCaught;
@@ -88,21 +139,52 @@ export function calculateBaseline(input: BaselineInputs): BaselineResult {
   const built = uncleared - abstained;
   const todayGathering = volume * g;
   const todayJudging = volume * j;
-  const withGathering = abstained * g;
-  const withJudging = (abstained + built) * j;
+  const withGathering = abstained * g + built * review;
+  // Fixed reference cohort, not a claim of avoided judgement or net savings.
+  const withJudging = todayJudging;
+  const builtReferrals = Math.round(built * (input.deficientBuiltPercent / 100));
+  const abstainReferrals = Math.round(abstained * (input.deficientAbstainPercent / 100));
+  const referrals = builtReferrals + abstainReferrals;
+  if (![pharmacyCaught, cleared, abstained, built, builtReferrals, abstainReferrals, referrals]
+    .every((count) => Number.isSafeInteger(count) && count >= 0 && count <= volume)
+    || builtReferrals > built || abstainReferrals > abstained || referrals > built + abstained
+    || pharmacyCaught + cleared + abstained + built !== volume
+    || ![todayGathering, todayJudging, withGathering, todayGathering + todayJudging, withGathering + withJudging]
+      .every((minutes) => Number.isFinite(minutes) && minutes <= Number.MAX_SAFE_INTEGER)) {
+    throw new RangeError("Baseline arithmetic overflow");
+  }
   return {
-    volume, pharmacyCaught, cleared, abstained, built,
+    volume, manualGatheringMinutes: g, pharmacyCaught, cleared, abstained, built,
     today: { gatheringMinutes: todayGathering, judgingMinutes: todayJudging, operatorHours: (todayGathering + todayJudging) / 60 },
     withAgent: { gatheringMinutes: withGathering, judgingMinutes: withJudging, operatorHours: (withGathering + withJudging) / 60 },
-    builtBeforeDecisionMinutes: j + assemblySeconds / 60,
+    builtBeforeDecisionMinutes: review + j + assemblySeconds / 60,
     abstainBeforeDecisionMinutes: g + j,
     assemblySeconds,
+    referrals: { today: volume, withAgent: referrals, built: builtReferrals, abstained: abstainReferrals },
+    // Referral-free scenario proxy, NOT observed endorsement correctness.
+    firstTimeEndorsementAccuracyPercent: volume === 0 ? null : (volume - referrals) / volume * 100,
   };
 }
 
 export function baselineSummary(result: BaselineResult, enabled: boolean): string {
   const n = (value: number) => formatBaselineNumber(value, 1);
-  const today = `Manual scenario: ${n(result.volume)} items, ${n(result.today.operatorHours)} operator hours.`;
-  if (!enabled) return `${today} Agent Off: With agent estimates hidden; no measured saving is claimed.`;
-  return `${today} With agent scenario: ${n(result.pharmacyCaught)} pharmacy-caught, ${n(result.cleared)} rule-cleared, ${n(result.abstained)} abstained and ${n(result.built)} built for human review; ${n(result.withAgent.operatorHours)} operator hours. Estimates, not measured savings or actual decisions.`;
+  if (!enabled) return `Synthetic scenario: ${n(result.volume)} items; ${n(result.today.operatorHours)} reference hours. Assisted estimates hidden. No measured savings.`;
+  return `Synthetic scenario: ${n(result.pharmacyCaught)} pharmacy-caught, ${n(result.cleared)} cleared, ${n(result.abstained)} abstained, ${n(result.built)} built; ${n(result.referrals.withAgent)} referrals. Judging unchanged. Not measured savings or decisions.`;
+}
+
+/** Shared construction for calculator and chapter 1; invalid drafts fail closed. */
+export function selectBaselineScenario(draft: BaselineDraft) {
+  const parsed = parseBaselineDraft(draft, BASELINE_DEFAULTS.assemblySeconds);
+  return { ...parsed, result: parsed.input ? calculateBaseline(parsed.input) : null };
+}
+
+/** Generate editable default labels from the same inputs used by the model. */
+export function baselineDefaultCopy(defaults: Readonly<BaselineInputs>) {
+  const n = formatBaselineNumber;
+  const reference = BASELINE_VOLUME_REFERENCE;
+  return {
+    volumeNote: `Volume default: ${n(defaults.volume)} items/month. O23's approximately ${n(reference.monthly)} referred-back items/month is a scale proxy, not total exceptions. Rates are synthetic scenario assumptions, not measured effectiveness.`,
+    volumeSource: `Volume: O23 attributes approximately ${n(reference.monthly)} referred-back items/month to Community Pharmacy England through the supplied pack. Used only as a scenario scale proxy, not total exceptions. O24: the total operator queue is unknown. N01: ${n(reference.annual)} / ${n(reference.monthsPerYear)} = approximately ${n(reference.annual / reference.monthsPerYear, 2)}, not exactly ${n(reference.monthly)}. No external verification.`,
+    manualAssumptions: `Gathering ${n(manualGatheringMinutes(defaults))} minutes across seven steps, built review ${n(defaults.builtReviewMinutes)} minutes and judging ${n(defaults.judgingMinutes)} minutes: editable synthetic assumptions, not document measurements. A03/A10 motivate workflow validation, not these durations.`,
+  };
 }

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { SourceDisclosure } from "./source-disclosure";
-import { BASELINE_FIELDS, formatBaselineNumber as n } from "@/lib/domain/baseline";
-import { BASELINE_DEFAULTS, BASELINE_PROVENANCE as provenance, baselineDefaultCopy } from "@/lib/domain/baseline-defaults";
+import { BASELINE_FIELDS, formatBaselineNumber as n, BASELINE_DEFAULTS, baselineDefaultCopy } from "@/lib/domain/baseline";
+import { BASELINE_PROVENANCE as provenance } from "@/lib/domain/baseline-defaults";
 import { useAppStore } from "@/lib/store";
 
 const previewCharacters = 64;
@@ -31,11 +31,13 @@ export function BaselineAssumptions({ register = false }: { register?: boolean }
         <li>Validated rule citations: {provenance.citations.numerator}/{provenance.citations.denominator} active recommended canonical packs only. Not all decisions or all scaled built items. D has no provision; E has no rule citation or model call. Existing human records are unchanged.</li>
       </ul>
       <div className="space-y-2 rounded-md bg-muted/40 p-4" aria-label="Calculator formula">
-        <p>V = whole-item volume; p, c, a = percentages / 100; g, j = gathering and judging minutes.</p>
+        <p>V = whole-item volume; p, c, a = percentages / 100; g = sum of seven synthetic gathering steps; j = judging minutes; r = built review minutes.</p>
         <p>P = round(V × p); C = round((V − P) × c); A = round((V − P − C) × a); B = V − P − C − A.</p>
         <p>P pharmacy-caught, C rule-cleared, A abstained, B built: disjoint integer cohorts summing exactly to V. Rounding is nearest integer, halves up.</p>
-        <p>Today: gathering V × g; judging V × j. With agent: gathering A × g; judging (A + B) × j. Operator hours = (gathering + judging) / 60.</p>
-        <p>Built expected time before decision = j + assemblySeconds / 60; abstained = g + j. No queue delay, parallelism or extra failed-assembly latency is modelled. Pharmacy-caught and rule-cleared assume no NHSBSA human touch; pharmacy effort is excluded.</p>
+        <p>Today gathering hours = V × g / 60. With agent gathering hours = (A × g + B × r) / 60. Judging hours = V × j / 60 on BOTH sides: a fixed reference-cohort comparison assumption, not avoided judgement. Reference operator hours = gathering hours + judging hours.</p>
+        <p>Today referrals = V, a referred-subset scenario proxy, not actual total exceptions. With agent referrals = round(B × deficientBuiltPercent / 100) + round(A × deficientAbstainPercent / 100). Deficiency shares are editable synthetic assumptions, not canonical outcomes or measured effectiveness.</p>
+        <p>First-time endorsement accuracy proxy = (V − assisted referrals) / V × 100, bounded 0–100; undefined at zero volume. This derived referral-free share is not actual accuracy, endorsement correctness or the documentary pricing-accuracy target.</p>
+        <p>Built expected time before decision = r + j + assemblySeconds / 60; abstained = g + j. No queue delay, parallelism or extra failed-assembly latency is modelled. Pharmacy-caught and rule-cleared assume no NHSBSA human touch, but reference-cohort judging stays fixed. Pharmacy effort is excluded; avoidance is count-only, never a causal net-time claim.</p>
         <p>Assembly is machine latency, never added to operator hours or multiplied into a labour cost. Built items still require a human decision. No prices, payments, approvals or decisions are generated.</p>
       </div>
       <SourceDisclosure claimIds={[...provenance.sourceIds]} label="Calculator documentary sources" />

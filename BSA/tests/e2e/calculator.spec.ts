@@ -1,15 +1,112 @@
 import AxeBuilder from "@axe-core/playwright";
+import type { Page } from "@playwright/test";
 import { captureCheckpoint, captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
-import { BASELINE_DEFAULTS } from "../../src/lib/domain/baseline-defaults";
-import { BASELINE_FIELDS, baselineSummary, calculateBaseline } from "../../src/lib/domain/baseline";
+import { BASELINE_DEFAULTS, BASELINE_FIELDS, GATHERING_STEPS, baselineSummary, calculateBaseline, formatBaselineNumber as n } from "../../src/lib/domain/baseline";
+
+async function expandSteps(page: Page) {
+  const disclosure = page.locator("[data-gathering-breakdown]");
+  if (await disclosure.getAttribute("open") === null) await disclosure.locator("summary").click();
+}
+
+test("all seven live steps, review, judging and deficiency edits drive the same scene model", async ({ page }, testInfo) => {
+  await page.goto("./#month");
+  await expect(page.locator("[data-gathering-breakdown]")).not.toHaveAttribute("open", "");
+  await expandSteps(page);
+  const edited = { ...BASELINE_DEFAULTS, volume: 120 };
+  await page.getByLabel("Monthly volume proxy", { exact: true }).fill("120");
+  for (const { key, label } of GATHERING_STEPS) {
+    edited[key] += 1;
+    await page.getByLabel(label, { exact: true }).fill(String(edited[key]));
+    const result = calculateBaseline(edited);
+    await expect(page.locator("[data-gathering-total]")).toContainText(`${n(result.manualGatheringMinutes, 1)} minutes`);
+    await expect(page.locator("[data-baseline-today] dl > div").filter({ has: page.locator("dt", { hasText: /^Gathering$/ }) })).toHaveText(`Gathering${n(result.today.gatheringMinutes / 60, 1)} hours`);
+    await expect(page.locator("[data-baseline-with] dl > div").filter({ has: page.locator("dt", { hasText: /^Gathering$/ }) })).toHaveText(`Gathering${n(result.withAgent.gatheringMinutes / 60, 1)} hours`);
+    await navigatePrimary(page, "Overview");
+    await expect(page.locator("[data-scene-volume]")).toHaveText("120");
+    await expect(page.locator("[data-scene-gathering]")).toHaveText(n(result.today.gatheringMinutes / 60, 1));
+    await expect(page.locator("[data-scene-with-gathering]")).toHaveText(n(result.withAgent.gatheringMinutes / 60, 1));
+    await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
+    await expandSteps(page);
+    await expect(page.getByLabel(label, { exact: true })).toHaveValue(String(edited[key]));
+  }
+  for (const { key, label, value } of [
+    { key: "builtReviewMinutes", label: "Built case review minutes / item", value: 2.5 },
+    { key: "judgingMinutes", label: "Judging minutes / item", value: 3.5 },
+    { key: "deficientBuiltPercent", label: "Deficient built share %", value: 75 },
+    { key: "deficientAbstainPercent", label: "Deficient abstained share %", value: 100 },
+  ] as const) {
+    edited[key] = value;
+    await page.getByLabel(label, { exact: true }).fill(String(value));
+    const result = calculateBaseline(edited);
+    await expect(page.locator("[data-referrals-today]")).toHaveText("120");
+    await expect(page.locator("[data-referrals-with]")).toHaveText(String(result.referrals.withAgent));
+    for (const side of ["today", "with"]) {
+      await expect(page.locator(`[data-baseline-${side}] dl > div`).filter({ has: page.locator("dt", { hasText: /^Judging$/ }) })).toHaveText(`Judging${n(result.today.judgingMinutes / 60, 1)} hours`);
+    }
+    await navigatePrimary(page, "Overview");
+    await expect(page.locator("[data-scene-judging]")).toHaveText(n(result.today.judgingMinutes / 60, 1));
+    await expect(page.locator("[data-scene-with-gathering]")).toHaveText(n(result.withAgent.gatheringMinutes / 60, 1));
+    await expect(page.locator("[data-scene-referrals]")).toHaveText(String(result.referrals.withAgent));
+    await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
+  }
+  await captureJson(testInfo, "shared-scenario", { inputs: edited, result: calculateBaseline(edited) });
+  expect((await page.locator("[data-baseline-summary]").innerText()).split(/\s+/).length).toBeLessThan(25);
+  await page.getByLabel("Built case review minutes / item", { exact: true }).fill("");
+  await navigatePrimary(page, "Overview");
+  await expect(page.locator("[data-scene-estimates]")).toContainText("unavailable");
+  await expect(page.locator("[data-scene-gathering]")).toHaveCount(0);
+  await confirmReset(page);
+  const defaults = calculateBaseline(BASELINE_DEFAULTS);
+  await expect(page.locator("[data-scene-gathering]")).toHaveText(n(defaults.today.gatheringMinutes / 60, 1));
+});
+
+for (const colorScheme of ["light", "dark"] as const) {
+  for (const width of [320, 360, 768, 1024, 1440]) {
+    test.describe(`proportional flow ${colorScheme} ${width}`, () => {
+      test.use({ colorScheme, viewport: { width, height: 1000 } });
+      test("accessible four-cohort ribbons conserve width including empty paths and reflow", async ({ page }, testInfo) => {
+        await page.goto("./#month");
+        const image = page.getByRole("img", { name: /Proportional monthly scenario flow/ });
+        await expect(image).toBeVisible();
+        for (const volume of [85000, 0, 1, 120, 1000000000]) {
+          await page.getByLabel("Monthly volume proxy", { exact: true }).fill(String(volume));
+          const result = calculateBaseline({ ...BASELINE_DEFAULTS, volume });
+          const counts = [result.pharmacyCaught, result.cleared, result.abstained, result.built];
+          const paths = image.locator("path");
+          await expect(paths).toHaveCount(4);
+          let total = 0;
+          for (const [index, count] of counts.entries()) {
+            const path = paths.nth(index);
+            await expect(path).toHaveAttribute("data-count", String(count));
+            const thickness = Number(await path.getAttribute("data-thickness"));
+            expect(thickness).toBe(volume === 0 ? 0 : count / volume * 240);
+            total += thickness;
+            if (count === 0) await expect(path).toHaveAttribute("d", "");
+            else await expect(path).toHaveAttribute("d", /Z$/);
+          }
+          expect(total).toBeCloseTo(volume === 0 ? 0 : 240, 10);
+          await expect(page.getByRole("list", { name: "Flow counts in top-to-bottom order" }).locator("li")).toHaveCount(4);
+          await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+        }
+        await page.getByLabel("Monthly volume proxy", { exact: true }).fill("120");
+        await page.getByLabel("Pharmacy pre-check %", { exact: true }).fill("100");
+        await expect(image.locator("path").first()).toHaveAttribute("data-thickness", "240");
+        for (let index = 1; index < 4; index++) await expect(image.locator("path").nth(index)).toHaveAttribute("d", "");
+        await confirmReset(page);
+        await captureCheckpoint(page, testInfo, "scenario-flow");
+      });
+    });
+  }
+}
 
 test("calculator live edits, flag, route persistence, history, reset and rail", async ({ page }) => {
   await page.goto("./#month");
+  await expandSteps(page);
   const summary = page.locator("[data-baseline-summary]");
   await expect(summary).toHaveText(baselineSummary(calculateBaseline(BASELINE_DEFAULTS), true));
   await page.getByLabel("Monthly volume proxy", { exact: true }).fill("12");
-  await page.getByLabel("Gathering minutes / item", { exact: true }).fill("3.5");
-  const edited = { ...BASELINE_DEFAULTS, volume: 12, gatheringMinutes: 3.5 };
+  await page.getByLabel("Find form minutes / item", { exact: true }).fill("3.5");
+  const edited = { ...BASELINE_DEFAULTS, volume: 12, findFormMinutes: 3.5 };
   await expect(summary).toHaveText(baselineSummary(calculateBaseline(edited), true));
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await expect(summary).toHaveText(baselineSummary(calculateBaseline(edited), false));
@@ -30,7 +127,7 @@ test("calculator live edits, flag, route persistence, history, reset and rail", 
   await expect(page.getByRole("main")).toContainText("DR-000871");
   await navigatePrimary(page, "Overview");
   await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Next", exact: true }).click();
-  await expect(page.getByLabel("Gathering minutes / item", { exact: true })).toHaveValue("3.5");
+  await expect(page.getByLabel("Find form minutes / item", { exact: true })).toHaveValue("3.5");
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await page.getByRole("button", { name: "Reset demo", exact: true }).click();
   await page.getByRole("button", { name: "Keep working" }).click();
@@ -48,6 +145,7 @@ test("calculator live edits, flag, route persistence, history, reset and rail", 
 
 test("invalid input is retained, labelled and suppresses results; zero and 100% work", async ({ page }) => {
   await page.goto("./#month");
+  await expandSteps(page);
   for (const { key, label, max } of BASELINE_FIELDS) {
     const field = page.getByLabel(label, { exact: true });
     for (const value of ["", "-1", "NaN", "Infinity", "1e309", String(max + 1)]) {
@@ -66,11 +164,12 @@ test("invalid input is retained, labelled and suppresses results; zero and 100% 
   await navigatePrimary(page, "Assumptions");
   await page.getByText("Calculator assumptions, sources and formula", { exact: true }).click();
   await page.getByRole("link", { name: "Return to calculator" }).click();
+  await expandSteps(page);
   await expect(volume).toHaveValue("");
   await volume.fill("0");
   await expect(page.locator("[data-cohort]")).toHaveText(["0", "0", "0", "0"]);
-  for (const label of ["Gathering minutes / item", "Judging minutes / item"]) await page.getByLabel(label, { exact: true }).fill("0");
-  await expect(page.locator("[data-baseline-today]")).toContainText("0 operator hours");
+  for (const label of [...GATHERING_STEPS.map(({ label }) => label), "Judging minutes / item"]) await page.getByLabel(label, { exact: true }).fill("0");
+  await expect(page.locator("[data-baseline-today]")).toContainText("0 reference operator hours");
   await volume.fill("1000000000");
   await page.getByLabel("Pharmacy pre-check %", { exact: true }).fill("100");
   await expect(page.locator("[data-cohort]")).toHaveText(["1,000,000,000", "0", "0", "0"]);
@@ -88,6 +187,7 @@ test("invalid input is retained, labelled and suppresses results; zero and 100% 
 for (const { key, label, max, integer } of BASELINE_FIELDS) {
   test(`exact decimal boundary validation: ${key}`, async ({ page }) => {
     await page.goto("./#month");
+    await expandSteps(page);
     const field = page.getByLabel(label, { exact: true });
     for (const raw of [`${max}.00000000000000001`, `000${max}.${"0".repeat(400)}1`]) {
       await field.fill(raw);
@@ -112,6 +212,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       test.use({ colorScheme, viewport: { width, height: 1000 } });
       test("all raw fields remain invalid and both expanded disclosures reflow", async ({ page }, testInfo) => {
         await page.goto("./#month");
+        await expandSteps(page);
         const raw = "9".repeat(400);
         for (const { key, label } of BASELINE_FIELDS) {
           const field = page.getByLabel(label, { exact: true });
@@ -167,11 +268,12 @@ for (const colorScheme of ["light", "dark"] as const) {
       test.use({ colorScheme, viewport: { width: 1440, height: 1000 } });
       test("expanded provenance and invalid inputs pass axe; selected responsive captures", async ({ page }, testInfo) => {
         await page.goto("./#month");
+        await expandSteps(page);
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
         for (const width of [1440, 360]) {
           await page.setViewportSize({ width, height: 1000 });
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-          await page.screenshot({ path: `docs/qa/calculator/month-${width}-${colorScheme}-${enabled ? "on" : "off"}.png`, fullPage: true });
+          await captureCheckpoint(page, testInfo, `month-${width}-${colorScheme}-${enabled ? "on" : "off"}`);
         }
         await page.setViewportSize({ width: 1440, height: 1000 });
         await page.getByText("Calculator assumptions, sources and formula", { exact: true }).click();
@@ -182,7 +284,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         await expect(page.locator('[data-claim-id="O23"]')).toContainText("Community Pharmacy England");
         await expect(page.locator('[data-claim-id="O23"]')).toContainText("P0694–P0695");
         for (const invalid of [false, true]) {
-          if (invalid) await page.getByLabel("Gathering minutes / item", { exact: true }).fill("");
+          if (invalid) await page.getByLabel("Find form minutes / item", { exact: true }).fill("");
           const results = await new AxeBuilder({ page }).analyze();
           await captureJson(testInfo, `axe-expanded-invalid-${invalid}`, results);
           expect(results.violations).toEqual([]);

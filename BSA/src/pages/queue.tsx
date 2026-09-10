@@ -65,7 +65,7 @@ export function QueuePage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="space-y-2">
         <SyntheticTag />
-        <h1 className="text-2xl font-semibold tracking-tight">NHSBSA exception queue</h1>
+        <h1 tabIndex={-1} data-tour-heading className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2">NHSBSA exception queue</h1>
         <p className="max-w-3xl text-muted-foreground">
           Items the existing routing has already sent to an operator. The agent has worked each one before anyone opened it. Confidence is shown as its
           signals, not as a percentage. Open a case to see the case pack, or its trace to see how the case was built.

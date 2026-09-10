@@ -14,6 +14,14 @@ source registry, canonical fixtures/rules/gate and unrelated files are untouched
 
 ## Verification
 
+### Cross-page focus follow-up
+
+Hosted calculator checks found that the Pharmacy and Queue tour destinations
+did not focus their headings. Both headings are now focusable tour targets,
+with forward/back, mouse/keyboard and input-focus regressions. The focused
+suite passed eight checks. The historical record comparison also exposed a
+test-harness whitespace mismatch, not a change to saved decisions.
+
 Current post-fix results come from raw local logs, not the earlier 222/327
 implementation totals. Typecheck, lint and build pass with the existing Vite
 large-chunk warning. The full unit run passes 239 tests in nine files, including

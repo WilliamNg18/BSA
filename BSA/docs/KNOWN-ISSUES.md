@@ -4,7 +4,28 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
-## Chapter 2 calculator current scope
+## Task 1 current scope
+
+The current [Task 1 model](task-1-baseline-model.md) supersedes the earlier
+aggregate gathering and reduced-judging formulas below. Seven synthetic steps,
+built review, fixed reference judging, bounded referrals, proportional flow
+and shared chapter 1 estimates are implemented. The source registry and
+documentary disclosures are unchanged; source-name removal and the broader
+copy cap are not part of this task. Existing focus fixes are preserved.
+
+Task 1 local validation passes: final check exit 0; 383 unit tests in nine
+files; 371 production Chromium tests in 4.5 minutes, exit 0; 48 axe audits,
+zero violations. Evidence and 298 screenshots (excluding attachment copies)
+are retained in [the task artifacts](../../.copilot-tracking/tasks/1/verification.json).
+The production privacy regression scanned nine emitted files and three
+served text assets, with zero private matches. CI and Azure deployment are
+not performed.
+Azure is the user-approved target following private Pages HTTP 422; local
+`/BSA/` production checks establish compatibility only. The existing bundle
+size warning remains. No measured time-saving, actual first-time endorsement
+accuracy or full WCAG conformance claim is made.
+
+## Historical Chapter 2 calculator scope before Task 1
 
 Chapter 2 now includes pure scenario arithmetic, validated editable volume,
 gathering/judging minutes and sequential percentages. Defaults/current values,

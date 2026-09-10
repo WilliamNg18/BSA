@@ -74,7 +74,7 @@ export function PharmacyPage() {
     <div className="mx-auto max-w-7xl space-y-6">
       <div className="space-y-2">
         <SyntheticTag>Synthetic pharmacy, synthetic prescription, synthetic claim</SyntheticTag>
-        <h1 className="text-2xl font-semibold tracking-tight">Pharmacy pre-submission check</h1>
+        <h1 tabIndex={-1} data-tour-heading className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2">Pharmacy pre-submission check</h1>
         <p className="max-w-3xl text-muted-foreground">
           {c.pharmacy.name} ({c.pharmacy.contractorCode}) is preparing this month's claim. Before it is sent, the same agent that works NHSBSA's queue checks the
           endorsement against the rule in force on the dispensing date and says exactly what is missing. In production this runs where the claim is
