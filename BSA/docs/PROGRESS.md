@@ -14,7 +14,7 @@ ms.date: 2026-09-10
 * [ ] Task 6
 * [ ] Task 7
 * [ ] Task 8: Shared case lifecycle and append-only history in the store
-* [ ] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state
+* [x] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state (stream-c-claims, pending merge after B)
 * [ ] Task 10: Live round trip with Follow this item banner and Switch side
 * [ ] Task 11: Tour chapter "What the pharmacy sees" after the queue; two-places chapter updated
 * [ ] Task 12: Navigation, case header Pharmacy view link, header still one row
@@ -132,3 +132,27 @@ Four [selected screenshots](screens/task3/README.md) were visually reviewed.
 No full WCAG, manual screen-reader, Firefox/WebKit or performance claim is made.
 Archive/rollback references remain untouched. This file is authoritative; the
 root progress file is a pointer, not a second checklist.
+## Task 9 (Stream C, stream-c-claims): pharmacy claims view
+
+Implemented `/pharmacy/claims` and its claim-detail/action components under
+`src/pages/pharmacy-claims.tsx` and `src/components/claims/`, plus their unit
+and Playwright tests. The store, routes, navigation and header were not
+touched. Built entirely on the frozen `lifecycle.ts` contract (LifecycleState,
+Actor, HistoryEvent, LIFECYCLE_LABELS) with page-local, session-only synthetic
+fixtures; no `not implemented` store method is invoked, matching the fixture-
+only phase. Pharmacies are selectable; each selected pharmacy lists its claims;
+selecting a claim shows its history and the actions allowed for its current
+lifecycle state (information_requested: send confirmation; referred_back:
+resubmit with correction; no action otherwise). Pharmacy-side lifecycle labels
+are the exact frozen strings and do not vary with the assistance toggle. When
+assistance is on, only the operator-approved draft reason is shown, labelled
+"Operator-approved draft"; when off, the manual operator context is shown
+instead. Pharmacy actions record a local, session-only note and never change a
+claim's lifecycle state.
+
+Local gates: `npm run typecheck`, `npm run lint` and `npm run build` all exit 0
+(existing large-chunk warning only). `npx vitest run` passes 393 units in ten
+files (386 pre-existing plus 7 new, covering fixture shape/history/state
+coverage and actions-by-state). The full production Playwright suite
+(`npx playwright test --project=chromium`), including four new claims-view
+tests, passes 390/390 with no skips or retries.

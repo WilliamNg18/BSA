@@ -53,3 +53,13 @@ Only new cross-stream tests may be tagged pending-integration and temporarily
 skipped before integration. Never weaken or skip existing regression tests.
 Tasks 5-7 lack a current detailed brief in the repository; Task 4 remains the
 only implemented Stream A increment until their exact requirements are available.
+## 2026-09-10: Task 9 claims are local, fixture-only
+
+Pharmacy claims view built entirely on synthetic, page-local fixtures typed
+against the frozen `lifecycle.ts` contract; no lifecycle store method is
+called, since Stream B's methods still throw not implemented. Pharmacy actions
+(confirm, resubmit) record a local, session-only note rather than a lifecycle
+transition. Reject any local reimplementation of state transitions ahead of
+Task 8; only the shared store may later change a lifecycle state. Reason
+wording follows the toggle: On shows only the operator-approved draft, labelled
+as such; Off shows the manual operator context instead.
