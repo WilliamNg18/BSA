@@ -69,6 +69,32 @@ describe("scripted pharmacy checks", () => {
     expect(checkPharmacy(d, d.extracted.endorsementText)).toMatchObject({ status: "unable", stages: ["STOPPED", "NOT RUN", "NOT RUN", "NOT RUN", "NOT RUN"] });
     expect(completePharmacyScenario(d, d.extracted.endorsementText, checkPharmacy(fixture("A"), d.extracted.endorsementText))).toBe(false);
   });
+  it.each(["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"])("unsupported B substitution %s cannot become ready or avoid referral", (text) => {
+    const c = fixture("B"), result = checkPharmacy(c, text);
+    expect(result).toMatchObject({
+      status: "unable", facts: { type: text.startsWith("BB") ? "BB" : "XP", quotedText: text },
+      version: null, clause: null, checks: [], agreement: "3/3 scripted readings",
+      stages: ["PASS", "STOPPED", "NOT RUN", "NOT RUN", "NOT RUN"],
+    });
+    expect(result.gap).toBe("Outside validated NCSO coverage; manual review");
+    expect(pharmacyDateCorrection(c, text)).toBe(text);
+    for (const checked of [result, null]) {
+      const completeScenario = completePharmacyScenario(c, text, checked);
+      expect(completeScenario).toBe(false);
+      const receipt = { ...receiptFor("B", checked !== null), completeScenario,
+        precheck: pharmacySnapshot(text, c.extracted.dispensingDate, checked ? "scripted" : "off", checked, checked ? at : null) };
+      const timeline = pharmacyTimeline(receipt);
+      expect(timeline.some((stage) => stage.outcome === "Not needed")).toBe(false);
+      expect(timeline.find((stage) => stage.label === "Refer back")).toMatchObject({ needed: true, outcome: "Illustrative referral" });
+      expect(receipt.precheck).toMatchObject({ tariffVersion: null, clauseId: null, checks: [] });
+    }
+  });
+  it.each(["", "unknown RK", "NCSOO RK", "NCSO", "NCSO 21/08/26"])("date correction does not manufacture an initialled NCSO endorsement from %s", (text) => {
+    expect(pharmacyDateCorrection(fixture("B"), text)).toBe(text);
+  });
+  it.each(["A", "D"] as const)("date correction is unavailable for scenario %s", (scenario) => {
+    expect(pharmacyDateCorrection(fixture(scenario), "NCSO RK")).toBe("NCSO RK");
+  });
   it.each(["NCSO RK 31/02/26", "NCSO RK 21/08", "NCSO RK 99/99/26", "NCSO RK 29/02/25"])("rejects false date matches: %s", (text) => {
     expect(interpretPharmacyText(text).dated).toBe(false);
   });

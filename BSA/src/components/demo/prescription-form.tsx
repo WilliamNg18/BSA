@@ -93,8 +93,8 @@ export function PrescriptionForm({
       </svg>
       {!compact && (
         <figcaption className="border-t bg-background px-3 py-2 text-xs text-muted-foreground">
-          Synthetic form. Dashed boxes are the regions the layout model located; the label shows the read confidence for each.
-          {poor && " This scan is deliberately poor: skewed, faint and speckled."}
+          Synthetic form. Dashed boxes mark layout-model regions; labels show read confidence.
+          {poor && " Deliberately poor scan: skewed, faint and speckled."}
         </figcaption>
       )}
     </figure>

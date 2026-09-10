@@ -32,7 +32,8 @@ export function interpretPharmacyText(text: string): EndorsementFacts {
 }
 
 export function pharmacyDateCorrection(c: ExceptionCase, text: string): string {
-  if (c.scenario !== "B" || interpretPharmacyText(text).dated) return text;
+  const facts = interpretPharmacyText(text);
+  if (c.scenario !== "B" || facts.type !== "NCSO" || !facts.initialled || facts.dated) return text;
   const [year, month, day] = c.extracted.dispensingDate.split("-");
   return `${text.trimEnd()} ${day}/${month}/${year.slice(2)}`;
 }
@@ -51,6 +52,8 @@ export function checkPharmacy(c: ExceptionCase, text: string): PharmacyCheck {
   const agreement = `${consensus.agree}/${consensus.total} scripted readings`;
   if (consensus.agree < AGREEMENT_THRESHOLD || !consensus.consensus || ["UNKNOWN", "NONE"].includes(consensus.consensus.type)) return stop(1, "Endorsement type unresolved", agreement);
   const facts = { ...consensus.consensus, quotedText: text, note: "Scripted typed-field reading" };
+  // Validated pharmacy coverage is NCSO only, not any type with a tariff clause.
+  if (facts.type !== "NCSO") return stop(1, "Outside validated NCSO coverage; manual review", agreement, facts);
   const version = versionForDate(c.extracted.dispensingDate);
   if (!version) return stop(2, "Dispensing-date version unresolved", agreement, facts);
   const clause = version.clauses.find((entry) => entry.endorsementType === facts.type) ?? null;

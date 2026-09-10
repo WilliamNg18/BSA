@@ -9,7 +9,7 @@ ms.date: 2026-09-10
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
-* [x] Task 4: manual/assisted pharmacy check, immutable receipts and illustrative timeline (local gates passed; uncommitted)
+* [x] Task 4: published increment a131bad (user-reported); P1 correction passes fresh local gates, follow-up commit pending
 * [ ] Task 5
 * [ ] Task 6
 * [ ] Task 7
@@ -36,9 +36,46 @@ See [contracts](parallel-contracts.md)
 for ownership, signatures, branch names and integration order. Task 4 local
 gates now pass below. The lifecycle signatures and other streams remain untouched.
 
-## Task 4 local gate and integration boundary
+## Task 4 P1 corrective finding
 
-Task 4 only is locally complete, uncommitted. Final check exit 0, 425 unit tests
+The published Task 4 commit a131bad is user-reported and is not rewritten here.
+Review found that substituting BB in Scenario B could pass an unrelated clause:
+the known endorsement-required boolean did not establish validated type coverage.
+The previous local gates below did not cover this substitution and are historical,
+not verification of this correction.
+
+Pharmacy coverage now stops non-NCSO types at endorsement type, with unable status
+and no retrieved version, clause or requirement checks. Original D still stops
+at capture. Date correction requires Scenario B, typed NCSO and initials; it
+never manufactures an endorsement. Continue with submission remains available.
+Plain and dated BB/XP regressions cover both readiness and illustrative referral
+handling; browser regressions first establish Ready to catch stale result reuse.
+The combined poor-scan caption is shortened without removing synthetic or read
+confidence labels, with a dedicated 25-word browser assertion.
+
+Fresh sequential verification completed: check exit 0, 436 units in ten files
+passed (exit 0), and all 409 production /BSA/ Chromium tests passed in 6.1 minutes
+with the dot reporter (exit 0). No failures, skips or retries were reported.
+This includes eleven new unit cases and five new browser cases. The combined
+D caption contains 19 words and its dedicated browser assertion passed.
+The terminal returned P1_CHECK_EXIT=0, P1_UNIT_EXIT=0 and P1_BROWSER_EXIT=0;
+no final test execution remains pending.
+
+The client scan checked 115 files with zero forbidden matches. The production
+privacy check scanned nine emitted files and three served assets, 928,929 bytes,
+with zero private matches. JS is 803.69 kB, 246.50 kB gzip; the existing Vite
+large-chunk warning remains. Historical screenshot and audit counts below were
+not independently recounted for this correction.
+
+The earlier runner was not interrupted: the only remaining test runner before
+validation was the stale 13:31 process, with no children or port 4173 listener.
+Frozen store, navigation, gate and other streams are untouched. No Git, account
+or deployment actions were performed. The main agent owns the follow-up commit
+without rewriting published history; no CI or hosted result is claimed here.
+
+## Task 4 historical local gate and integration boundary
+
+Before the corrective finding, Task 4 local gates recorded check exit 0, 425 unit tests
 in ten files and 404 production /BSA/ Chromium tests in 5.8 minutes, exit 0.
 No skipped tests or retries. All 64 unique axe audits passed with zero violations,
 including twelve Task 4 A/B/D, On/Off, light/desktop and dark/phone combinations.

@@ -96,6 +96,47 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
 });
 
+for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
+  test(`Task4 B edited to ${text} stops outside NCSO coverage but can still submit`, async ({ page }) => {
+    await page.goto("pharmacy");
+    await page.getByRole("banner").getByRole("switch").setChecked(true);
+    // Establish a successful revision first to detect stale rule/ready reuse.
+    await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready to submit");
+    await page.getByLabel("Endorsement entered by the pharmacy", { exact: true }).fill(text);
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Agent unable to determine");
+    await expect(page.getByRole("list", { name: "Scripted pharmacy process" }).locator("li")).toHaveText([
+      "CapturedPASS", "Endorsement typeSTOPPED", "Dispensing-date versionNOT RUN", "ClauseNOT RUN", "RequirementsNOT RUN",
+    ]);
+    await expect(page.getByRole("region", { name: "Validated synthetic rule" })).toHaveCount(0);
+    await expect(page.getByRole("list", { name: "Requirement checkboxes" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(0);
+    const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
+    await expect(submit).toBeEnabled();
+    await submit.click();
+    const receipt = page.getByRole("region", { name: "Submission receipt" });
+    await expect(receipt).toContainText(text);
+    await expect(receipt).toContainText("unable");
+    await expect(receipt).toContainText("Not retrieved / Not retrieved");
+    await page.getByRole("button", { name: "Jump to end", exact: true }).click();
+    const timeline = page.getByRole("list", { name: "Submission timeline" });
+    await expect(timeline.getByText("Not needed", { exact: true })).toHaveCount(0);
+    await expect(timeline).toContainText("Illustrative referral");
+  });
+}
+
+test("Task4 D combined caption stays within 25 words and retains synthetic confidence labels", async ({ page }) => {
+  await page.goto("pharmacy");
+  await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+  const caption = page.locator("figcaption");
+  const text = await caption.innerText();
+  expect(text.match(/[\p{L}\p{N}]+(?:['’\u002d][\p{L}\p{N}]+)*/gu)?.length ?? 0).toBeLessThanOrEqual(25);
+  await expect(caption).toContainText("Synthetic form");
+  await expect(caption).toContainText("labels show read confidence");
+  await expect(caption).toContainText("Deliberately poor scan");
+  await expect(page.locator("figure svg")).toContainText("read 0.");
+});
+
 test("Task4 corrected B stays corrected when submitted Off, without performed checks", async ({ page }) => {
   await page.goto("pharmacy");
   const flag = page.getByRole("banner").getByRole("switch");
