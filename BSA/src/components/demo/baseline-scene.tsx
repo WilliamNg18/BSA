@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
 import { AnimatedNumber } from "./animated-number";
+import { ReferralProxy } from "./referral-proxy";
 import { useAppStore } from "@/lib/store";
 
 export function BaselineScene() {
@@ -18,6 +19,7 @@ export function BaselineScene() {
         <div><dt>With agent referrals · Assumed</dt><dd data-scene-referrals><AnimatedNumber value={result.referrals.withAgent} digits={0} /></dd></div>
       </>}
     </dl> : <p role="status">Scenario estimates unavailable: correct the calculator inputs.</p>}
+    {enabled && result && <ReferralProxy result={result} />}
     {!enabled && <p className="text-sm">Agent Off. Assisted estimates hidden; inputs retained.</p>}
     <Link to="/#month" className="inline-block text-sm underline underline-offset-4">Edit scenario assumptions</Link>
   </section>;

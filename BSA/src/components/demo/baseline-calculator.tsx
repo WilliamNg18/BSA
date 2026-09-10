@@ -9,6 +9,7 @@ import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { AnimatedNumber } from "./animated-number";
 import { PainMarker } from "./pain-marker";
+import { ReferralProxy } from "./referral-proxy";
 
 const number = (value: number) => formatBaselineNumber(value, 1);
 
@@ -79,6 +80,7 @@ export function BaselineCalculator() {
       <section data-prose="comparison boundary"><h2 className="font-semibold">Comparison boundary</h2><p>Judging remains V × j / 60 hours on both sides. Pharmacy avoidance creates no assumed judgement savings.</p></section>
       <section data-prose="referral boundary"><h2 className="font-semibold">Referral boundary</h2><p>Today referrals equal scenario volume, not total exceptions. Assisted referrals use editable deficiency assumptions.</p></section>
       {enabled && <BaselineFlow result={result} />}
+      {enabled && <ReferralProxy result={result} />}
       {enabled && <section aria-label="Assembly latency, not operator effort" className="rounded-xl border p-4 text-sm">
         <h2 className="font-semibold">Assembly latency, not operator effort</h2>
         <dl className="mt-2 space-y-2"><div><dt>Synthetic engine latency</dt><dd><AnimatedNumber value={result.assemblySeconds} /> seconds / built item</dd></div><div><dt>Expected time before decision</dt><dd>Built: {number(result.builtBeforeDecisionMinutes)} minutes; abstained: {number(result.abstainBeforeDecisionMinutes)} minutes</dd></div></dl>

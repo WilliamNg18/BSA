@@ -4,6 +4,7 @@ import { BoundaryTag } from "@/components/demo/labels";
 import { PainMarker } from "@/components/demo/pain-marker";
 import { BaselineCalculator } from "@/components/demo/baseline-calculator";
 import { BaselineScene } from "@/components/demo/baseline-scene";
+import { ExceptionPipeline } from "@/components/demo/exception-pipeline";
 import { SceneDiagram, TwoPlacesDiagram } from "@/components/demo/tour-diagrams";
 import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
@@ -26,8 +27,8 @@ export function HomePage() {
       {chapterNumber === 1 && <>
         <ul aria-label="Public context figures" className="grid gap-4 lg:grid-cols-3">
           {TOUR_CONTENT.keyFigures.map((figure) => <li key={figure.id} className="space-y-3 rounded-xl border bg-card p-5" data-key-figure={figure.id}>
-            <p className="text-xs font-medium text-muted-foreground">Approximate context · Not independently verified</p>
-            <p className="text-2xl font-semibold tracking-tight">{figure.value}</p>
+            <p className="text-xs font-medium text-muted-foreground">Public context · Approximate, not independently verified</p>
+            <p className="text-3xl font-semibold tracking-tight md:text-4xl">{figure.value}</p>
             <p className="text-sm font-medium">{figure.label}</p>
             <details className="text-sm"><summary className="cursor-pointer">Figure qualification</summary><p className="mt-2 text-muted-foreground">{figure.qualifier}</p></details>
           </li>)}
@@ -43,6 +44,8 @@ export function HomePage() {
       </>}
       {chapterNumber === 2 && <BaselineCalculator />}
       {chapterNumber === 3 && <>
+        <ExceptionPipeline />
+        <h2 className="text-2xl font-semibold">Operator cases · Test the evidence</h2>
         <p className="text-sm font-medium">Synthetic cases · Scripted interpretation · Human decision throughout</p>
         <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-4">
           {CASES.filter((item) => ["A", "B", "C", "D"].includes(item.scenario)).map((item) => {

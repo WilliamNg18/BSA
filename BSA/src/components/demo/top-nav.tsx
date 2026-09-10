@@ -27,7 +27,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
   const navRoutes = routes.filter((r) => r.label);
   const groups = [...new Set(navRoutes.map((route) => route.group))];
   async function reset() {
-    if (await confirm({ title: "Reset demonstration?", description: "Remove session decisions, restore seeded cases and local fields, and turn Agent on. The seeded historical record remains. No payment is affected.", confirmLabel: "Reset demonstration", cancelLabel: "Keep working", destructive: true })) {
+    if (await confirm({ title: "Reset demonstration?", description: "Remove session decisions, restore seeded cases and local fields, and turn Agent Off. The seeded historical record remains. No payment is affected.", confirmLabel: "Reset demonstration", cancelLabel: "Keep working", destructive: true })) {
       resetDemo();
       onReset();
     }

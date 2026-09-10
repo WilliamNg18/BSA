@@ -6,6 +6,28 @@ ms.date: 2026-09-10
 
 ## Current increment scope
 
+Task 3 adds the six-stage Chapter 3 pipeline above the retained A-D cards.
+Stages 1-3 preserve existing capture, printed extraction and pricing; handwriting
+uncertainty remains. The uncertain-exception kernel uses the shared two-second
+presentation clock. Built-only proposals never remove Case D's manual fallback.
+The pharmacy pre-check exit precedes capture. Workflow pain points and weeks-long
+referral cycles are assumptions, not observed NHSBSA practice. Every estimate
+uses the Task 1 selector. The new referral-free proxy retains all abstentions
+as risk, shows Not established for zero residual, and never displays 100%.
+See [the model](task-1-baseline-model.md) and [progress](../../PROGRESS.md).
+Task 3 scope corrections add seven individually keyed gathering markers across
+Plan, Gather, Retrieve, Reconcile/assess and Reason. Only completed phases assist
+the built cohort. The exact-fix draft needs completed presentation and a passing
+gate; referral risk and Case D remain unresolved. The three public figures are
+approximately 1.1 billion items/year, 85,000 referrals/month and Monthly rulebook
+publication, not an accuracy target. Publication frequency is not rule-change
+frequency, and these public claims have not been independently verified.
+The corrected local check and 386 units pass; the single final full Chromium
+run is pending. The existing large-chunk warning remains.
+Task 3 commit, CI and hosting are not performed; Tasks 4-7 remain deferred.
+
+### Task 2 foundation
+
 Task 2 now supersedes the historical presentation requirements below: fresh
 sessions and confirmed Reset start Agent Off; On requires opt-in. Documentary
 filenames, inline documentary citations and source-prefixed labels are removed
@@ -19,10 +41,10 @@ blanket exemption for long prose. The CI check searches every client file;
 the full browser suite checks rendered copy with positive evasion controls.
 A shared two-second presentation transition and keyboard-readable pain markers
 never write case state. Reduced-motion users receive immediate changes.
-Tasks 3-7, including a new pipeline, pharmacy split views, queue simulation
-and manual case views, remain deferred. The existing trace replay remains.
+Pharmacy split views, queue simulation and manual case views remain deferred
+to Tasks 4-7. The existing trace replay remains separate from Task 3's pipeline.
 Local checks pass: 383 units, 376 Chromium tests and 48 axe audits with zero
-violations. Commit, Task 2 CI and hosting remain pending; see
+violations. Task 2 commit b7c4451 and successful CI/hosting are user-reported; see
 [progress](../../PROGRESS.md) for evidence and limitations.
 
 ### Historical Task 1 increment
@@ -103,7 +125,7 @@ navigation focuses its heading and returns to the top.
 |---|---|---|
 | 1 | `/#scene` | Three qualified documentary figures, existing-process branches and shared synthetic estimates; Off hides assisted estimates only |
 | 2 | `/#month` | Editable synthetic workload calculator; qualified manual/assisted estimates |
-| 3 | `/#cases` | A-D engine outcomes On; neutral illustrative manual tasks Off |
+| 3 | `/#cases` | Six-stage pipeline, shared estimates, built-only proposed records and residual referral risk; retained A-D cards below |
 | 4 | `/#two-places` then `/pharmacy` | Accessible proposal diagrams and existing advisory pharmacy substop |
 | 5 | `/queue` | Explicit planned simulation notice above the existing synthetic queue |
 | 6 | `/#close` | First data test, five PDF assumptions and seven exact PDF questions |

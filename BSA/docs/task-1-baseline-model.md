@@ -89,7 +89,7 @@ r + j + assemblySeconds / 60; abstained is g + j. Queue delay, parallelism,
 pharmacy effort and extra failed-assembly latency remain unmodelled. Existing
 3/3 citation provenance is not a scaled accuracy measure.
 
-## Referral assumptions and accuracy proxy
+## Referral assumptions and Task 3 risk proxy
 
 Today referrals = V is a scenario volume proxy for the referred-back subset,
 not a claim that every real exception is referred back. Actual exceptions
@@ -100,12 +100,18 @@ separately, bounded by its own cohort, and their sum cannot exceed A + B or V.
 Defaults produce 10,625 built referrals + 7,084 abstained referrals = 17,709.
 Deficiency shares are editable, not actual measurements or engine outcomes.
 
-The model exposes firstTimeEndorsementAccuracyPercent as
-(V - assisted referrals) / V * 100, bounded 0-100, with null at zero volume.
-This is only a derived referral-free scenario proxy, not actual endorsement
-correctness, a measured first-time accuracy result, or the documentary pricing
-accuracy target. Task 1 discloses the definition but adds no accuracy KPI or
-Task 3 animation.
+Task 3 replaces the misleading accuracy field with referralFreeProxyPercent.
+Residual risk R = A + round(B * db): every abstained item plus deficient built
+items. The deficient abstained subset is already inside A and is not added
+again. This risk count is distinct from the unchanged assisted-referral formula.
+Default R = 24,792; for V = 12, R = 4 while assumed referrals = 3.
+
+For positive V and R, the proxy is (V - R) / V * 100. Otherwise it is null
+and displays Not established: zero residual proves no accuracy. Display values
+round down to one decimal, so positive residual never rounds to 100% (maximum
+99.9% displayed). This is a disclosed precision policy, not an invented residual
+or empirical accuracy cap. No observed endorsement correctness, measured
+first-time accuracy, or pricing-target achievement is claimed.
 
 ## Validation, state and construction proof
 
@@ -119,9 +125,10 @@ inputs reject rather than clamp or retain stale results. Arithmetic checks
 reject non-integer, non-finite, overflowing or non-conserving results.
 
 [useBaselineScenario](../src/hooks/use-baseline-scenario.ts) memoises one
-shared selector over the current draft. Both the calculator and chapter 1
-consume it. There is no second scene formula or hard-coded estimate table.
-Invalid drafts suppress both surfaces; edits and resets update both. On/Off
+shared selector over the current draft. The calculator, chapter 1 and Task 3
+pipeline consume it. There is no second scene formula or hard-coded estimate
+table. Invalid drafts suppress estimates everywhere; edits and resets update
+all surfaces. On/Off
 changes visibility only; history, case states and inputs stay intact.
 
 The accessible SVG flow uses count / V * 240 as ribbon thickness. Zero

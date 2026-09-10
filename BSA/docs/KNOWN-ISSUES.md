@@ -4,7 +4,24 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
-## Task 2 local verification and remaining gaps
+## Task 3 scope and remaining gaps
+
+The six-stage pipeline and conservative referral-free estimate are implemented.
+Scope corrections replace the aggregate marker with seven phase-mapped markers,
+separate exact-fix readiness from permanent referral risk, and replace the third
+public figure with Monthly rulebook publication. Corrected check exit 0 and
+386 units pass; the single final full Chromium run is pending.
+The shared presentation clock never writes domain
+state. Pipeline stages illustrate a proposed workflow, not real asynchronous
+processing. Free-text reason practices and weeks-long referral cycles require
+validation. No measured first-time accuracy is available. Zero residual means
+Not established, not perfect performance. Tasks 4-7 remain unimplemented.
+
+The current JS bundle is 794.92 kB, 243.29 kB gzip; the existing size warning
+remains. Task 3 CI, hosted verification, Firefox/WebKit and manual screen-reader
+checks are not performed. See [progress](../../PROGRESS.md) for raw evidence.
+
+## Task 2 local verification and handoff
 
 Task 2 local gates now pass: check exit 0; 383 units in nine files; all 376
 production Chromium tests in 4.7 minutes, exit 0; 48 axe audits, zero violations.
@@ -27,8 +44,8 @@ values retained in inputs; evidence is not truncated to meet the copy cap.
 
 The existing bundle warning remains: 783.59 kB JS, 240.75 kB gzip. No full
 WCAG, zero-warning, performance or manual screen-reader claim. Only Chromium
-was run. Task 2 commit, remote CI and hosted verification are pending. Tasks
-3-7 are not implemented here. Task 1 remote CI/hosted gates are user-reported
+was run. Task 2 commit b7c4451, CI 34521892212 success and 62 hosted passes
+are the user's handoff, not repeated here. Task 1 remote CI/hosted gates are user-reported
 in progress, not repeated by this local-only verification.
 
 ## Historical Task 1 scope

@@ -1,12 +1,24 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { BASELINE_FIELDS, GATHERING_STEPS, baselineDraft, baselineSummary, calculateBaseline, parseBaselineDraft, selectBaselineScenario, manualGatheringMinutes, BASELINE_DEFAULTS, BASELINE_VOLUME_REFERENCE, baselineDefaultCopy, type BaselineInputs } from "../../src/lib/domain/baseline";
+import { BASELINE_FIELDS, GATHERING_STEPS, baselineDraft, baselineSummary, calculateBaseline, parseBaselineDraft, selectBaselineScenario, manualGatheringMinutes, BASELINE_DEFAULTS, BASELINE_VOLUME_REFERENCE, baselineDefaultCopy, referralFreeProxyDisplay, type BaselineInputs } from "../../src/lib/domain/baseline";
 import { BASELINE_PROVENANCE } from "../../src/lib/domain/baseline-defaults";
 import { CASES, QUEUE_FILLER } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { SOURCE_CLAIMS } from "../../data/reference/source-audit";
 import { useAppStore } from "../../src/lib/store";
+import { PUBLIC_FACTS, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 
 describe("baseline source and synthetic default provenance", () => {
+  it("pins exactly three public context figures: annual items, monthly referrals and monthly rulebook publication", () => {
+    expect(PUBLIC_FACTS).toMatchObject({ annualItems: 1_100_000_000, monthlyReferrals: 85_000, rulebookPublication: "Monthly" });
+    expect(TOUR_CONTENT.keyFigures.map(({ id, value }) => ({ id, value }))).toEqual([
+      { id: "annual-items", value: "Approximately 1.1 billion" },
+      { id: "monthly-referrals", value: "Approximately 85,000" },
+      { id: "rulebook-publication", value: "Monthly" },
+    ]);
+    expect(JSON.stringify(TOUR_CONTENT.keyFigures)).not.toMatch(/99\.85|100%|accuracy-target/);
+    expect(BASELINE_DEFAULTS.volume).toBe(PUBLIC_FACTS.monthlyReferrals);
+  });
+
   it("uses O23's approximate referred-back monthly subset, not annual/12 or all exceptions", () => {
     const source = SOURCE_CLAIMS.find((claim) => claim.id === "O23")!.numbers.find((n) => n.unit === "referred-back items/month")!;
     expect(source.approximate).toBe(true);
@@ -110,10 +122,13 @@ describe("baseline arithmetic", () => {
             expect(result.referrals.withAgent).toBeLessThanOrEqual(result.built + result.abstained);
             expect(result.referrals.withAgent).toBeGreaterThanOrEqual(0);
             expect(Number.isSafeInteger(result.referrals.withAgent)).toBe(true);
-            if (volume === 0) expect(result.firstTimeEndorsementAccuracyPercent).toBeNull();
+            expect(result.referralRiskResidual).toBe(result.abstained + result.referrals.built);
+            expect(result.referralRiskResidual).toBeLessThanOrEqual(volume);
+            if (volume === 0 || result.referralRiskResidual === 0) expect(result.referralFreeProxyPercent).toBeNull();
             else {
-              expect(result.firstTimeEndorsementAccuracyPercent).toBeGreaterThanOrEqual(0);
-              expect(result.firstTimeEndorsementAccuracyPercent).toBeLessThanOrEqual(100);
+              expect(result.referralFreeProxyPercent).toBeGreaterThanOrEqual(0);
+              expect(result.referralFreeProxyPercent).toBeLessThan(100);
+              expect(referralFreeProxyDisplay(result)).not.toBe("100%");
             }
           }
         }
@@ -170,7 +185,9 @@ describe("baseline arithmetic", () => {
     const input = { ...BASELINE_DEFAULTS, volume: 12 };
     const result = calculateBaseline(input);
     expect(result.referrals).toEqual({ today: 12, withAgent: 3, built: 2, abstained: 1 });
-    expect(result.firstTimeEndorsementAccuracyPercent).toBe(75);
+    expect(result.referralRiskResidual).toBe(4);
+    expect(result.referralFreeProxyPercent).toBe(8 / 12 * 100);
+    expect(referralFreeProxyDisplay(result)).toBe("66.6%");
     for (const deficientBuiltPercent of [0, 0.5, 25, 50, 99.9999, 100]) {
       for (const deficientAbstainPercent of [0, 0.5, 50, 100]) {
         const r = calculateBaseline({ ...input, deficientBuiltPercent, deficientAbstainPercent });
@@ -181,9 +198,34 @@ describe("baseline arithmetic", () => {
       }
     }
     const allBuilt = { ...input, precheckPercent: 0, clearedPercent: 0, abstainPercent: 0 };
-    expect(calculateBaseline({ ...allBuilt, deficientBuiltPercent: 100 }).firstTimeEndorsementAccuracyPercent).toBe(0);
-    expect(calculateBaseline({ ...allBuilt, deficientBuiltPercent: 0 }).firstTimeEndorsementAccuracyPercent).toBe(100);
-    expect(calculateBaseline({ ...input, volume: 0 }).firstTimeEndorsementAccuracyPercent).toBeNull();
+    expect(calculateBaseline({ ...allBuilt, deficientBuiltPercent: 100 }).referralFreeProxyPercent).toBe(0);
+    expect(calculateBaseline({ ...allBuilt, deficientBuiltPercent: 0 }).referralFreeProxyPercent).toBeNull();
+    expect(calculateBaseline({ ...input, volume: 0 }).referralFreeProxyPercent).toBeNull();
+  });
+
+  it("keeps every abstention in residual risk without double-counting deficient abstentions", () => {
+    const input = { ...BASELINE_DEFAULTS, volume: 12, deficientBuiltPercent: 0 };
+    const none = calculateBaseline({ ...input, deficientAbstainPercent: 0 });
+    const all = calculateBaseline({ ...input, deficientAbstainPercent: 100 });
+    expect(none.referrals.withAgent).toBe(0);
+    expect(all.referrals.withAgent).toBe(2);
+    expect(none.referralRiskResidual).toBe(2);
+    expect(all.referralRiskResidual).toBe(2);
+    expect(none.referralFreeProxyPercent).toBe(all.referralFreeProxyPercent);
+  });
+
+  it("zero residual and zero volume never establish accuracy; tiny positive residual never rounds to 100", () => {
+    const input = { ...BASELINE_DEFAULTS, precheckPercent: 0, clearedPercent: 0, abstainPercent: 0, deficientBuiltPercent: 0 };
+    for (const volume of [0, 1, 12, 85_000, 1_000_000_000]) {
+      const empty = calculateBaseline({ ...input, volume });
+      expect(empty.referralRiskResidual).toBe(0);
+      expect(empty.referralFreeProxyPercent).toBeNull();
+      expect(referralFreeProxyDisplay(empty)).toBe("Not established");
+    }
+    const tiny = calculateBaseline({ ...input, volume: 1_000_000_000, deficientBuiltPercent: 0.0000001 });
+    expect(tiny.referralRiskResidual).toBe(1);
+    expect(tiny.referralFreeProxyPercent).toBeLessThan(100);
+    expect(referralFreeProxyDisplay(tiny)).toBe("99.9%");
   });
 
   it("shared scene/calculator selector has no separate values or stale invalid fallback", () => {

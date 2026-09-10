@@ -2,7 +2,7 @@
 export const TOUR_STOPS = [
   { chapter: 1, label: "Set the scene", to: "/#scene" },
   { chapter: 2, label: "A month of work", to: "/#month" },
-  { chapter: 3, label: "Four cases", to: "/#cases" },
+  { chapter: 3, label: "The pipeline", to: "/#cases" },
   { chapter: 4, label: "One agent, two places", to: "/#two-places" },
   { chapter: 4, label: "Pharmacy example", to: "/pharmacy" },
   { chapter: 5, label: "The queue", to: "/queue" },

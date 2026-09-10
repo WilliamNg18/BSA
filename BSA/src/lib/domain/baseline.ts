@@ -124,7 +124,8 @@ export interface BaselineResult {
   abstainBeforeDecisionMinutes: number;
   assemblySeconds: number;
   referrals: { today: number; withAgent: number; built: number; abstained: number };
-  firstTimeEndorsementAccuracyPercent: number | null;
+  referralRiskResidual: number;
+  referralFreeProxyPercent: number | null;
 }
 
 export function calculateBaseline(input: BaselineInputs): BaselineResult {
@@ -146,6 +147,9 @@ export function calculateBaseline(input: BaselineInputs): BaselineResult {
   const builtReferrals = Math.round(built * (input.deficientBuiltPercent / 100));
   const abstainReferrals = Math.round(abstained * (input.deficientAbstainPercent / 100));
   const referrals = builtReferrals + abstainReferrals;
+  // Uncertainty is not correctness: retain ALL abstentions in the risk proxy.
+  // Deficient abstentions are already included, so never count them twice.
+  const referralRiskResidual = abstained + builtReferrals;
   if (![pharmacyCaught, cleared, abstained, built, builtReferrals, abstainReferrals, referrals]
     .every((count) => Number.isSafeInteger(count) && count >= 0 && count <= volume)
     || builtReferrals > built || abstainReferrals > abstained || referrals > built + abstained
@@ -162,9 +166,15 @@ export function calculateBaseline(input: BaselineInputs): BaselineResult {
     abstainBeforeDecisionMinutes: g + j,
     assemblySeconds,
     referrals: { today: volume, withAgent: referrals, built: builtReferrals, abstained: abstainReferrals },
-    // Referral-free scenario proxy, NOT observed endorsement correctness.
-    firstTimeEndorsementAccuracyPercent: volume === 0 ? null : (volume - referrals) / volume * 100,
+    referralRiskResidual,
+    // Zero residual does not establish perfect endorsement correctness.
+    referralFreeProxyPercent: volume === 0 || referralRiskResidual === 0 ? null : (volume - referralRiskResidual) / volume * 100,
   };
+}
+
+/** Round down, not to nearest: a positive residual must never display 100%. */
+export function referralFreeProxyDisplay(result: BaselineResult): string {
+  return result.referralFreeProxyPercent === null ? "Not established" : `${formatBaselineNumber(Math.floor(result.referralFreeProxyPercent * 10) / 10, 1)}%`;
 }
 
 export function baselineSummary(result: BaselineResult, enabled: boolean): string {

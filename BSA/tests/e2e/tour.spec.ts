@@ -162,7 +162,7 @@ test("documentary scene figures are invariant; A–D match runAgent and off is n
   await expect(page.locator("[data-scene-with-gathering], [data-scene-referrals]")).toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: Off" }).click();
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "3. Four cases", exact: true }).click();
+  await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
   for (const item of CASES.slice(0, 4)) {
     const card = page.locator(`[data-case="${item.scenario}"]`);
     const pack = runAgent(item);
@@ -180,7 +180,7 @@ test("documentary scene figures are invariant; A–D match runAgent and off is n
   await page.getByRole("switch", { name: "Agent: On" }).click();
   await expect(page.locator("[data-outcome]")).toHaveCount(0);
   await expect(page.locator("[data-manual-tasks]")).toHaveCount(4);
-  await expect(page.locator("[data-tour-chapter]")).not.toContainText(/minutes|seconds|savings|SUFFICIENT|REFER_BACK|REQUEST_INFORMATION|ABSTAIN/);
+  await expect(page.locator('[aria-label="Four canonical synthetic cases"]')).not.toContainText(/minutes|seconds|savings|SUFFICIENT|REFER_BACK|REQUEST_INFORMATION|ABSTAIN/);
   await page.getByRole("switch", { name: "Agent: Off" }).click();
   await expect(page.locator("[data-outcome]")).toHaveCount(4);
 });
@@ -274,7 +274,7 @@ test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmati
   await expect(page.getByRole("tooltip")).toContainText("Off withholds recommendations");
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("data-state", "checked");
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "3. Four cases", exact: true }).click();
+  await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
   await page.getByRole("link", { name: "Skip to main content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
