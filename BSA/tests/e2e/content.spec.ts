@@ -46,6 +46,32 @@ function auditProse() {
   return { paragraphs: candidates.filter(visible).length, panels: groups.size, failures };
 }
 
+for (const enabled of [false, true]) {
+  test(`Task4 pharmacy interactive copy cap On=${enabled}`, async ({ page }, info) => {
+    await page.goto("pharmacy");
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    const audits = [];
+    for (const scenario of ["Complete endorsement", "Information missing", "Unreadable form"]) {
+      await page.getByRole("radio", { name: scenario, exact: true }).click();
+      await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
+      audits.push({ scenario, phase: "check", ...await page.evaluate(auditProse) });
+      await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+      await page.getByRole("button", { name: "Jump to end", exact: true }).click();
+      await page.locator("main details").evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
+      await page.getByLabel("Month end days · Assumption", { exact: true }).fill("");
+      audits.push({ scenario, phase: "receipt-invalid-assumption", ...await page.evaluate(auditProse) });
+      await page.getByLabel("Month end days · Assumption", { exact: true }).fill("14");
+      if (enabled && scenario === "Information missing") {
+        await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready to submit");
+        audits.push({ scenario, phase: "corrected", ...await page.evaluate(auditProse) });
+      }
+    }
+    await captureJson(info, "task4-copy", audits);
+    expect(audits.flatMap(({ scenario, phase, failures }) => failures.map((failure) => ({ scenario, phase, ...failure })))).toEqual([]);
+  });
+}
+
 test("copy cap positive controls reject long prose and split-paragraph evasion", async ({ page }) => {
   await page.setContent(`<main><section data-prose="test"><h1>Heading excluded</h1><p>${"word ".repeat(26)}</p></section><section><p>${"word ".repeat(15)}</p><p>${"word ".repeat(15)}</p></section><p data-copy="label">${"label ".repeat(26)}</p><p><span data-slot="badge">Status</span>${"badge ".repeat(26)}</p><ul><li><a href="#">Link</a>${"linked ".repeat(26)}</li></ul><div>${"untagged ".repeat(26)}</div><dl><dd>${"definition ".repeat(26)}</dd></dl></main>`);
   const result = await page.evaluate(auditProse);
@@ -113,10 +139,14 @@ test("fresh session and reset are Off; shared transition is presentation-only an
 
 test("pain markers provide keyboard text and do not resolve abstention", async ({ page }) => {
   await page.goto("./#cases");
+  // Await the route's initial focus effect before moving keyboard focus away.
+  await expect(page.locator("h1[data-tour-heading]")).toBeFocused();
   const marker = page.locator('[data-case="B"] [data-pain-marker]');
   await marker.focus();
   await expect(marker).toBeFocused();
-  await expect(page.getByRole("tooltip")).toContainText("Evidence needs review");
+  const tooltip = page.getByRole("tooltip", { name: "Evidence needs review", exact: true });
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toHaveText("Evidence needs review");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
   await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");

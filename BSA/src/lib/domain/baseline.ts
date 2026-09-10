@@ -25,6 +25,25 @@ export type BaselineField = Exclude<keyof BaselineInputs, "assemblySeconds">;
 export type BaselineDraft = Record<BaselineField, string>;
 
 export const BASELINE_LIMITS = { volume: 1_000_000_000, minutes: 1440, percent: 100, assemblySeconds: 3600 } as const;
+/** Pharmacy-only illustrative durations; excluded from all calculator arithmetic. */
+export const PHARMACY_ASSUMPTION_DEFAULTS = Object.freeze({
+  monthEndDays: 14,
+  exceptionDays: 3,
+  referBackDays: 7,
+  correctionDays: 5,
+  paymentCycleDays: 14,
+});
+export type PharmacyAssumptions = { [K in keyof typeof PHARMACY_ASSUMPTION_DEFAULTS]: number };
+export const PHARMACY_ASSUMPTION_FIELDS = [
+  { key: "monthEndDays", label: "Month end days" },
+  { key: "exceptionDays", label: "Exception days" },
+  { key: "referBackDays", label: "Refer back days" },
+  { key: "correctionDays", label: "Correction days" },
+  { key: "paymentCycleDays", label: "Payment cycle days" },
+] as const;
+export function validPharmacyDays(value: string): number | null {
+  return /^\d{1,3}$/.test(value) && Number(value) <= 365 ? Number(value) : null;
+}
 export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) => value.toLocaleString("en-GB", { maximumFractionDigits });
 
 // All numeric scenario defaults live here. The companion module derives only

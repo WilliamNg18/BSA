@@ -9,7 +9,7 @@ ms.date: 2026-09-10
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
-* [ ] Task 4
+* [x] Task 4: manual/assisted pharmacy check, immutable receipts and illustrative timeline (local gates passed; uncommitted)
 * [ ] Task 5
 * [ ] Task 6
 * [ ] Task 7
@@ -27,14 +27,75 @@ main. Final check, 386 units and 386 production browser tests passed. The user
 confirmed Azure-host PASS and CI run 34526886080 SUCCESS. These remote gates
 are the supplied handoff, not newly executed remote checks.
 
-The current Step 0 increment freezes types, exact labels, throwing store
+The preceding Step 0 increment froze types, exact labels, throwing store
 signatures and a heading-only claims route. It completes no Task 4-13 behaviour.
 Contract check passed (exit 0), with 386 units in nine files passing (exit 0).
 The existing Vite large-chunk warning remains. The contracts-only commit follows
 these local checks; its immutable hash will be posted in the stream issues.
 See [contracts](parallel-contracts.md)
-for ownership, signatures, branch names and integration order. Stream A proceeds
-with Task 4 only after this freeze; its local gates are not yet run.
+for ownership, signatures, branch names and integration order. Task 4 local
+gates now pass below. The lifecycle signatures and other streams remain untouched.
+
+## Task 4 local gate and integration boundary
+
+Task 4 only is locally complete, uncommitted. Final check exit 0, 425 unit tests
+in ten files and 404 production /BSA/ Chromium tests in 5.8 minutes, exit 0.
+No skipped tests or retries. All 64 unique axe audits passed with zero violations,
+including twelve Task 4 A/B/D, On/Off, light/desktop and dark/phone combinations.
+Rendered copy checks covered 75 states with zero failures, including expanded
+pharmacy panels, receipts and invalid assumptions. The 25-word narrative checks
+and positive evasion controls remain intact; this is not a total-page word cap.
+
+The client scan checked 115 files with zero forbidden matches. Production privacy
+checks scanned nine emitted assets and three served text assets, 928,793 bytes,
+with zero private matches. JS is 803.55 kB, 246.46 kB gzip. The existing Vite
+large-chunk warning remains; no zero-warning or performance claim is made.
+
+Off permits typed manual submission with no performed precheck, retrieved clause
+or check timestamp. This is an explicit scenario assumption, not evidence that
+real pharmacies lack checks. On presents a revision-safe two-second scripted
+capture, interpretation, date-selected version, clause and requirement check.
+No model API is called. B's exact date gap is applied only by the user's action;
+canonical B and its July replay remain unchanged. D always stops at capture,
+even after plausible typed replacement; all subsequent checks are NOT RUN.
+Continue with submission stays enabled while pending, unavailable, missing or
+unable. Submission never waits for a successful check.
+
+Receipts are detached, recursively frozen snapshots in the separate
+[pharmacy store](../src/lib/pharmacy-store.ts), not the final shared one-case
+lifecycle store. They retain text, performed checks, timestamp, version and
+assumptions. Task 8 will integrate the lifecycle; no frozen store method is called
+and no queue/history state changes. The timeline is presentation only, not an
+actual paid transition. Complete A and the explicit corrected-B preset avoid
+invented referrals, including corrected B submitted Off without fabricated
+checks. D remains unresolved with no payment guarantee.
+
+Global Reset was verified on pharmacy and from another route: receipts and
+receipt numbering, edited text, selected scenario, local availability, timeline,
+all duration values and invalid field drafts return to defaults. Agent remains
+Off, with no stale check. Keyboard Apply/Step, Pause/Jump, cancellation and live
+reduced-motion behaviour pass. Baseline duration additions are isolated scenario
+assumptions; the existing calculator arithmetic and six canonical cases pass.
+
+The first full run had 400 passed and four failures: three pharmacy light-theme
+contrast failures from nested label backgrounds, plus an existing tooltip's
+initial route-focus race. Local label contrast and test focus sequencing were
+corrected without removing assertions. Failed evidence remains retained.
+Screenshot-only scroll positioning was then corrected; all sixteen pharmacy
+tests passed again in 32 seconds. Twelve Task 4 images are retained alongside
+302 non-attachment full-suite screenshots. See [selected images](screens/task4/README.md).
+
+Evidence: [final check](../../.copilot-tracking/tasks/4/final-check.log),
+[final units](../../.copilot-tracking/tasks/4/final-unit.log),
+[full Chromium](../../.copilot-tracking/tasks/4/final-playwright.log),
+[earlier failure](../../.copilot-tracking/tasks/4/resumed-playwright.log),
+[screenshot verification](../../.copilot-tracking/tasks/4/screenshot-verification.log)
+and [artifact counter](../../.copilot-tracking/tasks/4/summarise.mjs).
+
+No Git, account, commit, deployment or remote verification action was performed.
+Tasks 5-13 remain unchecked; queue simulation, shared lifecycle, claims actions
+and round-trip integration are not implemented here. No Firefox/WebKit, manual
+screen-reader or full WCAG conformance claim is made.
 
 ## Task 1 gates
 

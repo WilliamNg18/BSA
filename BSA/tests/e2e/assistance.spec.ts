@@ -56,14 +56,16 @@ for (const scenario of [
         await expect(status).toHaveText(scenario.status);
         const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
         const endorsement = await field.inputValue();
-        const checks = page.getByRole("heading", { name: /^Deterministic checks/ }).locator("..");
-        const evidence = await checks.innerText();
+        const checks = page.getByRole("list", { name: "Requirement checkboxes" });
+        if (scenario.readable) await expect(checks).toBeVisible();
+        else await expect(checks).toHaveCount(0);
         if (!globalEnabled) await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
         if (!localAvailable) await page.getByRole("switch", { name: "Agent available", exact: true }).click();
         const assistanceEnabled = globalEnabled && localAvailable;
         await expect(status).toHaveText(assistanceEnabled ? scenario.status : "Agent unable to determine");
         await expect(field).toHaveValue(endorsement);
-        await expect(checks).toHaveText(evidence, { useInnerText: true });
+        if (assistanceEnabled && scenario.readable) await expect(checks).toBeVisible();
+        else await expect(checks).toHaveCount(0);
         await expect(page.getByRole("switch", { name: "Agent available", exact: true })).toBeChecked({ checked: localAvailable });
         const rule = page.getByRole("heading", { name: /^Rule retrieved for/ });
         const reading = page.getByText(/^Reading of the note \(mocked interpretation\):/);
@@ -73,9 +75,9 @@ for (const scenario of [
         } else {
           await expect(rule).toHaveCount(0);
           await expect(reading).toHaveCount(0);
-          await expect(page.getByText(/Continue with submission as normal;/)).toBeVisible();
-          if (!globalEnabled) await expect(page.getByText(/Agent recommendations are switched off\./)).toBeVisible();
-          else if (!localAvailable) await expect(page.getByText(/The agent is not available\./)).toBeVisible();
+          if (!globalEnabled) await expect(page.getByText("Agent Off · No checks performed in this scenario; real pharmacy checks are unknown.", { exact: true })).toBeVisible();
+          else if (!localAvailable) await expect(page.getByText("Agent unavailable · No checks performed; manual submission remains available.", { exact: true })).toBeVisible();
+          else await expect(page.getByRole("list", { name: "Scripted pharmacy process" })).toContainText("STOPPED");
         }
         const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
         await expect(submit).toBeEnabled();
@@ -114,7 +116,7 @@ test("pharmacy keeps edits and local availability across global assistance chang
   await global.click();
   await expect(local).not.toBeChecked();
   await expect(status).toHaveText("Agent unable to determine");
-  await expect(page.getByText(/The agent is not available\./)).toBeVisible();
+  await expect(page.getByText("Agent unavailable · No checks performed; manual submission remains available.", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: /^Rule retrieved for/ })).toHaveCount(0);
   await local.click();
   await expect(status).toHaveText("Ready to submit");

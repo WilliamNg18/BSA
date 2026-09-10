@@ -4,22 +4,50 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
+## Task 4 boundary and remaining gaps
+
+Task 4 local check, 425 units and 404 full production Chromium tests pass.
+All 64 axe audits have zero violations. The first run's nested pharmacy-label
+contrast defect and existing tooltip focus race were repaired with assertions
+retained. Twelve Task 4 screenshots were regenerated after correcting capture
+scroll position; all sixteen pharmacy tests passed again. See
+[progress](PROGRESS.md) for actual logs, copy/privacy counts and limitations.
+
+The pharmacy store holds immutable session receipts separately from the frozen
+application lifecycle contract. It is not a completed shared one-case store;
+Task 8 integration remains pending. Leaving the pharmacy route discards local
+field edits and the selected receipt display; saved receipts remain in session
+memory until global Reset. No claims history interface is implemented here.
+
+Checks are scripted without a model API. Timeline days are assumptions and
+do not cause actual submission, queue routing or a paid transition. D stays
+uncertain even after replacement text, with no guaranteed payment. Unknown
+unassisted edits take the uncertain illustrative path, rather than claiming
+validation. Task 4 does not verify real pharmacy workflow or measured delays.
+
+JS is 803.55 kB, 246.46 kB gzip; the existing large-chunk warning remains.
+No Task 4 commit, deployment, CI, hosted, Firefox/WebKit or manual screen-reader
+verification was performed. Tasks 5-13 remain incomplete. The existing receipt
+store's reset adapter follows replacement of the three seeded app slices;
+Task 8 must preserve or explicitly replace that reset integration.
+
 ## Task 3 scope and remaining gaps
 
 The six-stage pipeline and conservative referral-free estimate are implemented.
 Scope corrections replace the aggregate marker with seven phase-mapped markers,
 separate exact-fix readiness from permanent referral risk, and replace the third
-public figure with Monthly rulebook publication. Corrected check exit 0 and
-386 units pass; the single final full Chromium run is pending.
+public figure with Monthly rulebook publication. Corrected check exit 0,
+386 units and 386 full Chromium tests passed.
 The shared presentation clock never writes domain
 state. Pipeline stages illustrate a proposed workflow, not real asynchronous
 processing. Free-text reason practices and weeks-long referral cycles require
 validation. No measured first-time accuracy is available. Zero residual means
-Not established, not perfect performance. Tasks 4-7 remain unimplemented.
+Not established, not perfect performance. Tasks 5-7 remain unimplemented.
 
 The current JS bundle is 794.92 kB, 243.29 kB gzip; the existing size warning
-remains. Task 3 CI, hosted verification, Firefox/WebKit and manual screen-reader
-checks are not performed. See [progress](PROGRESS.md) for the superseding gate evidence.
+remains in that historical build. Task 3 CI/hosting passed according to the
+supplied handoff; Firefox/WebKit and manual screen-reader checks were not
+performed. See [progress](PROGRESS.md) for the superseding gate evidence.
 
 ## Task 2 local verification and handoff
 

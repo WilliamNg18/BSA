@@ -6,6 +6,23 @@ ms.date: 2026-09-10
 
 ## Current increment scope
 
+Task 4 locally implements the pharmacy manual/assisted split, a cancellable
+two-second scripted check, explicit B date correction, immutable submission
+receipts and an illustrative post-submission timeline. Off performs no precheck;
+On is scripted, not a model API. D always stops at capture with downstream
+checks NOT RUN. Submission stays available in every status. Global Reset clears
+receipts, field drafts and assumptions and leaves Agent Off.
+
+The separate pharmacy memory store is not the final shared one-case lifecycle
+store. Task 8 owns that integration. No queue transition, actual submission or
+paid transition exists here. Complete A and explicitly corrected B avoid fake
+referrals; D remains uncertain with no payment guarantee. Durations are editable
+scenario assumptions, not measured operational delays. Local gates: check exit 0,
+425 units, 404 full Chromium tests and 64 axe audits with zero violations.
+See [authoritative progress](PROGRESS.md) for raw logs and limitations.
+
+### Completed Task 3 foundation
+
 Task 3 adds the six-stage Chapter 3 pipeline above the retained A-D cards.
 Stages 1-3 preserve existing capture, printed extraction and pricing; handwriting
 uncertainty remains. The uncertain-exception kernel uses the shared two-second
@@ -22,9 +39,9 @@ gate; referral risk and Case D remain unresolved. The three public figures are
 approximately 1.1 billion items/year, 85,000 referrals/month and Monthly rulebook
 publication, not an accuracy target. Publication frequency is not rule-change
 frequency, and these public claims have not been independently verified.
-The corrected local check and 386 units pass; the single final full Chromium
-run is pending. The existing large-chunk warning remains.
-Task 3 commit, CI and hosting are not performed; Tasks 4-7 remain deferred.
+The corrected local check, 386 units and 386 Chromium tests passed. Task 3 commit
+96bf097 and the supplied CI/hosting gates are recorded in progress. The existing
+large-chunk warning remains. Tasks 5-7 remain deferred.
 
 ### Task 2 foundation
 

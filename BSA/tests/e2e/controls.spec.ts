@@ -33,7 +33,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and unav
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
   await expect(status).toHaveText("Information may be missing");
   await captureCheckpoint(page, testInfo, "pharmacy-before-date");
-  await page.getByRole("button", { name: "Correct the information" }).click();
+  await page.getByRole("button", { name: "Apply correction" }).click();
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO  RK 21/08/26");
   await expect(status).toHaveText("Ready to submit");
