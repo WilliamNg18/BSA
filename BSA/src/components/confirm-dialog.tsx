@@ -26,12 +26,16 @@ interface PendingConfirm extends ConfirmOptions {
 export function ConfirmDialogProvider({ children }: { children: ReactNode }) {
   const [pending, setPending] = useState<PendingConfirm | null>(null);
   const openRef = useRef(false);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   const confirm = useCallback<ConfirmFn>(
     (options) => {
       // Guard against a second confirm() while one is already open — otherwise
       // the first promise's resolver would be orphaned and that await hangs.
       if (openRef.current) return Promise.resolve(false);
+      // This global portal has no Radix Trigger. Capture before focus enters it,
+      // and keep the reference after pending is cleared for close autofocus.
+      triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       openRef.current = true;
       return new Promise<boolean>((resolve) =>
         setPending({ ...options, resolve }),
@@ -55,7 +59,11 @@ export function ConfirmDialogProvider({ children }: { children: ReactNode }) {
           if (!open) settle(false);
         }}
       >
-        <AlertDialogContent>
+        <AlertDialogContent onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          if (triggerRef.current?.isConnected) triggerRef.current.focus({ preventScroll: true });
+          triggerRef.current = null;
+        }}>
           <AlertDialogHeader>
             <AlertDialogTitle>{pending?.title}</AlertDialogTitle>
             {pending?.description && (

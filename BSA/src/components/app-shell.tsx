@@ -30,6 +30,7 @@ export function AppShell() {
     <div className="flex min-h-screen flex-col">
       <TopNav onReset={() => { setResetEpoch((value) => value + 1); setTourVisible(true); setDisclaimerOpen(true); }} />
       <TourRail visible={tourVisible} onDismiss={() => setTourVisible(false)} />
+      <section aria-label="Demonstration scope and governing principle">
       <div className="border-b border-amber-300 bg-amber-50 px-4 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 md:px-6" data-disclaimer>
         <button type="button" className="rounded-sm text-left font-medium underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" aria-expanded={disclaimerOpen} aria-controls="synthetic-disclaimer" onClick={() => setDisclaimerOpen((open) => !open)}>
           Synthetic demonstration data throughout. {disclaimerOpen ? "Hide details" : "Show details"}
@@ -37,6 +38,7 @@ export function AppShell() {
         <p id="synthetic-disclaimer" hidden={!disclaimerOpen} className="mt-2">This prototype does not calculate or approve payments, and nothing here is a claim about NHSBSA's real performance. Document-attributed figures are not independently verified.</p>
       </div>
       <p className="border-b bg-muted/30 px-4 py-3 text-xs font-medium md:px-6" data-principle>The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.</p>
+      </section>
       <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
         {/* key on pathname → each route re-mounts and replays the entrance.
             Entrance-only (no AnimatePresence/exit): an exit animation around

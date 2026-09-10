@@ -12,6 +12,7 @@ import { runAgent } from "@/lib/domain/agent";
 import { caseById } from "@/lib/domain/cases";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
 
 // The key agentic screen: the observable workflow. Evidence, actions, tool
 // results and decision boundaries are shown. No private model reasoning is
@@ -89,7 +90,7 @@ export function CaseTracePage() {
                 <p className="text-sm">{step.summary}</p>
                 {step.items.length > 0 && (
                   <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-                    {step.items.map((it, k) => <li key={k}>{it}</li>)}
+                    {step.items.map((it, k) => <li key={k}>{it.replace(pack.agentVersion, agentVersionLabel(pack.agentVersion))}</li>)}
                   </ul>
                 )}
                 {step.toolCalls.length > 0 && (
@@ -121,7 +122,7 @@ export function CaseTracePage() {
                             <TableCell className="whitespace-normal align-top text-xs">{tc.sourceLabel}</TableCell>
                             <TableCell className="whitespace-normal align-top text-xs">
                               <div className="flex flex-col gap-1">
-                                <span>{tc.productionService}</span>
+                                <span>{productionServiceLabel(tc.productionService)}</span>
                                 <BoundaryTag cls={tc.cls} short className="w-fit" />
                               </div>
                             </TableCell>

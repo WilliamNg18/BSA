@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
   const stop = TOUR_STOPS[index];
   const last = index === TOUR_STOPS.length - 1;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!visible) return;
     function onKey(event: KeyboardEvent) {
       if (!isTourShortcut(event)) return;
@@ -20,14 +20,18 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
       if (target instanceof Element && target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"], [role="menu"], [role="dialog"], [role="alertdialog"]')) return;
       // Do not steal a browser shortcut while any modal/menu has focus trapped.
       if (document.querySelector('[role="dialog"], [role="alertdialog"], [role="menu"]')) return;
-      const destination = event.key === "ArrowRight" ? (index < 0 ? 0 : index + 1) : index - 1;
-      if (destination < 0 || destination >= TOUR_STOPS.length) return;
+      // BrowserRouter writes history synchronously, before React commits its
+      // location. Read that current URL so a burst never reuses a rendered index.
+      const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+      const current = tourStopIndex(window.location.pathname.slice(base.length) || "/", window.location.hash);
+      const destination = event.key === "ArrowRight" ? (current < 0 ? 0 : current + 1) : current - 1;
       event.preventDefault();
+      if (destination < 0 || destination >= TOUR_STOPS.length) return;
       navigate(TOUR_STOPS[destination].to);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [index, navigate, visible]);
+  }, [navigate, visible]);
 
   if (!visible) return null;
   return (
