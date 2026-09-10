@@ -19,7 +19,7 @@ Not established, not perfect performance. Tasks 4-7 remain unimplemented.
 
 The current JS bundle is 794.92 kB, 243.29 kB gzip; the existing size warning
 remains. Task 3 CI, hosted verification, Firefox/WebKit and manual screen-reader
-checks are not performed. See [progress](../../PROGRESS.md) for raw evidence.
+checks are not performed. See [progress](PROGRESS.md) for the superseding gate evidence.
 
 ## Task 2 local verification and handoff
 
@@ -29,7 +29,7 @@ The earlier nine failures comprised invalid calculator definition-list markup,
 live reduced-motion handling, trace label punctuation and a default-On test
 assumption. A subsequent disclosure-navigation race was fixed by awaiting the
 destination route before opening its identically named disclosure. Failed
-artifacts were retained; see [progress](../../PROGRESS.md).
+artifacts were retained; see [progress](PROGRESS.md).
 
 Client attribution is now one chapter-one footer, with documentary audit
 material outside the client. Default and Reset are Off. This supersedes

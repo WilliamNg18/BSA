@@ -14,7 +14,7 @@ The pharmacy pre-check exit precedes capture. Workflow pain points and weeks-lon
 referral cycles are assumptions, not observed NHSBSA practice. Every estimate
 uses the Task 1 selector. The new referral-free proxy retains all abstentions
 as risk, shows Not established for zero residual, and never displays 100%.
-See [the model](task-1-baseline-model.md) and [progress](../../PROGRESS.md).
+See [the model](task-1-baseline-model.md) and [progress](PROGRESS.md).
 Task 3 scope corrections add seven individually keyed gathering markers across
 Plan, Gather, Retrieve, Reconcile/assess and Reason. Only completed phases assist
 the built cohort. The exact-fix draft needs completed presentation and a passing
@@ -45,7 +45,7 @@ Pharmacy split views, queue simulation and manual case views remain deferred
 to Tasks 4-7. The existing trace replay remains separate from Task 3's pipeline.
 Local checks pass: 383 units, 376 Chromium tests and 48 axe audits with zero
 violations. Task 2 commit b7c4451 and successful CI/hosting are user-reported; see
-[progress](../../PROGRESS.md) for evidence and limitations.
+[progress](PROGRESS.md) for evidence and limitations.
 
 ### Historical Task 1 increment
 

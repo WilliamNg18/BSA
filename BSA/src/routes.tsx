@@ -9,6 +9,7 @@ import { CaseTracePage } from "@/pages/case-trace";
 import { DecisionRecordPage } from "@/pages/decision-record";
 import { EvaluationPage } from "@/pages/evaluation";
 import { PharmacyPage } from "@/pages/pharmacy";
+import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { QueuePage } from "@/pages/queue";
 
 export interface AppRoute {
@@ -30,6 +31,7 @@ export interface AppRoute {
 export const routes: AppRoute[] = [
   { path: "/", element: <HomePage />, label: "Overview", icon: HomeIcon, group: "Overview" },
   { path: "/pharmacy", element: <PharmacyPage />, label: "Pharmacy check", icon: Store, group: "Operations" },
+  { path: "/pharmacy/claims", element: <PharmacyClaimsPage />, label: "Pharmacy claims", icon: ClipboardList, group: "Operations" },
   { path: "/queue", element: <QueuePage />, label: "Exception queue", icon: Inbox, group: "Operations" },
   { path: "/case/:id", element: <CasePackPage /> },
   { path: "/case/:id/trace", element: <CaseTracePage /> },

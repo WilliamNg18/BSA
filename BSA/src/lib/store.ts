@@ -35,6 +35,7 @@ import { CASES } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
+import type { LifecycleSlice } from "@/lib/domain/lifecycle";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -66,7 +67,7 @@ function seededRecords(): DecisionRecord[] {
   ];
 }
 
-interface AppState {
+interface AppState extends LifecycleSlice {
   caseStates: Record<string, CaseState>;
   records: DecisionRecord[];
   agentEnabled: boolean;
@@ -98,6 +99,15 @@ function decisionMatches(recommendation: Recommendation, decision: HumanDecision
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
+  // Contract freeze only. Stream B owns implementation; no page calls these yet.
+  lifecycles: {},
+  followedCaseId: null,
+  submitFromPharmacy: () => { throw new Error("not implemented"); },
+  arriveInQueue: () => { throw new Error("not implemented"); },
+  recordOperatorDecision: () => { throw new Error("not implemented"); },
+  resubmitFromPharmacy: () => { throw new Error("not implemented"); },
+  sendConfirmation: () => { throw new Error("not implemented"); },
+  followCase: () => { throw new Error("not implemented"); },
   caseStates: initialStates(),
   records: seededRecords(),
   agentEnabled: false,

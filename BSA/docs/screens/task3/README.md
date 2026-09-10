@@ -22,7 +22,7 @@ risk. Both markers remain manual when Off.
 
 ## Verification status
 
-See [progress](../../../../PROGRESS.md) for the commit gate. These images do not
+See [progress](../../PROGRESS.md) for the commit gate. These images do not
 by themselves establish a passing browser suite. Check and 386 units passed;
 the full browser run is still pending and has exposed a tooltip test-locator
 ambiguity. The corrected locator requires verification after that run ends.
