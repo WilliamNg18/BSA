@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
 import { SourceDisclosure } from "@/components/demo/source-disclosure";
+import { BaselineCalculator } from "@/components/demo/baseline-calculator";
 import { SceneDiagram, TwoPlacesDiagram } from "@/components/demo/tour-diagrams";
 import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
@@ -19,7 +20,7 @@ export function HomePage() {
     <div className="mx-auto w-full max-w-7xl space-y-6" data-tour-chapter={chapterNumber}>
       <div className="max-w-3xl space-y-3" data-tour-prose>
         <h1 tabIndex={-1} data-tour-heading className="rounded-sm text-3xl font-semibold tracking-tight focus-visible:outline-2 md:text-4xl">{chapter?.title ?? "A month of work"}</h1>
-        <p className="text-muted-foreground">{chapter?.prose ?? "Calculator planned. No manual baseline or savings estimate is built here. Validated handling times, exception volumes and costs are needed before any result can be shown."}</p>
+        <p className="text-muted-foreground">{chapter?.prose ?? "Change the assumptions to compare manual effort with a proposed assisted month. These estimates use a referred-back volume proxy and synthetic cohorts, not measured NHSBSA performance."}</p>
       </div>
       {chapterNumber === 1 && <>
         <ul aria-label="Document-attributed key figures" className="grid gap-4 lg:grid-cols-3">
@@ -40,7 +41,7 @@ export function HomePage() {
           </section>
         </div>
       </>}
-      {chapterNumber === 2 && <div className="rounded-xl border border-dashed bg-muted/30 p-6 text-sm font-medium">Planned · Calculator · No results</div>}
+      {chapterNumber === 2 && <BaselineCalculator />}
       {chapterNumber === 3 && <>
         <p className="text-sm font-medium">Synthetic cases · Scripted interpretation · Human decision throughout</p>
         <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-4">

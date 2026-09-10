@@ -50,7 +50,7 @@ for (const enabled of [true, false]) {
       await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
       if (index > 0 && stop.to.includes("#")) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      if (stop.chapter === 2) await expect(page.getByText("Planned · Calculator · No results", { exact: true })).toBeVisible();
+      if (stop.chapter === 2) await expect(page.getByRole("region", { name: "Monthly workload calculator" })).toBeVisible();
       if (stop.chapter === 5) await expect(page.getByRole("heading", { name: "5. The queue · Simulation planned", exact: true })).toBeVisible();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
@@ -215,7 +215,7 @@ test("unknown routes do not claim a tour chapter and retain start and home recov
   await expect(page).toHaveURL(/#scene$/);
 });
 
-test("chapter prose stays within forty words in both states; selected QA screenshots", async ({ page }) => {
+test("chapter prose stays within forty words in both states; selected QA screenshots", async ({ page }, testInfo) => {
   test.setTimeout(60_000);
   for (const width of [1440, 360]) {
     await page.setViewportSize({ width, height: 1000 });
@@ -228,7 +228,7 @@ test("chapter prose stays within forty words in both states; selected QA screens
         const prose = await page.locator("[data-tour-prose]").innerText();
         expect(prose.trim().split(/\s+/).length).toBeLessThanOrEqual(40);
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-        await page.screenshot({ path: `docs/qa/tour-foundation/${fragment}-${width}-${width === 1440 ? "light" : "dark"}-${enabled ? "on" : "off"}.png`, fullPage: true });
+        await page.screenshot({ path: testInfo.outputPath(`${fragment}-${width}-${width === 1440 ? "light" : "dark"}-${enabled ? "on" : "off"}.png`), fullPage: true });
       }
     }
   }
