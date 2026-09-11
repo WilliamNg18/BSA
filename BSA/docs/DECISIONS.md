@@ -304,3 +304,20 @@ its existing label to wrap with bounded width and automatic height. Preserve
 the label, destination and layout; do not conceal overflow. Linux CI reported
 5px overflow at 360px. Windows reproduced 17px with the root text size enlarged
 from 16px to 18px, establishing the same intrinsic-width defect.
+
+Use completed Linux evidence on the exact patch instead of repeating a healthy
+but slow local matrix: CI `34629986842` on `1a103e3` has all 183 S tests and 247
+unique unrestricted axe reports passing. Keep its overall 760 passed / 205 failed
+result separate; no full-CI pass is claimed. Retain artifact `10277495935` and
+the extracted audit/CSP counts. Stop the owned duplicate, not another stream.
+
+After that matrix, fix two explicit accessibility gaps: Dismiss tour moves focus
+to main; Restore tour focuses the remounted chapter chooser. Reset overlay and
+content suppress open/closed animations under reduced motion, while preserving
+normal motion. Verify computed animation names and keyboard focus, not axe alone.
+Use state-qualified reduced-motion classes to match the state animation rules.
+
+AppShell remains the single owner of the claims chapter heading and prose.
+Derive chapter numbers/titles from shared tour stops and look up prose by that
+number. T's referral-cycle component keeps only its distinct flow subheading.
+This avoids duplicated chapter copy and hardcoded 5/4/6 numbering after T merges.

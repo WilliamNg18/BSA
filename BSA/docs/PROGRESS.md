@@ -22,7 +22,7 @@ ms.date: 2026-09-11
 
 ## Current handoff: 11 September 2026
 
-### Issue 15: Stream S local acceptance in progress
+### Issue 15: Stream S matrix passed; final control fixes in progress
 
 Production browser servers now enforce the emitted strict self-only CSP.
 The bounded scrollbar adapter fixes the demonstrated Reset inline-style block;
@@ -37,10 +37,22 @@ The initial full matrix was interrupted after concurrent build writes caused
 two HTTP 500 responses. A clean retry stalled during shared-machine contention
 and was stopped; neither interrupted run counts as passed or as a flaky test.
 
-The final dedicated matrix now defines 183 browser tests and 247 unrestricted
-axe audits, including all six phone packs and larger-text reflow. Final execution
-after rebase is pending the coordinator's local-browser slot. Tasks 8-13 remain
-unchecked; no full WCAG, manual screen-reader or hosted acceptance is claimed.
+Completed Linux CI run `34629986842` on `1a103e3` verified the dedicated matrix:
+183 browser tests, 247 unique unrestricted axe audits, zero axe violations and
+183 unique CSP reports with zero violations. Counts were checked directly in
+artifact `10277495935`, excluding attachment copies; no S failure-context file
+or failed-test entry exists. All six phone packs and enlarged-text reflow passed.
+The overall CI run was **not green**: 760 passed and 205 failed across 965 tests;
+the remaining failures belong to the R-owned legacy root/focus regressions.
+The healthy one-worker local duplicate was stopped once this completed,
+exact-revision evidence was available; its partial results are not added.
+
+Final AppShell Dismiss/Restore focus and Reset reduced-motion fixes remain under
+verification. Their tests bring the inventory to 185, without changing the 247
+matrix audit count. Queue/pharmacy/claims chapter labels now derive from shared
+tour metadata, ready for T's eight-chapter update without duplicate claims prose.
+Tasks 8-13 remain unchecked; no full WCAG, manual screen-reader or hosted
+acceptance is claimed.
 Post-rebase check and 557 units in 19 files pass on main `b23e478`; the lower
 count reflects main's seven removed budget tests. Playwright `--list` confirms
 183 tests after removing accidental nested duplication of the phone matrix.

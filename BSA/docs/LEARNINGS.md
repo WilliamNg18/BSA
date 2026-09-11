@@ -296,3 +296,14 @@ Check Playwright's actual `--list` inventory before quoting a planned count.
 The phone reflow loop was accidentally nested inside the eight desktop variants,
 yielding 351 tests instead of 183. Moving it to top level removes redundant
 executions without removing any unique screen/mode/motion combination.
+
+The completed Linux artifact supplied exact-revision evidence while local
+validation was CPU-constrained: 247 unique axe JSONs, zero violations, 183 unique
+CSP JSONs, zero violations and no S failure contexts. The whole run still failed
+205 other regressions; never promote scoped acceptance into a full-CI pass.
+
+Axe does not verify where focus goes when its invoker unmounts, or whether a
+reduced-motion preference actually suppresses CSS animation. Add observable
+keyboard/focus and computed-animation assertions. Preserve the established
+initial tour-heading focus contract; the skip-link test must navigate to the
+link by keyboard from that state rather than assume the first Tab starts at body.

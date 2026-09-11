@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import type { Page, TestInfo } from "@playwright/test";
 import { captureJson, expect, test as base } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../staticwebapp.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -156,6 +157,10 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
         await page.getByRole("button", { name: "Reset demo", exact: true }).press("Enter");
         const dialog = page.getByRole("alertdialog");
         await expect(dialog).toBeVisible();
+        for (const surface of [dialog, page.locator('[data-slot="alert-dialog-overlay"]')]) {
+          expect(await surface.evaluate((element) => getComputedStyle(element).animationName))
+            .toBe(reducedMotion === "reduce" ? "none" : "enter");
+        }
         await expect(page.locator("body")).toHaveAttribute("data-scroll-locked", "1");
         const locked = await page.evaluate(() => ({
           width: document.body.getBoundingClientRect().width,
@@ -237,6 +242,28 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       await expect(sheet).toHaveCount(0);
       await expect(page.locator("body")).not.toHaveAttribute("data-scroll-locked");
+    });
+
+    test("tour dismissal and restoration retain keyboard focus", async ({ page }) => {
+      await page.goto("./#scene");
+      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+      const rail = page.getByRole("navigation", { name: "Guided tour", exact: true });
+      await page.getByRole("button", { name: "Dismiss tour", exact: true }).press("Enter");
+      await expect(rail).toHaveCount(0);
+      await expect(page.getByRole("main")).toBeFocused();
+      await page.getByRole("button", { name: "Restore tour", exact: true }).press("Enter");
+      const chapter = rail.getByRole("button", { name: "Choose tour chapter", exact: true });
+      await expect(chapter).toBeFocused();
+      await chapter.press("ArrowDown");
+      await expect(page.getByRole("menuitem").first()).toBeFocused();
+      await page.keyboard.press("Escape");
+      await expect(chapter).toBeFocused();
+      for (const path of ["/queue", "/pharmacy/claims"] as const) {
+        const stop = TOUR_STOPS.find((item) => item.to === path)!;
+        await page.goto(path);
+        const intro = page.getByRole("region", { name: `Tour chapter ${stop.chapter}`, exact: true });
+        await expect(intro.getByRole("heading", { name: `${stop.chapter}. ${stop.label}`, exact: true })).toHaveCount(1);
+      }
     });
   });
 }
