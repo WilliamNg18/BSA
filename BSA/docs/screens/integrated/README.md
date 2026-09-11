@@ -36,6 +36,11 @@ The [manifest](manifest.json) records source revision, capture time, URL,
 viewport, Agent state, heading, SHA-256, horizontal overflow, browser errors
 and all-default-rule axe violations per image. A non-null `runtimeError` or
 non-empty `failures` means the capture run did not finish cleanly.
+The final-refresh harness checkpoints this manifest after every image and
+records `expectedCaptureCount` and `completed`. An interrupted run cannot be
+presented as a complete matrix, and resumed failures are rechecked rather than
+discarded. The initial manifest predates those two added completion fields;
+its 103 entries were independently counted and hash-verified.
 
 No dark/mobile/cross-browser coverage or full manual WCAG conformance is claimed
 by this matrix. Those wider regression gates belong to the coordinated
