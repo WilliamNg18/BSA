@@ -44,7 +44,7 @@ for (const enabled of [false, true]) {
     await expect(region).toBeVisible();
     await expect(region.getByRole("heading", { name: "Today versus With agent", exact: true })).toBeFocused();
     await expect(region).toHaveAttribute("id", await compare(page).getAttribute("aria-controls") as string);
-    await expect(region).toContainText("Same scenario, same clock: 08:15");
+    await expect(region).toContainText("Same scenario at 08:15");
     const result = calculateBaseline(input), day = projectQueueDay(input, 15);
     await expect(region).toContainText("1,234 items; pinned examples add no volume.");
     await expect(region).toContainText(`With agent: ${n(result.built)} built + ${n(result.abstained)} abstained.`);
@@ -56,7 +56,7 @@ for (const enabled of [false, true]) {
       const row = region.getByRole("row").filter({ has: page.getByRole("rowheader", { name: label, exact: true }) });
       await expect(row.getByRole("cell")).toHaveText([n(today), n(assisted)]);
     }
-    await expect(region).toContainText("not an additional judging saving");
+    await expect(region).toContainText("no additional savings");
     await expect(region.getByRole("button")).toHaveText(["Close comparison"]);
     expect(await queueSnapshot(page)).toEqual(before);
     await page.keyboard.press("Tab");
@@ -79,16 +79,16 @@ test("Compare follows the running shared clock without starting pausing or resta
   await page.getByRole("button", { name: "Play day", exact: true }).click();
   await page.clock.runFor(500);
   await compare(page).click();
-  await expect(comparison(page)).toContainText("Same scenario, same clock: 08:30");
+  await expect(comparison(page)).toContainText("Same scenario at 08:30");
   await expect(page.getByRole("button", { name: "Pause day", exact: true })).toBeEnabled();
   await page.clock.runFor(250);
-  await expect(comparison(page)).toContainText("Same scenario, same clock: 08:45");
+  await expect(comparison(page)).toContainText("Same scenario at 08:45");
   await comparison(page).getByRole("button", { name: "Close comparison", exact: true }).click();
   await page.clock.runFor(250);
   await expect(page.getByLabel("Shared day clock", { exact: true })).toHaveText("09:00");
   await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
   await compare(page).click();
-  await expect(comparison(page)).toContainText("Same scenario, same clock: 17:00");
+  await expect(comparison(page)).toContainText("Same scenario at 17:00");
   const day = projectQueueDay(BASELINE_DEFAULTS, 540);
   await expect(comparison(page).getByRole("row").filter({ has: page.getByRole("rowheader", { name: "Projected operator actions", exact: true }) }).getByRole("cell")).toHaveText([n(day.today.processed), n(day.assisted.processed)]);
   await expect(page.locator('[data-day-summary="today"] dd').first()).toHaveText(n(day.today.processed));
@@ -105,7 +105,7 @@ test("Compare Reset closes the surface and invalid assumptions disable stale com
   await expect(compare(page)).toHaveAttribute("aria-expanded", "false");
   await expect(page.getByRole("switch", { name: "Queue assistance: Off", exact: true })).not.toBeChecked();
   await compare(page).click();
-  await expect(comparison(page)).toContainText("Same scenario, same clock: 08:00");
+  await expect(comparison(page)).toContainText("Same scenario at 08:00");
   await navigatePrimary(page, "Overview");
   await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
   await page.getByLabel("Monthly volume proxy", { exact: true }).fill("");
@@ -130,7 +130,7 @@ for (const { width, colorScheme, enabled } of [
     await compare(page).focus(); await page.keyboard.press("Enter");
     const region = comparison(page);
     await expect(region.getByRole("heading")).toBeFocused();
-    await expect(region).toContainText("Same scenario, same clock: 17:00");
+    await expect(region).toContainText("Same scenario at 17:00");
     expect(await region.evaluate((element) => getComputedStyle(element).animationName)).toBe("none");
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     const audit = await new AxeBuilder({ page }).analyze();

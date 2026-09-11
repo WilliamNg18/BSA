@@ -17,9 +17,9 @@ export function QueueComparison({ input, result, day }: ComparisonProps) {
   ];
   return <div className="space-y-4">
     <div className="flex flex-wrap items-center gap-2"><SyntheticTag>Model assumptions</SyntheticTag><BoundaryTag cls="deterministic" /><BoundaryTag cls="human" /></div>
-    <p className="text-sm">Same scenario, same clock: <strong>{dayClock(day)}</strong>. One operator per projection; opening Compare does not pause or advance the simulation.</p>
+    <p className="text-sm">Same scenario at <strong>{dayClock(day)}</strong>; Compare changes no state. Judging counts processed work, unlike the calculator's fixed cohort; no additional savings.</p>
     <table className="w-full table-fixed text-left text-sm">
-      <caption className="pb-2 text-left text-muted-foreground">Synthetic day projections, not actual decisions or measured performance.</caption>
+      <caption className="pb-2 text-left text-muted-foreground">Assumed day projections</caption>
       <thead><tr>
         <th scope="col" className="p-2">Operator work</th>
         <th scope="col" className="p-2">Today</th>
@@ -38,8 +38,6 @@ export function QueueComparison({ input, result, day }: ComparisonProps) {
       <div><dt className="font-medium">Shared per-item assumptions</dt><dd>Gathering {n(manualGatheringMinutes(input))} min; built review {n(input.builtReviewMinutes)} min; judging {n(input.judgingMinutes)} min.</dd></div>
       <div><dt className="font-medium">Day capacity assumptions</dt><dd>One 540-minute budget each. Built and abstained share assisted capacity proportionally, rounded down; assembly latency, breaks and referral delays excluded.</dd></div>
     </dl>
-    <p className="text-sm text-muted-foreground">Day judging covers projected operator work, not the calculator's fixed reference cohort. Differences are not an additional judging saving.</p>
-    <p className="text-sm">Agent gathers evidence and recommends; humans decide. Abstentions stay manual. No decisions, payments or history events are written.</p>
   </div>;
 }
 

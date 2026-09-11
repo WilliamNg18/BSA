@@ -853,3 +853,7 @@ focused browser tests cover keyboard/open/close/focus, both assistance states,
 edited scenario/time parity, unchanged records and counters, continued playback,
 Reset/invalid inputs, reduced motion, responsive layout and axe. Their execution
 awaits the coordinator's browser slot. Integration and Tasks 8-13 remain pending.
+
+Coordinator copy review shortened the comparison to one 20-word paragraph and
+the caption "Assumed day projections". Cohort fields, manual handling and all
+no-write/state assertions are unchanged; only exact-copy expectations changed.

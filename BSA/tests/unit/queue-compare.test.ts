@@ -23,8 +23,8 @@ describe("queue Compare presentation", () => {
       [projected.today.judging, projected.assisted.judging],
     ]) expect(html).toContain(`>${n(today)}</td><td class="p-2 tabular-nums">${n(assisted)}</td>`);
     expect(html).toContain(`${n(result.built)} built + ${n(result.abstained)} abstained`);
-    expect(html).toContain("not an additional judging saving");
-    expect(html).toContain("No decisions, payments or history events are written");
+    expect(html).toContain("no additional savings");
+    expect(html).toContain("Compare changes no state");
   });
 
   it.each([0, 1, 5, 1e9])("keeps source volume %s honest, including tiny and empty cohorts", (volume) => {
@@ -32,7 +32,7 @@ describe("queue Compare presentation", () => {
     const html = renderToStaticMarkup(createElement(QueueComparison, { input, result, day: 540 }));
     expect(html).toContain(`${n(volume)} items; pinned examples add no volume.`);
     expect(html).not.toMatch(/NaN|Infinity/);
-    expect(html).toContain("Abstentions stay manual");
+    expect(html).toContain("handled manually");
   });
 
   it.each([false, true])("is initially closed and causes no store, fixture or decision writes with Agent %s", (enabled) => {
@@ -46,7 +46,7 @@ describe("queue Compare presentation", () => {
       const control = renderToStaticMarkup(createElement(QueueCompare, props));
       expect(control).toContain('aria-expanded="false"');
       expect(control).toContain(">Compare</button>");
-      expect(control).not.toContain("Synthetic day projections");
+      expect(control).not.toContain("Assumed day projections");
       renderToStaticMarkup(createElement(QueueComparison, { ...props, day: queue.day }));
       expect(appWrites).not.toHaveBeenCalled();
       expect(queueWrites).not.toHaveBeenCalled();
