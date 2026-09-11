@@ -57,11 +57,13 @@ test("six ordered stages preserve existing capture/pricing, assumptions and buil
   await expect(page.locator('[data-kernel] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
   await expect(stages.nth(4)).toContainText("Built exceptions only · Proposed record");
   await expect(stages.nth(4)).toContainText("Case D has no proposed rule or recommendation");
-  await expect(page.locator('[data-case="D"]')).toContainText("Gate: NOT RUN");
   await expect(page.locator("[data-pipeline-correction]")).toHaveText(runAgent(CASES[1]).draftToPharmacy!);
   await expectReferralMarkers(page, true);
-  await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
   await expect(page.locator("[data-pipeline]")).not.toContainText(/Sources:|\.pdf|\.docx|First-time endorsement accuracy/);
+  await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page).toHaveURL(/#cases$/);
+  await expect(page.locator('[data-case="D"]')).toContainText("Gate: NOT RUN");
+  await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
 });
 
 test("pipeline, scene and calculator share live counts, residuals and invalid/zero handling", async ({ page }, testInfo) => {

@@ -407,3 +407,16 @@ Scope its human-decision requirement to referred items rather than implying
 that Case E requires an operator. Server-rendering against frozen lifecycle
 inputs verifies that every state label remains unchanged in both modes and
 that an unknown claim never acquires an invented status or action link.
+
+The first selected browser run's pipeline timeout never left about:blank:
+newPage took 6.1 seconds and browser cleanup took 161.8 seconds. A separate
+mobile failure timed out creating the page, before application assertions.
+Do not relabel those failures as passes because the server returns HTTP 200.
+Both passed the unchanged-bound retry; first-run logs and traces are retained.
+
+After keyboard chapter selection, assert the new route heading owns focus and
+the menu has closed before activating another control. The Off test initially
+pressed Dismiss while the shell was still moving focus to the claims heading.
+Keep keyboard activation and the missing-rail assertion, not a sleep or retry
+loop. Splitting chapters also means pipeline tests must navigate to Four cases
+before asserting the actual Case D card; neither assertion should be removed.

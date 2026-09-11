@@ -61,7 +61,13 @@ for (const enabled of [false, true]) {
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
     await expect(page.getByRole("menuitem")).toHaveText(stops.filter((stop) => stop.path !== "/pharmacy").map((stop) => `${stop.chapter}. ${stop.label}`));
     await page.getByRole("menuitem", { name: "7. What the pharmacy sees", exact: true }).press("Enter");
-    await rail.getByRole("button", { name: "Dismiss tour" }).press("Enter");
+    await expect(page).toHaveURL(/\/pharmacy\/claims$/);
+    await expect(page.getByRole("menu")).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
+    const dismiss = rail.getByRole("button", { name: "Dismiss tour" });
+    await dismiss.focus();
+    await expect(dismiss).toBeFocused();
+    await dismiss.press("Enter");
     await expect(rail).toHaveCount(0);
     await page.getByRole("button", { name: "Restore tour", exact: true }).press("Enter");
     await expect(rail).toContainText("7/8 · What the pharmacy sees");
