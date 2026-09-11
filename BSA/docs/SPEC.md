@@ -179,7 +179,7 @@ The current Task 1 model is defined in
 [task-1-baseline-model.md](task-1-baseline-model.md). It supersedes the
 historical aggregate-minute formulas and six-input count below. Local
 verification is separate from pending Azure deployment; Azure is the
-user-approved target after private Pages returned HTTP 422.
+user-approved target after the former private-repository host returned HTTP 422.
 
 ### Historical calculator model before Task 1
 
@@ -449,6 +449,6 @@ Skip link to `#main-content`; every icon-only control has an `aria-label`; the t
 ## 18. Non-functional (Keep)
 
 - Static single-page application; no back end, no network calls, no analytics, no storage beyond memory. Reset returns to the seeded state.
-- Runs on GitHub Pages under a sub-path (`/BSA/`); deep links resolve through a `404.html` copy of `index.html`.
+- Runs only on Azure Static Web Apps at `/`; deep links use root `staticwebapp.config.json`, emitted into the application build.
 - No real personal data anywhere. Every screen carries the synthetic label.
 - UK English throughout. No vendor branding in the interface; the production mapping on the Architecture page may name services because that is its purpose.

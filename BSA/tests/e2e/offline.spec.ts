@@ -22,7 +22,7 @@ test(`fresh Overview supports first visits to every route after immediate discon
     }
     await navigatePrimary(page, "Exception queue");
     for (const c of cases) {
-      await page.locator(`a[href='/BSA/case/${c.id}']`).first().click();
+      await page.locator(`a[href='/case/${c.id}']`).first().click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
       const caseNav = page.getByRole("navigation", { name: "Case views" });
       await caseNav.getByRole("link", { name: "Case-building trace", exact: true }).click();
@@ -43,7 +43,7 @@ test(`fresh Overview supports first visits to every route after immediate discon
     // the router's browser-history surface, not a reload or preloaded route.
     for (const path of ["#scene", "#month", "#cases", "#two-places", "#close", "pharmacy/claims", "missing-page"]) {
       await page.evaluate((destination) => {
-        history.pushState(null, "", `/BSA/${destination}`);
+        history.pushState(null, "", `/${destination}`);
         window.dispatchEvent(new PopStateEvent("popstate"));
       }, path);
       await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();

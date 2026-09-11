@@ -22,6 +22,13 @@ ms.date: 2026-09-11
 
 ## Current handoff: 11 September 2026
 
+Current Phase 1 overrides the older execution order below: Azure Static Web Apps
+Free is the only host, every active browser configuration now uses `/`, and the
+350,000-byte gzip, copy, Lighthouse and visual thresholds are advisory.
+Tasks 8-13 remain unchecked until the R/S/V/D acceptance streams finish.
+Provisioning is owner-run because no intended subscription or token is configured;
+see DEPLOYMENT.md. Historical measurements below are retained as history only.
+
 The work branch is `integration/tasks-8-13`, based on the completed core at
 `79bd283`. Tasks 8-12 have implementation and tests in this checkpoint, but
 remain unchecked until integrated acceptance is verified. Task 13 is incomplete.
@@ -54,15 +61,14 @@ An earlier saved focused run passed 51 browser tests, not the complete suite.
 	both archive references intact. Review frozen-contract compatibility before
 	resolving overlaps; do not discard integrated features or introduce a
 	second lifecycle store.
-4. Complete the production browser and axe suites under `/BSA/`. Fix actual
+4. Complete the production browser and axe suites under `/`. Fix actual
 	product defects; document genuine flakiness and remaining limitations.
 5. Reconcile the modified screenshots as candidate integration captures, not
 	proof of acceptance. Update MEMORY, LEARNINGS and this checklist accurately.
-6. Implement the newly requested Pages-only hosting policy. Existing Azure
-	configuration and documentation have not yet been removed. Preserve the
-	`404.html` fallback. Pages was previously rejected for the private repository
-	by its GitHub plan; recheck eligibility without changing visibility silently.
-7. Publish the integrated revision and confirm CI, Pages deployment, public
+6. Use only Azure Static Web Apps at the root path with the configuration
+	fallback. The previous private-repository host was unavailable. This
+	corrects the superseded hosting instruction from the earlier handoff.
+7. Publish the integrated revision and confirm CI, Azure deployment, public
 	Overview and deep links. Only then tick Tasks 8-13 and report final counts.
 
 Original reference documents, machine-specific editor settings, dependencies,
@@ -624,7 +630,7 @@ large-chunk warning remains; no zero-warning performance claim.
 
 See [verification](../../.copilot-tracking/tasks/1/verification.json) and
 [model formulas](task-1-baseline-model.md). Azure hosting was approved after
-private Pages returned HTTP 422. Local tests retain the /BSA/ production base;
+the former private-repository host returned HTTP 422. These historical local tests used the /BSA/ production base;
 they do not verify Azure deployment.
 
 ## Task 2 gates and implementation

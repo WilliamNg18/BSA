@@ -7,14 +7,18 @@ import tailwindcss from "@tailwindcss/vite";
 import { runtimeCss } from "./build/runtime-css";
 import { runtimeBudget } from "./build/runtime-budget";
 import { radixTreeShaking } from "./build/radix-tree-shaking";
+import { readFileSync } from "node:fs";
 
 const routerRoot = dirname(createRequire(import.meta.url).resolve("react-router/package.json"));
 
-// `base` is "/" for local development and "/<repo-name>/" on GitHub Pages
-// (the deploy workflow sets VITE_BASE from the repository name).
 export default defineConfig(({ command }) => ({
-  base: process.env.VITE_BASE ?? "/",
-  plugins: [runtimeCss(fileURLToPath(new URL(".", import.meta.url))), radixTreeShaking(), react(), tailwindcss(), runtimeBudget()],
+  base: "/",
+  plugins: [runtimeCss(fileURLToPath(new URL(".", import.meta.url))), radixTreeShaking(), react(), tailwindcss(), {
+    name: "static-web-app-configuration",
+    generateBundle() {
+      this.emitFile({ type: "asset", fileName: "staticwebapp.config.json", source: readFileSync(fileURLToPath(new URL("../staticwebapp.config.json", import.meta.url))) });
+    },
+  }, runtimeBudget()],
   resolve: {
     alias: [
       { find: "@", replacement: fileURLToPath(new URL("./src", import.meta.url)) },
@@ -32,8 +36,7 @@ export default defineConfig(({ command }) => ({
     minify: "terser",
     cssMinify: "esbuild",
     terserOptions: { compress: { passes: 3 }, format: { comments: false } },
-    // The hard 200,000-byte total gzip gate above replaces the generic 500 kB
-    // raw-chunk advice to lazy-load. Retain a separate 650 kB raw-chunk warning.
+    // Total gzip size and raw-chunk size are advisory, not build failures.
     chunkSizeWarningLimit: 650,
   },
 }));

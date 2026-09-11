@@ -1,6 +1,6 @@
 # Instructions for coding agents and contributors
 
-This repository holds the **Prescription Exception Case Builder**, a proof of concept of a governed AI agent supporting prescription exception handling at NHS Business Services Authority (NHSBSA). It is a static React application on synthetic data, deployed to GitHub Pages. Read this file first, then `docs/SPEC.md` (what the application does), `docs/TASK.md` (what to build next) and `docs/KNOWN-ISSUES.md` (what is wrong now).
+This repository holds the **Prescription Exception Case Builder**, a proof of concept of a governed AI agent supporting prescription exception handling at NHS Business Services Authority (NHSBSA). It is a static React application on synthetic data, hosted only on Azure Static Web Apps. Read this file first, then `docs/SPEC.md` (what the application does), `docs/TASK.md` (what to build next) and `docs/KNOWN-ISSUES.md` (what is wrong now).
 
 ## The one rule that governs everything
 
@@ -17,7 +17,8 @@ Any change that lets the "agent" price an item, change a case state, bypass the 
 - **The gate is code.** `complianceGate` in `src/lib/domain/rules.ts` must stay a pure function the interpretation step cannot influence. Confidence is the five structural signals, never a self-reported percentage.
 - **Accessibility is a requirement**: WCAG 2.2 AA contrast, full keyboard operability, visible focus, correct names and roles, `aria-live` on the trace replay, reduced-motion support, no meaning carried by colour alone.
 - **UK English.** No em dashes in interface copy. No vendor or product branding in the interface (the Architecture page's production mapping is the one place service names belong).
-- **GitHub Pages.** The site is served under `/<repo>/`; keep `import.meta.env.BASE_URL` as the router basename and keep the `404.html` copy step in the deploy workflow.
+- **Azure Static Web Apps only.** Vite base and router basename are `/`. Root `staticwebapp.config.json` supplies deep-link fallback and security headers. No other hosting or authentication service.
+- **Gates.** Check (typecheck, lint, build), Vitest, browser crash/dead-control regressions and zero-violation axe are blocking. The 350,000 gzip-byte budget, word counts, Lighthouse scores and screenshot differences are advisory; retain their reports.
 
 ## Stack and layout
 
@@ -32,7 +33,7 @@ src/
   components/ui/   shadcn primitives (edit only to fix a defect; do not restyle here, restyle through tokens and className)
   pages/           one file per route
 docs/              SPEC.md, TASK.md, KNOWN-ISSUES.md
-.github/workflows  deploy.yml (Pages), copilot-setup-steps.yml (agent environment)
+../.github/workflows  azure-static-web-apps.yml (hosting), ci.yml (verification)
 ```
 
 ## Commands
@@ -42,7 +43,7 @@ npm install
 npm run dev        # local at http://localhost:5173/
 npm run typecheck  # tsc, strict
 npm run lint       # eslint
-npm run build      # vite build (set VITE_BASE=/BSA/ to mirror Pages)
+npm run build      # vite build at the root path, including hosting configuration
 npm run check      # typecheck + lint + build: must pass before any pull request
 ```
 

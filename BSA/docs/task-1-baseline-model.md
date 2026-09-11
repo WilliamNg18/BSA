@@ -146,8 +146,8 @@ disclosures and retained focus tests. Full local results belong in
 
 ## Deployment gate
 
-Azure, rather than private GitHub Pages, is the user-approved hosting target
-following Pages HTTP 422. Local production Chromium tests use `/BSA/` to
-retain sub-path compatibility. No deployment, Git action or account action
+Azure is the user-approved hosting target following the former host's HTTP 422.
+Historical local production Chromium tests used `/BSA/` to retain sub-path
+compatibility; current tests use `/`. No deployment, Git action or account action
 is performed; hosted validation and CI are pending independently of local
 task validation. Tasks 2-7 are not implemented here.

@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: "http://localhost:4173/BSA/",
+    baseURL: "http://localhost:4173/",
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     reducedMotion: "reduce",
@@ -16,8 +16,7 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
     command: "npm run build && npm run preview -- --host localhost --port 4173 --strictPort",
-    env: { VITE_BASE: "/BSA/" },
-    url: "http://localhost:4173/BSA/",
+    url: "http://localhost:4173/",
     reuseExistingServer: false,
     timeout: 120_000,
   },

@@ -3,7 +3,6 @@ name: CI
 on:
   pull_request:
   push:
-    branches-ignore: [main]
   workflow_call:
 
 permissions:
@@ -25,8 +24,11 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm test
+      - name: Advisory content report
+        continue-on-error: true
+        run: npm run check:content
       - run: npx playwright install --with-deps chromium
-      # Full production suite includes rendered copy caps, source no-leak and all-rule axe.
+      # Functional regressions and axe block; word counts and photographs report only.
       - run: npm run test:e2e -- --project=chromium --reporter=dot,html
       - uses: actions/upload-artifact@v4
         if: always()

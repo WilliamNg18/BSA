@@ -4,6 +4,40 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Current hosting and acceptance policy supersedes historical gates
+
+The user explicitly replaces every historical strict payload/score/copy/visual
+threshold below. The complete independent-resource gzip budget is 350,000
+decimal bytes and advisory at, below and above the threshold. Incomplete or
+unavailable size reports are explicit advisories, never success claims.
+Word counts, Lighthouse scores and screenshot differences cannot fail a build,
+unit run or browser run. Keep their measurements and positive audit controls.
+No Lighthouse or screenshot-difference assertion is currently configured;
+future tooling must follow this policy.
+
+Blocking checks are check (typecheck, lint, actual production build), Vitest,
+Playwright crash/dead-control regressions and zero-violation axe. Preserve
+functional assertions inside mixed copy/browser tests rather than marking
+whole suites continue-on-error. Eager offline navigation remains a functional
+contract, not a size optimisation to weaken.
+
+Azure Static Web Apps Free in West Europe is the single hosting target, with
+UK South resource-group metadata. Serve at `/`, copy the root configuration
+into the nested app's dist, and retain a self-only CSP. Do not provision
+Application Insights, Front Door, custom domains, authentication or other
+Azure services. Remove obsolete server-host and identity provisioning hooks;
+do not delete any live resource or tenant object as part of this migration.
+
+No default Azure subscription is configured and the CLI is unavailable.
+Discovery returned multiple corporate subscriptions, none selected. Do not
+guess a subscription or copy a historical account's identity into provisioning.
+Document explicit owner-run setup instead; GitHub has no deployment token.
+
+Integrate the preserved feature commits in this dedicated worktree because
+integration/tasks-8-13 is checked out elsewhere. It already descends from
+remote main, so no conflict/rewrite is necessary. Preserve main's frozen public
+types and all six outcomes. Never touch the other checkout or archive refs.
+
 ## 2026-09-10: Meet today first
 
 Default and Reset are Agent Off so the audience meets the manual scenario first.

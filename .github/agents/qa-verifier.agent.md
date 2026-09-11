@@ -21,7 +21,7 @@ in the pull request instead. A blocked or unverified check is not a pass.
    Work from the nested `BSA` application directory. Preserve `cowork-v1`.
 2. Run `npm ci`, `npm run check`, `npm test`, and
    `npm run test:e2e -- --project=chromium`. The browser suite must build the
-   production bundle and preview it under `/BSA/`, not use the development server.
+   production bundle and preview it under `/`, not use the development server.
 3. Visit every current route, including pack, trace and record for A to F,
    unknown paths and unknown case IDs. Exercise every link and non-destructive
    button. Require expected headings, no console errors, no boundary fallback
@@ -41,9 +41,11 @@ in the pull request instead. A blocked or unverified check is not a pass.
 7. Verify synthetic disclosures, the principle and boundary tags. Check UK
    English, no em dashes in interface copy, and no vendor branding outside the
    architecture section. Never infer WCAG compliance from axe alone.
-8. Check the deployed Pages home and a trace deep link in a fresh unauthenticated
-   browser context. A local preview is not evidence of a Pages deployment.
-   Verify CI status and Lighthouse performance/accessibility targets separately.
+8. Check the deployed Azure Static Web Apps home and a trace deep link in a fresh
+   unauthenticated browser context. A local preview does not prove deployment.
+   Require CI, crash/control regressions and zero-violation axe. Report payload
+   size against 350,000 gzip bytes, word counts, Lighthouse and screenshot
+   differences as advisory only.
 9. Report PASS, FAIL or NOT VERIFIED per check and beat, exact commands, counts,
    screenshots, failures, fixes already observed and remaining work. Do not
    merge a PR with a failed beat. Record the tested commit and deployment URL.

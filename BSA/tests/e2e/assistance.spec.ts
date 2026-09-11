@@ -38,7 +38,7 @@ test("queue hides all filler recommendations without changing evidence, states o
   await expect(recommendations).toHaveText(originalRecommendations);
   await expect(states).toHaveText(originalStates);
   await expect(times).toHaveText(originalTimes);
-  await page.locator("a[href='/BSA/case/EX-24112']").first().click();
+  await page.locator("a[href='/case/EX-24112']").first().click();
   await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();

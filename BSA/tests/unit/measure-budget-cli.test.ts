@@ -34,26 +34,26 @@ describe("standalone measure-budget command", () => {
       { file: "assets/font.woff2", bytes: bytes("font") },
       { file: "assets/extra.js", bytes: bytes("extra") },
       { file: "image.svg", bytes: bytes("<svg/>") },
-      { file: ".nojekyll", bytes: bytes("") },
+      { file: "staticwebapp.config.json", bytes: bytes("{}") },
     ];
     const result = run(files);
     expect(result.status, result.stderr).toBe(0);
     const report = JSON.parse(result.stdout);
-    expect(report).toMatchObject({ gzipTotal: measureRuntime(files).gzipTotal, limit: 200_000, complete: true, passed: true });
-    expect(report.assets).toHaveLength(6);
+    expect(report).toMatchObject({ gzipTotal: measureRuntime(files).gzipTotal, limit: 350_000, complete: true, passed: true, advisory: true });
+    expect(report.assets).toHaveLength(7);
   });
 
-  it("fails when an extra binary resource exceeds the strict budget", () => {
-    const result = run([...minimum, { file: "assets/large.bin", bytes: randomBytes(200_000) }]);
-    expect(result.status).toBe(1);
+  it("reports an exceeded budget and exits zero", () => {
+    const result = run([...minimum, { file: "assets/large.bin", bytes: randomBytes(350_000) }]);
+    expect(result.status).toBe(0);
     expect(JSON.parse(result.stdout).passed).toBe(false);
-    expect(result.stderr).toContain("must be below 200000");
+    expect(result.stderr).toContain("meets or exceeds budget 350000");
   });
 
-  it("fails incomplete and empty directories rather than reporting a vacuous pass", () => {
+  it("reports incomplete and empty directories without blocking", () => {
     for (const files of [[], minimum.slice(1)]) {
       const result = run(files);
-      expect(result.status).toBe(1);
+      expect(result.status).toBe(0);
       expect(JSON.parse(result.stdout)).toMatchObject({ complete: false, passed: false });
       expect(result.stderr).toContain("requires HTML, CSS and JavaScript");
     }

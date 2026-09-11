@@ -13,7 +13,7 @@ for (const c of cases.slice(0, 3)) {
     let injections = 0;
     // Transform only this synthetic input in the served production bundle.
     // The production gate runs unchanged; no source edits or debug API.
-    await page.route("**/BSA/assets/*.js", async (route) => {
+    await page.route("**/assets/*.js", async (route) => {
       const response = await route.fetch();
       const source = await response.text();
       const fault = injectPrescriberFault(source, c.id, original.extracted.prescriber);

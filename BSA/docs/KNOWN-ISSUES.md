@@ -167,7 +167,7 @@ are retained in [the task artifacts](../../.copilot-tracking/tasks/1/verificatio
 The production privacy regression scanned nine emitted files and three
 served text assets, with zero private matches. CI and Azure deployment are
 not performed.
-Azure is the user-approved target following private Pages HTTP 422; local
+Azure is the user-approved target following the former host's HTTP 422; local
 `/BSA/` production checks establish compatibility only. The existing bundle
 size warning remains. No measured time-saving, actual first-time endorsement
 accuracy or full WCAG conformance claim is made.
@@ -358,7 +358,7 @@ Both failures are resolved in the final results above.
 The current build reports 716.58 kB JavaScript (222.16 kB gzip) and 121.95 kB
 CSS (19.05 kB gzip), plus bundled fonts. The chunk remains above 500 kB;
 zero-warning and Lighthouse performance targets are not met or claimed.
-Hosted phase 1, Pages deep links, Linux CI, screen-reader operation and a full
+Hosted phase 1, deployed deep links, Linux CI, screen-reader operation and a full
 manual keyboard/contrast assessment remain NOT VERIFIED. No deployment is
 authorised. The counts in the next section describe the earlier merged
 crash-fix baseline, not this phase's test run.
@@ -387,7 +387,7 @@ coverage and release limits. These are not hosted or Linux CI results.
 
 ## Remaining release and performance work
 
-* Linux clean installation and CI execution, deployed Pages home and trace deep
+* Linux clean installation and CI execution, deployed home and trace deep
 	links, and phase 1 hosted access are NOT VERIFIED in this run. No deployment
 	is authorised for this phase. The existing hosted Overview is a before
 	screenshot source only, not evidence that phase 1 is deployed.

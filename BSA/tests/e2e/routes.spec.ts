@@ -68,7 +68,7 @@ for (const path of ["missing-page", "notes"]) {
   });
 }
 
-test("primary links navigate within the Pages base and keyboard skip link reaches main", async ({ page }) => {
+test("primary links navigate at the site root and keyboard skip link reaches main", async ({ page }) => {
   await page.goto("./");
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
@@ -83,7 +83,7 @@ test("primary links navigate within the Pages base and keyboard skip link reache
 test("all case views can be revisited without unstable snapshots", async ({ page }) => {
   await page.goto("queue");
   for (const c of cases) {
-    await page.locator(`a[href='/BSA/case/${c.id}']`).first().click();
+    await page.locator(`a[href='/case/${c.id}']`).first().click();
     const nav = page.getByRole("navigation", { name: "Case views" });
     for (let repeat = 0; repeat < 2; repeat++) {
       for (const label of ["Decision and audit record", "Case-building trace", "Operator case pack"]) {

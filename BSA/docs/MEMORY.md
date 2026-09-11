@@ -75,7 +75,13 @@ are requirements. Shared two-second animation is presentation, not processing.
 Repository root is the parent of the app folder BSA. Main integrates verified
 work. Task 3 baseline is 96bf0973724c0ceb34d2532f2fc95dfd88f534c4; user confirmed
 386 units, 386 browser tests, Azure PASS and CI 34526886080 SUCCESS.
-Azure is approved hosting; local production tests keep /BSA/ compatibility.
+Azure Static Web Apps Free is the only hosting target; production and local
+browser tests use `/`. Root configuration is emitted into BSA/dist. The
+350,000-byte gzip budget, word counts, Lighthouse and screenshot differences
+are advisory; typecheck, lint, build, units, crash/control tests and axe block.
+Provisioning and the deployment token require owner setup in DEPLOYMENT.md;
+no current hosted URL is verified. The integrated lifecycle is implemented
+but Tasks 8-13 stay unchecked until the R/S/V/D acceptance streams conclude.
 Never alter last-known-good or cowork-v1 branches/tags; see
 [branch policy](../../BRANCHES.md).
 

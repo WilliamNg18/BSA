@@ -10,11 +10,10 @@ const fixture = [
 ];
 
 describe("complete eager runtime budget", () => {
-  it("uses a strict decimal 200,000 byte cap, not 200 KiB", () => {
-    expect(RUNTIME_BUDGET_BYTES).toBe(200_000);
+  it("uses an advisory decimal 350,000 byte budget without rejecting any size", () => {
+    expect(RUNTIME_BUDGET_BYTES).toBe(350_000);
     const report = measureRuntime(fixture);
-    expect(() => assertRuntimeBudget({ ...report, gzipTotal: 199_999 })).not.toThrow();
-    for (const gzipTotal of [200_000, 204_799, 204_800]) expect(() => assertRuntimeBudget({ ...report, gzipTotal })).toThrow(/must be below/);
+    for (const gzipTotal of [349_999, 350_000, 350_001, 700_000]) expect(() => assertRuntimeBudget({ ...report, gzipTotal })).not.toThrow();
   });
   it("counts each asset's gzip independently, including extra chunks and fonts", () => {
     const files = [...fixture, { file: "assets/later.js", bytes: bytes("extra route") }, { file: "assets/font.woff2", bytes: bytes("font") }, { file: "assets/image.svg", bytes: bytes("<svg/>") }];
@@ -22,12 +21,11 @@ describe("complete eager runtime budget", () => {
     expect(report.assets).toHaveLength(files.length);
     expect(report.gzipTotal).toBe(files.reduce((sum, file) => sum + gzipSync(file.bytes).length, 0));
   });
-  it("excludes only the empty hosting marker", () => {
-    expect(measureRuntime([...fixture, { file: ".nojekyll", bytes: bytes("") }])).toEqual(measureRuntime(fixture));
-    expect(measureRuntime([...fixture, { file: ".nojekyll", bytes: bytes("not empty") }]).assets).toHaveLength(4);
+  it("counts hosting configuration as an emitted resource", () => {
+    expect(measureRuntime([...fixture, { file: "staticwebapp.config.json", bytes: bytes("{}") }]).assets).toHaveLength(4);
   });
-  it("rejects vacuous or incomplete scans", () => {
-    expect(() => assertRuntimeBudget(measureRuntime([]))).toThrow(/requires/);
-    for (const missing of [".html", ".js", ".css"]) expect(() => assertRuntimeBudget(measureRuntime(fixture.filter((item) => !item.file.endsWith(missing))))).toThrow(/requires/);
+  it("reports incomplete scans without blocking builds", () => {
+    expect(() => assertRuntimeBudget(measureRuntime([]))).not.toThrow();
+    for (const missing of [".html", ".js", ".css"]) expect(() => assertRuntimeBudget(measureRuntime(fixture.filter((item) => !item.file.endsWith(missing))))).not.toThrow();
   });
 });

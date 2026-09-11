@@ -114,7 +114,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await startDemonstrationReview(page);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-  await page.locator("a[href='/BSA/case/EX-24088']").first().click();
+  await page.locator("a[href='/case/EX-24088']").first().click();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
 });
@@ -130,7 +130,7 @@ test("agent flag hides recommendations on every case without changing case state
   await expect(stateCells).toHaveText(states);
   await captureCheckpoint(page, testInfo, "queue-assistance-off");
   for (const c of cases) {
-    await page.locator(`a[href='/BSA/case/${c.id}']`).first().click();
+    await page.locator(`a[href='/case/${c.id}']`).first().click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByText("No recommendation", { exact: true })).toBeVisible();
     await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();

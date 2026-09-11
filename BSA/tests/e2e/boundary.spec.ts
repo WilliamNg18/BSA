@@ -15,7 +15,7 @@ test("a view failure preserves the shell, logs its pathname and resets on naviga
     if (response.status() >= 400) requests.push(`${response.status()} ${response.url()}`);
   });
   let injected = false;
-  await page.route("**/BSA/assets/*.js", async (route) => {
+  await page.route("**/assets/*.js", async (route) => {
     const response = await route.fetch();
     const source = await response.text();
     const marker = "Operator case pack: ${";
@@ -46,7 +46,7 @@ test("a view failure preserves the shell, logs its pathname and resets on naviga
   await page.getByRole("link", { name: "Go to the queue", exact: true }).click();
   await expect(page.getByRole("heading", { name: "NHSBSA exception queue", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "This view could not be loaded" })).toHaveCount(0);
-  await page.locator("a[href='/BSA/case/EX-24112/trace']").first().click();
+  await page.locator("a[href='/case/EX-24112/trace']").first().click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("How the case was built: Missing or insufficient information");
   expect(errors).toEqual([]);
   expect(requests).toEqual([]);

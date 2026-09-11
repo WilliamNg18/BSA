@@ -6,9 +6,7 @@ import { AppShell } from "@/components/app-shell";
 import { NotFoundPage } from "@/pages/not-found";
 import { routes } from "@/routes";
 
-// The site is served under Vite's `base` (for GitHub Pages this is `/<repo>/`,
-// set by VITE_BASE in the deploy workflow; locally it is `/`). The router
-// basename must match it so deep links such as /BSA/case/EX-24112 resolve.
+// Local and Azure hosting share the site root and Vite's base.
 const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 
 export function App() {

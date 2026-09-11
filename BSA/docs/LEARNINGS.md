@@ -4,6 +4,19 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Root hosting migration preparation
+
+The git root contains a nested BSA application. Hosting workflow paths must use
+BSA/dist while infrastructure and the authoritative route configuration live
+at git root. Vite explicitly copies that configuration for every build.
+The first local check failed because this new worktree lacked TypeScript;
+npm ci restored the locked dependencies. This was not an application failure.
+
+GitHub access allows repository writes, but no deployment secret exists.
+Azure discovery has no selected subscription and the local Azure CLI is absent.
+The exact owner-run commands are in DEPLOYMENT.md. A generated template or
+successful Vite preview is not evidence of an Azure resource or hosted CSP pass.
+
 ## 2026-09-11: Integrated workflow handoff
 
 Tasks 1-7 form the verified core. Branch `integration/tasks-8-13` now preserves
@@ -11,7 +24,7 @@ the unfinished shared lifecycle, pharmacy claims, Follow banner, round-trip
 wiring, tour/navigation and regression tests. Fresh validation passed 557 units,
 typecheck, lint and content checks. The build still fails its old 200,000-byte
 hard cap at 201,179 gzip bytes. The requested 350,000-byte advisory policy and
-Pages-only hosting are not implemented. Start with those gate-policy changes,
+the then-requested hosting migration are not implemented. Start with those gate-policy changes,
 then run the complete production browser and axe suites. Earlier focused browser
 passes do not prove integrated acceptance. Reconcile candidate screenshots,
 check frozen contracts against main, and confirm deployment before ticking

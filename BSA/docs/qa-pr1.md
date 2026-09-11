@@ -1,6 +1,6 @@
 ---
 title: PR1 review fix verification
-description: Final local and hosted PR1 acceptance, corrected supplemental assertion, Pages exception and screenshot evidence.
+description: Historical local and hosted PR1 acceptance, corrected supplemental assertion and screenshot evidence.
 ms.date: 2026-09-09
 ---
 
@@ -13,9 +13,9 @@ unmodified Azure site for source commit
 `a9b3f85`, as confirmed by the user; CI was not queried again during this
 report-only update.
 
-GitHub Pages remains unavailable for this private repository under its current
-plan. The previous Pages enablement attempt returned HTTP 422; it is not a
-successful deployment or a verified Pages route. The user approved Azure as
+The former repository host was unavailable for this private repository under its
+plan. Its enablement attempt returned HTTP 422; it was not a successful
+deployment or a verified route. The user approved Azure as
 the PR1 hosted-acceptance exception. This is not completion of the wider
 redesign, performance or manual-accessibility definition of done.
 
@@ -153,7 +153,7 @@ Failed inline execution wrappers are not counted as browser passes.
 * All eight static routes, all 18 pack/trace/record routes for A-F, and the
   unknown-route fallback returned HTTP 200 with the expected heading,
   synthetic banner and primary navigation. This includes direct Azure deep
-  links, not deployed Pages sub-path verification.
+  links, not deployed sub-path verification.
 * B showed Dated not met, `REFER_BACK` and gate PASS. Empty, seven-character
   and whitespace-padded seven-character override reasons were rejected.
   A valid `AMEND` created `DR-000873`, pinned August, and July replay returned
@@ -195,14 +195,10 @@ CSS 123,128 bytes, SHA-256
 `d41fd41bd6d6f525fa4cb05d3236e4ddbffc4e9ac4c87872bae4e15cd43726ce`.
 This establishes deployed asset identity, not a hosted forced gate-FAIL test.
 
-CI green at `a9b3f85` and the user-approved Azure exception are separate from
-Pages deployment status. The Pages HTTP 422 remains unresolved. The pending
-local guard is in the root workflow,
-[../../.github/workflows/deploy.yml](../../.github/workflows/deploy.yml):
-`if: vars.PAGES_ENABLED == 'true'` on the Pages build job. Reusable tests remain
-unconditional; deploy depends on build. That existing root-workflow change was
-left untouched, is not covered by the `a9b3f85` CI claim, and does not establish
-Pages availability. No repository variable or plan was changed here.
+CI green at `a9b3f85` and the user-approved Azure exception were separate from
+the former host's HTTP 422. That historical deployment workflow is now removed.
+Current hosting and prerequisites are documented in [DEPLOYMENT.md](DEPLOYMENT.md);
+this historical report does not establish current deployment availability.
 
 ## Hosted screenshot index
 
@@ -240,13 +236,12 @@ report-only update did not stage, commit or upload them.
   and theme, not a cross-product of every fault, theme, viewport and input.
   The twelve axe tests use normal inputs, not the injected gate-FAIL screens.
 * No new dependency installation, CI query or dependency audit was performed
-  for this report update. Linux CI green is user-confirmed. Pages home and
+  for this report update. Linux CI green is user-confirmed. The former host's home and
   deep links remain unavailable/unverified; the approved exception is Azure,
-  not a claim that local `/BSA/` success proves deployed Pages behaviour.
+  not a claim that local `/BSA/` success proves deployed-host behaviour.
 * Hosted checks did not repeat the full responsive, dark-mode, axe or offline
   suite, or inject a forced gate FAIL. Bundle markers are not behavioural
   gate-FAIL evidence. The 12 axe audits and injected gate tests are local.
 * No manual screen-reader certification, comprehensive visual review,
   before-and-after screenshot collection or redesign was performed. The nine
   selected hosted screenshots do not complete that wider definition of done.
-
