@@ -89,6 +89,8 @@ Informational reporting does not excuse a functional or accessibility defect.
 separates genuine limitations from historical evidence.
 [Current screenshots](docs/screens/integrated/README.md) include the exact
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
+[Requested scope](docs/SCOPE.md) tracks the newer eight-chapter request and its
+active implementation owners separately from the current seven-chapter build.
 [AGENTS](AGENTS.md) governs contributions.
 
 No real prescriptions, patients, pharmacies, authentic tariff text, live model,

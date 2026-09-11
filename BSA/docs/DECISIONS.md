@@ -537,3 +537,19 @@ entries during resume, and recapture failed entries instead of skipping them.
 This prevents an interrupted or resumed run from appearing successful merely
 because its new in-memory failure list started empty. Validate this metadata
 logic without launching another browser before the final integration slot.
+
+## 2026-09-11: Latest requested scope and active implementation ownership
+
+Keep the latest eight-chapter request distinct from the seven-chapter source
+used for initial captures. SCOPE.md has exactly 18 requested rows: two bounded
+Done implementations (A2 calculator and F lifecycle), sixteen In progress and
+zero unowned Not started rows after assignment. Evidence names tests and tested
+revisions; source presence and a partial passing run do not establish completion.
+
+Use T #26 for chapter separation, two-place contrast and whole-cycle claims.
+File only additional proven increments: #27 numerical scene count-in (not the
+existing CSS fade), #28 operable queue Compare (not its existing toggle/summary)
+and #29 explicit unchecked claims-resubmission pain. Coordinator assigned all
+three, with #29 staying under R's existing claim-detail ownership. No new
+browser process or delegation by V. Final captures must follow the expanded
+merged scope rather than force the historical 103-image count.

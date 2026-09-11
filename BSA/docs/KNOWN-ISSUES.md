@@ -57,6 +57,13 @@ draft. R also confirmed the same exposure in expanded pharmacy lifecycle
 history. R owns the correction in [#19](https://github.com/WilliamNg18/BSA/issues/19);
 V does not modify the product. The explicit approval round trip itself works.
 
+The newer eight-chapter request adds distinct pipeline/Four cases chapters and
+a whole-cycle claims chapter (#26). Scene count-in (#27), queue Compare (#28)
+and explicit manual claims-resubmission pain (#29) are also active owned
+increments, not yet merged acceptance. [SCOPE.md](SCOPE.md) records the
+18-item implementation register and named evidence without treating test
+presence as completion.
+
 The pharmacy workbench also labels Agent Off as **Agent unable to determine**,
 including complete A. This makes an intentionally unchecked manual path look
 like an assistance failure. The parity stream owns the status-only correction in
