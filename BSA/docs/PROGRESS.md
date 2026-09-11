@@ -1,7 +1,7 @@
 ---
 title: Thirteen-task implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
-ms.date: 2026-09-10
+ms.date: 2026-09-11
 ---
 
 ## Checklist
@@ -12,7 +12,7 @@ ms.date: 2026-09-10
 * [x] Task 4: a131bad and P1 correction 7bdc199; supplied Azure/CI gate PASS
 * [x] Task 5: bounded virtual month, queue sweep and shared-clock day projections
 * [x] Task 6: manual case views, gated assisted assembly and immutable record comparison (36db32a; supplied postcommit gate PASS)
-* [x] Task 7: local check, 494 units, 721 browsers, 334 zero-violation axe audits; 199,636-byte payload (remote gates not run)
+* [x] Task 7: owned Stream A scope LOCAL PASS; 503 units, 721 browsers, 334 axe audits with zero violations; mobile median 91, desktop 100; 199,651-byte payload
 * [ ] Task 8: Shared case lifecycle and append-only history in the store
 * [ ] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state
 * [ ] Task 10: Live round trip with Follow this item banner and Switch side
@@ -21,6 +21,10 @@ ms.date: 2026-09-10
 * [ ] Task 13: Verification of Tasks 8 to 13 in both toggle states (Vitest, Playwright, axe, screenshots)
 
 ## Current gate and contract freeze
+
+Task 7 owned-scope local verification is complete. Task 7 commit, CI, deployment
+and hosted verification remain pending main-agent action. This tick does not
+complete cross-stream integration or Tasks 8-13; all six remain unchecked.
 
 Task 7 starts on stream-a-core at 36db32a. The user supplied Task 6 postcommit
 check PASS, 488 units, 465 browsers, Azure deployment in 1m15s, sixteen hosted
@@ -157,9 +161,11 @@ The client content scan checked 123 files with zero forbidden matches. Productio
 privacy scanned nine emitted files and three served assets, 961,088 bytes, with
 zero private matches. JS is 834.53 kB, 255.61 kB gzip; CSS 125.80 kB, 19.67 kB gzip.
 The existing large-chunk warning remains; no performance or zero-warning claim.
-Task 6 is ticked for local verification only. No Git, accounts, CI checks or
-deployment were performed. Task 7+, frozen store, lifecycle types, case header,
-navigation, shell and claims remain untouched. Shared lifecycle and the manual
+The original Task 6 run was local-only. It is superseded by the user-supplied
+postcommit gate at 36db32a: check PASS, 488 units, 465 browsers, Azure 1m15s,
+16 hosted passes and CI 34586563012 SUCCESS. No remote checks are repeated here.
+At that increment, Task 7+, frozen store, lifecycle types, case header,
+navigation, shell and claims were untouched. Shared lifecycle and the manual
 override counter still require Stream B integration.
 
 Evidence: [initial check](../../.copilot-tracking/tasks/6/check.log),
@@ -180,10 +186,10 @@ imports. No lifecycle, frozen store, claims, route definitions, case header or
 navigation features change. Tasks 8-13 remain with Streams B/C/D/E. The existing
 Stream D planned-simulation notice remains visible, not hidden for this gate.
 
-All routes remain eagerly imported. The accepted build's complete emitted
-payload is 199,636 gzip bytes for the production /BSA/ base, including JavaScript
-186,612, CSS 12,623, HTML 401 and zero fonts. This uses decimal 200,000 bytes,
-not 200 KiB. Headroom is only 364 bytes; later integrations must meet the same
+All routes remain eagerly imported. The final formatter build's complete emitted
+payload is 199,651 gzip bytes for the production /BSA/ base, including JavaScript
+186,624, CSS 12,623, HTML 404 and zero fonts. This uses decimal 200,000 bytes,
+not 200 KiB. Headroom is only 349 bytes; later integrations must meet the same
 strict gate or explicitly revisit the budget with the user.
 
 Every Vite build, including check and the production browser server, counts all
@@ -209,7 +215,8 @@ subsets the baseline scene did not necessarily request.
 | Small decision-notification provider | 199,789 | Below budget before final minifier pass |
 | Lightning CSS experiment | 201,081 | Rejected; hard build gate failed |
 | Esbuild CSS and Terser, three safe passes | 199,771 | Initial payload candidate; later accessibility fixes required |
-| Accepted accessibility and replay-copy corrections | 199,636 | Full local acceptance PASS |
+| Accepted accessibility and replay-copy corrections | 199,636 | Historical functional/payload PASS; original Lighthouse mobile 86 failed |
+| Formatter reuse, final owned-scope candidate | 199,651 | LOCAL PASS; 503 units, 721 browsers, mobile median 91 |
 
 No runtime explanations, domain predicates or source qualifications were removed
 to reach the target. Production CSS scans the complete reachable local source
@@ -217,7 +224,7 @@ graph, including conditional UI, rather than docs, tests and unused UI templates
 Development still scans source normally. No blanket side-effect override or
 unsafe minifier option is used. The generic 500 kB raw-chunk warning, which
 suggested forbidden lazy routes, is replaced by the strict total gzip failure
-and a separate 650 kB raw-chunk warning; accepted raw JS is 626,008 bytes.
+and a separate 650 kB raw-chunk warning; final raw JS is 626,039 bytes.
 
 The unused query provider is gone. Opacity, number fade and six-pixel entrance
 use native CSS media queries; the shared two-second clocks and MotionConfig
@@ -226,7 +233,7 @@ values and counterfactuals. The two decision messages use a small polite live
 region with keyboard dismissal; notices persist until dismissed, replaced or
 Reset, rather than depending on a toast engine or an automatic timeout.
 
-### Verification status
+### Historical functional verification before mobile continuation
 
 Initial check passed and 494 units passed in fourteen files. The nine targeted
 browser tests had eight passes and one failure: the new keyboard test pressed
@@ -279,7 +286,8 @@ The new matrix covers all 31 current destinations, both flag states,
 both motion preferences, phone/dark and desktop/light. Each has unrestricted
 default-rule axe and a current photograph. The existing four-width/two-theme
 route suite, seven-width header, tooltip focus, 25-word copy, source/privacy and
-canonical outcome regressions all pass. Task 7 is locally complete only.
+canonical outcome regressions all pass. These functional results alone do not
+complete Task 7: the original Lighthouse result below failed its mobile target.
 No Task 7 CI, hosted or deployment claim is made.
 
 Evidence: [before profile](../../.copilot-tracking/tasks/7/before.json),
@@ -296,6 +304,153 @@ Accepted evidence: [check](../../.copilot-tracking/tasks/7/accepted-check.log),
 Historical failures remain in the original final-browser/full-results paths,
 corrected-targeted paths and verified-full paths. The first 218 matrix images
 are archived separately under first-matrix-photos, not overwritten as evidence.
+
+### Historical tooling verification and Lighthouse blocker
+
+The named `npm run measure-budget` command is now included in `npm run check`.
+It independently scans every emitted resource and fails missing HTML/CSS/JS or
+totals greater than or equal to 200,000. Three CLI regression tests cover parity
+with the build gate, extra binary payload and incomplete scans. Final /BSA/
+check passed without warnings; all 497 units in fifteen files passed, exit 0.
+The rebuilt assets retain the exact accepted names and sizes: JS 186,612,
+CSS 12,623, HTML 401, fonts 0, total 199,636 gzip bytes, headroom 364.
+
+CSS targets 93 reachable local modules, including 18 of the 45 vendored UI
+components. The other 27 templates are not runtime dependencies. Baseline
+renderedLength identified motion-dom 290,871, framer-motion 91,037, Sonner
+68,153, Radix Select 50,688 and query-core 49,497 pre-minifier bytes. This is
+evidence of specific retained dependencies, not proof the entire Radix barrel
+was retained. Per-module rendered lengths are not additive gzip savings.
+
+Lighthouse 13.4.1 was installed in the npx cache, not app dependencies. Its
+first browser-launch attempt exited 1 with Windows EPERM during temporary
+profile cleanup and produced no report. Connecting the actual CLI to the
+installed Playwright Chromium over a local debugging port completed both
+audits, exit 0, no runtime errors or report warnings. Error reporting was off.
+These are cold navigation audits of default-Off Overview on the local /BSA/
+production preview, using standard simulated mobile and desktop presets.
+
+| Preset | Performance | Accessibility | FCP / LCP | TBT | CLS |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Mobile | 86 | 100 | 1,933 ms / 1,933 ms | 472.5 ms | 0 |
+| Desktop | 100 | 100 | 436 ms / 436 ms | 37.5 ms | 0 |
+
+The mobile performance requirement of at least 90 was not met in this run. The mobile report
+attributes 658.9 ms to script evaluation and 303.6 ms to style/layout; its largest
+bundle task is 429 ms. Unused-script estimates describe eager offline code, not
+permission to defer routes. No altered throttling, best-of-repeat score, hidden
+readiness wait or frozen-store change is used to manufacture a passing result.
+Task 7 remained unchecked at this point. Print, favicon and metadata additions are not needed
+for this scoped performance work and were not introduced.
+
+Automated Task 3-6 captures now use ignored Playwright output paths rather than
+overwriting historical screenshots. All 36 affected production tests passed in
+56.5 seconds, exit 0; SHA-256 comparison found all 36 historical images unchanged.
+The full 721-test accepted run remains the functional baseline; no runtime code
+changed afterward, and only the 36 screenshot-output tests needed repeating.
+The Task 7 after directory is ignored; twelve explicitly selected captures cover
+all six case packs, desktop/light/On and phone/dark/Off, and were visually reviewed.
+
+Evidence: [final tooling check](../../.copilot-tracking/tasks/7/tooling-check.log),
+[497 units](../../.copilot-tracking/tasks/7/tooling-unit.log),
+[screenshot isolation](../../.copilot-tracking/tasks/7/screenshot-output-verification.json),
+[mobile Lighthouse](../../.copilot-tracking/tasks/7/lighthouse-mobile.json),
+[desktop Lighthouse](../../.copilot-tracking/tasks/7/lighthouse-desktop.json).
+Both audit processes and the local preview were stopped after completion.
+No Git, account, deployment, source-document or editor-settings changes occurred.
+
+## Task 7 final owned-scope local verification
+
+The formatter-only candidate passes check without warnings and all 503 units in
+sixteen files. All 58 targeted calculator, pipeline and immediate-offline browser
+tests pass in 1.6 minutes. The authoritative latest production /BSA/ Chromium
+log ends with 721 passed in 10.2 minutes; the last-run report is passed with no
+failed tests. No failures, skips or retries are reported. Task 7 is ticked only
+for its owned Stream A local scope, not full integration or remote acceptance.
+
+The fresh recount excludes JSON attachment copies: 334 unique default-rule axe
+audits, zero violations, including 250 Task 7 audits (248 route-matrix and two
+notification states). Eight copy-report files are retained. All 248 matrix
+screenshots exist. The screenshot index retains 124 hash-verified copies of all
+31 destinations, both flags, desktop/light and phone/dark in reduced motion.
+These copies are not extra audits or extra unique captures. The Task 7 screenshot
+tree contains 408 PNG files: 248 matrix, 24 earlier font comparisons, twelve
+earlier selected case packs and 124 new selected copies. The eight formatter
+comparison pairs live separately under tracking and remain byte-identical.
+
+The original mobile report's dominant failing metric is TBT (472.5 ms, score
+0.60, 30% performance weight), not LCP (1,933.07 ms, score 0.98) or CLS (zero).
+Script evaluation is 658.916 ms, style/layout 303.644 ms, rendering 63.612 ms
+and parsing/compilation 9.232 ms. The largest simulated bundle task is 429 ms.
+The LCP is the unchanged chapter narrative paragraph at y=339..435 on the
+412px phone. Its observed render-delay breakdown (534.217 ms) is not the same
+quantity as simulated LCP. The critical network chain is HTML to eager JS,
+274 ms observed; CSS completes in 101 ms and has an estimated 150 ms blocking
+saving. There are no font requests, external chains or forced-reflow findings.
+
+Actual source inspection finds one Overview baseline selector call, one
+AssistanceTransition and no QueryClient provider. Tooltip providers serve the
+header and main content separately; neither computes the baseline. The DOM has
+151 elements, not an unbounded above/below-viewport list. Fresh trace attribution
+places the longest bundle callback in React Scheduler: 85.534 ms observed on the
+unchanged build, 87.627 ms on candidate run one. This is a render-work attribution,
+not evidence of duplicate providers. No content-visibility, lazy route, readiness
+delay, hidden control or fabricated LCP was added.
+
+The only new runtime change reuses Intl.NumberFormat by requested precision in
+formatBaselineNumber. It caches locale setup, never arithmetic or scenario
+results. Six tests check UK formatting parity, default precision, invalid
+precision and formatter construction count. Initial units had 502 passes and
+one constructor-spy failure; forwarding the spy to the genuine constructor
+fixed the test without changing production behaviour. All 503 then passed.
+
+The complete /BSA/ payload is 199,651 gzip bytes: JS 186,624, CSS 12,623, HTML
+404 and fonts zero. Headroom is 349 bytes under the unchanged strict limit.
+All routes remain eager and the four immediate-offline variants pass.
+
+Three consecutive candidate audits use actual Lighthouse CLI 13.4.1, fresh
+Playwright Chromium per run, normal cache reset and exactly the original
+configSettings (asserted by deep equality). Mobile remains 412x823 at DPR 1.75,
+150 ms RTT, 1,638.4 Kbps and 4x simulated CPU. No audit is skipped. Reports,
+logs and raw traces are retained for every run; desktop follows the three
+mobile replicates. All four exit 0, with no report warnings or runtime errors.
+
+| Run | Performance | Accessibility | FCP / LCP / Speed Index ms | TBT ms | CLS |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Mobile 1 | 91 | 100 | 1,858.262 | 338.5 | 0 |
+| Mobile 2 | 91 | 100 | 1,807.348 | 329 | 0 |
+| Mobile 3 | 90 | 100 | 1,804.240 | 370 | 0 |
+| Mobile median | 91 | 100 | 1,807.348 | 338.5 | 0 |
+| Desktop | 100 | 100 | 404.510 | 45 | 0 |
+
+Medians are computed separately per metric, not selected from the best run.
+The unchanged baseline also scored 93/100 on a fresh run (TBT 278.5 ms).
+Therefore the 86-to-91 comparison does not prove a causal speed-up: host and
+run variance are material. The candidate meets the requested three-run median
+threshold and demonstrably avoids repeated formatter construction; no guaranteed
+five-point improvement or universally stable Lighthouse score is claimed.
+
+Eight Overview pairs cover 360/1440px, both themes and flags. Initial immediate
+captures differed in two desktop switch-transition frames. Those originals are
+retained. Awaiting only the existing switch animation for screenshot comparison
+produced eight byte-identical PNG pairs. That wait is absent from Lighthouse and
+offline tests. No app styling changed and no historical screenshots were edited.
+
+Evidence: [candidate audit summary](../../.copilot-tracking/tasks/7/mobile-format/lighthouse/summary.json),
+[fresh unchanged baseline](../../.copilot-tracking/tasks/7/mobile-baseline/lighthouse/summary.json),
+[trace attribution](../../.copilot-tracking/tasks/7/mobile-trace-diagnosis.json),
+[strict check](../../.copilot-tracking/tasks/7/mobile-final-check.log),
+[503 units](../../.copilot-tracking/tasks/7/mobile-unit-fixed.log),
+[721 full browsers](../../.copilot-tracking/tasks/7/mobile-full-browser.log),
+[deduplicated final audit](../../.copilot-tracking/tasks/7/mobile-verification.json),
+[58 targeted browsers](../../.copilot-tracking/tasks/7/mobile-targeted.log) and
+[eight visual pairs](../../.copilot-tracking/tasks/7/mobile-format/visual-settled-comparison/summary.json).
+
+This closeout changes documentation and evidence only, copying existing matrix
+images without rerunning tests or altering application sources. No Git, accounts,
+deployment, source-document, lifecycle, claims or navigation feature changes
+occurred. Task 7 CI and hosted verification are pending main-agent action.
+Tasks 8-13 remain unchecked and require their owners' integration verification.
 
 ## Historical contract-freeze gate
 

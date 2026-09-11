@@ -146,3 +146,72 @@ Final check and 494 units passed, then all 721 browsers passed in 12.1 minutes.
 All 334 unique axe audits have zero violations and all 248 matrix images exist.
 Accepted /BSA/ payload is 199,636 gzip bytes with 364 bytes headroom. No global
 token changes, test exemptions, relaxed thresholds or late loading were needed.
+
+## 2026-09-11: Lighthouse and screenshot-output verification closeout
+
+The functional gate did not include Lighthouse and could not establish complete
+Task 7 acceptance. The actual 13.4.1 CLI measured mobile 86 performance/100
+accessibility and desktop 100/100. Mobile script evaluation was 658.9 ms and
+style/layout 303.6 ms, with TBT 472.5 ms. Keep Task 7 open; a passing total-byte
+budget and zero axe findings are separate from load-time performance.
+
+The first Lighthouse launch failed with Windows EPERM while deleting its profile;
+no report existed. Connecting to a separately launched Playwright Chromium port
+avoided that cleanup path and both actual CLI runs exited 0. No score is inferred
+from the failed attempt. Use explicit nested-app working directories: new async
+terminals start at the repository root, not the previous terminal's directory.
+
+Historical Task 3-6 tests still wrote directly into documentation screenshot
+folders. Redirecting only capture paths to testInfo.outputPath preserved every
+assertion. All 36 affected browsers passed; before/after SHA-256 comparison kept
+all 36 historical images identical. The Task 7 generated matrix is now ignored,
+with twelve reviewed case images copied into a separate selected folder.
+New budget-command tests raised the unit total to 497; final check retained
+199,636 gzip bytes and the exact accepted production assets.
+
+## 2026-09-11: Distinguish sampling, simulation and repeat variance
+
+Lighthouse's simulated long task and the corresponding observed trace callback
+are different quantities. The original report has a 429 ms simulated bundle
+task; fresh baseline trace locates an 85.534 ms observed React Scheduler callback.
+Do not label the entire callback a duplicated baseline computation. Overview
+has one scenario selector; its other tooltip providers do not calculate data.
+
+Number.toLocaleString with options repeatedly constructs locale formatting
+machinery. Reusing Intl.NumberFormat preserves UK rounding and grouping while
+avoiding repeated construction. Vitest's constructor spy needed an explicit
+implementation forwarding to the genuine Intl constructor; otherwise its
+constructed object lacked format. The initial one-test failure is retained.
+
+Three candidate mobile scores of 91/91/90 meet the median criterion, but a
+fresh unchanged baseline score of 93 exposes material environmental variance.
+Keep original 86, baseline 93 and every candidate result visible; report
+threshold attainment separately from a causal performance improvement claim.
+
+Two initial desktop screenshot pairs differed only during the existing switch
+colour transition. Waiting for that control's animation completion, without
+disabling animations or masking pixels, yielded eight byte-identical pairs.
+Screenshot stabilisation must stay separate from cold load and offline audits.
+
+## 2026-09-11: Final evidence counts and local acceptance boundaries
+
+Read the completed raw log and last-run status before closing a gate. The latest
+run is 721 passed in 10.2 minutes, not the earlier 12.1-minute run. Final units
+are 503 in sixteen files, not the historical 497. Check reports 199,651 gzip
+bytes with 349 bytes of headroom. No rerun is needed for a docs-only closeout.
+
+Count axe-core JSON outputs once, excluding attachment directories: 334 audits,
+zero violations, including 248 route-matrix and two notification-state audits.
+Distinguish unique screenshots from retained copies: 248 matrix images, 24 font
+comparisons, twelve earlier selections and 124 new hash-matched selections make
+408 PNG files in the Task 7 screenshot tree, not 408 independent test captures.
+The formatter's eight comparison pairs remain in a separate tracking directory.
+
+A delegated summary claimed an absent report and incorrect image totals. Direct
+file checks and the existing audit script established the counts above. Report
+artifact-backed facts, not an unverified execution summary.
+
+User permission covered targeted shared performance, not cross-stream features.
+Local acceptance does not imply CI, hosting or Tasks 8-13 integration. Preserve
+the historical mobile 86 and fresh unchanged baseline 93 alongside final median
+91; threshold attainment is not proof of a causal five-point improvement.

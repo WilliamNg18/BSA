@@ -237,7 +237,7 @@ for (const { width, colorScheme } of [{ width: 360, colorScheme: "dark" }, { wid
       await captureJson(testInfo, "axe-pipeline", axe);
       expect(axe.violations).toEqual([]);
       await captureCheckpoint(page, testInfo, `pipeline-${width}-${colorScheme}-${enabled ? "on" : "off"}`);
-      await page.screenshot({ path: `docs/screens/task3/pipeline-${width}-${colorScheme}-${enabled ? "on" : "off"}.png`, fullPage: true });
+      await page.screenshot({ path: testInfo.outputPath(`pipeline-${width}-${colorScheme}-${enabled ? "on" : "off"}.png`), fullPage: true });
       for (const nextWidth of [320, 768, 1024]) {
         await page.setViewportSize({ width: nextWidth, height: 1000 });
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);

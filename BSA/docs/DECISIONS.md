@@ -152,3 +152,57 @@ element now owns focus and its contextual name, avoiding nested duplicate region
 or resize observers. Remove the obsolete trace overflow override. Make the
 architecture preformatted flow a named, focusable region without changing text.
 Keep full default-rule axe and the strict complete-payload budget unchanged.
+
+## 2026-09-11: Separate payload acceptance from Lighthouse performance
+
+Retain the strict 200,000-byte independent-resource gzip gate and add the named
+measure-budget command to check. Do not reinterpret 199,636 bytes as a load-time
+pass: actual Lighthouse mobile performance is 86, below the user's 90 target,
+despite desktop performance 100 and accessibility 100 on both presets.
+Task 7 stays unchecked. Reject weaker throttling, best-of-repeat reporting,
+deferred route code and frozen-store changes to obtain a passing score.
+
+Run the pinned Lighthouse CLI from npx cache, leaving runtime dependencies alone.
+After Windows profile cleanup failed, attach the CLI to installed Playwright
+Chromium over a local debugging port. Keep failed and completed outcomes distinct.
+Generated historical-task screenshots belong in ignored test output. Only
+explicitly selected Task 7 images are retained as source-controlled evidence.
+
+## 2026-09-11: Bounded formatter optimisation and repeated audit acceptance
+
+Cache Intl.NumberFormat instances by precision in the existing display helper.
+Do not cache mutable scenario results, change formulas or touch the frozen
+store. Six new tests verify output parity and construction reuse. The candidate
+adds 15 gzip bytes, leaving 349 bytes under the unchanged 200,000-byte gate.
+
+Use three consecutive cold mobile CLI runs and report every score: 91, 91, 90,
+median 91. Desktop is 100 and all accessibility scores are 100. Deep-compare the
+entire configSettings object to the original report, preserving device, CPU,
+network, cache reset and audit selection. Keep all raw reports and traces.
+The unchanged baseline rerun scored 93, so do not attribute the old 86-to-91
+difference entirely to this patch. Full-browser verification remains required.
+
+Reject speculative offscreen containment: the measured DOM has 151 elements,
+the dominant callback is React Scheduler and no forced-reflow insight identifies
+a defect. Preserve all content, CSS layout and eager offline navigation. Await
+switch colour transitions only when comparing final screenshots, never when
+running Lighthouse or immediate-offline checks.
+
+## 2026-09-11: Close Task 7 locally without crossing integration ownership
+
+Accept only the user-authorised Stream A performance and accessibility scope:
+final check without warnings, 503 units, 721 full production browsers in
+10.2 minutes, 334 unique axe audits with zero violations and 199,651 gzip bytes.
+The three mobile scores are 91/91/90, median 91; desktop and accessibility are
+100. This supersedes the earlier local mobile blocker, not its retained history.
+
+Retain 124 hash-verified reduced-motion matrix copies for all 31 destinations,
+both Agent states and both desktop/light and phone/dark pairs. Keep the earlier
+twelve case-pack selections and historical screenshots unchanged. Copies do not
+increase the 248 unique matrix captures or the 334 unique audit count.
+
+The user's shared-performance permission does not authorise new navigation,
+claims, frozen store/lifecycle changes or Tasks 8-13. Tick Task 7 LOCAL PASS only;
+leave integration unchecked and Task 7 CI/hosted gates pending main-agent action.
+This closeout performs documentation and report work only: no source edits,
+Git commands, account changes, deployment or feature implementation.

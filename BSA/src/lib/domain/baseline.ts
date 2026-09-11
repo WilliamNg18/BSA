@@ -44,7 +44,10 @@ export const PHARMACY_ASSUMPTION_FIELDS = [
 export function validPharmacyDays(value: string): number | null {
   return /^\d{1,3}$/.test(value) && Number(value) <= 365 ? Number(value) : null;
 }
-export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) => value.toLocaleString("en-GB", { maximumFractionDigits });
+// Reuse locale setup for field hints and rendered values, not scenario results.
+const numberFormats: Intl.NumberFormat[] = [];
+export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) =>
+  (numberFormats[maximumFractionDigits] ??= new Intl.NumberFormat("en-GB", { maximumFractionDigits })).format(value);
 
 // All numeric scenario defaults live here. The companion module derives only
 // fixture provenance; neither module imports the private research register.

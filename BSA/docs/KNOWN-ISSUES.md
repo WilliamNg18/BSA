@@ -1,10 +1,41 @@
 ---
 title: Known issues and remaining verification
 description: Tour foundation verification, retained crash fixes, source limitations and deferred prototype work.
-ms.date: 2026-09-10
+ms.date: 2026-09-11
 ---
 
-## Task 7 local acceptance and remaining limits
+## Task 7 current mobile verification
+
+The formatter-only continuation passes three consecutive mobile Lighthouse
+audits: 91, 91, 90, median 91; accessibility 100 throughout. Median FCP/LCP
+is 1,807.348 ms, TBT 338.5 ms and CLS zero. Desktop is 100/100, FCP/LCP
+404.510 ms and TBT 45 ms. Every original audit setting is unchanged.
+
+Check and 503 units pass; all 58 targeted calculator, pipeline and offline
+browser tests pass. The latest full production run passed all 721 tests in
+10.2 minutes. Recounting excludes attachment copies: 334 unique default-rule
+axe audits, zero violations, with all 248 matrix screenshots present.
+Task 7 is LOCAL PASS for owned Stream A scope only. Current total gzip is
+199,651 bytes, leaving only 349 bytes under the strict limit. Task 7 CI and
+hosted verification remain pending main-agent action; Tasks 8-13 stay unchecked.
+
+The unchanged build also scored 93 on a fresh audit. These results establish
+the candidate's three-run threshold, not a causal five-point improvement over
+the older 86. Eight settled screenshot pairs are byte-identical. No content,
+layout, route-loading, lifecycle or navigation-feature change was introduced.
+The [screenshot index](screens/task7/README.md) retains 124 hash-verified current
+selections across all 31 destinations, both flags and both viewport/theme pairs.
+See [current evidence and limits](PROGRESS.md#task-7-final-owned-scope-local-verification).
+
+## Historical Task 7 mobile blocker before this continuation
+
+Task 7 was unchecked at this earlier gate. Actual Lighthouse 13.4.1 scores on
+that local production Overview were mobile performance 86/accessibility 100
+and desktop 100/100. This blocker is superseded by the final verification above.
+The required mobile performance score is at least 90. Mobile total blocking
+time is 472.5 ms, FCP/LCP 1,933 ms and CLS zero. Both completed audits exited 0
+without report warnings; the earlier Windows profile-cleanup failure produced
+no report. Payload size passing does not establish load-time performance.
 
 Scoped contrast and keyboard-scrolling defects are fixed: amber badges use
 amber-700, rose case-pack descriptions use the theme foreground, each table's
@@ -12,12 +43,17 @@ named outer region owns scrolling, and Architecture flow accepts keyboard focus.
 The queue scroll region contains its screen-reader-only header after scrolling.
 Notification focus restoration and native July replay remain covered.
 
-Local check, 494 units and all 721 Chromium tests pass. All 334 unique
+Local check, 497 units and the accepted 721 Chromium tests pass. All 334 unique
 default-rule axe audits report zero violations; all 248 matrix photos exist.
 The complete eager /BSA/ payload is 199,636 gzip bytes, only 364 below the strict
 200,000-byte limit. Future integration must preserve that budget. Root output
 is 199,627 bytes; these are measured independent-resource gzip totals, not
 load-time, Core Web Vitals or full WCAG conformance claims.
+
+The named budget CLI now runs in check. Its three added unit regressions pass.
+After redirecting historical screenshot output, all 36 affected browser tests
+passed and all 36 historical PNG hashes stayed unchanged. The generated Task 7
+matrix is ignored; twelve reviewed six-case captures are explicitly selected.
 
 No Git, accounts, deployment, CI, hosted, Firefox/WebKit or manual screen-reader
 verification occurred for Task 7. Frozen lifecycle/store contracts, claims and

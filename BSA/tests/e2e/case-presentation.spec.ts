@@ -1,5 +1,3 @@
-import { mkdir } from "node:fs/promises";
-import { resolve } from "node:path";
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, cases, confirmReset, expect, test } from "./fixtures";
 import { GATHERING_STEPS, BASELINE_DEFAULTS } from "../../src/lib/domain/baseline";
@@ -197,10 +195,8 @@ for (const screen of [{ name: "desktop", width: 1440, height: 1000, colorScheme:
         await captureJson(info, "task6-axe", axe);
         expect(axe.violations).toEqual([]);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-        const directory = resolve("docs/screens/task6");
-        await mkdir(directory, { recursive: true });
         await page.evaluate(() => window.scrollTo(0, 0));
-        await page.screenshot({ path: resolve(directory, `${view}-${screen.name}-${enabled ? "on" : "off"}.png`), fullPage: true });
+        await page.screenshot({ path: info.outputPath(`${view}-${screen.name}-${enabled ? "on" : "off"}.png`), fullPage: true });
       });
     }
   }

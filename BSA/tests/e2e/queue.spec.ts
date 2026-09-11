@@ -1,6 +1,4 @@
 import AxeBuilder from "@axe-core/playwright";
-import { mkdir } from "node:fs/promises";
-import path from "node:path";
 import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { BASELINE_DEFAULTS, calculateBaseline, formatBaselineNumber as n } from "../../src/lib/domain/baseline";
@@ -222,8 +220,7 @@ for (const width of [360, 1440]) for (const colorScheme of ["light", "dark"] as 
     expect(columns).toBe(width >= 1280 ? 2 : 1);
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     const audit = await new AxeBuilder({ page }).analyze(); await captureJson(info, "task5-axe", audit); expect(audit.violations).toEqual([]);
-    const dir = path.resolve("docs/screens/task5"); await mkdir(dir, { recursive: true });
     await page.evaluate(() => scrollTo(0, 0));
-    await page.screenshot({ path: path.join(dir, `queue-${width}-${colorScheme}-${enabled ? "on" : "off"}.png`), fullPage: true });
+    await page.screenshot({ path: info.outputPath(`queue-${width}-${colorScheme}-${enabled ? "on" : "off"}.png`), fullPage: true });
   });
 }

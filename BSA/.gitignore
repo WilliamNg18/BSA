@@ -4,3 +4,5 @@ dist/
 .vite-cache/
 *.log
 .DS_Store
+# Generated Task 7 matrix. Explicitly selected evidence lives outside this folder.
+docs/screens/task7/after/

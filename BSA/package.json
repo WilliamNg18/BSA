@@ -14,8 +14,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "check:content": "node scripts/check-content.mjs",
+    "measure-budget": "node scripts/measure-budget.mjs",
     "test:content": "playwright test content.spec.ts --project=chromium --reporter=dot",
-    "check": "npm run check:content && npm run typecheck && npm run lint && npm run build"
+    "check": "npm run check:content && npm run typecheck && npm run lint && npm run build && npm run measure-budget"
   },
   "engines": {
     "node": ">=20.19"

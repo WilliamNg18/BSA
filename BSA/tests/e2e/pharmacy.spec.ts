@@ -1,6 +1,4 @@
 import AxeBuilder from "@axe-core/playwright";
-import { mkdir } from "node:fs/promises";
-import { resolve } from "node:path";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 
 const scenarios = [
@@ -56,12 +54,10 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     const axe = await new AxeBuilder({ page }).analyze();
     await captureJson(info, "task4-axe", axe);
     expect(axe.violations).toEqual([]);
-    const directory = resolve("docs/screens/task4");
-    await mkdir(directory, { recursive: true });
     // Full-page capture otherwise paints sticky navigation at the last field's scroll offset.
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
     await expect(page.getByRole("banner")).toBeInViewport();
-    await page.screenshot({ path: resolve(directory, `${scenario.id}-${on ? "on" : "off"}-${theme}.png`), fullPage: true });
+    await page.screenshot({ path: info.outputPath(`${scenario.id}-${on ? "on" : "off"}-${theme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 }
