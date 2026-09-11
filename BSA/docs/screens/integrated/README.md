@@ -8,10 +8,11 @@ ms.date: 2026-09-11
 
 Initial Stream V evidence is captured from Phase 1 `d9e06e1`. This is **local
 production preview**, not a deployed Azure site or final R/S integration
-acceptance. After R, S and the #20 pharmacy-status correction merge, V rebases
-on `origin/main`, rebuilds and refreshes captures before its PR becomes ready.
+acceptance. After the coordinator releases all tested R/S, pharmacy-status and
+new-scope behaviour merges, V rebases on `origin/main`, rebuilds and refreshes
+captures before its PR becomes ready.
 
-The matrix contains 103 unique full-page PNGs, all from a 1440 x 1000 viewport,
+The initial matrix contains 103 unique full-page PNGs, all from a 1440 x 1000 viewport,
 device scale 1, light theme and reduced motion. These are fresh captures, not
 copies of earlier screenshots. Contact-sheet crops used for visual review are
 not additional captures and are not committed.
@@ -45,6 +46,22 @@ its 103 entries were independently counted and hash-verified.
 No dark/mobile/cross-browser coverage or full manual WCAG conformance is claimed
 by this matrix. Those wider regression gates belong to the coordinated
 verification streams. No token is needed for this local evidence.
+
+## Prepared final inventory, not yet captured
+
+The capture script now targets the settled T #26 / PR #30 and queue #28
+selectors. **Do not run it against the older seven-chapter build.** Its planned
+inventory is 107 images: the existing 103 plus two independent Four cases
+captures and two queue Compare captures. The pipeline moves to `/#pipeline`;
+Four cases uses `/#cases`. All eight chapters, including the full-cycle claims
+guide, are covered through their actual routes.
+
+Queue comparison uses **Jump to 17:00**, then **Compare** in **Queue controls**,
+and requires the inline **Today versus With agent** region. Both Agent states
+use the same scenario/day, without changing lifecycle or assistance as a side
+effect. These four additional images are pending, not missing historical files;
+links and final totals will be published only after real captures and review.
+The initial manifest remains the 103-image source record until that refresh.
 
 ## Exact capture procedure
 

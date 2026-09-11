@@ -94,8 +94,8 @@ controls and accessibility violations remain blocking and must be reported.
 Initial captures are local light-theme Chromium evidence, not full manual WCAG
 2.2 AA conformance, screen-reader verification, Firefox/WebKit coverage, mobile
 coverage, final integration approval, CI or a deployment result. R/S own the
-broader regression/accessibility gates; V refreshes after both and the #20
-parity correction merge.
+broader regression/accessibility gates; V refreshes after their tested fixes
+and the additional [scope implementation](SCOPE.md) streams merge.
 
 ## Historical evidence, not current blockers
 

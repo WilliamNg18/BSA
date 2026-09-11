@@ -553,3 +553,11 @@ and #29 explicit unchecked claims-resubmission pain. Coordinator assigned all
 three, with #29 staying under R's existing claim-detail ownership. No new
 browser process or delegation by V. Final captures must follow the expanded
 merged scope rather than force the historical 103-image count.
+
+## 2026-09-11: Prepare expanded final capture selectors
+
+Use T's settled `/#pipeline` and `/#cases` as separate destinations. Use queue
+#28's public Compare action after Jump to 17:00, asserting the inline Today
+versus With agent region. This plans 107 final images, not a fabricated update
+to the 103-image historical manifest. No capture runs before the coordinator
+releases tested integrations and the browser resource slot.
