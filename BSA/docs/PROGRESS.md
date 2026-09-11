@@ -182,6 +182,16 @@ The initial full suite still serves its unchanged pre-fix production artifact.
 No #19 browser pass or final acceptance is claimed until a coordinated slot
 rebuilds and exercises this revision. The coordinator owns merge sequencing.
 
+## Stream R issue #29 implementation, browser verification pending
+
+Added a claims-specific unchecked-resubmission comparison and reused the existing
+pain marker. Off names a synthetic possible repeat cycle; On resolves only a
+current Ready result with an actual approved instruction. No lifecycle or
+precheck code changes. Four new browser cases cover keyboard, mode reversals,
+unchecked snapshots, edit invalidation and default-rule axe on two viewports.
+Typecheck and lint passed, exit 0. Runtime verification awaits the coordinated
+browser slot; the running baseline production artifact remains unchanged.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

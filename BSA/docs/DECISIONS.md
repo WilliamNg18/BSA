@@ -457,3 +457,15 @@ With Agent Off, the pharmacy retains its manual human response. NHSBSA history
 retains the human reason in both modes. Toggle changes affect presentation only:
 no record, history event, approval, revision or lifecycle state is rewritten.
 Advisory typed-field checks and evidence remain separate from operator responses.
+
+## 2026-09-11: Explicit unchecked-resubmission comparison without new authority
+
+Issue #29 adds a claims-specific comparison using the existing keyboard-readable
+pain marker. Off describes another correction cycle as a synthetic assumption,
+not proof that real pharmacy checks are absent. Submission remains usable and
+unchecked; no new model call, validation or lifecycle action is introduced.
+
+On resolves the marker only when an operator-approved correction instruction
+exists and the existing check reports Ready for the current text. Missing,
+unable, unapproved and edited-but-unchecked states remain unresolved. Even a
+resolved marker explicitly requires human re-check and promises no payment.

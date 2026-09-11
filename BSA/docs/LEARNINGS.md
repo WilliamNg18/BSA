@@ -538,3 +538,15 @@ Eight new browser regressions cover seeded B/C and newly recorded manual,
 unapproved assisted and approved assisted responses. They compare unchanged
 history and attempts across Off -> On -> Off and verify NHSBSA still sees the
 original reason. Validation results belong in progress after execution.
+
+## 2026-09-11: Usable manual controls did not explain blind resubmission
+
+The existing textarea and Resubmit claim proved that Off could submit, but the
+single "Manual correction" sentence did not expose the missing-check comparison.
+Issue #29 adds that explanation without treating manual work as broken.
+
+Reuse the revision-safe result already held by ClaimDetail. Its text equality
+guard and edit invalidation prevent stale Ready from resolving the new marker;
+approval is independently required. Four new keyboard/axe browser cases cover
+phone-dark and desktop-light Off/On, tooltip Escape/focus, immutable mode flips,
+unchecked Off snapshots, approved correction and edit invalidation.
