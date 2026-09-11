@@ -121,7 +121,7 @@ function CasePackContent() {
       </section>}
       {decided && lifecycle?.state !== "submitted" && lifecycle?.state !== "resubmitted" && <section className="space-y-2 rounded-xl border p-4">
         <p>Historical case view. Submit another demonstration attempt at the pharmacy before starting a new review.</p>
-        <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>
+        <Button asChild variant="outline" className="h-auto max-w-full whitespace-normal"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>
       </section>}
       {error && <p role="alert">{error}</p>}
 

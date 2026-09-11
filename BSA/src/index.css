@@ -1,6 +1,16 @@
 @import "tailwindcss" source(".");
 @import "tw-animate-css";
 
+/* Companion rules for the CSP-safe Radix scrollbar adapter. */
+.with-scroll-bars-hidden {
+  overflow: hidden !important;
+  padding-right: var(--removed-body-scroll-bar-size, 0px) !important;
+}
+.right-scroll-bar-position { right: var(--removed-body-scroll-bar-size, 0px) !important; }
+.width-before-scroll-bar { margin-right: var(--removed-body-scroll-bar-size, 0px) !important; }
+.right-scroll-bar-position .right-scroll-bar-position { right: 0 !important; }
+.width-before-scroll-bar .width-before-scroll-bar { margin-right: 0 !important; }
+
 @custom-variant data-open {
   &:where([data-state="open"]),
   &:where([data-open]:not([data-open="false"])) { @slot; }

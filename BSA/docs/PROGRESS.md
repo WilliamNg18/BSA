@@ -22,6 +22,26 @@ ms.date: 2026-09-11
 
 ## Current handoff: 11 September 2026
 
+### Issue 15: Stream S local acceptance in progress
+
+Production browser servers now enforce the emitted strict self-only CSP.
+The bounded scrollbar adapter fixes the demonstrated Reset inline-style block;
+Radix retains focus and wheel/touch containment. A historical-case replay link
+now wraps instead of overflowing on narrow screens with wider system-font
+metrics. Lifecycle authority and the six outcomes are unchanged.
+
+On Phase 1, check and 564 units passed, including four new scroll-lock tests.
+Eight focused Chromium tests passed with no CSP violations, covering both-motion
+modals, mobile navigation, menus/tooltips, simulation/sweep and a claim panel.
+The initial full matrix was interrupted after concurrent build writes caused
+two HTTP 500 responses. A clean retry stalled during shared-machine contention
+and was stopped; neither interrupted run counts as passed or as a flaky test.
+
+The final dedicated matrix now defines 183 browser tests and 247 unrestricted
+axe audits, including all six phone packs and larger-text reflow. Final execution
+after rebase is pending the coordinator's local-browser slot. Tasks 8-13 remain
+unchecked; no full WCAG, manual screen-reader or hosted acceptance is claimed.
+
 The latest policy overrides the older execution order below: Azure Static Web
 Apps Free is the only host, every active browser configuration uses `/`, and
 there are no size or performance budgets. Gzip, copy, Lighthouse and visual

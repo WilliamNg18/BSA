@@ -21,6 +21,9 @@ export default defineConfig(({ command }) => ({
   resolve: {
     alias: [
       { find: "@", replacement: fileURLToPath(new URL("./src", import.meta.url)) },
+      // Keep Radix interactions, but do not inject react-remove-scroll-bar's
+      // inline stylesheet under the deployment's strict style-src 'self'.
+      { find: /^react-remove-scroll-bar$/, replacement: fileURLToPath(new URL("./src/lib/csp-scroll-lock.ts", import.meta.url)) },
       // Router 7.18 exports its development entry even for production builds.
       // Use the package's own production files, not a warning-stripping shim.
       ...(command === "build" ? [

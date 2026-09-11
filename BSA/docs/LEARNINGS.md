@@ -257,3 +257,37 @@ User permission covered targeted shared performance, not cross-stream features.
 Local acceptance does not imply CI, hosting or Tasks 8-13 integration. Preserve
 the historical mobile 86 and fresh unchanged baseline 93 alongside final median
 91; threshold attainment is not proof of a causal five-point improvement.
+
+## 2026-09-11: Header-enforced accessibility exposes blocked modal CSS
+
+Vite preview does not apply `staticwebapp.config.json`. The initial real-header
+Reset test had zero axe violations but one `style-src-elem: inline` violation
+and a matching browser console error. Passing axe alone missed the broken
+scrollbar stylesheet. Check actual response headers, CSP events, console errors,
+modal scroll compensation and cleanup together.
+
+React's individual CSSOM style assignments, including dynamic positions, are
+not the same as injecting a style element or setting a raw style attribute under
+CSP. Preserve working dynamic geometry; replace the demonstrated stylesheet
+injection rather than removing focus/scroll containment or weakening policy.
+
+Radix menu keys update focus asynchronously. Wait for the expected menu item
+and destination heading to receive focus before issuing the next keyboard
+action. An initial unsynchronised test activated the previous item; another
+timed out. Agent Off trace has no replay controls, so audit its evidence view
+without attempting the On-only Show all action. Two workers and a 60-second
+audit timeout accommodate this shared machine without disabling axe rules.
+
+Do not build and run a production-server audit concurrently against the same
+dist directory: Vite clears it during rebuild and requests can observe missing
+files. The first full run hit two HTTP 500 responses from this orchestration
+mistake. After stopping it, the clean retry and even a one-page probe stalled
+while another stream ran hundreds of browsers. Retain the partial log and
+serialise heavyweight validation; keep source work parallel. Neither interrupted
+run is an acceptance result or evidence warranting a quarantine tag.
+
+System-font metrics make narrow-layout defects platform dependent. The historical
+replay link used a non-wrapping, fixed-height button, appearing only on A/B/C/E/F.
+Windows fit it at 16px root text but overflowed by 17px at 18px; Linux CI reported
+5px at the standard size. Bound and wrap the control, then verify its full label,
+keyboard destination and page reflow rather than hiding horizontal overflow.

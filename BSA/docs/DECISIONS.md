@@ -270,3 +270,37 @@ claims, frozen store/lifecycle changes or Tasks 8-13. Tick Task 7 LOCAL PASS onl
 leave integration unchecked and Task 7 CI/hosted gates pending main-agent action.
 This closeout performs documentation and report work only: no source edits,
 Git commands, account changes, deployment or feature implementation.
+
+## 2026-09-11: Stream S verifies the deployed CSP without relaxing it
+
+Keep root `staticwebapp.config.json` unchanged. Production browser servers read
+the emitted configuration and apply its actual global headers to every response.
+Default Playwright uses port 4173; `PLAYWRIGHT_PORT` supports isolated runs and the
+dedicated accessibility configuration defaults to 4183. The local server covers
+static assets and SPA deep links, not every Azure platform routing behaviour.
+
+Reset and mobile navigation use Radix scroll locking. Its upstream scrollbar
+component injects a style element that `style-src 'self'` blocks. Alias only the
+`react-remove-scroll-bar` entry consumed by Radix to a local component. Preserve
+Radix focus trapping, dismissal, wheel/touch containment and constant subpath
+imports. Apply measured compensation with individual CSSOM properties and
+external CSS, retaining nested-lock counting and previous property priorities.
+Do not add unsafe-inline, nonces, hashes, a runtime service or a different host.
+
+The dedicated unrestricted axe matrix covers the specified screens, both Agent
+states, both motion settings and both themes. Phone claims also cover all seven
+lifecycle states. Keyboard checks assert observable effects and focus, not just
+successful key dispatch. This is local Chromium evidence, not full WCAG 2.2 AA
+conformance, manual screen-reader testing or verified hosted acceptance.
+
+Keep source work parallel, but temporarily serialise heavyweight browser runs
+on this shared machine. Stop only this stream's owned stalled process and retain
+its partial log as interrupted; wait for R's existing run before starting S's
+final matrix. Do not classify contention timeouts as product failures or flaky
+tests without evidence, and do not count interrupted runs as passing.
+
+The historical replay link is present for A/B/C/E/F, but not escalated D. Allow
+its existing label to wrap with bounded width and automatic height. Preserve
+the label, destination and layout; do not conceal overflow. Linux CI reported
+5px overflow at 360px. Windows reproduced 17px with the root text size enlarged
+from 16px to 18px, establishing the same intrinsic-width defect.
