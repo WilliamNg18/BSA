@@ -27,6 +27,6 @@ export function AssistanceTransition({ children }: { children: ReactNode }) {
     <div className="mx-auto max-w-7xl px-4 pt-2 text-xs text-muted-foreground" role="status" aria-live="polite" aria-atomic="true">
       {preparing ? "Preparing assistance" : enabled ? "Assistance On" : "Assistance Off"} · Simulated presentation, not a model call
     </div>
-    <div style={{ opacity: preparing ? 0.75 : 1 }} className="transition-opacity duration-200 motion-reduce:transition-none">{children}</div>
+    <div>{children}</div>
   </div></AssistancePresentationContext>;
 }

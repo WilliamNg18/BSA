@@ -1,5 +1,5 @@
 /** Frozen cross-stream contracts. Synthetic session data, not payment authority. */
-import type { EndorsementFacts, HumanDecision } from "./types";
+import type { DecisionRecord, EndorsementFacts, HumanDecision, Recommendation } from "./types";
 
 export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated";
 export type Actor = "pharmacy" | "agent" | "code" | "operator";
@@ -14,6 +14,41 @@ export interface HistoryEvent {
   clauseId?: string;
   tariffVersion?: string;
   exactFix?: string;
+  revision?: number;
+  recordId?: string;
+  decision?: HumanDecision;
+  recommendation?: Recommendation;
+  reason?: string;
+  approvedDraft?: ApprovedDraft;
+}
+
+/** Created only by an explicit human approval argument, never by the flag. */
+export interface ApprovedDraft {
+  readonly text: string;
+  readonly approvedAt: string;
+  readonly approvedBy: string;
+  readonly decision: HumanDecision;
+  readonly tariffVersion: string;
+  readonly clauseId: string;
+}
+
+/** Original historical records remain valid; new records carry revision linkage. */
+export interface LifecycleDecisionRecord extends DecisionRecord {
+  readonly revision?: number;
+  readonly reason?: string;
+  readonly clauseId?: string;
+  readonly approvedDraft?: ApprovedDraft;
+}
+
+/** Each pharmacy action retains its own text and advisory snapshot forever. */
+export interface CaseRevision {
+  readonly number: number;
+  readonly at: string;
+  readonly kind: "seed" | "submission" | "resubmission" | "confirmation";
+  readonly templateCaseId: string;
+  readonly endorsementText: string;
+  readonly precheck: PharmacyPrecheckSnapshot | null;
+  readonly confirmation: string | null;
 }
 
 export interface CaseLifecycle {
@@ -38,7 +73,9 @@ export interface PharmacyPrecheckSnapshot {
 
 export interface LifecycleSlice {
   lifecycles: Record<string, CaseLifecycle>;
+  caseRevisions: Record<string, readonly CaseRevision[]>;
   followedCaseId: string | null;
+  /** Explicit demo replay: append a submission revision, even for a seeded ID. */
   submitFromPharmacy: (caseId: string, endorsementText: string, precheck?: PharmacyPrecheckSnapshot) => void;
   arriveInQueue: (caseId: string) => void;
   recordOperatorDecision: (caseId: string, decision: HumanDecision, reason: string, draft?: string) => void;

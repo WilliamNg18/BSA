@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, cases, confirmReset, expect, test } from "./fixtures";
 import { GATHERING_STEPS, BASELINE_DEFAULTS } from "../../src/lib/domain/baseline";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 for (const c of cases) {
   test(`Task6 ${c.id} manual trace and raw pack are not agent evidence`, async ({ page }) => {
@@ -32,7 +33,8 @@ for (const c of cases) {
     await expect(page.getByRole("list", { name: "Confidence signals", exact: true })).toHaveCount(0);
     await expect(page.locator("[data-pain-marker]")).toHaveCount(4);
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
-    if (c.id !== "EX-24088") {
+    if (c.id !== "EX-24088" && c.id !== "EX-24101") {
+      if (c.id !== "EX-24123") await startDemonstrationReview(page);
       await expect(page.getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(1);
       await expect(page.getByRole("radio", { name: /^Escalate / })).toBeChecked();
       await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).not.toBeChecked();
@@ -42,26 +44,27 @@ for (const c of cases) {
 }
 
 for (const label of ["Sufficient (human choice)", "Refer back", "Request information", "Escalate"]) {
-  test(`Task6 manual ${label} requires reason and records NONE without lifecycle calls`, async ({ page }) => {
+  test(`Task6 manual ${label} requires reason and records NONE through valid lifecycle review`, async ({ page }) => {
     await page.goto("case/EX-24107");
+    await startDemonstrationReview(page);
     await page.getByRole("radio", { name: new RegExp(`^${label.replace(/[()]/g, "\\$&")} `) }).check();
     const reason = page.getByLabel("Reason (required)", { exact: true });
     for (const value of ["", "   1234567   "]) {
       await reason.fill(value);
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
       await expect(page).toHaveURL(/\/case\/EX-24107$/);
-      await expect(page.getByText("A reason is required when you override the recommendation, or when there is no recommendation to accept.").first()).toBeVisible();
+      await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     }
     await reason.fill("Human review of captured evidence");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
-    await expect(page.getByText("Yes. Reason: Human review of captured evidence", { exact: true })).toBeVisible();
+    await expect(page.getByText("No. Note: Human review of captured evidence", { exact: true })).toBeVisible();
     await expect(page.getByText("No recorded rule version to replay in this manual comparison", { exact: true })).toBeVisible();
     await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
     await page.getByRole("banner").getByRole("switch").setChecked(true);
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
-    await expect(page.getByText("No agent recommendation existed. The stored override flag is retained; correcting this counter requires Stream B integration.", { exact: true })).toBeVisible();
+    await expect(page.getByText("No agent recommendation existed. The stored override flag is retained; correcting this counter requires Stream B integration.", { exact: true })).toHaveCount(0);
     if (label.startsWith("Sufficient")) await expect(page.getByText("ACCEPT by Demo operator", { exact: false })).toBeVisible();
   });
 }
@@ -92,6 +95,7 @@ test("Task6 trace slots follow phases; Clear, Step and Show all never create a r
 test("Task6 full pack assembles in two seconds, with no decision pane before completion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.clock.install({ time: new Date("2026-09-11T12:00:00Z") });
   await page.clock.pauseAt(new Date("2026-09-11T12:00:10Z"));
   await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -145,6 +149,7 @@ test("Task6 live reduced motion cancels timers; Pause, Step, flag and route exit
 
 test("Task6 decision draft survives toggle and comparison; route exit and Reset clear it", async ({ page }) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   const flag = page.getByRole("banner").getByRole("switch");
   await page.getByRole("radio", { name: /^Request information / }).check();
   await page.getByLabel("Reason (required)", { exact: true }).fill("Keep this human decision draft");
@@ -163,6 +168,7 @@ test("Task6 decision draft survives toggle and comparison; route exit and Reset 
   await page.getByLabel("Reason (required)", { exact: true }).fill("Reset this local draft");
   await confirmReset(page);
   await expect(flag).not.toBeChecked();
+  await startDemonstrationReview(page);
   await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveValue("");
 });
 

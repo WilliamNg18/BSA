@@ -4,6 +4,20 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Integrated workflow handoff
+
+Tasks 1-7 form the verified core. Branch `integration/tasks-8-13` now preserves
+the unfinished shared lifecycle, pharmacy claims, Follow banner, round-trip
+wiring, tour/navigation and regression tests. Fresh validation passed 557 units,
+typecheck, lint and content checks. The build still fails its old 200,000-byte
+hard cap at 201,179 gzip bytes. The requested 350,000-byte advisory policy and
+Pages-only hosting are not implemented. Start with those gate-policy changes,
+then run the complete production browser and axe suites. Earlier focused browser
+passes do not prove integrated acceptance. Reconcile candidate screenshots,
+check frozen contracts against main, and confirm deployment before ticking
+Tasks 8-13. Keep both archives untouched. Source documents and local settings
+are excluded from the checkpoint. No cloud-agent assignment is implied.
+
 ## 2026-09-10: Stable Zustand selectors
 
 A selector returning a fresh filtered array caused React error 185 in production

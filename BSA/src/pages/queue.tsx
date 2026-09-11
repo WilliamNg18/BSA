@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { NativeChoiceGroup as ToggleGroup, NativeChoiceItem as ToggleGroupItem } from "@/components/ui/native-radio-group";
 import { PageSection } from "@/components/page-section";
 import { EmptyState } from "@/components/states";
 import { BoundaryTag, RecommendationBadge, StateBadge, SyntheticTag } from "@/components/demo/labels";
-import { Switch } from "@/components/ui/switch";
+import { NativeSwitch as Switch } from "@/components/ui/native-switch";
 import { QueueMonth } from "@/components/demo/queue-month";
 import { QueueDay } from "@/components/demo/queue-day";
 import { QueueManualSteps, QueueTodayDialog } from "@/components/demo/queue-manual";
@@ -21,6 +21,7 @@ import { runAgent } from "@/lib/domain/agent";
 import { CASES, QUEUE_FILLER } from "@/lib/domain/cases";
 import type { CaseState } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
+import { QueueLifecycle } from "@/components/demo/queue-lifecycle";
 
 const FILTERS: { value: CaseState | "all"; label: string }[] = [
   { value: "all", label: "All" },
@@ -119,6 +120,7 @@ export function QueuePage() {
         </p>
       </div>
 
+      <QueueLifecycle />
       <section aria-label="Queue controls" className="space-y-3 rounded-xl border bg-card p-4">
         <div className="flex flex-wrap items-center gap-3">
           <Switch aria-label={`Queue assistance: ${agentEnabled ? "On" : "Off"}`} checked={agentEnabled} onCheckedChange={setAgentEnabled} />
@@ -140,7 +142,7 @@ export function QueuePage() {
         action={null}
       >
         {result && result.volume < 12 && <p role="status">{12 - result.volume} examples outside projection · Monthly volume remains {result.volume}.</p>}
-        <ToggleGroup type="single" value={filter} onValueChange={(v) => v && setFilter(v as CaseState | "all")} aria-label="Filter by state" className="flex-wrap justify-start">
+        <ToggleGroup value={filter} onValueChange={(v) => v && setFilter(v as CaseState | "all")} aria-label="Filter by state" className="flex-wrap justify-start">
           {FILTERS.map((f) => (
             <ToggleGroupItem key={f.value} value={f.value} className="h-8 whitespace-normal text-xs data-[state=on]:bg-teal-700 data-[state=on]:text-white">
               {f.label}
@@ -229,9 +231,9 @@ export function QueuePage() {
         )}
       </PageSection>
       {input && result ? <>
-        <QueueMonth key={revision} result={result} openToday={openToday} runVisible={runVisible} />
+        <QueueMonth key={`month-${revision}`} result={result} openToday={openToday} runVisible={runVisible} />
         <QueueDay input={input} />
-        <QueueTodayDialog key={revision} selected={selected?.revision === revision ? selected.id : null} close={() => setSelected(null)} input={input} restoreFocus={restoreFocus} />
+        <QueueTodayDialog key={`dialog-${revision}`} selected={selected?.revision === revision ? selected.id : null} close={() => setSelected(null)} input={input} restoreFocus={restoreFocus} />
       </> : <p role="alert">Invalid calculator assumptions. Month and day projections are unavailable; pinned evidence remains readable.</p>}
     </div>
   );

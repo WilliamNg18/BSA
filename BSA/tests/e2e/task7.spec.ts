@@ -1,9 +1,10 @@
 import AxeBuilder from "@axe-core/playwright";
-import { mkdir, readFile, readdir } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { assertRuntimeBudget, measureRuntime } from "../../build/runtime-budget";
 import { captureCheckpoint, captureJson, cases, confirmReset, expect, staticRoutes, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 const app = fileURLToPath(new URL("../../", import.meta.url));
 const surfaces = [
@@ -31,10 +32,8 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           const results = await new AxeBuilder({ page }).analyze();
           await captureJson(testInfo, "axe-results", results);
           expect(results.violations, JSON.stringify(results.violations.map(({ id, nodes }) => ({ id, targets: nodes.map(({ target }) => target) })))).toEqual([]);
-          const folder = resolve(app, "docs/screens/task7/after");
-          await mkdir(folder, { recursive: true });
           await page.evaluate(() => window.scrollTo(0, 0));
-          await page.screenshot({ path: resolve(folder, `${surface.name}-${width}-${colorScheme}-${reducedMotion}-${enabled ? "on" : "off"}.png`), fullPage: true });
+          await page.screenshot({ path: testInfo.outputPath(`${surface.name}-${width}-${colorScheme}-${reducedMotion}-${enabled ? "on" : "off"}.png`), fullPage: true });
         });
       }
     });
@@ -61,6 +60,7 @@ test("Task7 complete emitted and served payload is below 200000 gzip bytes", asy
 
 test("Task7 native replay and decision notices retain keyboard operation and Reset Off", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("radio", { name: /^Amend / }).check();
   const record = page.getByRole("button", { name: "Record decision", exact: true });
@@ -68,15 +68,13 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await page.keyboard.press("Enter");
   const notices = page.getByRole("complementary", { name: "Decision notifications" });
   const dismiss = notices.getByRole("button", { name: "Dismiss notification" });
-  await expect(notices.getByRole("status")).toContainText("A reason is required");
+  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
   await expect(record).toBeFocused();
   let axe = await new AxeBuilder({ page }).analyze();
   await captureJson(testInfo, "axe-notice-error", axe);
   expect(axe.violations).toEqual([]);
-  for (let tabs = 0; tabs < 30 && !(await dismiss.evaluate((button) => button === document.activeElement)); tabs++) await page.keyboard.press("Tab");
-  await expect(dismiss).toBeFocused();
+  await expect(dismiss).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "notification-error-keyboard");
-  await page.keyboard.press("Enter");
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
   await expect(record).toBeFocused();
   await captureCheckpoint(page, testInfo, "notification-restored-record-focus");
@@ -103,25 +101,22 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
 });
 
-test("Task7 notification restores a publishing field but leaves unrelated focus alone", async ({ page }, testInfo) => {
+test("Task7 inline decision errors leave publishing fields and button focus unchanged", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
   const record = page.getByRole("button", { name: "Record decision", exact: true });
   const dismiss = page.getByRole("button", { name: "Dismiss notification", exact: true });
   await reason.focus();
   // Publish without moving focus, as with a form's implicit submission.
   await record.evaluate((button: HTMLButtonElement) => button.click());
-  await expect(dismiss).toBeVisible();
-  await expect(reason).toBeFocused();
-  await dismiss.focus();
-  await page.keyboard.press("Space");
+  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
   await expect(dismiss).toHaveCount(0);
   await expect(reason).toBeFocused();
   await captureCheckpoint(page, testInfo, "notification-restored-field-focus");
   await record.press("Enter");
-  await expect(dismiss).toBeVisible();
+  await expect(record).toBeFocused();
   await reason.focus();
-  await dismiss.evaluate((button: HTMLButtonElement) => button.click());
   await expect(dismiss).toHaveCount(0);
   await expect(reason).toBeFocused();
 });

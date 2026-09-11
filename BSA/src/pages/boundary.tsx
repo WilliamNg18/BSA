@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { NativeChoiceGroup as ToggleGroup, NativeChoiceItem as ToggleGroupItem } from "@/components/ui/native-radio-group";
 import { PageSection } from "@/components/page-section";
 import { BoundaryTag } from "@/components/demo/labels";
 import { BOUNDARY_META } from "@/components/demo/label-meta";
@@ -22,7 +22,7 @@ export function BoundaryPage() {
       </div>
 
       <PageSection title="Four classes" description="Filter the table by class.">
-        <ToggleGroup type="single" value={filter} onValueChange={(v) => v && setFilter(v as BoundaryClass | "all")} aria-label="Filter by class" className="flex-wrap justify-start">
+        <ToggleGroup value={filter} onValueChange={(v) => v && setFilter(v as BoundaryClass | "all")} aria-label="Filter by class" className="flex-wrap justify-start">
           <ToggleGroupItem value="all" className="h-8 data-[state=on]:bg-teal-700 data-[state=on]:text-white">All ({BOUNDARY_ROWS.length})</ToggleGroupItem>
           {counts.map(({ k, n }) => (
             <ToggleGroupItem key={k} value={k} className="h-8 whitespace-normal data-[state=on]:bg-teal-700 data-[state=on]:text-white">

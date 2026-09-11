@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureCheckpoint, captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 import { BASELINE_DEFAULTS, GATHERING_STEPS, calculateBaseline, referralFreeProxyDisplay, formatBaselineNumber, type BaselineInputs } from "../../src/lib/domain/baseline";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
@@ -31,7 +32,7 @@ async function expectReferralMarkers(page: Page, ready: boolean) {
 
 async function pipeline(page: Page) {
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await expect(page.getByRole("menuitem")).toHaveCount(6);
+  await expect(page.getByRole("menuitem")).toHaveCount(7);
   await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
   await expect(page).toHaveURL(/#cases$/);
 }
@@ -190,6 +191,7 @@ test("live reduced-motion changes finish presentation immediately without autono
   await expectGathering(page, 5);
   await expectReferralMarkers(page, true);
   await page.getByRole("link", { name: "Review case B and decide" }).click();
+  await startDemonstrationReview(page);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
 });
 

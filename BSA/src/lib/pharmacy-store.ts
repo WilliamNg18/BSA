@@ -11,7 +11,7 @@ interface PharmacyState {
   reset: () => void;
 }
 
-/** Stream A memory only. Never calls frozen lifecycle methods or changes a queue. */
+/** Receipt/timeline compatibility adapter. Lifecycle revisions are authoritative. */
 export const usePharmacyStore = create<PharmacyState>((set, get) => ({
   assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS },
   receipts: [],
@@ -23,6 +23,7 @@ export const usePharmacyStore = create<PharmacyState>((set, get) => ({
   },
   submit: (input) => {
     const receipt = immutableReceipt({ ...input, id: `PH-${String(get().receipts.length + 1).padStart(4, "0")}` });
+    useAppStore.getState().submitFromPharmacy(input.caseId, input.precheck.typedText, input.precheck);
     set((state) => ({ receipts: Object.freeze([...state.receipts, receipt]) }));
     return receipt;
   },

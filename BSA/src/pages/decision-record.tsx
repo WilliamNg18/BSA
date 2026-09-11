@@ -8,7 +8,8 @@ import { EmptyState, ErrorState } from "@/components/states";
 import { CaseHeader } from "@/components/demo/case-header";
 import { BoundaryTag, KeyValue, RecommendationBadge, StatusDot } from "@/components/demo/labels";
 import { runAgent } from "@/lib/domain/agent";
-import { caseById } from "@/lib/domain/cases";
+import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
+import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { useAppStore } from "@/lib/store";
 import { agentVersionLabel } from "@/lib/service-display";
@@ -26,20 +27,22 @@ export function DecisionRecordPage() {
 
 function DecisionRecordContent() {
   const { id } = useParams();
-  const c = caseById(id);
-  const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
+  const c = useLifecycleCase(id);
+  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
+  const state = storedState ?? c?.initialState;
   const allRecords = useAppStore((s) => s.records);
   const records = useMemo(() => allRecords.filter((r) => r.caseId === id), [allRecords, id]);
+  const latest = records[records.length - 1];
+  const recordedCase = useLifecycleCase(id, latest?.revision ?? 1);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const [replayVersion, setReplayVersion] = useState<string>("");
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
-  const replay = useMemo(() => (c && agentEnabled && replayVersion ? runAgent(c, { agentEnabled, tariffVersion: replayVersion }) : null), [c, replayVersion, agentEnabled]);
+  const replay = useMemo(() => (recordedCase && agentEnabled && replayVersion ? runAgent(recordedCase, { agentEnabled, tariffVersion: replayVersion }) : null), [recordedCase, replayVersion, agentEnabled]);
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
   }
 
-  const latest = records[records.length - 1];
   const hasRecordedRule = Boolean(latest && TARIFF_VERSIONS.some((v) => v.version === latest.tariffVersion));
 
   return (
@@ -50,6 +53,7 @@ function DecisionRecordContent() {
         title={`Decision and audit record: ${c.title}`}
         intro="Review evidence, versions, checks and the recorded human decision. Replay compares synthetic rule versions without changing history."
       />
+      <LifecycleHistory id={c.id} />
 
       {!agentEnabled && <><MissingAssistedSlots />{!latest && <section className="space-y-2 rounded-xl border p-4">
         <Button type="button" disabled>Replay unavailable</Button>

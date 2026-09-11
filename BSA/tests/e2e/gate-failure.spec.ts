@@ -3,6 +3,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { REC_META } from "../../src/components/demo/label-meta";
 import { injectPrescriberFault } from "../support/prescriber-fault";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 for (const c of cases.slice(0, 3)) {
   test(`gate FAIL withholds ${c.id} advice in queue, pack, trace, human record and replay`, async ({ page }) => {
@@ -33,6 +34,7 @@ for (const c of cases.slice(0, 3)) {
     await expect(row.locator("td").nth(3)).toHaveText("No recommendation");
     await expect(row.locator("td").nth(2)).toContainText("findings");
     await row.getByRole("link", { name: "Case pack", exact: true }).click();
+    await startDemonstrationReview(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");
     await expect(page.getByText("FAIL", { exact: true })).toBeVisible();
@@ -75,13 +77,13 @@ for (const c of cases.slice(0, 3)) {
       await reason.fill(value);
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
       await expect(page).toHaveURL(new RegExp(`/case/${c.id}$`));
-      await expect(page.getByText("A reason is required when you override the recommendation, or when there is no recommendation to accept.").first()).toBeVisible();
+      await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     }
     await reason.fill("Review prescriber evidence");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     await expect(page.getByText("ESCALATE by Demo operator", { exact: false })).toBeVisible();
-    await expect(page.getByText("Yes. Reason: Review prescriber evidence", { exact: true })).toBeVisible();
+    await expect(page.getByText("No. Note: Review prescriber evidence", { exact: true })).toBeVisible();
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     for (const month of ["July 2026 (2026-07)", "August 2026 (2026-08)", "September 2026 (2026-09)"]) {
       await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption({ label: month });

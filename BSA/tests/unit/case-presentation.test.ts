@@ -57,16 +57,18 @@ describe("Task 6 read-only presentation", () => {
     for (const slot of ASSISTED_SLOTS) expect(traceSlotReady(pack, 99, slot)).toBe(false);
   });
 
-  it("never auto-selects sufficient; keeps an explicit manual ACCEPT and requires integration for its override flag", () => {
+  it("never auto-selects sufficient; records an explicit manual ACCEPT after queue arrival without a false override", () => {
     expect(manualChoice(null)).toBe("ESCALATE");
     expect(manualChoice("AMEND")).toBe("ESCALATE");
     expect(manualChoice("ACCEPT")).toBe("ACCEPT");
     const before = useAppStore.getState();
+    before.submitFromPharmacy(CASES[0].id, CASES[0].extracted.endorsementText);
+    before.arriveInQueue(CASES[0].id);
     const record = before.recordDecision({ caseId: "EX-24107", tariffVersion: "n/a", agentVersion: "not invoked", inputs: ["Synthetic captured form"], sources: ["Existing capture"], checks: [], recommendation: "NONE", decision: "ACCEPT", overrideReason: "Human judgement on the captured evidence" });
-    expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: true, tariffVersion: "n/a", checks: [] });
+    expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, tariffVersion: "n/a", checks: [] });
     expect(record.overrideReason).toBeTruthy();
     expect(useAppStore.getState().records).toHaveLength(before.records.length + 1);
-    expect(useAppStore.getState().lifecycles).toBe(before.lifecycles);
+    expect(useAppStore.getState().lifecycles[CASES[0].id]).toMatchObject({ state: "paid", history: expect.arrayContaining([expect.objectContaining({ actor: "operator", recordId: record.id, revision: 2 })]) });
   });
 
   it("July B counterfactual never rewrites recorded August history or state", () => {

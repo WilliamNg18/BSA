@@ -1,9 +1,33 @@
-import { confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { confirmReset, expect, navigatePrimary as navigateExisting, test } from "./fixtures";
+import type { Page } from "@playwright/test";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { BASELINE_FIELDS } from "../../src/lib/domain/baseline";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { startDemonstrationReview } from "./lifecycle-helpers";
+
+// The shared legacy helper's Operations labels are owned by integration QA.
+async function navigatePrimary(page: Page, label: string) {
+  if (!["Pharmacy claims", "NHSBSA queue"].includes(label)) return navigateExisting(page, label);
+  const nav = page.getByRole("navigation", { name: "Primary", exact: true });
+  const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
+  if (await mobile.isVisible()) {
+    await mobile.press("Enter");
+    await page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true }).press("Enter");
+    await expect(page.getByRole("dialog", { name: "Navigation", exact: true })).toHaveCount(0);
+  } else {
+    await nav.getByRole("button", { name: "Operations", exact: true }).press("Enter");
+    const item = page.getByRole("menuitem", { name: label, exact: true });
+    await item.focus();
+    await expect(item).toBeFocused();
+    await item.press("Enter");
+    await expect(page.getByRole("menu")).toHaveCount(0);
+  }
+  await expect(page).toHaveURL(label === "Pharmacy claims" ? /\/pharmacy\/claims$/ : /\/queue$/);
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
+}
 
 for (const colorScheme of ["light", "dark"] as const) {
   for (const width of [360, 768, 960, 1024, 1280, 1440, 1920]) {
@@ -28,7 +52,7 @@ for (const colorScheme of ["light", "dark"] as const) {
             expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
           }
           expect((await rail.boundingBox())?.y).toBe(box!.height);
-          for (const label of ["Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture", "Overview"]) await navigatePrimary(page, label);
+          for (const label of ["Pharmacy check", "Pharmacy claims", "NHSBSA queue", "Evaluation", "Boundary", "Assumptions", "Architecture", "Overview"]) await navigatePrimary(page, label);
           await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
           expect((await header.boundingBox())?.y).toBe(0);
           expect((await rail.boundingBox())?.y).toBe(box!.height);
@@ -42,17 +66,20 @@ for (const colorScheme of ["light", "dark"] as const) {
 for (const enabled of [true, false]) {
   test(`@tour-focus tour forwards and backwards, chapter menu, pharmacy substop: agent=${enabled}`, async ({ page }) => {
     await page.goto("./#scene");
+    await page.getByRole("banner").getByRole("switch").focus();
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const rail = page.getByRole("navigation", { name: "Guided tour" });
     await expect(rail.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
     for (const [index, stop] of TOUR_STOPS.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).click();
       await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${stop.to.replace("/#", "#")}`);
-      await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
+      await expect(rail).toContainText(`${stop.chapter}/7 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
       if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+      else await expect(page.getByRole("banner").getByRole("switch")).toBeFocused();
       if (stop.chapter === 2) await expect(page.getByRole("region", { name: "Monthly workload calculator" })).toBeVisible();
-      if (stop.chapter === 5) await expect(page.getByRole("heading", { name: "5. The queue · Simulation planned", exact: true })).toBeVisible();
+      if (stop.chapter === 5) await expect(page.getByRole("heading", { name: "5. The queue", exact: true })).toBeVisible();
+      if (stop.chapter === 6) await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
     for (let index = TOUR_STOPS.length - 2; index >= 0; index--) {
@@ -74,7 +101,10 @@ for (const enabled of [true, false]) {
     await page.keyboard.press("Alt+ArrowRight");
     await expect(page).toHaveURL(/#month$/);
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await expect(page.getByRole("menuitem")).toHaveCount(6);
+    await expect(page.getByRole("menuitem")).toHaveCount(7);
+    await page.getByRole("menuitem", { name: "6. What the pharmacy sees", exact: true }).press("Enter");
+    await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
+    await rail.getByRole("button", { name: "Choose tour chapter" }).click();
     await page.getByRole("menuitem", { name: "4. One agent, two places", exact: true }).click();
     await expect(page).toHaveURL(/#two-places$/);
     await expect(page.locator("[data-two-places]")).toContainText(`Agent ${enabled ? "On" : "Off"}`);
@@ -86,7 +116,7 @@ for (const enabled of [true, false]) {
     await expect(page).toHaveURL(/#two-places$/);
   });
 
-  for (const route of ["./#month", "pharmacy", "queue"]) {
+  for (const route of ["./#month", "pharmacy", "queue", "pharmacy/claims"]) {
     test(`@tour-focus controls retain focus through edits, toggles and reset: ${route} agent=${enabled}`, async ({ page }) => {
       await page.goto(route);
       const heading = page.getByRole("heading", { level: 1 });
@@ -97,7 +127,15 @@ for (const enabled of [true, false]) {
       await flag.setChecked(enabled);
       await expect(flag).toBeFocused();
 
-      if (route !== "queue") {
+      if (route === "pharmacy/claims") {
+        const filter = page.getByRole("combobox", { name: "Claim state", exact: true });
+        await filter.focus();
+        for (const key of ["Alt+ArrowRight", "Alt+ArrowLeft"]) {
+          await filter.press(key);
+          await expect(page).toHaveURL(url);
+          await expect(filter).toBeFocused();
+        }
+      } else if (route !== "queue") {
         if (route === "./#month") await page.locator("[data-gathering-breakdown] > summary").click();
         const fields = route === "pharmacy"
           ? [page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" })]
@@ -203,7 +241,7 @@ test("mobile navigation closes without animation events after live reduced-motio
     await expect(flag).toBeFocused();
   }
   // Keep the shared helper's strict zero-dialog assertion and exercise it again.
-  await navigatePrimary(page, "Exception queue");
+  await navigatePrimary(page, "NHSBSA queue");
   await expect(content).toHaveCount(0);
   await expect(overlay).toHaveCount(0);
 });
@@ -270,7 +308,7 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page).toHaveURL(/#cases$/);
   await page.getByRole("button", { name: "Restore tour", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("3/6");
+  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("3/7");
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
   await expect(page.locator("[data-principle]")).toBeVisible();
@@ -281,6 +319,7 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
 
 test("reset cancel and Escape preserve edits and records; confirm resets local and global state", async ({ page }) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
@@ -301,8 +340,10 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await confirmReset(page);
   await expect(field).toHaveValue(seed);
   await expect(page.getByRole("switch", { name: "Agent: Off" })).not.toBeChecked();
-  await navigatePrimary(page, "Exception queue");
+  await navigatePrimary(page, "NHSBSA queue");
   await page.locator("a[href='/BSA/case/EX-24112']").first().click();
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await startDemonstrationReview(page);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
 });
 
@@ -331,6 +372,8 @@ test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmati
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("data-state", "checked");
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
   await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
+  await expect(page).toHaveURL(/#cases$/);
+  await expect(page.getByRole("heading", { name: "The exception pipeline", exact: true })).toBeFocused();
   await page.getByRole("link", { name: "Skip to main content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
@@ -364,4 +407,105 @@ test("chapter narrative stays within 25 words in both states; selected QA screen
       }
     }
   }
+});
+
+for (const reducedMotion of ["reduce", "no-preference"] as const) {
+  for (const width of [360, 768, 960, 1024, 1280, 1440, 1920]) {
+    test.describe(`follow banner ${width} ${reducedMotion}`, () => {
+      test.use({ viewport: { width, height: 900 }, reducedMotion, colorScheme: reducedMotion === "reduce" ? "dark" : "light" });
+      test("@tour-follow same item, dynamic sticky layout, keyboard dismissal and reset", async ({ page }, testInfo) => {
+        await page.goto("pharmacy/claims?case=EX-24123");
+        const history = page.getByRole("region", { name: "Shared case history", exact: true });
+        const detail = page.getByRole("heading", { name: "Claim detail: EX-24123", exact: true });
+        await expect(detail).toBeFocused();
+        await history.locator("summary").first().press("Enter");
+        const events = history.getByRole("list", { name: "Lifecycle events", exact: true });
+        const before = await events.innerText();
+        const follow = history.getByRole("button", { name: "Follow this case", exact: true });
+        await expect(page.getByRole("button", { name: /^Follow this (case|item)$/ })).toHaveCount(1);
+        await follow.press("Enter");
+        const banner = page.getByRole("region", { name: "Followed item", exact: true });
+        const header = page.getByRole("banner");
+        const rail = page.getByRole("navigation", { name: "Guided tour", exact: true });
+        const flag = header.getByRole("switch");
+        const reset = header.getByRole("button", { name: "Reset demo", exact: true });
+        for (const enabled of [true, false]) {
+          await flag.focus();
+          await flag.setChecked(enabled);
+          await expect(flag).toBeFocused();
+          await expect(banner).toContainText("Following EX-24123");
+          await expect(banner).toContainText(LIFECYCLE_LABELS.in_review.pharmacy);
+          await expect(banner).toContainText(LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]);
+          await expect(events).toHaveText(before, { useInnerText: true });
+          await page.evaluate(() => window.scrollTo(0, 0));
+          const h = (await header.boundingBox())!;
+          expect(h.y).toBe(0);
+          expect(h.height).toBeLessThanOrEqual(64);
+          for (const control of [flag, reset, header.getByRole("link", { name: "Prescription Exception Case Builder" })]) {
+            const b = (await control.boundingBox())!;
+            expect(b.y).toBeGreaterThanOrEqual(0);
+            expect(b.y + b.height).toBeLessThanOrEqual(h.height);
+            expect(b.x).toBeGreaterThanOrEqual(0);
+            expect(b.x + b.width).toBeLessThanOrEqual(width);
+          }
+          await expect.poll(async () => {
+            const b = (await banner.boundingBox())!, r = (await rail.boundingBox())!;
+            return Math.abs(b.y - h.height) + Math.abs(r.y - b.y - b.height);
+          }).toBeLessThan(1);
+          const r = (await rail.boundingBox())!;
+          expect((await page.locator("[data-disclaimer]").boundingBox())!.y).toBeGreaterThanOrEqual(r.y + r.height);
+          await expect(page.locator("[data-principle]")).toBeVisible();
+          expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+        }
+        await banner.getByRole("link", { name: "Switch side: NHSBSA", exact: true }).press("Enter");
+        await expect(page).toHaveURL(/\/case\/EX-24123$/);
+        const pharmacyView = page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Pharmacy view", exact: true });
+        await expect(pharmacyView).toHaveAttribute("href", "/BSA/pharmacy/claims?case=EX-24123");
+        await pharmacyView.press("Enter");
+        await expect(detail).toBeFocused();
+        await expect.poll(async () => {
+          const d = (await detail.boundingBox())!, r = (await rail.boundingBox())!;
+          return d.y - r.y - r.height;
+        }).toBeGreaterThanOrEqual(0);
+        // Dismiss only the banner, not history, the URL, or the current mode.
+        const url = page.url();
+        await banner.getByRole("button", { name: "Dismiss followed item" }).press("Enter");
+        await expect(banner).toHaveCount(0);
+        await expect(page.getByRole("main")).toBeFocused();
+        await expect(page).toHaveURL(url);
+        await expect(flag).not.toBeChecked();
+        await history.locator("summary").first().press("Enter");
+        await expect(events).toHaveText(before, { useInnerText: true });
+        await expect(follow).toHaveAttribute("aria-pressed", "false");
+        await follow.press("Enter");
+        await flag.setChecked(true);
+        await reset.press("Enter");
+        await page.getByRole("alertdialog").getByRole("button", { name: "Keep working", exact: true }).press("Enter");
+        await expect(reset).toBeFocused();
+        await expect(banner).toBeVisible();
+        await expect(flag).toBeChecked();
+        await confirmReset(page);
+        await expect(reset).toBeFocused();
+        await expect(banner).toHaveCount(0);
+        await expect(flag).not.toBeChecked();
+        await expect(page).toHaveURL(url);
+        await history.locator("summary").first().press("Enter");
+        await expect(events).toHaveText(before, { useInnerText: true });
+        await page.screenshot({ path: testInfo.outputPath("follow-reset.png"), fullPage: true });
+      });
+    });
+  }
+}
+
+test("@tour-follow following does not silently switch to another viewed case", async ({ page }) => {
+  await page.goto("./#cases");
+  await page.locator('[data-case="D"]').getByRole("button", { name: "Follow this item", exact: true }).press("Enter");
+  await page.locator('[data-case="B"]').getByRole("link", { name: "Open case B", exact: true }).press("Enter");
+  await expect(page).toHaveURL(/\/case\/EX-24112$/);
+  const banner = page.getByRole("region", { name: "Followed item", exact: true });
+  await expect(banner).toContainText("Following EX-24123");
+  await expect(banner.getByRole("link", { name: "Switch side: Pharmacy", exact: true })).toHaveAttribute("href", "/BSA/pharmacy/claims?case=EX-24123");
+  await expect(page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Pharmacy view", exact: true })).toHaveAttribute("href", "/BSA/pharmacy/claims?case=EX-24112");
+  await banner.getByRole("link", { name: "Switch side: Pharmacy", exact: true }).press("Enter");
+  await expect(page.getByRole("heading", { name: "Claim detail: EX-24123", exact: true })).toBeFocused();
 });

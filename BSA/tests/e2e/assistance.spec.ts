@@ -1,9 +1,12 @@
 import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
 import { QUEUE_FILLER } from "../../src/lib/domain/cases";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 test("queue hides all filler recommendations without changing evidence, states or human decisions", async ({ page }) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
@@ -36,7 +39,7 @@ test("queue hides all filler recommendations without changing evidence, states o
   await expect(states).toHaveText(originalStates);
   await expect(times).toHaveText(originalTimes);
   await page.locator("a[href='/BSA/case/EX-24112']").first().click();
-  await expect(page.getByText("Decision already recorded for this case", { exact: false })).toBeVisible();
+  await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
 });

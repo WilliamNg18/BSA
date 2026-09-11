@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { CASES } from "../../src/lib/domain/cases";
+import { runAgent } from "../../src/lib/domain/agent";
 import * as content from "../../src/lib/domain/content";
 import { useAppStore } from "../../src/lib/store";
 
@@ -24,9 +25,13 @@ describe("product-only session state", () => {
 
   it("toggling assistance preserves cases and human records; Reset restores the seed", () => {
     const seed = useAppStore.getState();
+    seed.setAgentEnabled(true);
+    seed.submitFromPharmacy(CASES[1].id, CASES[1].extracted.endorsementText);
+    seed.arriveInQueue(CASES[1].id);
+    const pack = runAgent(CASES[1]);
     const record = seed.recordDecision({
       caseId: "EX-24112", tariffVersion: "2026-08", agentVersion: "synthetic-test",
-      inputs: ["Synthetic input"], sources: ["Synthetic source"], checks: [],
+      inputs: ["Synthetic input"], sources: ["Synthetic source"], checks: pack.gate.checks,
       recommendation: "REFER_BACK", decision: "AMEND", overrideReason: "Synthetic override reason",
     });
     const recorded = useAppStore.getState();

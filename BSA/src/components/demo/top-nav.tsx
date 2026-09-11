@@ -1,22 +1,31 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ChevronDown, Menu, RotateCcw, ShieldCheck } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { NativeSwitch as Switch } from "@/components/ui/native-switch";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipProvider as TooltipProvider, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 import { useConfirm } from "@/hooks/use-confirm";
 import { routes } from "@/routes";
 import { useAppStore } from "@/lib/store";
+import { tourStopIndex } from "@/lib/tour-navigation";
 import { cn } from "@/lib/utils";
 
 export function TopNav({ onReset }: { onReset: () => void }) {
   const confirm = useConfirm();
-  const { pathname } = useLocation();
+  const { pathname, search, hash } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigating = useRef(false);
+  function chooseRoute(path: string) {
+    navigating.current = tourStopIndex(path, "") >= 0 && (path !== pathname || Boolean(search || hash));
+  }
+  function closeNavigation(event: Event) {
+    if (navigating.current) event.preventDefault();
+    navigating.current = false;
+  }
   const { agentEnabled, setAgentEnabled, resetDemo } = useAppStore(
     useShallow((s) => ({
       agentEnabled: s.agentEnabled,
@@ -24,7 +33,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
       resetDemo: s.resetDemo,
     })),
   );
-  const navRoutes = routes.filter((r) => r.label);
+  const navRoutes = routes.filter((r) => r.label).map((route) => route.path === "/queue" ? { ...route, label: "NHSBSA queue" } : route);
   const groups = [...new Set(navRoutes.map((route) => route.group))];
   async function reset() {
     if (await confirm({ title: "Reset demonstration?", description: "Remove session decisions, restore seeded cases and local fields, and turn Agent Off. The seeded historical record remains. No payment is affected.", confirmLabel: "Reset demonstration", cancelLabel: "Keep working", destructive: true })) {
@@ -34,7 +43,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
   }
 
   return (
-    <header className="sticky top-0 z-30 h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <a
         href="#main-content"
         onClick={(event) => { event.preventDefault(); document.getElementById("main-content")?.focus(); }}
@@ -56,9 +65,9 @@ export function TopNav({ onReset }: { onReset: () => void }) {
               const items = navRoutes.filter((route) => route.group === group);
               if (items.length === 1) return <NavLink key={group} to={items[0].path} end className={({ isActive }) => cn("rounded-md px-3 py-2 text-sm font-medium focus-visible:outline-2", isActive ? "bg-accent text-accent-foreground" : "hover:bg-muted")}>{group}</NavLink>;
               const active = items.some((route) => route.path === pathname) || (group === "Operations" && pathname.startsWith("/case/"));
-              return <DropdownMenu key={group}>
+              return <DropdownMenu key={group} modal={false}>
                 <DropdownMenuTrigger asChild><Button variant="ghost" className={cn(active && "bg-accent text-accent-foreground")}>{group}<ChevronDown aria-hidden="true" /></Button></DropdownMenuTrigger>
-                <DropdownMenuContent align="start">{items.map((route) => <DropdownMenuItem key={route.path} asChild><Link to={route.path} aria-current={route.path === pathname ? "page" : undefined}>{route.label}</Link></DropdownMenuItem>)}</DropdownMenuContent>
+                <DropdownMenuContent align="start" onCloseAutoFocus={closeNavigation}>{items.map((route) => <DropdownMenuItem key={route.path} asChild><Link to={route.path} onClick={() => chooseRoute(route.path)} aria-current={route.path === pathname ? "page" : undefined}>{route.label}</Link></DropdownMenuItem>)}</DropdownMenuContent>
               </DropdownMenu>;
             })}
           </div>
@@ -66,6 +75,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
             <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open navigation"><Menu aria-hidden="true" /></Button></SheetTrigger>
             {/* Close without waiting for animationend; retain Radix focus/scroll cleanup. */}
             <SheetContent
+              onCloseAutoFocus={closeNavigation}
               className="overflow-y-auto data-[state=closed]:animate-none data-[state=closed]:duration-0 motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=open]:duration-0"
               overlayClassName="data-[state=closed]:animate-none data-[state=closed]:duration-0 motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=open]:duration-0"
             >
@@ -73,7 +83,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
               <div className="space-y-5 px-4 pb-6">
                 {groups.map((group) => <section key={group} aria-label={group}>
                   <h2 className="mb-2 text-sm font-semibold">{group}</h2>
-                  <ul className="space-y-1">{navRoutes.filter((route) => route.group === group).map((route) => <li key={route.path}><SheetClose asChild><NavLink to={route.path} end className={({ isActive }) => cn("block rounded-md px-3 py-2 text-sm focus-visible:outline-2", isActive ? "bg-accent text-accent-foreground" : "hover:bg-muted")}>{route.label}</NavLink></SheetClose></li>)}</ul>
+                  <ul className="space-y-1">{navRoutes.filter((route) => route.group === group).map((route) => <li key={route.path}><SheetClose asChild><NavLink to={route.path} onClick={() => chooseRoute(route.path)} end className={({ isActive }) => cn("block rounded-md px-3 py-2 text-sm focus-visible:outline-2", isActive ? "bg-accent text-accent-foreground" : "hover:bg-muted")}>{route.label}</NavLink></SheetClose></li>)}</ul>
                 </section>)}
               </div>
             </SheetContent>

@@ -1,4 +1,4 @@
-// Seven stops, six chapters: the existing pharmacy demo is chapter 4's substop.
+// Eight stops, seven chapters: the precheck remains chapter 4's substop.
 export const TOUR_STOPS = [
   { chapter: 1, label: "Set the scene", to: "/#scene" },
   { chapter: 2, label: "A month of work", to: "/#month" },
@@ -6,7 +6,8 @@ export const TOUR_STOPS = [
   { chapter: 4, label: "One agent, two places", to: "/#two-places" },
   { chapter: 4, label: "Pharmacy example", to: "/pharmacy" },
   { chapter: 5, label: "The queue", to: "/queue" },
-  { chapter: 6, label: "The first test", to: "/#close" },
+  { chapter: 6, label: "What the pharmacy sees", to: "/pharmacy/claims" },
+  { chapter: 7, label: "The first test", to: "/#close" },
 ] as const;
 
 export function tourStopIndex(pathname: string, hash: string): number {

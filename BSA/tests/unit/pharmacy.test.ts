@@ -180,7 +180,7 @@ describe("immutable receipts and timeline assumptions", () => {
     expect(completePharmacyScenario(fixture("A"), "unknown edited text", null)).toBe(false);
     expect(completePharmacyScenario(fixture("B"), "NCSO RK 21/08/26", null)).toBe(false);
   });
-  it("stores detached, recursively frozen snapshots without queue/history changes", () => {
+  it("stores detached frozen receipts alongside exactly one authoritative submission revision", () => {
     const base = receiptFor("B", true), input = structuredClone(base);
     const appBefore = useAppStore.getState();
     const saved = usePharmacyStore.getState().submit(input);
@@ -195,10 +195,16 @@ describe("immutable receipts and timeline assumptions", () => {
     usePharmacyStore.getState().setAssumption("monthEndDays", "30");
     expect(saved.precheck.typedText).toBe(base.precheck.typedText);
     expect(saved.assumptions.monthEndDays).toBe(14);
-    expect(useAppStore.getState().caseStates).toBe(appBefore.caseStates);
     expect(useAppStore.getState().records).toBe(appBefore.records);
-    expect(useAppStore.getState().lifecycles).toBe(appBefore.lifecycles);
-    expect(usePharmacyStore.getState().submit(input).id).not.toBe(saved.id);
+    const appAfter = useAppStore.getState();
+    expect(appAfter.lifecycles[base.caseId].state).toBe("submitted");
+    expect(appAfter.lifecycles[base.caseId].history).toHaveLength(appBefore.lifecycles[base.caseId].history.length + 1);
+    expect(appAfter.caseRevisions[base.caseId]).toHaveLength(appBefore.caseRevisions[base.caseId].length + 1);
+    expect(appAfter.caseRevisions[base.caseId].at(-1)?.precheck).toEqual(base.precheck);
+    expect(appAfter.caseRevisions[base.caseId].at(-1)?.precheck).not.toBe(saved.precheck);
+    expect(() => usePharmacyStore.getState().submit(input)).toThrow(/snapshot/);
+    expect(useAppStore.getState().caseRevisions).toBe(appAfter.caseRevisions);
+    expect(usePharmacyStore.getState().submit(structuredClone(base)).id).not.toBe(saved.id);
   });
   it.each(["", "-1", "1.5", "1e2", "366", "9999", "Infinity"])("rejects invalid duration %s without changing the last valid value", (raw) => {
     expect(validPharmacyDays(raw)).toBeNull();

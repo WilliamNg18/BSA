@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { StateBadge, SyntheticTag } from "@/components/demo/labels";
+import { pharmacyCaseLink } from "@/lib/case-links";
 import type { CaseState, ExceptionCase } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +11,7 @@ export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state
     { to: `/case/${c.id}/trace`, label: "Case-building trace" },
     { to: `/case/${c.id}`, label: "Operator case pack" },
     { to: `/case/${c.id}/record`, label: "Decision and audit record" },
+    { to: pharmacyCaseLink(c.id), label: "Pharmacy view" },
   ];
   return (
     <div className="space-y-3">

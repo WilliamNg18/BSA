@@ -1,5 +1,5 @@
 import { CheckCircle2, AlertTriangle } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 import { cn } from "@/lib/utils";
 
 export function PainMarker({ resolved, pain, resolution }: { resolved: boolean; pain: string; resolution: string }) {

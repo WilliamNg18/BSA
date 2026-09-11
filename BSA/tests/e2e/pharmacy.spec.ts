@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 const scenarios = [
   { id: "A", label: "Complete endorsement", status: "Ready to submit" },
@@ -88,6 +89,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
   await expect(field).toHaveValue("NCSO  RK");
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
 });

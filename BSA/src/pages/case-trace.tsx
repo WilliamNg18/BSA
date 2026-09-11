@@ -8,7 +8,8 @@ import { ErrorState } from "@/components/states";
 import { CaseHeader } from "@/components/demo/case-header";
 import { BoundaryTag, StatusDot } from "@/components/demo/labels";
 import { runAgent } from "@/lib/domain/agent";
-import { caseById } from "@/lib/domain/cases";
+import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
+import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
@@ -25,9 +26,10 @@ import { REC_META } from "@/components/demo/label-meta";
 
 export function CaseTracePage() {
   const { id } = useParams();
-  const c = caseById(id);
+  const c = useLifecycleCase(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
+  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
+  const state = storedState ?? c?.initialState;
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
   const clock = useCasePresentation(pack?.trace.length ?? 1, false, pack);
   const { revealed } = clock;
@@ -47,6 +49,7 @@ export function CaseTracePage() {
         title={`How the case was built: ${c.title}`}
         intro="Inspect planned actions, evidence, tool results, deterministic checks and stop conditions. Interpretation is scripted; this trace exposes no private model reasoning."
       />
+      <LifecycleHistory id={c.id} />
 
       {!agentEnabled && <><ManualCaseTrace /><MissingAssistedSlots />
         <Button disabled type="button">Replay unavailable in manual comparison</Button>

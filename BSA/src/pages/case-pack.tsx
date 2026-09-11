@@ -6,7 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { NativeRadioGroup as RadioGroup, NativeRadioItem as RadioGroupItem } from "@/components/ui/native-radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { PageSection } from "@/components/page-section";
 import { ErrorState } from "@/components/states";
@@ -16,7 +16,8 @@ import { REC_META } from "@/components/demo/label-meta";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { CompositeBadge, SignalList } from "@/components/demo/signals";
 import { runAgent } from "@/lib/domain/agent";
-import { caseById } from "@/lib/domain/cases";
+import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
+import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
 import { manualChoice, permitsProposal } from "@/lib/case-presentation";
@@ -25,7 +26,7 @@ import { useCasePresentation } from "@/hooks/use-case-presentation";
 
 const DECISIONS: { value: HumanDecision; label: string; help: string }[] = [
   { value: "ACCEPT", label: "Accept the recommendation", help: "Proceed as the agent recommends." },
-  { value: "AMEND", label: "Amend", help: "Same outcome, different wording or reason." },
+  { value: "AMEND", label: "Amend", help: "Release to existing pricing with a human amendment." },
   { value: "REQUEST_INFORMATION", label: "Request information", help: "Ask the pharmacy to confirm a fact before any outcome." },
   { value: "REFER_BACK", label: "Refer back", help: "Return the item with the exact fix; payment waits." },
   { value: "ESCALATE", label: "Escalate", help: "Send to a senior operator, as today." },
@@ -47,9 +48,12 @@ function CasePackContent() {
   const { id } = useParams();
   const notification = useNotification();
   const navigate = useNavigate();
-  const c = caseById(id);
+  const c = useLifecycleCase(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
+  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
+  const lifecycle = useAppStore((s) => id ? s.lifecycles[id] : undefined);
+  const arrive = useAppStore((s) => s.arriveInQueue);
+  const state = storedState ?? c?.initialState;
   const recordDecision = useAppStore((s) => s.recordDecision);
   const records = useAppStore((s) => s.records);
   const existing = useMemo(() => records.filter((r) => r.caseId === id), [records, id]);
@@ -57,6 +61,8 @@ function CasePackContent() {
   const [decision, setDecision] = useState<HumanDecision | null>(null);
   const [reason, setReason] = useState("");
   const [compare, setCompare] = useState(false);
+  const [approved, setApproved] = useState(false);
+  const [error, setError] = useState("");
   const clock = useCasePresentation(6, agentEnabled, pack);
 
   if (!c || !pack || !state) {
@@ -66,16 +72,19 @@ function CasePackContent() {
   const showRecommendation = permitsProposal(pack);
   const suggested = showRecommendation ? suggestedFor(pack.recommendation) : "ESCALATE";
   const chosen = !agentEnabled ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
-  const isOverride = showRecommendation && chosen !== suggested && !(chosen === "ACCEPT");
-  const needsReason = isOverride || !showRecommendation;
-  const decided = state === "human_decision_recorded";
+  const isOverride = showRecommendation && (chosen === "AMEND" || chosen !== suggested && chosen !== "ACCEPT");
+  const disposition = chosen === "ACCEPT" && showRecommendation ? suggested : chosen;
+  const needsReason = isOverride || !showRecommendation || (disposition !== "ACCEPT" && disposition !== "AMEND");
+  const decided = lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
+  const canApprove = agentEnabled && showRecommendation && !!pack.draftToPharmacy && (disposition === "REFER_BACK" || disposition === "REQUEST_INFORMATION");
 
   function submit() {
     if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
     if (needsReason && reason.trim().length < 8) {
-      notification.show("error", "A reason is required when you override the recommendation, or when there is no recommendation to accept.");
+      setError("A reason of at least eight characters is required for this decision.");
       return;
     }
+    try {
     const rec = recordDecision({
       caseId: c.id,
       tariffVersion: agentEnabled ? pack.tariffVersion : "n/a",
@@ -90,9 +99,11 @@ function CasePackContent() {
       recommendation: pack.recommendation,
       decision: chosen,
       overrideReason: reason.trim() || null,
+      approvedDraft: canApprove && approved ? pack.draftToPharmacy! : undefined,
     });
     notification.show("success", `Decision recorded as ${rec.id}`);
     navigate(`/case/${c.id}/record`);
+    } catch (err) { setError(err instanceof Error ? err.message : "Decision unavailable. Review the current case state."); }
   }
 
   return (
@@ -103,6 +114,16 @@ function CasePackContent() {
         title={`Operator case pack: ${c.title}`}
         intro="Review the form, evidence, applicable rule, conflicts and gate checks. Assistance recommends only; the operator decides."
       />
+      <LifecycleHistory id={c.id} />
+      {(lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
+        <BoundaryTag cls="human" /><p>Start review explicitly before recording a decision.</p>
+        <Button onClick={() => { try { arrive(c.id); setError(""); } catch (err) { setError(err instanceof Error ? err.message : "Review unavailable."); } }}>Start review</Button>
+      </section>}
+      {decided && lifecycle?.state !== "submitted" && lifecycle?.state !== "resubmitted" && <section className="space-y-2 rounded-xl border p-4">
+        <p>Historical case view. Submit another demonstration attempt at the pharmacy before starting a new review.</p>
+        <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>
+      </section>}
+      {error && <p role="alert">{error}</p>}
 
       {!pack.agentInvoked && (
         <Alert>
@@ -288,8 +309,8 @@ function CasePackContent() {
       <PageSection title="Operator decision" description="The consequential decision is a person's. A reason is mandatory for any override, and whenever there is no recommendation to accept.">
         <Card className="border-orange-600">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Decision already recorded for this case" : "Record the decision"}</CardTitle>
-            {decided && existing.length > 0 && <CardDescription>Recorded as {existing[existing.length - 1].id}. Reset the demo from the header to work it again.</CardDescription>}
+            <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>
+            {decided && existing.length > 0 && <CardDescription>Latest record: {existing[existing.length - 1].id}. Previous attempts remain in history.</CardDescription>}
           </CardHeader>
           {!decided && (
             <CardContent className="space-y-4">
@@ -304,7 +325,7 @@ function CasePackContent() {
                   </div>
                 ))}
               </RadioGroup>
-              {!agentEnabled && <section data-prose="manual integration caveat"><p className="text-xs text-muted-foreground">Integration caveat: manual decisions currently count as overrides without an agent recommendation. Store correction pending; the recorded flag remains visible.</p></section>}
+              {canApprove && <label className="flex items-start gap-2"><input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>}
               <div className="space-y-1.5">
                 <Label htmlFor="reason">{needsReason ? "Reason (required)" : "Reason (optional)"}</Label>
                 <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Why you are departing from the recommendation. This is the most valuable data the system collects." : needsReason ? "Explain your decision based on the evidence." : "Optional note for the record."} aria-required={needsReason} />

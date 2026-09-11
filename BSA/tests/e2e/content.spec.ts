@@ -1,4 +1,5 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 /** Executes in the rendered page: no source-code word counting or truncation. */
 function auditProse() {
@@ -75,10 +76,11 @@ for (const enabled of [false, true]) {
 for (const enabled of [false, true]) {
   test(`Task6 interactive comparison and recorded decision copy On=${enabled}`, async ({ page }, info) => {
     await page.goto("case/EX-24112");
+    await startDemonstrationReview(page);
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     if (enabled) await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
     const audits = [{ state: "pack-comparison", ...await page.evaluate(auditProse) }];
-    if (!enabled) await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
+    await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
@@ -116,6 +118,26 @@ test("copy cap positive controls reject long prose and split-paragraph evasion",
     expect.objectContaining({ kind: "structured-prose", words: 26 }),
   ]));
 });
+
+for (const enabled of [false, true]) {
+  test(`Task9 shared claims narrative cap across every state On=${enabled}`, async ({ page }, info) => {
+    await page.goto("pharmacy/claims");
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    const audits = [];
+    for (const state of ["submitted", "in_review", "information_requested", "referred_back", "resubmitted", "paid", "escalated"]) {
+      await page.getByRole("combobox", { name: "Claim state", exact: true }).selectOption(state);
+      const open = page.getByRole("list", { name: "Pharmacy claims", exact: true }).getByRole("button").first();
+      const id = (await open.innerText()).replace("Open claim ", "");
+      await open.click();
+      await expect(page.getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
+      if (enabled && state === "referred_back") await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
+      await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
+      audits.push({ state, ...await page.evaluate(auditProse) });
+    }
+    await captureJson(info, "claims-copy", audits);
+    expect(audits.flatMap(({ state, failures }) => failures.map((failure) => ({ state, ...failure })))).toEqual([]);
+  });
+}
 
 for (const enabled of [false, true]) {
   test(`rendered copy cap all routes, expanded panels, assistance=${enabled}`, async ({ page }, testInfo) => {

@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 import { BASELINE_DEFAULTS, calculateBaseline, formatBaselineNumber as n } from "../../src/lib/domain/baseline";
 import { QUEUE_ROW_HEIGHT, QUEUE_SEGMENT_SIZE, QUEUE_SEEDS, QUEUE_WINDOW_LIMIT, projectQueueDay } from "../../src/lib/domain/queue-model";
 
@@ -162,6 +163,8 @@ test("Task5 pinned sweep keeps D manual and E code-only with no recorded-state w
 test("Task5 shared day clock pauses, steps, changes motion and never overwrites a human record", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("case/EX-24112"); await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await startDemonstrationReview(page);
+  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();

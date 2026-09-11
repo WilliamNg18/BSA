@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation
 export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: () => void }) {
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
+  const chapterSelected = useRef(false);
   const index = tourStopIndex(pathname, hash);
   const stop = TOUR_STOPS[index];
   const last = index === TOUR_STOPS.length - 1;
@@ -35,20 +36,25 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
 
   if (!visible) return null;
   return (
-    <nav aria-label="Guided tour" className="sticky top-14 z-20 border-b bg-background/95 px-3 backdrop-blur md:px-6">
+    <nav aria-label="Guided tour" className="border-b bg-background/95 px-3 backdrop-blur md:px-6">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-2">
         <Button variant="outline" size="sm" disabled={index <= 0} aria-keyshortcuts="Alt+ArrowLeft" onClick={() => navigate(TOUR_STOPS[index - 1].to)}>
           <ArrowLeft aria-hidden="true" /><span className="hidden sm:inline">Back</span><span className="sr-only sm:hidden">Back</span>
         </Button>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="min-w-0 flex-1 justify-start px-2" aria-label="Choose tour chapter">
-              <span className="truncate" aria-live="polite">{stop ? `${stop.chapter}/6 · ${stop.label}` : "Explore · Start the tour"}</span><ChevronDown className="shrink-0" aria-hidden="true" />
+              <span className="truncate" aria-live="polite">{stop ? `${stop.chapter}/7 · ${stop.label}` : "Explore · Start the tour"}</span><ChevronDown className="shrink-0" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
+          <DropdownMenuContent align="start" onCloseAutoFocus={(event) => {
+            // The route shell owns heading focus. A delayed close must not
+            // focus it again after the user has reopened this menu.
+            if (chapterSelected.current) event.preventDefault();
+            chapterSelected.current = false;
+          }}>
             {TOUR_STOPS.filter((item) => item.to !== "/pharmacy").map((item) => (
-              <DropdownMenuItem key={item.to} onSelect={() => navigate(item.to)} aria-current={item.chapter === stop?.chapter ? "step" : undefined}>
+              <DropdownMenuItem key={item.to} onSelect={() => { chapterSelected.current = true; navigate(item.to); }} aria-current={item.chapter === stop?.chapter ? "step" : undefined}>
                 {item.chapter}. {item.label}
               </DropdownMenuItem>
             ))}

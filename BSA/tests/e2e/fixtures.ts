@@ -14,6 +14,8 @@ export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: st
 }
 
 export async function navigatePrimary(page: Page, label: string) {
+  // Older workload tests use the original name; activate the current UI label.
+  if (label === "Exception queue") label = "NHSBSA queue";
   const nav = page.getByRole("navigation", { name: "Primary", exact: true });
   await expect(nav).toBeVisible();
   const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
@@ -30,7 +32,7 @@ export async function navigatePrimary(page: Page, label: string) {
     destination = await link.getAttribute("href") as string;
     await link.click();
   } else {
-    const group = ["Pharmacy check", "Exception queue"].includes(label) ? "Operations" : "How it works";
+    const group = ["Pharmacy check", "Pharmacy claims", "NHSBSA queue"].includes(label) ? "Operations" : "How it works";
     const trigger = nav.getByRole("button", { name: group, exact: true });
     await trigger.click();
     // The modal menu hides the navigation from the accessibility tree while

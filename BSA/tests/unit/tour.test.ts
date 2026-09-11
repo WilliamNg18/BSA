@@ -1,11 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
+import { pharmacyCaseLink } from "../../src/lib/case-links";
+import { useAppStore } from "../../src/lib/store";
 
 describe("tour navigation contract", () => {
-  it("has six chapters and a reversible pharmacy substop", () => {
-    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 4, 5, 6]);
-    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#cases", "/#two-places", "/pharmacy", "/queue", "/#close"]);
+  it("has seven chapters and retains the precheck before queue, claims and close", () => {
+    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 4, 5, 6, 7]);
+    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
+  });
+  it("links to the same claim through the supported case query", () => {
+    const id = "SYN-FQ123-2";
+    const url = new URL(pharmacyCaseLink(id), "https://example.test");
+    expect(url.pathname).toBe("/pharmacy/claims");
+    expect(url.searchParams.get("case")).toBe(id);
   });
   it.each(TOUR_STOPS.map((stop, index) => ({ ...stop, index })))("resolves $to", ({ to, index }) => {
     const url = new URL(to, "https://example.test");
@@ -38,5 +46,35 @@ describe("curated display boundary", () => {
       expect(text.split(/\s+/).length).toBeLessThanOrEqual(25);
       expect(text).not.toMatch(/\.pdf|\.docx|source:|supplied document/i);
     }
+  });
+});
+
+describe("following is presentation state only", () => {
+  it("keeps histories, revisions, records and states unchanged through follow, mode and dismiss", () => {
+    useAppStore.getState().resetDemo();
+    const before = useAppStore.getState();
+    try {
+      for (const id of ["EX-24123", "EX-24112", null]) {
+        before.followCase(id);
+        for (const enabled of [true, false]) {
+          before.setAgentEnabled(enabled);
+          const current = useAppStore.getState();
+          expect(current.followedCaseId).toBe(id);
+          expect(current.lifecycles).toBe(before.lifecycles);
+          expect(current.caseRevisions).toBe(before.caseRevisions);
+          expect(current.records).toBe(before.records);
+          expect(current.caseStates).toBe(before.caseStates);
+        }
+      }
+      before.followCase("EX-24112");
+      before.setAgentEnabled(true);
+      before.resetDemo();
+      const reset = useAppStore.getState();
+      expect(reset.followedCaseId).toBeNull();
+      expect(reset.agentEnabled).toBe(false);
+      expect(reset.lifecycles).toEqual(before.lifecycles);
+      expect(reset.caseRevisions).toEqual(before.caseRevisions);
+      expect(reset.records).toEqual(before.records);
+    } finally { useAppStore.getState().resetDemo(); }
   });
 });

@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
+import { FollowItem } from "../components/demo/case-links";
+import { pharmacyCaseLink } from "@/lib/case-links";
 import { PainMarker } from "@/components/demo/pain-marker";
 import { BaselineCalculator } from "@/components/demo/baseline-calculator";
 import { BaselineScene } from "@/components/demo/baseline-scene";
@@ -62,15 +64,26 @@ export function HomePage() {
                 <details className="text-sm"><summary className="cursor-pointer font-medium">Outcome evidence and exact correction</summary><div className="mt-3 space-y-3 text-muted-foreground"><ul aria-label="Requirement checks" className="space-y-2">{pack.requirementResults.map((r) => <li key={r.requirement.id}>{r.requirement.label}: {r.met === true ? "met" : r.met === false ? "not met" : "unknown"}</li>)}</ul>{pack.abstainReasons.length > 0 && <ul aria-label="Abstention reasons" className="list-disc pl-4">{pack.abstainReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}<Link className="underline" to={`/case/${item.id}`}>Review full evidence and human decision</Link></div></details>
               </> : <div className="space-y-3 text-sm" data-manual-tasks><BoundaryTag cls="human" /><p className="font-medium">Manual review · No recommendation</p><ul className="list-disc space-y-2 pl-4"><li>Locate image and claim</li><li>Check product and governing rule</li><li>Review evidence and record a decision</li></ul></div>}
               <Button asChild variant="outline" size="sm"><Link to={`/case/${item.id}`}>Open case {item.scenario}</Link></Button>
+              <FollowItem id={item.id} />
             </li>;
           })}
         </ul>
       </>}
       {chapterNumber === 4 && <>
         <TwoPlacesDiagram enabled={agentEnabled} />
-        <Button asChild variant="outline"><Link to="/pharmacy">Open existing pharmacy example</Link></Button>
+        <section aria-label="Referral and resubmission loop" className="space-y-3 rounded-xl border p-5">
+          <h2 className="font-semibold">One item, both sides</h2>
+          <ol className="grid gap-3 text-sm sm:grid-cols-3">
+            <li><Link className="underline" to="/case/EX-24112">NHSBSA: human referral decision</Link></li>
+            <li><Link className="underline" to={pharmacyCaseLink("EX-24112")}>Pharmacy: correction and resubmission</Link></li>
+            <li><Link className="underline" to="/queue">NHSBSA: human re-check</Link></li>
+          </ol>
+          <p className="text-sm text-muted-foreground">Workflow and delays are assumptions to validate. Shared session history is implemented locally; a shared operational service remains proposed.</p>
+          <FollowItem id="EX-24112" />
+        </section>
+        <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>
       </>}
-      {chapterNumber === 6 && <>
+      {chapterNumber === 7 && <>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>
           <div><dt className="text-xs text-muted-foreground">Requested history</dt><dd className="mt-1 font-medium">Two years · Item-level reasons</dd></div>

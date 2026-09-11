@@ -20,7 +20,56 @@ ms.date: 2026-09-11
 * [ ] Task 12: Navigation, case header Pharmacy view link, header still one row
 * [ ] Task 13: Verification of Tasks 8 to 13 in both toggle states (Vitest, Playwright, axe, screenshots)
 
-## Current gate and contract freeze
+## Current handoff: 11 September 2026
+
+The work branch is `integration/tasks-8-13`, based on the completed core at
+`79bd283`. Tasks 8-12 have implementation and tests in this checkpoint, but
+remain unchecked until integrated acceptance is verified. Task 13 is incomplete.
+This section supersedes historical pending-gate descriptions below.
+
+| Task | Checkpoint contents | Still required |
+| --- | --- | --- |
+| 8 | Shared lifecycle model, seeding, transitions, revision handling and store tests | Verify all transitions, immutable history, snapshot validation and operator-only authority end to end |
+| 9 | Pharmacy claims list, detail, filters and action panels | Verify every state, correction and confirmation in both Agent modes |
+| 10 | Cross-side wiring, Follow banner and round-trip tests | Pass the full production round trip without skipped integration coverage |
+| 11 | Claims tour stop and updated chapter navigation | Verify Next/Back and both-mode copy against the final route structure |
+| 12 | Cross-side links, header and shared overlay repairs | Verify focus, menu dismissal, same-item links and all seven widths |
+| 13 | Regression tests, accessibility checks, bundle experiments and generated screenshots | Complete production suite, axe, screenshot reconciliation, CI and hosted verification |
+
+Fresh handoff validation: 557 unit tests in 19 files passed. Content checking
+scanned 139 files without failures. Typecheck and lint passed. `npm run check`
+exited 1 because the Vite build still enforces 200,000 gzip bytes; its output
+was 201,179 bytes. The full production suite was not rerun in this handoff.
+An earlier saved focused run passed 51 browser tests, not the complete suite.
+
+### Next agent execution order
+
+1. Apply the latest requested gate policy: 350,000 gzip bytes is advisory and
+	exits zero. Update the build plugin, measurement script and corresponding
+	tests consistently. Keep typecheck, lint, build correctness, unit tests,
+	crash/control regressions and axe blocking. Record policy in DECISIONS.
+2. Make word counts, Lighthouse and screenshot differences advisory without
+	hiding functional defects or accessibility violations.
+3. Reconcile this branch with current remote main and the parallel work. Keep
+	both archive references intact. Review frozen-contract compatibility before
+	resolving overlaps; do not discard integrated features or introduce a
+	second lifecycle store.
+4. Complete the production browser and axe suites under `/BSA/`. Fix actual
+	product defects; document genuine flakiness and remaining limitations.
+5. Reconcile the modified screenshots as candidate integration captures, not
+	proof of acceptance. Update MEMORY, LEARNINGS and this checklist accurately.
+6. Implement the newly requested Pages-only hosting policy. Existing Azure
+	configuration and documentation have not yet been removed. Preserve the
+	`404.html` fallback. Pages was previously rejected for the private repository
+	by its GitHub plan; recheck eligibility without changing visibility silently.
+7. Publish the integrated revision and confirm CI, Pages deployment, public
+	Overview and deep links. Only then tick Tasks 8-13 and report final counts.
+
+Original reference documents, machine-specific editor settings, dependencies,
+credentials and local test logs are not part of this application checkpoint.
+No hosted-agent assignment or deployment is claimed by committing this work.
+
+## Historical gates and contract freeze
 
 Task 7 owned-scope local verification is complete. Task 7 commit, CI, deployment
 and hosted verification remain pending main-agent action. This tick does not

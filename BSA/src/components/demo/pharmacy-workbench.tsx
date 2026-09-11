@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { NativeSwitch as Switch } from "@/components/ui/native-switch";
+import { NativeChoiceGroup as ToggleGroup, NativeChoiceItem as ToggleGroupItem } from "@/components/ui/native-radio-group";
 import { PageSection } from "@/components/page-section";
 import { BoundaryTag, KeyValue, SyntheticTag } from "@/components/demo/labels";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
@@ -29,6 +30,7 @@ export function PharmacyPage() {
   const [agentAvailable, setAgentAvailable] = useState(true);
   const [edited, setEdited] = useState<Record<string, string>>({});
   const [receipt, setReceipt] = useState<PharmacyReceipt | null>(null);
+  const [error, setError] = useState("");
   const c = caseById(scenario === "A" ? "EX-24107" : scenario === "B" ? "EX-24112" : "EX-24123")!;
   const text = edited[c.id] ?? c.extracted.endorsementText;
   const enabled = agentEnabled && agentAvailable;
@@ -49,7 +51,7 @@ export function PharmacyPage() {
       <div className="flex flex-wrap gap-2 text-xs font-medium"><span className="rounded-md border px-2 py-1">Advisory only</span><span className="rounded-md border px-2 py-1" data-scripted-badge>Scripted signal · Not live</span><BoundaryTag cls="human" /></div>
     </div>
     <div className="flex flex-wrap items-center gap-4">
-      <ToggleGroup type="single" value={scenario} onValueChange={(value) => { if (value) setScenario(value as PharmacyScenario); }} aria-label="Choose a scenario" className="flex-wrap justify-start">
+      <ToggleGroup value={scenario} onValueChange={(value) => { if (value) setScenario(value as PharmacyScenario); }} aria-label="Choose a scenario" className="flex-wrap justify-start">
         <ToggleGroupItem value="A">Complete endorsement</ToggleGroupItem>
         <ToggleGroupItem value="B">Information missing</ToggleGroupItem>
         <ToggleGroupItem value="D">Unreadable form</ToggleGroupItem>
@@ -111,10 +113,14 @@ export function PharmacyPage() {
             </section>}
           </>}
           <Button className="bg-teal-700 text-white hover:bg-teal-800" onClick={() => {
+            try {
             const precheck = pharmacySnapshot(text, c.extracted.dispensingDate, mode, result, current.checkedAt);
             setReceipt(submit({ caseId: c.id, scenario, submittedAt: new Date().toISOString(), precheck, assumptions,
               completeScenario: completePharmacyScenario(c, text, result) }));
+            setError("");
+            } catch (err) { setError(err instanceof Error ? err.message : "Submission unavailable."); }
           }}><Send aria-hidden="true" />Continue with submission</Button>
+          {error && <p role="alert">{error}</p>}
           <PainMarker resolved={enabled && result?.status === "ready"} pain="Submit now; problem may surface later · Assumption" resolution="Complete before submission · No payment guarantee" />
         </div>
       </PageSection>
@@ -130,8 +136,10 @@ export function PharmacyPage() {
           <KeyValue k="Typed text snapshot" v={<span className="break-all">{receipt.precheck.typedText || "Empty"}</span>} />
           <KeyValue k="Check timestamp" v={receipt.precheck.checkedAt ?? "No checks performed"} />
           <KeyValue k="Version / clause" v={`${receipt.precheck.tariffVersion ?? "Not retrieved"} / ${receipt.precheck.clauseId ?? "Not retrieved"}`} />
-          <KeyValue k="Check result" v={receipt.precheck.status} /><KeyValue k="Session receipts" v={receipts.length} /><KeyValue k="Storage" v="Memory only · No queue integration" />
+          <KeyValue k="Check result" v={receipt.precheck.status} /><KeyValue k="Session receipts" v={receipts.length} /><KeyValue k="Storage" v="Shared lifecycle · Memory only" />
         </dl>
+        <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(receipt.caseId)}`}>View submitted claim</Link></Button>
+        <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>
       </section>
       <PharmacyTimeline key={receipt.id} receipt={receipt} />
     </>}

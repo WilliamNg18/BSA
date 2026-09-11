@@ -1,4 +1,5 @@
 import { captureCheckpoint, cases, confirmReset, expect, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 for (const caseId of ["EX-24107", "EX-24112"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
@@ -60,6 +61,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and unav
 
 test("override requires eight trimmed characters then writes and preserves a human record", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Missing or insufficient information");
   await captureCheckpoint(page, testInfo, "b-pack");
@@ -70,7 +72,7 @@ test("override requires eight trimmed characters then writes and preserves a hum
     await reason.fill(value);
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page).toHaveURL(/\/case\/EX-24112$/);
-    await expect(page.getByText("A reason is required when you override the recommendation, or when there is no recommendation to accept.").first()).toBeVisible();
+    await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     if (value === "") await captureCheckpoint(page, testInfo, "b-rejected-empty-reason");
   }
   await reason.fill("12345678");
@@ -81,14 +83,16 @@ test("override requires eight trimmed characters then writes and preserves a hum
   await expect(page.getByText("Drug Tariff 2026-08", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-accepted-amendment-record");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-  await expect(page.getByText("Decision already recorded for this case", { exact: false })).toBeVisible();
+  await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
 });
 
 test("recommended B decision replays under July; flag off applies to replay; Reset restores seed", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
+  await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-recommended-decision-record");
@@ -107,6 +111,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Open the case pack", exact: true }).click();
+  await startDemonstrationReview(page);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   await page.locator("a[href='/BSA/case/EX-24088']").first().click();

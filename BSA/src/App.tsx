@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { MotionConfig } from "motion/react";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { ConfirmDialogProvider } from "@/components/confirm-dialog";
 import { NotificationProvider } from "@/components/notification-provider";
@@ -15,7 +14,6 @@ const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 export function App() {
   return (
     <ErrorBoundary>
-        <MotionConfig reducedMotion="user">
           <NotificationProvider>
           <ConfirmDialogProvider>
             <BrowserRouter basename={ROUTER_BASENAME}>
@@ -34,7 +32,6 @@ export function App() {
             </BrowserRouter>
           </ConfirmDialogProvider>
           </NotificationProvider>
-        </MotionConfig>
     </ErrorBoundary>
   );
 }

@@ -38,20 +38,22 @@ for (const enabled of [true, false]) {
     await page.goto("./#scene");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const rail = page.getByRole("navigation", { name: "Guided tour" });
+    // The native switch is an input; shortcuts deliberately ignore fields.
+    await page.getByRole("heading", { level: 1 }).focus();
     // Real keyboard events, deliberately no screenshot, sleep or assertion
     // between inputs. Cross both hash and pathname transitions in both directions.
     for (let pass = 0; pass < 3; pass++) {
       for (let step = 1; step < TOUR_STOPS.length; step++) await page.keyboard.press("Alt+ArrowRight");
       await expect(page).toHaveURL(/#close$/);
-      await expect(rail).toContainText("6/6");
+      await expect(rail).toContainText("7/7");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       for (let step = 1; step < TOUR_STOPS.length; step++) await page.keyboard.press("Alt+ArrowLeft");
       await expect(page).toHaveURL(/#scene$/);
-      await expect(rail).toContainText("1/6");
+      await expect(rail).toContainText("1/7");
     }
     // A same-task burst deterministically exercises history ahead of React's
     // commit. Assert EVERY requested stop, including immediate reversals/limits.
-    const directions = [1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1, -1, -1, -1, -1, -1];
+    const directions = [1, -1, -1, ...Array<number>(TOUR_STOPS.length).fill(1), ...Array<number>(TOUR_STOPS.length).fill(-1)];
     let index = 0;
     const expected = directions.map((direction) => {
       index = Math.max(0, Math.min(TOUR_STOPS.length - 1, index + direction));
@@ -68,7 +70,7 @@ for (const enabled of [true, false]) {
     await page.getByRole("heading", { level: 1 }).click();
     await page.keyboard.press("Alt+ArrowLeft");
     await expect(page).toHaveURL(/#two-places$/);
-    await expect(rail).toContainText("4/6");
+    await expect(rail).toContainText("4/7");
     await page.goBack();
     await expect(page).toHaveURL(/\/pharmacy$/);
     await page.keyboard.press("Alt+ArrowRight");

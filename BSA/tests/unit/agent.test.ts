@@ -95,6 +95,9 @@ describe("governance and fail-open paths", () => {
   it("records a human decision append-only and Reset restores the seed", () => {
     const store = useAppStore.getState();
     const originalRecords = store.records;
+    store.setAgentEnabled(true);
+    store.submitFromPharmacy(CASES[0].id, CASES[0].extracted.endorsementText);
+    store.arriveInQueue(CASES[0].id);
     const pack = runAgent(CASES[0]);
     const record = store.recordDecision({ caseId: CASES[0].id, tariffVersion: pack.tariffVersion,
       agentVersion: pack.agentVersion, inputs: [], sources: [], checks: pack.gate.checks,

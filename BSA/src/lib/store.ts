@@ -35,14 +35,17 @@ import { CASES } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
-import type { LifecycleSlice } from "@/lib/domain/lifecycle";
+import type { CaseRevision, HistoryEvent, LifecycleDecisionRecord, LifecycleSlice, LifecycleState } from "@/lib/domain/lifecycle";
+import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
+import { appendHistory, caseForLifecycle, immutable, requireLifecycle, requireText, validatePrecheck } from "@/lib/domain/lifecycle-model";
+import { runAgent } from "@/lib/domain/agent";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
 // demonstration to its starting point.
 
 function seededRecords(): DecisionRecord[] {
-  return [
+  return immutable([
     {
       id: "DR-000871",
       caseId: "EX-24088",
@@ -64,12 +67,12 @@ function seededRecords(): DecisionRecord[] {
       operator: "Operator P (synthetic)",
       synthetic: true,
     },
-  ];
+  ]);
 }
 
 interface AppState extends LifecycleSlice {
   caseStates: Record<string, CaseState>;
-  records: DecisionRecord[];
+  records: LifecycleDecisionRecord[];
   agentEnabled: boolean;
   baselineInputs: BaselineDraft;
   setBaselineInput: (field: BaselineField, value: string) => void;
@@ -83,6 +86,7 @@ interface AppState extends LifecycleSlice {
     recommendation: Recommendation;
     decision: HumanDecision;
     overrideReason: string | null;
+    approvedDraft?: string;
   }) => DecisionRecord;
   setAgentEnabled: (on: boolean) => void;
   resetDemo: () => void;
@@ -91,52 +95,122 @@ interface AppState extends LifecycleSlice {
 const initialStates = () =>
   Object.fromEntries(CASES.map((c) => [c.id, c.initialState])) as Record<string, CaseState>;
 
-function decisionMatches(recommendation: Recommendation, decision: HumanDecision): boolean {
-  if (recommendation === "SUFFICIENT") return decision === "ACCEPT";
-  if (recommendation === "REFER_BACK") return decision === "REFER_BACK" || decision === "ACCEPT";
-  if (recommendation === "REQUEST_INFORMATION") return decision === "REQUEST_INFORMATION" || decision === "ACCEPT";
-  return false;
-}
+const targets: Record<HumanDecision, LifecycleState> = {
+  ACCEPT: "paid", AMEND: "paid", REFER_BACK: "referred_back", REQUEST_INFORMATION: "information_requested", ESCALATE: "escalated",
+};
+const recommendations: Partial<Record<Recommendation, LifecycleState>> = {
+  SUFFICIENT: "paid", REFER_BACK: "referred_back", REQUEST_INFORMATION: "information_requested",
+};
 
-export const useAppStore = create<AppState>((set, get) => ({
-  // Contract freeze only. Stream B owns implementation; no page calls these yet.
-  lifecycles: {},
-  followedCaseId: null,
-  submitFromPharmacy: () => { throw new Error("not implemented"); },
-  arriveInQueue: () => { throw new Error("not implemented"); },
-  recordOperatorDecision: () => { throw new Error("not implemented"); },
-  resubmitFromPharmacy: () => { throw new Error("not implemented"); },
-  sendConfirmation: () => { throw new Error("not implemented"); },
-  followCase: () => { throw new Error("not implemented"); },
-  caseStates: initialStates(),
-  records: seededRecords(),
-  agentEnabled: false,
-  baselineInputs: baselineDraft(BASELINE_DEFAULTS),
-  setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
-  recordDecision: (input) => {
-    const n = get().records.length + 872;
-    const record: DecisionRecord = {
-      id: `DR-${String(n).padStart(6, "0")}`,
-      caseId: input.caseId,
-      timestamp: new Date().toISOString().slice(0, 19),
-      tariffVersion: input.tariffVersion,
-      agentVersion: input.agentVersion,
-      inputs: input.inputs,
-      sources: input.sources,
-      checks: input.checks,
-      recommendation: input.recommendation,
-      decision: input.decision,
-      isOverride: !decisionMatches(input.recommendation, input.decision),
-      overrideReason: input.overrideReason,
-      operator: "Demo operator",
-      synthetic: true,
-    };
-    set((s) => ({
-      records: [...s.records, record],
-      caseStates: { ...s.caseStates, [input.caseId]: "human_decision_recorded" },
-    }));
+export const useAppStore = create<AppState>((set, get) => {
+  const currentCase = (caseId: string) => {
+    const s = get();
+    requireLifecycle(caseId, s.lifecycles);
+    const c = caseForLifecycle(caseId, s.lifecycles, s.caseRevisions);
+    if (!c) throw new Error("No synthetic evidence for this case.");
+    return c;
+  };
+  const timestamp = (caseId: string) => new Date(Math.max(Date.now(), Date.parse(get().lifecycles[caseId].history.at(-1)!.at) + 1)).toISOString();
+  const requireState = (caseId: string, states: LifecycleState[]) => {
+    const row = requireLifecycle(caseId, get().lifecycles);
+    if (!states.includes(row.state)) throw new Error(`Cannot act on ${caseId} while ${row.state}; expected ${states.join(" or ")}.`);
+    return row;
+  };
+  const pharmacyAction = (caseId: string, text: string, kind: CaseRevision["kind"], precheck?: Parameters<LifecycleSlice["submitFromPharmacy"]>[2]) => {
+    const c = currentCase(caseId);
+    if (typeof text !== "string" || (c.scenario !== "E" && !text.trim()) || kind === "confirmation" && !text.trim()) throw new Error("Pharmacy text is required.");
+    const s = get();
+    const current = kind === "submission" ? s.lifecycles[caseId] : requireState(caseId, [kind === "confirmation" ? "information_requested" : "referred_back"]);
+    validatePrecheck(precheck, text, c.extracted.dispensingDate);
+    const previous = s.caseRevisions[caseId].at(-1)!;
+    const at = timestamp(caseId);
+    const revision: CaseRevision = { number: previous.number + 1, at, kind, templateCaseId: previous.templateCaseId,
+      endorsementText: kind === "confirmation" ? previous.endorsementText : text, precheck: precheck ?? null, confirmation: kind === "confirmation" ? text : null };
+    const event: HistoryEvent = { at, actor: "pharmacy", from: current.state, to: kind === "submission" ? "submitted" : "resubmitted",
+      message: kind === "submission" ? "Explicit demo submission; previous revisions retained." : kind === "confirmation" ? "Pharmacy confirmation received; human re-check required." : "Pharmacy correction resubmitted for re-check.",
+      revision: revision.number };
+    set({ lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(current, event) }),
+      caseRevisions: immutable({ ...s.caseRevisions, [caseId]: [...s.caseRevisions[caseId], revision] }),
+      caseStates: { ...s.caseStates, [caseId]: c.initialState === "human_decision_recorded" ? "operator_review_required" : c.initialState } });
+  };
+
+  /** Both public decision APIs commit exactly one linked operator event atomically. */
+  const decide = (input: Omit<Parameters<AppState["recordDecision"]>[0], "approvedDraft">, legacy: boolean, draft?: string): LifecycleDecisionRecord => {
+    const c = currentCase(input.caseId);
+    const current = requireState(c.id, ["in_review", "escalated"]);
+    if (!Object.hasOwn(targets, input.decision) || !["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION", "ABSTAIN", "NONE"].includes(input.recommendation)) throw new Error("Unknown decision or recommendation.");
+    requireText(input.tariffVersion, "Tariff version");
+    requireText(input.agentVersion, "Agent version");
+    if (![input.inputs, input.sources].every((items) => Array.isArray(items) && items.every((item) => typeof item === "string")) ||
+      !Array.isArray(input.checks) || input.checks.some((check) => !check || typeof check.name !== "string" || typeof check.detail !== "string" || typeof check.pass !== "boolean")) throw new Error("Invalid decision evidence.");
+    // A manual NONE decision must not invoke interpretation behind the Off UI.
+    const pack = runAgent(c, { agentEnabled: input.recommendation !== "NONE" });
+    const proposed = recommendations[input.recommendation];
+    if (input.recommendation !== "NONE" && (pack.recommendation !== input.recommendation || input.tariffVersion !== pack.tariffVersion)) throw new Error("Recommendation is stale or does not match current evidence.");
+    if (proposed && (pack.gate.result !== "PASS" || JSON.stringify(input.checks) !== JSON.stringify(pack.gate.checks))) throw new Error("Cannot accept advice without the current validated gate checks.");
+    if (input.decision === "AMEND" && !proposed) throw new Error("No validated recommendation to amend; choose a manual decision.");
+    const to = legacy && input.decision === "ACCEPT" && proposed ? proposed : targets[input.decision];
+    const isOverride = Boolean(proposed && (to !== proposed || input.decision === "AMEND"));
+    const reason = input.overrideReason ?? "";
+    if (typeof reason !== "string") throw new Error("Decision reason must be text.");
+    if (!proposed || isOverride || to !== "paid") requireText(reason, "Decision reason", 8);
+    if (draft !== undefined) {
+      requireText(draft, "Approved draft");
+      if (!get().agentEnabled || !proposed || pack.gate.result !== "PASS" || !pack.clause || !pack.draftToPharmacy ||
+        (to !== "referred_back" && to !== "information_requested")) throw new Error("No validated pharmacy draft available for approval.");
+    }
+    const s = get(), at = timestamp(c.id), revision = s.caseRevisions[c.id].at(-1)!.number;
+    const clauseId = input.tariffVersion === pack.tariffVersion && input.recommendation !== "NONE" ? pack.clause?.id : undefined;
+    const approvedDraft = draft === undefined ? undefined : { text: draft, approvedAt: at, approvedBy: "Demo operator", decision: input.decision, tariffVersion: pack.tariffVersion, clauseId: pack.clause!.id };
+    const record = immutable<LifecycleDecisionRecord>({ ...input, id: `DR-${String(s.records.length + 872).padStart(6, "0")}`,
+      timestamp: at, operator: "Demo operator", synthetic: true, isOverride, overrideReason: reason.trim() || null,
+      reason: reason.trim(), revision, clauseId, ...(approvedDraft ? { approvedDraft } : {}) });
+    const event: HistoryEvent = { at, actor: "operator", from: current.state, to, message: "Human decision recorded (synthetic).",
+      decision: input.decision, recommendation: input.recommendation, reason: record.reason, recordId: record.id, revision,
+      tariffVersion: input.tariffVersion, clauseId, ...(approvedDraft ? { approvedDraft, exactFix: approvedDraft.text } : {}) };
+    set({ records: immutable([...s.records, record]), caseStates: { ...s.caseStates, [c.id]: "human_decision_recorded" },
+      lifecycles: immutable({ ...s.lifecycles, [c.id]: appendHistory(current, event) }) });
     return record;
-  },
-  setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
-  resetDemo: () => set({ caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
-}));
+  };
+
+  return {
+    ...seededLifecycleSession(), followedCaseId: null,
+    submitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "submission", precheck),
+    resubmitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "resubmission", precheck),
+    sendConfirmation: (id, text) => pharmacyAction(id, text, "confirmation"),
+    arriveInQueue: (id) => {
+      const current = requireState(id, ["submitted", "resubmitted"]);
+      const s = get(), c = currentCase(id), pack = runAgent(c, { agentEnabled: s.agentEnabled });
+      const at = timestamp(id), revision = s.caseRevisions[id].at(-1)!.number;
+      let row = appendHistory(current, { at, actor: "code", from: current.state, to: "in_review", message: "Arrived for review.", revision });
+      if (pack.state === "cleared_by_rules" || pack.agentInvoked) {
+        const cleared = pack.state === "cleared_by_rules";
+        row = appendHistory(row, { at, actor: cleared ? "code" : "agent", from: "in_review", to: cleared ? "paid" : "in_review", revision,
+          message: cleared ? "Released to existing pricing without an agent call (synthetic)." : pack.recommendation === "ABSTAIN" ? "Scripted agent abstained; manual evidence review required." : pack.gate.result === "FAIL" ? "Gate withheld recommendation; evidence only." : "Scripted case built; human decision required.",
+          recommendation: pack.recommendation });
+      }
+      // F's historical decision remains in records, not as the new revision's decision.
+      set({ lifecycles: immutable({ ...s.lifecycles, [id]: row }), caseStates: { ...s.caseStates, [id]: pack.state === "human_decision_recorded" ? "operator_review_required" : pack.state } });
+    },
+    recordOperatorDecision: (id, decision, reason, draft) => {
+      const c = currentCase(id), pack = runAgent(c, { agentEnabled: get().agentEnabled });
+      decide({ caseId: id, decision, overrideReason: reason, recommendation: pack.recommendation,
+        tariffVersion: get().agentEnabled ? pack.tariffVersion : "n/a", agentVersion: get().agentEnabled ? pack.agentVersion : "not invoked",
+        inputs: pack.evidence.map((e) => e.value), sources: [...new Set(pack.evidence.map((e) => e.origin))], checks: pack.gate.checks }, false, draft);
+    },
+    followCase: (id) => { if (id !== null) requireLifecycle(id, get().lifecycles); set({ followedCaseId: id }); },
+    caseStates: initialStates(), records: seededRecords(), agentEnabled: false,
+    baselineInputs: baselineDraft(BASELINE_DEFAULTS),
+    setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
+    recordDecision: ({ approvedDraft, ...input }) => decide(input, true, approvedDraft),
+    setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
+    // Preserve all three replacement identities used by existing reset subscribers.
+    resetDemo: () => set({ ...seededLifecycleSession(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
+  };
+});
+
+/** Imperative convenience. React consumers memoise the pure helper on both slices. */
+export function sessionCase(caseId: string) {
+  const { lifecycles, caseRevisions } = useAppStore.getState();
+  return caseForLifecycle(caseId, lifecycles, caseRevisions);
+}
