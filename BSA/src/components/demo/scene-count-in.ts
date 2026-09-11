@@ -17,6 +17,7 @@ export function startSceneCountIn(value: number, display: (value: number) => voi
     media.removeEventListener("change", onMotionChange);
   };
   const finish = () => {
+    if (!active) return;
     cancel();
     display(value);
   };

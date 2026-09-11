@@ -98,8 +98,11 @@ describe("scene estimate count-in", () => {
     const display = vi.fn();
     const cancel = startSceneCountIn(85000, display);
     const pending = [...frames.values()];
+    const pendingChanges = [...listeners];
     cancel();
     cancel();
+    reduced = true;
+    pendingChanges.forEach((listener) => listener());
     pending.forEach((callback) => callback(1100));
     expect(display.mock.calls).toEqual([[0]]);
     expect(frames.size).toBe(0);

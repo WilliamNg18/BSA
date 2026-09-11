@@ -13,11 +13,12 @@ immediate and stale frames are cancelled on input changes, Off/Reset and
 unmount. No public figures, source qualifications, lifecycle, domain arithmetic,
 shared number helper or T26-owned navigation files changed.
 
-Initial implementation: check passed; all 565 units in nineteen files passed
+Initial implementation 9e8fb7f: check passed; all 565 units in nineteen files passed
 with two workers, including twelve new count-in cases. Targeted production
-browser tests are being prepared; no local browser has been started and no
-browser acceptance is claimed. Draft PR and merge remain coordinator-owned
-acceptance boundaries; Tasks 8-13 remain unchecked.
+browser tests now cover exact/intermediate values, stable accessible names,
+Off/Reset, route/input cancellation, live reduced motion and zero/one/billion
+inputs. No local browser has been started and no browser acceptance is claimed.
+Draft PR #31 is open; merge remains coordinator-owned and Tasks 8-13 unchecked.
 
 ## Checklist
 
