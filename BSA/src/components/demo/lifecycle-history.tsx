@@ -27,7 +27,8 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
             <div><dt>Time / actor</dt><dd>{event.at} · {event.actor}</dd></div>
             <div><dt>Transition</dt><dd>{event.from ?? "New"} → {event.to}</dd></div>
             <div><dt>Attempt / record</dt><dd>{event.revision ?? "Historical"} · {event.recordId ?? "No decision record"}</dd></div>
-            {event.reason && <div><dt>Human reason</dt><dd>{event.reason}</dd></div>}
+            {event.reason && (!pharmacy || !enabled) && <div><dt>Human reason</dt><dd>{event.reason}</dd></div>}
+            {event.reason && pharmacy && enabled && !event.approvedDraft && <div><dt>Pharmacy response</dt><dd>No operator-approved note recorded.</dd></div>}
             {event.tariffVersion && <div><dt>Rule / clause</dt><dd>{event.tariffVersion} · {event.clauseId ?? "Not recorded"}</dd></div>}
             {event.approvedDraft && enabled && <div><dt>Operator-approved note</dt><dd>{event.approvedDraft.text}</dd></div>}
           </dl>

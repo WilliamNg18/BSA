@@ -41,8 +41,8 @@ for (const enabled of [false, true]) {
     await decide(page, "Please add the dispensing date beside the initials");
     await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
-    await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
     if (enabled) {
+      await expect(detail(page)).not.toContainText("Please add the dispensing date beside the initials");
       await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
       await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
       await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
@@ -50,6 +50,7 @@ for (const enabled of [false, true]) {
       await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
       await expect(detail(page)).toContainText("Ready to resubmit");
     } else {
+      await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
       await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
@@ -70,7 +71,9 @@ for (const enabled of [false, true]) {
       await expect(attempts.nth(1)).not.toContainText("NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText("NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
-      await expect(history(page).getByRole("list", { name: "Lifecycle events" })).toContainText("Human reviewed the corrected date and complete evidence");
+      const events = history(page).getByRole("list", { name: "Lifecycle events" });
+      if (enabled && side === "Pharmacy") await expect(events).not.toContainText("Human reviewed the corrected date and complete evidence");
+      else await expect(events).toContainText("Human reviewed the corrected date and complete evidence");
     }
     await captureJson(info, "roundtrip-history", await history(page).innerText());
     await confirmReset(page);

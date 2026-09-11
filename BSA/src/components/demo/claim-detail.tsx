@@ -41,12 +41,13 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
       <div><dt>Current endorsement</dt><dd>{c.extracted.endorsementText || "None"}</dd></div>
     </dl>
     {(editable || row.state === "information_requested") && <section aria-label="Operator response" className="space-y-2">
-      <h3 className="font-semibold">Human decision reason</h3><p>{event?.reason ?? "No reason recorded."}</p>
-      <div className="text-sm">Rule: {event?.tariffVersion ?? "Not recorded"} · Clause: {event?.clauseId ?? "Not recorded"}</div>
-      {enabled && (approved ? <section aria-label="Operator-approved pharmacy note" className="space-y-2 rounded-md border p-3">
+      {enabled ? (approved ? <section aria-label="Operator-approved pharmacy note" className="space-y-2 rounded-md border p-3">
         <h3 className="font-semibold">Operator-approved note</h3><p>{approved.text}</p>
         <div className="text-xs">{approved.approvedBy} · {approved.approvedAt} · {approved.tariffVersion} · {approved.clauseId}</div>
-      </section> : <p>No operator-approved draft. Enabling assistance does not approve a note.</p>)}
+      </section> : <p>No operator-approved draft. Enabling assistance does not approve a note.</p>) : <>
+        <h3 className="font-semibold">Human decision reason</h3><p>{event?.reason ?? "No reason recorded."}</p>
+        <div className="text-sm">Rule: {event?.tariffVersion ?? "Not recorded"} · Clause: {event?.clauseId ?? "Not recorded"}</div>
+      </>}
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
       <label className="grid gap-2" htmlFor="claim-endorsement">Corrected endorsement
