@@ -6,6 +6,9 @@ ms.date: 2026-09-11
 
 ## Baseline and final font comparison
 
+This page records the historical Task 7 build, not current integration gates.
+Fresh root-path production captures are in [integrated](../integrated/README.md).
+
 The before directory contains eight current Task 6 scene photographs: 360px and
 1440px, light and dark, On and Off. The final directory repeats the same eight
 captures with system fonts and the final measured performance candidate.
@@ -51,9 +54,10 @@ Selected corrected captures reviewed visually:
 * [Assumptions badges, light desktop](after/assumptions-1440-light-reduce-off.png)
 * [Architecture scroll regions, dark phone](after/architecture-360-dark-reduce-on.png)
 
-Current claims is the inherited contract-only heading, not a Task 9 feature.
-The Stream D planned-simulation notice remains visible. Capturing these routes
-does not assert that Tasks 8-13 are implemented or integrated.
+At this historical checkpoint, claims was the inherited contract-only heading
+and the Stream D planned-simulation notice remained visible. The integrated
+application now implements claims and lifecycle; these old photographs do not
+verify those features or replace their acceptance gates.
 
 Photographs are layout evidence, not pixel-baseline tests. The existing route
 matrix and seven-width header tests remain in the full suite. No CI, hosted

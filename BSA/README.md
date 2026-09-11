@@ -1,63 +1,96 @@
 ---
 title: Prescription Exception Case Builder
-description: Synthetic prescription exception investigation with deterministic guardrails and human review.
+description: Synthetic prescription exception investigation, shared lifecycle and human decisions.
 ---
 
-A proof of concept of a **governed AI agent supporting prescription exception handling at NHS Business Services Authority (NHSBSA)**. Built for a capability discussion; domain logic runs entirely in the browser on **synthetic data**. Hosted only on Azure Static Web Apps Free at the site root. Model interpretation is simulated, not a live model call.
+A static demonstration of evidence gathering for prescription exceptions at
+NHS Business Services Authority. React and TypeScript run locally in the browser
+with synthetic cases, scripted interpretation and deterministic guardrails.
+**Azure Static Web Apps Free at `/` is the only hosting target. No live URL or
+provisioned deployment is claimed.**
 
-> The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides. The prototype does not calculate or approve payments.
+> The agent gathers evidence and recommends. Deterministic code validates and
+> calculates. A human decides. The prototype does not calculate or approve payments.
 
-## The problem it addresses
+## What it demonstrates
 
-NHSBSA prices almost all of around 1.1 billion prescription items a year automatically. Around 85,000 items a month cannot be priced because a pharmacy's endorsement fails a rule in the Drug Tariff, a rulebook that changes every month. Each of those items goes to a person who gathers the evidence and judges a handwritten note against the rule by hand. This application shows an agent building that case, citing the rule in force on the dispensing date and recommending, while a person still decides. It runs in two places: at the pharmacy before a claim is sent (advisory, never blocking) and at NHSBSA after an item enters the exception queue.
+An advisory pharmacy check and an NHSBSA evidence pack share one session-only
+case history. A human can refer an item back, approve a draft instruction,
+correct and resubmit it from the pharmacy, then review it again. The final
+`paid` label is synthetic and attributed to existing pricing, not an agent
+payment decision. Toggling assistance never advances the lifecycle.
 
-## What is in the box
+The documentary context includes approximately 1.1 billion annual items and
+85,000 monthly referrals. Referrals are a subset, not the total exception queue.
+These are attributed public figures, not independently verified operational
+measurements. Monthly publication does not establish monthly rule changes.
+Calculator durations, cohorts and benefits are editable demonstration assumptions.
 
 | Route | Screen |
-|---|---|
-| `/` | Overview: the problem, the principle, one synthetic working day |
-| `/pharmacy` | Pharmacy pre-submission check (advisory only) |
-| `/queue` | Exception queue with six states |
-| `/case/:id/trace` | How the case was built: the agent's observable workflow, step by step |
-| `/case/:id` | Operator case pack and the human decision |
-| `/case/:id/record` | Decision and audit record, with replay under another Tariff version |
-| `/evaluation`, `/boundary`, `/assumptions`, `/architecture`, `/notes` | The reflective pages: guardrails, the agent/code/human boundary, assumptions, architecture, presenter notes |
+| --- | --- |
+| `/#scene`, `/#month`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: context, calculator, pipeline, two places and first test |
+| `/pharmacy` | Manual submission or optional scripted precheck; never blocks submission |
+| `/pharmacy/claims` | Pharmacy/state filters, claimed totals, expandable claim detail and shared history |
+| `/pharmacy/claims?caseId=EX-24112` | Same-item pharmacy link, correction and resubmission |
+| `/queue` | Pinned examples, bounded virtual month, visible-row sweep and shared live-session queue |
+| `/case/:id`, `/case/:id/trace`, `/case/:id/record` | Evidence pack, observable trace, human record and counterfactual rule replay |
+| `/evaluation`, `/boundary`, `/assumptions`, `/architecture` | Reflective pages |
 
-Six synthetic cases each show one behaviour: valid and complete; missing information; evidence conflict; deliberate abstention; cleared by rules with no model call; decision already recorded. Header controls: the agent feature flag (off shows the fail-open path), Presenter mode (a ten-minute walkthrough), Discussion mode (prompts and challenge cards), Reset.
+Seven tour chapters have eight stops: Pharmacy check is chapter 4's substop;
+Pharmacy claims is chapter 6. Header navigation groups Overview, Operations and
+How it works (the queue menu item is **NHSBSA queue**). Agent defaults **Off**; confirmed Reset restores Off and seeded
+session data. Follow/Switch side links keep the same item. Presenter mode,
+Discussion mode and `/notes` are removed; use the [demo script](docs/demo-script.md).
 
-## Run it locally
+The six canonical cases remain A sufficient, B missing a date (July replay
+sufficient), C unresolved quantity conflict, D abstention, E code-only clearance
+without a model call, and F an existing human record.
 
+## Run locally
+
+From repository root in PowerShell:
+
+```powershell
+Set-Location BSA
+npm ci
+npm run dev
 ```
-npm install
-npm run dev          # http://localhost:5173/
-npm run check        # typecheck + lint + build
+
+The development URL is `http://localhost:5173/`. For a production rehearsal:
+
+```powershell
+npm run check
+npm run preview -- --host localhost --port 4193 --strictPort
 ```
 
-## Deploy to Azure Static Web Apps
+Open `http://localhost:4193/`. Preview serves built files, not Azure response
+headers. In-session navigation works after initial loading without a runtime
+service; offline reload is not guaranteed.
 
-Follow [the one-time setup](docs/DEPLOYMENT.md): create the Free Static Web App
-with root `infra/staticwebapp.bicep`, then store its token as repository secret
-`AZURE_STATIC_WEB_APPS_API_TOKEN`. Pushes to `main` deploy automatically.
-Pull requests get previews that are removed on close. Deep links use the root
-`staticwebapp.config.json`, copied into the build. No other Azure service is used.
+## Deployment and gates
 
-Typecheck, lint, build, unit tests, browser crash/control checks and axe remain
-blocking. The 350,000-byte gzip budget, word counts, Lighthouse scores and
-screenshot differences are advisory.
+Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md) for explicit subscription selection,
+the root `infra/staticwebapp.bicep` and the repository deployment secret. No
+subscription was selected, no resource provisioned and no token supplied.
+After owner setup, the workflow deploys `BSA/dist` on `main` and creates eligible
+pull-request previews. Root `staticwebapp.config.json` is copied into the build.
+Hosted deep links and the strict CSP still require verification on that host.
 
-## Documents
+`npm run check` (typecheck, lint, build), `npm test` (Vitest), production browser
+crash/dead-control checks and zero-violation axe are blocking. There are no size
+or performance budgets. CI reports gzip size as information only; word counts,
+Lighthouse scores and screenshot differences are also informational.
+Informational reporting does not excuse a functional or accessibility defect.
 
-- [Azure deployment guide](docs/DEPLOYMENT.md): Free Static Web App, one-time token setup and automatic deployment.
-- [Hosting decision](docs/adr/0001-host-existing-demo-first.md): scope and deferred live-agent services.
-- `docs/SPEC.md`: functional specification of the application, screen by screen and rule by rule.
-- `docs/TASK.md`: the brief for rebuilding this proof of concept to a higher standard.
-- `docs/KNOWN-ISSUES.md`: what is weak or broken in the current build.
-- `AGENTS.md`: working rules for coding agents and contributors.
+## Documentation and limits
 
-## Status of what is built
+[SPEC](docs/SPEC.md) describes current behaviour. [KNOWN-ISSUES](docs/KNOWN-ISSUES.md)
+separates genuine limitations from historical evidence.
+[Current screenshots](docs/screens/integrated/README.md) include the exact
+production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
+[AGENTS](AGENTS.md) governs contributions.
 
-Built for real: the deterministic rules (requirement checks, compliance gate, confidence composite, citation validation), the scripted orchestration and its inspectable trace, the versioned synthetic rulebook, session-only decision records, and every screen. Hosting adds no authentication, telemetry or runtime backend. See the deployment guide for provisioning status. Mocked: the interpretation of the free-text endorsement (three scripted readings per case) and every enterprise source. Not built: a live model, Search retrieval, durable audit storage, capture integration, a live queue, monitoring and dispensing-system integration. Pricing is excluded by design.
-
-## Disclosure
-
-All sources used to frame the problem are public. All data is synthetic. Nothing here is a claim about NHSBSA's real performance, and the rulebook text is a paraphrase written for the demonstration, not the Drug Tariff.
+No real prescriptions, patients, pharmacies, authentic tariff text, live model,
+capture integration, durable audit store, real operational queue or payment
+calculation is present. Synthetic claimed amounts are not calculated payments.
+Hosting adds no authentication, telemetry or runtime backend.

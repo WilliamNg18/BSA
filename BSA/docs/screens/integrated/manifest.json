@@ -1,0 +1,1048 @@
+{
+  "sourceRevision": "d9e06e198027ab673937000ee13cc32749760fae",
+  "capturedAt": "2026-09-11T17:49:43.723Z",
+  "baseURL": "http://localhost:4193",
+  "build": "BSA/dist, root-path production build",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "deviceScaleFactor": 1,
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "fullPage": true,
+  "captures": [
+    {
+      "filename": "overview-scene-off-1440.png",
+      "url": "/#scene",
+      "agent": "off",
+      "heading": "The referred-back subset",
+      "sha256": "c30bc9822994f14e2ff06fa223fe8aed91f8571a0d6d030d215255fb3da040de",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-month-off-1440.png",
+      "url": "/#month",
+      "agent": "off",
+      "heading": "A month of work",
+      "sha256": "dbf1bc215ab7ac8b2520a6ac7d907a4a8cf113ad924c1af7feef5773b28343c2",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-pipeline-off-1440.png",
+      "url": "/#cases",
+      "agent": "off",
+      "heading": "The exception pipeline",
+      "sha256": "520609d6f252b4475156d994ea361e4761fa012f83b2cd323d42c41ce7a9a6a4",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-two-places-off-1440.png",
+      "url": "/#two-places",
+      "agent": "off",
+      "heading": "A bounded proposal",
+      "sha256": "4e25e1024997cbd5853576e38c7ef0ec78c7d9ce3852f14b2a051884bf5e37f3",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-close-off-1440.png",
+      "url": "/#close",
+      "agent": "off",
+      "heading": "Decide on evidence",
+      "sha256": "a196e7769e1bbafded7af1425996da41312e27716407d8f86432c28b62e9d112",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "pharmacy-b-off-1440.png",
+      "url": "/pharmacy",
+      "agent": "off",
+      "heading": "Pharmacy pre-submission check",
+      "sha256": "5349ccd8f9ace4ec05cbbfcc56ac31bdcb777f8f30a64cdc5e67fc061e4c17cb",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-off-1440.png",
+      "url": "/pharmacy/claims",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "1e13e880a44b2a852f3f282243e5e646df836256bebe69dcb217fde0ede4cb24",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "queue-off-1440.png",
+      "url": "/queue",
+      "agent": "off",
+      "heading": "NHSBSA exception queue",
+      "sha256": "fdda1ac7bab07164fed48816d5fde412e4e387dd1fd64c388cb81208b995eb51",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "evaluation-off-1440.png",
+      "url": "/evaluation",
+      "agent": "off",
+      "heading": "Evaluation and guardrails",
+      "sha256": "838e1e54280f067e19de1dbcd4b437e70b5261d9b5363dbc72513a32e49c105a",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "boundary-off-1440.png",
+      "url": "/boundary",
+      "agent": "off",
+      "heading": "Agent, deterministic code, human decision",
+      "sha256": "da88dd4708d610eb74d88dcb6bc43902bd0818218a8d720a9864efdeee362073",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "assumptions-off-1440.png",
+      "url": "/assumptions",
+      "agent": "off",
+      "heading": "The assumptions that decide whether an agent is needed",
+      "sha256": "154f87ba007e2f0c5e410250be48220be3cf2154549d8538f60767e2fe2d4ece",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "architecture-off-1440.png",
+      "url": "/architecture",
+      "agent": "off",
+      "heading": "Technical architecture and the path to production",
+      "sha256": "a346efd3cb1bcfb43418bcc0e632995b7922da5873091f796487ca24c16dcfe0",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24107-pack-off-1440.png",
+      "url": "/case/EX-24107",
+      "agent": "off",
+      "heading": "Operator case pack: Valid and complete",
+      "sha256": "eb1a3a4d7a52ac13fd0fd3cb643685ec1b06e2515ebf1906e65ea074094dd45f",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24107-trace-off-1440.png",
+      "url": "/case/EX-24107/trace",
+      "agent": "off",
+      "heading": "How the case was built: Valid and complete",
+      "sha256": "7a3a1a8ed01d640300c70010045c889e2810ecc712bc707747330f8d987b23d6",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24107-record-off-1440.png",
+      "url": "/case/EX-24107/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Valid and complete",
+      "sha256": "eab5aad2e42803e47f3fbe6b8bb6999dcd7e0ff4fd9b79ed286c40516e3b0d0d",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24112-pack-off-1440.png",
+      "url": "/case/EX-24112",
+      "agent": "off",
+      "heading": "Operator case pack: Missing or insufficient information",
+      "sha256": "6ffc497605ec96abf1ab781aa95a3f72ee4ea36259ab1477d69c62ff6d1e2785",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24112-trace-off-1440.png",
+      "url": "/case/EX-24112/trace",
+      "agent": "off",
+      "heading": "How the case was built: Missing or insufficient information",
+      "sha256": "9dbdf082fc1882bf8df460858cff885bc2003ba2471b01852efb0fe33e6f52f9",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24112-record-off-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "a941c9232a9750c44e7fa64847350c6b23050a08ee08543094b6850dd18d63d3",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24119-pack-off-1440.png",
+      "url": "/case/EX-24119",
+      "agent": "off",
+      "heading": "Operator case pack: Evidence conflict",
+      "sha256": "86af8ab6317814b94fbbf37a8b4c479c6c329fcade40186dee26da9aa4703e8c",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24119-trace-off-1440.png",
+      "url": "/case/EX-24119/trace",
+      "agent": "off",
+      "heading": "How the case was built: Evidence conflict",
+      "sha256": "2a87c4815aa7c8662aa6b95b0463a805bb3f254c4a35f30b081ccd6643a4e282",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24119-record-off-1440.png",
+      "url": "/case/EX-24119/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Evidence conflict",
+      "sha256": "5121dd8205acfd73d7688a38ef963c8cdee4e27676ecd6c477ac96cdeca70338",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24123-pack-off-1440.png",
+      "url": "/case/EX-24123",
+      "agent": "off",
+      "heading": "Operator case pack: Deliberate failure and abstention",
+      "sha256": "64898e213ac8cfcf401d3db1680f8f0248475b5338ad2beec5dd6e12c2c1f890",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24123-trace-off-1440.png",
+      "url": "/case/EX-24123/trace",
+      "agent": "off",
+      "heading": "How the case was built: Deliberate failure and abstention",
+      "sha256": "4f9cad3bd8347fddc1f2a07743d18c051fd15e89796935fb2e5537286f264d27",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24123-record-off-1440.png",
+      "url": "/case/EX-24123/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Deliberate failure and abstention",
+      "sha256": "4ec600dec783cb9799debcb1035299baa1d181c622219fc651b0c606e3fb2c99",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24101-pack-off-1440.png",
+      "url": "/case/EX-24101",
+      "agent": "off",
+      "heading": "Operator case pack: Cleared by rules (no model call)",
+      "sha256": "eec060b7834ae57b6cf4499d204ea0ff635ef7b1940fd7879427742b2c8919e2",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24101-trace-off-1440.png",
+      "url": "/case/EX-24101/trace",
+      "agent": "off",
+      "heading": "How the case was built: Cleared by rules (no model call)",
+      "sha256": "92b22a8e35ba2597f99c765c2216374baf0163eea836a64e12f914f842b5df20",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24101-record-off-1440.png",
+      "url": "/case/EX-24101/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Cleared by rules (no model call)",
+      "sha256": "f92a21d65c1067f27bde1d3679987dcdbea16e7b698599f247ddf1cfd5243988",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24088-pack-off-1440.png",
+      "url": "/case/EX-24088",
+      "agent": "off",
+      "heading": "Operator case pack: Human decision recorded",
+      "sha256": "64bc97370530b8cb40c111b8b058677cedf81d0dd59b4b82cb2739deefb164b1",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24088-trace-off-1440.png",
+      "url": "/case/EX-24088/trace",
+      "agent": "off",
+      "heading": "How the case was built: Human decision recorded",
+      "sha256": "ccdabaec2a5fcae4dcc3fbeef8be2a76ba555c11076cd189b4103b9c77ee8ebc",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24088-record-off-1440.png",
+      "url": "/case/EX-24088/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Human decision recorded",
+      "sha256": "52d004d9b0ac7a4efe9006885b5dbc7ce829b9e722c04f5d28a58c6842471e82",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "not-found-off-1440.png",
+      "url": "/not-a-route",
+      "agent": "off",
+      "heading": "Page not found",
+      "sha256": "d5d2fe5dc49f5973d6b649b71b3f6b3db924058652c688129e2f5fd09c991f34",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-submitted-off-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-1",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "f8ffcad1fee3f5be34df0b8ced8b2d59463d4814576902fbb9583f237bc8cf6b",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-in_review-off-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-2",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "2842fb848ed769f5cdccacc35b94d8d747a780a6b859f3c80cd9d50d980048a5",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-information_requested-off-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-3",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "94b780086fd07374641b9ded162d0bb05ead3776866ea6e6de3e22dfdf4cf347",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-referred_back-off-1440.png",
+      "url": "/pharmacy/claims?caseId=EX-24112",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "e99854572c63e0dc52036813334933e210bc2089a2ce01042cce8c4570ab6892",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-resubmitted-off-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-5",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "e07e929041bf15c97910cc6aa58eaf03e4c9fdd68648082e6be57ef7bb20c84b",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-paid-off-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-6",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "cea3f45c543be4f5b05c3b5cabfb72288f15c94a81a7ab0d2c24be0b9c1742bc",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-escalated-off-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-7",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "c779d8aa295786d1e4789b216c03f9754dddc458db3c88d7696b9b748210e163",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "pharmacy-a-off-1440.png",
+      "url": "/pharmacy",
+      "agent": "off",
+      "heading": "Pharmacy pre-submission check",
+      "sha256": "d4329c51afc312eef4eecdd228664892eec7edbc88fbc4bb2b0d5fe4bb415075",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "pharmacy-d-off-1440.png",
+      "url": "/pharmacy",
+      "agent": "off",
+      "heading": "Pharmacy pre-submission check",
+      "sha256": "e09203810a9c6f946d5b72d9cb3e1b60f2b461f416a018e61547a3c601627235",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-1-submitted-off-1440.png",
+      "url": "/pharmacy/claims?caseId=EX-24112",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "f80c11ae78408f660e85509fd6c0d88c6b6857511a29b9201b5d41c069ff96e2",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-2-review-off-1440.png",
+      "url": "/case/EX-24112",
+      "agent": "off",
+      "heading": "Operator case pack: Missing or insufficient information",
+      "sha256": "d00252798cb6e9a754a08517f41bc37a5287118291097b51eee2a443cc5cbe7f",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-3-referral-record-off-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "c34009ca17be991babaa4ef0b544ee7fc396fd733118c925afee8f1fd43896d3",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-4-referral-received-off-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "4ba8f5cde0e37162383e5f2bd8c9d24bba3e33849308a52869b9155394fa8417",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-5-corrected-off-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "2171e98d5c0d23a112466d732c61378125fa84f06a42ed7d790716c5e75c78fb",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-6-resubmitted-off-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "19cb5f9f709d0af89e9be45f4b74f7e9b50f350ddab543e68900ad934f933290",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "operations-menu-off-1440.png",
+      "url": "/",
+      "agent": "off",
+      "heading": "The referred-back subset",
+      "sha256": "7c13b4aea626a1d58e53820b48eb17aa719c3f1dda5fa0bbe29a0cb5cb5acbc8",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "reset-dialog-off-1440.png",
+      "url": "/",
+      "agent": "off",
+      "heading": "The referred-back subset",
+      "sha256": "105112e7f6be4e3ca4cbb2353aeae22a757ac422afb1a25da9d184ff227b93a7",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "queue-today-off-1440.png",
+      "url": "/queue",
+      "agent": "off",
+      "heading": "NHSBSA exception queue",
+      "sha256": "2a298a13dab42e7d57eddf9dea3b81e85e8153b2551ff52e9864fc7eb6018fe9",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-7-human-record-off-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "off",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "ecc05056978b9215cf6ec4a37db1205bcc3c941c39f8589159c24c73b4454796",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-8-synthetic-paid-off-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "off",
+      "heading": "Pharmacy claims",
+      "sha256": "b3129170dc592c2ead1ab9e403b9c0ab46c6ccc415f8f3e8f5695e1b1aa010f6",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-scene-on-1440.png",
+      "url": "/#scene",
+      "agent": "on",
+      "heading": "The referred-back subset",
+      "sha256": "adc699a68c39c7e07b0e5d35f26b16504b3366b2f2c28999246662832ececec2",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-month-on-1440.png",
+      "url": "/#month",
+      "agent": "on",
+      "heading": "A month of work",
+      "sha256": "ca56601bacd7436d38fe51ef4fb6c6ced2504bed10440a45cb1c2fe114a0e011",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-pipeline-on-1440.png",
+      "url": "/#cases",
+      "agent": "on",
+      "heading": "The exception pipeline",
+      "sha256": "c44cc3dd2fba291598ae8fee026e6a5ebef5442f3564b4a08ff1f6e10d710593",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-two-places-on-1440.png",
+      "url": "/#two-places",
+      "agent": "on",
+      "heading": "A bounded proposal",
+      "sha256": "ef4551d93e37c327946eb7647b5b8d3b0a57b3d83b6ddd1260b956c2bf800921",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "overview-close-on-1440.png",
+      "url": "/#close",
+      "agent": "on",
+      "heading": "Decide on evidence",
+      "sha256": "dad9d1963adb364f77926ec5b8ead4905221b97eed108c664df9ce0f7366d2cc",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "pharmacy-b-on-1440.png",
+      "url": "/pharmacy",
+      "agent": "on",
+      "heading": "Pharmacy pre-submission check",
+      "sha256": "033575258aa5f11e7ee87a786a526997d0bef6818b1dca2a865581498602528d",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-on-1440.png",
+      "url": "/pharmacy/claims",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "5f7ac3fc6ce678ac2353d3aaded10537ff8e07782bd72704546f9e1d20e4f35b",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "queue-on-1440.png",
+      "url": "/queue",
+      "agent": "on",
+      "heading": "NHSBSA exception queue",
+      "sha256": "5cc863842aef505bd73ffad1732bd247e5db36b6ab8f2d73ad3b8994c9bb96a6",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "evaluation-on-1440.png",
+      "url": "/evaluation",
+      "agent": "on",
+      "heading": "Evaluation and guardrails",
+      "sha256": "63387e0ef14369e4769fd7a624c9fbd9355da0429d308c362381431873483da6",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "boundary-on-1440.png",
+      "url": "/boundary",
+      "agent": "on",
+      "heading": "Agent, deterministic code, human decision",
+      "sha256": "301a7c124fd31246c86960711cc659ff6f5c3f4b68f543a6e1e3b39a0df1072f",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "assumptions-on-1440.png",
+      "url": "/assumptions",
+      "agent": "on",
+      "heading": "The assumptions that decide whether an agent is needed",
+      "sha256": "c612dc81b1c18e38948be8872caeaaedba3eb5dc5c6c37dc71ff13f0beda2d23",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "architecture-on-1440.png",
+      "url": "/architecture",
+      "agent": "on",
+      "heading": "Technical architecture and the path to production",
+      "sha256": "bc98c916cabbbfa2932b855afcc7a3a1b3ec354504bb90fda544da5ef0f1dfa4",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24107-pack-on-1440.png",
+      "url": "/case/EX-24107",
+      "agent": "on",
+      "heading": "Operator case pack: Valid and complete",
+      "sha256": "4e635f195a2f0eb8f790605cbe14b4817236d5019e39d77e89e744174a998dc8",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24107-trace-on-1440.png",
+      "url": "/case/EX-24107/trace",
+      "agent": "on",
+      "heading": "How the case was built: Valid and complete",
+      "sha256": "cbcf4b56fa1bb797141e8a920fa75afb5550a649495bdbec5303ff6949ad0cb8",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24107-record-on-1440.png",
+      "url": "/case/EX-24107/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Valid and complete",
+      "sha256": "8cf93fda7cc589d8d39a869f3c9e7e3da3a507de9ba966156c97e43cdbaa85f1",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24112-pack-on-1440.png",
+      "url": "/case/EX-24112",
+      "agent": "on",
+      "heading": "Operator case pack: Missing or insufficient information",
+      "sha256": "ee04b98038f7bcb184051ecd7c34eb4669c567d962736b7d8b6d94c3bb535f7c",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24112-trace-on-1440.png",
+      "url": "/case/EX-24112/trace",
+      "agent": "on",
+      "heading": "How the case was built: Missing or insufficient information",
+      "sha256": "c94f4514f05ca39262c2866856c82d319f51e071168af53f1f8cf0a8f2068921",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24112-record-on-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "3ef49aa645a1a8f1c503747af83085feab28fd3efdc4b0f74bf9e18e052b8325",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24119-pack-on-1440.png",
+      "url": "/case/EX-24119",
+      "agent": "on",
+      "heading": "Operator case pack: Evidence conflict",
+      "sha256": "9a35ee4b0b633ff56426586d8a8df8413f97283c106c9254e58fcebab0c0e0d7",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24119-trace-on-1440.png",
+      "url": "/case/EX-24119/trace",
+      "agent": "on",
+      "heading": "How the case was built: Evidence conflict",
+      "sha256": "c2485154d75a4655183cdf6636a782606fbed43911f1e6a90882bb6d5a55aec2",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24119-record-on-1440.png",
+      "url": "/case/EX-24119/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Evidence conflict",
+      "sha256": "c3212f96da269c59f65ccdb7d55d0920e57a63f71a885050371f3df7b6d43471",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24123-pack-on-1440.png",
+      "url": "/case/EX-24123",
+      "agent": "on",
+      "heading": "Operator case pack: Deliberate failure and abstention",
+      "sha256": "7345b076eac8ab03c908a1d490f1fecf8fda38cfa9734c9bd9f3262de93af333",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24123-trace-on-1440.png",
+      "url": "/case/EX-24123/trace",
+      "agent": "on",
+      "heading": "How the case was built: Deliberate failure and abstention",
+      "sha256": "e3ab265e9dbd5df9cfc352422849b1fce9e4cdf0899c80f493912d0cb32d9de3",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24123-record-on-1440.png",
+      "url": "/case/EX-24123/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Deliberate failure and abstention",
+      "sha256": "9a8ce019ab0fb78ddfa305458e9d5969ebb58d8c68f6d354d2c6a4a21b98dceb",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24101-pack-on-1440.png",
+      "url": "/case/EX-24101",
+      "agent": "on",
+      "heading": "Operator case pack: Cleared by rules (no model call)",
+      "sha256": "2c0309586ea13ac1232aab83a111b802e8cf2bd5370c3e344e7381390ddca343",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24101-trace-on-1440.png",
+      "url": "/case/EX-24101/trace",
+      "agent": "on",
+      "heading": "How the case was built: Cleared by rules (no model call)",
+      "sha256": "b25b4cc11f843b2d7d8227e02d378ea621f37353fb1f2cfb56c9663c308f6bfb",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24101-record-on-1440.png",
+      "url": "/case/EX-24101/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Cleared by rules (no model call)",
+      "sha256": "32095c63c8b5f7f9e18c25d0c3bd40213bfbf57cb7ee0aae469f07ad4f5cece4",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24088-pack-on-1440.png",
+      "url": "/case/EX-24088",
+      "agent": "on",
+      "heading": "Operator case pack: Human decision recorded",
+      "sha256": "54474136c0c2f3c625837034338476664b44cde81a5b436827bdbbcafac19a48",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24088-trace-on-1440.png",
+      "url": "/case/EX-24088/trace",
+      "agent": "on",
+      "heading": "How the case was built: Human decision recorded",
+      "sha256": "69cbe8f9472bef805c477079fb19524848f96c7ad38414274a2b8d55ec21972f",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "EX-24088-record-on-1440.png",
+      "url": "/case/EX-24088/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Human decision recorded",
+      "sha256": "056bf957ddf797ee25da5e975f784121e2d0354b64b5619bccbc7d4095a69065",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "not-found-on-1440.png",
+      "url": "/not-a-route",
+      "agent": "on",
+      "heading": "Page not found",
+      "sha256": "8976dc8c302fb76ab5781e0099e8be9938600ec7ee62420aaf9db5410cb4982b",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-submitted-on-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-1",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "a9a35e72677bf5acf6837e15c27789622cbe1e20c71551541267533f16c3e893",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-in_review-on-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-2",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "d9f2cb87884c10dfc3c8143b9589bad95beab07aba968b36dc427d8afa021ae8",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-information_requested-on-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-3",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "a15488cfef55a2b24c5931873b8fb394433493407c67e05c619f4aad72e8e8eb",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-referred_back-on-1440.png",
+      "url": "/pharmacy/claims?caseId=EX-24112",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "86f5c367b676df654a298e3a0e68747b70a319ee2a94728533f2eead8f193f52",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-resubmitted-on-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-5",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "f4d5da89cde2e974c845714e5e578f9f5f4dd0f489267594a18c2258815af4d7",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-paid-on-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-6",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "a65f04715b235c8cb59c51a8dc97f4cafe232044984c1b85f9309cef4dc2de71",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "claims-detail-escalated-on-1440.png",
+      "url": "/pharmacy/claims?caseId=SYN-FQ123-7",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "7012a9b5e6c876bc558a8e05c46bbf57f43eb8431817994f7444c3d760f6b812",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "pharmacy-a-on-1440.png",
+      "url": "/pharmacy",
+      "agent": "on",
+      "heading": "Pharmacy pre-submission check",
+      "sha256": "6caa08b8a0dc888f6add62ff1314169d7d0c8664054c6d65d29385e80f6d0059",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "pharmacy-d-on-1440.png",
+      "url": "/pharmacy",
+      "agent": "on",
+      "heading": "Pharmacy pre-submission check",
+      "sha256": "d10bcbe565319aaf1c50804dba57c8c058cbe456ae700cdcda80daed645ab4e5",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "operations-menu-on-1440.png",
+      "url": "/",
+      "agent": "on",
+      "heading": "The referred-back subset",
+      "sha256": "05bf7687f853b43f8d6ad80c0a8c099f78e74996a7089e89371d9990f68f1602",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "reset-dialog-on-1440.png",
+      "url": "/",
+      "agent": "on",
+      "heading": "The referred-back subset",
+      "sha256": "d00cee188ea1d3a521d3cb90313dcd83933298892b4e8849461562d03e6ae95c",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "queue-today-on-1440.png",
+      "url": "/queue",
+      "agent": "on",
+      "heading": "NHSBSA exception queue",
+      "sha256": "501c1fcde88945d2b95adc47de52557137d8b5b3a0cb542383c3313506c473ba",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-1-submitted-on-1440.png",
+      "url": "/pharmacy/claims?caseId=EX-24112",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "04bca700dd70e7c58dd773e8467522bd50b1d8154544801ef7bb2737a2d64055",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-2-review-on-1440.png",
+      "url": "/case/EX-24112",
+      "agent": "on",
+      "heading": "Operator case pack: Missing or insufficient information",
+      "sha256": "025028327bb964e2b0e442f6dea661c322f800446747506948edf2809d969682",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-3-referral-record-on-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "64ce296c9bede7ec6f62c7366533bc369151c50087a0a885c6d437e9e7d296da",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-july-sufficient-on-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "063b1d8bce2c0e2c96f581ad7de0a7b31614d973015f00907d15e9e4b74fea4e",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-4-referral-received-on-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "9086c0b2402aeccd6f97db2b531be4149868f66481934e272521837a93dcc1c7",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-5-corrected-on-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "466be9d441e3adc1027ff39fd617050f8428bb6262bdfe315b7e4554e36b87c4",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-6-resubmitted-on-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "74a6176ae5f300a0aaafcd81185f102c725e5b208911b89129e0641fbb8a3a9e",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-7-human-record-on-1440.png",
+      "url": "/case/EX-24112/record",
+      "agent": "on",
+      "heading": "Decision and audit record: Missing or insufficient information",
+      "sha256": "2bd5bab560a2fad50e22921f7689782bed2e9154e1cb4202f086af184ab83334",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    },
+    {
+      "filename": "roundtrip-8-synthetic-paid-on-1440.png",
+      "url": "/pharmacy/claims?case=EX-24112",
+      "agent": "on",
+      "heading": "Pharmacy claims",
+      "sha256": "ace8b4e0760981e893025abc2b7e66c6111cd3676c498882b839deafd71c3b09",
+      "horizontalOverflow": false,
+      "axeViolations": [],
+      "browserErrors": []
+    }
+  ],
+  "failures": [],
+  "runtimeError": null
+}
