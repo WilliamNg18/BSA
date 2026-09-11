@@ -4,6 +4,21 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-11
 ---
 
+## Issue 27 independent scene count-in stream
+
+Based on main 8c05b18. The scene now composes a local numeric count-in using
+the existing derived estimates, UK formatting and two-second presentation
+duration. Final accessible values remain stable; Off/reduced motion are
+immediate and stale frames are cancelled on input changes, Off/Reset and
+unmount. No public figures, source qualifications, lifecycle, domain arithmetic,
+shared number helper or T26-owned navigation files changed.
+
+Initial implementation: check passed; all 565 units in nineteen files passed
+with two workers, including twelve new count-in cases. Targeted production
+browser tests are being prepared; no local browser has been started and no
+browser acceptance is claimed. Draft PR and merge remain coordinator-owned
+acceptance boundaries; Tasks 8-13 remain unchecked.
+
 ## Checklist
 
 ### Issue 26 implementation stream

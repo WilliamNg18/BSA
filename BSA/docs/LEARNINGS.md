@@ -4,6 +4,19 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Issue 27 count-in isolation
+
+The scene's previous AnimatedNumber only faded a final string. A scene-local
+frame controller can interpolate the existing derived value without changing
+the shared formatter, calculator or store. Check media state inside each frame
+as well as on preference-change events to avoid one stale moving frame.
+
+This worktree initially lacked TypeScript, so the first check stopped with
+`tsc` not found. Restoring the existing lockfile with npm ci added no dependency
+or manifest change. The subsequent check passed and 565 units passed with two
+workers, including twelve count-in cases. Browser acceptance awaits the
+coordinator's resource slot; unit interpolation is not browser evidence.
+
 ## 2026-09-11: Budget removal and acceptance evidence
 
 The latest user direction removes byte budgets completely, including the
