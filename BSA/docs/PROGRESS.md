@@ -22,7 +22,7 @@ ms.date: 2026-09-11
 
 ## Current handoff: 11 September 2026
 
-### Issue 15: Stream S matrix passed; final control fixes in progress
+### Issue 15: Stream S scoped acceptance passed; coordinator merge pending
 
 Production browser servers now enforce the emitted strict self-only CSP.
 The bounded scrollbar adapter fixes the demonstrated Reset inline-style block;
@@ -47,10 +47,27 @@ the remaining failures belong to the R-owned legacy root/focus regressions.
 The healthy one-worker local duplicate was stopped once this completed,
 exact-revision evidence was available; its partial results are not added.
 
-Final AppShell Dismiss/Restore focus and Reset reduced-motion fixes remain under
-verification. Their tests bring the inventory to 185, without changing the 247
-matrix audit count. Queue/pharmacy/claims chapter labels now derive from shared
-tour metadata, ready for T's eight-chapter update without duplicate claims prose.
+Final AppShell Dismiss/Restore focus and Reset reduced-motion fixes were verified
+on `32b5342`. The affected 40-test run returned 38 passed and two 30-second
+timeouts in 15.1 minutes. Only those two existing tests were rechecked on the
+same artifact, one worker and unchanged limits: both passed in 1.6 minutes.
+The original failures remain recorded: B's manual-case flow and the 768px dark
+header. The coordinator observed 100% host CPU; this is context, not a waiver
+or proof of a product flake. No tests were weakened or quarantined.
+
+All nine dedicated keyboard checks passed, including actual animation-name
+assertions and tour focus restoration. Their seven unrestricted axe reports
+and nine CSP reports contain zero violations. These are follow-up checks on
+the final control revision, not additional unique matrix screens. The other
+31 checks cover nine dead-control regressions, fourteen header width/theme
+combinations, seven canonical case checks and one repeated-view crash test.
+The dedicated inventory is now 185 tests; its 247 matrix audits are unchanged.
+
+Final check and 557 units in 19 files passed. The subsequent main rebase is
+documentation-only, with no change to the validated runtime or test source.
+Port 4183 was confirmed released. Queue/pharmacy/claims chapter labels derive
+from shared tour metadata, ready for T's eight-chapter update without duplicate
+claims prose.
 Tasks 8-13 remain unchecked; no full WCAG, manual screen-reader or hosted
 acceptance is claimed.
 Post-rebase check and 557 units in 19 files pass on main `b23e478`; the lower
@@ -58,6 +75,23 @@ count reflects main's seven removed budget tests. Playwright `--list` confirms
 183 tests after removing accidental nested duplication of the phone matrix.
 Already-built artifact diagnostics also enforce the header; only the explicitly
 development-server configuration excludes the production-only acceptance spec.
+
+Reproducible final commands from `BSA`:
+
+```powershell
+npm run check
+npm test -- --reporter=dot
+$env:PLAYWRIGHT_PORT = "4183"
+npx playwright test accessibility-final.spec.ts controls.spec.ts tour.spec.ts routes.spec.ts case-presentation.spec.ts --config tests\e2e\production-artifact.config.ts --workers=1 --reporter=line --grep "accessibility-final.spec.ts.*keyboard|controls.spec.ts|tour.spec.ts.*tour header|routes.spec.ts.*all case views|case-presentation.spec.ts.*(manual trace and raw pack|D keeps)"
+npx playwright test case-presentation.spec.ts tour.spec.ts --config tests\e2e\production-artifact.config.ts --workers=1 --reporter=line --grep "case-presentation.spec.ts.*EX-24112 manual trace|tour.spec.ts.*tour header 768 dark"
+```
+
+The completed Linux matrix used the default header-enforced CI command:
+`npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine`.
+The dedicated equivalent is `npm run test:a11y -- --workers=1`.
+Raw CI artifact, extracted counts, local first-run traces and unchanged recheck
+logs are retained in the session artifacts. The PR includes a keyboard-focus
+viewport screenshot; no new hosted-environment claim is made.
 
 The latest policy overrides the older execution order below: Azure Static Web
 Apps Free is the only host, every active browser configuration uses `/`, and

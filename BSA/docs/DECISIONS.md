@@ -321,3 +321,12 @@ AppShell remains the single owner of the claims chapter heading and prose.
 Derive chapter numbers/titles from shared tour stops and look up prose by that
 number. T's referral-cycle component keeps only its distinct flow subheading.
 This avoids duplicated chapter copy and hardcoded 5/4/6 numbering after T merges.
+
+Complete affected-control acceptance without rerunning the full matrix: the
+40-test final-artifact run passed 38 and timed out twice at the existing
+30-second limit. Recheck only those two on the same artifact and unchanged
+configuration; both pass. Retain both outcomes and their traces rather than
+reporting a clean 40-test first run. No assertion, timeout or CI gate is weakened.
+Observed CPU saturation alone does not establish a product-specific flaky test.
+The nine owned keyboard checks, seven follow-up axe reports and nine CSP reports
+all pass on the final control revision. Release the owned server before handoff.

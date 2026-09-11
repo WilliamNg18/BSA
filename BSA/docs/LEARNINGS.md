@@ -307,3 +307,14 @@ reduced-motion preference actually suppresses CSS animation. Add observable
 keyboard/focus and computed-animation assertions. Preserve the established
 initial tour-heading focus contract; the skip-link test must navigate to the
 link by keyboard from that state rather than assume the first Tab starts at body.
+
+Final affected acceptance was 38 passed / two overall-test timeouts, followed by
+two unchanged isolated passes. Keep those separate results, not a fabricated
+single-run 40/40 claim. The timed-out B case and 768px dark header passed without
+source changes, assertion changes or longer limits. Retain the initial traces
+and the host-saturation observation without declaring an unproven product flake.
+
+All final dedicated keyboard cases passed, including computed `animationName`
+of `none` under reduced motion and `enter` under normal motion, modal
+containment/cleanup, and focus after Dismiss/Restore tour. The seven final axe
+audits and nine final CSP reports are rechecks, not new unique matrix surfaces.
