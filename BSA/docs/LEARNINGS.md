@@ -371,3 +371,19 @@ inspection found no error-like browser events; slow setup/teardown alone does
 not prove a flake or excuse the failed tests. The owned preview stopped and
 port 4193 had no remaining listener. Do not mark the PR ready until these
 failures are resolved or the coordinator accepts explicit further evidence.
+
+## 2026-09-11: Issue 20 exact failure rerun and bounded quarantine
+
+One coordinator-authorised rerun of exactly the three failed instances passed
+3/3, exit 0 in 2.8 minutes, with unchanged application, assertions and timeouts.
+Retain the first 26/29 outcome and separate rerun; do not claim a single-run
+29/29 pass. The first run produced ten unique axe reports with zero violations;
+the retry produced two more zero-violation reports for the unfinished captures.
+Port 4193 was confirmed released after each run; R's port was untouched.
+
+Coordinator-reported CPU saturation and the exact unchanged rerun support a
+bounded timing-flakiness follow-up, not an assertion that every failure was
+environmental. Issue #34 tracks investigation and removal criteria. Apply
+@quarantine only to assistance complete-A/global-Off/local-available and the
+pharmacy D-Off/light and B-On/light matrix instances. All three new Issue20
+guards and the other 23 focused cases remain blocking; no assertion is removed.

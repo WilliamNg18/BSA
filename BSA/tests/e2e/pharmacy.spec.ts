@@ -9,7 +9,9 @@ const scenarios = [
 ];
 
 for (const theme of ["light", "dark"] as const) for (const on of [false, true]) for (const scenario of scenarios) {
-  test(`Task4 ${scenario.id} agent=${on} ${theme}: receipt, timeline, all-rule axe`, async ({ page }, info) => {
+  // #34: only these two shared-load navigation/axe timeout instances.
+  const quarantine = theme === "light" && ((!on && scenario.id === "D") || (on && scenario.id === "B"));
+  test(`Task4 ${scenario.id} agent=${on} ${theme}: receipt, timeline, all-rule axe`, { tag: quarantine ? ["@quarantine"] : [] }, async ({ page }, info) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
     await page.setViewportSize({ width: theme === "dark" ? 360 : 1440, height: 1000 });
     await page.goto("pharmacy");
