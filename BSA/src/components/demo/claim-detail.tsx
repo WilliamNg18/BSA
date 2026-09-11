@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
+import { ClaimsResubmissionComparison } from "@/components/demo/claims-resubmission-comparison";
 import { useAppStore } from "@/lib/store";
 import { checkPharmacy, pharmacyDateCorrection, pharmacySnapshot, type PharmacyCheck } from "@/lib/domain/pharmacy-check";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
@@ -66,7 +67,8 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
         {correction !== text && <div className="space-y-2"><p>Append dispensing date: {correction.slice(text.trimEnd().length).trim()}</p>
           <Button variant="outline" onClick={() => { setText(correction); setChecked(null); }}>Apply suggested correction</Button>
         </div>}
-      </section> : <p>Manual correction. No advisory checks performed.</p>}
+      </section> : null}
+      <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
       <Button onClick={() => act(() => resubmit(c.id, text, snapshot()), "Resubmitted for human re-check.")}>Resubmit claim</Button>
     </section>}
     {row.state === "information_requested" && <section aria-label="Requested confirmation" className="space-y-3">
