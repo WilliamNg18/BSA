@@ -19,7 +19,8 @@ let completed = false;
 const surfaces = [
   ["overview-scene", "/#scene"],
   ["overview-month", "/#month"],
-  ["overview-pipeline", "/#cases"],
+  ["overview-pipeline", "/#pipeline"],
+  ["overview-four-cases", "/#cases"],
   ["overview-two-places", "/#two-places"],
   ["overview-close", "/#close"],
   ["pharmacy-b", "/pharmacy"],
@@ -31,7 +32,8 @@ const surfaces = [
   ["not-found", "/not-a-route"],
 ];
 const states = ["submitted", "in_review", "information_requested", "referred_back", "resubmitted", "paid", "escalated"];
-const expectedCaptureCount = 2 * (surfaces.length + states.length + 2 + 3 + 8) + 1;
+const controlStates = ["operations-menu", "reset-dialog", "queue-today", "queue-compare"];
+const expectedCaptureCount = 2 * (surfaces.length + states.length + 2 + controlStates.length + 8) + 1;
 await mkdir(directory, { recursive: true });
 
 function failed(entry) {
@@ -141,9 +143,9 @@ try {
         await capture(page, `pharmacy-${name}`, enabled, errors);
       });
     }
-    for (const overlay of ["operations-menu", "reset-dialog", "queue-today"]) {
+    for (const overlay of controlStates) {
       await session(async (page, errors) => {
-        await page.goto(`${baseURL}${overlay === "queue-today" ? "/queue" : "/"}`);
+        await page.goto(`${baseURL}${overlay.startsWith("queue-") ? "/queue" : "/"}`);
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
         if (overlay === "operations-menu") {
           await page.getByRole("navigation", { name: "Primary", exact: true }).getByRole("button", { name: "Operations", exact: true }).click();
@@ -151,9 +153,13 @@ try {
         } else if (overlay === "reset-dialog") {
           await page.getByRole("button", { name: "Reset demo", exact: true }).click();
           await expect(page.getByRole("alertdialog")).toBeVisible();
-        } else {
+        } else if (overlay === "queue-today") {
           await page.getByRole("button", { name: "Today", exact: true }).first().click();
           await expect(page.getByRole("dialog")).toBeVisible();
+        } else {
+          await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
+          await page.getByRole("region", { name: "Queue controls", exact: true }).getByRole("button", { name: "Compare", exact: true }).click();
+          await expect(page.getByRole("region", { name: "Today versus With agent", exact: true })).toBeVisible();
         }
         await capture(page, overlay, enabled, errors);
       });
