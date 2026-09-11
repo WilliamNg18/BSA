@@ -609,3 +609,19 @@ summary locator ambiguous. Both were capture-harness issues, not product bugs.
 Initial default-worker Vitest execution timed out one budget-CLI test at 5,000ms
 with 559 passing. A bounded two-worker rerun passed all 560 tests. Preserve both
 outcomes; do not change application tests to hide host contention.
+
+## 2026-09-11: Stream V numerical distinctions (#25)
+
+Projected referrals use rounded deficient built and deficient abstained shares.
+Risk instead contains every abstention plus deficient built items. Both use
+the same synthetic cohorts, but they are not interchangeable totals. `V` is a
+volume and `g`/`j` are durations, not additional cohorts.
+
+The monthly calculator deliberately keeps `V * j` on both sides. The queue day
+shares one operator's elapsed allowance between built and abstained work; its
+pharmacy/code-cleared cohorts add no judging time. Shared inputs do not imply
+identical denominators or a measured productivity effect.
+
+The reason guard also applies to recommended referrals, information requests
+and escalations, not only overrides or manual decisions. Check both the pack
+label predicate and store validation before describing a numerical threshold.

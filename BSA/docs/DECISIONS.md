@@ -513,3 +513,18 @@ Lighthouse, word counts and screenshot differences are informational only.
 Functional and accessibility checks still block. Absence of a token does not
 block local work; document owner setup in DEPLOYMENT.md without inventing a
 selected subscription, provisioned resource or live URL.
+
+## 2026-09-11: Stream V numerical narration follow-up (#25)
+
+Count semantic claim families, not repeated numbers, route IDs or list numbering.
+Review 33 families in the four owned current narrative documents against source
+definitions and existing evidence. Correct four narration claims: explicit
+unverified public-figure framing, duration versus cohort units, projected
+referrals versus all-abstention risk, and the full eight-character reason rule.
+The other 29 remain qualified and supported; no application discrepancy or
+deferred narration fix requires another issue.
+
+Keep the monthly calculator's fixed-reference judging separate from the queue's
+single-operator day projection. Neither model measures savings or accuracy.
+Public-source validation remains explicitly unverified, not silently converted
+into a measured fact. No new browser run, source edit or test edit is needed.

@@ -20,10 +20,11 @@ correct and resubmit it from the pharmacy, then review it again. The final
 `paid` label is synthetic and attributed to existing pricing, not an agent
 payment decision. Toggling assistance never advances the lifecycle.
 
-The documentary context includes approximately 1.1 billion annual items and
-85,000 monthly referrals. Referrals are a subset, not the total exception queue.
-These are attributed public figures, not independently verified operational
-measurements. Monthly publication does not establish monthly rule changes.
+The documentary context includes approximately 1.1 billion primary-care items
+per year in England (reporting year unspecified) and approximately 85,000 monthly
+referred-back items (2024/25 context). Referrals are a subset, not the total
+exception queue. These are attributed public figures, not independently verified
+operational measurements. Monthly publication does not establish monthly rule changes.
 Calculator durations, cohorts and benefits are editable demonstration assumptions.
 
 | Route | Screen |
