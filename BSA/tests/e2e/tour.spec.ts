@@ -152,6 +152,62 @@ for (const enabled of [true, false]) {
   }
 }
 
+test("mobile navigation closes without animation events after live reduced-motion changes", async ({ page }) => {
+  await page.setViewportSize({ width: 960, height: 900 });
+  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "no-preference" });
+  await page.goto("./#scene");
+  const trigger = page.getByRole("button", { name: "Open navigation", exact: true });
+  const content = page.locator('[data-slot="sheet-content"]');
+  const overlay = page.locator('[data-slot="sheet-overlay"]');
+
+  for (const action of ["Escape", "Close", "Pharmacy check"]) {
+    await trigger.focus();
+    await trigger.press("Enter");
+    await expect(content).toHaveAttribute("data-state", "open");
+    // Normal opening animation remains; preference changes apply to this mounted sheet.
+    await expect(content).toHaveCSS("animation-name", "enter");
+    await expect(content).toHaveCSS("animation-duration", "0.5s");
+    await expect(overlay).toHaveCSS("animation-name", "enter");
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    for (const layer of [content, overlay]) {
+      await expect(layer).toHaveCSS("animation-name", "none");
+      await expect(layer).toHaveCSS("transition-duration", "0s");
+    }
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await expect(content).toHaveCSS("animation-name", "enter");
+    await expect(overlay).toHaveCSS("animation-name", "enter");
+    // Deterministically withhold animation completion, as in a stalled background tab.
+    // Closing must use Presence's no-animation unmount, not wait for a timeout/event.
+    await page.locator('[data-slot="sheet-content"], [data-slot="sheet-overlay"]').evaluateAll((layers) => {
+      for (const layer of layers) (layer as HTMLElement).style.animationPlayState = "paused";
+    });
+    if (action === "Escape") await page.keyboard.press("Escape");
+    else if (action === "Close") await content.getByRole("button", { name: "Close", exact: true }).press("Enter");
+    else await content.getByRole("link", { name: action, exact: true }).press("Enter");
+
+    // Raw selectors include hidden/closed layers; an inert remnant cannot pass.
+    await expect(content).toHaveCount(0);
+    await expect(overlay).toHaveCount(0);
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("body")).not.toHaveCSS("pointer-events", "none");
+    await expect(page.locator("body")).not.toHaveAttribute("data-scroll-locked");
+    await expect(page.locator('#root[aria-hidden="true"], #root[inert], #root [inert]')).toHaveCount(0);
+    if (action !== "Pharmacy check") await expect(trigger).toBeFocused();
+    else await expect(page).toHaveURL(/\/pharmacy$/);
+    const flag = page.getByRole("banner").getByRole("switch");
+    await flag.focus();
+    await expect(flag).toBeFocused();
+    const enabled = await flag.isChecked();
+    await flag.press("Space");
+    await expect(flag).toBeChecked({ checked: !enabled });
+    await expect(flag).toBeFocused();
+  }
+  // Keep the shared helper's strict zero-dialog assertion and exercise it again.
+  await navigatePrimary(page, "Exception queue");
+  await expect(content).toHaveCount(0);
+  await expect(overlay).toHaveCount(0);
+});
+
 test("documentary scene figures are invariant; A–D match runAgent and off is neutral manual work", async ({ page }) => {
   await page.goto("./#scene");
   await page.getByRole("banner").getByRole("switch").setChecked(true);

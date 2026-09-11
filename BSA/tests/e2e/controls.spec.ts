@@ -116,7 +116,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const rows = page.locator("tbody > tr");
+  const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
   await expect(rows).toHaveCount(12);
   const stateCells = rows.locator("td:nth-child(6)");
   const states = await stateCells.allTextContents();
@@ -179,9 +179,10 @@ test("product header retains working controls without presentation UI", async ({
 
 test("queue state filters are interactive", async ({ page }) => {
   await page.goto("queue");
-  await expect(page.locator("tbody > tr")).toHaveCount(12);
+  const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
+  await expect(rows).toHaveCount(12);
   await page.getByRole("radio", { name: "Agent abstained", exact: true }).click();
-  await expect(page.locator("tbody > tr")).toHaveCount(2);
+  await expect(rows).toHaveCount(2);
   await page.getByRole("radio", { name: "All", exact: true }).click();
-  await expect(page.locator("tbody > tr")).toHaveCount(12);
+  await expect(rows).toHaveCount(12);
 });

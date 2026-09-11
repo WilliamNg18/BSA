@@ -53,3 +53,42 @@ Only new cross-stream tests may be tagged pending-integration and temporarily
 skipped before integration. Never weaken or skip existing regression tests.
 Tasks 5-7 lack a current detailed brief in the repository; Task 4 remains the
 only implemented Stream A increment until their exact requirements are available.
+
+## 2026-09-10: Task 5 projections remain separate from evidence
+
+The user supplied the Task 5 brief after the ownership freeze. Keep twelve
+canonical/filler examples pinned independently of exact monthly model counts.
+Generated rows use a deterministic rotated cohort rank with no agent calls or
+fabricated citations. Reject mapping synthetic cohort outcomes onto canonical
+identities, which could misrepresent D as built or E as agent-assisted.
+
+Use bounded native-scroll segments plus accessible logical jumps rather than a
+billion-row spacer exceeding browser physical scroll limits. Sweeps retain only
+visible-row projections. New queue memory follows the existing reset adapter;
+it never calls throwing lifecycle methods or writes actual decisions.
+
+## 2026-09-10: Task 5 single-operator day capacity
+
+The day uses one 540-minute budget for built and abstained cohorts together,
+allocated proportionally and rounded down. Rule-cleared work bypasses operator
+review; pharmacy-caught work is outside the queue. Reject separate full-day
+budgets for each cohort and counting code clearances as human decisions.
+Keep calculator judging unchanged; its full-reference comparison is not the
+day's volume-capped projected operator throughput. Both denominators are labelled.
+
+Stream D retains ownership of the inherited "Simulation planned" shell notice.
+Flag its contradiction in progress rather than editing or concealing that text.
+
+## 2026-09-11: User-authorised mobile sheet ownership exception
+
+The user explicitly permits Stream A to repair only Stream D's mobile navigation
+sheet exit/Presence race while completing dirty Task 5. The header sheet disables
+closing animations on content and overlay, with zero closing transition duration.
+Normal opening animations remain; live reduced-motion preference disables them.
+An optional overlay class pass-through leaves other sheets' defaults unchanged.
+
+Retain Radix Presence and its focus/scroll cleanup. Reject conditional removal of
+SheetContent on mobileOpen, forceMount, hidden inert remnants and relaxed dialog
+count assertions. No frozen store, routes, case header, claims, rail or other
+Stream D behaviour is changed. The planned-simulation copy handoff still applies.
+This exception authorises no Git, account, deployment or Task 6 work.

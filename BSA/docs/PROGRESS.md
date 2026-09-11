@@ -9,8 +9,8 @@ ms.date: 2026-09-10
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
-* [x] Task 4: published increment a131bad (user-reported); P1 correction passes fresh local gates, follow-up commit pending
-* [ ] Task 5
+* [x] Task 4: a131bad and P1 correction 7bdc199; supplied Azure/CI gate PASS
+* [x] Task 5: bounded virtual month, queue sweep and shared-clock day projections
 * [ ] Task 6
 * [ ] Task 7
 * [ ] Task 8: Shared case lifecycle and append-only history in the store
@@ -21,6 +21,73 @@ ms.date: 2026-09-10
 * [ ] Task 13: Verification of Tasks 8 to 13 in both toggle states (Vitest, Playwright, axe, screenshots)
 
 ## Current gate and contract freeze
+
+Task 5 starts on Stream A from Task 4 correction 7bdc199. The supplied handoff
+confirms check PASS, 436 units, 409 browsers, Azure PASS, 17 hosted checks and
+CI 34535055333 SUCCESS. Both a131bad and 7bdc199 remain published history.
+These remote results are user-supplied, not independently rerun in Task 5.
+
+## Task 5 Stream A local implementation and pending verification
+
+Queue-only virtual month, manual evidence dialogs, visible-row sweeps and shared
+08:00-17:00 day comparisons are implemented. The new queue memory store follows
+the pharmacy adapter's three-slice Reset detection. Frozen store, lifecycle,
+routes, case navigation, shell/rail copy and claims remain untouched. The user
+explicitly authorised one Stream D exception: the mobile navigation sheet's
+exit/Presence race, its overlay and focused regression coverage only.
+
+The month uses calculator volume through one billion, deterministic on-demand
+cohorts, at most ten mounted model rows and 1,000-position physical segments.
+Logical scroll counters, direct jumps and keyboard controls reach the final item.
+All twelve seed examples remain independently pinned, explicitly excluded from
+model cohort counts. At volumes below twelve, extra examples are individually
+labelled outside projection. No N-sized allocation or N-sized engine sweep occurs.
+
+Generated rows contain generic model classification, not invented rule evidence.
+Only existing canonical packs use the existing agent engine; E remains code-only.
+Sweeps snapshot only visible rows, retain at most 32 items, animate six phases
+over two seconds, and never write recorded state. Off, input regeneration, route
+exit and Reset cancel presentation work. D never becomes case-ready. Today
+dialogs expose seven manual tasks; full manual case workflows remain Task 6.
+
+Day comparisons use the same twelve examples, a shared clock, Pause, Step and
+Jump controls, and two columns at 1280px or wider. Reduced motion is paused
+step-through. Aggregate Today capacity is volume-capped floor(540 / (g + j)).
+Built and abstained work share one proportional time budget, rounded down;
+code-cleared work excludes review and judging. Historical decisions remain
+read-only. Calculator judging keeps its constant reference denominator; day
+judging counts only projected operator work. These are explicitly different.
+
+First direct full verification: check exit 0, 475 units in eleven files passed,
+430 browsers passed and two failed, full browser exit 1. One Today dialog opened
+its first pain tooltip automatically, intercepting Escape; initial focus now
+targets the dialog heading. The existing chapter-three tooltip assertion raced
+focus-induced scrolling; it now scrolls first while retaining all assertions.
+The next full run had 434 passes and one failure among 435 tests: the 960px dark
+header retained closed sheet content beyond five seconds. Three isolated repeats
+passed without a fix. Under the explicit ownership exception, navigation-only
+content and overlay now use no closing animation and zero closing duration.
+Radix still owns unmount, focus restoration and scroll cleanup; opening motion
+remains unless reduced motion is requested. Other sheets retain their defaults.
+
+Six repeats each of the original failure and a new live-motion/paused-animation
+regression passed: 12 tests in 51.8 seconds, exit 0. The regression checks Escape,
+Close, navigation, removal of both layers, lock cleanup and external keyboard
+focus. The shared navigatePrimary helper still requires zero mounted dialogs.
+Check passed (exit 0), and 475 units in eleven files passed (exit 0). The complete
+436-test production Chromium run is pending; Task 5 is not yet ticked.
+
+### Stream D integration handoff
+
+The inherited shell still visibly says "5. The queue · Simulation planned" and
+"Workload simulation remains planned". This contradicts Task 5's local interface.
+Stream D must update its owned chapter-five shell/rail copy and corresponding
+tests during integration. Stream A does not hide the notice with CSS or edit
+shell ownership. Current screenshots intentionally retain it. No Task 6-13,
+PR, Git/account action, rebase or deployment is performed; the main agent owns
+the later contract-required rebase before PR creation.
+
+## Historical contract-freeze gate
 
 Task 3 commit 96bf0973724c0ceb34d2532f2fc95dfd88f534c4 is confirmed from local
 main. Final check, 386 units and 386 production browser tests passed. The user

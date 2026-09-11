@@ -64,7 +64,11 @@ export function TopNav({ onReset }: { onReset: () => void }) {
           </div>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild><Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open navigation"><Menu aria-hidden="true" /></Button></SheetTrigger>
-            <SheetContent className="overflow-y-auto">
+            {/* Close without waiting for animationend; retain Radix focus/scroll cleanup. */}
+            <SheetContent
+              className="overflow-y-auto data-[state=closed]:animate-none data-[state=closed]:duration-0 motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=open]:duration-0"
+              overlayClassName="data-[state=closed]:animate-none data-[state=closed]:duration-0 motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=open]:duration-0"
+            >
               <SheetHeader><SheetTitle>Navigation</SheetTitle><SheetDescription>Explore the synthetic demonstration.</SheetDescription></SheetHeader>
               <div className="space-y-5 px-4 pb-6">
                 {groups.map((group) => <section key={group} aria-label={group}>

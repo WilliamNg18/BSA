@@ -142,6 +142,9 @@ test("pain markers provide keyboard text and do not resolve abstention", async (
   // Await the route's initial focus effect before moving keyboard focus away.
   await expect(page.locator("h1[data-tour-heading]")).toBeFocused();
   const marker = page.locator('[data-case="B"] [data-pain-marker]');
+  // Focusing an offscreen trigger scrolls it, which dismisses its Radix tooltip.
+  // Finish scrolling first, then exercise the same keyboard tooltip assertions.
+  await marker.scrollIntoViewIfNeeded();
   await marker.focus();
   await expect(marker).toBeFocused();
   const tooltip = page.getByRole("tooltip", { name: "Evidence needs review", exact: true });
@@ -151,3 +154,16 @@ test("pain markers provide keyboard text and do not resolve abstention", async (
   await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
   await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
 });
+
+for (const enabled of [false, true]) {
+  test(`Task5 expanded queue and Today dialog copy cap On=${enabled}`, async ({ page }, info) => {
+    await page.goto("queue"); await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
+    await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
+    const audits = [{ state: "expanded-day", ...await page.evaluate(auditProse) }];
+    await page.locator('[data-queue-seed="EX-24104"]').getByRole("button", { name: "Today", exact: true }).click();
+    audits.push({ state: "today-dialog", ...await page.evaluate(auditProse) });
+    await captureJson(info, "task5-copy", audits);
+    expect(audits.flatMap((audit) => audit.failures)).toEqual([]);
+  });
+}

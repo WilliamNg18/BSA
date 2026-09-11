@@ -7,7 +7,7 @@ test("queue hides all filler recommendations without changing evidence, states o
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-  const rows = page.locator("tbody > tr");
+  const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
   await expect(rows).toHaveCount(12);
   const states = rows.locator("td:nth-child(6)");
   const times = rows.locator("td:nth-child(7)");
@@ -93,7 +93,7 @@ for (const scenario of [
 test("pharmacy keeps edits and local availability across global assistance changes", async ({ page }) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.locator("tbody > tr")).toHaveCount(12);
+  await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(12);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
   await expect(page).toHaveURL(/\/pharmacy$/);
