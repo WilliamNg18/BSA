@@ -188,6 +188,11 @@ passed and `npm run test -- --maxWorkers=1` passed the complete 569-test suite i
 19 files in 40.47 seconds, exit 0. This adds no production code and does not
 replace keyboard, lifecycle or axe browser verification.
 
+Coordinator policy also replaces only the mixed-mode round trip's 120-second
+elapsed-time assertion with an informational JSON timing artifact. Every
+functional assertion, test timeout and deterministic phase-clock check remains.
+The narration target is not a strict runtime acceptance claim.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

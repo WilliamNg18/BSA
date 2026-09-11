@@ -79,7 +79,7 @@ test("Task9/10 complete Off referral to approved On correction and human suffici
   await expect(attempts.locator(":scope > li").nth(3)).toContainText("ready · scripted");
   await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(3);
   await captureJson(info, "off-to-on-roundtrip-history", await history(page).innerText());
-  expect(Date.now() - started).toBeLessThan(120_000);
+  await captureJson(info, "roundtrip-elapsed-time", { elapsedMs: Date.now() - started, informational: true });
 });
 
 test("Task9 manual correction retains an unchecked snapshot and requires an explicit human sufficient decision", async ({ page }) => {

@@ -436,3 +436,11 @@ On resolves the marker only when an operator-approved correction instruction
 exists and the existing check reports Ready for the current text. Missing,
 unable, unapproved and edited-but-unchecked states remain unresolved. Even a
 resolved marker explicitly requires human re-check and promises no payment.
+
+## 2026-09-11: Narration timing is informational, not a performance gate
+
+The mixed-mode round-trip test retains every control, both-side, lifecycle and
+history assertion but records elapsed milliseconds as a JSON artifact instead
+of enforcing a 120-second wall-clock budget. The two-minute narration remains
+a presentation target. Existing test timeout/hang guards and deterministic
+phase-clock assertions are unchanged.
