@@ -393,3 +393,21 @@ Day judging is not an additional calculator saving; abstention remains manual,
 code-cleared cohorts require no operator review, and no payment is calculated.
 Existing virtual month, sweep, twelve examples and day summaries remain intact.
 No shared primitive, global style, lifecycle, store or algorithm changes.
+
+## 2026-09-11: Stream R root-path functional acceptance
+
+Compare production destinations with exact root-relative routes, not the retired
+/BSA prefix. Tour checks retain every stop, direction, shortcut and focus
+assertion; rapid keyboard history compares the complete pathname and fragment.
+No route assertions are skipped or replaced with an origin-only check.
+
+Use two browser and two unit workers on the shared machine. Run every production
+spec with zero retries, including blocking crash, control and default-rule axe
+checks. Stream S owns strict-CSP serving and compatibility fixes; Vite preview
+alone cannot establish CSP or Azure-hosted acceptance.
+
+Strengthen the integrated Off-to-On round trip using only public controls and
+visible history. Preserve the initial unchecked submission verbatim, prove the
+unaided resubmission stays unchecked, and verify neither enabling assistance nor
+checking a correction changes lifecycle state. Arrival presents a recommendation;
+only the explicit human decision releases the synthetic item to existing pricing.

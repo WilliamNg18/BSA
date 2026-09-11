@@ -470,3 +470,22 @@ from a failure list alone. Do not label the overall CI run successful.
 Keep the local zero-test startup timeout and subsequent three passes/five
 timeouts separately, including anomalous elapsed timing. Never weaken assertions
 or repeat a CPU-bound local run solely to duplicate exact-source remote proof.
+
+## 2026-09-11: Stream R root assertions and round-trip history
+
+Changing the production base URL did not update escaped regular expressions or
+bare prefix arithmetic. The deep-link matrix still required /^\/BSA\//, tour
+stop comparisons prepended /BSA, and same-task keyboard history sliced four
+characters from every pathname. These obsolete test assumptions are corrected
+to exact root destinations without relaxing navigation or crash checks.
+
+The new worktree's initial check exited 1 because tsc was absent; dependency
+restoration followed that missing-tool failure. Subsequent check passed and the
+bounded full unit run passed 560 tests in 20 files, exit 0. Full production
+browser results are recorded in progress only after actual completion.
+
+The mixed-mode round trip includes a seeded attempt plus three user submissions:
+blind Off, unaided Off resubmission and corrected On resubmission. Assert four
+immutable attempts rather than confusing the seed with a user submission.
+Retain the blind snapshot exactly and require explicit human acceptance after
+the corrected recommendation; scripted advice is not a lifecycle transition.

@@ -61,7 +61,7 @@ for (const enabled of [true, false]) {
     });
     const visited = await page.evaluate((steps) => steps.map((direction) => {
       window.dispatchEvent(new KeyboardEvent("keydown", { key: direction > 0 ? "ArrowRight" : "ArrowLeft", altKey: true, bubbles: true, cancelable: true }));
-      return `${location.pathname.slice("/BSA".length) || "/"}${location.hash}`;
+      return `${location.pathname}${location.hash}`;
     }), directions);
     expect(visited).toEqual(expected);
     await expect(page).toHaveURL(/#scene$/);

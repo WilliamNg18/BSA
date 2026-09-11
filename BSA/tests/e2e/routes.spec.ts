@@ -22,7 +22,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           await expect(page.locator("a[href$='/notes']")).toHaveCount(0);
           await expect(page.getByText("NHSBSA capability demonstration · synthetic data", { exact: true })).toHaveCount(0);
           await expect(page.getByText("This view could not be loaded", { exact: true })).toHaveCount(0);
-          expect(new URL(page.url()).pathname).toMatch(/^\/BSA\//);
+          expect(new URL(page.url()).pathname).toBe(`/${route.path}`);
           // Wait for fonts and the entrance animation before checking overflow.
           await page.evaluate(() => document.fonts.ready);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
