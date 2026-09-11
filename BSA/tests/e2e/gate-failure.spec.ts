@@ -2,6 +2,7 @@ import { cases, expect, test } from "./fixtures";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { REC_META } from "../../src/components/demo/label-meta";
+import { injectPrescriberFault } from "../support/prescriber-fault";
 
 for (const c of cases.slice(0, 3)) {
   test(`gate FAIL withholds ${c.id} advice in queue, pack, trace, human record and replay`, async ({ page }) => {
@@ -14,15 +15,14 @@ for (const c of cases.slice(0, 3)) {
     await page.route("**/BSA/assets/*.js", async (route) => {
       const response = await route.fetch();
       const source = await response.text();
-      const pattern = new RegExp(`(id:"${c.id}",scenario:"[ABC]"[\\s\\S]*?prescriber:)"[^"]*"`, "g");
-      const matches = [...source.matchAll(pattern)];
-      if (!matches.length) {
+      const fault = injectPrescriberFault(source, c.id, original.extracted.prescriber);
+      if (!fault.injections) {
         await route.fulfill({ response });
         return;
       }
-      expect(matches).toHaveLength(1);
-      injections++;
-      await route.fulfill({ response, body: source.replace(pattern, '$1"Illegible"') });
+      expect(fault.injections).toBe(1);
+      injections += fault.injections;
+      await route.fulfill({ response, body: fault.source });
     });
 
     await page.goto("queue");
@@ -84,9 +84,8 @@ for (const c of cases.slice(0, 3)) {
     await expect(page.getByText("Yes. Reason: Review prescriber evidence", { exact: true })).toBeVisible();
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     for (const month of ["July 2026 (2026-07)", "August 2026 (2026-08)", "September 2026 (2026-09)"]) {
-      await page.getByRole("combobox", { name: "Replay with", exact: true }).click();
-      await page.getByRole("option", { name: month, exact: true }).click();
-      await expect(page.getByText("Recommendation withheld by the compliance gate. Evidence only; gate FAIL.", { exact: true })).toBeVisible();
+      await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption({ label: month });
+      await expect(page.getByText("Gate FAIL: recommendation withheld; evidence only.", { exact: true })).toBeVisible();
       await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(3);
       for (const rec of ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"] as const) {
         await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);

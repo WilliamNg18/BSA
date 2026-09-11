@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AlertTriangle, Check, FileText, Scale } from "lucide-react";
-import { toast } from "sonner";
+import { useNotification } from "@/hooks/use-notification";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,6 +45,7 @@ export function CasePackPage() {
 
 function CasePackContent() {
   const { id } = useParams();
+  const notification = useNotification();
   const navigate = useNavigate();
   const c = caseById(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
@@ -72,7 +73,7 @@ function CasePackContent() {
   function submit() {
     if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
     if (needsReason && reason.trim().length < 8) {
-      toast.error("A reason is required when you override the recommendation, or when there is no recommendation to accept.");
+      notification.show("error", "A reason is required when you override the recommendation, or when there is no recommendation to accept.");
       return;
     }
     const rec = recordDecision({
@@ -90,7 +91,7 @@ function CasePackContent() {
       decision: chosen,
       overrideReason: reason.trim() || null,
     });
-    toast.success(`Decision recorded as ${rec.id}`);
+    notification.show("success", `Decision recorded as ${rec.id}`);
     navigate(`/case/${c.id}/record`);
   }
 
@@ -114,7 +115,7 @@ function CasePackContent() {
         <Alert className="border-rose-300 bg-rose-50 dark:border-rose-800 dark:bg-rose-950">
           <AlertTriangle className="text-rose-700" aria-hidden="true" />
           <AlertTitle>The agent abstained</AlertTitle>
-          <AlertDescription>
+          <AlertDescription className="text-foreground">
             <p>No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed.</p>
             <ul className="mt-1 list-disc pl-5">{pack.abstainReasons.map((r) => <li key={r}>{r}</li>)}</ul>
           </AlertDescription>
@@ -124,7 +125,7 @@ function CasePackContent() {
         <Alert className="border-rose-300 bg-rose-50 dark:border-rose-800 dark:bg-rose-950">
           <AlertTriangle className="text-rose-700" aria-hidden="true" />
           <AlertTitle>Recommendation withheld by the compliance gate</AlertTitle>
-          <AlertDescription>The agent proposed an outcome the rules do not permit. The operator sees the evidence only.</AlertDescription>
+          <AlertDescription className="text-foreground">The agent proposed an outcome the rules do not permit. The operator sees the evidence only.</AlertDescription>
         </Alert>
       )}
 
@@ -233,7 +234,7 @@ function CasePackContent() {
               <ul className="space-y-2">
                 {pack.conflicts.map((k) => (
                   <li key={k.field} className="rounded-md border border-amber-500 bg-amber-50 p-3 text-sm dark:bg-amber-950">
-                    <h3 className="font-semibold">{k.field} {k.material && <span className="ml-1 rounded bg-amber-600 px-1.5 py-0.5 text-xs text-white">material</span>}</h3>
+                    <h3 className="font-semibold">{k.field} {k.material && <span className="ml-1 rounded bg-amber-700 px-1.5 py-0.5 text-xs text-white">material</span>}</h3>
                     <ul className="mt-1 grid gap-1 sm:grid-cols-2">{k.values.map((v) => <li key={v.origin} className="rounded bg-background px-2 py-1"><span className="text-muted-foreground">{v.origin}:</span> <span className="font-medium">{v.value}</span></li>)}</ul>
                     <p className="mt-1 text-muted-foreground">{k.note}</p>
                   </li>

@@ -151,7 +151,7 @@ export function QueuePage() {
         {rows.length === 0 ? (
           <EmptyState icon={Inbox} title="No items in this state" description="Choose another filter, or reset the demo from the header." action={<Button variant="outline" size="sm" onClick={() => setFilter("all")}>Show all</Button>} />
         ) : (
-          <div className="overflow-x-auto rounded-lg border" role="region" aria-label="Exception queue table" tabIndex={0}>
+          <div className="relative overflow-x-auto rounded-lg border" role="region" aria-label="Exception queue table" tabIndex={0}>
             <Table>
               <TableHeader>
                 <TableRow>

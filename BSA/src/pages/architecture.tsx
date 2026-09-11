@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const BUILT: Record<string, string> = {
   "Built for real": "bg-emerald-700 text-white",
-  Mocked: "bg-amber-600 text-white",
+  Mocked: "bg-amber-700 text-white",
   "Not built": "bg-slate-600 text-white",
 };
 
@@ -23,7 +23,7 @@ export function ArchitecturePage() {
       </div>
 
       <PageSection title="The flow, once" description="Read-only against every existing system. Nothing the new component does can block an item.">
-        <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-4 font-mono text-xs leading-relaxed" aria-label="Architecture flow">
+        <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-4 font-mono text-xs leading-relaxed" role="region" tabIndex={0} aria-label="Architecture flow">
 {`EXISTING (unchanged; read-only from the new component)
   scanners + capture  -->  extracted fields + image store  -->  pricing (straightforward items)  -->  exception routing to operators
                                                                                                           |  exception event

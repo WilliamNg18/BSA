@@ -113,3 +113,42 @@ manual assumed steps, not disguised as seven engine actions. On slots depend
 on actual engine phases and final PASS; FAIL withholds proposals and D keeps
 its abstention evidence. Read-only comparison columns share one decision panel.
 Only explicit human recording changes session state; playback is presentation.
+
+## 2026-09-11: Approved Task 7 shared performance ownership
+
+The user explicitly permits targeted shared performance work by Stream A on
+36db32a after the supplied Task 6 postcommit gate. Root providers, font loading,
+bundle configuration and performance-only shell imports are in scope. Reject
+new navigation features, changes to the frozen store or lifecycle, and work
+owned by Streams B/C/D/E. No Git, account or deployment actions are authorised.
+
+Keep immediate offline first navigation and all eager routes. A strict decimal
+200,000-byte total gzip failure gate covers every emitted resource, not only
+the entry script. Reject 200 KiB, deferred chunks, service-worker readiness waits,
+selective font accounting and hiding unused-page payload from the measurement.
+
+Choose system fonts, static reachable-source CSS and safe Terser compression.
+Synchronous LazyMotion alone remained too large; native CSS expresses the three
+simple entrance/opacity effects without an animation engine. MotionConfig and
+all presentation clocks remain. Use the platform select for three replay months.
+Replace only the two decision toasts with a polite, keyboard-dismissible live
+region that clears on Reset. No business explanation or gate predicate changes.
+
+Reject Lightning CSS after its measured 201,081-byte payload failed the gate.
+Keep esbuild CSS and a separate 650 kB raw warning, with the stricter complete
+gzip gate authoritative. Production fault tests target the exact case and exact
+prescriber syntax rather than generated symbols; duplicate markers are errors.
+
+## 2026-09-11: Scoped Task 7 accessibility corrections
+
+The user extends Task 7 scope to accessibility defects on applicable pages.
+Keep amber semantic labels but use amber-700 behind white text. Use the theme
+foreground only for the two rose case-pack alert descriptions; do not darken
+global muted text. Preserve uncertainty, full evidence and all gate outcomes.
+
+Audit all seven shared Table usages before removing its internal scroll wrapper.
+Each call site already supplies a named region with tabindex zero. One scrolling
+element now owns focus and its contextual name, avoiding nested duplicate regions
+or resize observers. Remove the obsolete trace overflow override. Make the
+architecture preformatted flow a named, focusable region without changing text.
+Keep full default-rule axe and the strict complete-payload budget unchanged.

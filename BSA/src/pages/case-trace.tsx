@@ -94,7 +94,7 @@ export function CaseTracePage() {
                   </dl>
                 )}
                 {step.toolCalls.length > 0 && (
-                  <div className="overflow-x-auto rounded-md border [&>[data-slot=table-container]]:overflow-visible" role="region" aria-label={`Tool calls in step ${i + 1}`} tabIndex={0}>
+                  <div className="overflow-x-auto rounded-md border" role="region" aria-label={`Tool calls in step ${i + 1}`} tabIndex={0}>
                     <Table>
                       <TableHeader>
                         <TableRow>

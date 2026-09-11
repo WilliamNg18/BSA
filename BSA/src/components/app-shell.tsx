@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { motion, useReducedMotion } from "motion/react";
 import { AssistanceTransition } from "@/components/demo/assistance-transition";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/sonner";
+import { useNotification } from "@/hooks/use-notification";
 import { TopNav } from "@/components/demo/top-nav";
 import { RouteErrorBoundary } from "@/components/route-error-boundary";
 import { TourRail } from "@/components/demo/tour-rail";
@@ -19,7 +18,7 @@ import { Button } from "@/components/ui/button";
 // Pages fill <main flex-1> with `h-full`; never add `min-h-screen` inside a page.
 export function AppShell() {
   const { pathname, hash } = useLocation();
-  const reduced = useReducedMotion();
+  const notification = useNotification();
   const [tourVisible, setTourVisible] = useState(true);
   const [disclaimerOpen, setDisclaimerOpen] = useState(true);
   const [resetEpoch, setResetEpoch] = useState(0);
@@ -33,7 +32,7 @@ export function AppShell() {
   }, [pathname, hash]);
   return (
     <div className="flex min-h-screen flex-col">
-      <TopNav onReset={() => { setResetEpoch((value) => value + 1); setTourVisible(true); setDisclaimerOpen(true); }} />
+      <TopNav onReset={() => { notification.clear(); setResetEpoch((value) => value + 1); setTourVisible(true); setDisclaimerOpen(true); }} />
       <TourRail visible={tourVisible} onDismiss={() => setTourVisible(false)} />
       <section aria-label="Demonstration scope and governing principle">
       <div className="border-b border-amber-300 bg-amber-50 px-4 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 md:px-6" data-disclaimer>
@@ -49,12 +48,9 @@ export function AppShell() {
         {/* key on pathname → each route re-mounts and replays the entrance.
             Entrance-only (no AnimatePresence/exit): an exit animation around
             <Outlet/> would animate the NEXT route's content, not the leaving one. */}
-        <motion.div
+        <div
           key={`${pathname}:${resetEpoch}`}
-          initial={{ opacity: reduced ? 1 : 0, y: reduced ? 0 : 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduced ? 0 : 0.15, ease: "easeOut" }}
-          className="flex-1 px-4 py-6 md:px-6"
+          className="flex-1 px-4 py-6 md:px-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
         >
           {pathname === "/queue" && <section aria-label="Tour chapter 5" className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
             <h2 className="font-semibold">5. The queue · Simulation planned</h2>
@@ -64,14 +60,13 @@ export function AppShell() {
           <RouteErrorBoundary key={pathname} pathname={pathname}>
             <Outlet />
           </RouteErrorBoundary>
-        </motion.div>
+        </div>
         </AssistanceTransition></TooltipProvider>
       </main>
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-4 text-xs text-muted-foreground md:px-6">
         <span>Session only · Synthetic cases · No payments calculated or approved</span>
         {tourVisible ? <span>Tour shortcuts: Alt + ← / → outside fields and menus</span> : <Button variant="outline" size="sm" onClick={() => setTourVisible(true)}>Restore tour</Button>}
       </footer>
-      <Toaster />
     </div>
   );
 }

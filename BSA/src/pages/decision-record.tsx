@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { History } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageSection } from "@/components/page-section";
 import { EmptyState, ErrorState } from "@/components/states";
 import { CaseHeader } from "@/components/demo/case-header";
@@ -98,14 +97,12 @@ function DecisionRecordContent() {
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <label htmlFor="replay-version" className="text-sm">Replay with</label>
-                <Select value={replayVersion} onValueChange={setReplayVersion} disabled={!agentEnabled || !hasRecordedRule}>
-                  <SelectTrigger id="replay-version" className="w-56"><SelectValue placeholder="Choose a Tariff version" /></SelectTrigger>
-                  <SelectContent>
+                <select id="replay-version" value={replayVersion} onChange={(event) => setReplayVersion(event.target.value)} disabled={!agentEnabled || !hasRecordedRule} className="h-9 w-56 max-w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                  <option value="" disabled>Choose a Tariff version</option>
                     {TARIFF_VERSIONS.map((v) => (
-                      <SelectItem key={v.version} value={v.version}>{v.label} ({v.version})</SelectItem>
+                      <option key={v.version} value={v.version}>{v.label} ({v.version})</option>
                     ))}
-                  </SelectContent>
-                </Select>
+                </select>
                 {agentEnabled && replayVersion && <Button type="button" variant="ghost" size="sm" onClick={() => setReplayVersion("")}>Clear</Button>}
               </div>
               {!agentEnabled || !hasRecordedRule ? <p className="text-sm text-muted-foreground">{hasRecordedRule
@@ -114,10 +111,8 @@ function DecisionRecordContent() {
                 <Card className={replay.recommendation !== latest.recommendation ? "border-amber-600" : "border-emerald-600"}>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base">Replayed under {replay.tariffLabel}</CardTitle>
-                    <CardDescription>{TARIFF_VERSIONS.find((v) => v.version === replayVersion)?.changeNote}</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
-                    {replay.gate.result === "FAIL" && <p>Recommendation withheld by the compliance gate. Evidence only; gate FAIL.</p>}
                     <div className="grid gap-2 sm:grid-cols-2">
                       <div className="rounded-md bg-muted/50 p-2.5">
                         <p className="text-xs text-muted-foreground">Recorded ({latest.tariffVersion})</p>
@@ -141,10 +136,10 @@ function DecisionRecordContent() {
                     </ul>
                     <p className="text-xs text-muted-foreground">
                       {replay.gate.result === "FAIL"
-                        ? "No actionable recommendation is available under this version."
+                        ? "Gate FAIL: recommendation withheld; evidence only."
                         : replay.recommendation !== latest.recommendation
-                        ? "Same reading, different synthetic requirement. The record pins its original version; replay does not rewrite history or prove monthly recoding is necessary."
-                        : "The recommendation is unchanged under this version."}
+                        ? "No monthly recoding need established."
+                        : "Recommendation unchanged."}
                     </p>
                   </CardContent>
                 </Card>

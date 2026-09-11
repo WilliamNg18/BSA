@@ -1,5 +1,4 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { motion } from "motion/react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { ASSISTANCE_DURATION_MS, ASSISTANCE_PHASES, AssistancePresentationContext } from "@/hooks/use-assistance-presentation";
 import { useAppStore } from "@/lib/store";
@@ -28,6 +27,6 @@ export function AssistanceTransition({ children }: { children: ReactNode }) {
     <div className="mx-auto max-w-7xl px-4 pt-2 text-xs text-muted-foreground" role="status" aria-live="polite" aria-atomic="true">
       {preparing ? "Preparing assistance" : enabled ? "Assistance On" : "Assistance Off"} · Simulated presentation, not a model call
     </div>
-    <motion.div animate={{ opacity: preparing ? 0.75 : 1 }} transition={{ duration: reduced ? 0 : 0.2 }}>{children}</motion.div>
+    <div style={{ opacity: preparing ? 0.75 : 1 }} className="transition-opacity duration-200 motion-reduce:transition-none">{children}</div>
   </div></AssistancePresentationContext>;
 }

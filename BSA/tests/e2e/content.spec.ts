@@ -1,4 +1,4 @@
-import { cases, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
+import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
 
 /** Executes in the rendered page: no source-code word counting or truncation. */
 function auditProse() {
@@ -83,9 +83,20 @@ for (const enabled of [false, true]) {
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
     if (enabled) {
-      await page.getByRole("combobox", { name: "Replay with", exact: true }).click();
-      await page.getByRole("option", { name: "July 2026 (2026-07)", exact: true }).click();
-      audits.push({ state: "july-replay", ...await page.evaluate(auditProse) });
+      for (const [version, month, outcome] of [["2026-07", "July", "Sufficient: release to pricing once confirmed"], ["2026-08", "August", "Refer back with the exact fix"], ["2026-09", "September", "Refer back with the exact fix"]]) {
+        await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption(version);
+        const card = page.locator('[data-slot="card"]').filter({ has: page.getByText(`Replayed under ${month} 2026`, { exact: true }) });
+        await expect(card.getByRole("blockquote")).toHaveText(version === "2026-07"
+          ? '"Dispensing-month concession: endorse NCSO, initialled by or on behalf of the contractor."'
+          : '"Dispensing-month concession: endorse NCSO, initialled and dated by or on behalf of the contractor."');
+        await expect(card.getByRole("listitem")).toHaveText(version === "2026-07"
+          ? ["Endorsement present: met", "Initialled by or on behalf of the contractor: met"]
+          : ["Endorsement present: met", "Initialled by or on behalf of the contractor: met", "Dated: not met"]);
+        await expect(card.getByRole("status", { name: "Replay outcome" })).toHaveText(outcome);
+        // Audit aggregate prose without changing the checker or exempting tags.
+        audits.push({ state: `${month.toLowerCase()}-replay`, ...await page.evaluate(auditProse) });
+        await captureCheckpoint(page, info, `record-${month.toLowerCase()}-replay`);
+      }
     }
     await captureJson(info, "task6-copy", audits);
     expect(audits.flatMap((audit) => audit.failures)).toEqual([]);

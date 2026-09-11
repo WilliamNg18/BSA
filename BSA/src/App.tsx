@@ -1,9 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { QueryClientProvider } from "@tanstack/react-query";
 import { MotionConfig } from "motion/react";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { ConfirmDialogProvider } from "@/components/confirm-dialog";
-import { queryClient } from "@/lib/query-client";
+import { NotificationProvider } from "@/components/notification-provider";
 import { AppShell } from "@/components/app-shell";
 import { NotFoundPage } from "@/pages/not-found";
 import { routes } from "@/routes";
@@ -16,8 +15,8 @@ const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 export function App() {
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
         <MotionConfig reducedMotion="user">
+          <NotificationProvider>
           <ConfirmDialogProvider>
             <BrowserRouter basename={ROUTER_BASENAME}>
               <Routes>
@@ -34,8 +33,8 @@ export function App() {
               </Routes>
             </BrowserRouter>
           </ConfirmDialogProvider>
+          </NotificationProvider>
         </MotionConfig>
-      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

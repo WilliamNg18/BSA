@@ -92,8 +92,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-recommended-decision-record");
-  await page.getByRole("combobox", { name: "Replay with", exact: true }).click();
-  await page.getByRole("option", { name: "July 2026 (2026-07)", exact: true }).click();
+  await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-07");
   await expect(page.getByText("Replayed under July 2026", { exact: true })).toBeVisible();
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-july-sufficient");

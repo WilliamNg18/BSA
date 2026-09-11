@@ -4,6 +4,26 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
+## Task 7 local acceptance and remaining limits
+
+Scoped contrast and keyboard-scrolling defects are fixed: amber badges use
+amber-700, rose case-pack descriptions use the theme foreground, each table's
+named outer region owns scrolling, and Architecture flow accepts keyboard focus.
+The queue scroll region contains its screen-reader-only header after scrolling.
+Notification focus restoration and native July replay remain covered.
+
+Local check, 494 units and all 721 Chromium tests pass. All 334 unique
+default-rule axe audits report zero violations; all 248 matrix photos exist.
+The complete eager /BSA/ payload is 199,636 gzip bytes, only 364 below the strict
+200,000-byte limit. Future integration must preserve that budget. Root output
+is 199,627 bytes; these are measured independent-resource gzip totals, not
+load-time, Core Web Vitals or full WCAG conformance claims.
+
+No Git, accounts, deployment, CI, hosted, Firefox/WebKit or manual screen-reader
+verification occurred for Task 7. Frozen lifecycle/store contracts, claims and
+navigation features are unchanged. The Task 6 integration caveat below remains.
+See [progress](PROGRESS.md) for genuine failure history and final evidence.
+
 ## Task 6 integration caveat
 
 Manual Sufficient is recorded through existing recordDecision as human ACCEPT,

@@ -11,8 +11,8 @@ ms.date: 2026-09-10
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
 * [x] Task 4: a131bad and P1 correction 7bdc199; supplied Azure/CI gate PASS
 * [x] Task 5: bounded virtual month, queue sweep and shared-clock day projections
-* [x] Task 6: manual case views, gated assisted assembly and immutable record comparison (local gate)
-* [ ] Task 7
+* [x] Task 6: manual case views, gated assisted assembly and immutable record comparison (36db32a; supplied postcommit gate PASS)
+* [x] Task 7: local check, 494 units, 721 browsers, 334 zero-violation axe audits; 199,636-byte payload (remote gates not run)
 * [ ] Task 8: Shared case lifecycle and append-only history in the store
 * [ ] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state
 * [ ] Task 10: Live round trip with Follow this item banner and Switch side
@@ -21,6 +21,11 @@ ms.date: 2026-09-10
 * [ ] Task 13: Verification of Tasks 8 to 13 in both toggle states (Vitest, Playwright, axe, screenshots)
 
 ## Current gate and contract freeze
+
+Task 7 starts on stream-a-core at 36db32a. The user supplied Task 6 postcommit
+check PASS, 488 units, 465 browsers, Azure deployment in 1m15s, sixteen hosted
+passes and CI 34586563012 SUCCESS. These results supersede the Task 6 local-only
+status below; no remote gate is independently repeated during Task 7.
 
 Task 6 starts on stream-a-core at 034121f. The supplied Task 5 gate confirms
 check PASS, 475 units and 436 full browsers, CI 34580827129 SUCCESS, Azure deploy
@@ -166,6 +171,131 @@ Evidence: [initial check](../../.copilot-tracking/tasks/6/check.log),
 [final full Chromium](../../.copilot-tracking/tasks/6/verified-browser.log),
 [unique evidence counter](../../.copilot-tracking/tasks/6/count-evidence.mjs) and
 [screenshots](screens/task6/README.md).
+
+## Task 7 Stream A performance and verification
+
+The user explicitly extended Stream A ownership to targeted shared performance:
+root providers, font loading, bundle configuration and supporting presentation
+imports. No lifecycle, frozen store, claims, route definitions, case header or
+navigation features change. Tasks 8-13 remain with Streams B/C/D/E. The existing
+Stream D planned-simulation notice remains visible, not hidden for this gate.
+
+All routes remain eagerly imported. The accepted build's complete emitted
+payload is 199,636 gzip bytes for the production /BSA/ base, including JavaScript
+186,612, CSS 12,623, HTML 401 and zero fonts. This uses decimal 200,000 bytes,
+not 200 KiB. Headroom is only 364 bytes; later integrations must meet the same
+strict gate or explicitly revisit the budget with the user.
+
+Every Vite build, including check and the production browser server, counts all
+emitted files independently with standard gzip, including any extra chunks,
+fonts and public assets. Only the empty hosting marker is excluded. It rejects
+200,000 exactly, incomplete scans and dynamic chunk imports. A browser test
+also compares every emitted payload with served bytes. No asset is delayed,
+preloaded behind a readiness wait or excluded because the first scene omits it.
+
+### Measured experiments
+
+The temporary Vite plugin records renderedLength by module and package outside
+public output. These are pre-minifier module lengths, not additive gzip shares.
+All rows below use the same conservative all-emitted accounting, including font
+subsets the baseline scene did not necessarily request.
+
+| Candidate | Total gzip bytes | Outcome |
+| --- | ---: | --- |
+| Current Task 6 build | 352,235 | Baseline; includes all five font subsets |
+| No query provider, synchronous LazyMotion, system font, native replay | 248,001 | Safe intermediate, still over budget |
+| Reachable-source CSS and Terser, two passes | 234,276 | Still over budget |
+| Native CSS for the three simple effects, MotionConfig retained | 209,368 | Still over budget |
+| Small decision-notification provider | 199,789 | Below budget before final minifier pass |
+| Lightning CSS experiment | 201,081 | Rejected; hard build gate failed |
+| Esbuild CSS and Terser, three safe passes | 199,771 | Initial payload candidate; later accessibility fixes required |
+| Accepted accessibility and replay-copy corrections | 199,636 | Full local acceptance PASS |
+
+No runtime explanations, domain predicates or source qualifications were removed
+to reach the target. Production CSS scans the complete reachable local source
+graph, including conditional UI, rather than docs, tests and unused UI templates.
+Development still scans source normally. No blanket side-effect override or
+unsafe minifier option is used. The generic 500 kB raw-chunk warning, which
+suggested forbidden lazy routes, is replaced by the strict total gzip failure
+and a separate 650 kB raw-chunk warning; accepted raw JS is 626,008 bytes.
+
+The unused query provider is gone. Opacity, number fade and six-pixel entrance
+use native CSS media queries; the shared two-second clocks and MotionConfig
+remain. Replay uses a labelled native select with the same disabled states,
+values and counterfactuals. The two decision messages use a small polite live
+region with keyboard dismissal; notices persist until dismissed, replaced or
+Reset, rather than depending on a toast engine or an automatic timeout.
+
+### Verification status
+
+Initial check passed and 494 units passed in fourteen files. The nine targeted
+browser tests had eight passes and one failure: the new keyboard test pressed
+ArrowDown after Home had already selected July, so it selected August. The
+test now uses Home and Enter, retaining the exact July value and Sufficient
+outcome assertions. Gate-failure injection, all four immediate-offline variants
+and complete payload accounting passed in that run. Fault injection now parses
+the production syntax and changes exactly one case's exact prescriber literal,
+independent of minified variable names or field order. The actual gate is intact.
+
+The original full run finished: 687 passed and 31 failed out of 718 in 12.6
+minutes. Its original log and failed artifacts remain preserved. Thirty failures
+were unrestricted axe matrix findings: white on amber-600 (3.19:1), muted text
+on the Case D rose alert (4.31:1), unfocusable nested table scroll boxes and the
+architecture flow. The remaining failure was aggregate recorded-replay prose;
+the existing dirty correction removes redundant copy, retaining full clauses,
+requirements and July/August/September outcomes without checker exemptions.
+
+The scoped accessibility correction uses amber-700 badges and local
+text-foreground on the two rose alert descriptions, not global muted tokens.
+All seven Table call sites already have named, focusable outer scroll regions;
+removing the inner scroll wrapper makes those regions actually scroll. The
+trace-only workaround is now redundant and removed. The flow gains a named
+focusable region. New light/dark phone tests verify actual ArrowRight scrolling
+and table-region ownership. Existing notification focus and July fixes remain.
+The first corrected targeted run passed 52 of 55 tests, including all 48
+affected-page axe checks and notification tests. Two new scrolling checks found
+the queue's screen-reader-only Actions header escaped its scroll container after
+ArrowRight. A positioned outer region fixes that overflow. The other failure
+expected an abbreviated replay label; the exact assertion now checks the full
+existing label. All four focused scrolling/replay-copy checks then passed.
+
+The next full run passed 718 of 721, with three stale exact gate-notice strings.
+Only those expected words were aligned with the preserved concise FAIL notice;
+gate predicates, no-recommendation counts and all withholding assertions remain
+unchanged. All three full fault-injection regressions then passed. The final
+fresh full run passed 721 of 721 in 12.1 minutes, exit 0, with no retries or
+skips. Check and all 494 units in fourteen files exited 0 with no warnings.
+Root-base check payload is 199,627 bytes; served /BSA/ payload is 199,636 bytes.
+
+Final artifact counting reports 334 unique default-rule axe audits and zero
+violations, including 248 matrix audits and two notification-state audits.
+All 248 matrix photographs were generated; 272 Task 7 photographs include the
+24 earlier font-comparison images. Selected Case C/D light desktop, Assumptions
+light desktop and Architecture dark phone captures were visually reviewed.
+The privacy regression checked four emitted files and three served assets
+(702,501 raw bytes), with zero private matches. No command remains running.
+
+The new matrix covers all 31 current destinations, both flag states,
+both motion preferences, phone/dark and desktop/light. Each has unrestricted
+default-rule axe and a current photograph. The existing four-width/two-theme
+route suite, seven-width header, tooltip focus, 25-word copy, source/privacy and
+canonical outcome regressions all pass. Task 7 is locally complete only.
+No Task 7 CI, hosted or deployment claim is made.
+
+Evidence: [before profile](../../.copilot-tracking/tasks/7/before.json),
+[final profile](../../.copilot-tracking/tasks/7/final.json),
+[profiler](../../.copilot-tracking/tasks/7/profile.mjs),
+[initial targeted run](../../.copilot-tracking/tasks/7/focused.log),
+[final check](../../.copilot-tracking/tasks/7/final-check.log) and
+[screenshots](screens/task7/README.md).
+
+Accepted evidence: [check](../../.copilot-tracking/tasks/7/accepted-check.log),
+[units](../../.copilot-tracking/tasks/7/accepted-unit.log),
+[full browser run](../../.copilot-tracking/tasks/7/accepted-browser.log),
+[deduplicated audit](../../.copilot-tracking/tasks/7/accepted-verification.json).
+Historical failures remain in the original final-browser/full-results paths,
+corrected-targeted paths and verified-full paths. The first 218 matrix images
+are archived separately under first-matrix-photos, not overwritten as evidence.
 
 ## Historical contract-freeze gate
 

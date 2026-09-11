@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const EFFECT: Record<string, string> = {
   Kills: "bg-rose-700 text-white",
-  Reshapes: "bg-amber-600 text-white",
+  Reshapes: "bg-amber-700 text-white",
   Intact: "bg-emerald-700 text-white",
 };
 
