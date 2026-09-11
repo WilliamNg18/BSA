@@ -839,3 +839,17 @@ Four [selected screenshots](screens/task3/README.md) were visually reviewed.
 No full WCAG, manual screen-reader, Firefox/WebKit or performance claim is made.
 Archive/rollback references remain untouched. This file is authoritative; the
 root progress file is a pointer, not a second checklist.
+
+## Issue 28: Queue Compare control
+
+Implemented the missing explicit toolbar Compare action as a read-only inline
+Today versus With agent region. It reuses current scenario inputs, monthly
+denominators and the shared day projection; no domain or simulation mutations.
+Keyboard heading focus, Close/Escape restoration, revision-safe Reset and
+invalid-input disabling are included. Existing queue simulations are unchanged.
+
+Check and 563 unit tests pass, including ten new comparison tests. Eight new
+focused browser tests cover keyboard/open/close/focus, both assistance states,
+edited scenario/time parity, unchanged records and counters, continued playback,
+Reset/invalid inputs, reduced motion, responsive layout and axe. Their execution
+awaits the coordinator's browser slot. Integration and Tasks 8-13 remain pending.
