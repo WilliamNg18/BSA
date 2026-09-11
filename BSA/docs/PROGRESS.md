@@ -124,6 +124,19 @@ removes all byte budgets and measurement tests; it will apply after rebase, not
 by changing the artifact during the running suite. No Azure acceptance is
 claimed, and Tasks 8-13 remain unchecked.
 
+## Stream R issue #19 implementation, browser verification pending
+
+The baseline Chromium probe reproduced unapproved seeded EX-24112 reason text
+in both the current Operator response and expanded pharmacy history with On.
+The scoped fix hides raw manual reasons only on the On pharmacy surface,
+preserves labelled approved notes and leaves Off/NHSBSA history unchanged.
+Eight new seeded/new-response browser tests plus the updated Task13 round-trip
+assertions cover that policy. Typecheck and lint passed, exit 0.
+
+The initial full suite still serves its unchanged pre-fix production artifact.
+No #19 browser pass or final acceptance is claimed until a coordinated slot
+rebuilds and exercises this revision. The coordinator owns merge sequencing.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

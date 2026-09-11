@@ -411,3 +411,16 @@ visible history. Preserve the initial unchecked submission verbatim, prove the
 unaided resubmission stays unchecked, and verify neither enabling assistance nor
 checking a correction changes lifecycle state. Arrival presents a recommendation;
 only the explicit human decision releases the synthetic item to existing pricing.
+
+## 2026-09-11: Pharmacy response visibility follows explicit draft approval
+
+Issue #19 distinguishes an operator's internal decision reason from a pharmacy
+draft approved for release. With Agent On, both the current pharmacy response
+and expanded pharmacy history show only an actual approved draft, labelled
+Operator-approved note. An unapproved response states that no approved note
+exists; it never promotes manual text by relabelling it.
+
+With Agent Off, the pharmacy retains its manual human response. NHSBSA history
+retains the human reason in both modes. Toggle changes affect presentation only:
+no record, history event, approval, revision or lifecycle state is rewritten.
+Advisory typed-field checks and evidence remain separate from operator responses.

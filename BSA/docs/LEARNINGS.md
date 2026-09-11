@@ -489,3 +489,18 @@ blind Off, unaided Off resubmission and corrected On resubmission. Assert four
 immutable attempts rather than confusing the seed with a user submission.
 Retain the blind snapshot exactly and require explicit human acceptance after
 the corrected recommendation; scripted advice is not a lifecycle transition.
+
+## 2026-09-11: Unapproved reason exposure on both pharmacy surfaces
+
+A real Chromium probe of the unchanged Phase 1 production artifact reproduced
+issue #19 on seeded EX-24112. Agent On displayed "Endorsement initialled but not
+dated." beside "No operator-approved draft." The same raw reason also appeared
+in expanded lifecycle history. Correcting only the current response would leave
+the second exposure intact.
+
+The repair gates the human reason to Off pharmacy or either NHSBSA mode, while
+actual approved drafts retain their label in On pharmacy history and response.
+Eight new browser regressions cover seeded B/C and newly recorded manual,
+unapproved assisted and approved assisted responses. They compare unchanged
+history and attempts across Off -> On -> Off and verify NHSBSA still sees the
+original reason. Validation results belong in progress after execution.
