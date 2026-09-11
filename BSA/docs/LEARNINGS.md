@@ -335,3 +335,23 @@ no overlapping browser process has been started.
 On main 8c05b18 plus this display-only change, npm run check passes with no
 warnings and the full Vitest run passes 553 tests in 18 files. No new unit
 helper or domain behaviour was needed for a presentation-only distinction.
+
+## 2026-09-11: Issue 20 cross-suite status expectations
+
+CI 34629999025 on f95ae88 passed check and 553 units, but its complete browser
+run failed: 547 passed and 238 failed in 25.7 minutes. Eleven failures directly
+exposed incomplete label migration: nine Off/unavailable assistance matrix
+states, one global/local availability regression and one advisory-control test.
+Their status locators filtered by the old three possible strings, so the new
+neutral status disappeared from the locator before the stale assertion ran.
+These are deterministic expectation mismatches, not quarantined flakes.
+
+With coordinator approval, use the existing data-pharmacy-status target and
+explicitly distinguish Off from unavailable in assistance.spec.ts and the two
+approved controls.spec.ts locations. Preserve real On unreadable expectations,
+all control/receipt checks and every other test. Typecheck and lint pass after
+these test-only edits. The expanded selector lists 29 tests across pharmacy,
+assistance and controls; no local browsers started without the shared slot.
+The dot CI log does not identify individual passes, so it does not independently
+establish that the original 15-test selector passed. Retain the failed run and
+obtain explicit focused results rather than inferring success from omission.
