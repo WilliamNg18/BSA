@@ -355,3 +355,19 @@ assistance and controls; no local browsers started without the shared slot.
 The dot CI log does not identify individual passes, so it does not independently
 establish that the original 15-test selector passed. Retain the failed run and
 obtain explicit focused results rather than inferring success from omission.
+
+## 2026-09-11: Issue 20 first focused browser result
+
+Coordinator granted one worker on isolated port 4193. The unchanged production
+configuration, with only port and artifact destination overridden in an ignored
+temporary config, ran the 29-test selector on 5ec240a: 26 passed, three failed,
+exit 1 in 20.2 minutes. All three new Issue20 transition tests passed.
+The failures were complete A Off/local available timing out on the global
+switch click, D Off/light timing out during axe analysis, and B On/light
+timing out on initial navigation. No status-text assertion failed.
+
+Retain issue20-focused-29.log and all three traces in session artifacts. Trace
+inspection found no error-like browser events; slow setup/teardown alone does
+not prove a flake or excuse the failed tests. The owned preview stopped and
+port 4193 had no remaining listener. Do not mark the PR ready until these
+failures are resolved or the coordinator accepts explicit further evidence.
