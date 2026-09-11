@@ -1,14 +1,17 @@
-// Eight stops, seven chapters: the precheck remains chapter 4's substop.
+// Nine stops, eight chapters: the precheck remains chapter 5's substop.
 export const TOUR_STOPS = [
-  { chapter: 1, label: "Set the scene", to: "/#scene" },
-  { chapter: 2, label: "A month of work", to: "/#month" },
-  { chapter: 3, label: "The pipeline", to: "/#cases" },
-  { chapter: 4, label: "One agent, two places", to: "/#two-places" },
-  { chapter: 4, label: "Pharmacy example", to: "/pharmacy" },
-  { chapter: 5, label: "The queue", to: "/queue" },
-  { chapter: 6, label: "What the pharmacy sees", to: "/pharmacy/claims" },
-  { chapter: 7, label: "The first test", to: "/#close" },
+  { chapter: 1, label: "The scene", to: "/#scene" },
+  { chapter: 2, label: "A month in numbers", to: "/#month" },
+  { chapter: 3, label: "What exists today and what changes", to: "/#pipeline" },
+  { chapter: 4, label: "Four cases", to: "/#cases" },
+  { chapter: 5, label: "One agent, two places", to: "/#two-places" },
+  { chapter: 5, label: "Pharmacy example", to: "/pharmacy" },
+  { chapter: 6, label: "The queue", to: "/queue" },
+  { chapter: 7, label: "What the pharmacy sees", to: "/pharmacy/claims" },
+  { chapter: 8, label: "Where it ends", to: "/#close" },
 ] as const;
+
+export const TOUR_CHAPTER_COUNT = new Set(TOUR_STOPS.map((stop) => stop.chapter)).size;
 
 export function tourStopIndex(pathname: string, hash: string): number {
   if (pathname === "/") {

@@ -6,6 +6,21 @@ ms.date: 2026-09-11
 
 ## Checklist
 
+### Issue 26 implementation stream
+
+Eight explicit chapters now separate the pipeline and Four cases. Both places
+show longer manual evidence-gathering sequences and shorter proposed assisted
+preparation, preserving human decisions and abstention. The claims composition
+includes a five-stage explanatory referral cycle alongside, not instead of,
+actual recorded state and existing pharmacy/operator controls.
+
+New `tour-cycle.spec.ts` covers exact navigation, mode-dependent sequences,
+the actual human/code referral-to-synthetic-pricing journey and responsive axe.
+Unit contracts cover chapter order and complete canonical narratives.
+Local check passes and all 555 units in 18 files pass. Browser execution awaits
+the coordinator's resource slot. R owns existing tour expectations; S owns shell focus/metadata.
+No domain/store mutation, hosting change or integrated acceptance claim.
+
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)

@@ -45,8 +45,8 @@ export function HomePage() {
         </div>
       </>}
       {chapterNumber === 2 && <BaselineCalculator />}
-      {chapterNumber === 3 && <>
-        <ExceptionPipeline />
+      {chapterNumber === 3 && <ExceptionPipeline />}
+      {chapterNumber === 4 && <>
         <h2 className="text-2xl font-semibold">Operator cases · Test the evidence</h2>
         <p className="text-sm font-medium">Synthetic cases · Scripted interpretation · Human decision throughout</p>
         <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -69,7 +69,7 @@ export function HomePage() {
           })}
         </ul>
       </>}
-      {chapterNumber === 4 && <>
+      {chapterNumber === 5 && <>
         <TwoPlacesDiagram enabled={agentEnabled} />
         <section aria-label="Referral and resubmission loop" className="space-y-3 rounded-xl border p-5">
           <h2 className="font-semibold">One item, both sides</h2>
@@ -83,7 +83,7 @@ export function HomePage() {
         </section>
         <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>
       </>}
-      {chapterNumber === 7 && <>
+      {chapterNumber === 8 && <>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>
           <div><dt className="text-xs text-muted-foreground">Requested history</dt><dd className="mt-1 font-medium">Two years · Item-level reasons</dd></div>

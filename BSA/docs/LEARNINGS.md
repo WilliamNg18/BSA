@@ -387,3 +387,17 @@ environmental. Issue #34 tracks investigation and removal criteria. Apply
 @quarantine only to assistance complete-A/global-Off/local-available and the
 pharmacy D-Off/light and B-On/light matrix instances. All three new Issue20
 guards and the other 23 focused cases remain blocking; no assertion is removed.
+
+## 2026-09-11: Issue 26 chapter split integration surfaces
+
+The old tour had eight stops but only seven chapters. Pipeline and case cards
+shared one home branch, and canonical narrative metadata omitted calculator
+and queue chapters. Chapter count alone therefore did not establish independent
+chapter content. Tests now pin the exact nine-stop route/label sequence and
+the complete eight-entry narrative mapping.
+
+Moving the pipeline also requires updating pipeline and calculator browser
+destinations, not Four cases destinations. Shell chapter labels/prose and
+existing tour expectations are coordinated with their separate owners.
+The fresh worktree initially lacked tsc; npm ci restored locked dependencies.
+No local browser is started before the coordinator grants a resource slot.

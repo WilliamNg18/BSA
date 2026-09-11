@@ -141,7 +141,7 @@ test("calculator live edits, flag, route persistence, history, reset and rail", 
   for (const { key, label } of BASELINE_FIELDS) await expect(page.getByLabel(label, { exact: true })).toHaveValue(String(BASELINE_DEFAULTS[key]));
   const rail = page.getByRole("navigation", { name: "Guided tour" });
   await rail.getByRole("button", { name: "Next", exact: true }).click();
-  await expect(page).toHaveURL(/#cases$/);
+  await expect(page).toHaveURL(/#pipeline$/);
   await rail.getByRole("button", { name: "Back", exact: true }).click();
   await expect(page).toHaveURL(/#month$/);
 });

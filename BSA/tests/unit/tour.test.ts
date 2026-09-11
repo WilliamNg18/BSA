@@ -1,13 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
+import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { pharmacyCaseLink } from "../../src/lib/case-links";
 import { useAppStore } from "../../src/lib/store";
 
 describe("tour navigation contract", () => {
-  it("has seven chapters and retains the precheck before queue, claims and close", () => {
-    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 4, 5, 6, 7]);
-    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
+  it("has eight explicit chapters and retains the precheck before queue, claims and close", () => {
+    expect(TOUR_CHAPTER_COUNT).toBe(8);
+    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 5, 5, 6, 7, 8]);
+    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#pipeline", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
+    expect(TOUR_STOPS.filter((stop) => stop.to !== "/pharmacy").map((stop) => stop.label)).toEqual([
+      "The scene", "A month in numbers", "What exists today and what changes", "Four cases",
+      "One agent, two places", "The queue", "What the pharmacy sees", "Where it ends",
+    ]);
   });
   it("links to the same claim through the supported case query", () => {
     const id = "SYN-FQ123-2";
@@ -38,6 +43,9 @@ describe("tour navigation contract", () => {
 });
 
 describe("curated display boundary", () => {
+  it("supplies one canonical narrative for every explicit chapter", () => {
+    expect(TOUR_CONTENT.chapters.map((chapter) => chapter.chapter)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  });
   it("retains the single exact sourcing statement", () => {
     expect(SOURCES_FOOTER).toBe("Public information (NHSBSA and Community Pharmacy England publications) and stated assumptions. All operational data on this site is synthetic.");
   });
