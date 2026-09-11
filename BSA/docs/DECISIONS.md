@@ -528,3 +528,12 @@ Keep the monthly calculator's fixed-reference judging separate from the queue's
 single-operator day projection. Neither model measures savings or accuracy.
 Public-source validation remains explicitly unverified, not silently converted
 into a measured fact. No new browser run, source edit or test edit is needed.
+
+## 2026-09-11: Preserve partial capture evidence
+
+Checkpoint the capture manifest after each image and record expected count and
+completion separately from violations. Recompute failures from all retained
+entries during resume, and recapture failed entries instead of skipping them.
+This prevents an interrupted or resumed run from appearing successful merely
+because its new in-memory failure list started empty. Validate this metadata
+logic without launching another browser before the final integration slot.

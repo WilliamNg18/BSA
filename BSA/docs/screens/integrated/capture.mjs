@@ -11,11 +11,11 @@ const baseURL = "http://localhost:4193";
 const resume = process.argv.includes("--resume");
 const previous = resume ? JSON.parse(await readFile(join(directory, "manifest.json"), "utf8")) : null;
 const results = previous?.captures ?? [];
-const failures = [];
 const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 if (previous && previous.sourceRevision !== revision) throw new Error("Cannot resume captures from a different source revision");
 const browser = await chromium.launch();
 let runtimeError = null;
+let completed = false;
 const surfaces = [
   ["overview-scene", "/#scene"],
   ["overview-month", "/#month"],
@@ -31,7 +31,23 @@ const surfaces = [
   ["not-found", "/not-a-route"],
 ];
 const states = ["submitted", "in_review", "information_requested", "referred_back", "resubmitted", "paid", "escalated"];
+const expectedCaptureCount = 2 * (surfaces.length + states.length + 2 + 3 + 8) + 1;
 await mkdir(directory, { recursive: true });
+
+function failed(entry) {
+  return entry.horizontalOverflow || entry.axeViolations.length > 0 || entry.browserErrors.length > 0;
+}
+
+async function saveManifest() {
+  await writeFile(join(directory, "manifest.json"), `${JSON.stringify({
+    sourceRevision: revision, capturedAt: new Date().toISOString(),
+    baseURL, build: "BSA/dist, root-path production build",
+    viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1,
+    colorScheme: "light", reducedMotion: "reduce", fullPage: true,
+    expectedCaptureCount, completed,
+    captures: results, failures: results.filter(failed).map((entry) => entry.filename), runtimeError,
+  }, null, 2)}\n`);
+}
 
 async function session(run) {
   const context = await browser.newContext({
@@ -62,7 +78,7 @@ async function settle(page) {
 async function capture(page, name, enabled, errors) {
   const filename = `${name}-${enabled ? "on" : "off"}-1440.png`;
   const existing = results.findIndex((entry) => entry.filename === filename);
-  if (resume && existing >= 0 && !name.startsWith("claims-detail-")) return;
+  if (resume && existing >= 0 && !failed(results[existing]) && !name.startsWith("claims-detail-")) return;
   await settle(page);
   await page.mouse.move(0, 0);
   const dismiss = page.getByRole("button", { name: "Dismiss notification", exact: true });
@@ -81,7 +97,7 @@ async function capture(page, name, enabled, errors) {
   };
   if (existing >= 0) results[existing] = entry;
   else results.push(entry);
-  if (overflow || axe.violations.length || errors.length) failures.push(filename);
+  await saveManifest();
   console.log(`${results.length}: ${filename} (axe ${axe.violations.length}, overflow ${overflow}, errors ${errors.length})`);
 }
 
@@ -94,6 +110,7 @@ async function history(page) {
 }
 
 try {
+  await saveManifest();
   for (const enabled of [false, true]) {
     for (const [name, path] of surfaces) {
       await session(async (page, errors) => {
@@ -102,6 +119,10 @@ try {
         await capture(page, name, enabled, errors);
       });
     }
+    if (results.length !== expectedCaptureCount || new Set(results.map((entry) => entry.filename)).size !== expectedCaptureCount) {
+      throw new Error(`Expected ${expectedCaptureCount} unique captures, found ${results.length}`);
+    }
+    completed = true;
     for (const state of states) {
       await session(async (page, errors) => {
         await page.goto(`${baseURL}/pharmacy/claims`);
@@ -189,12 +210,6 @@ try {
   throw error;
 } finally {
   await browser.close();
-  await writeFile(join(directory, "manifest.json"), `${JSON.stringify({
-    sourceRevision: revision, capturedAt: new Date().toISOString(),
-    baseURL, build: "BSA/dist, root-path production build",
-    viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1,
-    colorScheme: "light", reducedMotion: "reduce", fullPage: true,
-    captures: results, failures, runtimeError,
-  }, null, 2)}\n`);
+  await saveManifest();
 }
-if (failures.length) process.exitCode = 1;
+if (results.some(failed)) process.exitCode = 1;
