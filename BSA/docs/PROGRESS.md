@@ -226,6 +226,13 @@ Its draft PR is not merge-ready: focused browser verification awaits the next
 coordinated slot, and eight-chapter tour expectations await integration of #26.
 No hosted acceptance or final full-suite pass is claimed.
 
+While awaiting the browser slot, sixteen server-rendered component tests covered
+every enabled/approved/check-status combination of the #29 comparison using
+existing React/Vitest dependencies. All sixteen passed, then typecheck and lint
+passed and `npm run test -- --maxWorkers=1` passed the complete 569-test suite in
+19 files in 40.47 seconds, exit 0. This adds no production code and does not
+replace keyboard, lifecycle or axe browser verification.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending
