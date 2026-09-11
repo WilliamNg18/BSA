@@ -63,33 +63,6 @@ for (const colorScheme of ["light", "dark"] as const) {
           });
         }
 
-        for (const reducedMotion of ["reduce", "no-preference"] as const) {
-          for (const enabled of [false, true]) {
-            test.describe(`phone pack motion=${reducedMotion} agent=${enabled}`, () => {
-              test.use({ reducedMotion, colorScheme: "dark", viewport: { width: 360, height: 900 } });
-              for (const id of ["EX-24107", "EX-24112", "EX-24119", "EX-24123", "EX-24101", "EX-24088"]) {
-                test(`axe and reflow ${id}`, async ({ page }, info) => {
-                  await page.goto(`case/${id}`);
-                  await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-                  if (enabled) await page.getByRole("button", { name: "Show all", exact: true }).press("Enter");
-                  await audit(page, info, "phone-pack-axe");
-                  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-                  // System-font metrics differ on Linux; enlarged text also forces the
-                  // historical replay link to wrap instead of widening the page.
-                  await page.evaluate(() => { document.documentElement.style.fontSize = "18px"; });
-                  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-                  if (id !== "EX-24123") {
-                    const replay = page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true });
-                    const bounds = await replay.boundingBox();
-                    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(360);
-                    await replay.press("Enter");
-                    await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toBeVisible();
-                  }
-                });
-              }
-            });
-          }
-        }
         test("axe claim detail and Follow banner", async ({ page }, info) => {
           await page.goto("pharmacy/claims?caseId=EX-24112");
           await page.getByRole("banner").getByRole("switch").setChecked(enabled);
@@ -105,6 +78,34 @@ for (const colorScheme of ["light", "dark"] as const) {
         });
       });
     }
+  }
+}
+
+for (const reducedMotion of ["reduce", "no-preference"] as const) {
+  for (const enabled of [false, true]) {
+    test.describe(`phone pack motion=${reducedMotion} agent=${enabled}`, () => {
+      test.use({ reducedMotion, colorScheme: "dark", viewport: { width: 360, height: 900 } });
+      for (const id of ["EX-24107", "EX-24112", "EX-24119", "EX-24123", "EX-24101", "EX-24088"]) {
+        test(`axe and reflow ${id}`, async ({ page }, info) => {
+          await page.goto(`case/${id}`);
+          await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+          if (enabled) await page.getByRole("button", { name: "Show all", exact: true }).press("Enter");
+          await audit(page, info, "phone-pack-axe");
+          expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+          // System-font metrics differ on Linux; enlarged text also forces the
+          // historical replay link to wrap instead of widening the page.
+          await page.evaluate(() => { document.documentElement.style.fontSize = "18px"; });
+          expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+          if (id !== "EX-24123") {
+            const replay = page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true });
+            const bounds = await replay.boundingBox();
+            expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(360);
+            await replay.press("Enter");
+            await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toBeVisible();
+          }
+        });
+      }
+    });
   }
 }
 

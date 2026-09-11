@@ -291,3 +291,8 @@ replay link used a non-wrapping, fixed-height button, appearing only on A/B/C/E/
 Windows fit it at 16px root text but overflowed by 17px at 18px; Linux CI reported
 5px at the standard size. Bound and wrap the control, then verify its full label,
 keyboard destination and page reflow rather than hiding horizontal overflow.
+
+Check Playwright's actual `--list` inventory before quoting a planned count.
+The phone reflow loop was accidentally nested inside the eight desktop variants,
+yielding 351 tests instead of 183. Moving it to top level removes redundant
+executions without removing any unique screen/mode/motion combination.

@@ -41,6 +41,11 @@ The final dedicated matrix now defines 183 browser tests and 247 unrestricted
 axe audits, including all six phone packs and larger-text reflow. Final execution
 after rebase is pending the coordinator's local-browser slot. Tasks 8-13 remain
 unchecked; no full WCAG, manual screen-reader or hosted acceptance is claimed.
+Post-rebase check and 557 units in 19 files pass on main `b23e478`; the lower
+count reflects main's seven removed budget tests. Playwright `--list` confirms
+183 tests after removing accidental nested duplication of the phone matrix.
+Already-built artifact diagnostics also enforce the header; only the explicitly
+development-server configuration excludes the production-only acceptance spec.
 
 The latest policy overrides the older execution order below: Azure Static Web
 Apps Free is the only host, every active browser configuration uses `/`, and
