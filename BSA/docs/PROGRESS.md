@@ -192,6 +192,26 @@ unchecked snapshots, edit invalidation and default-rule axe on two viewports.
 Typecheck and lint passed, exit 0. Runtime verification awaits the coordinated
 browser slot; the running baseline production artifact remains unchanged.
 
+## Stream R obsolete full run interrupted by coordinator
+
+`npm run test:e2e -- --workers=2 --reporter=dot` collected 783 tests at the root
+on port 4173, zero retries. On 11 September at 19:42 local time the coordinator
+requested termination of this obsolete seven-chapter run so implemented changes
+could be validated. Only its owned shell/process tree was stopped; port 4173
+was verified released. This is INTERRUPTED, with no final runner exit code.
+
+The saved reporter output contains 629 pass markers, ten timeout markers and
+one failure. These are partial markers, not final test counts or a full pass.
+The known skip-link failure exposed the stale first-Tab assumption corrected
+above. Timeout artifacts remain unclassified; no assertions were quarantined.
+Raw log, full results/traces and the original dist are preserved under the
+Stream R session artifacts as r-full-browser-1.log, r-full-browser-1-results
+and r-full-browser-1-dist. The earlier four-timeout report was interim only.
+
+Final full production acceptance remains required on the integrated eight-chapter
+build, preferably through exact Linux CI evidence. Neither this interrupted run
+nor the pending focused #19/#29 browser cases establish that acceptance.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

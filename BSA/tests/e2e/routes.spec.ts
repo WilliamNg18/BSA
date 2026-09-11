@@ -70,8 +70,15 @@ for (const path of ["missing-page", "notes"]) {
 
 test("primary links navigate at the site root and keyboard skip link reaches main", async ({ page }) => {
   await page.goto("./");
-  await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  const skip = page.getByRole("link", { name: "Skip to main content" });
+  // Tour entry focuses its heading; reach the skip link using only the keyboard.
+  for (let step = 0; step < 24 && !await skip.evaluate((element) => element === document.activeElement); step++) {
+    await page.keyboard.press("Shift+Tab");
+  }
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeVisible();
+  await expect(skip).toBeInViewport();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
   for (const [index, label] of ["Overview", "Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture"].entries()) {
