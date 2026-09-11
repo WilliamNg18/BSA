@@ -489,3 +489,27 @@ Add the separate pipeline to offline, content, generic-label, screenshot and
 default-rule axe matrices without removing Four cases. The coordinator and S
 explicitly authorise adding that one route to both existing accessibility arrays;
 all audit variants and zero-violation assertions remain unchanged.
+
+## 2026-09-11: Stream V integrated visual and narrative reconciliation
+
+Replace the layered historical SPEC, demo script and known-issues narrative
+with the implemented seven-chapter/eight-stop structure and shared lifecycle.
+Keep historical evidence in its existing task records, explicitly labelled,
+rather than treating old feature gaps or measurements as current blockers.
+The script uses exact public controls and an Off-to-On-to-Off B round trip;
+draft approval, resubmission and sufficient disposition remain human actions.
+
+Capture fresh production files at root path on isolated port 4193, 1440 x 1000,
+light theme, device scale 1 and reduced motion. Include every route and Agent
+state, all six case pack/trace/record views, seven expanded claim states and
+round-trip/overlay checkpoints. Assert disclosure expansion and record per-image
+hashes, errors, overflow and axe outcomes. Contact-sheet slices are review aids,
+not extra screenshots. Keep the PR draft until the coordinator confirms R/S
+and the separately owned #20 pharmacy-status correction have merged; then
+rebase and refresh before declaring ready. Do not merge V.
+
+The later user direction removes all size/performance budgets: gzip,
+Lighthouse, word counts and screenshot differences are informational only.
+Functional and accessibility checks still block. Absence of a token does not
+block local work; document owner setup in DEPLOYMENT.md without inventing a
+selected subscription, provisioned resource or live URL.

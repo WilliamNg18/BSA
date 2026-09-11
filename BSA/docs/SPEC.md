@@ -1,454 +1,310 @@
 ---
 title: Functional specification for Prescription Exception Case Builder
-description: Guided tour, Chapter 2 scenario calculator, qualified assumptions and retained synthetic case behaviour.
-ms.date: 2026-09-10
+description: Current routes, synthetic evidence, shared lifecycle and human-controlled round trip.
+ms.date: 2026-09-11
 ---
 
-## Current increment scope
+## 1. Purpose and authority
 
-Task 4 locally implements the pharmacy manual/assisted split, a cancellable
-two-second scripted check, explicit B date correction, immutable submission
-receipts and an illustrative post-submission timeline. Off performs no precheck;
-On is scripted, not a model API. D always stops at capture with downstream
-checks NOT RUN. Submission stays available in every status. Global Reset clears
-receipts, field drafts and assumptions and leaves Agent Off.
+A static capability demonstration using synthetic prescription exceptions,
+scripted interpretation and a versioned synthetic rulebook. It is not a clinical,
+pricing or operational service.
 
-The separate pharmacy memory store is not the final shared one-case lifecycle
-store. Task 8 owns that integration. No queue transition, actual submission or
-paid transition exists here. Complete A and explicitly corrected B avoid fake
-referrals; D remains uncertain with no payment guarantee. Durations are editable
-scenario assumptions, not measured operational delays. Local gates: check exit 0,
-425 units, 404 full Chromium tests and 64 axe audits with zero violations.
-See [authoritative progress](PROGRESS.md) for raw logs and limitations.
+> The agent gathers evidence and recommends. Deterministic code validates and
+> calculates. A human decides. The prototype does not calculate or approve payments.
 
-### Completed Task 3 foundation
+The integrated application implements the lifecycle, claims/detail, cross-side
+round trip and navigation. Implementation is distinct from final acceptance;
+[PROGRESS.md](PROGRESS.md) owns the remaining R/S/V/D gates.
 
-Task 3 adds the six-stage Chapter 3 pipeline above the retained A-D cards.
-Stages 1-3 preserve existing capture, printed extraction and pricing; handwriting
-uncertainty remains. The uncertain-exception kernel uses the shared two-second
-presentation clock. Built-only proposals never remove Case D's manual fallback.
-The pharmacy pre-check exit precedes capture. Workflow pain points and weeks-long
-referral cycles are assumptions, not observed NHSBSA practice. Every estimate
-uses the Task 1 selector. The new referral-free proxy retains all abstentions
-as risk, shows Not established for zero residual, and never displays 100%.
-See [the model](task-1-baseline-model.md) and [progress](PROGRESS.md).
-Task 3 scope corrections add seven individually keyed gathering markers across
-Plan, Gather, Retrieve, Reconcile/assess and Reason. Only completed phases assist
-the built cohort. The exact-fix draft needs completed presentation and a passing
-gate; referral risk and Case D remain unresolved. The three public figures are
-approximately 1.1 billion items/year, 85,000 referrals/month and Monthly rulebook
-publication, not an accuracy target. Publication frequency is not rule-change
-frequency, and these public claims have not been independently verified.
-The corrected local check, 386 units and 386 Chromium tests passed. Task 3 commit
-96bf097 and the supplied CI/hosting gates are recorded in progress. The existing
-large-chunk warning remains. Tasks 5-7 remain deferred.
+## 2. Boundary classes
 
-### Task 2 foundation
+| Class | Responsibility |
+| --- | --- |
+| `existing` | Existing capture, image store, claim ledger, case history and routing capabilities, represented by synthetic data |
+| `deterministic` | Requirement checks, reconciliation arithmetic, citation validation, structural confidence, compliance gate and record writing |
+| `agent` | Gather evidence, retrieve the applicable provision, compare sources and recommend or abstain |
+| `human` | Review evidence, approve a pharmacy draft and explicitly record a decision |
 
-Task 2 now supersedes the historical presentation requirements below: fresh
-sessions and confirmed Reset start Agent Off; On requires opt-in. Documentary
-filenames, inline documentary citations and source-prefixed labels are removed
-from client code. One chapter-one Sources footer remains; the complete audit
-is retained outside the client in [the offline register](../data/reference/source-audit.ts).
-Synthetic operational rule citations, evidence and gate checks remain visible.
-
-Narrative paragraphs/panels have a 25-word cap, including expanded disclosures.
-Headings, controls and structured numeric/status fields are separate, not a
-blanket exemption for long prose. The CI check searches every client file;
-the full browser suite checks rendered copy with positive evasion controls.
-A shared two-second presentation transition and keyboard-readable pain markers
-never write case state. Reduced-motion users receive immediate changes.
-Pharmacy split views, queue simulation and manual case views remain deferred
-to Tasks 4-7. The existing trace replay remains separate from Task 3's pipeline.
-Local checks pass: 383 units, 376 Chromium tests and 48 axe audits with zero
-violations. Task 2 commit b7c4451 and successful CI/hosting are user-reported; see
-[progress](PROGRESS.md) for evidence and limitations.
-
-### Historical Task 1 increment
-
-Task 1 replaces the earlier aggregate calculator model with seven editable
-synthetic gathering steps, editable built review, identical reference-cohort
-judging, bounded referral assumptions and a proportional four-cohort flow.
-Chapter 1 now consumes the same live scenario selector. The existing header,
-chapters 3/4/6, pharmacy and queue interfaces are unchanged. Tasks 2-7,
-including animation, remain unimplemented. No backend or automatic decisions
-are added. The current formulas and defaults are specified in
-[the Task 1 model](task-1-baseline-model.md).
-
-Presenter mode, Discussion mode, their state, the subtitle and `/notes` remain
-removed. This supersedes those older requirements in [TASK.md](TASK.md).
-The existing source registry is consumed without modification. Domain rules,
-fixtures, gate semantics and six canonical outcomes are unchanged. See
-[source-review.md](source-review.md) for attribution limits, discrepancies,
-case mapping and the remaining numerical-copy migration.
-
-Cases and operational results are synthetic. The tour separately labels
-document-attributed public figures, assumptions and design proposals. No real
-prescriptions, patients or authentic Drug Tariff text are introduced. Runtime
-data stays local, with no public-document fetching.
-
----
-
-## 1. Purpose
-
-The supplied documents attribute approximately 1.1 billion primary-care items
-annually to NHSBSA and approximately 85,000 referred-back items monthly to
-Community Pharmacy England. Referrals are a subset, not the whole operator
-queue. These publications were not independently verified. The Drug Tariff
-is described as republished monthly; the frequency of endorsement-affecting
-changes and the current operator evidence-assembly workflow need validation.
-
-The application demonstrates a **governed AI agent that builds that case and recommends, while a person decides**. It is a capability demonstration for a conversation, not a system for NHSBSA to run.
-
-**Governing principle (Keep, visible on every screen):**
-
-> The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides. The prototype does not calculate or approve payments.
-
-## 2. Boundary classes (Keep)
-
-Every action in the application is tagged as exactly one of four classes, and the tag is shown wherever the action appears (trace steps, tool calls, evidence items, section headings):
-
-| Class | Tag colour (initial build) | Meaning |
-|---|---|---|
-| `existing` | slate | Existing NHSBSA capability: scanners, capture, image store, claim ledger, case history, routing |
-| `deterministic` | sky blue | Pure code: pre-checks, requirement checks, reconciliation arithmetic, confidence composite, compliance gate, citation validation, record writing |
-| `agent` | teal | Agentic action: planning, choosing and calling tools, retrieving the rule for a date, reconciling sources, interpreting free text, recommending or abstaining |
-| `human` | orange | Human decision: the operator's accept, amend, request information, refer back or escalate |
-
-A `Boundary` page lists every action with its class and the reason for the classification, plus "where a model must not be used" and "what makes the agentic part genuinely agentic".
+Tags appear with actions and evidence. Colour is supplementary to text.
+The agent cannot change a lifecycle state, invent a citation, resolve a material
+conflict, bypass the pure gate or price an item. `price()` refuses pricing.
 
 ## 3. Information architecture
 
-The sticky header is 56 px tall. Route metadata groups Overview, Operations
-(Pharmacy check, Exception queue), and How it works (Evaluation, Boundary,
-Assumptions, Architecture). Below 1024 px, a keyboard-operable mobile sheet
-contains all groups. The shield links home, with an accessible full product
-name at every width. Visible product text is abbreviated on tablets and
-shield-only on phones. Agent: On/Off and Reset remain in the same row.
-
-The tour rail pins immediately beneath the header. Back, Next, a six-chapter
-menu and Dismiss tour are keyboard accessible. Alt+ArrowLeft/Right navigate
-only outside editable fields, menus and dialogs, without Ctrl, Meta, Shift,
-composition, repeat or an already-handled event. The footer restores a
-dismissed rail at the current route. Unknown/detail routes show Start instead
-of falsely claiming a chapter. Nothing about tour visibility is persisted.
-
-The amber synthetic label remains on every route. Its detail paragraph can
-be collapsed for the session; the governing principle cannot be collapsed.
-The skip link focuses main without replacing a tour fragment. Chapter
-navigation focuses its heading and returns to the top.
-
-| Chapter | Route | Built in this increment |
-|---|---|---|
-| 1 | `/#scene` | Three qualified documentary figures, existing-process branches and shared synthetic estimates; Off hides assisted estimates only |
-| 2 | `/#month` | Editable synthetic workload calculator; qualified manual/assisted estimates |
-| 3 | `/#cases` | Six-stage pipeline, shared estimates, built-only proposed records and residual referral risk; retained A-D cards below |
-| 4 | `/#two-places` then `/pharmacy` | Accessible proposal diagrams and existing advisory pharmacy substop |
-| 5 | `/queue` | Explicit planned simulation notice above the existing synthetic queue |
-| 6 | `/#close` | First data test, five PDF assumptions and seven exact PDF questions |
-
-Next visits the pharmacy substop before chapter 5; Back reverses that exact
-sequence. The chapter menu has six entries, not seven. Only one Overview
-chapter renders at a time. Bare home and unrecognised home fragments show
-scene. Chapter narrative title plus prose is at most 40 words; concise data
-labels, controls and expanded disclosures are separate. The seven-question
-disclosure is explicitly exempt. Source disclosures name claim class, named
-source, supplied document, and PDF section or DOCX part/paragraph identifiers.
-
-| Route | Screen | Contents |
-|---|---|---|
-| `/` | Overview | Fragment-driven tour chapters described above; no old headline or operating KPI cards |
-| `/pharmacy` | Pharmacy pre-submission check | Section 9 |
-| `/queue` | NHSBSA exception queue | Section 12 |
-| `/case/:id/trace` | Case-building trace | Section 6: the agent's observable workflow, step by step, with a replay control |
-| `/case/:id` | Operator case pack | Section 8: everything the operator needs on one screen, then the decision |
-| `/case/:id/record` | Decision and audit record | Section 8.3: the append-only record, and replay under another Tariff version |
-| `/evaluation` | Evaluation and guardrails | Section 13 |
-| `/boundary` | Agent, deterministic code, human decision | Section 2 |
-| `/assumptions` | Assumptions register | Section 14 |
-| `/architecture` | Technical architecture and the path to production | Section 15 |
-| `*` | Not found | Friendly not-found state with a Go home link, including the removed `/notes` path |
-
-Case pages share a header: synthetic-case tag, state badge, "Back to queue", title, one-paragraph intro, and a three-tab strip (trace, case pack, record).
-
-## 4. Domain model
-
-### Chapter 2 baseline model
-
-The current Task 1 model is defined in
-[task-1-baseline-model.md](task-1-baseline-model.md). It supersedes the
-historical aggregate-minute formulas and six-input count below. Local
-verification is separate from pending Azure deployment; Azure is the
-user-approved target after the former private-repository host returned HTTP 422.
-
-### Historical calculator model before Task 1
-
-The following retained description records the previous increment, not
-current arithmetic or current UI expectations.
-
-[baseline.ts](../src/lib/domain/baseline.ts) contains pure typed validation,
-cohort arithmetic and generated summary copy. Its default provenance is in
-[baseline-defaults.ts](../src/lib/domain/baseline-defaults.ts). Neither changes
-cases, rules, gates, recommendations or human decisions. These are scenario
-estimates, not measured savings, real current practice or an operational forecast.
-
-| Input | Default and provenance |
-|---|---|
-| V, monthly volume proxy | 85,000, pinned by test to O23's approximate referred-back subset; not all exceptions |
-| g, gathering minutes/item | 5, editable design assumption; A03/A10 motivate observation but supply no duration |
-| j, judging minutes/item | 2, editable design assumption; not measured NHSBSA time |
-| p, pharmacy pre-check share | 2/12 incoming seed rows: B EX-24112 has an unmet date requirement; filler EX-24109 explicitly lacks invoice price |
-| c, rule-cleared share | 2/10 after those candidates: E EX-24101 and filler EX-24098 |
-| a, abstention share | 2/8 after candidates and clearances: D EX-24123 and filler EX-24120 |
-| Assembly seconds/item | Mean of current engine assemblySeconds for active recommended A/B/C, not a measured latency |
-
-The seed queue contains six canonical cases and six metadata-only fillers.
-There are no filler model runs. Pharmacy effectiveness is an explicit scenario
-assumption, not a measured catch rate or evidence of existing pharmacy checks.
-Conflict and unreadable rows are not counted as pharmacy catches. Historical
-F and the recorded filler are excluded from catches and timing samples. They
-remain in the residual scaling pool without inventing new packs or decisions.
-Defaults do not change when an operator records a session decision.
-
-O23 is attributed to Community Pharmacy England by the supplied pack,
-P0694-P0695, not externally verified. O24 distinguishes referrals from the
-unknown total operator queue. N01: 1,000,000 / 12 is approximately 83,333.33,
-not exactly 85,000. Scaling this deliberately mixed synthetic queue with that
-referral proxy does not estimate real operational cohorts.
-
-With p/c/a converted from percentages to fractions, the disjoint counts are:
-
-* P = round(V * p), pharmacy-caught
-* C = round((V - P) * c), rule-cleared
-* A = round((V - P - C) * a), abstained
-* B = V - P - C - A, built for human review
-
-Rounding uses the nearest integer, halves up. Each cohort is removed before
-the next denominator is calculated. P + C + A + B equals V exactly. At the
-defaults these are 14,167 / 14,167 / 14,167 / 42,499 respectively.
-
-Today gathering = V * g; Today judging = V * j. With agent gathering = A * g;
-With agent judging = (A + B) * j. Operator hours divide each combined minute
-total by 60. Default Today: 425,000 gathering minutes and 170,000 judging
-minutes, or 9,916.7 displayed operator hours. With agent: 70,835 gathering
-minutes and 113,332 judging minutes, or 3,069.5 displayed operator hours.
-No subtraction is presented as a measured saving.
-
-Expected per-item time before decision for built items = j + assemblySeconds/60;
-abstained = g + j. Assembly is machine latency, never added to operator hours
-or priced as labour. Queue delay, parallelism, extra failed-assembly latency
-and pharmacy effort are excluded. Pharmacy-caught and rule-cleared items
-assume no NHSBSA human touch. Built items require human review. Per-item
-assumptions remain labelled even when a cohort is empty; zero volume yields
-zero monthly hours and zero cohort counts.
-
-Validated citations cover only 3/3 active recommended canonical A/B/C packs,
-not all decisions or all scaled built items. D has no provision; E has no
-citation or model call. No payment, price, approval or human decision is output.
-
-The six input fields retain raw text in the global memory-only calculator
-slice across route navigation. Blank, negative, non-finite, malformed,
-out-of-range and fractional-volume inputs suppress estimates with associated
-field errors. Volume accepts whole numbers 0-1,000,000,000; minutes accept
-decimals 0-1,440; all three percentages accept decimals 0-100. Plain decimal
-syntax only, no thousands separators or exponents. Internal assembly input
-validation accepts finite seconds 0-3,600; the UI derives it, not an editable
-stopwatch claim. Bounded arithmetic stays within safe numerical magnitudes.
-
-Agent Off highlights Today and hides assisted metrics and summary cohorts;
-the accessible existing header switch restores them with inputs retained.
-Reset demonstration restores inputs and Agent On via the store as well as
-the existing route remount. Reload returns defaults; no storage is added.
-The permanent note requires replacing assumptions with validated NHSBSA
-figures. Expanded disclosure lists defaults/current values, exact default
-denominators, source IDs, formula and the Assumptions link. Display rounding
-does not change the full-precision rates retained in inputs.
-
-### Existing case model
-
-Types live in `src/lib/domain/types.ts`. The important ones:
-
-- **ExceptionCase**: `id`, `scenario` (A to F), `title`, `purpose`, `pharmacy {name, contractorCode}`, `routingReason`, `channel` ("Paper FP10" or "Electronic (EPS)"), `receivedAt`, `minutesInQueue`, `imageQuality` (0 to 1), `imageStyle` (printed, handwritten, handwritten_poor), `patientLabel`, `extracted` (ExtractedFields), `regions` (located regions on the form with text and read confidence), `claim` (what the pharmacy claimed), `readings` (three independent interpretations of the note, the mocked model step), `inCoverage`, `initialState`.
-- **ExtractedFields**: `productText`, `productCode | null`, `productConfidence`, `quantity | null`, `quantityConfidence`, `endorsementText`, `endorsementConfidence`, `prescriber`, `dispensingDate` (ISO date).
-- **EndorsementFacts** (one reading): `type` (NCSO, BB, XP, SP, UNKNOWN, NONE), `present`, `initialled | null`, `dated | null`, `quotedText`, `note`.
-- **TariffVersion**: `version` (YYYY-MM), `label`, `effectiveFrom`, `effectiveTo`, `changeNote`, `clauses[]`, `concessions[] {productCode, price}`.
-- **TariffClause**: `id`, `part`, `title`, `endorsementType`, `text`, `requirements[] {id, label}`.
-- **CasePack** (output of the agent run): tariff version and label, clause, `citationValid`, product, concession, `endorsementRequired`, `facts`, `requirementResults[]`, `conflicts[]`, `evidence[]`, `signals`, `composite`, `recommendation`, `alternative {outcome, note}`, `reasons[]`, `gate {result, checks[]}`, `draftToPharmacy`, `abstainReasons[]`, `trace[]`, `state`, `agentVersion`, `agentInvoked`, `assemblySeconds`.
-- **TraceStep**: `phase` (PLAN, GATHER, RETRIEVE, RECONCILE, ASSESS, RECOMMEND, ABSTAIN, CHECK, HAND_OFF), `title`, `cls` (boundary class), `summary`, `items[]`, `toolCalls[]`, `status` (ok, warn, fail, skipped).
-- **ToolCall**: `tool`, `productionService`, `cls`, `input` (record), `outputSummary`, `sourceLabel`, `durationMs`, `status`.
-- **Recommendation**: SUFFICIENT, REFER_BACK, REQUEST_INFORMATION, ABSTAIN, NONE.
-- **CaseState**: cleared_by_rules, agent_review_complete, operator_review_required, additional_evidence_required, agent_abstained, human_decision_recorded.
-- **HumanDecision**: ACCEPT, AMEND, REQUEST_INFORMATION, REFER_BACK, ESCALATE.
-- **DecisionRecord**: `id` (DR-nnnnnn), `caseId`, `timestamp`, `tariffVersion`, `agentVersion`, `inputs[]`, `sources[]`, `checks[]`, `recommendation`, `decision`, `isOverride`, `overrideReason | null`, `operator`, `synthetic: true`.
-
-## 5. Synthetic data (Keep the shape and the six behaviours; values may be regenerated)
-
-### 5.1 Rulebook: three monthly versions (`tariff.ts`)
-
-| Version | Clause 9 (NCSO) requires | Concessions |
-|---|---|---|
-| 2026-07 July | endorsement present, initialled | sertraline £3.12, metformin £2.40 |
-| 2026-08 August | endorsement present, initialled **and dated** | sertraline £3.41, amlodipine £2.95, metformin £2.60 |
-| 2026-09 September | as August | sertraline £3.20 (amlodipine withdrawn) |
-
-Other clauses in every version: Clause 8 Broken bulk (BB: present, quantity stated), Clause 12 Out-of-pocket expenses (XP: present, initialled), Part VIIIB Specials (SP: present, invoice price, quantity stated). `versionForDate(isoDate)` returns the version in force; `versionById` supports replay. The August change to Clause 9 is what makes Case B flip when replayed under July (Keep).
-
-### 5.2 Reference data (`reference.ts`)
-
-Six products with code, name, pack size, category and basic price (all `SYN-` codes). Five pharmacies with contractor codes. Contractor history (referrals in the last 90 days with reasons). A fuzzy `productCandidates(text)` for uncertain reads.
-
-### 5.3 The six cases (`cases.ts`)
-
-| Case | Id | Set-up | Expected agent outcome | Expected state |
-|---|---|---|---|---|
-| A | EX-24107 | Riverside Chemist. Printed "NCSO JB 14/08/26", sertraline, dispensed 2026-08-14, claim matches | SUFFICIENT, gate PASS, high confidence | agent_review_complete |
-| B | EX-24112 | Hillcrest Pharmacy. Handwritten "NCSO  RK" (initialled, not dated), amlodipine, dispensed 2026-08-21, £2.95 = August concession | REFER_BACK with the exact fix and a drafted note to the pharmacy; alternative SUFFICIENT shown as "not permitted"; gate PASS | operator_review_required |
-| C | EX-24119 | Oakfield Pharmacy. Complete endorsement, but form/capture say quantity 56 and the claim says 84 | REQUEST_INFORMATION; conflict surfaced with both values, not resolved; alternative REFER_BACK explained | additional_evidence_required |
-| D | EX-24123 | Meadow Lane Dispensary. Poor handwritten scan (quality 0.31), product and quantity unreadable, three readings disagree on what the note even is | ABSTAIN with three named reasons (no provision, quality below 0.60, only 1 of 3 readings agree); gate NOT RUN | agent_abstained |
-| E | EX-24101 | Station Road Pharmacy. EPS item, no endorsement, amount at basic price | Cleared by deterministic pre-checks; agent never invoked; no model call | cleared_by_rules |
-| F | EX-24088 | Hillcrest Pharmacy. Already decided; a seeded decision record DR-000871 (refer back, accepted, no override) | Shown through the record view | human_decision_recorded |
-
-Six further "filler" rows make the queue read like a working day (ids EX-24104, 24109, 24115, 24120, 24098, 24093) with a state, a recommendation label and minutes in queue but no case pages.
-
-## 6. The agent pipeline (`agent.ts`, `tools.ts`) (Keep the sequence, the classification and the stop conditions)
-
-`runAgent(case, {tariffVersion?, agentEnabled?})` is deterministic and runs entirely in the browser. It returns a CasePack with a trace. In the initial build the model step is mocked by the three scripted readings per case; the interface says so wherever the result appears.
-
-1. **PLAN, deterministic pre-checks** (`deterministic`): `mandatoryFieldsCheck` (product identified, quantity present, dispensing date present, prescriber present), `lookup_product_pack`, `lookup_claim`, `endorsementRequired(product, versionForDate, amountClaimed)`. Evidence items added: claim, extracted fields, product.
-   - **Stop 1 (cleared):** if no endorsement is required, there is no endorsement text and all mandatory fields pass, the trace ends with HAND_OFF "Cleared by rules; agent not invoked", `agentInvoked=false`, recommendation NONE, state cleared_by_rules.
-   - **Stop 2 (flag off):** if `agentEnabled` is false, the trace ends with HAND_OFF "Agent recommendations switched off; evidence only"; the case keeps its initial state; the operator sees evidence only.
-2. **PLAN, the unknowns for this item** (`agent`): four questions: was an endorsement required this month; was one given and what does it claim; does it satisfy the provision in force on the dispensing date; do form, extracted fields and claim agree.
-3. **GATHER** (`agent`): read-only tool calls chosen from the plan: `read_image_region` (endorsement margin), `read_image_region` (item line), `check_history`. Each finding carries its source and confidence; a low-confidence read is recorded with status `warn`, never papered over.
-4. **ASSESS part 1, interpret** (mocked model): `sampleAgreement(readings)`; consensus facts are used only if at least 2 of 3 readings agree on type, presence, initialled and dated; otherwise the endorsement type is UNKNOWN.
-5. **RETRIEVE** (`agent`): `retrieve_tariff(endorsementType, dispensingDate)` returns the version in force and the clause for that type. Evidence item added with the quoted clause text and the version's effective dates. If nothing is retrieved the step is `fail` and the agent may not cite a rule from memory (Keep).
-6. **RECONCILE** (`agent`): `reconcile()` compares quantity (form vs claim), product code (form vs claim) and amount (claim vs concession price). Disagreements are listed with both values and marked material; the agent never chooses between them (Keep).
-7. **ASSESS part 2** (`deterministic` tool calls inside an `agent` step): `run_endorsement_checks` evaluates each clause requirement against the consensus facts (present, initialled, dated, quantity stated, invoice price); `validate_citation` confirms the cited span exists in the clause of the version in force.
-8. **Confidence composite** (`deterministic`, `compositeFrom(signals)`): five structural signals, never a self-reported percentage (Keep): provision found; readings agree (threshold 2 of 3); sources reconcile; image quality (threshold 0.60); in validated coverage. Any of the first, second or fourth failing means **abstain**. Otherwise: high if all five satisfied; medium if one weakness (conflict, out of coverage, readings not unanimous); low if more than one.
-9. **RECOMMEND or ABSTAIN** (`agent`):
-   - composite abstain: recommendation ABSTAIN, reasons listed, step status `fail`, no draft.
-   - material conflict: REQUEST_INFORMATION; alternative REFER_BACK with a note on why it is worse for the pharmacy; draft asks the pharmacy to confirm the quantity.
-   - any requirement unmet and a clause found: REFER_BACK; reasons name the clause, version and the missing requirement; alternative SUFFICIENT marked "not permitted: the gate blocks SUFFICIENT while a requirement is unmet"; draft note to the pharmacy states the item, the gap, the clause and version, and what to do ("nothing else is needed").
-   - otherwise: SUFFICIENT; alternative REFER_BACK "would delay payment by a cycle with no rule requiring it".
-10. **CHECK, compliance gate** (`deterministic`, `complianceGate`): pure code the model cannot influence (Keep). Always: recommendation cites a validated provision; mandatory fields present; agent has not priced or disposed. Then per recommendation: SUFFICIENT needs every requirement met (or no endorsement required) and no unresolved material conflict; REFER_BACK needs at least one requirement unmet; REQUEST_INFORMATION needs a material conflict or missing evidence. Result PASS, FAIL or NOT_RUN (for ABSTAIN and NONE). On FAIL the recommendation is withheld and the operator sees evidence only.
-11. **HAND_OFF** (`human`): the case pack is written to the append-only record (`write_decision_record`) with the Tariff version and agent version pinned. State: agent_abstained, additional_evidence_required, agent_review_complete (SUFFICIENT and PASS) or operator_review_required.
-
-`assemblySeconds` is the sum of tool durations plus a fixed synthetic model latency (34 s) and is labelled synthetic wherever shown. `price()` throws: the application refuses to price (Keep).
-
-### Tool contracts (`TOOL_DEFINITIONS`, shown on the Architecture page)
-
-| Tool | Class | Purpose | Production mapping (as stated in the initial build) |
-|---|---|---|---|
-| read_image_region | existing | Read the located endorsement margin and item line | Document layout analysis over the existing image store |
-| lookup_product_pack | deterministic | Resolve product and pack from captured text | Product and pack master data (dm+d-aligned), read-only |
-| retrieve_tariff | agent | Fetch the clause in force on the dispensing date for an endorsement type | Search over the versioned Drug Tariff corpus, filtered by effective date |
-| lookup_claim | existing | What the pharmacy claimed | Claim ledger / submission records, read-only |
-| check_history | existing | Recent referrals for the contractor | Case-management history, read-only |
-| run_endorsement_checks | deterministic | Requirement and mandatory-field checks | Pure functions with unit tests |
-| validate_citation | deterministic | Cited span exists in the corpus for the version in force | Pure functions |
-| write_decision_record | deterministic | Append the case pack, later the human decision | Append-only store |
-
-Every tool is read-only against its source; none can write to a payment (Keep).
-
-## 7. Case-building trace screen (`/case/:id/trace`)
-
-- Controls: **Replay step by step** (reveals one step every ~0.9 s, `aria-live="polite"`), **Show all**, **Clear**; summary line "N steps · N tool calls · Tariff <label> · agent invoked / not invoked".
-- Each step is a card with a coloured left border by class, a monospace chip "01 PLAN", the title, the boundary tag and a status dot (OK, Attention, Failed, Skipped); then the summary, bullet items, and a tool-call table (Tool, Input, Result, Source, Production service, ms) where each tool row carries its own status and class tag.
-- When all steps are shown: "Where it ends. The agent's part is over. The rest is a person." with buttons to the operator case pack and the Boundary page.
-- No private model reasoning is displayed; the trace shows tool calls and structured outputs only (Keep).
-
-## 8. Operator case pack (`/case/:id`) and the human decision
-
-### 8.1 Alerts at the top
-- Agent not invoked (cleared by rules, or flag off): neutral alert explaining the operator works the item as today with evidence attached.
-- ABSTAIN: rose alert "The agent abstained" with the reasons; the item follows today's process unchanged.
-- Gate FAIL: rose alert "Recommendation withheld by the compliance gate".
-
-### 8.2 Layout (two columns on wide screens, 3:2)
-Left: **Recommendation** card (recommendation badge, composite badge, gate result; reasons; alternative considered with its note; confidence signals as five labelled rows with pass/fail dots and a composite sentence; deterministic check results, one row per gate check; draft explanation to the pharmacy in a blockquote, "grounded in the decision record only; the operator reviews before it leaves"). **Applicable Drug Tariff provision** (part, clause title, version label, "citation validated against the corpus", quoted text, requirement rows met / not met / unknown). **Conflicts and missing evidence** (each conflict with both sources and values, a "material" marker and a note; or "the sources agree").
-Right: **Prescription image** (synthetic form drawn as SVG with the located regions boxed and labelled with read confidence; the poor scan is skewed, faint and speckled); **Extracted fields, product and claim** (key-value list including capture confidences, master data, claim/ledger, concession this month, endorsement required, dispensing date); **Evidence** (every finding with field, value, source, provenance and class tag).
-
-### 8.3 Operator decision (orange card, `human`)
-- Five options with help text: Accept the recommendation; Amend; Request information; Refer back; Escalate. The recommended option is marked "(as recommended)" and pre-selected (SUFFICIENT maps to Accept, REFER_BACK to Refer back, REQUEST_INFORMATION to Request information, anything else to Escalate).
-- **Reason** field: required (minimum 8 characters) when the choice departs from the recommendation or when there is no recommendation to accept; optional otherwise. Placeholder on override: "Why you are departing from the recommendation. This is the most valuable data the system collects." (Keep the mandatory-reason rule.)
-- **Record decision** appends a DecisionRecord (inputs, sources, gate checks, recommendation, decision, override flag and reason, pinned versions), toasts the record id, sets the case state to human_decision_recorded and navigates to the record view. Footnote: nothing is paid or approved; in production the decision releases the item to existing deterministic pricing or returns it to the pharmacy.
-- Once decided, the card shows "Decision already recorded for this case" with the record id; Reset demo (header) makes it workable again.
-
-### 8.4 Decision and audit record (`/case/:id/record`)
-- The latest record for the case: id, timestamp, operator, rule version used, agent version, decision vs recommendation, override reason, inputs, sources, checks. Empty state "No human decision recorded yet" with a link to the case pack.
-- **Replay under a different rule version**: a select over the three Tariff versions re-runs `runAgent` with `tariffVersion` and shows the resulting recommendation, so the effect of a monthly change is visible (Case B under July becomes SUFFICIENT because July did not require a date) (Keep).
-- "What this record deliberately is not": it is not a payment decision, not a pricing calculation, not a model's free-text reasoning.
-
-## 9. Pharmacy pre-submission check (`/pharmacy`) (Keep: advisory, never blocks)
-
-- Intro: the same agent that works NHSBSA's queue checks the endorsement against the rule in force on the dispensing date before the claim is sent; in production this runs where the claim is submitted (NHSBSA's Manage Your Service portal) and later inside dispensing software. A teal "Advisory only" alert.
-- Controls: scenario toggle (Complete endorsement = Case A, Information missing = Case B, Unreadable form = Case D) and an **Agent available** switch.
-- Left: the synthetic form with regions highlighted; product, quantity, dispensing date, amount to be claimed; an editable **Endorsement entered by the pharmacy** text field (monospace) with **Restore**; help text "Edit the endorsement and the check re-runs. Try adding a date such as 21/08/26."
-- Right: a status card whose border colour follows the status:
-  - **Ready to submit** (green): the endorsement appears to satisfy the rule in force; submit as normal; NHSBSA's own checks still apply.
-  - **Information may be missing** (amber): "The endorsement appears to need: <missing requirements>. Correcting it now avoids a referral weeks later."
-  - **Agent unable to determine** (grey): either the agent is unavailable ("Continue with submission as normal; NHSBSA processes the item exactly as today") or the form could not be read well enough / the type was not recognised ("the item will be checked by a person at NHSBSA").
-  - Sections: Deterministic checks (endorsement required this month? plus the four mandatory fields, each Present/Missing, and the reason sentence); Rule retrieved for <date> (clause, version label, quoted text, requirement rows met / not met); "Reading of the note (mocked interpretation): ..."; buttons **Correct the information** (in scenario B, appends the dispensing date to the note and focuses the field) and **Continue with submission** (always enabled); on submit: "Submitted (synthetic). The result of this check travels with the claim, so if the item still reaches an operator the case starts pre-built. Nothing here changed what NHSBSA will pay."
-  - Footnote: a check on a typed field, not a scan; nothing is scanned at the pharmacy.
-- In the initial build the interpretation of the typed field is a small deterministic mock (`interpret()`: type from keyword, date from a d/m(/y) pattern, initials from a 2 to 3 capital-letter token). In production it is the same constrained model call the NHSBSA side uses.
-
-## 10. Header controls after tour foundation
-
-- Agent recommendations on/off (feature flag): off shows the fail-open path on every case (evidence only, no recommendation, state unchanged). Queue recommendations, including filler rows, are withheld. Pharmacy assistance is also withheld without blocking submission. Historical human records are unchanged; rule-version replay follows the current flag.
-- Agent: On/Off is the visible and accessible control label. Its tooltip explains synthetic assistance, evidence-only Off and unchanged scene facts. Historical records stay unchanged.
-- Reset demo opens a confirmation dialog. Keep working or Escape changes nothing. Reset demonstration restores seeded case states and records and calculator inputs, turns Agent on, restores tour/disclaimer visibility and remounts the current route to reset local pharmacy fields and replay selection. DR-000871 remains. The current route/fragment is retained. No record is persisted or payment affected.
-
-There are no Presenter mode or Discussion mode buttons, bar, sheet, timers or
-beat controls. The reference script is documentation, not a route or a header link.
-
-## 11. Overview figures and case summaries
-
-Scene consumes the registry's three key figures: approximately 1.1 billion
-annual items, approximately 85,000 monthly referred-back items, and the stated
-99.85% PPIA/PPPA target. Qualifications distinguish items from forms, referrals
-from all exceptions, approximation from exact arithmetic, and targets from
-achievement. No savings or operational-count headline is shown.
-
-The A-D summaries invoke `runAgent` with the current flag. On shows the actual
-recommendation and gate, B's missing-date fix, C's unresolved source values,
-and D's three failed abstention signals with exact reasons in disclosure.
-Off shows manual review tasks, with no fabricated minutes or effort counts.
-Those tasks are illustrative assumptions, not observed NHSBSA practice.
-All case links open the existing case pack; no new manual pack is built.
-
-Other routes retain existing synthetic numbers pending a separate numerical
-copy/source migration. This PR does not claim universal registry coverage.
-
-## 12. Exception queue (`/queue`)
-
-A filter toggle (All plus the six states) and a table of twelve rows: case id, routing reason, pharmacy, state badge, recommendation, minutes in queue, and for the six real cases a link to the case pack and to the trace. Empty state "No items in this state". With the agent flag off, recommendations show as "No recommendation (agent not run)".
-
-## 13. Evaluation and guardrails (`/evaluation`) (illustrative; every figure labelled synthetic)
-
-Scoreboard of nine metrics with value, target, status and note (agreement with expert adjudication; citation validity; evidence completeness; abstention rate; human override rate; handling time per exception, not measured; repeat-referral rate, not measured; cost per synthetic case; payment-accuracy guardrail unchanged by design). Performance by exception category (five categories with cases, agreement, abstention, note). Payment-accuracy guardrail. Go, reshape or stop criteria. "How this becomes evidence, in order": an eight-step delivery sequence from synthetic data to operator-assisted mode.
-
-## 14. Assumptions (`/assumptions`)
-
-A register of eight assumptions, each with statement, why it matters, evidence, how to validate, what if wrong, and whether being wrong kills, reshapes or leaves the idea intact. Plus "How the prototype's own claims are classified" (publicly supported; reasoned assumption; synthetic demonstration; proposed design decision; requires customer validation).
-
-## 15. Architecture (`/architecture`)
-
-"The flow, once" as a monospace diagram (existing estate, ingress, tier-0 pre-checks, agent with tools and a constrained model call, gate, append-only record, operator surface, human decision, pharmacy channel, evaluation gates, observability; pricing never enters; patient identity redacted before any model call). A component table (component; in this prototype; in production; NHSBSA owns; status Built for real / Mocked / Not built). The tool-contract table (section 6). "Deliberately not built" and "Why the prototype is shaped this way".
-
-## 16. Demonstration guide outside the application
-
-[demo-script.md](demo-script.md) retains seven timed beats with what to say and
-show, all twelve discussion prompts and twelve challenge answers, the delivery
-sequence, ownership, failure recovery, setup and deliberate omissions. It uses
-the current control labels and marks future controls as planned. `/notes` no
-longer has a page or navigation link and resolves to Page not found.
-
-## 17. Accessibility and interaction conventions (Keep and improve)
-
-Skip link to `#main-content`; every icon-only control has an `aria-label`; the trace list is `aria-live="polite"`; statuses use `role="status"`; form fields have visible labels and `aria-describedby` help; focus-visible outlines on all interactive elements; reduced motion respected (`MotionConfig reducedMotion="user"`); colour is never the only carrier of meaning (dots are paired with words); surfaces and text use semantic tokens so the OS dark theme works; accent colours carry at least 4.5:1 contrast against their text.
-
-## 18. Non-functional (Keep)
-
-- Static single-page application; no back end, no network calls, no analytics, no storage beyond memory. Reset returns to the seeded state.
-- Runs only on Azure Static Web Apps at `/`; deep links use root `staticwebapp.config.json`, emitted into the application build.
-- No real personal data anywhere. Every screen carries the synthetic label.
-- UK English throughout. No vendor branding in the interface; the production mapping on the Architecture page may name services because that is its purpose.
+The header contains Overview, Operations (Pharmacy check, Pharmacy claims,
+NHSBSA queue) and How it works (Evaluation, Boundary, Assumptions,
+Architecture), plus Agent and Reset. Narrow layouts use Open navigation.
+The shield links home. The synthetic banner and governing principle remain
+available on every route.
+
+### Seven chapters, eight stops
+
+| Chapter | Route | Current content |
+| --- | --- | --- |
+| 1: Set the scene | `/#scene` | Qualified public figures, shared scenario estimates and existing process |
+| 2: A month of work | `/#month` | Editable calculator with Today/assisted comparison |
+| 3: The pipeline | `/#cases` | Six operational stages, evidence assembly and canonical A-D examples |
+| 4: One agent, two places | `/#two-places` | Pharmacy/NHSBSA proposal and local round-trip links |
+| 4: Pharmacy example | `/pharmacy` | Optional scripted precheck and explicit submission |
+| 5: The queue | `/queue` | Virtual month, pinned cases, manual work and visible-row sweep |
+| 6: What the pharmacy sees | `/pharmacy/claims` | Pharmacy claims, states, detail and shared history |
+| 7: The first test | `/#close` | Referral-reason discovery, assumptions and questions |
+
+Next and Back follow this exact sequence. The chapter menu has seven entries;
+Pharmacy example is a substop, not an eighth chapter. Only one Overview chapter
+renders at a time. Bare `/` and unknown home fragments show scene.
+Off-tour routes show Start. Dismiss tour and Restore tour are session choices.
+Alt+ArrowLeft/Right navigate outside editable fields, menus and dialogs.
+
+### Route inventory
+
+| Route | Screen |
+| --- | --- |
+| `/` and the five fragments above | Overview |
+| `/pharmacy` | Pharmacy check |
+| `/pharmacy/claims` | Claims list |
+| `/pharmacy/claims?caseId=:id` | Selected claim detail; legacy `case` query also accepted |
+| `/queue` | Exception queue and shared session queue |
+| `/case/:id` | Operator case pack |
+| `/case/:id/trace` | Case-building trace |
+| `/case/:id/record` | Decision and audit record |
+| `/evaluation` | Synthetic evaluation and guardrails |
+| `/boundary` | Agent/code/human boundary |
+| `/assumptions` | Assumptions and validation |
+| `/architecture` | Tool contracts and proposed production architecture |
+| Other paths, including removed `/notes` | Not found with Go home |
+
+Case pages share a header, Back to queue, View pharmacy claim and a Case views
+tab strip. Same-item links use the shared case ID, including generated claims.
+Unknown cases have a recovery link rather than an invented pack.
+
+## 4. Models and storage
+
+`src/lib/domain` owns cases, product/reference data, tariff versions, rules,
+scripted tools, baseline arithmetic and lifecycle contracts. `src/lib/store.ts`
+owns session state. Scenario changes clone data instead of changing canonical
+fixtures. Only presentation preferences may persist.
+
+An `ExceptionCase` contains the case ID/scenario, synthetic pharmacy and patient,
+capture quality/regions, extracted fields, claim and scripted readings.
+`runAgent` returns a `CasePack`: evidence, provision/version, checks, conflicts,
+five confidence signals, composite, recommendation, gate, draft and trace.
+These outputs do not themselves create a human decision or lifecycle event.
+
+### Workload calculator
+
+The authoritative equations/defaults are in
+[task-1-baseline-model.md](task-1-baseline-model.md). Volume `V`, seven gathering
+steps `g`, judging `j`, pharmacy-caught `P`, rule-cleared `C`, abstained `A` and
+built `B` are bounded, sequential cohorts. Judging is identical across the
+comparison; pharmacy catch counts items, not minutes. Referral assumptions
+include deficient built items and all abstentions without double counting.
+Zero residual means Not established, never 100% accuracy.
+
+The scene, calculator, pipeline and queue consume shared scenario assumptions.
+Approximately 85,000 monthly referrals is a scale proxy, not the whole exception
+queue. Approximately 1.1 billion annual items and monthly rulebook publication
+are documentary context, not independent validation or a measured change rate.
+One Sources line sits on chapter 1; the documentary audit remains outside the
+client. No public-document retrieval occurs at runtime.
+
+## 5. Canonical synthetic cases
+
+### Rulebook and reference data
+
+July, August and September 2026 are synthetic versions. NCSO needs presence and
+initials in July; August and September additionally require a date. Broken bulk,
+expenses and specials have their own synthetic requirements. The effective
+dispensing date selects the version; replay may explicitly choose another.
+Products use `SYN-` codes; five pharmacies and all prices/claims are synthetic.
+Claimed/concession amounts are evidence, not a payment calculation.
+
+### Six fixed behaviours
+
+| Case | ID | Agent On result and invariant |
+| --- | --- | --- |
+| A | EX-24107 | Complete endorsement: SUFFICIENT, gate PASS |
+| B | EX-24112 | Initialled, not dated: August REFER_BACK with exact fix; July replay SUFFICIENT |
+| C | EX-24119 | Form/capture quantity 56 versus claim 84: REQUEST_INFORMATION; preserve both values |
+| D | EX-24123 | ABSTAIN: quality 0.31 below 0.60, no provision and only 1/3 readings agree; gate NOT RUN |
+| E | EX-24101 | Deterministic clearance, agent never invoked, no model call |
+| F | EX-24088 | Already decided; seeded DR-000871 remains historical |
+
+Turning Agent Off removes proposals but does not rewrite these fixtures,
+decisions or lifecycle history. Code-only E clearance remains visible.
+Metadata-only queue examples do not acquire invented agent results.
+
+## 6. Evidence pipeline and gate
+
+`runAgent(case, { tariffVersion?, agentEnabled? })` is deterministic, offline
+orchestration of scripted tool results, not a live language-model request.
+
+1. Code checks mandatory fields, product, claim and whether endorsement is needed.
+   E exits with code-only clearance; Off exits to manual evidence review.
+2. PLAN identifies missing evidence. GATHER reads synthetic image regions and
+   history. Scripted readings agree only when at least two of three match.
+3. RETRIEVE obtains the clause for the endorsement type and dispensing-date
+   version. No provision means no citation from memory.
+4. RECONCILE preserves both sides of product, quantity and amount disagreements.
+5. ASSESS runs requirement checks and citation validation. Confidence uses
+   provision found, sample agreement, reconciliation, image quality and coverage,
+   not a self-reported percentage. Missing provision, disagreement or low image
+   quality triggers abstention.
+6. RECOMMEND proposes Sufficient, Refer back or Request information, or ABSTAIN
+   names the stop conditions. Proposed text has no sending authority.
+7. CHECK is pure `complianceGate`: citation, mandatory fields, no pricing/disposal
+   and outcome-specific requirements. Sufficient cannot pass with an unmet
+   requirement or unresolved material conflict. ABSTAIN/NONE yield NOT RUN.
+8. FAIL withholds recommendation, alternative and pharmacy draft while preserving
+   evidence and failed checks. HAND_OFF ends the agent's part; a human decides.
+
+Phase chips include PLAN, GATHER, RETRIEVE, RECONCILE, ASSESS, CHECK, RECOMMEND,
+ABSTAIN and HAND_OFF as applicable, not nine compulsory steps for every case.
+Observable actions, tool inputs/results and boundaries are exposed; private
+model reasoning is not. Synthetic durations are not measured inference latency.
+
+## 7. Case pack, trace and record
+
+The pack pairs synthetic form/claim evidence with applicable provision, checks,
+conflicts and the human decision. On adds gated recommendations and assembly
+slots. Off presents competent manual tasks and evidence-only comparisons.
+D shows named abstention reasons; E explains why no agent was called.
+
+Trace playback has play/pause, stepping and completion controls using the shared
+two-second presentation clock. Reduced motion is respected. Replay changes
+presentation only, never a decision or lifecycle. Off exposes manual work and
+does not pretend to replay an agent trace; E retains deterministic evidence.
+
+An active review permits Accept/Sufficient, Amend, Request information, Refer
+back or Escalate as applicable. Recommended choices are labelled. A reason of
+at least eight characters is required when departing from a recommendation or
+making a manual decision without one. Invalid input produces a visible error.
+Explicit **Approve this draft for the pharmacy** is separate from recording
+the decision; toggling On is never approval.
+
+Record decision appends the human decision with revision, timestamp, inputs,
+sources, checks and versions, then opens the record. An already-disposed case
+requires an explicit new demonstration attempt, not a second silent decision.
+Manual NONE decisions have no recommendation to override.
+
+The record page shows an honest empty state when no human record exists.
+Existing records survive flag changes. Counterfactual **Replay with** compares
+July/August/September against recorded evidence without mutating history or
+the current resubmission. It is disabled in manual mode or without a recorded
+rule version. B's original undated August record becomes Sufficient under July.
+
+## 8. Shared lifecycle and human authority
+
+Lifecycle states are distinct from evidence-pack `CaseState` classifications.
+`lifecycles`, immutable `caseRevisions` and decision records are shared between
+pharmacy and NHSBSA views, with no parallel operational store.
+
+| Lifecycle | Pharmacy label | How it advances |
+| --- | --- | --- |
+| `submitted` | Submitted, awaiting processing | Explicit pharmacy submission |
+| `in_review` | In review at NHSBSA | Explicit Start review/Open for review |
+| `information_requested` | Information requested: NHSBSA needs you to confirm something | Human Request information |
+| `referred_back` | Referred back: correction needed before payment | Human Refer back |
+| `resubmitted` | Resubmitted, awaiting re-check | Explicit pharmacy correction/resubmission or confirmation |
+| `paid` | Payment approved (synthetic) | Human sufficient disposition, or E's deterministic clearance, attributed to existing pricing |
+| `escalated` | In review at NHSBSA (senior review) | Human Escalate |
+
+Only NHSBSA's `in_review` wording changes with assistance: Awaiting operator
+versus Case built, awaiting operator. Pharmacy state labels do not vary by toggle.
+History lists actor, transition, reason, version/clause, revision and approval
+metadata where present. Old attempts retain their own endorsement and precheck
+snapshot. Reset/reload restores seeds; this is not durable audit storage.
+
+## 9. Pharmacy check and claims
+
+`/pharmacy` offers Complete endorsement (A), Information missing (B) and
+Unreadable form (D), an editable endorsement and Restore. Off performs no
+advisory check; On runs a cancellable two-second scripted check. Agent available
+models unavailable assistance without blocking **Continue with submission**.
+Edits invalidate old checks. B's date is applied only by explicit action.
+D stops at capture; later steps are NOT RUN even if typed text appears complete.
+
+Submission stores an immutable attempt/advisory snapshot and offers
+**View submitted claim**. An illustrative local timeline is not automatic
+lifecycle progress or a payment guarantee.
+
+`/pharmacy/claims` filters five synthetic pharmacies and seven states. Totals sum
+matching claimed amounts, not payments. Open claim selects detail by shared ID.
+Read-only states do not offer correction/confirmation fields.
+
+Referred-back claims offer **Corrected endorsement** and **Resubmit claim**.
+On adds **Re-check endorsement**; a permitted date correction requires the
+operator-approved draft. Applying it invalidates the prior check, so re-check
+again before showing Ready to resubmit. This advisory status never blocks
+resubmission or guarantees payment. Off allows typed manual correction.
+
+Information-requested claims show both conflicting values and **Pharmacy
+confirmation** / **Send confirmation**. Empty confirmation is rejected.
+Confirmation appends evidence and requires human re-check; it does not select
+a winning quantity. On pharmacy-facing draft instructions must be explicitly
+operator-approved and labelled as such.
+
+**Demonstration replay** / **Submit another demonstration attempt** explicitly
+appends a new revision for a seeded or disposed item. Prior attempts remain.
+Follow this case/Follow this item and the Followed item banner's **Switch side**
+links keep one ID through navigation. Merely switching sides does not start review.
+
+## 10. Queue and Today
+
+Pinned canonical cases coexist with a bounded virtual month. State filters,
+manual seven-step work, projection counts and **Run agent on visible rows** /
+**Step sweep** / **Cancel sweep** operate on illustrative work. The shared
+session queue separately exposes submitted/resubmitted cases with **Open for
+review**. A sweep never records a human decision or changes a lifecycle state.
+
+Today on a metadata-only item opens a labelled manual-work example with seven
+assumed tasks and judging duration. It must remain usable and honest, not a
+broken link or fabricated full evidence pack. Projection speed/benefits are
+not measured operational performance.
+
+## 11. Reflective pages
+
+Evaluation exposes illustrative synthetic metrics, risks and guardrails, not
+an accuracy claim. Boundary separates existing capability, code, agent and
+human authority. Assumptions states how claims could be validated or disproved.
+Architecture describes read-only tool contracts and a proposed production
+mapping; it does not assert those services are deployed.
+
+The first-test chapter requests referral-reason evidence before proceeding.
+The [demo script](demo-script.md) supplies the exact-click story and discussion
+prompts outside the interface. Presenter/Discussion UI and `/notes` are removed.
+
+## 12. Global controls and accessibility
+
+Agent starts Off. On/Off is reversible, never a lifecycle or approval action.
+Reset demo opens confirmation; Keep working/Escape leaves the session unchanged.
+Reset demonstration restores seeds (including DR-000871), calculator defaults,
+Agent Off, tour/disclaimer visibility and local route controls without changing
+the current URL.
+
+UK English, no em dashes, no vendor/product/document names in interface copy
+outside the permitted Architecture mapping, under 25 words of prose per panel,
+and one qualified Sources line are content requirements. The synthetic label
+and governing principle cannot disappear with optional disclosure content.
+Keyboard operation, focus visibility, semantic labels, non-colour status,
+live announcements and reduced motion are required by WCAG 2.2 AA intent.
+Automated axe is necessary, not proof of full manual conformance.
+
+## 13. Hosting and verification
+
+Azure Static Web Apps Free at root `/` is the only target. Root
+`staticwebapp.config.json` is emitted to `BSA/dist`; SPA deep links and security
+headers belong to that host. No intended subscription or token is configured
+and no live URL is claimed. See [DEPLOYMENT.md](DEPLOYMENT.md).
+
+Blocking: typecheck, lint, build, Vitest, production crash/dead-control browser
+checks and zero-violation axe. There are no size or performance budgets.
+CI gzip reporting, prose counts, Lighthouse and screenshot differences are
+informational. Functional defects remain blocking even when discovered during
+an informational visual review.
+
+[Current captures](screens/integrated/README.md) are fresh root-path production
+images at 1440px in both Agent states. They are not copied historical captures.
+[KNOWN-ISSUES](KNOWN-ISSUES.md) records genuine limitations and evidence scope;
+older measurement logs remain historical rather than current release claims.

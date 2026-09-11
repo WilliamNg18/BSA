@@ -586,3 +586,26 @@ Keep every kernel phase/gathering/referral clock check on /#pipeline, then visit
 /#cases and replay the same Off-to-On clock to check D's marker at every phase,
 plus its final ABSTAIN and NOT RUN. Do not navigate away during the kernel loop.
 The focused three-test strict-header rerun passed without retries or new limits.
+
+## 2026-09-11: Stream V exact-click and capture evidence
+
+Read the rendered navigation adapter as well as routes.tsx: the queue menu item
+is NHSBSA queue, even though the route metadata uses Exception queue.
+The integrated tour has seven chapters/eight stops, including pharmacy claims.
+Reset restores Agent Off. An existing seeded disposition is not an editable
+review; append an explicit demonstration attempt and start review.
+
+Rehearsing the mixed-mode B story through public controls preserved the original
+undated evidence, July Sufficient counterfactual and three immutable attempts.
+Applying the approved date correction invalidates its old advisory result;
+re-checking is a separate action. Turning Off after the human sufficient
+disposition leaves the synthetic lifecycle and human records unchanged.
+
+An instantaneous count() can miss a disclosure before navigation has rendered
+it; awaiting the region and asserting the outer details open attribute avoids
+mislabelled "expanded" photographs. Nested advisory snapshots also make a broad
+summary locator ambiguous. Both were capture-harness issues, not product bugs.
+
+Initial default-worker Vitest execution timed out one budget-CLI test at 5,000ms
+with 559 passing. A bounded two-worker rerun passed all 560 tests. Preserve both
+outcomes; do not change application tests to hide host contention.
