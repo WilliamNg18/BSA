@@ -1,4 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MemoryRouter } from "react-router-dom";
+import { ReferralCycle } from "../../src/components/demo/referral-cycle";
+import { LIFECYCLE_LABELS, type CaseLifecycle, type LifecycleState } from "../../src/lib/domain/lifecycle";
 import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { pharmacyCaseLink } from "../../src/lib/case-links";
@@ -84,5 +89,38 @@ describe("following is presentation state only", () => {
       expect(reset.caseRevisions).toEqual(before.caseRevisions);
       expect(reset.records).toEqual(before.records);
     } finally { useAppStore.getState().resetDemo(); }
+  });
+
+  describe("referral guide is not lifecycle progress", () => {
+    const render = (enabled: boolean, claim?: CaseLifecycle) => renderToStaticMarkup(
+      createElement(MemoryRouter, null, createElement(ReferralCycle, { enabled, claim })),
+    );
+    it.each(Object.keys(LIFECYCLE_LABELS) as LifecycleState[])("renders only recorded %s state in both modes without mutation", (state) => {
+      const claim: CaseLifecycle = { caseId: "EX-24112", pharmacyCode: "FQ123", state, history: [] };
+      Object.freeze(claim.history);
+      Object.freeze(claim);
+      for (const enabled of [false, true]) {
+        const markup = render(enabled, claim);
+        expect(markup).toContain(`role="status">${LIFECYCLE_LABELS[state].pharmacy}</p>`);
+        expect(markup).toContain("This guide is not claim history");
+        expect(markup).toContain("For referred items, a sufficient human decision");
+        expect(markup).toContain("An unsent correction is a local draft");
+        expect(markup).toContain('href="/case/EX-24112"');
+        expect(markup).toContain(enabled ? "Assisted preparation" : "Manual preparation");
+        expect(markup.includes("Recorded synthetic outcome attributed to existing pricing")).toBe(state === "paid");
+        expect(claim).toEqual({ caseId: "EX-24112", pharmacyCode: "FQ123", state, history: [] });
+      }
+    });
+    it("does not invent a recorded state or working claim link for an unknown claim", () => {
+      for (const enabled of [false, true]) {
+        const markup = render(enabled);
+        expect(markup).not.toContain('role="status"');
+        expect(markup).not.toContain("Recorded claim state");
+        expect(markup).not.toContain("Open this operator case");
+        expect(markup).toContain("Paid");
+        expect(markup).toContain("Synthetic only");
+        expect(markup).toContain("This guide is not claim history");
+      }
+    });
   });
 });

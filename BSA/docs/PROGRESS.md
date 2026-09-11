@@ -17,9 +17,14 @@ actual recorded state and existing pharmacy/operator controls.
 New `tour-cycle.spec.ts` covers exact navigation, mode-dependent sequences,
 the actual human/code referral-to-synthetic-pricing journey and responsive axe.
 Unit contracts cover chapter order and complete canonical narratives.
-Local check passes and all 555 units in 18 files pass. Browser execution awaits
+Local check passes and all 563 units in 18 files pass. Browser execution awaits
 the coordinator's resource slot. R owns existing tour expectations; S owns shell focus/metadata.
 No domain/store mutation, hosting change or integrated acceptance claim.
+
+Parent review tightened the comparison to one qualified paragraph and scoped
+the paid-stage human decision to referred items, not rules-cleared Case E.
+Eight additional server-rendered contracts check all seven lifecycle states
+in both modes and unknown claims, with frozen inputs and no invented progress.
 
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)

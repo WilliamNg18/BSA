@@ -401,3 +401,9 @@ destinations, not Four cases destinations. Shell chapter labels/prose and
 existing tour expectations are coordinated with their separate owners.
 The fresh worktree initially lacked tsc; npm ci restored locked dependencies.
 No local browser is started before the coordinator grants a resource slot.
+
+An explanatory referral guide may also be visible for a rules-cleared claim.
+Scope its human-decision requirement to referred items rather than implying
+that Case E requires an operator. Server-rendering against frozen lifecycle
+inputs verifies that every state label remains unchanged in both modes and
+that an unknown claim never acquires an invented status or action link.

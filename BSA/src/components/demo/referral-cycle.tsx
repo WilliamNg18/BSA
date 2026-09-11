@@ -12,9 +12,8 @@ export function ReferralCycle({ enabled, claim }: { enabled: boolean; claim?: Ca
       <h3 className="font-semibold">{enabled ? "With agent · Assisted preparation" : "Today · Manual preparation"}</h3>
       <BoundaryTag cls={enabled ? "agent" : "human"} />
       <p className="text-sm">{enabled
-        ? "Read the operator-approved draft when available; optionally check the correction. Humans still correct, resubmit and decide after code validates."
-        : "Read the operator's reason, find the rule, correct the endorsement and resubmit. The operator gathers evidence again before deciding."}</p>
-      <p className="text-xs text-muted-foreground">Workflow comparison is illustrative. Assistance may reduce repeat gathering, not required decisions or guaranteed waiting time.</p>
+        ? "Illustrative: operator-approved drafts support human correction and resubmission; code validates and humans decide. Optional checks never guarantee shorter waits."
+        : "Illustrative: humans review the reason, find the rule, correct, resubmit and decide after code validates. Waiting times are not guaranteed."}</p>
     </section>
     <ol aria-label="Referral cycle stages" className="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-5">
       <li className="space-y-2 rounded-lg border p-3">
@@ -35,7 +34,7 @@ export function ReferralCycle({ enabled, claim }: { enabled: boolean; claim?: Ca
       </li>
       <li className="space-y-2 rounded-lg border p-3">
         <h3 className="font-semibold">5. Paid · Synthetic only</h3><BoundaryTag cls="existing" />
-        <p className="text-sm">Only a sufficient human decision releases the item to existing pricing. This prototype records a synthetic result, not a calculated payment.</p>
+        <p className="text-sm">For referred items, a sufficient human decision releases the item to existing pricing. The recorded paid result is synthetic, not a calculated payment.</p>
       </li>
     </ol>
     <p className="text-sm font-medium">This guide is not claim history. Opening it or switching assistance never completes a stage.</p>
