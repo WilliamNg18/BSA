@@ -516,3 +516,20 @@ guard and edit invalidation prevent stale Ready from resolving the new marker;
 approval is independently required. Four new keyboard/axe browser cases cover
 phone-dark and desktop-light Off/On, tooltip Escape/focus, immutable mode flips,
 unchecked Off snapshots, approved correction and edit invalidation.
+
+## 2026-09-11: Initial focus contract and interrupted obsolete baseline
+
+The root route test assumed the first Tab would focus the skip link. AppShell
+intentionally focuses the tour heading on direct entry, a behaviour covered by
+the existing tour tests. Preserve that contract: await heading focus, traverse
+backwards with a bounded number of real Shift+Tab keys, assert the visible skip
+link is focused, then Enter must focus main. Do not replace the keyboard path
+with programmatic skip-link focus or weaken the destination assertion.
+
+The coordinator interrupted the obsolete seven-chapter full run after more
+than 80 minutes of shared-machine contention. Its retained reporter output has
+629 pass dots, ten timeout markers and one failure, not a completed 783-test
+summary. Later failure artifacts can exist beyond buffered reporter output;
+neither artifact count nor partial dots establish complete acceptance.
+No timeout is classified as flaky without a controlled reproduction/repeat.
+The new eight-chapter integrated artifact still requires a full production run.
