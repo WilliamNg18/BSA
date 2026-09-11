@@ -22,9 +22,10 @@ ms.date: 2026-09-11
 
 ## Current handoff: 11 September 2026
 
-Current Phase 1 overrides the older execution order below: Azure Static Web Apps
-Free is the only host, every active browser configuration now uses `/`, and the
-350,000-byte gzip, copy, Lighthouse and visual thresholds are advisory.
+The latest policy overrides the older execution order below: Azure Static Web
+Apps Free is the only host, every active browser configuration uses `/`, and
+there are no size or performance budgets. Gzip, copy, Lighthouse and visual
+metrics are informational only.
 Tasks 8-13 remain unchecked until the R/S/V/D acceptance streams finish.
 Provisioning is owner-run because no intended subscription or token is configured;
 see DEPLOYMENT.md. Historical measurements below are retained as history only.

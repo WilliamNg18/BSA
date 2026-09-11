@@ -1,12 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
-import { readFile, readdir } from "node:fs/promises";
-import { resolve, relative } from "node:path";
-import { fileURLToPath } from "node:url";
-import { assertRuntimeBudget, measureRuntime } from "../../build/runtime-budget";
 import { captureCheckpoint, captureJson, cases, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-const app = fileURLToPath(new URL("../../", import.meta.url));
 const surfaces = [
   ...["scene", "month", "cases", "two-places", "close"].map((chapter) => ({ name: `overview-${chapter}`, path: `./#${chapter}` })),
   ...staticRoutes.slice(1).map((route) => ({ name: route.path, path: route.path })),
@@ -39,24 +34,6 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
     });
   }
 }
-
-test("Task7 complete emitted and served payload reports advisory 350000 gzip budget", async ({ request, baseURL }, testInfo) => {
-  const dist = resolve(app, "dist");
-  const entries = await readdir(dist, { recursive: true, withFileTypes: true });
-  const files = await Promise.all(entries.filter((entry) => entry.isFile()).map(async (entry) => {
-    const path = resolve(entry.parentPath, entry.name);
-    return { file: relative(dist, path).replaceAll("\\", "/"), bytes: await readFile(path) };
-  }));
-  const report = measureRuntime(files);
-  for (const file of files) {
-    const response = await request.get(new URL(file.file, baseURL).href);
-    expect(response.status()).toBe(200);
-    expect((await response.body()).equals(file.bytes), file.file).toBe(true);
-  }
-  assertRuntimeBudget(report);
-  await captureJson(testInfo, "runtime-budget", report);
-  console.log(JSON.stringify(report));
-});
 
 test("Task7 native replay and decision notices retain keyboard operation and Reset Off", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");

@@ -43,9 +43,9 @@ in the pull request instead. A blocked or unverified check is not a pass.
    architecture section. Never infer WCAG compliance from axe alone.
 8. Check the deployed Azure Static Web Apps home and a trace deep link in a fresh
    unauthenticated browser context. A local preview does not prove deployment.
-   Require CI, crash/control regressions and zero-violation axe. Report payload
-   size against 350,000 gzip bytes, word counts, Lighthouse and screenshot
-   differences as advisory only.
+   Require check, units, crash/control/six-outcome regressions and zero-violation
+   axe. There are no size or performance budgets. Gzip size, word counts,
+   Lighthouse and screenshot differences are informational only.
 9. Report PASS, FAIL or NOT VERIFIED per check and beat, exact commands, counts,
    screenshots, failures, fixes already observed and remaining work. Do not
    merge a PR with a failed beat. Record the tested commit and deployment URL.

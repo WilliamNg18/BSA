@@ -4,6 +4,36 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Remove all performance and size budgets
+
+No performance or size budgets on this project; a static demo with no back end has no reason to fail a build on bytes. Functional and accessibility checks only.
+
+This supersedes the 350,000-byte advisory policy and all older hard caps.
+Delete the measurement plugin, byte-budget script and budget-only tests.
+Disable Vite chunk-size warnings and compressed-size reporting; one non-blocking
+CI summary line reports independent-resource gzip size without a threshold.
+Check is exactly typecheck, lint and build. Vitest, crash/dead-control/six-outcome
+browser regressions and zero-violation axe are the only other blockers.
+Word counts, Lighthouse, screenshot differences and all other quality metrics
+are informational. Quarantine proven flaky checks with a tag and linked issue;
+run them separately without turning them into a silent pass.
+
+Hosting is settled: Azure Static Web Apps Free at the root, no additional
+services and no future hosting redesign. All further effort goes into the
+application, except a proven functional defect such as CSP-blocked modal styles.
+Keep the strict CSP and remove incompatible style injection in code.
+No route adds access restrictions; asset caching is immutable only for hashed
+assets. Every PR triggers preview upload and close triggers cleanup.
+
+Provider quotas are facts, not configurable project gates: Free has three
+concurrent previews, 250 MB per environment and 500 MB total. Do not claim
+unlimited previews or account minutes. Actions is enabled with all actions
+allowed; billing usage does not establish remaining entitlement. No billing
+change or deletion of existing artifacts is authorised by this code change.
+Cancel superseded CI runs and make failed-run artifact uploads best-effort with
+one-day retention, so optional evidence storage cannot fail a workflow.
+The absent deployment token is expected and does not block any stream.
+
 ## 2026-09-11: Current hosting and acceptance policy supersedes historical gates
 
 The user explicitly replaces every historical strict payload/score/copy/visual

@@ -4,6 +4,21 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Budget removal and acceptance evidence
+
+The latest user direction removes byte budgets completely, including the
+measurement plugin/command and their seven unit tests. Check passes with no
+compressed-size or chunk warnings; all 553 retained units pass in 18 files
+with two workers. This count reduction is deliberate removal of budget-only
+tests, not lost application coverage. The payload-only browser test is removed;
+route/crash/control/offline and six-outcome checks remain.
+
+The hosting provider documents three concurrent previews on Free, not unlimited
+previews. GitHub Actions permissions are enabled, and billing/storage usage is
+readable, but neither establishes unlimited entitlement. Best-effort failed-run
+artifacts and superseded-run cancellation reduce avoidable resource pressure
+without altering account billing or deleting existing evidence.
+
 ## 2026-09-11: Root hosting migration preparation
 
 The git root contains a nested BSA application. Hosting workflow paths must use

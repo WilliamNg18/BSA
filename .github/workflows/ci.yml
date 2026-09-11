@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -23,18 +27,36 @@ jobs:
           cache-dependency-path: BSA/package-lock.json
       - run: npm ci
       - run: npm run check
+      - name: Informational gzip size
+        continue-on-error: true
+        run: |
+          node --input-type=module <<'NODE'
+          import { readdir, readFile, appendFile } from 'node:fs/promises';
+          import { resolve } from 'node:path';
+          import { gzipSync } from 'node:zlib';
+          const files = await readdir('dist', { recursive: true, withFileTypes: true });
+          let total = 0;
+          for (const file of files.filter(entry => entry.isFile())) {
+            total += gzipSync(await readFile(resolve(file.parentPath, file.name))).length;
+          }
+          await appendFile(process.env.GITHUB_STEP_SUMMARY, `Gzip size: ${total.toLocaleString('en-GB')} bytes (all emitted resources, compressed independently; informational only).\n`);
+          NODE
       - run: npm test
       - name: Advisory content report
         continue-on-error: true
         run: npm run check:content
       - run: npx playwright install --with-deps chromium
-      # Functional regressions and axe block; word counts and photographs report only.
-      - run: npm run test:e2e -- --project=chromium --reporter=dot,html
+      # Quarantined flakes retain runnable coverage but never block acceptance.
+      - run: npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+      - name: Informational quarantined regressions
+        continue-on-error: true
+        run: npm run test:e2e -- --project=chromium --reporter=dot --grep @quarantine --pass-with-no-tests
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: failure()
+        continue-on-error: true
         with:
           name: browser-test-results
           path: |
             BSA/playwright-report/
             BSA/test-results/
-          retention-days: 14
+          retention-days: 1

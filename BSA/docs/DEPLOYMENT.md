@@ -45,9 +45,28 @@ prerequisite with a named-secret error. After setup, rerun that failed workflow
 or run `gh workflow run azure-static-web-apps.yml --repo WilliamNg18/BSA`.
 
 CI runs typecheck, lint, production build, Vitest and the production browser
-regressions including crash/dead-control coverage and zero-violation axe checks.
-Payload size (350,000 gzip bytes), word counts, Lighthouse scores and screenshot
-differences are advisory. Advisory results never suppress functional failures.
+regressions including crash/dead-control/six-outcome coverage and zero-violation
+axe checks. No size or performance budget exists. A single CI summary line
+reports gzip size. Word counts, Lighthouse scores and screenshot differences
+are informational. Proven flaky tests require an issue and quarantine tag;
+their separate run is non-blocking. Failed-run artifact upload is best-effort
+with one-day retention, so storage/upload failures do not fail acceptance.
+
+## Provider limits, not project gates
+
+All pull requests trigger preview upload and close events trigger cleanup.
+The Free service permits only three concurrent preview environments, 250 MB
+per environment and 500 MB total; these provider quotas cannot be removed in
+repository configuration. Tokenless/fork pull requests cannot deploy a preview.
+This does not block application work or require changing the settled host.
+Merge and close completed stream PRs promptly to release preview slots.
+
+GitHub Actions is enabled and permits all actions. Billing usage and stored
+artifact totals were readable, but those do not prove unlimited minutes,
+remaining storage or absence of an account-level spending cap. No paid plan,
+billing limit, old artifact or live resource was changed. Duplicate CI runs are
+cancelled, successful-run artifacts are not uploaded, and uploads cannot fail CI.
+See [SWA quotas](https://learn.microsoft.com/azure/static-web-apps/quotas).
 
 ## Verification and current provisioning status
 

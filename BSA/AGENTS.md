@@ -18,7 +18,7 @@ Any change that lets the "agent" price an item, change a case state, bypass the 
 - **Accessibility is a requirement**: WCAG 2.2 AA contrast, full keyboard operability, visible focus, correct names and roles, `aria-live` on the trace replay, reduced-motion support, no meaning carried by colour alone.
 - **UK English.** No em dashes in interface copy. No vendor or product branding in the interface (the Architecture page's production mapping is the one place service names belong).
 - **Azure Static Web Apps only.** Vite base and router basename are `/`. Root `staticwebapp.config.json` supplies deep-link fallback and security headers. No other hosting or authentication service.
-- **Gates.** Check (typecheck, lint, build), Vitest, browser crash/dead-control regressions and zero-violation axe are blocking. The 350,000 gzip-byte budget, word counts, Lighthouse scores and screenshot differences are advisory; retain their reports.
+- **Gates.** Only check (typecheck, lint, build), Vitest, browser crash/dead-control/six-outcome regressions and zero-violation axe block. No byte or performance budgets. CI reports gzip size once as information; word counts, Lighthouse and screenshot differences are informational. Proven flakes need an issue and `@quarantine` tag.
 
 ## Stack and layout
 

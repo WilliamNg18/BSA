@@ -5,7 +5,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { runtimeCss } from "./build/runtime-css";
-import { runtimeBudget } from "./build/runtime-budget";
 import { radixTreeShaking } from "./build/radix-tree-shaking";
 import { readFileSync } from "node:fs";
 
@@ -18,7 +17,7 @@ export default defineConfig(({ command }) => ({
     generateBundle() {
       this.emitFile({ type: "asset", fileName: "staticwebapp.config.json", source: readFileSync(fileURLToPath(new URL("../staticwebapp.config.json", import.meta.url))) });
     },
-  }, runtimeBudget()],
+  }],
   resolve: {
     alias: [
       { find: "@", replacement: fileURLToPath(new URL("./src", import.meta.url)) },
@@ -36,7 +35,7 @@ export default defineConfig(({ command }) => ({
     minify: "terser",
     cssMinify: "esbuild",
     terserOptions: { compress: { passes: 3 }, format: { comments: false } },
-    // Total gzip size and raw-chunk size are advisory, not build failures.
-    chunkSizeWarningLimit: 650,
+    reportCompressedSize: false,
+    chunkSizeWarningLimit: Number.POSITIVE_INFINITY,
   },
 }));

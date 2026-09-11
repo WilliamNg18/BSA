@@ -1,7 +1,7 @@
 import { defineConfig } from "@playwright/test";
 import base from "../../playwright.config";
 
-/** Explicit development-server verification when the production budget blocks build. */
+/** Optional development-server diagnostics; production acceptance uses the main config. */
 export default defineConfig({
   ...base,
   testDir: ".",
