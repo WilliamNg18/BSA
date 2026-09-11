@@ -318,3 +318,20 @@ All final dedicated keyboard cases passed, including computed `animationName`
 of `none` under reduced motion and `enter` under normal motion, modal
 containment/cleanup, and focus after Dismiss/Restore tour. The seven final axe
 audits and nine final CSP reports are rechecks, not new unique matrix surfaces.
+
+## 2026-09-11: Issue 20 manual pharmacy status
+
+The workbench used one !enabled branch for both deliberate Off and unavailable
+assistance. R reproduced complete A showing "Agent unable to determine" in
+both states with submission enabled. Existing pharmacy matrix assertions
+encoded that label, so a passing test did not establish a healthy Today view.
+
+Separate display branches retain the existing check and submission data paths.
+The A/B/D matrix now expects neutral Off wording; three focused regressions
+exercise availability, Off/On/Off, actual results and immutable unchecked
+receipts. Browser execution awaits the coordinator's shared-machine slot;
+no overlapping browser process has been started.
+
+On main 8c05b18 plus this display-only change, npm run check passes with no
+warnings and the full Vitest run passes 553 tests in 18 files. No new unit
+helper or domain behaviour was needed for a presentation-only distinction.

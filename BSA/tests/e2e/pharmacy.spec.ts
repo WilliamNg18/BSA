@@ -15,7 +15,7 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(on);
     await page.getByRole("radio", { name: scenario.label, exact: true }).click();
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Agent unable to determine");
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Not checked: manual submission");
     await expect(page.locator("[data-scripted-badge]")).toHaveText("Scripted signal · Not live");
     const field = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
     const text = await field.inputValue();
@@ -51,7 +51,7 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     await expect(receipt).toHaveText(frozen, { useInnerText: true });
     await expect(timeline.locator("li").nth(1)).toContainText("14");
     await field.fill(text);
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Agent unable to determine");
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Not checked: manual submission");
     const axe = await new AxeBuilder({ page }).analyze();
     await captureJson(info, "task4-axe", axe);
     expect(axe.violations).toEqual([]);
@@ -60,6 +60,37 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     await expect(page.getByRole("banner")).toBeInViewport();
     await page.screenshot({ path: info.outputPath(`${scenario.id}-${on ? "on" : "off"}-${theme}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+}
+
+for (const scenario of scenarios) {
+  test(`Issue20 ${scenario.id}: manual, unavailable and checked statuses remain distinct`, async ({ page }) => {
+    await page.goto("pharmacy");
+    await page.getByRole("radio", { name: scenario.label, exact: true }).click();
+    const flag = page.getByRole("banner").getByRole("switch");
+    const availability = page.getByRole("switch", { name: "Agent available", exact: true });
+    const status = page.locator("[data-pharmacy-status]");
+    const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
+    await expect(status).toHaveText("Not checked: manual submission");
+    await expect(submit).toBeEnabled();
+    await availability.setChecked(false);
+    await expect(status).toHaveText("Not checked: manual submission");
+    await flag.setChecked(true);
+    await expect(status).toHaveText("Agent unavailable: manual submission");
+    await expect(page.getByRole("list", { name: "Scripted pharmacy process" })).toHaveCount(0);
+    await expect(submit).toBeEnabled();
+    await submit.click();
+    const receipt = page.getByRole("region", { name: "Submission receipt" });
+    await expect(receipt).toContainText("not_checked");
+    await expect(receipt).toContainText("Not retrieved / Not retrieved");
+    await expect(receipt).toContainText("No checks performed");
+    const frozen = await receipt.innerText();
+    await availability.setChecked(true);
+    await expect(status).toHaveText(scenario.status);
+    await expect(submit).toBeEnabled();
+    await flag.setChecked(false);
+    await expect(status).toHaveText("Not checked: manual submission");
+    await expect(receipt).toHaveText(frozen, { useInnerText: true });
   });
 }
 
