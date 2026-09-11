@@ -99,7 +99,9 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await captureCheckpoint(page, testInfo, "b-july-sufficient");
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toHaveCount(0);
-  await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(2);
+  await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
+  await expect(page.getByText("Replay disabled in this manual comparison. The historical rule version is preserved; enable assistance to inspect it.", { exact: true })).toBeVisible();
   await expect(page.getByText("REFER BACK by Demo operator", { exact: false })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-july-assistance-off");
   await confirmReset(page);
@@ -146,7 +148,9 @@ test("D shows its three abstention reasons; E has no agent trace", async ({ page
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "d-abstention-not-run");
   await page.goto("case/EX-24101/trace");
-  await expect(page.getByRole("list", { name: "Agent trace" }).locator(":scope > li")).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(7);
+  await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "e-cleared-no-agent");
 });

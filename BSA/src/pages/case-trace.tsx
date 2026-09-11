@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FastForward, Play, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -13,7 +12,11 @@ import { caseById } from "@/lib/domain/cases";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
-import { useReducedMotion } from "motion/react";
+import { CasePlayback, ManualCaseTrace, MissingAssistedSlots } from "@/components/demo/case-presentation";
+import { useCasePresentation } from "@/hooks/use-case-presentation";
+import { ASSISTED_SLOTS, traceSlotReady } from "@/lib/case-presentation";
+import { SignalList } from "@/components/demo/signals";
+import { REC_META } from "@/components/demo/label-meta";
 
 // The key agentic screen: the observable workflow. Evidence, actions, tool
 // results and decision boundaries are shown. No private model reasoning is
@@ -26,24 +29,8 @@ export function CaseTracePage() {
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const state = useAppStore((s) => (id ? s.caseStates[id] : undefined));
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
-  const [revealed, setRevealed] = useState<number>(0);
-  const [playing, setPlaying] = useState(false);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    setRevealed(pack ? pack.trace.length : 0);
-    setPlaying(false);
-  }, [pack]);
-
-  useEffect(() => {
-    if (!playing || !pack) return;
-    if (revealed >= pack.trace.length) {
-      setPlaying(false);
-      return;
-    }
-    const t = window.setTimeout(() => setRevealed((n) => n + 1), 900);
-    return () => window.clearTimeout(t);
-  }, [playing, revealed, pack]);
+  const clock = useCasePresentation(pack?.trace.length ?? 1, false, pack);
+  const { revealed } = clock;
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
@@ -61,24 +48,30 @@ export function CaseTracePage() {
         intro="Inspect planned actions, evidence, tool results, deterministic checks and stop conditions. Interpretation is scripted; this trace exposes no private model reasoning."
       />
 
-      <div className="flex flex-wrap items-center gap-2">
-        <Button type="button" className="bg-teal-700 text-white hover:bg-teal-800" onClick={() => { setRevealed(reduced ? 1 : 0); setPlaying(!reduced); }}>
-          <Play aria-hidden="true" /> Replay step by step
-        </Button>
-        {reduced && revealed < pack.trace.length && <Button type="button" variant="outline" onClick={() => setRevealed((n) => Math.min(n + 1, pack.trace.length))}>Next step</Button>}
-        <Button type="button" variant="outline" onClick={() => { setPlaying(false); setRevealed(pack.trace.length); }}>
-          <FastForward aria-hidden="true" /> Show all
-        </Button>
-        <Button type="button" variant="ghost" onClick={() => { setPlaying(false); setRevealed(0); }}>
-          <RotateCcw aria-hidden="true" /> Clear
-        </Button>
+      {!agentEnabled && <><ManualCaseTrace /><MissingAssistedSlots />
+        <Button disabled type="button">Replay unavailable in manual comparison</Button>
+      </>}
+      {agentEnabled && <>
+        <CasePlayback clock={clock} total={pack.trace.length} />
         <p className="text-sm text-muted-foreground">
-          {pack.trace.length} steps · {totalCalls} tool calls · Tariff {pack.tariffLabel} · {pack.agentInvoked ? "agent invoked" : "agent not invoked"}
+          {pack.trace.length} steps · {totalCalls} scripted tool calls · Tariff {pack.tariffLabel} · {pack.agentInvoked ? "agent invoked" : "agent not invoked"}
         </p>
-      </div>
+        <section aria-label="Case assembly slots" className="grid gap-3 sm:grid-cols-2" aria-live="polite">
+          {ASSISTED_SLOTS.map((slot) => <div key={slot} className="rounded-xl border p-4" data-assisted-slot={slot} data-prose={`assembly ${slot}`}>
+            <h2 className="mb-2 font-semibold">{slot}</h2>
+            {!traceSlotReady(pack, revealed, slot) ? <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL" ? "Withheld: gate FAIL" : pack.recommendation === "ABSTAIN" ? "Unavailable: abstained" : pack.agentInvoked ? "Not yet assembled" : "Not applicable: no agent call"}</p>
+              : slot === "Clause" ? <blockquote className="text-sm">{pack.clause?.text}</blockquote>
+              : slot === "Requirements" ? <ul className="space-y-1 text-sm">{pack.requirementResults.map((r) => <li key={r.requirement.id}>{r.requirement.label}: {r.met === true ? "met" : r.met === false ? "not met" : "unknown"}</li>)}</ul>
+              : slot === "Alternative" ? <><h3 className="text-sm font-medium">{pack.alternative ? REC_META[pack.alternative.outcome].label : "None"}</h3><p className="text-sm">{pack.alternative?.note}</p></>
+              : <SignalList signals={pack.signals} />}
+          </div>)}
+        </section>
+        {pack.recommendation === "ABSTAIN" && <PageSection title="Abstention signals" description="No recommendation. Gate NOT RUN; the unresolved evidence remains visible."><SignalList signals={pack.signals} /></PageSection>}
+      </>}
+      {agentEnabled && <section data-prose="scripted playback boundary"><p className="text-xs text-muted-foreground">Scripted tool results are illustrative. Playback writes no decision; only the operator's Record decision action changes session history.</p></section>}
 
-      <ol className="space-y-3" aria-label="Agent trace" aria-live="polite">
-        {shown.map((step, i) => (
+      {(agentEnabled || pack.state === "cleared_by_rules") && <ol className="space-y-3" aria-label={agentEnabled ? "Agent trace" : "Deterministic clearance trace"} aria-live="polite">
+        {(agentEnabled ? shown : pack.trace).map((step, i) => (
           <li key={`${step.phase}-${i}`}>
             <Card className={cn("border-l-4", step.cls === "agent" ? "border-l-teal-600" : step.cls === "deterministic" ? "border-l-sky-600" : step.cls === "human" ? "border-l-orange-600" : "border-l-slate-500")}>
               <CardHeader className="pb-2">
@@ -101,7 +94,7 @@ export function CaseTracePage() {
                   </dl>
                 )}
                 {step.toolCalls.length > 0 && (
-                  <div className="overflow-x-auto rounded-md border" role="region" aria-label={`Tool calls in step ${i + 1}`} tabIndex={0}>
+                  <div className="overflow-x-auto rounded-md border [&>[data-slot=table-container]]:overflow-visible" role="region" aria-label={`Tool calls in step ${i + 1}`} tabIndex={0}>
                     <Table>
                       <TableHeader>
                         <TableRow>
@@ -110,7 +103,7 @@ export function CaseTracePage() {
                           <TableHead>Result</TableHead>
                           <TableHead>Evidence</TableHead>
                           <TableHead>Production service</TableHead>
-                          <TableHead className="text-right">ms</TableHead>
+                            <TableHead className="text-right">Synthetic ms</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -144,9 +137,9 @@ export function CaseTracePage() {
             </Card>
           </li>
         ))}
-      </ol>
+      </ol>}
 
-      {revealed >= pack.trace.length && (
+      {(!agentEnabled || revealed >= pack.trace.length) && (
         <PageSection title="Where it ends" description="The agent's part is over. The rest is a person.">
           <div className="flex flex-wrap gap-2">
             <Button asChild className="bg-teal-700 text-white hover:bg-teal-800"><Link to={`/case/${c.id}`}>Open the operator case pack</Link></Button>

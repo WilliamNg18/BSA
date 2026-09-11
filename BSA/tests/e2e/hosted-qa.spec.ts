@@ -89,13 +89,24 @@ for (const enabled of [true, false]) {
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       if (route.startsWith("case/UNKNOWN")) await expect(page.getByText("Case not found", { exact: true })).toBeVisible();
       else await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-      if (route.endsWith("/trace") && !route.includes("UNKNOWN")) await page.getByRole("button", { name: "Show all", exact: true }).click();
+      if (route.endsWith("/trace") && !route.includes("UNKNOWN")) {
+        if (enabled) await page.getByRole("button", { name: "Show all", exact: true }).click();
+        else {
+          await expect(page.getByRole("list", { name: "Manual gathering trace", exact: true }).locator(":scope > li")).toHaveCount(7);
+          await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+        }
+      }
       // Include expanded disclosures and audit metadata, not just default copy.
       await page.locator("main details").evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
       await expect(page.locator("body"), route).not.toContainText(/\b(?:Azure|OpenAI|Cosmos DB|Copilot|Microsoft)\b/i);
       await expect(page.locator('a[href$=".pdf"], a[href$=".docx"]')).toHaveCount(0);
       if (route === "case/EX-24088/record") {
-        await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toBeVisible();
+        if (enabled) await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toBeVisible();
+        else {
+          await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toHaveCount(0);
+          await expect(page.getByText("This historical record retains rule 2026-08 and assisted fields. Only the manual comparison omits them; history is unchanged.", { exact: true })).toBeVisible();
+          await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
+        }
         await expect(page.getByRole("main")).toContainText("DR-000871");
       }
     }

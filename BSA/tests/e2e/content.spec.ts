@@ -72,6 +72,26 @@ for (const enabled of [false, true]) {
   });
 }
 
+for (const enabled of [false, true]) {
+  test(`Task6 interactive comparison and recorded decision copy On=${enabled}`, async ({ page }, info) => {
+    await page.goto("case/EX-24112");
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    if (enabled) await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
+    const audits = [{ state: "pack-comparison", ...await page.evaluate(auditProse) }];
+    if (!enabled) await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
+    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
+    audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
+    if (enabled) {
+      await page.getByRole("combobox", { name: "Replay with", exact: true }).click();
+      await page.getByRole("option", { name: "July 2026 (2026-07)", exact: true }).click();
+      audits.push({ state: "july-replay", ...await page.evaluate(auditProse) });
+    }
+    await captureJson(info, "task6-copy", audits);
+    expect(audits.flatMap((audit) => audit.failures)).toEqual([]);
+  });
+}
+
 test("copy cap positive controls reject long prose and split-paragraph evasion", async ({ page }) => {
   await page.setContent(`<main><section data-prose="test"><h1>Heading excluded</h1><p>${"word ".repeat(26)}</p></section><section><p>${"word ".repeat(15)}</p><p>${"word ".repeat(15)}</p></section><p data-copy="label">${"label ".repeat(26)}</p><p><span data-slot="badge">Status</span>${"badge ".repeat(26)}</p><ul><li><a href="#">Link</a>${"linked ".repeat(26)}</li></ul><div>${"untagged ".repeat(26)}</div><dl><dd>${"definition ".repeat(26)}</dd></dl></main>`);
   const result = await page.evaluate(auditProse);

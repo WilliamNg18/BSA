@@ -4,6 +4,25 @@ description: Tour foundation verification, retained crash fixes, source limitati
 ms.date: 2026-09-10
 ---
 
+## Task 6 integration caveat
+
+Manual Sufficient is recorded through existing recordDecision as human ACCEPT,
+recommendation NONE and a mandatory reason. The frozen store sets isOverride
+true for every decision without a recommendation. The interface exposes this
+fact rather than hiding it. Stream B must define correct manual-decision counter
+semantics; no shared lifecycle completion is implied and no throwing lifecycle
+method is called. Manual records use no recorded rule version or agent checks.
+
+The Off historical record is a minimal comparison, not a deletion of structured
+history. Existing versions are explicitly acknowledged and restored On. Replay
+is read-only and disabled Off. Seven manual steps and their durations are
+synthetic assumptions, not observed NHSBSA practice or measured timings. E's
+deterministic no-call evidence remains visible separately.
+
+Task 6 local verification is recorded in [progress](PROGRESS.md). No new CI,
+hosted deployment, cross-browser or manual screen-reader result is claimed.
+The existing large-bundle warning remains outside this Task 6 increment.
+
 ## Task 4 boundary and remaining gaps
 
 Task 4 local check, 425 units and 404 full production Chromium tests pass.

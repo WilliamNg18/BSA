@@ -92,3 +92,24 @@ SheetContent on mobileOpen, forceMount, hidden inert remnants and relaxed dialog
 count assertions. No frozen store, routes, case header, claims, rail or other
 Stream D behaviour is changed. The planned-simulation copy handoff still applies.
 This exception authorises no Git, account, deployment or Task 6 work.
+
+## 2026-09-11: Task 6 manual records and frozen lifecycle boundary
+
+The user separately authorised Task 6 on 034121f after the supplied Task 5 gate.
+Manual Sufficient is an explicit human ACCEPT with a mandatory eight-character
+reason and recommendation NONE. The existing recordDecision method still marks
+that record as an override. Show the stored flag and explain its limitation;
+reject changing Stream B's store or hiding the counter to simulate integration.
+The throwing recordOperatorDecision contract is never called by this increment.
+
+Missing assisted slots describe only the synthetic manual comparison. Historical
+records with actual rule versions retain them underneath and acknowledge them
+in the Off view. Reject claiming a historical rule never existed merely because
+assistance is Off. Counterfactual replay compares with the recorded outcome,
+never replaces history, and is disabled in the manual comparison.
+
+Keep E's deterministic pre-check and clearance evidence alongside the seven
+manual assumed steps, not disguised as seven engine actions. On slots depend
+on actual engine phases and final PASS; FAIL withholds proposals and D keeps
+its abstention evidence. Read-only comparison columns share one decision panel.
+Only explicit human recording changes session state; playback is presentation.

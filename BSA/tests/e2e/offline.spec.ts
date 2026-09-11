@@ -26,7 +26,9 @@ test("fresh Overview supports first visits to every route after disconnection", 
       const caseNav = page.getByRole("navigation", { name: "Case views" });
       await caseNav.getByRole("link", { name: "Case-building trace", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`How the case was built: ${c.title}`);
-      await expect(page.getByRole("list", { name: "Agent trace" }).locator(":scope > li").first()).toBeVisible();
+      await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(7);
+      await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+      if (c.id === "EX-24101") await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
       await caseNav.getByRole("link", { name: "Decision and audit record", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Decision and audit record: ${c.title}`);
       await page.getByRole("link", { name: "Back to queue", exact: true }).click();

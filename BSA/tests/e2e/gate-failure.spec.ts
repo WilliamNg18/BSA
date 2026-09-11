@@ -51,6 +51,8 @@ for (const c of cases.slice(0, 3)) {
     await nav.getByRole("link", { name: "Case-building trace", exact: true }).click();
     const trace = page.getByRole("list", { name: "Agent trace", exact: true });
     await expect(trace.locator(":scope > li")).toHaveCount(9);
+    await expect(page.locator("[data-assisted-slot]")).toHaveCount(4);
+    for (const slot of ["Clause", "Requirements", "Alternative", "Confidence"]) await expect(page.locator(`[data-assisted-slot="${slot}"]`)).toContainText("Withheld: gate FAIL");
     await expect(trace).toContainText("Proposal withheld by the compliance gate");
     await expect(trace).toContainText("Fail: Mandatory fields present");
     await expect(trace).not.toContainText("Recommend:");

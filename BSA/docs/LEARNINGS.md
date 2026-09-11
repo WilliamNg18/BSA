@@ -56,3 +56,31 @@ navigatePrimary zero-dialog assertion is unchanged. Six repeats of this test and
 the original 960px dark header test passed: 12 tests, exit 0. Check passed and
 475 units in eleven files passed; the existing large-chunk warning remains.
 Full-suite completion is recorded separately in progress after its actual exit.
+
+## 2026-09-11: Task 6 structure and presentation timing
+
+The first Task 6 full run completed with 454 passes and nine failures. A pain
+button beside dt/dd invalidated the definition-list group; it belongs inside
+dd. A focusable outer trace region did not make the vendored table's separate
+inner scroll area keyboard accessible. Scope overflow to the outer region on
+this page without editing the shared table primitive.
+
+Chaining the next timer from each React effect introduced render delay. Schedule
+all remaining milestones against one start time so the final decision pane
+appears at two seconds. Cancel every pending milestone on Pause, Off, identity
+change, route unmount or live reduced motion. Keep the exact timing assertion.
+
+The existing generic-label audit clicked Show all for Off trace and expected
+assisted metadata in Off historical records. Replace those obsolete assertions
+with seven manual steps, zero agent trace and disabled replay, retaining the
+vendor scan and the historical-rule preservation assertion. Earlier failures
+remain evidence, not a passing gate; final results belong in progress.
+
+The corrective 465-test run exposed a live matchMedia notification race: virtual
+time advanced before React received the preference update. Each callback now
+checks current media state; the regression also awaits disabled Play before
+advancing virtual time. The unchanged pipeline tooltip test failed once in that
+run and passed in the final full suite. No assertion or pipeline code changed.
+Final check and all 465 browsers passed; 488 units passed. Unique artifact
+counting excludes attachments: 84 axe audits, zero violations, twelve Task 6
+audits, 84 copy states without failures and twelve selected screenshots.

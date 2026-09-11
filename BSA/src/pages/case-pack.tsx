@@ -19,6 +19,9 @@ import { runAgent } from "@/lib/domain/agent";
 import { caseById } from "@/lib/domain/cases";
 import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
+import { manualChoice, permitsProposal } from "@/lib/case-presentation";
+import { CasePlayback, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
+import { useCasePresentation } from "@/hooks/use-case-presentation";
 
 const DECISIONS: { value: HumanDecision; label: string; help: string }[] = [
   { value: "ACCEPT", label: "Accept the recommendation", help: "Proceed as the agent recommends." },
@@ -37,6 +40,11 @@ function suggestedFor(rec: string): HumanDecision {
 
 export function CasePackPage() {
   const { id } = useParams();
+  return <CasePackContent key={id} />;
+}
+
+function CasePackContent() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const c = caseById(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
@@ -47,35 +55,37 @@ export function CasePackPage() {
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
   const [decision, setDecision] = useState<HumanDecision | null>(null);
   const [reason, setReason] = useState("");
+  const [compare, setCompare] = useState(false);
+  const clock = useCasePresentation(6, agentEnabled, pack);
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
   }
 
-  const showRecommendation = pack.agentInvoked && pack.recommendation !== "ABSTAIN" && pack.recommendation !== "NONE" && pack.gate.result === "PASS";
+  const showRecommendation = permitsProposal(pack);
   const suggested = showRecommendation ? suggestedFor(pack.recommendation) : "ESCALATE";
-  const chosen = !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
+  const chosen = !agentEnabled ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
   const isOverride = showRecommendation && chosen !== suggested && !(chosen === "ACCEPT");
   const needsReason = isOverride || !showRecommendation;
   const decided = state === "human_decision_recorded";
 
   function submit() {
-    if (!c || !pack) return;
+    if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
     if (needsReason && reason.trim().length < 8) {
       toast.error("A reason is required when you override the recommendation, or when there is no recommendation to accept.");
       return;
     }
     const rec = recordDecision({
       caseId: c.id,
-      tariffVersion: pack.tariffVersion,
-      agentVersion: pack.agentVersion,
+      tariffVersion: agentEnabled ? pack.tariffVersion : "n/a",
+      agentVersion: agentEnabled ? pack.agentVersion : "not invoked",
       inputs: [
         `Extracted fields: ${c.extracted.productText}, qty ${c.extracted.quantity ?? "?"}, endorsement "${c.extracted.endorsementText || "none"}"`,
         `Claim: qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, ${c.claim.submittedVia}`,
         `Image ${c.id}.tif, quality ${c.imageQuality.toFixed(2)}`,
       ],
-      sources: Array.from(new Set(pack.evidence.map((e) => e.origin))),
-      checks: pack.gate.checks,
+      sources: agentEnabled ? Array.from(new Set(pack.evidence.map((e) => e.origin))) : ["Existing capture", "Claim ledger", "Form image"],
+      checks: agentEnabled ? pack.gate.checks : [],
       recommendation: pack.recommendation,
       decision: chosen,
       overrideReason: reason.trim() || null,
@@ -97,7 +107,7 @@ export function CasePackPage() {
         <Alert>
           <FileText aria-hidden="true" />
           <AlertTitle>{pack.state === "cleared_by_rules" ? "Cleared by deterministic rules; the agent was not called" : "Agent recommendations are switched off"}</AlertTitle>
-          <AlertDescription>{pack.reasons.join(" ")} The operator works the item exactly as today, with the gathered evidence attached.</AlertDescription>
+          <AlertDescription>{pack.state === "cleared_by_rules" ? "Deterministic pre-checks still apply. No model called; manual comparison does not undo clearance." : "Synthetic manual comparison: inspect captured fields and record your own reason. Real NHSBSA workflow requires validation."}</AlertDescription>
         </Alert>
       )}
       {pack.recommendation === "ABSTAIN" && (
@@ -118,8 +128,23 @@ export function CasePackPage() {
         </Alert>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-5">
+      {!agentEnabled && <>
+        <div className="flex flex-wrap items-center gap-2"><RecommendationBadge rec="NONE" /><StatusDot status="skipped" label="NOT RUN" /><BoundaryTag cls="human" /></div>
+        <RawCaseFields c={c} />
+        <MissingAssistedSlots markers />
+      </>}
+      {agentEnabled && <>
+        <CasePlayback clock={clock} total={6} />
+        <Button variant="outline" type="button" aria-pressed={compare} onClick={() => setCompare((value) => !value)}>Compare manual view</Button>
+        <div className={compare ? "grid gap-6 xl:grid-cols-2" : ""}>
+          {compare && <aside className="space-y-4 rounded-xl border p-4" aria-label="Read-only manual comparison">
+            <h2 className="font-semibold">Manual comparison · Read-only</h2>
+            <p className="text-sm text-muted-foreground">Synthetic assumptions. Shared decision controls remain below; this comparison writes nothing.</p>
+            <RawCaseFields c={c} /><MissingAssistedSlots markers />
+          </aside>}
+      <div className={compare ? "space-y-6" : "grid gap-6 xl:grid-cols-5"} data-pack-assembly={clock.revealed}>
         <div className="space-y-6 xl:col-span-3">
+          {clock.revealed >= 5 && <>
           <PageSection title="Recommendation" description={showRecommendation ? "Prepared by the agent, permitted by the gate, decided by a person." : "No recommendation to show."}>
             <Card className="border-teal-600">
               <CardHeader>
@@ -162,7 +187,7 @@ export function CasePackPage() {
                     ))}
                   </ul>
                 </section>
-                {pack.draftToPharmacy && (
+                {showRecommendation && pack.draftToPharmacy && (
                   <section data-prose="pharmacy draft" className="rounded-md border p-3">
                     <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Draft explanation to the pharmacy <BoundaryTag cls="agent" short /></h3>
                     <blockquote className="rounded-md border-l-4 border-teal-600 bg-muted/40 p-3 text-sm">{pack.draftToPharmacy}</blockquote>
@@ -172,7 +197,9 @@ export function CasePackPage() {
               </CardContent>
             </Card>
           </PageSection>
+          </>}
 
+          {clock.revealed >= 3 && <>
           <PageSection title="Applicable Drug Tariff provision" description={pack.clause ? `Version in force on the dispensing date: ${pack.tariffLabel}.` : "No provision could be retrieved for this endorsement type and date."}>
             {pack.clause ? (
               <Card>
@@ -196,7 +223,9 @@ export function CasePackPage() {
               <p className="text-sm text-muted-foreground">No citation from memory; no recommendation without a retrieved provision.</p>
             )}
           </PageSection>
+          </>}
 
+          {clock.revealed >= 4 && <>
           <PageSection title="Conflicts and missing evidence" description={pack.conflicts.length ? "Each source is shown; the agent does not choose between them." : "The sources agree."}>
             {pack.conflicts.length === 0 ? (
               <p className="text-sm text-muted-foreground">No disagreement between the form, the extracted fields, the claim and the product data.</p>
@@ -212,9 +241,11 @@ export function CasePackPage() {
               </ul>
             )}
           </PageSection>
+          </>}
         </div>
 
         <div className="space-y-6 xl:col-span-2">
+          {clock.revealed >= 1 && <>
           <PageSection title="Prescription image" description="The regions the agent read are highlighted.">
             <PrescriptionForm c={c} highlight={["item", "endorsement"]} />
           </PageSection>
@@ -230,6 +261,8 @@ export function CasePackPage() {
               <KeyValue k="Dispensing date" v={c.extracted.dispensingDate} />
             </dl>
           </PageSection>
+          </>}
+          {clock.revealed >= 2 && <>
           <PageSection title="Evidence" description="Every finding carries its source.">
             <ul className="space-y-1.5">
               {pack.evidence.map((e) => (
@@ -244,9 +277,13 @@ export function CasePackPage() {
               ))}
             </ul>
           </PageSection>
+          </>}
         </div>
       </div>
+        </div>
+      </>}
 
+      {(!agentEnabled || clock.revealed >= 6) && <>
       <PageSection title="Operator decision" description="The consequential decision is a person's. A reason is mandatory for any override, and whenever there is no recommendation to accept.">
         <Card className="border-orange-600">
           <CardHeader>
@@ -256,16 +293,17 @@ export function CasePackPage() {
           {!decided && (
             <CardContent className="space-y-4">
               <RadioGroup value={chosen} onValueChange={(v) => setDecision(v as HumanDecision)} aria-label="Decision" className="grid gap-2 sm:grid-cols-2">
-                {DECISIONS.map((d) => (
+                {DECISIONS.filter((d) => agentEnabled || d.value !== "AMEND").map((d) => (
                   <div key={d.value} className="flex items-start gap-2 rounded-md border p-2.5">
-                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "ACCEPT" || d.value === "AMEND")} />
+                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={agentEnabled && !showRecommendation && (d.value === "ACCEPT" || d.value === "AMEND")} />
                     <Label htmlFor={`d-${d.value}`} className="flex flex-col gap-0.5 font-normal">
-                      <span className="font-medium">{d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
-                      <span className="text-xs text-muted-foreground">{d.help}</span>
+                      <span className="font-medium">{!agentEnabled && d.value === "ACCEPT" ? "Sufficient (human choice)" : d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
+                      <span className="text-xs text-muted-foreground">{!agentEnabled && d.value === "ACCEPT" ? "Your judgement, not an agent recommendation or payment approval." : d.help}</span>
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
+              {!agentEnabled && <section data-prose="manual integration caveat"><p className="text-xs text-muted-foreground">Integration caveat: manual decisions currently count as overrides without an agent recommendation. Store correction pending; the recorded flag remains visible.</p></section>}
               <div className="space-y-1.5">
                 <Label htmlFor="reason">{needsReason ? "Reason (required)" : "Reason (optional)"}</Label>
                 <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Why you are departing from the recommendation. This is the most valuable data the system collects." : needsReason ? "Explain your decision based on the evidence." : "Optional note for the record."} aria-required={needsReason} />
@@ -278,6 +316,7 @@ export function CasePackPage() {
           )}
         </Card>
       </PageSection>
+      </>}
     </div>
   );
 }

@@ -11,7 +11,7 @@ ms.date: 2026-09-10
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
 * [x] Task 4: a131bad and P1 correction 7bdc199; supplied Azure/CI gate PASS
 * [x] Task 5: bounded virtual month, queue sweep and shared-clock day projections
-* [ ] Task 6
+* [x] Task 6: manual case views, gated assisted assembly and immutable record comparison (local gate)
 * [ ] Task 7
 * [ ] Task 8: Shared case lifecycle and append-only history in the store
 * [ ] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state
@@ -22,12 +22,17 @@ ms.date: 2026-09-10
 
 ## Current gate and contract freeze
 
+Task 6 starts on stream-a-core at 034121f. The supplied Task 5 gate confirms
+check PASS, 475 units and 436 full browsers, CI 34580827129 SUCCESS, Azure deploy
+in 2m16s and hosted virtual-volume 0/1/billion, sweep and day PASS. These remote
+results are the user's handoff, not independently repeated during Task 6.
+
 Task 5 starts on Stream A from Task 4 correction 7bdc199. The supplied handoff
 confirms check PASS, 436 units, 409 browsers, Azure PASS, 17 hosted checks and
 CI 34535055333 SUCCESS. Both a131bad and 7bdc199 remain published history.
 These remote results are user-supplied, not independently rerun in Task 5.
 
-## Task 5 Stream A local implementation and pending verification
+## Task 5 Stream A implementation and completed gate
 
 Queue-only virtual month, manual evidence dialogs, visible-row sweeps and shared
 08:00-17:00 day comparisons are implemented. The new queue memory store follows
@@ -75,7 +80,8 @@ regression passed: 12 tests in 51.8 seconds, exit 0. The regression checks Escap
 Close, navigation, removal of both layers, lock cleanup and external keyboard
 focus. The shared navigatePrimary helper still requires zero mounted dialogs.
 Check passed (exit 0), and 475 units in eleven files passed (exit 0). The complete
-436-test production Chromium run is pending; Task 5 is not yet ticked.
+436-test production Chromium run subsequently passed. Task 5 is ticked and
+published at 034121f; its supplied CI, Azure and hosted gate is recorded above.
 
 ### Stream D integration handoff
 
@@ -83,9 +89,83 @@ The inherited shell still visibly says "5. The queue · Simulation planned" and
 "Workload simulation remains planned". This contradicts Task 5's local interface.
 Stream D must update its owned chapter-five shell/rail copy and corresponding
 tests during integration. Stream A does not hide the notice with CSS or edit
-shell ownership. Current screenshots intentionally retain it. No Task 6-13,
+shell ownership. Task 5 screenshots intentionally retain it. At that boundary, no Task 6-13,
 PR, Git/account action, rebase or deployment is performed; the main agent owns
 the later contract-required rebase before PR creation.
+
+## Task 6 Stream A implementation and verification
+
+The three case views now distinguish the synthetic manual comparison from
+assisted evidence assembly. Manual trace uses all seven current baseline
+durations and their sum, human tags, stopwatch icons and unresolved pain markers.
+Clause, requirements, alternative and confidence slots explicitly say not
+recorded in this scenario. E additionally exposes its unchanged deterministic
+clearance trace, with no agent call; seven assumed manual steps do not replace it.
+
+Off pack has the raw form, captured fields, four missing-field markers and a
+single reasoned human decision panel. Sufficient is an explicit human ACCEPT,
+never an automatic recommendation: recorded recommendation stays NONE. Existing
+recordDecision is the only state-writing action. The frozen lifecycle methods
+are not called. The unchanged store labels manual decisions as overrides even
+without a recommendation. That counter caveat is visible in pack and record;
+Stream B must resolve it during integration, not through this presentation work.
+
+On pack sequences image/fields, evidence, clause/requirements, conflicts,
+recommendation/signals/gate and the decision panel last. Replay, Pause, Step,
+Show all and Clear are presentation-only. Live reduced motion cancels timers;
+reduced mode is explicit step-through. The default reduced-motion view exposes
+the complete pack immediately. A read-only manual comparison is side by side
+at 1280px, stacked below that width, with no duplicated decision form or buttons.
+
+Off record hides assisted fields only in the comparison. Existing historical
+rule versions are acknowledged and retained. Replay is disabled Off; records
+without a rule use the explicit no-recorded-version note. On keeps the full
+record and July B counterfactual with an animated outcome, compared against the
+recorded recommendation rather than a recomputed current recommendation.
+No history is rewritten by flag changes, replay, page controls or route changes.
+
+Initial units passed: 488 in twelve files, exit 0. Initial check caught a Fast
+Refresh warning from a hook exported alongside components; separating the hook
+fixed it. Corrected check passed with the existing large-chunk warning only.
+First full Chromium run completed: 454 passed, nine failed in 7.3 minutes,
+exit 1. Failures covered definition-list structure in missing slots, nested
+phone trace scroll focus, render-dependent timer drift and obsolete Off label
+test assumptions. Repairs retain strict axe, two-second and no-agent assertions.
+The first corrective run passed 463 and failed two tests in 8.1 minutes, exit 1.
+One live-motion test exposed a media-notification race; callbacks now check the
+current preference before advancing and the test awaits the disabled Play state
+before advancing virtual time. The unrelated existing pipeline tooltip test
+also failed once; its source and assertions remain unchanged.
+
+Final verification completed: check exit 0; all 465 production /BSA/ Chromium
+tests passed in 7.3 minutes, exit 0, zero failures, skips or retries. The earlier
+488-unit run passed in twelve files; no domain/policy code changed afterward.
+All 84 unique all-default-rule axe audits passed with zero violations, including
+twelve Task 6 audits. Copy checks covered 84 states, including five new Task 6
+interactive states, with zero failures. Attachment copies are excluded from
+these counts. Twelve screenshots cover pack, trace and record, On/Off, at
+1440px light and 360px dark. Six representative images were visually reviewed.
+The terminal returned TASK6_VERIFIED_CHECK_EXIT=0 and TASK6_VERIFIED_BROWSER_EXIT=0;
+no verification remains running or pending.
+
+The client content scan checked 123 files with zero forbidden matches. Production
+privacy scanned nine emitted files and three served assets, 961,088 bytes, with
+zero private matches. JS is 834.53 kB, 255.61 kB gzip; CSS 125.80 kB, 19.67 kB gzip.
+The existing large-chunk warning remains; no performance or zero-warning claim.
+Task 6 is ticked for local verification only. No Git, accounts, CI checks or
+deployment were performed. Task 7+, frozen store, lifecycle types, case header,
+navigation, shell and claims remain untouched. Shared lifecycle and the manual
+override counter still require Stream B integration.
+
+Evidence: [initial check](../../.copilot-tracking/tasks/6/check.log),
+[units](../../.copilot-tracking/tasks/6/unit.log),
+[corrected check](../../.copilot-tracking/tasks/6/check-fixed.log) and
+[first full browser run](../../.copilot-tracking/tasks/6/full-browser.log),
+[corrective run](../../.copilot-tracking/tasks/6/final-browser.log),
+[final check](../../.copilot-tracking/tasks/6/verified-check.log),
+[final full Chromium](../../.copilot-tracking/tasks/6/verified-browser.log),
+[unique evidence counter](../../.copilot-tracking/tasks/6/count-evidence.mjs) and
+[screenshots](screens/task6/README.md).
 
 ## Historical contract-freeze gate
 
