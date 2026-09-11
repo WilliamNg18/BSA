@@ -212,6 +212,20 @@ Final full production acceptance remains required on the integrated eight-chapte
 build, preferably through exact Linux CI evidence. Neither this interrupted run
 nor the pending focused #19/#29 browser cases establish that acceptance.
 
+### Rebased Stream R check and unit evidence
+
+Source revision 7515c51 rebased cleanly onto origin/main 87923d7. From BSA,
+`npm run check` passed typecheck, lint and production build, exit 0.
+`npm run test -- --maxWorkers=2` passed all 553 tests in 18 files in 14.62 seconds,
+exit 0. This uses the coordinator's no-budget policy; the earlier 560-test
+Phase 1 result included seven subsequently removed budget tests.
+
+The branch contains separate approved-response (#19) and unchecked-resubmission
+comparison (#29) commits, root-route corrections and the keyboard skip regression.
+Its draft PR is not merge-ready: focused browser verification awaits the next
+coordinated slot, and eight-chapter tour expectations await integration of #26.
+No hosted acceptance or final full-suite pass is claimed.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending
