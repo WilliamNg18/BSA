@@ -37,6 +37,7 @@ or strict-CSP behaviour on Azure.
 | Today | Metadata-only examples show manual tasks, not fabricated prescriptions, retrieved citations or a full operator case |
 | Outcomes | C's 56/84 conflict remains unresolved after confirmation; D stays manual with no guaranteed payment |
 | Timing and benefits | Gathering, judging, delay and assembly figures are illustrative assumptions, not measured NHSBSA performance |
+| Referral projections | Deficient built/abstained shares estimate referrals; the distinct risk residual includes every abstention. Neither the count nor the referral-free percentage measures accuracy |
 | Confidence | Five structural signals with synthetic thresholds, not a calibrated probability or clinical assurance |
 | Public context | Attributed figures were not independently verified; referrals are not all exceptions; publication frequency is not change frequency |
 | Fonts | Synthetic handwriting uses platform cursive fallbacks, so appearance can vary across operating systems |

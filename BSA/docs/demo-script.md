@@ -29,6 +29,10 @@ Say: "All case data and rule text are synthetic. Interpretation is scripted.
 The agent gathers evidence and recommends; code validates; a human decides.
 Nothing here calculates or approves a payment."
 
+Say: "The public figures are attributed, not independently verified. The annual
+figure concerns primary-care items in England with no reporting year specified;
+the monthly referral approximation uses 2024/25 context."
+
 The single-row header contains Overview, Operations, How it works, Agent and
 Reset. Under Operations are Pharmacy check, Pharmacy claims and NHSBSA
 queue. Under How it works are Evaluation, Boundary, Assumptions and Architecture.
@@ -42,7 +46,7 @@ Alt+ArrowRight/Left also works outside editable fields and menus.
 
 | Stop and exact action | What to show and say | Toggle moment |
 | --- | --- | --- |
-| Open `/#scene` | Three qualified public figures and existing process. Approximately 85,000 monthly referrals is a subset, not all exceptions. Monthly publication does not prove monthly rule changes. Expand Figure qualification if challenged. | Stay Off; these public facts do not depend on assistance. |
+| Open `/#scene` | Three attributed figures and existing process. Approximately 85,000 monthly referrals is a subset, not all exceptions. Monthly publication does not prove monthly rule changes. Expand Figure qualification to show the unverified-source caveats. | Stay Off; attribution does not depend on assistance. |
 | Click Next to `/#month` | A month of work. Expand assumptions and change an input; Today represents competent manual work, not a broken service. Gathering and judging durations are assumptions, not measured savings. | Switch On to reveal the assisted comparison, then Off to show unchanged inputs and manual baseline. |
 | Click Next to `/#cases` | The pipeline's six stages precede A-D evidence examples. Existing scanning, capture and pricing remain existing capabilities. | Start Off, then On. Wait for presentation to finish; B needs a date, C retains 56/84, D abstains. |
 | Click Next to `/#two-places` | One agent, two places. Local shared history exists; a shared operational service remains proposed. Follow the same ID rather than imagining two unrelated systems. | Compare On/Off; neither changes a case lifecycle. Finish Off. |
@@ -55,6 +59,14 @@ Back reverses all eight stops, including Pharmacy check. Dismiss tour hides the
 rail; **Restore tour** in the footer brings it back. Detail/reflective pages
 offer **Start** rather than pretending to be a tour chapter. The skip link
 focuses main without changing the selected fragment.
+
+When comparing numbers, distinguish projected referrals from the risk residual:
+referrals use deficient shares of built and abstained items; risk includes
+every abstention. The referral-free percentage uses the full scenario volume,
+not just the residual queue, and is not measured accuracy. Zero volume or
+residual means Not established. The monthly calculator holds judging hours
+constant; the queue day instead projects one operator's capacity. Neither is
+measured savings, and the two-second presentation is not work completed.
 
 ## Complete round trip: B, manual submission to assisted correction
 

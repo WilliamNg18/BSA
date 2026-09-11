@@ -92,35 +92,45 @@ capture quality/regions, extracted fields, claim and scripted readings.
 five confidence signals, composite, recommendation, gate, draft and trace.
 These outputs do not themselves create a human decision or lifecycle event.
 
-### Workload calculator
+### Chapter 2 baseline model
 
 The authoritative equations/defaults are in
-[task-1-baseline-model.md](task-1-baseline-model.md). Volume `V`, seven gathering
-steps `g`, judging `j`, pharmacy-caught `P`, rule-cleared `C`, abstained `A` and
-built `B` are bounded, sequential cohorts. Judging is identical across the
-comparison; pharmacy catch counts items, not minutes. Referral assumptions
-include deficient built items and all abstentions without double counting.
-Zero residual means Not established, never 100% accuracy.
+[task-1-baseline-model.md](task-1-baseline-model.md). `V` is the scenario volume;
+`g` sums seven editable gathering durations and `j` is judging time per item.
+Pharmacy-caught `P`, rule-cleared `C`, abstained `A` and built `B` are disjoint,
+sequentially rounded cohorts summing to `V`. The monthly calculator uses `V * j`
+for judging on both sides; pharmacy catch counts items, not saved minutes.
+
+Projected referrals are `round(B * db) + round(A * da)`, using editable
+deficient-built and deficient-abstained fractions. The separate risk residual
+is `R = A + round(B * db)`: every abstention plus deficient built items, with
+no second addition of deficient abstentions. For positive `V` and `R`, the
+referral-free proxy is `(V - R) / V * 100`, rounded down to one decimal for
+display. Zero volume or residual means Not established, never 100% accuracy.
 
 The scene, calculator, pipeline and queue consume shared scenario assumptions.
-Approximately 85,000 monthly referrals is a scale proxy, not the whole exception
-queue. Approximately 1.1 billion annual items and monthly rulebook publication
-are documentary context, not independent validation or a measured change rate.
+Approximately 85,000 monthly referrals is a 2024/25-context scale proxy, not the
+whole exception queue. Approximately 1.1 billion primary-care items per year in
+England (reporting year unspecified) and monthly rulebook publication are
+documentary context, not independently verified figures or a measured change rate.
 One Sources line sits on chapter 1; the documentary audit remains outside the
 client. No public-document retrieval occurs at runtime.
 
 ## 5. Canonical synthetic cases
 
-### Rulebook and reference data
+### 5.1 Synthetic rulebook
 
 July, August and September 2026 are synthetic versions. NCSO needs presence and
 initials in July; August and September additionally require a date. Broken bulk,
 expenses and specials have their own synthetic requirements. The effective
 dispensing date selects the version; replay may explicitly choose another.
+
+### 5.2 Synthetic reference data
+
 Products use `SYN-` codes; five pharmacies and all prices/claims are synthetic.
 Claimed/concession amounts are evidence, not a payment calculation.
 
-### Six fixed behaviours
+### 5.3 The six cases
 
 | Case | ID | Agent On result and invariant |
 | --- | --- | --- |
@@ -134,6 +144,8 @@ Claimed/concession amounts are evidence, not a payment calculation.
 Turning Agent Off removes proposals but does not rewrite these fixtures,
 decisions or lifecycle history. Code-only E clearance remains visible.
 Metadata-only queue examples do not acquire invented agent results.
+
+<a id="6-the-agent-pipeline-agentts-toolsts-keep-the-sequence-the-classification-and-the-stop-conditions"></a>
 
 ## 6. Evidence pipeline and gate
 
@@ -178,8 +190,9 @@ does not pretend to replay an agent trace; E retains deterministic evidence.
 
 An active review permits Accept/Sufficient, Amend, Request information, Refer
 back or Escalate as applicable. Recommended choices are labelled. A reason of
-at least eight characters is required when departing from a recommendation or
-making a manual decision without one. Invalid input produces a visible error.
+at least eight characters is required for an override, a manual decision without
+a recommendation, and every referral, information request or escalation even
+when recommended. Invalid input produces a visible error.
 Explicit **Approve this draft for the pharmacy** is separate from recording
 the decision; toggling On is never approval.
 
@@ -257,6 +270,11 @@ manual seven-step work, projection counts and **Run agent on visible rows** /
 **Step sweep** / **Cancel sweep** operate on illustrative work. The shared
 session queue separately exposes submitted/resubmitted cases with **Open for
 review**. A sweep never records a human decision or changes a lifecycle state.
+
+The day projection is a single-operator capacity model, not the monthly
+calculator's fixed-cohort judging comparison. Built and abstained items share
+one elapsed-time allowance; pharmacy-caught and code-cleared items add no human
+judging time there. Synthetic assembly latency is not operator labour.
 
 Today on a metadata-only item opens a labelled manual-work example with seven
 assumed tasks and judging duration. It must remain usable and honest, not a
