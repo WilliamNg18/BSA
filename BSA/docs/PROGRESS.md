@@ -149,6 +149,26 @@ lifecycle labels, not the former workbench Off status. Combined check and
 * [ ] Task 12: In progress, paused; navigation implemented, final integrated acceptance pending
 * [ ] Task 13: In progress, paused; final suite/captures/report incomplete
 
+## Stream R: root-route regression preparation
+
+Corrected exact root-path assertions in routes, tour stops and rapid keyboard
+history; strengthened the existing Off-to-On round trip with immutable blind
+submission and no-automatic-transition assertions. Product code is unchanged
+in this regression preparation.
+
+The initial check exited 1 because TypeScript was missing. Locked dependency
+restoration made the tools available but stalled without output and was stopped;
+no successful npm ci completion is claimed. Subsequent npm run check exited 0,
+and npm run test -- --maxWorkers=2 passed 560 tests in 20 files, exit 0.
+The final regression edits also passed npm run typecheck and npm run lint,
+exit 0. The full production run collected 783 tests with two workers on root
+port 4173, zero retries; its completion evidence is pending, not a passing gate.
+
+This run retains Phase 1's then-current payload test. Coordinator policy now
+removes all byte budgets and measurement tests; it will apply after rebase, not
+by changing the artifact during the running suite. No Azure acceptance is
+claimed, and Tasks 8-13 remain unchecked.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

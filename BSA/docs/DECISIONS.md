@@ -426,3 +426,21 @@ secrets or Azure, never the static browser bundle. The owner is to reset the SWA
 deployment token in Azure and replace its repository secret. No credential value
 is requested in chat or source. The repository returns to private when the demo
 is done; do not change visibility before that instruction is fulfilled.
+
+## 2026-09-11: Stream R root-path functional acceptance
+
+Compare production destinations with exact root-relative routes, not the retired
+/BSA prefix. Tour checks retain every stop, direction, shortcut and focus
+assertion; rapid keyboard history compares the complete pathname and fragment.
+No route assertions are skipped or replaced with an origin-only check.
+
+Use two browser and two unit workers on the shared machine. Run every production
+spec with zero retries, including blocking crash, control and default-rule axe
+checks. Stream S owns strict-CSP serving and compatibility fixes; Vite preview
+alone cannot establish CSP or Azure-hosted acceptance.
+
+Strengthen the integrated Off-to-On round trip using only public controls and
+visible history. Preserve the initial unchecked submission verbatim, prove the
+unaided resubmission stays unchecked, and verify neither enabling assistance nor
+checking a correction changes lifecycle state. Arrival presents a recommendation;
+only the explicit human decision releases the synthetic item to existing pricing.

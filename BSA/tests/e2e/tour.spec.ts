@@ -72,7 +72,7 @@ for (const enabled of [true, false]) {
     await expect(rail.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
     for (const [index, stop] of TOUR_STOPS.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).click();
-      await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${stop.to.replace("/#", "#")}`);
+      await expect(page).toHaveURL(new URL(stop.to, page.url()).href);
       await expect(rail).toContainText(`${stop.chapter}/7 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
       if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
@@ -86,14 +86,14 @@ for (const enabled of [true, false]) {
       await rail.getByRole("button", { name: "Back", exact: true }).focus();
       await page.keyboard.press("Enter");
       await expect(rail).toContainText(TOUR_STOPS[index].label);
-      await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
+      await expect(page).toHaveURL(new URL(TOUR_STOPS[index].to, page.url()).href);
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     }
     // Exercise the same full route sequence in both directions via shortcuts.
     for (const direction of [1, -1]) {
       for (let index = direction === 1 ? 1 : TOUR_STOPS.length - 2; index >= 0 && index < TOUR_STOPS.length; index += direction) {
         await page.keyboard.press(direction === 1 ? "Alt+ArrowRight" : "Alt+ArrowLeft");
-        await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
+        await expect(page).toHaveURL(new URL(TOUR_STOPS[index].to, page.url()).href);
         await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
         await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
       }
