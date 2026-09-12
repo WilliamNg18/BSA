@@ -8,7 +8,8 @@ export function FollowBanner() {
   const row = useAppStore((s) => s.followedCaseId ? s.lifecycles[s.followedCaseId] : undefined);
   const enabled = useAppStore((s) => s.agentEnabled);
   const follow = useAppStore((s) => s.followCase);
-  if (!row) return null;
+  const both = useAppStore((s) => s.perspective === "both");
+  if (!row || !both) return null;
   const labels = LIFECYCLE_LABELS[row.state];
   return <section aria-label="Followed item" className="border-b bg-muted px-3 py-2 text-xs md:px-6">
     <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2">

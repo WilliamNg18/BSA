@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { pharmacyCaseLink } from "@/lib/case-links";
 import type { CaseLifecycle } from "@/lib/domain/lifecycle";
 import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
+import { useAppStore } from "@/lib/store";
 
 export function ReferralCycle({ enabled, claim }: { enabled: boolean; claim?: CaseLifecycle }) {
+  const perspective = useAppStore((s) => s.perspective);
   return <section aria-label="Referral cycle guide" className="space-y-4 rounded-xl border bg-card p-5">
     <h2 className="text-xl font-semibold">Referral, correction and re-check</h2>
     <section aria-label="Referral cycle comparison" className="space-y-2 rounded-lg bg-muted/40 p-4">
@@ -43,8 +45,8 @@ export function ReferralCycle({ enabled, claim }: { enabled: boolean; claim?: Ca
       <p className="text-sm" role="status">{LIFECYCLE_LABELS[claim.state].pharmacy}</p>
       {claim.state === "paid" && <p className="text-sm">Recorded synthetic outcome attributed to existing pricing. No actual payment is calculated or approved here.</p>}
       <div className="flex flex-wrap gap-3">
-        <Button asChild variant="outline"><Link to={pharmacyCaseLink(claim.caseId)}>Open this pharmacy claim</Link></Button>
-        <Button asChild variant="outline"><Link to={`/case/${claim.caseId}`}>Open this operator case</Link></Button>
+        {perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to={pharmacyCaseLink(claim.caseId)}>Open this pharmacy claim</Link></Button>}
+        {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to={`/case/${claim.caseId}`}>Open this operator case</Link></Button>}
       </div>
     </section>}
   </section>;

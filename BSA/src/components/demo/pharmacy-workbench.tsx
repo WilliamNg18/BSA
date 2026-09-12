@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,13 @@ import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { usePharmacyCheck } from "@/hooks/use-pharmacy-check";
 import { useAppStore } from "@/lib/store";
 import { usePharmacyStore } from "@/lib/pharmacy-store";
+import type { PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
 
 export function PharmacyPage() {
   const agentEnabled = useAppStore((state) => state.agentEnabled);
+  const perspective = useAppStore((state) => state.perspective);
+  const caseRevisions = useAppStore((state) => state.caseRevisions);
+  const recordCorrection = useAppStore((state) => state.recordPharmacyCorrection);
   const assumptions = usePharmacyStore((state) => state.assumptions);
   const submit = usePharmacyStore((state) => state.submit);
   const receipts = usePharmacyStore((state) => state.receipts);
@@ -31,6 +35,7 @@ export function PharmacyPage() {
   const [edited, setEdited] = useState<Record<string, string>>({});
   const [receipt, setReceipt] = useState<PharmacyReceipt | null>(null);
   const [error, setError] = useState("");
+  const pendingCorrection = useRef<{ caseId: string; text: string; revision: number; before: PharmacyPrecheckSnapshot } | null>(null);
   const c = caseById(scenario === "A" ? "EX-24107" : scenario === "B" ? "EX-24112" : "EX-24123")!;
   const text = edited[c.id] ?? c.extracted.endorsementText;
   const enabled = agentEnabled && agentAvailable;
@@ -44,7 +49,25 @@ export function PharmacyPage() {
   const correction = canApply ? pharmacyDateCorrection(c, text) : text;
   const product = productByCode(c.extracted.productCode);
   const stoppedAtCapture = scenario === "D" || c.imageQuality < QUALITY_THRESHOLD || !product;
-  const update = (value: string) => setEdited((old) => ({ ...old, [c.id]: value }));
+  const update = (value: string) => {
+    pendingCorrection.current = null;
+    setEdited((old) => ({ ...old, [c.id]: value }));
+  };
+  useEffect(() => {
+    const pending = pendingCorrection.current;
+    if (!pending) return;
+    if (!enabled || pending.caseId !== c.id || pending.text !== text ||
+      pending.revision !== caseRevisions[c.id].at(-1)!.number + 1) {
+      pendingCorrection.current = null;
+      return;
+    }
+    if (!result || !current.checkedAt) return;
+    pendingCorrection.current = null;
+    if (result.status !== "ready") return;
+    try {
+      recordCorrection(c.id, pending.before, pharmacySnapshot(text, c.extracted.dispensingDate, mode, result, current.checkedAt), pending.revision);
+    } catch (err) { setError(err instanceof Error ? err.message : "Correction evidence unavailable."); }
+  }, [enabled, c, text, caseRevisions, result, current.checkedAt, mode, recordCorrection]);
 
   return <div className="mx-auto max-w-7xl space-y-6">
     <div className="space-y-2">
@@ -53,7 +76,7 @@ export function PharmacyPage() {
       <div className="flex flex-wrap gap-2 text-xs font-medium"><span className="rounded-md border px-2 py-1">Advisory only</span><span className="rounded-md border px-2 py-1" data-scripted-badge>Scripted signal · Not live</span><BoundaryTag cls="human" /></div>
     </div>
     <div className="flex flex-wrap items-center gap-4">
-      <ToggleGroup value={scenario} onValueChange={(value) => { if (value) setScenario(value as PharmacyScenario); }} aria-label="Choose a scenario" className="flex-wrap justify-start">
+      <ToggleGroup value={scenario} onValueChange={(value) => { if (value) { pendingCorrection.current = null; setScenario(value as PharmacyScenario); } }} aria-label="Choose a scenario" className="flex-wrap justify-start">
         <ToggleGroupItem value="A">Complete endorsement</ToggleGroupItem>
         <ToggleGroupItem value="B">Information missing</ToggleGroupItem>
         <ToggleGroupItem value="D">Unreadable form</ToggleGroupItem>
@@ -111,7 +134,14 @@ export function PharmacyPage() {
             {canApply && <section aria-label="Suggested correction" className="space-y-2 rounded-lg border border-amber-600 p-3">
               <h3 className="font-semibold">Suggested correction</h3>
               <dl className="text-sm"><KeyValue k="Append dispensing date" v={correction.slice(text.trimEnd().length).trim()} /><KeyValue k="Provenance" v="Dispensing date · Deterministic suggestion" /></dl>
-              <Button variant="outline" onClick={() => { update(correction); document.getElementById("endorsement")?.focus(); }}>Apply correction</Button>
+              <Button variant="outline" onClick={() => {
+                update(correction);
+                pendingCorrection.current = {
+                  caseId: c.id, text: correction, revision: caseRevisions[c.id].at(-1)!.number + 1,
+                  before: pharmacySnapshot(text, c.extracted.dispensingDate, mode, result, current.checkedAt),
+                };
+                document.getElementById("endorsement")?.focus();
+              }}>Apply correction</Button>
             </section>}
           </>}
           <Button className="bg-teal-700 text-white hover:bg-teal-800" onClick={() => {
@@ -141,7 +171,7 @@ export function PharmacyPage() {
           <KeyValue k="Check result" v={receipt.precheck.status} /><KeyValue k="Session receipts" v={receipts.length} /><KeyValue k="Storage" v="Shared lifecycle · Memory only" />
         </dl>
         <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(receipt.caseId)}`}>View submitted claim</Link></Button>
-        <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>
+        {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}
       </section>
       <PharmacyTimeline key={receipt.id} receipt={receipt} />
     </>}

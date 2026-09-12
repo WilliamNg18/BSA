@@ -866,6 +866,27 @@ claims; X perspective/navigation; V copy recommendations and visual/docs
 acceptance. Coordinator owns frozen contracts/store and serialises shared
 changes. Merge N, Q/P, X, V; every main merge uses existing App Service OIDC.
 
+## 2026-09-12: Task 14 presents monthly effort separately from built-case capacity
+
+Chapter 2 exposes only volume, total Today minutes and built-case judging
+minutes before its two headline tiles. The Agent flag switches both tiles.
+Chapter 1 reads the same monthly selector. The original `calculateBaseline`
+remains unchanged for consumers migrating in later streams.
+
+Seven gathering fields are relative weights, not extra minutes. Weights,
+sequential cohort assumptions, the proportional flow and provenance sit inside
+the initially collapsed Show the detail disclosure. The old separate built
+review input is not presented by the monthly UI. Monthly operator effort
+includes full manual fallback for abstentions; the independent 7,560-minute
+capacity denominator describes built cases, not mixed-cohort throughput.
+
+Public referral-subset context is visible beside the volume assumption and
+available through a keyboard-focusable tooltip. It is never described as a
+measured total exception queue. Exact owner-requested explanatory sentences
+take priority over informational prose-count aspirations. Numeric count
+transitions expose stable final accessible values, cancel on unmount and
+settle immediately when reduced motion is enabled.
+
 ## 2026-09-12: Q queue windows and comparison authority
 
 Task 15 (#58) replaces separate pinned, session and virtual queue surfaces with
@@ -902,27 +923,6 @@ manual quality. Eligibility reads the current revision's synthetic version,
 consensus and validated clause with deterministic helpers, not a hidden agent
 run. Missing clauses and historical/filler/abstention/rule-clear rows do not count.
 
-## 2026-09-12: Task 14 presents monthly effort separately from built-case capacity
-
-Chapter 2 exposes only volume, total Today minutes and built-case judging
-minutes before its two headline tiles. The Agent flag switches both tiles.
-Chapter 1 reads the same monthly selector. The original `calculateBaseline`
-remains unchanged for consumers migrating in later streams.
-
-Seven gathering fields are relative weights, not extra minutes. Weights,
-sequential cohort assumptions, the proportional flow and provenance sit inside
-the initially collapsed Show the detail disclosure. The old separate built
-review input is not presented by the monthly UI. Monthly operator effort
-includes full manual fallback for abstentions; the independent 7,560-minute
-capacity denominator describes built cases, not mixed-cohort throughput.
-
-Public referral-subset context is visible beside the volume assumption and
-available through a keyboard-focusable tooltip. It is never described as a
-measured total exception queue. Exact owner-requested explanatory sentences
-take priority over informational prose-count aspirations. Numeric count
-transitions expose stable final accessible values, cancel on unmount and
-settle immediately when reduced motion is enabled.
-
 ## 2026-09-12: Evidence for the selected pharmacy's caught-before-submission count
 
 A submitted ready snapshot does not establish that a missing endorsement was
@@ -934,6 +934,23 @@ This record is neither submission nor lifecycle history, approval or payment;
 all existing operational slices remain identical. Reset clears it. X owns the
 narrow workbench capture; P consumes the selected-pharmacy count. The monthly
 model's whole-cohort estimate remains separate from these observed demo actions.
+
+## 2026-09-12: Independent perspectives share one operational session
+
+Pharmacy, NHSBSA and Both are a native radio group immediately before Agent.
+Both remains the default. The choice filters navigation and cross-side actions,
+not lifecycle data, revisions, records or Agent. A hidden route retains its URL
+and presents an explicit switch action instead of mounting the opposite page.
+Single-side modes suspend the tour and Follow controls without discarding their
+session choices. Reset retains perspective and otherwise keeps its existing
+behaviour. Overview and How it works remain shared.
+
+Production and live acceptance use the same UI-driven Off-then-On round trip,
+without Reset or reloading the operational session. They compare the exact
+submitted item, immutable attempts and recorded decision identity across side
+switches. Live execution retains the existing before/after build-identity
+fixtures and belongs to the coordinator after the integrated release, not to
+an unmerged feature branch.
 
 ## 2026-09-12: Task 16 P keeps claims actions and recorded counts separate
 

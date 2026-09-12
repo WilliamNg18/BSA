@@ -853,6 +853,62 @@ Issue #52 adds a local icon and explicit link. Six targeted hosting tests and
 a production HTTP probe passed with image/x-icon and exact built bytes.
 This does not replace the remaining full live checklist.
 
+## 2026-09-12: A perspective filter must cover more than the main menu
+
+Shared overview cards, pipeline calls to action, referral guides, historical
+case links and nested lifecycle history all provide cross-side navigation.
+Filter these at their rendering source and guard the route outlet as a final
+presentation boundary. CSS hiding alone would still mount operational pages.
+Keep the Operations menu even when it contains only NHSBSA queue so its label
+and keyboard interaction stay stable.
+
+A ready submission is not evidence that a problem was caught. The workbench
+captures a missing snapshot only on human Apply correction and waits for the
+matching completed ready check before recording advisory evidence. Cancel the
+pending capture when the field, scenario, Agent availability or next revision
+changes; the store validates it again. No submission or lifecycle transition
+is implied by that evidence event.
+
+Header-only bounds are not a page-reflow guarantee. Linux CI's wider system
+font pushed the mobile navigation beyond the viewport despite Windows checks
+passing against identical built assets. Keep the narrow Agent state accessible
+through the native switch and label, defer the optional short brand, and check
+both document and body widths in every perspective and Agent mode. Do not hide
+overflow to mask the missing navigation control.
+At 320px or with enlarged text, allow the header's intrinsic flex layout to
+wrap and its height to grow. Keep mobile navigation before the control group
+in both visual and keyboard order so the Agent tooltip cannot cover a wrapped
+menu button. The existing sticky-stack observer measures the resulting height;
+reflow tests also exercise heading, Reset and tour focus clearance.
+
+## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
+
+Comparing parsed floating-point values alone accepted a judging draft just
+above Today's total, such as `12.00000000000000001`. The monthly selector now
+also compares the valid raw decimal fractions. Normalising relative weights
+before scaling the gathering total avoids losing a subnormal positive weight
+when the gathering total is fractional. Dedicated regressions preserve both
+cases without changing legacy baseline arithmetic or frozen signatures.
+
+The initial Task 14 production audit caught a paragraph directly inside a
+definition-list group. The assisted gathering explanation belongs in a `dd`,
+not a sibling paragraph. The run was stopped and its failure artifacts retained;
+that failed run is not acceptance evidence. Nested disclosures also require a
+direct-child summary selector in tests, not an ambiguous descendant selector.
+
+The application supplies compact overlays, not the raw tooltip provider.
+Reusing the existing compact tooltip avoids a missing-provider route crash.
+The static-render test must not add a raw provider absent from the real app,
+because that wrapper masks the integration defect. Capacity footnotes must
+also follow the mode: manual-case capacity Today, built-case capacity On.
+
+Counting a delta must not reconstruct the final target as `from + delta`.
+After a very large valid capacity, floating-point cancellation can display
+3,776 or zero instead of 3,780, including in reduced motion. Assign the exact
+model target at completion, retaining it as the next transition's origin.
+Both motion modes now exercise large capacities followed by the default
+judging input and check the visible number against the shared Scene value.
+
 ## 2026-09-12: Q queue clarity implementation
 
 Changing audience wording is not a lifecycle transition. Queue tests now inspect
@@ -902,31 +958,3 @@ monthly selected-pharmacy strip consumes explicit before/after correction
 events, excludes other pharmacies and months, and counts each case/revision
 once. Recorded item counts and the shared whole-service model are different
 quantities and need separate labels even when both are synthetic.
-
-## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
-
-Comparing parsed floating-point values alone accepted a judging draft just
-above Today's total, such as `12.00000000000000001`. The monthly selector now
-also compares the valid raw decimal fractions. Normalising relative weights
-before scaling the gathering total avoids losing a subnormal positive weight
-when the gathering total is fractional. Dedicated regressions preserve both
-cases without changing legacy baseline arithmetic or frozen signatures.
-
-The initial Task 14 production audit caught a paragraph directly inside a
-definition-list group. The assisted gathering explanation belongs in a `dd`,
-not a sibling paragraph. The run was stopped and its failure artifacts retained;
-that failed run is not acceptance evidence. Nested disclosures also require a
-direct-child summary selector in tests, not an ambiguous descendant selector.
-
-The application supplies compact overlays, not the raw tooltip provider.
-Reusing the existing compact tooltip avoids a missing-provider route crash.
-The static-render test must not add a raw provider absent from the real app,
-because that wrapper masks the integration defect. Capacity footnotes must
-also follow the mode: manual-case capacity Today, built-case capacity On.
-
-Counting a delta must not reconstruct the final target as `from + delta`.
-After a very large valid capacity, floating-point cancellation can display
-3,776 or zero instead of 3,780, including in reduced motion. Assign the exact
-model target at completion, retaining it as the next transition's origin.
-Both motion modes now exercise large capacities followed by the default
-judging input and check the visible number against the shared Scene value.

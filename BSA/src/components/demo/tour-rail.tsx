@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
+import { useAppStore } from "@/lib/store";
 
 export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: () => void }) {
   const { pathname, hash } = useLocation();
@@ -12,9 +13,10 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
   const index = tourStopIndex(pathname, hash);
   const stop = TOUR_STOPS[index];
   const last = index === TOUR_STOPS.length - 1;
+  const both = useAppStore((s) => s.perspective === "both");
 
   useLayoutEffect(() => {
-    if (!visible) return;
+    if (!visible || !both) return;
     function onKey(event: KeyboardEvent) {
       if (!isTourShortcut(event)) return;
       const target = event.target;
@@ -32,9 +34,9 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [navigate, visible]);
+  }, [navigate, visible, both]);
 
-  if (!visible) return null;
+  if (!visible || !both) return null;
   return (
     <nav aria-label="Guided tour" className="border-b bg-background/95 px-3 backdrop-blur md:px-6">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-2">

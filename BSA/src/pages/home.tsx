@@ -18,6 +18,7 @@ import { useAppStore } from "@/lib/store";
 export function HomePage() {
   const { pathname, hash } = useLocation();
   const agentEnabled = useAppStore((s) => s.agentEnabled);
+  const perspective = useAppStore((s) => s.perspective);
   const chapterNumber = TOUR_STOPS[tourStopIndex(pathname, hash)].chapter;
   const chapter = TOUR_CONTENT.chapters.find((item) => item.chapter === chapterNumber);
   return (
@@ -61,9 +62,9 @@ export function HomePage() {
                 {item.scenario === "B" && pack.recommendation === "REFER_BACK" && <p className="text-sm" data-correction>Fix: add the date beside the initials.</p>}
                 {pack.conflicts.map((conflict) => <dl key={conflict.field} className="text-sm"><dt className="font-medium">{conflict.field} · Unresolved</dt>{conflict.values.map((value) => <dd key={value.origin}>{value.origin}: {value.value}</dd>)}</dl>)}
                 {pack.abstainReasons.length > 0 && <ul aria-label="Abstention signals" className="space-y-2 text-sm"><li>Provision: {pack.signals.provisionFound ? "Found" : "Not found"}</li><li>Image quality: {pack.signals.imageQuality.toFixed(2)} / threshold {QUALITY_THRESHOLD.toFixed(2)}</li><li>Readings agree: {pack.signals.sampleAgreement.agree} of {pack.signals.sampleAgreement.total}</li></ul>}
-                <details className="text-sm"><summary className="cursor-pointer font-medium">Outcome evidence and exact correction</summary><div className="mt-3 space-y-3 text-muted-foreground"><ul aria-label="Requirement checks" className="space-y-2">{pack.requirementResults.map((r) => <li key={r.requirement.id}>{r.requirement.label}: {r.met === true ? "met" : r.met === false ? "not met" : "unknown"}</li>)}</ul>{pack.abstainReasons.length > 0 && <ul aria-label="Abstention reasons" className="list-disc pl-4">{pack.abstainReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}<Link className="underline" to={`/case/${item.id}`}>Review full evidence and human decision</Link></div></details>
+                <details className="text-sm"><summary className="cursor-pointer font-medium">Outcome evidence and exact correction</summary><div className="mt-3 space-y-3 text-muted-foreground"><ul aria-label="Requirement checks" className="space-y-2">{pack.requirementResults.map((r) => <li key={r.requirement.id}>{r.requirement.label}: {r.met === true ? "met" : r.met === false ? "not met" : "unknown"}</li>)}</ul>{pack.abstainReasons.length > 0 && <ul aria-label="Abstention reasons" className="list-disc pl-4">{pack.abstainReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}{perspective !== "pharmacy" && <Link className="underline" to={`/case/${item.id}`}>Review full evidence and human decision</Link>}</div></details>
               </> : <div className="space-y-3 text-sm" data-manual-tasks><BoundaryTag cls="human" /><p className="font-medium">Manual review · No recommendation</p><ul className="list-disc space-y-2 pl-4"><li>Locate image and claim</li><li>Check product and governing rule</li><li>Review evidence and record a decision</li></ul></div>}
-              <Button asChild variant="outline" size="sm"><Link to={`/case/${item.id}`}>Open case {item.scenario}</Link></Button>
+              {perspective !== "pharmacy" && <Button asChild variant="outline" size="sm"><Link to={`/case/${item.id}`}>Open case {item.scenario}</Link></Button>}
               <FollowItem id={item.id} />
             </li>;
           })}
@@ -74,14 +75,14 @@ export function HomePage() {
         <section aria-label="Referral and resubmission loop" className="space-y-3 rounded-xl border p-5">
           <h2 className="font-semibold">One item, both sides</h2>
           <ol className="grid gap-3 text-sm sm:grid-cols-3">
-            <li><Link className="underline" to="/case/EX-24112">NHSBSA: human referral decision</Link></li>
-            <li><Link className="underline" to={pharmacyCaseLink("EX-24112")}>Pharmacy: correction and resubmission</Link></li>
-            <li><Link className="underline" to="/queue">NHSBSA: human re-check</Link></li>
+            <li>{perspective === "pharmacy" ? "NHSBSA: human referral decision" : <Link className="underline" to="/case/EX-24112">NHSBSA: human referral decision</Link>}</li>
+            <li>{perspective === "nhsbsa" ? "Pharmacy: correction and resubmission" : <Link className="underline" to={pharmacyCaseLink("EX-24112")}>Pharmacy: correction and resubmission</Link>}</li>
+            <li>{perspective === "pharmacy" ? "NHSBSA: human re-check" : <Link className="underline" to="/queue">NHSBSA: human re-check</Link>}</li>
           </ol>
           <p className="text-sm text-muted-foreground">Workflow and delays are assumptions to validate. Shared session history is implemented locally; a shared operational service remains proposed.</p>
           <FollowItem id="EX-24112" />
         </section>
-        <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>
+        {perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>}
       </>}
       {chapterNumber === 8 && <>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">

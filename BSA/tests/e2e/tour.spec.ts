@@ -42,15 +42,20 @@ for (const colorScheme of ["light", "dark"] as const) {
           const box = await header.boundingBox();
           await expect(header.getByRole("switch")).toHaveAttribute("data-state", enabled ? "checked" : "unchecked");
           expect(box?.height).toBeLessThanOrEqual(64);
-          const controls = [header.getByRole("link", { name: "Prescription Exception Case Builder" }), header.getByRole("switch"), header.getByRole("button", { name: "Reset demo" })];
+          await expect(header.getByRole("radio", { name: "Both", exact: true })).toBeChecked();
+          const navigation = width < 1024 ? header.getByRole("button", { name: "Open navigation", exact: true }) : header.getByRole("button", { name: "Operations", exact: true });
+          const controls = [header.getByRole("link", { name: "Prescription Exception Case Builder" }), navigation, header.getByRole("group", { name: "Perspective", exact: true }), header.getByRole("switch"), header.getByRole("button", { name: "Reset demo" })];
+          const centres: number[] = [];
           for (const control of controls) {
             await expect(control).toBeVisible();
             const bounds = await control.boundingBox();
+            centres.push(bounds!.y + bounds!.height / 2);
             expect(bounds!.y).toBeGreaterThanOrEqual(box!.y);
             expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(box!.y + box!.height);
             expect(bounds!.x).toBeGreaterThanOrEqual(0);
             expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
           }
+          expect(Math.max(...centres) - Math.min(...centres)).toBeLessThanOrEqual(1);
           expect((await rail.boundingBox())?.y).toBe(box!.height);
           for (const label of ["Pharmacy check", "Pharmacy claims", "NHSBSA queue", "Evaluation", "Boundary", "Assumptions", "Architecture", "Overview"]) await navigatePrimary(page, label);
           await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
