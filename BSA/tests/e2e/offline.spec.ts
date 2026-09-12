@@ -41,7 +41,7 @@ test(`fresh Overview supports first visits to every route after immediate discon
     }
     // These current destinations have no primary link before Stream D. Exercise
     // the router's browser-history surface, not a reload or preloaded route.
-    for (const path of ["#scene", "#month", "#cases", "#two-places", "#close", "pharmacy/claims", "missing-page"]) {
+    for (const path of ["#scene", "#month", "#pipeline", "#cases", "#two-places", "#close", "pharmacy/claims", "missing-page"]) {
       await page.evaluate((destination) => {
         history.pushState(null, "", `/${destination}`);
         window.dispatchEvent(new PopStateEvent("popstate"));

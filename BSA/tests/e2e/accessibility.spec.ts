@@ -4,7 +4,7 @@ import { captureJson, expect, test } from "./fixtures";
 // Every existing audit surface, both themes and both assistance states.
 // No tag filter: landmark and other best-practice rules must run as well as WCAG.
 const surfaces = [
-  ...["scene", "month", "cases", "two-places", "close"].map((chapter) => [`Overview ${chapter}`, `./#${chapter}`]),
+  ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => [`Overview ${chapter}`, `./#${chapter}`]),
   ["Pharmacy", "pharmacy"], ["Queue", "queue"],
   ["Case pack", "case/EX-24112"], ["Trace", "case/EX-24112/trace"],
   ["Decision record", "case/EX-24088/record"],
