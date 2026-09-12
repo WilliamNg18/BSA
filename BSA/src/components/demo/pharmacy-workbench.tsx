@@ -37,7 +37,9 @@ export function PharmacyPage() {
   const current = usePharmacyCheck(c, text, enabled);
   const result = current.result;
   const mode = !agentEnabled ? "off" : !agentAvailable ? "unavailable" : !result ? "pending" : "scripted";
-  const status = !enabled ? "Agent unable to determine" : !result ? "Scripted check in progress" : result.status === "ready" ? "Ready to submit" : result.status === "missing" ? "Information may be missing" : "Agent unable to determine";
+  const status = !agentEnabled ? "Not checked: manual submission"
+    : !agentAvailable ? "Agent unavailable: manual submission"
+    : !result ? "Scripted check in progress" : result.status === "ready" ? "Ready to submit" : result.status === "missing" ? "Information may be missing" : "Agent unable to determine";
   const canApply = enabled && result?.status === "missing" && scenario === "B" && result.facts?.type === "NCSO" && result.facts.initialled && result.checks.some((entry) => entry.id === "dated" && entry.met === false);
   const correction = canApply ? pharmacyDateCorrection(c, text) : text;
   const product = productByCode(c.extracted.productCode);

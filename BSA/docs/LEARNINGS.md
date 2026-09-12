@@ -318,3 +318,72 @@ All final dedicated keyboard cases passed, including computed `animationName`
 of `none` under reduced motion and `enter` under normal motion, modal
 containment/cleanup, and focus after Dismiss/Restore tour. The seven final axe
 audits and nine final CSP reports are rechecks, not new unique matrix surfaces.
+
+## 2026-09-11: Issue 20 manual pharmacy status
+
+The workbench used one !enabled branch for both deliberate Off and unavailable
+assistance. R reproduced complete A showing "Agent unable to determine" in
+both states with submission enabled. Existing pharmacy matrix assertions
+encoded that label, so a passing test did not establish a healthy Today view.
+
+Separate display branches retain the existing check and submission data paths.
+The A/B/D matrix now expects neutral Off wording; three focused regressions
+exercise availability, Off/On/Off, actual results and immutable unchecked
+receipts. Browser execution awaits the coordinator's shared-machine slot;
+no overlapping browser process has been started.
+
+On main 8c05b18 plus this display-only change, npm run check passes with no
+warnings and the full Vitest run passes 553 tests in 18 files. No new unit
+helper or domain behaviour was needed for a presentation-only distinction.
+
+## 2026-09-11: Issue 20 cross-suite status expectations
+
+CI 34629999025 on f95ae88 passed check and 553 units, but its complete browser
+run failed: 547 passed and 238 failed in 25.7 minutes. Eleven failures directly
+exposed incomplete label migration: nine Off/unavailable assistance matrix
+states, one global/local availability regression and one advisory-control test.
+Their status locators filtered by the old three possible strings, so the new
+neutral status disappeared from the locator before the stale assertion ran.
+These are deterministic expectation mismatches, not quarantined flakes.
+
+With coordinator approval, use the existing data-pharmacy-status target and
+explicitly distinguish Off from unavailable in assistance.spec.ts and the two
+approved controls.spec.ts locations. Preserve real On unreadable expectations,
+all control/receipt checks and every other test. Typecheck and lint pass after
+these test-only edits. The expanded selector lists 29 tests across pharmacy,
+assistance and controls; no local browsers started without the shared slot.
+The dot CI log does not identify individual passes, so it does not independently
+establish that the original 15-test selector passed. Retain the failed run and
+obtain explicit focused results rather than inferring success from omission.
+
+## 2026-09-11: Issue 20 first focused browser result
+
+Coordinator granted one worker on isolated port 4193. The unchanged production
+configuration, with only port and artifact destination overridden in an ignored
+temporary config, ran the 29-test selector on 5ec240a: 26 passed, three failed,
+exit 1 in 20.2 minutes. All three new Issue20 transition tests passed.
+The failures were complete A Off/local available timing out on the global
+switch click, D Off/light timing out during axe analysis, and B On/light
+timing out on initial navigation. No status-text assertion failed.
+
+Retain issue20-focused-29.log and all three traces in session artifacts. Trace
+inspection found no error-like browser events; slow setup/teardown alone does
+not prove a flake or excuse the failed tests. The owned preview stopped and
+port 4193 had no remaining listener. Do not mark the PR ready until these
+failures are resolved or the coordinator accepts explicit further evidence.
+
+## 2026-09-11: Issue 20 exact failure rerun and bounded quarantine
+
+One coordinator-authorised rerun of exactly the three failed instances passed
+3/3, exit 0 in 2.8 minutes, with unchanged application, assertions and timeouts.
+Retain the first 26/29 outcome and separate rerun; do not claim a single-run
+29/29 pass. The first run produced ten unique axe reports with zero violations;
+the retry produced two more zero-violation reports for the unfinished captures.
+Port 4193 was confirmed released after each run; R's port was untouched.
+
+Coordinator-reported CPU saturation and the exact unchanged rerun support a
+bounded timing-flakiness follow-up, not an assertion that every failure was
+environmental. Issue #34 tracks investigation and removal criteria. Apply
+@quarantine only to assistance complete-A/global-Off/local-available and the
+pharmacy D-Off/light and B-On/light matrix instances. All three new Issue20
+guards and the other 23 focused cases remain blocking; no assertion is removed.

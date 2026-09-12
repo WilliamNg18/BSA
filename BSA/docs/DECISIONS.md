@@ -330,3 +330,16 @@ reporting a clean 40-test first run. No assertion, timeout or CI gate is weakene
 Observed CPU saturation alone does not establish a product-specific flaky test.
 The nine owned keyboard checks, seven follow-up axe reports and nine CSP reports
 all pass on the final control revision. Release the owned server before handoff.
+
+## 2026-09-11: Issue 20 distinguishes manual mode from inability
+
+Intentional Agent Off displays "Not checked: manual submission". Agent On
+with availability disabled displays "Agent unavailable: manual submission".
+Only an actual scripted unable result displays "Agent unable to determine";
+ready, missing and pending checks retain their existing wording.
+
+These are display distinctions, not precheck results or lifecycle transitions.
+Reject labelling Off as a failed agent check or implying that unchecked text
+is ready. Submission stays available; receipts, snapshots and canonical cases
+remain unchanged. Coordinator transferred only the pharmacy workbench and
+its matching functional regressions from R to the parity stream for this fix.

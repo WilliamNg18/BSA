@@ -30,7 +30,7 @@ test(`${caseId} trace replay announces one step at a time, Show all and Clear wo
 test("pharmacy is advisory for missing, corrected, complete, unreadable and unavailable inputs", async ({ page }, testInfo) => {
   await page.goto("pharmacy");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const status = page.getByRole("status").filter({ hasText: /^(Information may be missing|Ready to submit|Agent unable to determine)$/ });
+  const status = page.locator("[data-pharmacy-status]");
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
   await expect(status).toHaveText("Information may be missing");
   await captureCheckpoint(page, testInfo, "pharmacy-before-date");
@@ -53,7 +53,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and unav
   await expect(page.getByRole("status").filter({ hasText: "Submitted (synthetic)." })).toBeVisible();
   await page.getByRole("radio", { name: "Information missing", exact: true }).click();
   await page.getByRole("switch", { name: "Agent available", exact: true }).click();
-  await expect(status).toHaveText("Agent unable to determine");
+  await expect(status).toHaveText("Agent unavailable: manual submission");
   await expect(submit).toBeEnabled();
   await submit.click();
   await expect(page.getByRole("status").filter({ hasText: "Submitted (synthetic)." })).toBeVisible();
