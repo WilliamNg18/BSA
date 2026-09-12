@@ -37,12 +37,13 @@ test("caught-before-submission records only a completed human-applied correction
 for (const cancellation of ["edit", "scenario", "Agent Off", "leave page", "Reset", "submit"] as const) {
   test(`unfinished correction evidence is cancelled by ${cancellation}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.clock.install();
+    await page.clock.install({ time: new Date("2026-09-12T12:00:00Z") });
+    await page.clock.pauseAt(new Date("2026-09-12T12:00:10Z"));
     await page.goto("/pharmacy");
     await choosePerspective(page, "Pharmacy");
     await flag(page).setChecked(true);
+    await page.clock.runFor(3000);
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
-    await page.clock.pauseAt(new Date());
     await page.getByRole("button", { name: "Apply correction", exact: true }).click();
     if (cancellation === "edit") await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO XY 21/08/26");
     if (cancellation === "scenario") await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();

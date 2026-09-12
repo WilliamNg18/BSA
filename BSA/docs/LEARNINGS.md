@@ -869,6 +869,13 @@ pending capture when the field, scenario, Agent availability or next revision
 changes; the store validates it again. No submission or lifecycle transition
 is implied by that evidence event.
 
+Header-only bounds are not a page-reflow guarantee. Linux CI's wider system
+font pushed the mobile navigation beyond the viewport despite Windows checks
+passing against identical built assets. Keep the narrow Agent state accessible
+through the native switch and label, defer the optional short brand, and check
+both document and body widths in every perspective and Agent mode. Do not hide
+overflow to mask the missing navigation control.
+
 ## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
 
 Comparing parsed floating-point values alone accepted a judging draft just

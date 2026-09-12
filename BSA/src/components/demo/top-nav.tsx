@@ -96,7 +96,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
           <PerspectiveSwitch />
           <div className="flex items-center gap-1 rounded-md border bg-muted/50 px-1 py-1.5 sm:gap-2 sm:px-2">
             <TooltipProvider><Tooltip>
-              <TooltipTrigger asChild><span className="inline-flex"><Switch id="agent-flag" aria-describedby="agent-help" checked={agentEnabled} onCheckedChange={setAgentEnabled} className="data-[state=checked]:bg-teal-700" /></span></TooltipTrigger>
+              <TooltipTrigger asChild><span className="inline-flex"><Switch id="agent-flag" aria-label={`Agent: ${agentEnabled ? "On" : "Off"}`} aria-describedby="agent-help" checked={agentEnabled} onCheckedChange={setAgentEnabled} className="data-[state=checked]:bg-teal-700" /></span></TooltipTrigger>
               <TooltipContent className="max-w-64">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</TooltipContent>
             </Tooltip></TooltipProvider>
             <span id="agent-help" className="sr-only">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</span>
