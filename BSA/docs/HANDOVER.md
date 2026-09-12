@@ -24,14 +24,19 @@ an Owner actions for me line; never label this ALL DONE before live checks.
 
 ## Current completion pointer, 12 September 2026
 
-R #33, V #24 and final parity #38 are merged; main is
-`a031fc49f4f616efc3a3a33baa0510e6b82eb880`. [PROGRESS](PROGRESS.md) now
+R #33, V #24, parity #38, D #39, opacity repair #42, quarantine removal #40
+and scoped V #43 are merged; current main is
+`c687a9eab181b02f4fca0eb667e8ab8f94468620`. Current CI 34696637977 passed
+607 units and 1,054 all-blocking browsers, zero quarantine. V refreshed 64
+settled routes byte-identically; 43 other state images retain original
+provenance. Current comparable gzip is 203,721 Python-method bytes, informational.
+[PROGRESS](PROGRESS.md) now
 records final application evidence and Tasks 1-12 Done; Task 13 retains the
 hosted-release criterion under #37. [SCOPE](SCOPE.md) records 17 Done and
-hosting I In progress; D's final documentation delivery awaits coordinator
+hosting I In progress; D's scoped records refresh awaits coordinator
 PR merge. [MEMORY](MEMORY.md) and [BRANCHES](BRANCHES.md) describe current
-facts and preserved refs. No live URL is verified; timing follow-up #34
-remains open, while #35 is closed as not reproduced in final acceptance.
+facts and preserved refs. No live URL is verified; #34/#35/#41 are closed.
+The two owner actions above remain outstanding.
 The freeze, pending-transfer and stream statuses below are
 historical, not current instructions or acceptance totals.
 

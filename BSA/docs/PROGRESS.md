@@ -4,7 +4,48 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
-## Issue #34 timing follow-up: tag-removal proposal
+## Current acceptance refresh: 12 September 2026
+
+Main after #42, #40 and V #43 is
+`c687a9eab181b02f4fca0eb667e8ab8f94468620`; accepted application/test source is
+`82c18e49e7d1c765e5392b1bec5c028c8f89fd16`. #42 removes only the route
+opacity fade to repair intermediate-frame contrast and adds 32 frame cases.
+#40 restores three quarantined cases to blocking; #43 is documentation-only.
+
+[CI 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977)
+at exact head `f295d7f19363cd101af7401f0ba03188ee7d0b2b` passed check,
+**607 units in 22 files and 1,054 all-blocking Chromium tests in 15.1 minutes,
+zero quarantine**. Source/tests match the accepted application. The workflow's
+`--grep-invert @quarantine` command excludes no current tagged cases.
+#34 and #41 are closed following these repairs; #35 is closed as not reproduced,
+not as a newly proven axe defect. The earlier 1,019-plus-three run and tag-removal
+proposal below are historical, not the current gate or open follow-ups.
+
+V's [scoped route ledger](screens/route-opacity-parity/route-equivalence.json)
+completed `2026-09-12T14:05:50.955Z`: **64/64 settled route screenshots
+byte-identical, 32 Off/32 On**, with 64 fresh unrestricted axe reports,
+zero violations/page-console-CSP errors/overflow and 39 incomplete audit sets.
+These light/reduced-motion route captures do not replace normal-motion frame
+regressions or establish manual WCAG conformance. The original 107 PNGs and
+audit ledger retain source `898cda5`; **43 other stateful images were not rerun**.
+Do not relabel the original 107 audits as current-source captures or combine
+old and fresh counts into a new full-CI audit total.
+
+[Current build evidence](screens/route-opacity-parity/build-evidence.json):
+**203,721 bytes**, sum of all four independent resources using Python
+`gzip.compress(data, mtime=0)` at default level 9, comparable with the old
+203,723-byte record. Node level 9 gives a separately recorded **203,964 bytes**.
+Different compressor results are not interchangeable; all sizes are informational,
+with no budget. No code build/browser tests were rerun for this records refresh.
+
+Tasks **1-12 remain Done; Task 13 hosted release remains pending #37**.
+Scope I and parity row 31 are unchanged: no verified live URL or PR preview.
+The two owner actions in HANDOVER/DEPLOYMENT and MEMORY's permanent Blockers
+and status policy remain in force. Initial D documentation merged as #39;
+this scoped refresh awaits coordinator merge. The acceptance/transfer records
+below are preserved as history, not current pending work.
+
+## Historical issue #34 timing follow-up: tag-removal proposal
 
 Fresh main 58c3879 was built successfully with `npm run build`, exit 0.
 The exact existing tagged subset ran with:
@@ -20,7 +61,7 @@ are proposed for restoration to blocking status. No assertion, timeout, fixture,
 application code or workflow change. Full public CI on the proposed revision
 is pending; earlier accepted 1,019-plus-three counts remain historical evidence.
 
-## Final application acceptance: 12 September 2026
+## Historical initial application acceptance: 12 September 2026
 
 Main after R, V and final parity PR #38 is
 `a031fc49f4f616efc3a3a33baa0510e6b82eb880`.

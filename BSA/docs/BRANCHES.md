@@ -6,17 +6,26 @@ ms.date: 2026-09-12
 
 # Current integration
 
-`main` after R PR #33, V PR #24 and parity PR #38 is
+Current `main` after opacity repair #42, quarantine removal #40 and V #43 is
+`c687a9eab181b02f4fca0eb667e8ab8f94468620`. Accepted application/test source is
+`82c18e49e7d1c765e5392b1bec5c028c8f89fd16`, matching tested head
+`f295d7f19363cd101af7401f0ba03188ee7d0b2b` (CI 34696637977:
+607 units, 1,054 all-blocking browsers, zero quarantine). V #43 adds scoped
+64-route provenance and compression evidence, not runtime changes.
+
+Initial main after R PR #33, V PR #24 and parity PR #38 was
 `a031fc49f4f616efc3a3a33baa0510e6b82eb880`. V's merge is
 `be623ab507e871c27e0889e7db6e64a8595ad10b`. R's application merge is
 `898cda594d0dcb34376bddab7112edcddb172440`; its tested head is
 `6e424ac75c4980380c31f9e3aab23243a9a013d0` (CI 34689966621).
-V's documentation head `5660bbc` supplies the final 107 captures. These
-revisions have matching runtime source/configuration. See PROGRESS for exact
+V's documentation head `5660bbc` supplies the original 107 captures. Those
+initial revisions have matching runtime source/configuration, not the later
+opacity-repaired runtime. See PROGRESS for current scoped provenance, exact
 evidence and limitations; a documentation merge is not a new browser run.
 
 D delivers on `williamng18-final-acceptance-documentation`, rebased on main
-after V and parity. The coordinator serialises its PR merge; D does not self-merge.
+after V #43. Initial D #39 is merged; the coordinator serialises this scoped
+records refresh PR merge. D does not self-merge.
 The earlier generated D branch remains the pushed checkpoint, not an active
 acceptance branch. No empty checkpoint is claimed as a feature increment.
 
