@@ -4,7 +4,73 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
-## Account transfer checkpoint: authoritative current status
+## Final application acceptance: 12 September 2026
+
+Main after R, V and final parity PR #38 is
+`a031fc49f4f616efc3a3a33baa0510e6b82eb880`.
+R PR #33 integrated application acceptance at
+`898cda594d0dcb34376bddab7112edcddb172440`; V PR #24 delivered final
+documentation/captures from head `5660bbc` without runtime changes.
+V's merge is `be623ab507e871c27e0889e7db6e64a8595ad10b`; parity is also
+documentation-only.
+Transfer is cancelled; public ownership/reference approval and scanning/push
+protection remain unchanged. Protected branches and checkpoint tags are intact.
+
+* [x] Task 8: shared lifecycle and append-only history (`d9e06e1`; accepted `898cda5`)
+* [x] Task 9: claims/detail/actions and approved On reasons (`d9e06e1`, R #19/#29; accepted `898cda5`)
+* [x] Task 10: complete human-controlled round trip, Follow and Switch side (`d9e06e1`; accepted `898cda5`)
+* [x] Task 11: eight chapters/nine stops and full referral-cycle guide (`c95ff1d`; accepted `898cda5`, captured by V)
+* [x] Task 12: grouped one-row header, same-item links, focus and seven widths (`22ec345`, `c95ff1d`; accepted `898cda5`)
+* [ ] Task 13: application verification complete; actual hosted release remains pending #37
+
+Tasks: **12 Done, 1 In progress, 0 Not started**. Scope: **17 Done,
+1 In progress, 0 Not started**; scope I is hosting #37, J is this completed
+documentation deliverable. Documentation still requires coordinator PR merge.
+
+### Exact accepted evidence and limits
+
+[Public CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
+tested `6e424ac75c4980380c31f9e3aab23243a9a013d0`. Runtime source/configuration
+matches `898cda5` and `be623ab`; documentation changes do not imply a new code run.
+
+| Evidence | Actual result |
+| --- | --- |
+| `npm run check` | Passed typecheck, lint and production build |
+| `npm test` | 607 passed in 22 files |
+| Chromium, `--grep-invert @quarantine` | 1,019 blocking tests passed in 17.7 minutes |
+| Separate informational quarantine execution | 3 passed in 16.4 seconds; not added to the blocking count |
+| Final V manifest | 107 actual PNGs/audits, 53 Off and 54 On, captured at `2026-09-12T11:50:58.433Z` against application source `898cda594d0dcb34376bddab7112edcddb172440` |
+| V axe/overflow/browser-console-CSP results | Zero violations/errors across 107 audits; 51 audits have incomplete axe rules requiring human review |
+| Capture conditions | Root-path production with configured strict headers, 1440x1000, light, reduced motion; full-page images reviewed, hashes and width checked |
+| Independent gzip, all four emitted resources | 203,723 bytes; informational only, no size/performance budget |
+
+The manifest and individual audit files are in [screens/integrated](screens/integrated/);
+[build-evidence.json](screens/integrated/build-evidence.json) records each resource.
+Successful CI audit artifacts were not uploaded, so a deduplicated full-CI axe
+or CSP total (including an On/Off split) is unavailable. The 107 V audit counts
+are separate evidence, not inferred CI totals. Neither local strict-header
+testing nor zero axe violations establishes hosted behaviour or full manual
+WCAG conformance. Phase 1's 560 units/19 browsers/201,623 bytes are historical.
+
+### Explicit remaining work
+
+**No verified live URL or PR preview.** [Azure run 34692328300](https://github.com/WilliamNg18/BSA/actions/runs/34692328300)
+built main `be623ab` but failed the named missing
+`AZURE_STATIC_WEB_APPS_API_TOKEN` prerequisite. #37 owns token reset/repository
+secret and any resource setup, then actual deployment, home/deep links, headers,
+both modes and preview creation/closure. Owner commands are in DEPLOYMENT.md;
+no resource creation or intended subscription is inferred.
+
+#34 retains three quarantined pharmacy timing cases; their informational pass
+does not remove quarantine. #35 retains the transient local axe-timeout
+investigation. These are transparent timing follow-ups, not failed final
+blocking tests or new missing application features. [PARITY](PARITY.md), merged
+through #38, records 33 rows: 22 Preserved, 10 Changed with decision, zero
+Changed without decision, zero Missing and one Not yet verified. That is
+32/33 accepted, not all 33; row 31 is hosted acceptance #37. Historical totals
+below are not current acceptance.
+
+## Historical account transfer checkpoint
 
 **Current outcome:** transfer cancelled; repository public, owner WilliamNg18.
 Work is authorised to resume from HANDOVER. Checkpoint `b7e63ac` and all stream

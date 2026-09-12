@@ -19,9 +19,10 @@ Successful-run artifacts were not uploaded; no deduplicated CI axe/CSP
 count is inferred. V's [manifest](screens/integrated/manifest.json) records
 its own source-pinned 1440px captures and individual audit outputs.
 
-**Current totals: 16 Done, 2 In progress, 0 Not started, 18 rows.**
-I remains owner-run Azure deployment/verification (#37). J remains final V
-delivery followed by D's authoritative task/memory/branch closeout. The
+**Current totals: 17 Done, 1 In progress, 0 Not started, 18 rows.**
+I remains owner-run Azure deployment/verification (#37). J is delivered by V
+PR #24 (merged `be623ab`) and D's authoritative task/memory/branch closeout.
+D's documentation is subject to coordinator PR merge, not hosted acceptance. The
 historical checkpoint below is preserved, not a second current checklist.
 Done refers to the requested synthetic application and its named functional
 tests, not real clinical assurance, live services or full manual WCAG certification.
@@ -45,7 +46,7 @@ tests, not real clinical assurance, live services or full manual WCAG certificat
 | G Whole round trip/Follow/Switch side/both-side assertions | **Done**, `898cda5` | `lifecycle-ui.spec.ts`, `task13.spec.ts`: both modes, same ID at each transition, human-approved correction and final history. Two-minute story target/elapsedMs are informational, not performance gates |
 | H Header360-1920/controls/defaultOff/copy/motion/pain/accessibility | **Done**, `898cda5`, scoped automated acceptance | `tour.spec.ts`, `accessibility-final.spec.ts`, accessibility/control matrices: seven widths, keyboard/focus, default/Reset Off, reduced motion, no prohibited interface names. Copy/visual metrics informational; no manual WCAG certification claimed |
 | I SWA root/headers/previews/no budgets and actual hosting | **In progress**, owner #37; application/config on `898cda5` | Config/strict-header CI passed. No verified token/resource/live URL; use DEPLOYMENT.md and verify real home/deep links/headers. Three Free preview slots, not unlimited. Missing token does not block local acceptance |
-| J Documentation/memory/progress/story/screens/known issues | **In progress**, V PR #24 then D #17 | V final source-pinned capture index/manifest and current narrative; D must update authoritative MEMORY/PROGRESS/BRANCHES and tick only accepted tasks after V merge. Do not reuse historical103 as final107 evidence |
+| J Documentation/memory/progress/story/screens/known issues | **Done**, V PR #24 merged `be623ab`, D #17 documentation deliverable | V final 107 reviewed captures/audits (53 Off/54 On) from `898cda5`, current narrative and known issues; D MEMORY/PROGRESS/BRANCHES record Tasks 8-12 accepted and Task 13 hosted criterion pending #37. Historical 103 images are not final proof |
 
 Reference documents remain public by the owner's decision. Publication does not
 independently verify their figures. The agent gathers evidence/recommends, code
@@ -90,7 +91,7 @@ it has actually merged. No unfinished work is unowned.
 | I Hosting and gates | **In progress, paused**. Config `d9e06e1`, budgets removed `b23e478`, strict-header server `22ec345` | Config/build/unit contracts implemented. SWA resource/token/live URL unverified; GitHub replacement job refused before tests by billing/spending restriction. Free has three concurrent previews; triggers do not prove live deployment. |
 | J Documentation/memory/progress/screens/known issues | **In progress, paused**, V #16/#25 draft PR #24, D #17 | Main transfer records updated; V checkpoint has 103 original images and prepared 107-image harness, not executed on final code. Numeric audit 33/4/29/0. D readiness only; final task ticks/report pending R then V merges. |
 
-## Frozen owners
+## Frozen owners (historical checkpoint, not current delivery status)
 
 Full checkpoint SHAs and exact resumption commands are in HANDOVER. Short IDs
 here identify the same commits, not additional unpushed work.
