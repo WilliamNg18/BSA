@@ -1,0 +1,214 @@
+{
+  "sourceRevision": "da1ac03e943bc5e7138d637faea9fd98ae1f2e69",
+  "applicationSourceRevision": "898cda594d0dcb34376bddab7112edcddb172440",
+  "url": "http://localhost:4193/queue",
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.13.0"
+  },
+  "timestamp": "2026-09-12T11:49:20.198Z",
+  "violations": [],
+  "passes": [
+    {
+      "id": "aria-allowed-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-allowed-role",
+      "nodeCount": 20
+    },
+    {
+      "id": "aria-conditional-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-deprecated-role",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-dialog-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-hidden-body",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-hidden-focus",
+      "nodeCount": 24
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "nodeCount": 14
+    },
+    {
+      "id": "aria-required-attr",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-roles",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-valid-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "nodeCount": 3
+    },
+    {
+      "id": "button-name",
+      "nodeCount": 9
+    },
+    {
+      "id": "bypass",
+      "nodeCount": 1
+    },
+    {
+      "id": "color-contrast",
+      "nodeCount": 483
+    },
+    {
+      "id": "document-title",
+      "nodeCount": 1
+    },
+    {
+      "id": "duplicate-id-aria",
+      "nodeCount": 8
+    },
+    {
+      "id": "empty-heading",
+      "nodeCount": 1
+    },
+    {
+      "id": "heading-order",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-has-lang",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-lang-valid",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-one-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-unique",
+      "nodeCount": 6
+    },
+    {
+      "id": "meta-viewport-large",
+      "nodeCount": 1
+    },
+    {
+      "id": "meta-viewport",
+      "nodeCount": 1
+    },
+    {
+      "id": "nested-interactive",
+      "nodeCount": 9
+    },
+    {
+      "id": "page-has-heading-one",
+      "nodeCount": 1
+    },
+    {
+      "id": "region",
+      "nodeCount": 41
+    },
+    {
+      "id": "tabindex",
+      "nodeCount": 3
+    }
+  ],
+  "incomplete": [
+    {
+      "id": "aria-hidden-focus",
+      "nodeCount": 17
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "nodeCount": 1
+    },
+    {
+      "id": "color-contrast",
+      "nodeCount": 2
+    }
+  ],
+  "inapplicable": [
+    "accesskeys",
+    "area-alt",
+    "aria-braille-equivalent",
+    "aria-command-name",
+    "aria-input-field-name",
+    "aria-meter-name",
+    "aria-progressbar-name",
+    "aria-required-children",
+    "aria-required-parent",
+    "aria-tab-name",
+    "aria-text",
+    "aria-toggle-field-name",
+    "aria-tooltip-name",
+    "aria-treeitem-name",
+    "autocomplete-valid",
+    "blink",
+    "definition-list",
+    "dlitem",
+    "empty-table-header",
+    "form-field-multiple-labels",
+    "frame-focusable-content",
+    "frame-tested",
+    "frame-title-unique",
+    "frame-title",
+    "html-xml-lang-mismatch",
+    "image-alt",
+    "image-redundant-alt",
+    "input-button-name",
+    "input-image-alt",
+    "label-title-only",
+    "label",
+    "landmark-banner-is-top-level",
+    "landmark-contentinfo-is-top-level",
+    "landmark-no-duplicate-banner",
+    "landmark-no-duplicate-contentinfo",
+    "link-in-text-block",
+    "link-name",
+    "list",
+    "listitem",
+    "marquee",
+    "meta-refresh",
+    "object-alt",
+    "presentation-role-conflict",
+    "role-img-alt",
+    "scope-attr-valid",
+    "scrollable-region-focusable",
+    "select-name",
+    "server-side-image-map",
+    "skip-link",
+    "summary-name",
+    "svg-img-alt",
+    "table-duplicate-name",
+    "td-headers-attr",
+    "th-has-data-cells",
+    "valid-lang",
+    "video-caption",
+    "no-autoplay-audio"
+  ]
+}

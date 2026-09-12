@@ -637,3 +637,21 @@ The supplied PDF asks whether assembly effort is material; the research pack's
 stronger more-than-judging claim remains an assumption. Capacity, reconstruction
 and pharmacy rework are outcomes to test, not measured benefits. Keep that
 distinction when using the now explicitly public references in final narration.
+
+## 2026-09-12: Whole-matrix completion must follow both mode loops
+
+The final capture attempt stopped after 32 fresh Off route images because its
+inventory assertion was placed before claims/actions and the On loop. Move the
+unchanged 107-image assertion after both complete mode loops. That is a harness
+control-flow fix, not a product defect or a relaxed count.
+
+The per-image manifest preserved the 32 new-source successes, allowing a
+same-HEAD/same-built-assets continuation without importing old checkpoint
+images. Record the interruption explicitly; a later complete manifest does
+not make the first attempt uninterrupted.
+
+Every audit file represents one retained capture, not an attachment copy or an
+invented aggregate of successful CI reports. Fifty-three Off plus fifty-four
+On files account for the July-only extra image. The accepted CI uploaded no
+successful-run artifacts, so its passing browser total and this independently
+counted visual audit set must stay separate.

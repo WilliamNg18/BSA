@@ -1,0 +1,31 @@
+{
+  "applicationSourceRevision": "898cda594d0dcb34376bddab7112edcddb172440",
+  "method": "Sum of independently gzipped resources, gzip.compress(file,mtime=0), all emitted dist files; informational only, no threshold",
+  "files": [
+    {
+      "file": "assets/index-BhGON1bo.js",
+      "bytes": 638972,
+      "gzipBytes": 189972,
+      "sha256": "d3d2174076a20ebfba1e8e59e3d4b09d473b5e8301de1ddd85ca8283bc502000"
+    },
+    {
+      "file": "assets/index-L7EeoDzm.css",
+      "bytes": 77349,
+      "gzipBytes": 12909,
+      "sha256": "9fefcfaf56f2c14a4cc096b3a65306b0d6610187cd405b183ba965b8ed9d7772"
+    },
+    {
+      "file": "index.html",
+      "bytes": 736,
+      "gzipBytes": 410,
+      "sha256": "7278e9d67bde036bc8eff22075f816c13793aecaecf8f4d8420e1be638714dca"
+    },
+    {
+      "file": "staticwebapp.config.json",
+      "bytes": 784,
+      "gzipBytes": 432,
+      "sha256": "6f2de3a33179e215ce2e4dc436be9c906939eec2b2a4870f5173a9fb49691c79"
+    }
+  ],
+  "gzipTotalBytes": 203723
+}

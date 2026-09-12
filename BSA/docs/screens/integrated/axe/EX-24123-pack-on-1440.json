@@ -1,0 +1,251 @@
+{
+  "sourceRevision": "da1ac03e943bc5e7138d637faea9fd98ae1f2e69",
+  "applicationSourceRevision": "898cda594d0dcb34376bddab7112edcddb172440",
+  "url": "http://localhost:4193/case/EX-24123",
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.13.0"
+  },
+  "timestamp": "2026-09-12T11:45:04.083Z",
+  "violations": [],
+  "passes": [
+    {
+      "id": "aria-allowed-attr",
+      "nodeCount": 30
+    },
+    {
+      "id": "aria-allowed-role",
+      "nodeCount": 10
+    },
+    {
+      "id": "aria-conditional-attr",
+      "nodeCount": 30
+    },
+    {
+      "id": "aria-deprecated-role",
+      "nodeCount": 10
+    },
+    {
+      "id": "aria-hidden-body",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-hidden-focus",
+      "nodeCount": 33
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "nodeCount": 30
+    },
+    {
+      "id": "aria-required-attr",
+      "nodeCount": 10
+    },
+    {
+      "id": "aria-roles",
+      "nodeCount": 10
+    },
+    {
+      "id": "aria-tooltip-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "nodeCount": 30
+    },
+    {
+      "id": "aria-valid-attr",
+      "nodeCount": 30
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "nodeCount": 5
+    },
+    {
+      "id": "button-name",
+      "nodeCount": 16
+    },
+    {
+      "id": "bypass",
+      "nodeCount": 1
+    },
+    {
+      "id": "color-contrast",
+      "nodeCount": 123
+    },
+    {
+      "id": "definition-list",
+      "nodeCount": 1
+    },
+    {
+      "id": "dlitem",
+      "nodeCount": 16
+    },
+    {
+      "id": "document-title",
+      "nodeCount": 1
+    },
+    {
+      "id": "duplicate-id-aria",
+      "nodeCount": 10
+    },
+    {
+      "id": "empty-heading",
+      "nodeCount": 11
+    },
+    {
+      "id": "form-field-multiple-labels",
+      "nodeCount": 7
+    },
+    {
+      "id": "heading-order",
+      "nodeCount": 11
+    },
+    {
+      "id": "html-has-lang",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-lang-valid",
+      "nodeCount": 1
+    },
+    {
+      "id": "label-title-only",
+      "nodeCount": 7
+    },
+    {
+      "id": "label",
+      "nodeCount": 7
+    },
+    {
+      "id": "landmark-banner-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-contentinfo-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-banner",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-contentinfo",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-one-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-unique",
+      "nodeCount": 10
+    },
+    {
+      "id": "link-name",
+      "nodeCount": 10
+    },
+    {
+      "id": "list",
+      "nodeCount": 5
+    },
+    {
+      "id": "listitem",
+      "nodeCount": 16
+    },
+    {
+      "id": "meta-viewport-large",
+      "nodeCount": 1
+    },
+    {
+      "id": "meta-viewport",
+      "nodeCount": 1
+    },
+    {
+      "id": "nested-interactive",
+      "nodeCount": 24
+    },
+    {
+      "id": "page-has-heading-one",
+      "nodeCount": 1
+    },
+    {
+      "id": "region",
+      "nodeCount": 347
+    },
+    {
+      "id": "skip-link",
+      "nodeCount": 1
+    },
+    {
+      "id": "summary-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "svg-img-alt",
+      "nodeCount": 1
+    },
+    {
+      "id": "tabindex",
+      "nodeCount": 1
+    }
+  ],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "nodeCount": 15
+    }
+  ],
+  "inapplicable": [
+    "accesskeys",
+    "area-alt",
+    "aria-braille-equivalent",
+    "aria-command-name",
+    "aria-dialog-name",
+    "aria-input-field-name",
+    "aria-meter-name",
+    "aria-progressbar-name",
+    "aria-required-children",
+    "aria-required-parent",
+    "aria-tab-name",
+    "aria-text",
+    "aria-toggle-field-name",
+    "aria-treeitem-name",
+    "autocomplete-valid",
+    "blink",
+    "empty-table-header",
+    "frame-focusable-content",
+    "frame-tested",
+    "frame-title-unique",
+    "frame-title",
+    "html-xml-lang-mismatch",
+    "image-alt",
+    "image-redundant-alt",
+    "input-button-name",
+    "input-image-alt",
+    "link-in-text-block",
+    "marquee",
+    "meta-refresh",
+    "object-alt",
+    "presentation-role-conflict",
+    "role-img-alt",
+    "scope-attr-valid",
+    "scrollable-region-focusable",
+    "select-name",
+    "server-side-image-map",
+    "table-duplicate-name",
+    "td-headers-attr",
+    "th-has-data-cells",
+    "valid-lang",
+    "video-caption",
+    "no-autoplay-audio"
+  ]
+}

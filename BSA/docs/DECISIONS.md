@@ -579,3 +579,38 @@ Do not edit the parent-owned root README or create new product features.
 R's corrected public Actions run must actually pass and merge before V's
 expanded 107-image refresh. No new capture, source change or early rebase is
 part of this narration preparation; the frozen evidence remains historical.
+
+## 2026-09-12: Reconcile V after accepted public integration
+
+The coordinator released V after R merged as `898cda5`. Public CI
+34689966621 passed check, 607 units, 1,019 blocking browser cases and three
+separate informational quarantine cases. No successful-run audit artifacts
+were uploaded; keep test counts distinct from deduplicated report counts.
+
+Rebase V onto that main and retain public root README/security, HANDOVER,
+MEMORY, PROGRESS and SCOPE. Superseded V-only historical SCOPE patches are
+already represented by main's handover; retain the main snapshot and append
+current acceptance rather than discarding public resumption. Verify main's
+DECISIONS and LEARNINGS remain complete prefixes before adding V history.
+Runtime, tests, dependencies and production configuration remain unchanged.
+
+Regenerate the whole expanded matrix with the existing strict-header server
+on granted port 4193 and one sequential capture context. Preserve initial
+103 images through checkpoint `b3acc13`, not a mixed-source resume. Individual
+audit JSONs belong with the new manifest; independent gzip of every emitted
+resource is informational only. Owner-hosted verification remains issue #37.
+
+## 2026-09-12: V final visual acceptance
+
+Accept the completed 107-image source-898cda5 matrix: 53 Off and 54 On,
+107 individual unrestricted axe JSON outputs, zero violations, page/console/CSP
+errors or horizontal-overflow captures. Completion is 2026-09-12T11:50:58.433Z;
+the same-source harness continuation is explicitly recorded. All PNG hashes,
+1440px widths and full-height visual slices were reviewed.
+
+Retain incomplete audit rules (51 audits) rather than claiming manual WCAG
+conformance. Focus-triggered switch tooltips are ordinary UI state and remain
+visible on some routes; no content is pixel-masked. Build evidence sums all four
+independently gzipped emitted resources to 203,723 bytes, information only.
+Current SCOPE has 16 accepted implementation rows, with owner hosting #37 and
+VD final documentation closeout remaining In progress. D owns final task ticks.

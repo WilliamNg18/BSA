@@ -1,7 +1,7 @@
 ---
 title: Functional specification for Prescription Exception Case Builder
 description: Current routes, synthetic evidence, shared lifecycle and human-controlled round trip.
-ms.date: 2026-09-11
+ms.date: 2026-09-12
 ---
 
 ## 1. Purpose and authority
@@ -14,8 +14,9 @@ pricing or operational service.
 > calculates. A human decides. The prototype does not calculate or approve payments.
 
 The integrated application implements the lifecycle, claims/detail, cross-side
-round trip and navigation. Implementation is distinct from final acceptance;
-[PROGRESS.md](PROGRESS.md) owns the remaining R/S/V/D gates.
+round trip, eight-chapter tour and navigation. Source `898cda5` has passed
+integrated functional acceptance; [PROGRESS.md](PROGRESS.md) owns final task
+ticks, and owner-run hosted verification remains separate.
 
 ### Reference-grounded aim and outcome boundary
 
@@ -60,21 +61,22 @@ Architecture), plus Agent and Reset. Narrow layouts use Open navigation.
 The shield links home. The synthetic banner and governing principle remain
 available on every route.
 
-### Seven chapters, eight stops
+### Eight chapters, nine stops
 
 | Chapter | Route | Current content |
 | --- | --- | --- |
-| 1: Set the scene | `/#scene` | Qualified public figures, shared scenario estimates and existing process |
-| 2: A month of work | `/#month` | Editable calculator with Today/assisted comparison |
-| 3: The pipeline | `/#cases` | Six operational stages, evidence assembly and canonical A-D examples |
-| 4: One agent, two places | `/#two-places` | Pharmacy/NHSBSA proposal and local round-trip links |
-| 4: Pharmacy example | `/pharmacy` | Optional scripted precheck and explicit submission |
-| 5: The queue | `/queue` | Virtual month, pinned cases, manual work and visible-row sweep |
-| 6: What the pharmacy sees | `/pharmacy/claims` | Pharmacy claims, states, detail and shared history |
-| 7: The first test | `/#close` | Referral-reason discovery, assumptions and questions |
+| 1: The scene | `/#scene` | Qualified public figures, shared estimates with scene-only On count-in and existing process |
+| 2: A month in numbers | `/#month` | Editable calculator with Today/assisted comparison |
+| 3: What exists today and what changes | `/#pipeline` | Six operational stages and phase-related evidence-assembly comparison |
+| 4: Four cases | `/#cases` | A-D pain/results with Open case and Follow actions in both modes |
+| 5: One agent, two places | `/#two-places` | Longer manual/shorter assisted preparation loops, pharmacy referral experience and same-item links |
+| 5: Pharmacy example | `/pharmacy` | Optional scripted precheck and explicit submission |
+| 6: The queue | `/queue` | Virtual month, manual work, visible-row sweep and read-only Compare |
+| 7: What the pharmacy sees | `/pharmacy/claims` | Full referral-cycle guide, actual recorded state, claim detail and history |
+| 8: Where it ends | `/#close` | Referral-reason discovery, assumptions and questions |
 
-Next and Back follow this exact sequence. The chapter menu has seven entries;
-Pharmacy example is a substop, not an eighth chapter. Only one Overview chapter
+Next and Back follow this exact sequence. The chapter menu has eight entries;
+Pharmacy example is a substop, not a ninth chapter. Only one Overview chapter
 renders at a time. Bare `/` and unknown home fragments show scene.
 Off-tour routes show Start. Dismiss tour and Restore tour are session choices.
 Alt+ArrowLeft/Right navigate outside editable fields, menus and dialogs.
@@ -83,7 +85,7 @@ Alt+ArrowLeft/Right navigate outside editable fields, menus and dialogs.
 
 | Route | Screen |
 | --- | --- |
-| `/` and the five fragments above | Overview |
+| `/` and the six fragments above | Overview |
 | `/pharmacy` | Pharmacy check |
 | `/pharmacy/claims` | Claims list |
 | `/pharmacy/claims?caseId=:id` | Selected claim detail; legacy `case` query also accepted |
@@ -137,6 +139,11 @@ England (reporting year unspecified) and monthly rulebook publication are
 documentary context, not independently verified figures or a measured change rate.
 One Sources line sits on chapter 1; the documentary audit remains outside the
 client. No public-document retrieval occurs at runtime.
+
+On scene estimates count in numerically over the presentation interval while
+accessible names retain exact final values. Off and reduced motion are immediate.
+Input/toggle/route changes cancel stale frames. The three public cards do not
+become animated invented facts, and count-in is not work or model latency.
 
 ## 5. Canonical synthetic cases
 
@@ -257,6 +264,10 @@ snapshot. Reset/reload restores seeds; this is not durable audit storage.
 Unreadable form (D), an editable endorsement and Restore. Off performs no
 advisory check; On runs a cancellable two-second scripted check. Agent available
 models unavailable assistance without blocking **Continue with submission**.
+Intentional Off is labelled **Not checked: manual submission**; On with unavailable
+assistance is **Agent unavailable: manual submission**. Only an actual failed
+scripted interpretation is **Agent unable to determine**. Manual work is not
+presented as a broken service.
 Edits invalidate old checks. B's date is applied only by explicit action.
 D stops at capture; later steps are NOT RUN even if typed text appears complete.
 
@@ -268,17 +279,31 @@ lifecycle progress or a payment guarantee.
 matching claimed amounts, not payments. Open claim selects detail by shared ID.
 Read-only states do not offer correction/confirmation fields.
 
+The **Referral cycle guide** explains Referred back, Corrected, Resubmitted,
+Re-checked and Paid (synthetic only), with distinct Today/With agent preparation
+copy. **Recorded claim state** shows the actual selected lifecycle alongside
+links to **Open this pharmacy claim** and **Open this operator case**. Opening
+the guide changes no stage. A local unsent correction is not a lifecycle state.
+
 Referred-back claims offer **Corrected endorsement** and **Resubmit claim**.
 On adds **Re-check endorsement**; a permitted date correction requires the
 operator-approved draft. Applying it invalidates the prior check, so re-check
 again before showing Ready to resubmit. This advisory status never blocks
 resubmission or guarantees payment. Off allows typed manual correction.
+Its pain marker identifies the absence of an advisory sufficiency check as a
+synthetic assumption, not evidence about real pharmacy checks. On resolves the
+marker only when the current text is Ready and an approved instruction exists;
+editing invalidates readiness. Human re-check remains required.
 
 Information-requested claims show both conflicting values and **Pharmacy
 confirmation** / **Send confirmation**. Empty confirmation is rejected.
 Confirmation appends evidence and requires human re-check; it does not select
 a winning quantity. On pharmacy-facing draft instructions must be explicitly
 operator-approved and labelled as such.
+Raw human reasons remain visible to NHSBSA and in the Off pharmacy comparison.
+Pharmacy On response and history expose only explicitly approved drafts,
+labelled **Operator-approved note**; toggling does not approve a missing draft
+or change stored history.
 
 **Demonstration replay** / **Submit another demonstration attempt** explicitly
 appends a new revision for a seeded or disposed item. Prior attempts remain.
@@ -297,6 +322,12 @@ The day projection is a single-operator capacity model, not the monthly
 calculator's fixed-cohort judging comparison. Built and abstained items share
 one elapsed-time allowance; pharmacy-caught and code-cleared items add no human
 judging time there. Synthetic assembly latency is not operator labour.
+
+**Compare** in Queue controls opens the inline **Today versus With agent**
+region using the current scenario and day clock. It does not toggle assistance,
+run a sweep or write a record. **Close comparison** or Escape returns focus to
+Compare. Reset/input revision closes the comparison; invalid inputs disable it.
+**Jump to 17:00** reveals the end-of-day projection, not work actually performed.
 
 Today on a metadata-only item opens a labelled manual-work example with seven
 assumed tasks and judging duration. It must remain usable and honest, not a
@@ -337,12 +368,22 @@ Azure Static Web Apps Free at root `/` is the only target. Root
 `staticwebapp.config.json` is emitted to `BSA/dist`; SPA deep links and security
 headers belong to that host. No intended subscription or token is configured
 and no live URL is claimed. See [DEPLOYMENT.md](DEPLOYMENT.md).
+Owner token/resource setup and actual hosted verification are tracked in
+[#37](https://github.com/WilliamNg18/BSA/issues/37), separate from local acceptance.
 
 Blocking: typecheck, lint, build, Vitest, production crash/dead-control browser
 checks and zero-violation axe. There are no size or performance budgets.
 CI gzip reporting, prose counts, Lighthouse and screenshot differences are
 informational. Functional defects remain blocking even when discovered during
 an informational visual review.
+
+Integrated source `898cda594d0dcb34376bddab7112edcddb172440` corresponds to the
+accepted R head `6e424ac75c4980380c31f9e3aab23243a9a013d0`:
+[CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
+passed check, 607 units in 22 files, 1,019 blocking Chromium tests and three
+separate informational quarantine cases. Successful-run audit artifacts were
+not uploaded; do not turn that test result into an invented deduplicated axe
+report count. The screenshot manifest records a separate set of actual audits.
 
 [Current captures](screens/integrated/README.md) are fresh root-path production
 images at 1440px in both Agent states. They are not copied historical captures.

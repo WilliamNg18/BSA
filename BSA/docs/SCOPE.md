@@ -1,10 +1,59 @@
 ---
-title: Account-transfer scope checkpoint
-description: Current implementation and acceptance status, frozen before repository transfer.
+title: Integrated scope acceptance and remaining owner work
+description: Eighteen requested rows with accepted application proof and explicit hosting/documentation limits.
 ms.date: 2026-09-12
 ---
 
 # Scope register
+
+## Current acceptance, 12 September 2026
+
+Application main `898cda594d0dcb34376bddab7112edcddb172440` contains all
+S/T/helper/Scene/Queue/R implementation. Exact R head
+`6e424ac75c4980380c31f9e3aab23243a9a013d0` passed
+[public CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621):
+check, 607 units in 22 files, 1,019 blocking Chromium tests (17.7 minutes) and
+three separately executed informational quarantine cases (16.4 seconds).
+The 1,022-test inventory is now execution, not merely enumeration.
+Successful-run artifacts were not uploaded; no deduplicated CI axe/CSP
+count is inferred. V's [manifest](screens/integrated/manifest.json) records
+its own source-pinned 1440px captures and individual audit outputs.
+
+**Current totals: 16 Done, 2 In progress, 0 Not started, 18 rows.**
+I remains owner-run Azure deployment/verification (#37). J remains final V
+delivery followed by D's authoritative task/memory/branch closeout. The
+historical checkpoint below is preserved, not a second current checklist.
+Done refers to the requested synthetic application and its named functional
+tests, not real clinical assurance, live services or full manual WCAG certification.
+
+| Item | Current status / source or owner | Proving tests in accepted CI, or precise remaining proof |
+| --- | --- | --- |
+| A1 Scene: three attributed figures, On count-in, one Sources | **Done**, `898cda5`, Scene #31 merged | `scene-count-in.spec.ts`, `baseline.test.ts`, `tour.test.ts`: intermediate/final values, Off/reduced motion, stable accessible labels, three qualified cards and one footer |
+| A2 Month: seven steps, fixed judging, three shares, Sankey, shared scene | **Done**, `898cda5` | `baseline.test.ts`, `calculator.spec.ts`: conserved cohorts, fixed V*j, defined denominators, editable inputs/invalid states and shared outputs |
+| A3 Separate six-stage pipeline with phase-related pain | **Done**, `898cda5`, T/R integration | `pipeline.spec.ts`: all six stages, phase markers, zero/all-abstained cohorts; kernel assertions stay on `/#pipeline`, D cards separately checked on `/#cases` |
+| A4 Four cases: Off pain, On results, both actions | **Done**, `898cda5` | `tour-cycle.spec.ts`, `tour.spec.ts`, `agent.test.ts`: separate chapter, A-D actions and fixed sufficient/referral/conflict/abstention outcomes |
+| A5 Two places and pharmacy referral experience | **Done**, `898cda5` | `tour-cycle.spec.ts`: seven/five preparation steps and eight/six referral loops, qualified shorter preparation, manual D fallback and real same-case actions |
+| A6 Queue chapter | **Done**, `898cda5` | `tour-cycle.spec.ts` exact eight-chapter/nine-stop Next/Back sequence; `queue.spec.ts` scrolling, segments, sweep/day controls |
+| A7 Whole referral/correction/resubmission/recheck/paid cycle | **Done**, `898cda5` | `tour-cycle.spec.ts`, `task13.spec.ts`, `lifecycle-ui.spec.ts`: explanatory guide distinct from recorded state, actual Off/On human-controlled cycle, synthetic pricing release |
+| A8 Where it ends | **Done**, `898cda5` | `tour.test.ts`, `tour-cycle.spec.ts`: chapter-eight order/content, discovery/assumptions, keyboard navigation and focus |
+| Rail: cross-page Next/Back, dismiss/restore | **Done**, `898cda5` | `tour.spec.ts`, `tour-cycle.spec.ts` and S keyboard/CSP checks: exact routes, guarded shortcuts, heading/main/restore focus and reduced motion |
+| B Pharmacy split/check/gap/correction/receipt/three scenarios | **Done**, `898cda5` | `pharmacy.spec.ts`, `pharmacy.test.ts`, `assistance.spec.ts`: healthy unchecked Off, unavailable versus actual unable, non-blocking submission, A/B/D and immutable shared receipts |
+| C Claims states/actions/history/manual pain/approved reasons | **Done**, `898cda5`, R #19/#29 merged | `pharmacy-response.spec.ts`, claims comparison tests, `lifecycle-ui.spec.ts`: approved-only On response/history, Off raw reasons, edit invalidation, explicit correction, Ready and unchanged history |
+| D Queue virtual month/counter/sweep/day/Compare/local toggle | **Done**, `898cda5` | `queue.spec.ts`, `queue-compare.spec.ts`, `queue.test.ts`: bounded virtualisation, logical position, local toggle, 17:00 summary, inline Compare focus and no domain writes |
+| E Trace/pack/record Off/On and July replay | **Done**, `898cda5` | `case-presentation.spec.ts`, `controls.spec.ts`, `gate-failure.spec.ts`: manual slots, assembly/replay controls, gate withholding, human records, original B July Sufficient |
+| F Seven-state lifecycle/labels/actors/five pharmacies/six cases/Reset | **Done**, `898cda5` | `lifecycle-store.test.ts`, revision/bridge tests and `agent.test.ts`: immutable history, agent transition rejection, exact seeds/labels and Reset |
+| G Whole round trip/Follow/Switch side/both-side assertions | **Done**, `898cda5` | `lifecycle-ui.spec.ts`, `task13.spec.ts`: both modes, same ID at each transition, human-approved correction and final history. Two-minute story target/elapsedMs are informational, not performance gates |
+| H Header360-1920/controls/defaultOff/copy/motion/pain/accessibility | **Done**, `898cda5`, scoped automated acceptance | `tour.spec.ts`, `accessibility-final.spec.ts`, accessibility/control matrices: seven widths, keyboard/focus, default/Reset Off, reduced motion, no prohibited interface names. Copy/visual metrics informational; no manual WCAG certification claimed |
+| I SWA root/headers/previews/no budgets and actual hosting | **In progress**, owner #37; application/config on `898cda5` | Config/strict-header CI passed. No verified token/resource/live URL; use DEPLOYMENT.md and verify real home/deep links/headers. Three Free preview slots, not unlimited. Missing token does not block local acceptance |
+| J Documentation/memory/progress/story/screens/known issues | **In progress**, V PR #24 then D #17 | V final source-pinned capture index/manifest and current narrative; D must update authoritative MEMORY/PROGRESS/BRANCHES and tick only accepted tasks after V merge. Do not reuse historical103 as final107 evidence |
+
+Reference documents remain public by the owner's decision. Publication does not
+independently verify their figures. The agent gathers evidence/recommends, code
+validates/calculates and a human decides; no payment is calculated or approved.
+Original failures, retries, interrupted runs and the immutable nine checkpoint
+tags remain evidence. The owner cancelled transfer; current work is authorised.
+
+## Historical transfer snapshot, superseded by current acceptance above
 
 **Resumption authorised:** transfer cancelled, repository public and ownership
 remains WilliamNg18. The checkpoint record is preserved; its paused status is

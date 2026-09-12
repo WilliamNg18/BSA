@@ -50,16 +50,16 @@ observe actual work and agree accuracy/stop criteria before assisted use.
 
 | Route | Screen |
 | --- | --- |
-| `/#scene`, `/#month`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: context, calculator, pipeline, two places and first test |
+| `/#scene`, `/#month`, `/#pipeline`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: context, calculator, separate pipeline/Four cases, two places and closing discovery |
 | `/pharmacy` | Manual submission or optional scripted precheck; never blocks submission |
-| `/pharmacy/claims` | Pharmacy/state filters, claimed totals, expandable claim detail and shared history |
+| `/pharmacy/claims` | Full referral-cycle guide, pharmacy/state filters, claimed totals, detail and shared history |
 | `/pharmacy/claims?caseId=EX-24112` | Same-item pharmacy link, correction and resubmission |
-| `/queue` | Pinned examples, bounded virtual month, visible-row sweep and shared live-session queue |
+| `/queue` | Pinned examples, virtual month, visible-row sweep, shared session queue and read-only Compare |
 | `/case/:id`, `/case/:id/trace`, `/case/:id/record` | Evidence pack, observable trace, human record and counterfactual rule replay |
 | `/evaluation`, `/boundary`, `/assumptions`, `/architecture` | Reflective pages |
 
-Seven tour chapters have eight stops: Pharmacy check is chapter 4's substop;
-Pharmacy claims is chapter 6. Header navigation groups Overview, Operations and
+Eight tour chapters have nine stops: Pharmacy check is chapter 5's substop;
+Pharmacy claims is chapter 7. Header navigation groups Overview, Operations and
 How it works (the queue menu item is **NHSBSA queue**). Agent defaults **Off**; confirmed Reset restores Off and seeded
 session data. Follow/Switch side links keep the same item. Presenter mode,
 Discussion mode and `/notes` are removed; use the [demo script](docs/demo-script.md).
@@ -85,8 +85,15 @@ npm run check
 npm run preview -- --host localhost --port 4193 --strictPort
 ```
 
-Open `http://localhost:4193/`. Preview serves built files, not Azure response
-headers. In-session navigation works after initial loading without a runtime
+Open `http://localhost:4193/`. Vite preview serves built files but does not apply
+the emitted security headers. For header-enforced rehearsal, stop preview and run:
+
+```powershell
+$env:PLAYWRIGHT_PORT = "4193"
+node scripts\serve-production.mjs
+```
+
+In-session navigation works after initial loading without a runtime
 service; offline reload is not guaranteed.
 
 ## Deployment and gates
@@ -110,15 +117,20 @@ Informational reporting does not excuse a functional or accessibility defect.
 separates genuine limitations from historical evidence.
 [Current screenshots](docs/screens/integrated/README.md) include the exact
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
-[Requested scope](docs/SCOPE.md) tracks the newer eight-chapter request and its
-active implementation owners separately from the current seven-chapter build.
+[Requested scope](docs/SCOPE.md) tracks the eight-chapter implementation and
+the remaining documentation and hosted-verification responsibilities.
 [AGENTS](AGENTS.md) governs contributions.
 
 The owner cancelled the proposed account transfer and authorised public
 repository resumption on 12 September 2026. Reference material remains public
 by that decision; publication is not independent validation of its claims.
-The initial screenshots/checkpoint are preserved. Final integrated acceptance
-and the expanded 107-image refresh still await R's verified merge.
+The initial screenshots/checkpoint are preserved in Git history. Integrated
+source `898cda5` passed check, 607 units, 1,019 blocking browser tests and three
+separately run informational quarantine cases in
+[Actions run 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621).
+Successful-run audit artifacts were not uploaded; no new deduplicated CI axe
+count is claimed. The [capture index](docs/screens/integrated/README.md) records
+the separate final visual evidence.
 
 No real prescriptions, patients, pharmacies, authentic tariff text, live model,
 capture integration, durable audit store, real operational queue or payment

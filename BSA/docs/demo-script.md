@@ -1,7 +1,7 @@
 ---
 title: Demo script and discussion guide
-description: Exact-click seven-chapter story and a complete human-controlled pharmacy round trip.
-ms.date: 2026-09-11
+description: Exact-click eight-chapter story and a complete human-controlled pharmacy round trip.
+ms.date: 2026-09-12
 ---
 
 ## Prepare the demonstration
@@ -11,7 +11,8 @@ Use the root-path production build, not the development server:
 ```powershell
 Set-Location BSA
 npm run check
-npm run preview -- --host localhost --port 4193 --strictPort
+$env:PLAYWRIGHT_PORT = "4193"
+node scripts\serve-production.mjs
 ```
 
 Open `http://localhost:4193/` at 1440px. Keep this guide beside the application.
@@ -60,24 +61,25 @@ Reset. Under Operations are Pharmacy check, Pharmacy claims and NHSBSA
 queue. Under How it works are Evaluation, Boundary, Assumptions and Architecture.
 At narrow widths use **Open navigation**.
 
-## Tour: seven chapters, eight stops
+## Tour: eight chapters, nine stops
 
 Use the rail's **Next** and **Back**, not old presenter beats. The chapter
-selector has seven entries. Pharmacy check is chapter 4's additional stop.
+selector has eight entries. Pharmacy check is chapter 5's additional stop.
 Alt+ArrowRight/Left also works outside editable fields and menus.
 
 | Stop and exact action | What to show and say | Toggle moment |
 | --- | --- | --- |
 | Open `/#scene` | Three attributed figures and existing process. Approximately 85,000 monthly referrals is a subset, not all exceptions. Monthly publication does not prove monthly rule changes. Expand Figure qualification to show the unverified-source caveats. | Stay Off; attribution does not depend on assistance. |
-| Click Next to `/#month` | A month of work. Expand assumptions and change an input; Today represents competent manual work, not a broken service. Gathering and judging durations are assumptions, not measured savings. | Switch On to reveal the assisted comparison, then Off to show unchanged inputs and manual baseline. |
-| Click Next to `/#cases` | The pipeline's six stages precede A-D evidence examples. Existing scanning, capture and pricing remain existing capabilities. | Start Off, then On. Wait for presentation to finish; B needs a date, C retains 56/84, D abstains. |
+| Click Next to `/#month` | A month in numbers. Expand assumptions and change an input; Today represents competent manual work, not a broken service. Gathering and judging durations are assumptions, not measured savings. | Switch On to reveal the assisted comparison, then Off to show unchanged inputs and manual baseline. |
+| Click Next to `/#pipeline` | What exists today and what changes. Show all six stages; existing scanning, capture and pricing remain existing capabilities. | Start Off, then On. Wait for the phase-related evidence preparation; the animation records no decision. |
+| Click Next to `/#cases` | Four cases has its own chapter. Show Open case and Follow this item on A-D. | Compare Off pain with On results: A sufficient, B needs a date, C retains 56/84, D abstains. |
 | Click Next to `/#two-places` | One agent, two places. Local shared history exists; a shared operational service remains proposed. Follow the same ID rather than imagining two unrelated systems. | Compare On/Off; neither changes a case lifecycle. Finish Off. |
 | Click Next to `/pharmacy` | Information missing is the B example. Manual endorsement and Continue with submission remain usable without advice. | Keep Off here; the live round trip below introduces On at a specific human review. |
-| Click Next to `/queue` | Pinned cases, manual evidence work and a bounded synthetic virtual month. Today on a metadata-only row opens manual tasks, not a fabricated case. Close it before continuing. | On enables Run agent on visible rows; Step sweep/Cancel sweep affect projection only. Return Off. |
-| Click Next to `/pharmacy/claims` | What the pharmacy sees. Change Pharmacy (synthetic) and Claim state; totals are matching claimed amounts, not payments. Open a claim and expand History and attempts. | Compare Off/On; pharmacy lifecycle labels and existing history stay the same. |
-| Click Next to `/#close` | The first test. Request two years of item-level referral reasons, test concentration, then proceed, reshape or stop. Open assumptions and discovery questions as needed. | Either state; do not present proposals as validated operational facts. |
+| Click Next to `/queue` | Pinned cases and a bounded virtual month. Click Jump to 17:00, then Compare in Queue controls; show Today versus With agent and Close comparison. Today on a model row opens manual tasks. | On enables Run agent on visible rows; Step sweep/Cancel sweep affect projection only. Compare itself does not toggle assistance. Return Off. |
+| Click Next to `/pharmacy/claims` | What the pharmacy sees. Walk all five Referral cycle guide stages, then distinguish the actual Recorded claim state. Totals are claimed amounts, not payments. Use the uninterrupted cycle below to perform the actions. | Compare Today/With agent preparation. The guide itself changes no stage; On reasons require recorded draft approval. |
+| Click Next to `/#close` | Where it ends. Request two years of item-level referral reasons, test concentration, then proceed, reshape or stop. Open assumptions and discovery questions as needed. | Either state; do not present proposals as validated operational facts. |
 
-Back reverses all eight stops, including Pharmacy check. Dismiss tour hides the
+Back reverses all nine stops, including Pharmacy check. Dismiss tour hides the
 rail; **Restore tour** in the footer brings it back. Detail/reflective pages
 offer **Start** rather than pretending to be a tour chapter. The skip link
 focuses main without changing the selected fragment.
@@ -95,10 +97,13 @@ measured savings, and the two-second presentation is not work completed.
 This is a separate uninterrupted session sequence. Leave time to show the
 human approval boundary, not just a green end state. Use exact button labels
 below; no hidden store edits, test hooks or direct lifecycle manipulation.
+Two minutes is a rehearsal target, not a performance budget. Do not omit
+human approval or uncertainty to meet a stopwatch.
 
 1. Open **Operations > Pharmacy check**. Click **Reset demo > Reset
    demonstration**. Confirm **Agent: Off**, **Information missing** and the
-   endorsement `NCSO  RK`. Say: "No advisory check has been performed."
+   endorsement `NCSO  RK`. Show **Not checked: manual submission** and say:
+   "No advisory check has been performed. Submission remains available."
 2. Click **Continue with submission**, then **View submitted claim**. The
    selected ID is **EX-24112**, status **Submitted, awaiting processing**.
    In **Shared case history**, click **Follow this case**. The Followed item
@@ -143,6 +148,11 @@ below; no hidden store edits, test hooks or direct lifecycle manipulation.
     Assisted fields disappear; no decision is undone. Stop following with
     **Stop following this case** when finished.
 
+The same cycle can start from the chapter's **Open this operator case** and
+**Open this pharmacy claim** links. Keep EX-24112 selected and distinguish
+**Recorded claim state** from the five-stage explanation. The explanation is
+not evidence of completion; the recorded human actions and history are.
+
 ### Entirely manual comparison
 
 Reset and repeat steps 1-3 with Agent Off throughout. Choose **Refer back**,
@@ -152,6 +162,11 @@ Open the shared queue and **Open for review**. Choose **Sufficient (human
 choice)** explicitly, enter the review reason and record. There is no
 Re-check, suggested correction, approved agent draft or counterfactual replay
 in this manual comparison. The human still controls the same round trip.
+Show **No advisory sufficiency check** as a synthetic manual-work assumption.
+It is not a claim that real pharmacy checks are absent. If you turn On before
+any approved draft exists, the pharmacy shows **No operator-approved draft**,
+not the raw unapproved human reason. Turn Off to inspect the manual reason;
+this changes presentation, not history.
 
 ### Entirely assisted comparison
 

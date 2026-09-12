@@ -1,131 +1,110 @@
 ---
 title: Current limitations and verification boundaries
-description: Genuine caveats for the integrated synthetic demonstration, separated from historical results.
-ms.date: 2026-09-11
+description: Genuine caveats for the accepted synthetic application, separated from historical failures.
+ms.date: 2026-09-12
 ---
 
-## Current scope
+## Current implementation and acceptance
 
-The shared lifecycle, pharmacy claims/detail, round trip, seven-chapter tour and
-cross-side navigation are implemented. They are not outstanding feature gaps.
-Tasks 8-13 acceptance remains separate from implementation and is tracked in
-[PROGRESS.md](PROGRESS.md). Stream V owns documentation and captures, not product
-or regression-test fixes.
+The eight-chapter/nine-stop tour, standalone pipeline and Four cases, complete
+referral-cycle guide, shared lifecycle, scene count-in, queue Compare and
+human-controlled round trip are implemented. Pharmacy On response/history shows
+only labelled operator-approved drafts; intentional Off is a healthy unchecked
+manual path. These are no longer open implementation gaps.
+
+Application source `898cda594d0dcb34376bddab7112edcddb172440` includes the accepted
+R head `6e424ac75c4980380c31f9e3aab23243a9a013d0`.
+[Actions run 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
+passed check, 607 units in 22 files, 1,019 blocking browser tests in 17.7 minutes
+and three separately run informational quarantine cases in 16.4 seconds.
+Successful-run audit artifacts were not uploaded; no deduplicated CI axe/CSP
+report count is invented from that result.
 
 The agent gathers evidence and recommends; deterministic code validates and
 calculates; a human decides. Nothing in this demonstration calculates or
-approves a payment. `Payment approved (synthetic)` is a lifecycle label for
-existing pricing, not evidence of a payment service.
+approves a payment. `Payment approved (synthetic)` is a lifecycle label
+attributed to existing pricing, not proof of a payment service.
 
-## Deployment is not provisioned
+## Owner-run hosting verification remains open
 
-The proposed account transfer was cancelled on 12 September 2026. WilliamNg18
-remains owner and the repository is public by explicit owner decision, including
-the approved reference material. Work is authorised to resume; historical
-transfer-freeze statements and interrupted runs remain history, not a current
-instruction to stop. Public visibility alone does not prove a new Actions run
-or deployment succeeded.
+Azure Static Web Apps Free at `/` is the only target. No intended subscription,
+resource, replacement deployment token or current live URL is verified here.
+[#37](https://github.com/WilliamNg18/BSA/issues/37) tracks owner setup and actual
+hosted checks using [DEPLOYMENT.md](DEPLOYMENT.md). Keep credentials in Azure
+and repository secrets, never documentation or the static bundle. Free permits
+three concurrent preview environments; a PR trigger is not proof of a preview.
 
-Azure Static Web Apps Free at `/` is the only target. No intended subscription
-was selected, no deployment token supplied and no live URL verified.
-[DEPLOYMENT.md](DEPLOYMENT.md) is the owner setup procedure. Local production
-preview does not establish deployed deep links, response headers, cache policy
-or strict-CSP behaviour on Azure.
-
-Replacement CI jobs previously refused before tests because of account
-payments/spending restrictions are not application failures. R is resuming
-full Actions acceptance on public main; no new passing outcome is claimed here.
-The owner-run token reset/replacement stays in Azure and repository secrets,
-never in documentation or the client.
+The account transfer was cancelled on 12 September 2026. WilliamNg18 remains
+owner; repository and approved reference material are public by explicit
+decision. Private-repository replacement jobs previously refused before tests
+because of account payment/spending restrictions are historical external
+failures. The subsequent public Actions run above actually passed. Neither
+public visibility nor that CI pass proves an Azure deployment.
 
 ## Deliberate demonstration limits
 
 | Area | Current limitation |
 | --- | --- |
-| Interpretation | Scripted case readings and a deterministic typed-field mock, not live model inference or handwriting capture |
-| Evidence | Synthetic cases, rule paraphrases, product data and enterprise tool responses, not authentic clinical or tariff evidence |
-| History | Append-only within the browser session; reload and confirmed Reset restore seeds, not durable records |
-| Offline | Loaded-session navigation is supported; a cold offline load or reload is not guaranteed |
-| Queue | Virtual month and sweep are bounded synthetic projections, not a live operational work queue or measured capacity |
-| Today | Metadata-only examples show manual tasks, not fabricated prescriptions, retrieved citations or a full operator case |
-| Outcomes | C's 56/84 conflict remains unresolved after confirmation; D stays manual with no guaranteed payment |
-| Timing and benefits | Gathering, judging, delay and assembly figures are illustrative assumptions, not measured NHSBSA performance |
-| Referral projections | Deficient built/abstained shares estimate referrals; the distinct risk residual includes every abstention. Neither the count nor the referral-free percentage measures accuracy |
-| Confidence | Five structural signals with synthetic thresholds, not a calibrated probability or clinical assurance |
-| Public context | Attributed figures were not independently verified; referrals are not all exceptions; publication frequency is not change frequency |
-| Fonts | Synthetic handwriting uses platform cursive fallbacks, so appearance can vary across operating systems |
+| Interpretation | Scripted case readings and deterministic typed-field mock, not live inference or handwriting capture |
+| Evidence | Synthetic cases, rule paraphrases and enterprise tool responses, not authentic clinical or tariff evidence |
+| History | Immutable attempts and append-only events within a session, not durable audit storage; reload/Reset restores seeds |
+| Offline | Loaded-session navigation works; a cold offline load or reload is not guaranteed |
+| Queue | Virtual month, sweep, day and Compare are bounded projections, not live work or measured capacity |
+| Today | Model examples show manual tasks without invented retrieved citations or agent results |
+| Outcomes | C's 56/84 conflict survives confirmation; D stays manual with no payment guarantee |
+| Timing/benefits | Gathering, judging, delay and assembly are assumptions; animation is presentation, not elapsed operational work |
+| Referral risk | Referral estimates use deficient built/abstained shares; the distinct risk residual includes every abstention. Neither measures accuracy |
+| Confidence | Five structural signals and synthetic thresholds, not a calibrated probability |
+| Public context | Attributed figures are not independently verified; referrals are a subset; publication frequency is not change frequency |
+| Fonts | Synthetic handwriting uses platform cursive fallbacks and may differ across operating systems |
+| Cycle guide | Five explanatory stages are not recorded history; opening the guide or changing assistance completes no stage |
 
-No capture integration, dispensing-system integration, live retrieval/model,
-monitoring, durable audit storage or payment calculation is included. A shared
-operational service remains a proposal even though local cross-side history works.
+No live retrieval/model, capture or dispensing-system integration, monitoring,
+durable record service or payment calculation is included. A shared operational
+service remains a proposal even though the local cross-side workflow works.
 
-## Reported integration finding
+## Remaining verification caveats
 
-On baseline `d9e06e1`, opening `/pharmacy/claims?caseId=EX-24112` and turning
-Agent On displays the seed's **Human decision reason** ("Endorsement initialled
-but not dated") alongside **No operator-approved draft**. It does not falsely
-claim approval, but the unapproved reason is still pharmacy-visible in On,
-contrary to the stricter requirement that every On reason be an operator-approved
-draft. R also confirmed the same exposure in expanded pharmacy lifecycle
-history. R owns the correction in [#19](https://github.com/WilliamNg18/BSA/issues/19);
-V does not modify the product. The explicit approval round trip itself works.
+[#34](https://github.com/WilliamNg18/BSA/issues/34) tracks three exact conditional
+timing cases run separately as informational quarantine. All three passed in
+the accepted public CI run; one successful run does not itself establish
+long-term stability or authorise removal of their tags. R owns their follow-up.
+[#35](https://github.com/WilliamNg18/BSA/issues/35) retains its named timing
+investigation; historical timeouts are not silently converted into product
+defects or erased by a later pass.
 
-The newer eight-chapter request adds distinct pipeline/Four cases chapters and
-a whole-cycle claims chapter (#26). Scene count-in (#27), queue Compare (#28)
-and explicit manual claims-resubmission pain (#29) are also active owned
-increments, not yet merged acceptance. [SCOPE.md](SCOPE.md) records the
-18-item implementation register and named evidence without treating test
-presence as completion.
+The [current visual index](screens/integrated/README.md) and
+[manifest](screens/integrated/manifest.json) identify actual source revisions,
+per-image hashes, errors, overflow and axe results. Header-enforced local
+Chromium evidence is not full manual WCAG 2.2 AA conformance, screen-reader
+verification, Firefox/WebKit coverage or deployed Azure routing/caching parity.
+Its 1440px light matrix does not claim independent mobile/dark coverage.
+V's completed matrix has 107 images and individual audit JSONs, 53 Off / 54 On,
+with zero violations, overflow and page/console/CSP errors. Fifty-one audits
+retain incomplete-rule results; these are not a full manual accessibility
+assessment. All images were reviewed at full height through slices.
 
-The pharmacy workbench also labels Agent Off as **Agent unable to determine**,
-including complete A. This makes an intentionally unchecked manual path look
-like an assistance failure. The parity stream owns the status-only correction in
-[#20](https://github.com/WilliamNg18/BSA/issues/20); Off must still perform no
-precheck and must leave submission available. Refresh pharmacy Off captures
-after that correction merges.
+Only functional/accessibility checks block. There are no size/performance
+budgets; independent-resource gzip, word counts, Lighthouse and visual
+differences are informational. A two-minute story target is not a blocking
+wall-clock cap, and informational status never excuses a functional defect.
 
-## Current local evidence
+## Historical evidence remains historical
 
-The initial Stream V capture candidate is Phase 1 `d9e06e1`. `npm run check`
-passed, including typecheck, lint and production build. Runtime assets totalled
-201,623 gzip bytes. That baseline still reported an advisory threshold; the
-subsequent user direction removes all size/performance budgets. Gzip size,
-Lighthouse, word counts and screenshot differences are informational only.
+The initial V captures at `d9e06e1` had 103 images and a seven-chapter layout.
+They remain in the immutable
+[V checkpoint](https://github.com/WilliamNg18/BSA/tree/b3acc1392dfc5074a943a184e026a4fb856341fc/BSA/docs/screens/integrated),
+not mixed into the new-source manifest. Initial check passed; default Vitest
+had 559 passes/one 5,000 ms CLI timeout and the bounded rerun passed 560 tests.
 
-The first default-worker Vitest run passed 559 tests and timed out one
-`measure-budget-cli.test.ts` test at its 5,000 ms limit. A bounded rerun,
-`npm test -- --maxWorkers=2`, passed all 560 tests in 20 files. Retain the initial
-timeout as execution evidence, not a product defect or a hidden passing run.
+The earlier assembled Linux run `34687220652` had 1,016 passes/three stale
+chapter failures; those expectations were corrected before the accepted run.
+The transfer interrupted the local fallback; it did not pass. Earlier
+scoped S/T/helper/Scene/Queue reports retain their initial failures and narrow
+rechecks in [PROGRESS.md](PROGRESS.md), [LEARNINGS.md](LEARNINGS.md) and
+[HANDOVER.md](HANDOVER.md). Task 7's 503 units, 721 browsers, 334 axe reports,
+91/91/90 Lighthouse scores and 199,651 gzip bytes are not current measurements.
 
-The [integrated screenshot manifest](screens/integrated/manifest.json) records
-source revision, actual capture time, 1440px viewport, Agent state, image hashes,
-browser errors, overflow and axe results. The adjacent
-[capture index](screens/integrated/README.md) distinguishes initial evidence from
-post-integration refresh. Visual differences are informational; crashes, broken
-controls and accessibility violations remain blocking and must be reported.
-
-Initial captures are local light-theme Chromium evidence, not full manual WCAG
-2.2 AA conformance, screen-reader verification, Firefox/WebKit coverage, mobile
-coverage, final integration approval, CI or a deployment result. R/S own the
-broader regression/accessibility gates; V refreshes after their tested fixes
-and the additional [scope implementation](SCOPE.md) streams merge.
-
-## Historical evidence, not current blockers
-
-Historical results remain in [PROGRESS.md](PROGRESS.md),
-[LEARNINGS.md](LEARNINGS.md), [qa-pr1.md](qa-pr1.md) and the
-[Task 7 capture record](screens/task7/README.md). Their older build sizes,
-route layouts, test totals, host assumptions and performance thresholds do not
-describe the integrated root-path application.
-
-In particular, the historical Task 7 result was 503 unit tests, 721 browser
-tests, 334 axe audits with zero violations, mobile Lighthouse scores 91/91/90
-and 199,651 gzip bytes. Those are not a fresh verification of this branch.
-The earlier mobile 86 and unchanged-baseline 93 remain historical measurements;
-the final median does not prove a causal five-point improvement.
-
-The previously listed missing claims/lifecycle integration, planned queue,
-immediate Reset, absent grouped navigation, old 900ms trace without step/pause
-and missing tests are obsolete. Manual decisions without a recommendation
-are not counted as overrides; the old Stream B integration caveat is not a
-current release blocker.
+[SCOPE.md](SCOPE.md) distinguishes accepted implementation from final documentation
+and hosted verification. Final task ticks belong to D's
+[PROGRESS.md](PROGRESS.md), not to a screenshot or an old implementation checklist.

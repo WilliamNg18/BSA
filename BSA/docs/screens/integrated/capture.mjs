@@ -12,6 +12,8 @@ const resume = process.argv.includes("--resume");
 const previous = resume ? JSON.parse(await readFile(join(directory, "manifest.json"), "utf8")) : null;
 const results = previous?.captures ?? [];
 const revision = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+const applicationSourceRevision = "898cda594d0dcb34376bddab7112edcddb172440";
+execFileSync("git", ["diff", "--exit-code", applicationSourceRevision, "--", "BSA/src", "BSA/scripts", "BSA/package.json", "BSA/package-lock.json"], { stdio: "pipe" });
 if (previous && previous.sourceRevision !== revision) throw new Error("Cannot resume captures from a different source revision");
 const browser = await chromium.launch();
 let runtimeError = null;
@@ -35,6 +37,7 @@ const states = ["submitted", "in_review", "information_requested", "referred_bac
 const controlStates = ["operations-menu", "reset-dialog", "queue-today", "queue-compare"];
 const expectedCaptureCount = 2 * (surfaces.length + states.length + 2 + controlStates.length + 8) + 1;
 await mkdir(directory, { recursive: true });
+await mkdir(join(directory, "axe"), { recursive: true });
 
 function failed(entry) {
   return entry.horizontalOverflow || entry.axeViolations.length > 0 || entry.browserErrors.length > 0;
@@ -42,8 +45,8 @@ function failed(entry) {
 
 async function saveManifest() {
   await writeFile(join(directory, "manifest.json"), `${JSON.stringify({
-    sourceRevision: revision, capturedAt: new Date().toISOString(),
-    baseURL, build: "BSA/dist, root-path production build",
+    sourceRevision: revision, applicationSourceRevision, capturedAt: new Date().toISOString(),
+    baseURL, build: "BSA/dist, root-path production build with emitted global security headers",
     viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1,
     colorScheme: "light", reducedMotion: "reduce", fullPage: true,
     expectedCaptureCount, completed,
@@ -63,6 +66,11 @@ async function session(run) {
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());
+  });
+  await page.addInitScript(() => {
+    window.addEventListener("securitypolicyviolation", (event) => {
+      console.error(`CSP: ${event.violatedDirective} ${event.blockedURI}`);
+    });
   });
   try {
     await run(page, errors);
@@ -94,10 +102,20 @@ async function capture(page, name, enabled, errors) {
   if (await dismiss.count()) await dismiss.click();
   await page.evaluate(() => window.scrollTo(0, 0));
   const axe = await new AxeBuilder({ page }).analyze();
+  const auditFile = `axe/${filename.replace(".png", ".json")}`;
+  await writeFile(join(directory, auditFile), `${JSON.stringify({
+    sourceRevision: revision, applicationSourceRevision, url: page.url(),
+    testEngine: axe.testEngine, timestamp: axe.timestamp,
+    violations: axe.violations,
+    passes: axe.passes.map(({ id, nodes }) => ({ id, nodeCount: nodes.length })),
+    incomplete: axe.incomplete.map(({ id, nodes }) => ({ id, nodeCount: nodes.length })),
+    inapplicable: axe.inapplicable.map(({ id }) => id),
+  }, null, 2)}\n`);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
   await page.screenshot({ path: join(directory, filename), fullPage: true });
   const entry = {
     filename, url: page.url().replace(baseURL, ""), agent: enabled ? "on" : "off",
+    auditFile,
     heading: await page.locator("h1").innerText(),
     sha256: createHash("sha256").update(await readFile(join(directory, filename))).digest("hex"),
     horizontalOverflow: overflow,
@@ -128,10 +146,6 @@ try {
         await capture(page, name, enabled, errors);
       });
     }
-    if (results.length !== expectedCaptureCount || new Set(results.map((entry) => entry.filename)).size !== expectedCaptureCount) {
-      throw new Error(`Expected ${expectedCaptureCount} unique captures, found ${results.length}`);
-    }
-    completed = true;
     for (const state of states) {
       await session(async (page, errors) => {
         await page.goto(`${baseURL}/pharmacy/claims`);
@@ -218,6 +232,10 @@ try {
       await capture(page, "roundtrip-8-synthetic-paid", enabled, errors);
     });
   }
+  if (results.length !== expectedCaptureCount || new Set(results.map((entry) => entry.filename)).size !== expectedCaptureCount) {
+    throw new Error(`Expected ${expectedCaptureCount} unique captures, found ${results.length}`);
+  }
+  completed = true;
 } catch (error) {
   runtimeError = error instanceof Error ? error.message : String(error);
   throw error;
