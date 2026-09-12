@@ -1,0 +1,133 @@
+
+Running 29 tests using 1 worker
+
+[1/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Complete endorsement: global=true, local=true remains advisory
+[2/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Complete endorsement: global=true, local=false remains advisory
+[3/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Complete endorsement: global=false, local=true remains advisory
+  1) [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Complete endorsement: global=false, local=true remains advisory 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('switch', { name: 'Agent: On', exact: true })
+        - locator resolved to <input role="switch" id="agent-flag" type="checkbox" data-slot="switch" data-size="default" data-state="checked" aria-describedby="agent-help" class="peer inline-flex shrink-0 appearance-none items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-[1.15rem] data-[size=default]:w-8 data-[siz…/>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+
+
+      63 |         if (scenario.readable) await expect(checks).toBeVisible();
+      64 |         else await expect(checks).toHaveCount(0);
+    > 65 |         if (!globalEnabled) await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
+         |                                                                                                ^
+      66 |         if (!localAvailable) await page.getByRole("switch", { name: "Agent available", exact: true }).click();
+      67 |         const assistanceEnabled = globalEnabled && localAvailable;
+      68 |         await expect(status).toHaveText(!globalEnabled ? "Not checked: manual submission"
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-18-parity-verification-and-owned-applicatio-a752e8\BSA\tests\e2e\assistance.spec.ts:65:96
+
+    Error Context: ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\assistance-pharmacy-Comple-a5b90-local-true-remains-advisory-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\assistance-pharmacy-Comple-a5b90-local-true-remains-advisory-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\assistance-pharmacy-Comple-a5b90-local-true-remains-advisory-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[4/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Complete endorsement: global=false, local=false remains advisory
+[5/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Information missing: global=true, local=true remains advisory
+[6/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Information missing: global=true, local=false remains advisory
+[7/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Information missing: global=false, local=true remains advisory
+[8/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Information missing: global=false, local=false remains advisory
+[9/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Unreadable form: global=true, local=true remains advisory
+[10/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Unreadable form: global=true, local=false remains advisory
+[11/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Unreadable form: global=false, local=true remains advisory
+[12/29] [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Unreadable form: global=false, local=false remains advisory
+[13/29] [chromium] › tests\e2e\assistance.spec.ts:97:1 › pharmacy keeps edits and local availability across global assistance changes
+[14/29] [chromium] › tests\e2e\controls.spec.ts:30:1 › pharmacy is advisory for missing, corrected, complete, unreadable and unavailable inputs
+[15/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 A agent=false light: receipt, timeline, all-rule axe
+[16/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 B agent=false light: receipt, timeline, all-rule axe
+[17/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 D agent=false light: receipt, timeline, all-rule axe
+  2) [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 D agent=false light: receipt, timeline, all-rule axe 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.evaluate: Test timeout of 30000ms exceeded.
+     Please check out https://github.com/dequelabs/axe-core-npm/blob/develop/packages/playwright/error-handling.md
+
+      53 |     await field.fill(text);
+      54 |     await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Not checked: manual submission");
+    > 55 |     const axe = await new AxeBuilder({ page }).analyze();
+         |                 ^
+      56 |     await captureJson(info, "task4-axe", axe);
+      57 |     expect(axe.violations).toEqual([]);
+      58 |     // Full-page capture otherwise paints sticky navigation at the last field's scroll offset.
+        at AxeBuilder.analyze (C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-18-parity-verification-and-owned-applicatio-a752e8\BSA\node_modules\@axe-core\playwright\dist\index.mjs:218:13)
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-18-parity-verification-and-owned-applicatio-a752e8\BSA\tests\e2e\pharmacy.spec.ts:55:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-D-agent-fal-f273c-ceipt-timeline-all-rule-axe-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-D-agent-fal-f273c-ceipt-timeline-all-rule-axe-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-D-agent-fal-f273c-ceipt-timeline-all-rule-axe-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-D-agent-fal-f273c-ceipt-timeline-all-rule-axe-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[18/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 A agent=true light: receipt, timeline, all-rule axe
+[19/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 B agent=true light: receipt, timeline, all-rule axe
+  3) [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 B agent=true light: receipt, timeline, all-rule axe 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+      - navigating to "http://localhost:4193/pharmacy", waiting until "load"
+
+
+      13 |     await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+      14 |     await page.setViewportSize({ width: theme === "dark" ? 360 : 1440, height: 1000 });
+    > 15 |     await page.goto("pharmacy");
+         |                ^
+      16 |     await page.getByRole("banner").getByRole("switch").setChecked(on);
+      17 |     await page.getByRole("radio", { name: scenario.label, exact: true }).click();
+      18 |     await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Not checked: manual submission");
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-18-parity-verification-and-owned-applicatio-a752e8\BSA\tests\e2e\pharmacy.spec.ts:15:16
+
+    Error Context: ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-B-agent-tru-5ef27-ceipt-timeline-all-rule-axe-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-B-agent-tru-5ef27-ceipt-timeline-all-rule-axe-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\..\..\..\.copilot\session-state\de580b0c-cff2-411a-8c72-a6e4979f2496\files\issue20-focused-results\pharmacy-Task4-B-agent-tru-5ef27-ceipt-timeline-all-rule-axe-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[20/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 D agent=true light: receipt, timeline, all-rule axe
+[21/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 A agent=false dark: receipt, timeline, all-rule axe
+[22/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 B agent=false dark: receipt, timeline, all-rule axe
+[23/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 D agent=false dark: receipt, timeline, all-rule axe
+[24/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 A agent=true dark: receipt, timeline, all-rule axe
+[25/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 B agent=true dark: receipt, timeline, all-rule axe
+[26/29] [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 D agent=true dark: receipt, timeline, all-rule axe
+[27/29] [chromium] › tests\e2e\pharmacy.spec.ts:67:3 › Issue20 A: manual, unavailable and checked statuses remain distinct
+[28/29] [chromium] › tests\e2e\pharmacy.spec.ts:67:3 › Issue20 B: manual, unavailable and checked statuses remain distinct
+[29/29] [chromium] › tests\e2e\pharmacy.spec.ts:67:3 › Issue20 D: manual, unavailable and checked statuses remain distinct
+  3 failed
+    [chromium] › tests\e2e\assistance.spec.ts:54:7 › pharmacy Complete endorsement: global=false, local=true remains advisory 
+    [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 D agent=false light: receipt, timeline, all-rule axe 
+    [chromium] › tests\e2e\pharmacy.spec.ts:12:3 › Task4 B agent=true light: receipt, timeline, all-rule axe 
+  26 passed (20.2m)

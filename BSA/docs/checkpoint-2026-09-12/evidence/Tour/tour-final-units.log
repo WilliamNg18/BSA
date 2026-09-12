@@ -1,0 +1,41 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test
+> vitest run --maxWorkers=2 --reporter=dot
+
+
+ RUN  v4.1.11 C:/Users/williamng/OneDrive - Microsoft/GitHub/copilot-worktrees/BSA/williamng18-issue-26-eight-chapter-tour-and-full-referral-cyc-316bb6/BSA
+
+········stdout | tests/unit/source-claims.test.ts > two-document source registry > limits each chapter title plus prose to forty words and explicitly exempts the question disclosure
+Advisory word count / budget 40: 31
+Advisory word count / budget 40: 28
+Advisory word count / budget 40: 29
+Advisory word count / budget 40: 29
+
+··························stdout | tests/unit/baseline.test.ts > baseline arithmetic > generates all cohorts from the result and hides assisted estimates when off
+Advisory word count / budget 25: 19
+Advisory word count / budget 25: 13
+
+············································································································································································································································································································································································································stdout | tests/unit/tour.test.ts > curated display boundary > caps every chapter and discovery question without documentary exemptions
+Advisory word count / budget 25: 22
+Advisory word count / budget 25: 20
+Advisory word count / budget 25: 23
+Advisory word count / budget 25: 19
+Advisory word count / budget 25: 21
+Advisory word count / budget 25: 20
+Advisory word count / budget 25: 20
+Advisory word count / budget 25: 19
+Advisory word count / budget 25: 10
+Advisory word count / budget 25: 11
+Advisory word count / budget 25: 12
+Advisory word count / budget 25: 16
+Advisory word count / budget 25: 12
+Advisory word count / budget 25: 14
+Advisory word count / budget 25: 12
+
+·····································································································································
+
+ Test Files  18 passed (18)
+      Tests  563 passed (563)
+   Start at  20:10:25
+   Duration  57.71s (transform 9.56s, setup 0ms, import 25.37s, tests 4.46s, environment 17ms)
+

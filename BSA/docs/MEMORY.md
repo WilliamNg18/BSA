@@ -1,7 +1,7 @@
 ---
 title: Durable project facts
 description: Read first at each task; correct facts in place rather than appending history.
-ms.date: 2026-09-10
+ms.date: 2026-09-12
 ---
 
 ## Purpose and principle
@@ -39,7 +39,8 @@ NHSBSA evidence assembly after an exception. Neither is a live model service.
   abstentions. Zero residual means Not established, not 100% accuracy.
 * Lifecycle contracts: submitted, in_review, information_requested,
   referred_back, resubmitted, paid, escalated. Distinct from existing case states.
-  Contracts only until Task 8. Paid is synthetic, attributed to existing pricing.
+  Implemented shared lifecycle, immutable revisions and five-pharmacy seeds.
+  Paid is synthetic, attributed to existing pricing.
 
 ## Six canonical cases
 
@@ -70,24 +71,45 @@ one; documentary audit stays outside the client. Synthetic operational citations
 remain visible. Keyboard, focus, contrast, reduced motion and non-colour status
 are requirements. Shared two-second animation is presentation, not processing.
 
-## Branches and task records
+## Transfer freeze and current state
 
-Repository root is the parent of the app folder BSA. Main integrates verified
-work. Task 3 baseline is 96bf0973724c0ceb34d2532f2fc95dfd88f534c4; user confirmed
-386 units, 386 browser tests, Azure PASS and CI 34526886080 SUCCESS.
+The repository is about to transfer from WilliamNg18/BSA to an enterprise
+owner whose name has not been supplied. The personal account must remain a
+collaborator as requested; verify the actual transferred permissions after
+resume rather than claiming they have already been configured.
+All streams are stopped. No merge, test or implementation resumes until a
+new-owner session says exactly `Resume from docs/HANDOVER.md`.
+
+Git root contains the nested application `BSA`. Application main at freeze is
+`98c888184db1df9c03539413b5e3b1db47f1ebfe`; annotated
+`checkpoint-2026-09-12` pins the main handover/tracking commit. Stream tags
+and full branch heads are listed in [HANDOVER](HANDOVER.md).
+
+Tasks 1-7 are Done. Tasks 8-13 are In progress and paused for remaining
+integrated acceptance and final documentation. Eight chapters/nine stops,
+full referral-cycle guide, queue Compare, scene count-in, healthy manual
+pharmacy status and S's CSP/focus/motion fixes are merged. R's approved-only
+On reasons and manual-resubmission pain fixes are on PR #33, not main.
+V's draft #24 preserves 103 initial images; its final 107-image harness is
+prepared but has not run against the complete final application. D has
+completed readiness only and must not tick final tasks yet.
+
 Azure Static Web Apps Free is the only hosting target; production and local
 browser tests use `/`. Root configuration is emitted into BSA/dist. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
-Provisioning and the deployment token require owner setup in DEPLOYMENT.md;
-no current hosted URL is verified. The integrated lifecycle is implemented
-but Tasks 8-13 stay unchecked until the R/S/V/D acceptance streams conclude.
-Never alter last-known-good or cowork-v1 branches/tags; see
+The token is absent, resource/subscription and live URL unverified. Replacement
+GitHub CI jobs failed before starting because of an account payment/spending
+restriction; no billing change was made. R's local full fallback was
+interrupted for transfer, not passed. Prior exact evidence: check/607 units,
+Linux 1,016 passes/three stale test failures, then all three corrected tests
+passed; 673 axe and 193 CSP reports from the failed run were clear.
+
+Never alter last-known-good, lkg-2026-09-09 or cowork-v1 refs; see
 [branch policy](../../BRANCHES.md).
 
-Read this file first, then [progress](PROGRESS.md), [learnings](LEARNINGS.md),
-[decisions](DECISIONS.md) and [parallel contracts](parallel-contracts.md).
-Every task commit updates progress. Append surprises to learnings and decisions
-to the decision record. Correct this file in place; Stream E owns final updates
-during parallel integration. No task beyond the authorised increment is complete.
+Read AGENTS first, then this file, DECISIONS, LEARNINGS, PROGRESS, SCOPE and
+HANDOVER. After authorised resume, merge R (S already merged), then V, then
+D's final acceptance record. Old issue text mentioning size budgets or
+unconditional autonomous work is superseded by the current gates and freeze.

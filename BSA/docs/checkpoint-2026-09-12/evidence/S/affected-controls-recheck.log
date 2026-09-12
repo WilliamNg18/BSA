@@ -1,0 +1,6 @@
+
+Running 2 tests using 1 worker
+
+[1/2] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24112 manual trace and raw pack are not agent evidence
+[2/2] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 768 dark › single row, pinned rail, full grouped navigation and both agent states
+  2 passed (1.6m)

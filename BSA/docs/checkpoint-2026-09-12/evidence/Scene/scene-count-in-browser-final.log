@@ -1,0 +1,43 @@
+
+Running 7 tests using 1 worker
+T······
+
+  1) [chromium] › tests\e2e\calculator.spec.ts:11:1 › all seven live steps, review, judging and deficiency edits drive the same scene model 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Built case review minutes / item', { exact: true })
+        - locator resolved to <input value="1" type="text" data-slot="input" autocomplete="off" spellcheck="false" inputmode="decimal" aria-invalid="false" id="baseline-builtReviewMinutes" aria-describedby="baseline-builtReviewMinutes-hint" class="h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium file…/>
+        - fill("2.5")
+      - attempting fill action
+        - waiting for element to be visible, enabled and editable
+
+
+      38 |   ] as const) {
+      39 |     edited[key] = value;
+    > 40 |     await page.getByLabel(label, { exact: true }).fill(String(value));
+         |                                                   ^
+      41 |     const result = calculateBaseline(edited);
+      42 |     await expect(page.locator("[data-referrals-today]")).toHaveText("120");
+      43 |     await expect(page.locator("[data-referrals-with]")).toHaveText(String(result.referrals.withAgent));
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-27-implement-scene-estimate-count-in-5af7f0\BSA\tests\e2e\calculator.spec.ts:40:51
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-final\calculator-all-seven-live--e8ad4--drive-the-same-scene-model-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-final\calculator-all-seven-live--e8ad4--drive-the-same-scene-model-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-final\calculator-all-seven-live--e8ad4--drive-the-same-scene-model-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-final\calculator-all-seven-live--e8ad4--drive-the-same-scene-model-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests\e2e\calculator.spec.ts:11:1 › all seven live steps, review, judging and deficiency edits drive the same scene model 
+  6 passed (2.9m)

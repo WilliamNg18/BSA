@@ -1,8 +1,47 @@
 ---
 title: Thirteen-task implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
-ms.date: 2026-09-11
+ms.date: 2026-09-12
 ---
+
+## Account transfer checkpoint: authoritative current status
+
+**Frozen on 12 September 2026.** Resume only on the new owner's exact
+`Resume from docs/HANDOVER.md` message. [HANDOVER](HANDOVER.md) is the
+authoritative branch/head/next-action record. Application main at freeze is
+`98c888184db1df9c03539413b5e3b1db47f1ebfe`; this documentation is pinned by
+`checkpoint-2026-09-12`. No feature merges occur during the freeze.
+
+| Task | Current status | Completed implementation / remaining acceptance |
+| --- | --- | --- |
+| 1 | Done | `ad7d5d86aedc0d07378f3b77622dbd72874f512c` |
+| 2 | Done | `b7c4451e64d27e4c7c410d9e5647722f7f6ee64b` |
+| 3 | Done | `96bf0973724c0ceb34d2532f2fc95dfd88f534c4` |
+| 4 | Done | `a131bad4c312d8e1b583f43ab4ce95e94c5abd56`, correction `7bdc1990f7c16a843ccebd86620d92c6d3a13fae` |
+| 5 | Done | `034121fe45b74ea024d6f6e1d2f6b76a676747d4` |
+| 6 | Done | `36db32af9db823d1e32e6daf9f32d008a5c98a44` |
+| 7 | Done | `79bd2832f5f27e47af7022fc7899fe494356f206`; old performance budgets are superseded |
+| 8 | In progress, paused | Lifecycle implementation merged `d9e06e1`; final integrated acceptance/D tick pending |
+| 9 | In progress, paused | Claims foundation merged `d9e06e1`; #19/#29 fixes on R PR #33, not main |
+| 10 | In progress, paused | Shared round trip/Follow implemented; complete corrected-head browser acceptance interrupted |
+| 11 | In progress, paused | Eight-chapter/full-cycle implementation merged `c95ff1d`; final R/V acceptance pending |
+| 12 | In progress, paused | Navigation and S focus/reflow merged `22ec345`/`c95ff1d`; final acceptance pending |
+| 13 | In progress, paused | R full suite, V final 107 captures, D final report unfinished |
+
+Tasks: **7 Done, 6 In progress, 0 Not started**. Scope: **3 Done, 15 In
+progress, 0 Not started** across the 18 rows of [SCOPE](SCOPE.md).
+These bounded scope completions do not prematurely tick Tasks 8-13.
+
+R checkpoint `500e883d1f48a03b32ae0864751a44705b996382` preserves source
+`696f077`, check/607 unit passes, inventory 1,022, a failed Linux run
+1,016/3 and all three corrected-test passes. Its exact-head full Windows
+fallback was stopped for transfer without final counts. Replacement CI
+never started because of an account payment/spending restriction. No
+full corrected-head, hosted or final V capture acceptance is claimed.
+
+All sections below are retained historical stream evidence. Statements such
+as "merge pending", old seven-chapter arrangements, old size budgets and
+then-current running commands below are superseded by this table and HANDOVER.
 
 ## Issue 27 independent scene count-in stream
 
@@ -94,15 +133,15 @@ lifecycle labels, not the former workbench Off status. Combined check and
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
 * [x] Task 4: a131bad and P1 correction 7bdc199; supplied Azure/CI gate PASS
-* [x] Task 5: bounded virtual month, queue sweep and shared-clock day projections
+* [x] Task 5: bounded virtual month, queue sweep and shared-clock day projections (034121f)
 * [x] Task 6: manual case views, gated assisted assembly and immutable record comparison (36db32a; supplied postcommit gate PASS)
-* [x] Task 7: owned Stream A scope LOCAL PASS; 503 units, 721 browsers, 334 axe audits with zero violations; mobile median 91, desktop 100; 199,651-byte payload
-* [ ] Task 8: Shared case lifecycle and append-only history in the store
-* [ ] Task 9: Pharmacy claims view (/pharmacy/claims) with claim detail and actions by state
-* [ ] Task 10: Live round trip with Follow this item banner and Switch side
-* [ ] Task 11: Tour chapter "What the pharmacy sees" after the queue; two-places chapter updated
-* [ ] Task 12: Navigation, case header Pharmacy view link, header still one row
-* [ ] Task 13: Verification of Tasks 8 to 13 in both toggle states (Vitest, Playwright, axe, screenshots)
+* [x] Task 7: owned Stream A scope complete (79bd283); historical 503 units/721 browsers/334 axe clear
+* [ ] Task 8: In progress, paused; lifecycle implemented, final integrated acceptance pending
+* [ ] Task 9: In progress, paused; claims implemented, R #19/#29 unmerged
+* [ ] Task 10: In progress, paused; round trip and Follow implemented, full proof interrupted
+* [ ] Task 11: In progress, paused; eight chapters/cycle merged c95ff1d, final R/V acceptance pending
+* [ ] Task 12: In progress, paused; navigation implemented, final integrated acceptance pending
+* [ ] Task 13: In progress, paused; final suite/captures/report incomplete
 
 ## Current handoff: 11 September 2026
 

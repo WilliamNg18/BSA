@@ -1,0 +1,92 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test:a11y
+> playwright test --config tests/e2e/accessibility-final.config.ts --workers=1 --reporter=line --global-timeout=1800000
+
+
+Running 183 tests using 1 worker
+
+[1/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Overview scene
+[2/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Overview month
+[3/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Overview cases
+[4/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Overview two-places
+[5/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Overview close
+[6/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Pharmacy check
+[7/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Pharmacy claims
+[8/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Exception queue
+[9/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Case pack
+[10/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe How the case was built
+[11/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=false › axe Decision record
+[12/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final light motion=reduce agent=false › axe claim detail and Follow banner
+[13/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Overview scene
+[14/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Overview month
+[15/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Overview cases
+[16/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Overview two-places
+[17/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Overview close
+[18/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Pharmacy check
+[19/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Pharmacy claims
+[20/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Exception queue
+[21/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Case pack
+[22/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe How the case was built
+[23/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=reduce agent=true › axe Decision record
+[24/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final light motion=reduce agent=true › axe claim detail and Follow banner
+[25/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Overview scene
+[26/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Overview month
+[27/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Overview cases
+[28/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Overview two-places
+[29/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Overview close
+[30/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Pharmacy check
+[31/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Pharmacy claims
+[32/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Exception queue
+[33/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Case pack
+[34/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe How the case was built
+[35/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=false › axe Decision record
+[36/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final light motion=no-preference agent=false › axe claim detail and Follow banner
+[37/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Overview scene
+[38/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Overview month
+[39/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Overview cases
+[40/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Overview two-places
+[41/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Overview close
+[42/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Pharmacy check
+[43/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Pharmacy claims
+[44/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Exception queue
+[45/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Case pack
+[46/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe How the case was built
+[47/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final light motion=no-preference agent=true › axe Decision record
+[48/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final light motion=no-preference agent=true › axe claim detail and Follow banner
+[49/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Overview scene
+[50/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Overview month
+[51/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Overview cases
+[52/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Overview two-places
+[53/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Overview close
+[54/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Pharmacy check
+[55/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Pharmacy claims
+[56/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Exception queue
+[57/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Case pack
+[58/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe How the case was built
+[59/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=false › axe Decision record
+[60/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final dark motion=reduce agent=false › axe claim detail and Follow banner
+[61/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Overview scene
+[62/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Overview month
+[63/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Overview cases
+[64/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Overview two-places
+[65/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Overview close
+[66/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Pharmacy check
+[67/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Pharmacy claims
+[68/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Exception queue
+[69/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Case pack
+[70/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe How the case was built
+[71/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=reduce agent=true › axe Decision record
+[72/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final dark motion=reduce agent=true › axe claim detail and Follow banner
+[73/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Overview scene
+[74/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Overview month
+[75/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Overview cases
+[76/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Overview two-places
+[77/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Overview close
+[78/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Pharmacy check
+[79/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Pharmacy claims
+[80/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Exception queue
+[81/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Case pack
+[82/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe How the case was built
+[83/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=false › axe Decision record
+[84/183] [chromium] › tests\e2e\accessibility-final.spec.ts:66:9 › final dark motion=no-preference agent=false › axe claim detail and Follow banner
+[85/183] [chromium] › tests\e2e\accessibility-final.spec.ts:57:11 › final dark motion=no-preference agent=true › axe Overview scene

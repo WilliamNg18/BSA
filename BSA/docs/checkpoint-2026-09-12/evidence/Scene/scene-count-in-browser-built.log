@@ -1,0 +1,42 @@
+
+Running 7 tests using 1 worker
+Advisory word count / budget 25: 19
+·F·····
+
+  1) [chromium] › tests\e2e\scene-count-in.spec.ts:46:3 › scene estimate count-in with motion › Agent On visibly interpolates all derived estimates then reaches exact final UK values 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    - Expected  - 1
+    + Received  + 2
+
+    - - img "85,000"
+    + - definition:
+    +   - img "85,000"
+
+      60 |       const finalText = formatBaselineNumber(value, digits);
+      61 |       await expect(number.getByRole("img", { name: finalText, exact: true })).toBeVisible();
+    > 62 |       expect(await number.ariaSnapshot()).toBe(`- img "${finalText}"`);
+         |                                           ^
+      63 |       expect(await number.evaluate((element) => element.closest("[aria-live], [role=status], [role=alert]"))).toBeNull();
+      64 |     }
+      65 |     await expect(facts).toHaveText(beforeFacts!);
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-27-implement-scene-estimate-count-in-5af7f0\BSA\tests\e2e\scene-count-in.spec.ts:62:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-built\scene-count-in-scene-estim-f198d-aches-exact-final-UK-values-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-built\scene-count-in-scene-estim-f198d-aches-exact-final-UK-values-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-built\scene-count-in-scene-estim-f198d-aches-exact-final-UK-values-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\..\..\..\.copilot\session-state\93fd46cf-e27e-4fe8-8d88-7592756f1bfc\files\scene-count-in-browser-built\scene-count-in-scene-estim-f198d-aches-exact-final-UK-values-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests\e2e\scene-count-in.spec.ts:46:3 › scene estimate count-in with motion › Agent On visibly interpolates all derived estimates then reaches exact final UK values 
+  6 passed (5.1m)

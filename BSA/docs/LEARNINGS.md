@@ -470,3 +470,19 @@ from a failure list alone. Do not label the overall CI run successful.
 Keep the local zero-test startup timeout and subsequent three passes/five
 timeouts separately, including anomalous elapsed timing. Never weaken assertions
 or repeat a CPU-bound local run solely to duplicate exact-source remote proof.
+
+## 2026-09-12: Account transfer checkpoint
+
+All eight stream branches were checkpointed and pushed. R's exact corrected-head
+full local acceptance was interrupted for transfer after announcing 1,019 tests
+and two workers, with no completed counts or final exit in its retained log.
+Its earlier Linux result was 1,016 passed/three stale chapter assertions, then
+all three corrected tests passed; replacement CI was refused before execution
+by an account billing/spending restriction. V's 103 initial images are committed;
+the prepared final 107-image matrix has not run. D completed readiness only.
+
+HANDOVER, SCOPE, MEMORY and the current PROGRESS table distinguish merged
+implementation, scoped evidence and incomplete final acceptance. Compact logs
+and summaries are preserved in Git rather than relying only on session paths.
+No feature PR, protected archive reference or account ownership changed during
+the freeze.

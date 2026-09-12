@@ -1,0 +1,797 @@
+2026-09-11T19:16:04.058Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:04.949Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:04.949Z pw:webserver Starting WebServer process npm run build && npm run preview -- --host localhost --port 4193 --strictPort...
+2026-09-11T19:16:06.394Z pw:webserver Process started
+2026-09-11T19:16:06.395Z pw:webserver Waiting for availability...
+2026-09-11T19:16:06.395Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:06.400Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:06.401Z pw:webserver Waiting 100ms
+2026-09-11T19:16:06.712Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:06.855Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:06.856Z pw:webserver Waiting 250ms
+2026-09-11T19:16:07.219Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:07.514Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:07.516Z pw:webserver Waiting 500ms
+2026-09-11T19:16:08.671Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:10.129Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:10.130Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:11.226Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:11.304Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:11.305Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:12.390Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:12.394Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:12.394Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:13.483Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:13.606Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:13.607Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:14.681Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:14.686Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:14.686Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:15.744Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:15.823Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:15.823Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:17.009Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:17.019Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:17.019Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:18.551Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:18.723Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:18.723Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:19.844Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:19.855Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:19.855Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:21.670Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:22.965Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:22.965Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:24.229Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:24.748Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:24.749Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:26.228Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:26.903Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:26.904Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:28.068Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:28.662Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:28.662Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:29.963Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:30.283Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:30.283Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:31.401Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:31.490Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:31.495Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:32.596Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:32.603Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:32.604Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:33.864Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:33.998Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:33.998Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:35.572Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:35.581Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:35.581Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:36.801Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:37.006Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:37.006Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:38.101Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:38.274Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:38.274Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:39.556Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:40.469Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:40.469Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:41.623Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:41.627Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:41.627Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:42.703Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:42.772Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:42.772Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:43.881Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:44.051Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:44.052Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:45.146Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:45.219Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:45.219Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:46.247Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:46.255Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:46.255Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:47.284Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:47.291Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:47.291Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:48.346Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:48.350Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:48.351Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:49.378Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:49.411Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:49.411Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:50.439Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:50.468Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:50.468Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:51.512Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:51.560Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:51.561Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:52.620Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:52.718Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:52.719Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:53.840Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:54.059Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:54.059Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:55.084Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:55.103Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:55.107Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:56.124Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:56.143Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:56.143Z pw:webserver Waiting 1000ms
+[WebServer] 
+[WebServer] > bsa-prescription-exception-case-builder@0.6.0 build
+[WebServer] > vite build
+[WebServer] 
+2026-09-11T19:16:57.147Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:57.152Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:57.152Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:58.190Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:58.206Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:58.206Z pw:webserver Waiting 1000ms
+2026-09-11T19:16:59.234Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:16:59.268Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:16:59.268Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:00.315Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:00.358Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:00.358Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:01.386Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:01.421Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:01.421Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:02.590Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:02.639Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:02.639Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:03.941Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:04.133Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:04.133Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:05.288Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:05.607Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:05.607Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:09.237Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:09.824Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:09.824Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:10.966Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:11.062Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:11.063Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:12.206Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:12.575Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:12.575Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:13.719Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:13.727Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:13.727Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:14.959Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:15.285Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:15.288Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:16.370Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:16.416Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:16.416Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:17.568Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:17.689Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:17.689Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:18.737Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:18.749Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:18.749Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:19.812Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:19.816Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:19.816Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:20.879Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:20.944Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:20.944Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:22.021Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:22.029Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:22.029Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:23.317Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:23.324Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:23.324Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:24.345Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:24.349Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:24.349Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:25.491Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:25.496Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:25.496Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:26.585Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:26.652Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:26.652Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:27.719Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:27.810Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:27.811Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:28.901Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:28.997Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:28.997Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:30.063Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:30.168Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:30.168Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:31.203Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:31.267Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:31.267Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:32.352Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:32.929Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:32.929Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:33.974Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:34.060Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:34.060Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:35.120Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:35.151Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:35.151Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:36.204Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:36.252Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:36.252Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:37.322Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:37.411Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:37.411Z pw:webserver Waiting 1000ms
+[WebServer] vite v7.3.6 building client environment for production...
+2026-09-11T19:17:38.627Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:38.958Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:38.958Z pw:webserver Waiting 1000ms
+[WebServer] transforming...
+2026-09-11T19:17:39.961Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:39.964Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:39.964Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:40.996Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:41.033Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:41.033Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:42.061Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:42.142Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:42.142Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:43.166Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:43.269Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:43.269Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:44.299Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:44.342Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:44.343Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:45.440Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:45.550Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:45.550Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:46.622Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:46.653Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:46.653Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:47.691Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:47.739Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:47.739Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:48.768Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:48.771Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:48.771Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:49.817Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:49.850Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:49.850Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:50.964Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:51.158Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:51.159Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:52.206Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:52.252Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:52.252Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:53.369Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:53.373Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:53.374Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:54.469Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:54.473Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:54.473Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:55.514Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:55.562Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:55.563Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:56.620Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:56.817Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:56.818Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:58.057Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:58.064Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:58.064Z pw:webserver Waiting 1000ms
+2026-09-11T19:17:59.191Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:17:59.272Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:17:59.273Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:00.337Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:00.537Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:00.537Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:01.638Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:01.642Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:01.642Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:02.722Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:02.815Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:02.815Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:03.931Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:03.951Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:03.952Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:05.118Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:05.122Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:05.122Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:06.295Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:06.592Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:06.592Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:08.580Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:09.327Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:09.327Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:10.691Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:10.707Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:11.220Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:12.227Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:12.237Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:12.237Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:13.242Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:13.287Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:13.287Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:14.383Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:14.974Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:14.974Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:16.999Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:17.518Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:17.518Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:18.673Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:18.892Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:18.892Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:19.976Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:20.156Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:20.156Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:21.642Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:21.774Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:21.774Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:23.126Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:23.871Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:23.872Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:25.194Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:25.810Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:25.810Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:26.887Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:26.983Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:26.983Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:28.051Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:28.056Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:28.056Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:29.158Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:29.234Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:29.234Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:30.303Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:30.407Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:30.407Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:31.451Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:31.490Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:31.490Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:32.625Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:32.784Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:32.784Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:33.833Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:33.909Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:33.909Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:34.985Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:35.154Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:35.154Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:36.236Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:36.244Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:36.244Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:37.296Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:37.357Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:37.357Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:38.382Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:38.420Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:38.421Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:39.487Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:39.553Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:39.553Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:40.614Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:40.678Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:40.678Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:41.683Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:41.688Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:41.688Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:42.869Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:42.872Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:42.872Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:44.007Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:44.075Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:44.075Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:45.122Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:45.165Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:45.165Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:46.366Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:46.370Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:46.370Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:47.411Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:47.488Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:47.489Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:49.339Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:49.437Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:49.437Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:51.052Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:52.864Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:52.864Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:53.868Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:53.873Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:53.873Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:54.883Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:55.297Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:55.297Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:56.539Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:56.778Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:56.778Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:58.073Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:18:58.768Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:18:58.769Z pw:webserver Waiting 1000ms
+2026-09-11T19:18:59.949Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:00.252Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:00.252Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:01.320Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:01.542Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:01.542Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:02.995Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:03.002Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:03.002Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:04.250Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:04.629Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:04.629Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:06.982Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:09.515Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:09.515Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:11.681Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:11.979Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:11.982Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:13.192Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:13.198Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:13.198Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:14.660Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:14.866Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:14.866Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:16.287Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:16.291Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:16.291Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:17.588Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:17.593Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:17.593Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:19.259Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:19.264Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:19.264Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:20.676Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:20.681Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:20.681Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:22.010Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:22.017Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:22.017Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:23.391Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:23.972Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:23.972Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:25.218Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:25.837Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:25.864Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:27.617Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:28.148Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:28.148Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:29.263Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:29.373Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:29.373Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:30.540Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:30.728Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:30.728Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:31.737Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:32.065Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:32.068Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:33.113Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:33.200Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:33.200Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:34.308Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:34.312Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:34.312Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:35.468Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:35.711Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:35.711Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:36.908Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:37.102Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:37.103Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:38.315Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:38.560Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:38.560Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:39.685Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:40.428Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:40.429Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:41.874Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:43.260Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:43.260Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:44.498Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:44.880Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:44.880Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:46.159Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:46.471Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:46.471Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:47.553Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:47.678Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:47.679Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:48.762Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:48.845Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:48.845Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:49.969Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:50.014Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:50.014Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:51.075Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:51.083Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:51.138Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:52.280Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:52.407Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:52.407Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:53.475Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:53.527Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:53.527Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:54.867Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:54.977Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:54.977Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:56.150Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:56.592Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:56.593Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:57.651Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:57.792Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:57.924Z pw:webserver Waiting 1000ms
+2026-09-11T19:19:59.015Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:19:59.472Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:19:59.473Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:00.560Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:01.455Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:01.456Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:02.977Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:03.351Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:03.351Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:05.231Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:05.375Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:05.376Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:06.453Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:06.459Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:06.459Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:07.565Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:07.719Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:07.719Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:08.779Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:08.860Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:08.860Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:09.904Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:09.980Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:09.981Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:11.033Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:11.079Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:11.079Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:12.119Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:12.184Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:12.185Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:13.232Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:13.238Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:13.238Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:14.285Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:14.312Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:14.312Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:15.340Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:15.409Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:15.409Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:16.469Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:16.472Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:16.472Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:17.521Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:17.560Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:17.560Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:18.669Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:18.731Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:18.731Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:19.790Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:19.887Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:19.888Z pw:webserver Waiting 1000ms
+[WebServer] ✓ 2055 modules transformed.
+2026-09-11T19:20:20.900Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:20.905Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:20.905Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:21.944Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:21.982Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:21.982Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:23.035Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:23.081Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:23.081Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:24.097Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:24.119Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:24.119Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:25.155Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:25.196Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:25.196Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:26.262Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:26.387Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:26.388Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:27.592Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:28.289Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:28.289Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:29.745Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:20:30.667Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:20:30.668Z pw:webserver Waiting 1000ms
+2026-09-11T19:20:47.089Z pw:webserver HTTP GET: http://localhost:4193/
+2026-09-11T19:21:13.829Z pw:webserver Error while checking if http://localhost:4193/ is available: connect ECONNREFUSED ::1:4193
+connect ECONNREFUSED 127.0.0.1:4193
+2026-09-11T19:21:13.830Z pw:webserver Waiting 1000ms
+2026-09-11T19:21:13.832Z pw:webserver Terminating the WebServer
+2026-09-11T19:21:34.748Z pw:webserver Terminated the WebServer
+
+Error: Timed out waiting 300000ms from config.webServer.
+2026-09-11T19:21:34.756Z pw:webserver Terminating the WebServer
+2026-09-11T19:21:34.756Z pw:webserver Terminated the WebServer
+
+

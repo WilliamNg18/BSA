@@ -393,3 +393,13 @@ Day judging is not an additional calculator saving; abstention remains manual,
 code-cleared cohorts require no operator review, and no payment is calculated.
 Existing virtual month, sweep, twelve examples and day summaries remain intact.
 No shared primitive, global style, lifecycle, store or algorithm changes.
+
+## 2026-09-12: Account transfer checkpoint
+
+Checkpoint before transfer; all branches preserved; no merges during the freeze.
+
+Commit and push unfinished work without waiting for tests. Preserve the eight
+stream heads with annotated checkpoint tags and document actual interrupted
+results, not inferred passes. Main's handover/tracking checkpoint changes no
+application source and does not complete Tasks 8-13. The later owner instruction
+determines whether the proposed transfer proceeds.

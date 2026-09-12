@@ -1,0 +1,312 @@
+build-and-deploy	Set up job	﻿2026-09-11T18:25:22.0364744Z Current runner version: '2.337.0'
+build-and-deploy	Set up job	2026-09-11T18:25:22.0402005Z ##[group]Runner Image Provisioner
+build-and-deploy	Set up job	2026-09-11T18:25:22.0403465Z Hosted Compute Agent
+build-and-deploy	Set up job	2026-09-11T18:25:22.0404448Z Version: 20260828.587
+build-and-deploy	Set up job	2026-09-11T18:25:22.0405599Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+build-and-deploy	Set up job	2026-09-11T18:25:22.0406899Z Build Date: 2026-08-28T16:44:25Z
+build-and-deploy	Set up job	2026-09-11T18:25:22.0408159Z Worker ID: {5ad3c691-a519-4355-838f-78e3683dd445}
+build-and-deploy	Set up job	2026-09-11T18:25:22.0409781Z Azure Region: westus2
+build-and-deploy	Set up job	2026-09-11T18:25:22.0410791Z ##[endgroup]
+build-and-deploy	Set up job	2026-09-11T18:25:22.0413193Z ##[group]Operating System
+build-and-deploy	Set up job	2026-09-11T18:25:22.0414312Z Ubuntu
+build-and-deploy	Set up job	2026-09-11T18:25:22.0415231Z 24.04.5
+build-and-deploy	Set up job	2026-09-11T18:25:22.0416221Z LTS
+build-and-deploy	Set up job	2026-09-11T18:25:22.0417106Z ##[endgroup]
+build-and-deploy	Set up job	2026-09-11T18:25:22.0418194Z ##[group]Runner Image
+build-and-deploy	Set up job	2026-09-11T18:25:22.0419745Z Image: ubuntu-24.04
+build-and-deploy	Set up job	2026-09-11T18:25:22.0420802Z Version: 20260907.300.1
+build-and-deploy	Set up job	2026-09-11T18:25:22.0423044Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260907.300/images/ubuntu/Ubuntu2404-Readme.md
+build-and-deploy	Set up job	2026-09-11T18:25:22.0426217Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260907.300
+build-and-deploy	Set up job	2026-09-11T18:25:22.0428055Z ##[endgroup]
+build-and-deploy	Set up job	2026-09-11T18:25:22.0430777Z ##[group]GITHUB_TOKEN Permissions
+build-and-deploy	Set up job	2026-09-11T18:25:22.0433710Z Contents: read
+build-and-deploy	Set up job	2026-09-11T18:25:22.0434698Z Metadata: read
+build-and-deploy	Set up job	2026-09-11T18:25:22.0435811Z PullRequests: write
+build-and-deploy	Set up job	2026-09-11T18:25:22.0436926Z ##[endgroup]
+build-and-deploy	Set up job	2026-09-11T18:25:22.0440484Z Secret source: Actions
+build-and-deploy	Set up job	2026-09-11T18:25:22.0442045Z Cache mode: write
+build-and-deploy	Set up job	2026-09-11T18:25:22.0443267Z Prepare workflow directory
+build-and-deploy	Set up job	2026-09-11T18:25:22.1137218Z Prepare all required actions
+build-and-deploy	Set up job	2026-09-11T18:25:22.1212368Z Getting action download info
+build-and-deploy	Set up job	2026-09-11T18:25:22.5949619Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+build-and-deploy	Set up job	2026-09-11T18:25:22.7145964Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build-and-deploy	Set up job	2026-09-11T18:25:22.8279174Z Download action repository 'Azure/static-web-apps-deploy@v1' (SHA:1a947af9992250f3bc2e68ad0754c0b0c11566c9)
+build-and-deploy	Set up job	2026-09-11T18:25:23.1236892Z Complete job name: build-and-deploy
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	﻿2026-09-11T18:25:23.1761882Z ##[group]Build container for action use: '/home/runner/work/_actions/Azure/static-web-apps-deploy/v1/Dockerfile'.
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.1908158Z ##[command]/usr/bin/docker build -t f554ca:1e82671668d148898163abe58bab64ba -f "/home/runner/work/_actions/Azure/static-web-apps-deploy/v1/Dockerfile" "/home/runner/work/_actions/Azure/static-web-apps-deploy/v1"
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9338144Z #0 building with "default" instance using docker driver
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9340009Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9340780Z #1 [internal] load build definition from Dockerfile
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9342494Z #1 transferring dockerfile: 160B 0.0s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9343895Z #1 DONE 0.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9344442Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9345297Z #2 [internal] load metadata for mcr.microsoft.com/appsvc/staticappsclient:stable
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:23.9347038Z #2 DONE 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0580308Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0583561Z #3 [internal] load .dockerignore
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0588829Z #3 transferring context: 2B done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0591343Z #3 DONE 0.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0593229Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0594271Z #4 [internal] load build context
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0596374Z #4 transferring context: 107B done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0598659Z #4 DONE 0.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0599892Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0603730Z #5 [1/2] FROM mcr.microsoft.com/appsvc/staticappsclient:stable@sha256:8ed8ea489d04d0636b5c47fbaa44f005975ab0d1f03eddc28014cdf7a061f7f4
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0614809Z #5 resolve mcr.microsoft.com/appsvc/staticappsclient:stable@sha256:8ed8ea489d04d0636b5c47fbaa44f005975ab0d1f03eddc28014cdf7a061f7f4 done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0628152Z #5 sha256:2dadab5848b144c9b973125a744d7db13f89b1ae3e08bc06af4115e3ebb6885b 14.85kB / 14.85kB done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0634943Z #5 sha256:9a57ac12a02944f33f4613c51086e29027d2a9fe416981d3254c55b723712a5c 13.63MB / 60.95MB 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0641206Z #5 sha256:673965f86294fda2f405de92b30753f90cbd1097f62d6ace60fd5bc27f7dff2a 5.24MB / 16.97MB 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0652092Z #5 sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab 3.15MB / 62.25MB 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.0657984Z #5 sha256:8ed8ea489d04d0636b5c47fbaa44f005975ab0d1f03eddc28014cdf7a061f7f4 2.88kB / 2.88kB done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.1789114Z #5 sha256:9a57ac12a02944f33f4613c51086e29027d2a9fe416981d3254c55b723712a5c 35.65MB / 60.95MB 0.2s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.1805035Z #5 sha256:673965f86294fda2f405de92b30753f90cbd1097f62d6ace60fd5bc27f7dff2a 16.97MB / 16.97MB 0.2s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.1841083Z #5 sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab 22.02MB / 62.25MB 0.2s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.1870226Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 0B / 221.00MB 0.2s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.2739098Z #5 sha256:9a57ac12a02944f33f4613c51086e29027d2a9fe416981d3254c55b723712a5c 50.33MB / 60.95MB 0.3s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.2765871Z #5 sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab 36.70MB / 62.25MB 0.3s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.2906647Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 12.58MB / 221.00MB 0.3s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.4622712Z #5 sha256:9a57ac12a02944f33f4613c51086e29027d2a9fe416981d3254c55b723712a5c 60.95MB / 60.95MB 0.4s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.4643801Z #5 sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab 62.25MB / 62.25MB 0.5s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.4660108Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 55.57MB / 221.00MB 0.5s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.4742429Z #5 extracting sha256:9a57ac12a02944f33f4613c51086e29027d2a9fe416981d3254c55b723712a5c
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.4748702Z #5 sha256:89732bc7504122601f40269fc9ddfb70982e633ea9caf641ae45736f2846b004 39B / 39B 0.4s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.4778243Z #5 sha256:3b17442d31d185afee5af808ff7f34be99df67a06c11ef3819e3612d90105eba 13.63MB / 36.64MB 0.5s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.5625234Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 80.74MB / 221.00MB 0.6s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.5630970Z #5 sha256:3b17442d31d185afee5af808ff7f34be99df67a06c11ef3819e3612d90105eba 31.46MB / 36.64MB 0.6s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.7573928Z #5 sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab 62.25MB / 62.25MB 0.6s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.7577601Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 108.00MB / 221.00MB 0.8s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.7581137Z #5 sha256:3b17442d31d185afee5af808ff7f34be99df67a06c11ef3819e3612d90105eba 36.64MB / 36.64MB 0.8s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.8629008Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 120.59MB / 221.00MB 0.9s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.8677277Z #5 sha256:3b17442d31d185afee5af808ff7f34be99df67a06c11ef3819e3612d90105eba 36.64MB / 36.64MB 0.8s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.8685610Z #5 sha256:2151d16d7dcca2946d0178aa0cd40138de91ad550daa6c0ce23cc8680cef44dc 1.83MB / 1.83MB 0.9s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.8691769Z #5 sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 4.19MB / 79.23MB 0.9s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:24.8697570Z #5 sha256:3175e53e95b1cb83067cc50762c4ffd867c26a65786c1c543a424020be5e04fa 0B / 123.28kB 0.9s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.0286380Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 146.80MB / 221.00MB 1.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.0292461Z #5 sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 25.17MB / 79.23MB 1.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.0301039Z #5 sha256:3175e53e95b1cb83067cc50762c4ffd867c26a65786c1c543a424020be5e04fa 123.28kB / 123.28kB 0.9s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.0308132Z #5 sha256:b63b9d8b66b5ff5212c0d72d09c4d3feadccf1db4ef01d419da27de677a7e768 0B / 1.31MB 1.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.2563799Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 169.87MB / 221.00MB 1.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.2570440Z #5 sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 48.23MB / 79.23MB 1.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.2597361Z #5 sha256:b63b9d8b66b5ff5212c0d72d09c4d3feadccf1db4ef01d419da27de677a7e768 1.31MB / 1.31MB 1.0s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.2603668Z #5 sha256:28fac68ae10cfabc2b6e0950099b1f82f89d163713e7add747a7881f65df2107 733.27kB / 733.27kB 1.1s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.2608613Z #5 sha256:54839ea777508dd630548e945f939d611fc491006c088552eb814f5245274d23 0B / 40.28MB 1.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.3583583Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 207.62MB / 221.00MB 1.4s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.3588737Z #5 sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 79.23MB / 79.23MB 1.4s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.3593368Z #5 sha256:54839ea777508dd630548e945f939d611fc491006c088552eb814f5245274d23 40.28MB / 40.28MB 1.4s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:25.6761860Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 221.00MB / 221.00MB 1.5s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.7364649Z #5 sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 221.00MB / 221.00MB 2.7s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.7383324Z #5 sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 79.23MB / 79.23MB 2.7s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.7413812Z #5 sha256:54839ea777508dd630548e945f939d611fc491006c088552eb814f5245274d23 40.28MB / 40.28MB 2.7s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.7415819Z #5 sha256:e5b98d580c88cbc9c3209953cda9374569e5eb75690b57485ec7b2265f5c9604 176B / 176B 2.7s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.7417257Z #5 sha256:7364f3ef58a1fcc634a004f1a3f535e1da1400f1ffd64ac989c3d51117422f5e 0B / 71.24MB 2.7s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.7421320Z #5 sha256:093d222846cbb3af8c495e5edc11036cc3764df86b2ea13eba45d8d633027fb8 176B / 176B 2.7s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.8385126Z #5 sha256:7364f3ef58a1fcc634a004f1a3f535e1da1400f1ffd64ac989c3d51117422f5e 17.83MB / 71.24MB 2.8s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:26.9427027Z #5 sha256:7364f3ef58a1fcc634a004f1a3f535e1da1400f1ffd64ac989c3d51117422f5e 41.94MB / 71.24MB 2.9s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:27.0569174Z #5 sha256:7364f3ef58a1fcc634a004f1a3f535e1da1400f1ffd64ac989c3d51117422f5e 71.24MB / 71.24MB 3.1s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:28.0583530Z #5 extracting sha256:9a57ac12a02944f33f4613c51086e29027d2a9fe416981d3254c55b723712a5c 3.7s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:28.2065197Z #5 extracting sha256:673965f86294fda2f405de92b30753f90cbd1097f62d6ace60fd5bc27f7dff2a 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:28.7033470Z #5 extracting sha256:673965f86294fda2f405de92b30753f90cbd1097f62d6ace60fd5bc27f7dff2a 0.4s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:29.2720288Z #5 extracting sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:31.7339979Z #5 extracting sha256:40dc2f594569ada869542e14b3d9b19af523e5a664b2099fa5deee0fac6bf3ab 2.3s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:32.2348388Z #5 extracting sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:37.3020282Z #5 extracting sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 5.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:38.2526365Z #5 extracting sha256:c7cdd48d6d211d1aca6edf8ae5ac69979ee52d0efbe788ad4073f5bda7763d5d 6.0s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:40.7905414Z #5 extracting sha256:89732bc7504122601f40269fc9ddfb70982e633ea9caf641ae45736f2846b004
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:40.9335949Z #5 extracting sha256:89732bc7504122601f40269fc9ddfb70982e633ea9caf641ae45736f2846b004 done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:40.9338586Z #5 extracting sha256:3b17442d31d185afee5af808ff7f34be99df67a06c11ef3819e3612d90105eba 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:42.2105042Z #5 extracting sha256:3b17442d31d185afee5af808ff7f34be99df67a06c11ef3819e3612d90105eba 1.2s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:42.2814628Z #5 extracting sha256:2151d16d7dcca2946d0178aa0cd40138de91ad550daa6c0ce23cc8680cef44dc
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:42.5588633Z #5 extracting sha256:2151d16d7dcca2946d0178aa0cd40138de91ad550daa6c0ce23cc8680cef44dc 0.1s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:42.5591005Z #5 extracting sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:43.7629095Z #5 extracting sha256:5580a4bf363d0ef29fbd6a90ba5891fac7d0a8cddd81435531b222462b9446cf 1.2s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:44.1298623Z #5 extracting sha256:3175e53e95b1cb83067cc50762c4ffd867c26a65786c1c543a424020be5e04fa
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:44.2442193Z #5 extracting sha256:3175e53e95b1cb83067cc50762c4ffd867c26a65786c1c543a424020be5e04fa done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:44.2443969Z #5 extracting sha256:b63b9d8b66b5ff5212c0d72d09c4d3feadccf1db4ef01d419da27de677a7e768 0.1s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:44.2452399Z #5 extracting sha256:28fac68ae10cfabc2b6e0950099b1f82f89d163713e7add747a7881f65df2107
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:44.4117677Z #5 extracting sha256:28fac68ae10cfabc2b6e0950099b1f82f89d163713e7add747a7881f65df2107 0.0s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:44.4130582Z #5 extracting sha256:54839ea777508dd630548e945f939d611fc491006c088552eb814f5245274d23 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:45.0298415Z #5 extracting sha256:54839ea777508dd630548e945f939d611fc491006c088552eb814f5245274d23 0.6s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:45.0302502Z #5 extracting sha256:093d222846cbb3af8c495e5edc11036cc3764df86b2ea13eba45d8d633027fb8
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:45.1883559Z #5 extracting sha256:093d222846cbb3af8c495e5edc11036cc3764df86b2ea13eba45d8d633027fb8 done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:45.1886567Z #5 extracting sha256:e5b98d580c88cbc9c3209953cda9374569e5eb75690b57485ec7b2265f5c9604 done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:45.1887716Z #5 extracting sha256:7364f3ef58a1fcc634a004f1a3f535e1da1400f1ffd64ac989c3d51117422f5e 0.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:48.2495239Z #5 extracting sha256:7364f3ef58a1fcc634a004f1a3f535e1da1400f1ffd64ac989c3d51117422f5e 3.2s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.0859094Z #5 DONE 25.1s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.2605597Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.2606947Z #6 [2/2] COPY entrypoint.sh /entrypoint.sh
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.2608470Z #6 DONE 0.0s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.2612191Z 
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.2612942Z #7 exporting to image
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:49.2613624Z #7 exporting layers
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:50.4303631Z #7 exporting layers 1.3s done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:50.4530107Z #7 writing image sha256:bc7363318ab736f9b8b3c307d3f60c19dcf4d2b60407890a644e9be779721bdc done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:50.4531586Z #7 naming to docker.io/library/f554ca:1e82671668d148898163abe58bab64ba done
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:50.4534130Z #7 DONE 1.3s
+build-and-deploy	Build Azure/static-web-apps-deploy@v1	2026-09-11T18:25:50.4588730Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	﻿2026-09-11T18:25:50.4895614Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4904123Z ##[group]Run actions/checkout@v4
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4904571Z with:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4904807Z   repository: WilliamNg18/BSA
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4907294Z   token: ***
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4907520Z   ssh-strict: true
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4907732Z   ssh-user: git
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4907950Z   persist-credentials: true
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4908198Z   clean: true
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4908418Z   sparse-checkout-cone-mode: true
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4908734Z   fetch-depth: 1
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4908945Z   fetch-tags: false
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4909163Z   show-progress: true
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4909765Z   lfs: false
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4910048Z   submodules: false
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4910339Z   set-safe-directory: true
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4910600Z   allow-unsafe-pr-checkout: false
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.4911197Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6214206Z Syncing repository: WilliamNg18/BSA
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6216172Z ##[group]Getting Git version info
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6216780Z Working directory is '/home/runner/work/BSA/BSA'
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6217734Z [command]/usr/bin/git version
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6294862Z git version 2.55.0
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6342655Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6350513Z Temporarily overriding HOME='/home/runner/work/_temp/06dd0f1b-229f-4f7b-9096-24f719e7fd40' before making global git config changes
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6352196Z Adding repository directory to the temporary git global config as a safe directory
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6354063Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/BSA/BSA
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6427919Z Deleting the contents of '/home/runner/work/BSA/BSA'
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6435012Z ##[group]Initializing the repository
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6451228Z [command]/usr/bin/git init /home/runner/work/BSA/BSA
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6641491Z hint: Using 'master' as the name for the initial branch. This default branch name
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6642717Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6643787Z hint: to use in all of your new repositories, which will suppress this warning,
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6644576Z hint: call:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6647479Z hint:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6648409Z hint: 	git config --global init.defaultBranch <name>
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6649095Z hint:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6653470Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6654503Z hint: 'development'. The just-created branch can be renamed via this command:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6655265Z hint:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6679008Z hint: 	git branch -m <name>
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6684420Z hint:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6685540Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6686709Z Initialized empty Git repository in /home/runner/work/BSA/BSA/.git/
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6743884Z [command]/usr/bin/git remote add origin https://github.com/WilliamNg18/BSA
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6792770Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6794211Z ##[group]Disabling automatic garbage collection
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6820680Z [command]/usr/bin/git config --local gc.auto 0
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6826189Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6827976Z ##[group]Setting up auth
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6828905Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.6851517Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.7385916Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.7396393Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.7730360Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.7781744Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.8043475Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.8076393Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.8077588Z ##[group]Fetching the repository
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:50.8087956Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d0ed97e1a4bd1c16ffe43ee7103de8a52025cc8e:refs/remotes/pull/23/merge
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7126648Z From https://github.com/WilliamNg18/BSA
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7131144Z  * [new ref]         d0ed97e1a4bd1c16ffe43ee7103de8a52025cc8e -> pull/23/merge
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7134802Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7135884Z ##[group]Determining the checkout info
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7138257Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7146619Z [command]/usr/bin/git sparse-checkout disable
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7206081Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7243659Z ##[group]Checking out the ref
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:52.7250332Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/23/merge
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1022155Z Note: switching to 'refs/remotes/pull/23/merge'.
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1022904Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1036695Z You are in 'detached HEAD' state. You can look around, make experimental
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1037953Z changes and commit them, and you can discard any commits you make in this
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1039220Z state without impacting any branches by switching back to a branch.
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1040379Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1040928Z If you want to create a new branch to retain commits you create, you may
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1042355Z do so (now or later) by using -c with the switch command. Example:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1043016Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1043379Z   git switch -c <new-branch-name>
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1043850Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1044196Z Or undo this operation with:
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1044659Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1044973Z   git switch -
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1045373Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1045903Z Turn off this advice by setting config variable advice.detachedHead to false
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1046670Z 
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1047777Z HEAD is now at d0ed97e Merge 5ec240a079f4293af2772f631c52a021f2181c17 into 8c05b184f6c68ca1420fece3bfa8f46b15112f6c
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1050775Z ##[endgroup]
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1109267Z [command]/usr/bin/git log -1 --format=%H
+build-and-deploy	Run actions/checkout@v4	2026-09-11T18:25:53.1131094Z d0ed97e1a4bd1c16ffe43ee7103de8a52025cc8e
+build-and-deploy	Run actions/setup-node@v4	﻿2026-09-11T18:25:53.1402484Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1404262Z ##[group]Run actions/setup-node@v4
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1404538Z with:
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1404737Z   node-version: 22
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1404955Z   cache: npm
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1405205Z   cache-dependency-path: BSA/package-lock.json
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1405527Z   always-auth: false
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1405752Z   check-latest: false
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1408128Z   token: ***
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.1408340Z ##[endgroup]
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.2941030Z Found in cache @ /opt/hostedtoolcache/node/22.23.2/x64
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.2944679Z (node:2159) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.2946409Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.2948458Z ##[group]Environment details
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.8690351Z node: v22.23.2
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.8690890Z npm: 10.9.8
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.8691212Z yarn: 1.22.22
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.8701283Z ##[endgroup]
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.8751277Z [command]/opt/hostedtoolcache/node/22.23.2/x64/bin/npm config get cache
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:53.9958947Z /home/runner/.npm
+build-and-deploy	Run actions/setup-node@v4	2026-09-11T18:25:54.2824686Z npm cache is not found
+build-and-deploy	Run npm ci	﻿2026-09-11T18:25:54.2970458Z ##[group]Run npm ci
+build-and-deploy	Run npm ci	2026-09-11T18:25:54.2971025Z ^[[36;1mnpm ci^[[0m
+build-and-deploy	Run npm ci	2026-09-11T18:25:54.3021615Z shell: /usr/bin/bash -e {0}
+build-and-deploy	Run npm ci	2026-09-11T18:25:54.3021913Z ##[endgroup]
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9710198Z 
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9739898Z added 433 packages, and audited 434 packages in 15s
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9740770Z 
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9741516Z 82 packages are looking for funding
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9742423Z   run `npm fund` for details
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9742993Z 
+build-and-deploy	Run npm ci	2026-09-11T18:26:08.9743434Z found 0 vulnerabilities
+build-and-deploy	Run npm run build	﻿2026-09-11T18:26:09.0377568Z ##[group]Run npm run build
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.0377905Z ^[[36;1mnpm run build^[[0m
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.0414852Z shell: /usr/bin/bash -e {0}
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.0415130Z ##[endgroup]
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.1444791Z 
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.1446129Z > bsa-prescription-exception-case-builder@0.6.0 build
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.1447354Z > vite build
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.1447851Z 
+build-and-deploy	Run npm run build	2026-09-11T18:26:09.9743659Z ^[[36mvite v7.3.6 ^[[32mbuilding client environment for production...^[[36m^[[39m
+build-and-deploy	Run npm run build	2026-09-11T18:26:10.0512729Z transforming...
+build-and-deploy	Run npm run build	2026-09-11T18:26:14.9924923Z ^[[32m✓^[[39m 2053 modules transformed.
+build-and-deploy	Run npm run build	2026-09-11T18:26:23.3810816Z rendering chunks...
+build-and-deploy	Run npm run build	2026-09-11T18:26:23.3925403Z ^[[2mdist/^[[22m^[[32mindex.html                 ^[[39m^[[1m^[[2m  0.72 kB^[[22m^[[1m^[[22m
+build-and-deploy	Run npm run build	2026-09-11T18:26:23.3927409Z ^[[2mdist/^[[22m^[[32mstaticwebapp.config.json   ^[[39m^[[1m^[[2m  0.77 kB^[[22m^[[1m^[[22m
+build-and-deploy	Run npm run build	2026-09-11T18:26:23.3929286Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[35mindex-CFQIw7ou.css  ^[[39m^[[1m^[[2m 76.81 kB^[[22m^[[1m^[[22m
+build-and-deploy	Run npm run build	2026-09-11T18:26:23.3931725Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mindex-cqVt68mp.js   ^[[39m^[[1m^[[2m627.66 kB^[[22m^[[1m^[[22m
+build-and-deploy	Run npm run build	2026-09-11T18:26:23.3941889Z ^[[32m✓ built in 13.39s^[[39m
+build-and-deploy	Deploy configuration prerequisite	﻿2026-09-11T18:26:23.4876251Z ##[group]Run if [ -z "$DEPLOYMENT_TOKEN" ]; then
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4876705Z ^[[36;1mif [ -z "$DEPLOYMENT_TOKEN" ]; then^[[0m
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4877379Z ^[[36;1m  echo "::error::Deploy blocked: AZURE_STATIC_WEB_APPS_API_TOKEN is missing. Complete BSA/docs/DEPLOYMENT.md once, then rerun this workflow."^[[0m
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4878023Z ^[[36;1m  exit 1^[[0m
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4878235Z ^[[36;1mfi^[[0m
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4914704Z shell: /usr/bin/bash -e {0}
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4914978Z env:
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4915178Z   DEPLOYMENT_TOKEN: 
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.4915404Z ##[endgroup]
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.5003006Z ##[error]Deploy blocked: AZURE_STATIC_WEB_APPS_API_TOKEN is missing. Complete BSA/docs/DEPLOYMENT.md once, then rerun this workflow.
+build-and-deploy	Deploy configuration prerequisite	2026-09-11T18:26:23.5013694Z ##[error]Process completed with exit code 1.
+build-and-deploy	Post Run actions/checkout@v4	﻿2026-09-11T18:26:23.5156624Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.5157927Z Post job cleanup.
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6159922Z [command]/usr/bin/git version
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6221604Z git version 2.55.0
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6302307Z Temporarily overriding HOME='/home/runner/work/_temp/dbc35ef9-4e4b-40ed-9529-7073e9ce9c67' before making global git config changes
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6304136Z Adding repository directory to the temporary git global config as a safe directory
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6305517Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/BSA/BSA
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6368676Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6451101Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6833052Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6870322Z http.https://github.com/.extraheader
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.6930288Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.7031792Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.7683755Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-and-deploy	Post Run actions/checkout@v4	2026-09-11T18:26:23.7851572Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-and-deploy	Complete job	﻿2026-09-11T18:26:23.8538760Z Cleaning up orphan processes
+build-and-deploy	Complete job	2026-09-11T18:26:23.8828264Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

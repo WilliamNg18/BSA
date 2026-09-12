@@ -1,0 +1,102 @@
+
+Running 10 tests using 1 worker
+
+[1/10] [chromium] › tests\e2e\calculator.spec.ts:104:1 › calculator live edits, flag, route persistence, history, reset and rail
+[2/10] [chromium] › tests\e2e\pipeline.spec.ts:40:1 › six ordered stages preserve existing capture/pricing, assumptions and built-only assistance
+  1) [chromium] › tests\e2e\pipeline.spec.ts:40:1 › six ordered stages preserve existing capture/pricing, assumptions and built-only assistance 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+      - navigating to "http://localhost:4173/#pipeline", waiting until "load"
+
+
+      39 |
+      40 | test("six ordered stages preserve existing capture/pricing, assumptions and built-only assistance", async ({ page }) => {
+    > 41 |   await page.goto("./#pipeline");
+         |              ^
+      42 |   const stages = page.locator("[data-pipeline-stage]");
+      43 |   await expect(stages).toHaveCount(6);
+      44 |   expect(await stages.evaluateAll((els) => els.map((el) => el.getAttribute("data-pipeline-stage")))).toEqual(["1", "2", "3", "4", "5", "6"]);
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-26-eight-chapter-tour-and-full-referral-cyc-316bb6\BSA\tests\e2e\pipeline.spec.ts:41:14
+
+    Error Context: test-results\pipeline-six-ordered-stage-63794-s-and-built-only-assistance-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\pipeline-six-ordered-stage-63794-s-and-built-only-assistance-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\pipeline-six-ordered-stage-63794-s-and-built-only-assistance-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[3/10] [chromium] › tests\e2e\pipeline.spec.ts:67:1 › pipeline, scene and calculator share live counts, residuals and invalid/zero handling
+[4/10] [chromium] › tests\e2e\pipeline.spec.ts:198:1 › pipeline links and pain tooltips are keyboard accessible; Reset describes Off
+[5/10] [chromium] › tests\e2e\tour-cycle.spec.ts:18:3 › eight chapters remain independently reachable in both directions: agent false
+  2) [chromium] › tests\e2e\tour-cycle.spec.ts:18:3 › eight chapters remain independently reachable in both directions: agent false 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByRole('navigation', { name: 'Guided tour' })
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByRole('navigation', { name: 'Guided tour' }) with timeout 5000ms
+      - waiting for getByRole('navigation', { name: 'Guided tour' })
+        13 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+      63 |     await page.getByRole("menuitem", { name: "7. What the pharmacy sees", exact: true }).press("Enter");
+      64 |     await rail.getByRole("button", { name: "Dismiss tour" }).press("Enter");
+    > 65 |     await expect(rail).toHaveCount(0);
+         |                        ^
+      66 |     await page.getByRole("button", { name: "Restore tour", exact: true }).press("Enter");
+      67 |     await expect(rail).toContainText("7/8 · What the pharmacy sees");
+      68 |     await expect(page).toHaveURL(/\/pharmacy\/claims$/);
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-26-eight-chapter-tour-and-full-referral-cyc-316bb6\BSA\tests\e2e\tour-cycle.spec.ts:65:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\tour-cycle-eight-chapters--4aeca-both-directions-agent-false-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\tour-cycle-eight-chapters--4aeca-both-directions-agent-false-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\tour-cycle-eight-chapters--4aeca-both-directions-agent-false-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\tour-cycle-eight-chapters--4aeca-both-directions-agent-false-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[6/10] [chromium] › tests\e2e\tour-cycle.spec.ts:71:3 › cycle guide follows real human referral, correction, re-check and synthetic pricing: agent false
+[7/10] [chromium] › tests\e2e\tour-cycle.spec.ts:18:3 › eight chapters remain independently reachable in both directions: agent true
+[8/10] [chromium] › tests\e2e\tour-cycle.spec.ts:71:3 › cycle guide follows real human referral, correction, re-check and synthetic pricing: agent true
+[9/10] [chromium] › tests\e2e\tour-cycle.spec.ts:116:3 › cycle comparison preserves recorded state, reduced motion and accessible reflow at 360
+  3) [chromium] › tests\e2e\tour-cycle.spec.ts:116:3 › cycle comparison preserves recorded state, reduced motion and accessible reflow at 360 
+
+    Test timeout of 30000ms exceeded while setting up "page".
+
+    Error Context: test-results\tour-cycle-cycle-compariso-3dd1c-nd-accessible-reflow-at-360-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\tour-cycle-cycle-compariso-3dd1c-nd-accessible-reflow-at-360-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\tour-cycle-cycle-compariso-3dd1c-nd-accessible-reflow-at-360-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[10/10] [chromium] › tests\e2e\tour-cycle.spec.ts:116:3 › cycle comparison preserves recorded state, reduced motion and accessible reflow at 1440
+  3 failed
+    [chromium] › tests\e2e\pipeline.spec.ts:40:1 › six ordered stages preserve existing capture/pricing, assumptions and built-only assistance 
+    [chromium] › tests\e2e\tour-cycle.spec.ts:18:3 › eight chapters remain independently reachable in both directions: agent false 
+    [chromium] › tests\e2e\tour-cycle.spec.ts:116:3 › cycle comparison preserves recorded state, reduced motion and accessible reflow at 360 
+  7 passed (10.8m)

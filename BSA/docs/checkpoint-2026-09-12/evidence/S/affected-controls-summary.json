@@ -1,0 +1,10 @@
+{
+  "revision": "32b5342",
+  "initial_passed": 38,
+  "initial_timed_out": 2,
+  "unchanged_recheck_passed": 2,
+  "axe_audits": 7,
+  "axe_violations": 0,
+  "csp_reports": 9,
+  "csp_violations": 0
+}

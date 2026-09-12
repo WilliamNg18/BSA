@@ -1,0 +1,7 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test:a11y
+> playwright test --config tests/e2e/accessibility-final.config.ts --reporter=dot --global-timeout=1800000
+
+
+Running 159 tests using 2 workers
+······································

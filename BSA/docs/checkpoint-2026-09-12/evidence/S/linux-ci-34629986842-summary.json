@@ -1,0 +1,15 @@
+{
+  "run": 34629986842,
+  "commit": "1a103e36ab5b07da3aa99f8b3cb06fb85159db2e",
+  "unique_axe_audits": 247,
+  "axe_violations": 0,
+  "unique_csp_reports": 183,
+  "csp_violations": 0,
+  "failure_files": [],
+  "sample_paths": [
+    "test-results/accessibility-final-final--08b10-lse-axe-Overview-two-places-chromium/csp-violations.json",
+    "test-results/accessibility-final-final--08b10-lse-axe-Overview-two-places-chromium/screen-axe.json",
+    "test-results/accessibility-final-final--0946a-lse-axe-Overview-two-places-chromium/screen-axe.json",
+    "test-results/accessibility-final-final--0946a-lse-axe-Overview-two-places-chromium/csp-violations.json"
+  ]
+}

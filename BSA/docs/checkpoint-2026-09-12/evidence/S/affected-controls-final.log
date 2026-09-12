@@ -1,0 +1,121 @@
+
+Running 40 tests using 1 worker
+
+[1/40] [chromium] › tests\e2e\accessibility-final.spec.ts:113:1 › keyboard navigation, menus and tooltip under real CSP
+[2/40] [chromium] › tests\e2e\accessibility-final.spec.ts:147:5 › keyboard motion=reduce › reset preserves scroll compensation, containment and focus
+[3/40] [chromium] › tests\e2e\accessibility-final.spec.ts:193:5 › keyboard motion=reduce › simulation and sweep have keyboard-controlled motion alternatives
+[4/40] [chromium] › tests\e2e\accessibility-final.spec.ts:225:5 › keyboard motion=reduce › mobile navigation sheet retains focus and scroll lock
+[5/40] [chromium] › tests\e2e\accessibility-final.spec.ts:247:5 › keyboard motion=reduce › tour dismissal and restoration retain keyboard focus
+[6/40] [chromium] › tests\e2e\accessibility-final.spec.ts:147:5 › keyboard motion=no-preference › reset preserves scroll compensation, containment and focus
+[7/40] [chromium] › tests\e2e\accessibility-final.spec.ts:193:5 › keyboard motion=no-preference › simulation and sweep have keyboard-controlled motion alternatives
+[8/40] [chromium] › tests\e2e\accessibility-final.spec.ts:225:5 › keyboard motion=no-preference › mobile navigation sheet retains focus and scroll lock
+[9/40] [chromium] › tests\e2e\accessibility-final.spec.ts:247:5 › keyboard motion=no-preference › tour dismissal and restoration retain keyboard focus
+[10/40] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24107 manual trace and raw pack are not agent evidence
+[11/40] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24112 manual trace and raw pack are not agent evidence
+  1) [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24112 manual trace and raw pack are not agent evidence 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Raw captured fields', exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Raw captured fields', exact: true }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Raw captured fields', exact: true })
+      - Protocol error (Runtime.callFunctionOn): Internal server error, session closed.
+
+
+      28 |     }
+      29 |     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
+    > 30 |     await expect(page.getByRole("heading", { name: "Raw captured fields", exact: true })).toBeVisible();
+         |                                                                                           ^
+      31 |     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toHaveCount(0);
+      32 |     await expect(page.getByRole("heading", { name: "Applicable Drug Tariff provision", exact: true })).toHaveCount(0);
+      33 |     await expect(page.getByRole("list", { name: "Confidence signals", exact: true })).toHaveCount(0);
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-15-stream-s-accessibility-and-strict-csp-de-723765\BSA\tests\e2e\case-presentation.spec.ts:30:91
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\case-presentation-Task6-EX-a8606-pack-are-not-agent-evidence-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\case-presentation-Task6-EX-a8606-pack-are-not-agent-evidence-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\case-presentation-Task6-EX-a8606-pack-are-not-agent-evidence-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\case-presentation-Task6-EX-a8606-pack-are-not-agent-evidence-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[12/40] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24119 manual trace and raw pack are not agent evidence
+[13/40] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24123 manual trace and raw pack are not agent evidence
+[14/40] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24101 manual trace and raw pack are not agent evidence
+[15/40] [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24088 manual trace and raw pack are not agent evidence
+[16/40] [chromium] › tests\e2e\case-presentation.spec.ts:175:1 › Task6 D keeps three reasons and four failed signals; E remains no-call On
+[17/40] [chromium] › tests\e2e\controls.spec.ts:5:1 › EX-24107 trace replay announces one step at a time, Show all and Clear work
+[18/40] [chromium] › tests\e2e\controls.spec.ts:5:1 › EX-24112 trace replay announces one step at a time, Show all and Clear work
+[19/40] [chromium] › tests\e2e\controls.spec.ts:30:1 › pharmacy is advisory for missing, corrected, complete, unreadable and unavailable inputs
+[20/40] [chromium] › tests\e2e\controls.spec.ts:62:1 › override requires eight trimmed characters then writes and preserves a human record
+[21/40] [chromium] › tests\e2e\controls.spec.ts:90:1 › recommended B decision replays under July; flag off applies to replay; Reset restores seed
+[22/40] [chromium] › tests\e2e\controls.spec.ts:122:1 › agent flag hides recommendations on every case without changing case state
+[23/40] [chromium] › tests\e2e\controls.spec.ts:145:1 › D shows its three abstention reasons; E has no agent trace
+[24/40] [chromium] › tests\e2e\controls.spec.ts:162:1 › product header retains working controls without presentation UI
+[25/40] [chromium] › tests\e2e\controls.spec.ts:188:1 › queue state filters are interactive
+[26/40] [chromium] › tests\e2e\routes.spec.ts:83:1 › all case views can be revisited without unstable snapshots
+[27/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 360 light › single row, pinned rail, full grouped navigation and both agent states
+[28/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 768 light › single row, pinned rail, full grouped navigation and both agent states
+[29/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 960 light › single row, pinned rail, full grouped navigation and both agent states
+[30/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1024 light › single row, pinned rail, full grouped navigation and both agent states
+[31/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1280 light › single row, pinned rail, full grouped navigation and both agent states
+[32/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1440 light › single row, pinned rail, full grouped navigation and both agent states
+[33/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1920 light › single row, pinned rail, full grouped navigation and both agent states
+[34/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 360 dark › single row, pinned rail, full grouped navigation and both agent states
+[35/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 768 dark › single row, pinned rail, full grouped navigation and both agent states
+  2) [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 768 dark › single row, pinned rail, full grouped navigation and both agent states 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.isVisible: Test timeout of 30000ms exceeded.
+    Call log:
+        - checking visibility of getByRole('navigation', { name: 'Primary', exact: true }).getByRole('button', { name: 'Open navigation', exact: true })
+
+
+      14 |   const nav = page.getByRole("navigation", { name: "Primary", exact: true });
+      15 |   const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
+    > 16 |   if (await mobile.isVisible()) {
+         |                    ^
+      17 |     await mobile.press("Enter");
+      18 |     await page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true }).press("Enter");
+      19 |     await expect(page.getByRole("dialog", { name: "Navigation", exact: true })).toHaveCount(0);
+        at navigatePrimary (C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-15-stream-s-accessibility-and-strict-csp-de-723765\BSA\tests\e2e\tour.spec.ts:16:20)
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-15-stream-s-accessibility-and-strict-csp-de-723765\BSA\tests\e2e\tour.spec.ts:55:161
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\tour-tour-header-768-dark--17383-ation-and-both-agent-states-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\tour-tour-header-768-dark--17383-ation-and-both-agent-states-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\tour-tour-header-768-dark--17383-ation-and-both-agent-states-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\tour-tour-header-768-dark--17383-ation-and-both-agent-states-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[36/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 960 dark › single row, pinned rail, full grouped navigation and both agent states
+[37/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1024 dark › single row, pinned rail, full grouped navigation and both agent states
+[38/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1280 dark › single row, pinned rail, full grouped navigation and both agent states
+[39/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1440 dark › single row, pinned rail, full grouped navigation and both agent states
+[40/40] [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 1920 dark › single row, pinned rail, full grouped navigation and both agent states
+  2 failed
+    [chromium] › tests\e2e\case-presentation.spec.ts:7:3 › Task6 EX-24112 manual trace and raw pack are not agent evidence 
+    [chromium] › tests\e2e\tour.spec.ts:36:7 › tour header 768 dark › single row, pinned rail, full grouped navigation and both agent states 
+  38 passed (15.1m)

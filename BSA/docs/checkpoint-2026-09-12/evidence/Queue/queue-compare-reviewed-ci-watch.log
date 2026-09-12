@@ -1,0 +1,469 @@
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 1 minute ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 2 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 4 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 5 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 6 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 7 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 8 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 9 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 10 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 11 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 12 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 14 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 15 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 16 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 17 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 18 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 19 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 20 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 21 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 23 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 60 seconds. Press Ctrl+C to quit.
+
+* williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 24 minutes ago
+
+JOBS
+* test (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  * Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  * Informational quarantined regressions
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+X williamng18-queue-comparison-control CI WilliamNg18/BSA#32 · 34635510262
+Triggered via pull_request about 25 minutes ago
+
+JOBS
+X test in 24m55s (ID 103382378659)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run npm ci
+  ✓ Run npm run check
+  ✓ Informational gzip size
+  ✓ Run npm test
+  ✓ Advisory content report
+  ✓ Run npx playwright install --with-deps chromium
+  X Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+  - Informational quarantined regressions
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+test: .github#2
+
+X Process completed with exit code 1.
+test: .github#7165
+
