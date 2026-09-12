@@ -71,6 +71,9 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
         await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(perspective === "Both" ? 1 : 0);
         expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
         await captureCheckpoint(page, info, `perspective-${perspective.toLowerCase()}-${width}-${colorScheme}`);
+        const headerPath = info.outputPath(`header-${perspective.toLowerCase()}-${width}-${colorScheme}.png`);
+        await header.screenshot({ path: headerPath });
+        await info.attach("Perspective header", { path: headerPath, contentType: "image/png" });
       }
     });
   }
