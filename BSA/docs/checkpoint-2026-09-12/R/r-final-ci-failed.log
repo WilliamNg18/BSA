@@ -1,0 +1,538 @@
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	﻿2026-09-12T09:59:46.2788650Z ##[group]Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.2789254Z ^[[36;1mnpm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine^[[0m
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.2826762Z shell: /usr/bin/bash -e {0}
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.2826991Z ##[endgroup]
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.4375524Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.4376521Z > bsa-prescription-exception-case-builder@0.6.0 test:e2e
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.4381221Z > playwright test --project=chromium --reporter=dot --grep-invert @quarantine
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:46.4381616Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:57.7021241Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T09:59:57.7035842Z Running 1019 tests using 2 workers
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:01:27.4155544Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:03:10.6636630Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:04:50.2447087Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:00.7066434Z ·············Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4177799Z ··························Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4332662Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4447693Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4573385Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4754624Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4872302Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4905215Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.4974832Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5001311Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5142997Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5187679Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5297251Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5323096Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5403071Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5493189Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5525859Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5622675Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5665224Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5738935Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5825452Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5858284Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5941568Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.5986040Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6103441Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6195261Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6285854Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6421033Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6558377Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6689132Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:24.6826951Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.1997918Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.2407772Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.2449688Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.2660340Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.2692114Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.2895194Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.2941888Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3079137Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3093560Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3218710Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3227040Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3338511Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3350369Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3439236Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3469522Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3557474Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3567678Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3685005Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3700362Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3804220Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3837855Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3897201Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3916574Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.3996625Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.4020333Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.4091703Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.4113257Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.4189466Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.4222395Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:25.4300750Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.6484435Z ··Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.6746209Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.6995828Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7072450Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7163187Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7201996Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7295590Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7350775Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7446033Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7493434Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7605994Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7652612Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7747146Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7836261Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7938953Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.7971700Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8109871Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8179025Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8250986Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8349186Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8471988Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8579018Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8643718Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8880463Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.8918833Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.9036292Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.9175330Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.9255272Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.9360049Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:28.9498974Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.5226628Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.5589355Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.5826683Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6067019Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6252509Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6481917Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6545831Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6743016Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6800156Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6958236Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.6982613Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7080919Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7114014Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7180902Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7235898Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7316292Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7359459Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7466846Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7480532Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7570807Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7609012Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7683155Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7712273Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7781829Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7835623Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7878387Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.7978525Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.8105605Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.8215574Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:29.8315536Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:32.9968770Z ··Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.0198592Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.0357075Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.0632155Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.0837054Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.0933492Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1073515Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1167635Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1314146Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1417591Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1630808Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1766324Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.1834175Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2001625Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2058257Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2146884Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2186876Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2279262Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2292574Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2404065Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2499990Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2591009Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2701678Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.2866294Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.3032320Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.3156269Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.3422561Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.3663706Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.3812844Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.3946055Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.8619645Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.9003383Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.9422272Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.9591263Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.9699179Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:33.9839392Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.0203454Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.0336200Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.0462613Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.0576058Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.0739825Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.0860299Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.1030326Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.1161673Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.1241762Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.2102948Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.2356480Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.2576015Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.2826895Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.2999926Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3149370Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3250898Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3401979Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3510839Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3652985Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3840913Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.3931455Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.4031238Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.4125548Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:34.4225936Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2273600Z ····Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2415068Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2556270Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2679895Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2791971Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2891065Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.2986989Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3084981Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3221063Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3449114Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3528920Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3548790Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3725146Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3763986Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3921439Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.3951090Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4096369Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4124581Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4206079Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4240226Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4369391Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4485988Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4620901Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4735983Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4866032Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.4989392Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.5183299Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.5277551Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.5421072Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:42.5603630Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.0533402Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1007535Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1120418Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1247519Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1384553Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1545536Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1759085Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1949047Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.1973850Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2082868Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2094400Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2198440Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2207029Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2299790Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2346806Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2390334Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2495574Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2507335Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2592003Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2622678Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2697093Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2733825Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2818081Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.2919529Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.3040261Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.3128899Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.3209398Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.3315845Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.3408618Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:43.3507946Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3013490Z ··Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3245295Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3392997Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3491039Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3617428Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3763668Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.3858138Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4097354Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4265852Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4296999Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4389954Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4473930Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4487951Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4655949Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4732284Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4836380Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4894108Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.4932741Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5010114Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5033951Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5141472Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5232024Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5334391Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5415407Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5562229Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5745775Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.5926435Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.6109869Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.6259756Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:46.6385947Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.1596116Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.1787260Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.1978577Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.2122357Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.2222596Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.2328246Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.2445705Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.2712528Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.2935876Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3017138Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3355913Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3384598Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3672976Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3696048Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3788091Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3811967Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3898041Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.3936309Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4022947Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4053455Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4126691Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4162113Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4273049Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4355272Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4475484Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4556942Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4657493Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4761143Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4875577Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:47.4944122Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7106830Z ··Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7252801Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7403488Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7656376Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7779279Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7894365Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.7965665Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8063388Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8172064Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8435895Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8608534Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8699476Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8822648Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8855757Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.8993314Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9102457Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9139884Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9226023Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9355824Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9379697Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9465774Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9495991Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9572109Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9701971Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9815951Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:50.9989054Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.0274453Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.0560776Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.0703999Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.0862415Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.6689813Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.6900558Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.7266025Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.7755731Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8097429Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8268124Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8427236Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8568023Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8651256Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8791595Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8877570Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.8975703Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.9101608Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.9193696Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:51.9280779Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.0356262Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.0655113Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.1036018Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.1691986Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2056262Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2189193Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2290978Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2413699Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2494786Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2620678Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2716312Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2803681Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.2897784Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.3011622Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:05:52.3115554Z Advisory current-input summary characters: 143
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:25.9156799Z ·····························
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:33.6867615Z ·····Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:36.0378381Z ··Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:36.5500005Z ·Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:38.6146263Z ··Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:38.6332694Z Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:40.8280101Z ··Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:48.7929789Z ·Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:06:53.3534976Z ···Advisory word budget: 25 []
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:08:51.8250876Z ································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:08:56.5643792Z ·······Advisory word count / budget 25: 18
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:10:32.4698928Z ·····F·····F·····························································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:11:06.5331372Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:11:41.0476567Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:12:06.4660915Z ································{"emittedFilesScanned":4,"servedFilesScanned":4,"servedBytes":717809,"privateIdsChecked":6,"privateExcerptsChecked":8,"privateMatches":0,"nonPersonalClaims":348,"displayClaims":63,"auditOnlyClaims":6}
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:13:23.9307848Z ················································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:14:47.3862973Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:16:28.8647467Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:18:37.1016387Z ················································································
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:06.0398233Z ··········································Advisory word count / budget 25: 22
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:06.2163299Z Advisory word count / budget 25: 22
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:06.4272670Z Advisory word count / budget 25: 20
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:06.6893866Z Advisory word count / budget 25: 20
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:06.9114486Z Advisory word count / budget 25: 23
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:07.1216082Z Advisory word count / budget 25: 23
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:07.3602068Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:07.5152169Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:07.6581325Z Advisory word count / budget 25: 21
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:07.8317471Z Advisory word count / budget 25: 21
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.0408252Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.1473142Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.3095879Z Advisory word count / budget 25: 22
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.4253421Z Advisory word count / budget 25: 22
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.5783896Z Advisory word count / budget 25: 20
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.7485438Z Advisory word count / budget 25: 20
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:08.8998343Z Advisory word count / budget 25: 23
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:09.0663582Z Advisory word count / budget 25: 23
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:09.2570658Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:09.3801747Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:09.5249776Z Advisory word count / budget 25: 21
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:09.6646567Z Advisory word count / budget 25: 21
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:09.8415871Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:10.0060822Z Advisory word count / budget 25: 19
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7782120Z ·F···············
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7790423Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7806598Z   1) [chromium] › tests/e2e/pipeline.spec.ts:121:1 › shared two-second clock sequences kernel phases, resolves built pain only, and cancels safely 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7807528Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7807725Z     Error: expect(locator).toHaveCount(expected) failed
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7807921Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7808177Z     Locator:  locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]')
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7808538Z     Expected: 2
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7808726Z     Received: 1
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7808912Z     Timeout:  5000ms
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7809038Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7809116Z     Call log:
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7809623Z       - Expect "toHaveCount" locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]') with timeout 5000ms
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7810301Z       - waiting for locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]')
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7811549Z         14 × locator resolved to 1 element
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7811848Z            - unexpected value "1"
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7812000Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7812007Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7812159Z       137 |     await expectGathering(page, index);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7812516Z       138 |     await expectReferralMarkers(page, false);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7813154Z     > 139 |     await expect(page.locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]')).toHaveCount(2);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7813907Z           |                                                                                                        ^
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7818776Z       140 |     for (const marker of await page.locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]').all()) await expect(marker).toHaveAttribute("data-pain-marker", "open");
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7819868Z       141 |     await page.clock.runFor(ASSISTANCE_DURATION_MS / ASSISTANCE_PHASES.length - (index === ASSISTANCE_PHASES.length - 1 ? 1 : 0));
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7820604Z       142 |   }
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7821051Z         at /home/runner/work/BSA/BSA/BSA/tests/e2e/pipeline.spec.ts:139:104
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7821408Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7821991Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7822731Z     test-results/pipeline-shared-two-second-1dbc4-ain-only-and-cancels-safely-chromium/test-failed-1.png
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7825515Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7826388Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7827578Z     Error Context: test-results/pipeline-shared-two-second-1dbc4-ain-only-and-cancels-safely-chromium/error-context.md
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7844370Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7845170Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7845793Z     test-results/pipeline-shared-two-second-1dbc4-ain-only-and-cancels-safely-chromium/trace.zip
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7846273Z     Usage:
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7846366Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7846782Z         npx playwright show-trace test-results/pipeline-shared-two-second-1dbc4-ain-only-and-cancels-safely-chromium/trace.zip
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7847206Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7847508Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7847742Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7848220Z   2) [chromium] › tests/e2e/pipeline.spec.ts:166:1 › all-abstained cohort never resolves a gathering or exact-fix marker during any phase 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7848623Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7848782Z     Error: expect(locator).toHaveAttribute(expected) failed
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7848980Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7849133Z     Locator: locator('[data-case="D"] [data-pain-marker]')
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7849376Z     Expected: "open"
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7849505Z     Timeout: 5000ms
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7849641Z     Error: element(s) not found
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850144Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850189Z     Call log:
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850437Z       - Expect "toHaveAttribute" locator('[data-case="D"] [data-pain-marker]') with timeout 5000ms
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850743Z       - waiting for locator('[data-case="D"] [data-pain-marker]')
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850886Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850889Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7850982Z       176 |     await expectReferralMarkers(page, false);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7851296Z       177 |     await expect(page.locator('[data-pipeline] [data-pain-marker="resolved"]')).toHaveCount(0);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7851722Z     > 178 |     await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7852054Z           |                                                                      ^
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7852424Z       179 |     if (phase < ASSISTANCE_PHASES.length) await page.clock.runFor(ASSISTANCE_DURATION_MS / ASSISTANCE_PHASES.length);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7852721Z       180 |   }
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7852831Z       181 | });
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7853023Z         at /home/runner/work/BSA/BSA/BSA/tests/e2e/pipeline.spec.ts:178:70
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7853181Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7853415Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7853828Z     test-results/pipeline-all-abstained-coh-8c9e4-fix-marker-during-any-phase-chromium/test-failed-1.png
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7854265Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7854414Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7854849Z     Error Context: test-results/pipeline-all-abstained-coh-8c9e4-fix-marker-during-any-phase-chromium/error-context.md
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7855169Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7855387Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7855772Z     test-results/pipeline-all-abstained-coh-8c9e4-fix-marker-during-any-phase-chromium/trace.zip
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7856065Z     Usage:
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7856126Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7856395Z         npx playwright show-trace test-results/pipeline-all-abstained-coh-8c9e4-fix-marker-during-any-phase-chromium/trace.zip
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7856682Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7856872Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7857027Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7857330Z   3) [chromium] › tests/e2e/tour.spec.ts:358:1 › keyboard shortcuts ignore fields, combined modifiers, menus and confirmation dialogs 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7857592Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7857674Z     Error: expect(locator).toBeFocused() failed
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7857790Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7857938Z     Locator: getByRole('heading', { name: 'The exception pipeline', exact: true })
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7858156Z     Expected: focused
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7858280Z     Timeout: 5000ms
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7858583Z     Error: element(s) not found
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7858677Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7858722Z     Call log:
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7859009Z       - Expect "toBeFocused" getByRole('heading', { name: 'The exception pipeline', exact: true }) with timeout 5000ms
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7859386Z       - waiting for getByRole('heading', { name: 'The exception pipeline', exact: true })
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7859566Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7859570Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7859772Z       382 |   await page.getByRole("menuitem", { name: "3. What exists today and what changes", exact: true }).click();
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7860275Z       383 |   await expect(page).toHaveURL(/#pipeline$/);
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7860662Z     > 384 |   await expect(page.getByRole("heading", { name: "The exception pipeline", exact: true })).toBeFocused();
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7860999Z           |                                                                                            ^
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7861269Z       385 |   await page.getByRole("link", { name: "Skip to main content" }).focus();
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7861612Z       386 |   await page.keyboard.press("Enter");
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7861832Z       387 |   await expect(page.getByRole("main")).toBeFocused();
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7862105Z         at /home/runner/work/BSA/BSA/BSA/tests/e2e/tour.spec.ts:384:92
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7862263Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7862477Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7862885Z     test-results/tour-keyboard-shortcuts-ig-95af6-us-and-confirmation-dialogs-chromium/test-failed-1.png
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7863320Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7863477Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7863725Z     Error Context: test-results/tour-keyboard-shortcuts-ig-95af6-us-and-confirmation-dialogs-chromium/error-context.md
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7864005Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7864228Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7864630Z     test-results/tour-keyboard-shortcuts-ig-95af6-us-and-confirmation-dialogs-chromium/trace.zip
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7875402Z     Usage:
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7875505Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7875899Z         npx playwright show-trace test-results/tour-keyboard-shortcuts-ig-95af6-us-and-confirmation-dialogs-chromium/trace.zip
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7876456Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7876787Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7877025Z 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7877101Z   3 failed
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7877742Z     [chromium] › tests/e2e/pipeline.spec.ts:121:1 › shared two-second clock sequences kernel phases, resolves built pain only, and cancels safely 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7878645Z     [chromium] › tests/e2e/pipeline.spec.ts:166:1 › all-abstained cohort never resolves a gathering or exact-fix marker during any phase 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7879478Z     [chromium] › tests/e2e/tour.spec.ts:358:1 › keyboard shortcuts ignore fields, combined modifiers, menus and confirmation dialogs 
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.7879956Z   1016 passed (20.8m)
+test	Run npm run test:e2e -- --project=chromium --reporter=dot --grep-invert @quarantine	2026-09-12T10:20:37.8182280Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,38 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test:e2e
+> playwright test --config C:\Users\williamng\.copilot\session-state\***\files\r-focused.config.mjs
+
+
+Running 21 tests using 1 worker
+T····················
+
+  1) [chromium] › tests\e2e\claims-resubmission.spec.ts:9:5 › claims resubmission comparison 360 dark › Off keyboard resubmission stays unchecked without changing history on mode flips 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: frame.evaluate: Test timeout of 30000ms exceeded.
+
+      32 |       await expect(marker).toBeFocused();
+      33 |       await expect(page.getByRole("tooltip")).toHaveText("No advisory sufficiency check · Assumption");
+    > 34 |       const audit = await new AxeBuilder({ page }).analyze();
+         |                     ^
+      35 |       await captureJson(info, "manual-resubmission-axe", audit);
+      36 |       expect(audit.violations).toEqual([]);
+      37 |       await page.keyboard.press("Escape");
+        at AxeBuilder.runPartialRecursive (C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-14-stream-r-production-round-trip-and-brows-ee5093\BSA\node_modules\@axe-core\playwright\dist\index.mjs:280:39)
+        at AxeBuilder.analyze (C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-14-stream-r-production-round-trip-and-brows-ee5093\BSA\node_modules\@axe-core\playwright\dist\index.mjs:210:39)
+        at C:\Users\williamng\OneDrive - Microsoft\GitHub\copilot-worktrees\BSA\williamng18-issue-14-stream-r-production-round-trip-and-brows-ee5093\BSA\tests\e2e\claims-resubmission.spec.ts:34:21
+
+    Error Context: ..\..\..\..\..\..\.copilot\session-state\c860b133-a590-4e09-97c6-e61fa5a4e0d3\files\r-focused-2-results\claims-resubmission-claims-9de82-nging-history-on-mode-flips-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\..\..\..\..\.copilot\session-state\c860b133-a590-4e09-97c6-e61fa5a4e0d3\files\r-focused-2-results\claims-resubmission-claims-9de82-nging-history-on-mode-flips-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\..\..\..\..\.copilot\session-state\c860b133-a590-4e09-97c6-e61fa5a4e0d3\files\r-focused-2-results\claims-resubmission-claims-9de82-nging-history-on-mode-flips-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests\e2e\claims-resubmission.spec.ts:9:5 › claims resubmission comparison 360 dark › Off keyboard resubmission stays unchecked without changing history on mode flips 
+  20 passed (7.7m)

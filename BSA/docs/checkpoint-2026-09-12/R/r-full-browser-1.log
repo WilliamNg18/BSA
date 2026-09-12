@@ -1,0 +1,25 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test:e2e
+> playwright test --workers=2 --reporter=dot
+
+
+Running 783 tests using 2 workers
+······················································Advisory word count / budget 25: 19
+··························
+·T············································Advisory word budget: 25 []
+·Advisory word budget: 25 []
+·Advisory word budget: 25 []
+·Advisory word budget: 25 []
+··Advisory word budget: 25 []
+·Advisory word budget: 25 []
+·Advisory word budget: 25 []
+·Advisory word budget: 25 []
+··························
+····················T··········T······Advisory word count / budget 25: 18
+··········T·······························
+················································································
+················································································
+················································F{"emittedFilesScanned":4,"servedFilesScanned":4,"servedBytes":705948,"privateIdsChecked":6,"privateExcerptsChecked":8,"privateMatches":0,"nonPersonalClaims":348,"displayClaims":63,"auditOnlyClaims":6}
+·······························
+················································································
+··············································T·······T·T·········T·········T··T
