@@ -739,3 +739,12 @@ Feature branches run verification only for pull-request events; main retains
 push verification, manual dispatch and reusable invocation. Superseded runs
 cancel, all shards finish even if another fails, and unique shard artifacts
 remain best-effort. No runtime dependency, application or hosting change.
+
+## 2026-09-12: PR build downloads without live preview infrastructure
+
+Publish BSA/dist only from shard one of pull-request CI, with seven-day retention.
+The upload and job-summary link are non-blocking; absent files or failed upload
+cannot conceal verification failure or manufacture a download URL. Link only
+the successful action's artifact URL and label it as a build, not a deployment.
+Keep contents:read permissions and normal pull_request execution; no repository
+write access, fork-secret exposure, PR comment token or live preview slot.

@@ -112,6 +112,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
 
 test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, info) => {
   await page.goto("./#scene");
+  await expect(page.getByRole("heading", { level: 1, name: "The referred-back subset", exact: true })).toBeFocused();
   const flag = page.getByRole("banner").getByRole("switch");
   await flag.focus();
   await flag.press("Space");
@@ -125,11 +126,13 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await page.keyboard.press("End");
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#close$/);
-  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "Where it ends", exact: true })).toBeFocused();
   await page.keyboard.press("Alt+ArrowLeft");
   await expect(page).toHaveURL(/\/pharmacy\/claims$/);
-  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "Pharmacy claims", exact: true })).toBeFocused();
   const operations = page.getByRole("button", { name: "Operations", exact: true });
+  await operations.focus();
+  await expect(operations).toBeFocused();
   await operations.press("ArrowDown");
   await expect(page.getByRole("menuitem").first()).toBeFocused();
   await page.keyboard.press("End");
@@ -138,7 +141,7 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await expect(page.getByRole("menuitem", { name: "Pharmacy check" })).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/pharmacy$/);
-  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "Pharmacy pre-submission check", exact: true })).toBeFocused();
 });
 
 for (const reducedMotion of ["reduce", "no-preference"] as const) {

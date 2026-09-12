@@ -4,6 +4,30 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
+## PR build artifact execution and keyboard readiness correction
+
+CI 34701455982 at 261cbfe published `pr-build-49`, artifact ID 10299839601,
+204,991 bytes, with seven-day retention. The actual download link was written
+to shard one's job summary and independently downloaded: index.html, hosting
+JSON and two fingerprinted CSS/JS files. This is a build, not a live preview.
+
+The run passed 645 unique unit cases in every shard but completed 1,053 browser
+passes/one failure. Artifact publication did not conceal the keyboard readiness
+failure described in LEARNINGS. Coordinator authorised a narrow test-only fix
+in that function; the policy import and application code remain unchanged.
+The exact case repeated three times passed 3/3 in 58.3 seconds, exit 0; typecheck
+and targeted lint passed. Port 4173 was released. Full replacement CI remains
+required; retain the original failed-run result rather than relabelling it.
+
+## PR build artifact follow-up
+
+The artifact-only proposal adds one best-effort seven-day PR build upload on
+verification shard one and a guarded job-summary download link. No production,
+runner, e2e body, permissions or blocking check changes. Workflow YAML parsed;
+38 runner/workflow unit cases and typecheck passed after the CRLF-aware test
+correction. Actual artifact publication still requires the proposal's PR run.
+No local full browser rerun was started for this workflow-only addition.
+
 ## Issue #46 measured four-shard verification
 
 [Public CI 34700392502](https://github.com/WilliamNg18/BSA/actions/runs/34700392502)

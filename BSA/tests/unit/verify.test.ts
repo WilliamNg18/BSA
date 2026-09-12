@@ -133,6 +133,28 @@ describe("cross-platform process execution", () => {
 });
 
 describe("CI verification contract", () => {
+  it("publishes only the PR shard-one build with short, best-effort retention", () => {
+    const workflow = readFileSync(new URL("../../../.github/workflows/ci.yml", import.meta.url), "utf8");
+    const upload = workflow.split("      - name: Upload PR build (not a live deployment)")[1].split("      - name: Link available PR build")[0];
+    expect(upload).toContain("id: pr-build");
+    expect(upload).toContain("uses: actions/upload-artifact@v4");
+    expect(upload).toContain("if: ${{ !cancelled() && github.event_name == 'pull_request' && matrix.shard == 1 }}");
+    expect(upload).toContain("continue-on-error: true");
+    expect(upload).toContain("path: BSA/dist/");
+    expect(upload).toContain("retention-days: 7");
+    expect(upload).toContain("if-no-files-found: warn");
+    expect(workflow.match(/path: BSA\/dist\//g)).toHaveLength(1);
+  });
+  it("links only an actually available artifact without PR write permissions", () => {
+    const workflow = readFileSync(new URL("../../../.github/workflows/ci.yml", import.meta.url), "utf8");
+    const summary = workflow.split("      - name: Link available PR build")[1].split("      - uses: actions/upload-artifact@v4")[0];
+    expect(summary).toContain("if: ${{ !cancelled() && steps.pr-build.outputs.artifact-url != '' }}");
+    expect(summary).toContain("continue-on-error: true");
+    expect(summary).toContain("PR_BUILD_URL: ${{ steps.pr-build.outputs.artifact-url }}");
+    expect(summary).toContain('"$PR_BUILD_URL" >> "$GITHUB_STEP_SUMMARY"');
+    expect(workflow).toMatch(/permissions:\r?\n {2}contents: read/);
+    expect(workflow).not.toMatch(/(?:pull-requests|contents|actions): write|pull_request_target/);
+  });
   it("uses one bounded four-shard entry point without duplicate branch-push runs", () => {
     const workflow = readFileSync(new URL("../../../.github/workflows/ci.yml", import.meta.url), "utf8");
     expect(workflow).toContain("branches: [main]");
