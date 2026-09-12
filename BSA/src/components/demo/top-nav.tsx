@@ -46,7 +46,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
   }
 
   return (
-    <header className="h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <a
         href="#main-content"
         onClick={(event) => { event.preventDefault(); document.getElementById("main-content")?.focus(); }}
@@ -54,7 +54,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
       >
         Skip to main content
       </a>
-      <div className="flex h-full flex-nowrap items-center gap-1 px-2 sm:gap-2 md:gap-4 md:px-6">
+      <div className="flex min-h-[calc(3.5rem-1px)] flex-wrap items-center gap-1 px-2 py-1 sm:gap-2 md:gap-4 md:px-6">
         <Link to="/#scene" aria-label="Prescription Exception Case Builder" className="flex shrink-0 items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2">
           <span className="flex size-7 items-center justify-center rounded-md bg-teal-700 text-white sm:size-9" aria-hidden="true">
             <ShieldCheck className="size-5" />
@@ -62,7 +62,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
           <span className="hidden whitespace-nowrap text-sm font-semibold 2xl:inline">Prescription Exception Case Builder</span>
           <span className="hidden whitespace-nowrap text-sm font-semibold min-[900px]:inline lg:hidden xl:inline 2xl:hidden" aria-hidden="true">NHSBSA Case Builder</span>
         </Link>
-        <nav aria-label="Primary" className="order-last ml-auto lg:order-none lg:ml-0 lg:flex-1">
+        <nav aria-label="Primary" className="ml-auto lg:ml-0 lg:flex-1">
           <div className="hidden items-center gap-1 lg:flex">
             {groups.map((group) => {
               const items = navRoutes.filter((route) => route.group === group);

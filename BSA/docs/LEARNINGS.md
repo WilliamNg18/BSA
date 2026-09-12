@@ -875,6 +875,11 @@ passing against identical built assets. Keep the narrow Agent state accessible
 through the native switch and label, defer the optional short brand, and check
 both document and body widths in every perspective and Agent mode. Do not hide
 overflow to mask the missing navigation control.
+At 320px or with enlarged text, allow the header's intrinsic flex layout to
+wrap and its height to grow. Keep mobile navigation before the control group
+in both visual and keyboard order so the Agent tooltip cannot cover a wrapped
+menu button. The existing sticky-stack observer measures the resulting height;
+reflow tests also exercise heading, Reset and tour focus clearance.
 
 ## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
 

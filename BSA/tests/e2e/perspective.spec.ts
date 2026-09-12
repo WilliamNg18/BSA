@@ -105,11 +105,12 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
   }
 }
 
-for (const width of [360, 768]) for (const colorScheme of ["light", "dark"] as const) {
-  test(`document reflow for every perspective and Agent mode ${width} ${colorScheme}`, async ({ page }, info) => {
+for (const width of [320, 360, 768]) for (const colorScheme of ["light", "dark"] as const) for (const fontSize of [16, 18]) {
+  test(`document reflow for every perspective and Agent mode ${width} ${colorScheme} font ${fontSize}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
     await page.goto("/evaluation");
+    await page.evaluate((size) => { document.documentElement.style.fontSize = `${size}px`; }, fontSize);
     await page.evaluate(() => document.fonts.ready);
     for (const side of ["Pharmacy", "NHSBSA", "Both"] as const) for (const enabled of [false, true]) {
       await choosePerspective(page, side);
@@ -133,6 +134,29 @@ for (const width of [360, 768]) for (const colorScheme of ["light", "dark"] as c
       const box = (await radio.boundingBox())!;
       expect(box.x).toBeGreaterThanOrEqual(2);
       expect(box.x + box.width).toBeLessThanOrEqual(width - 2);
+      await navigatePrimary(page, "Overview");
+      const heading = page.getByRole("main").getByRole("heading", { level: 1 });
+      await expect(heading).toBeFocused();
+      const chrome = page.getByRole("banner").locator("..");
+      await expect.poll(async () => {
+        const title = (await heading.boundingBox())!, stack = (await chrome.boundingBox())!;
+        return title.y - stack.y - stack.height;
+      }).toBeGreaterThanOrEqual(0);
+      await confirmReset(page);
+      const reset = page.getByRole("button", { name: "Reset demo", exact: true });
+      await expect(reset).toBeFocused();
+      const resetBox = (await reset.boundingBox())!, headerBox = (await page.getByRole("banner").boundingBox())!;
+      expect(resetBox.y).toBeGreaterThanOrEqual(headerBox.y);
+      expect(resetBox.y + resetBox.height).toBeLessThanOrEqual(headerBox.y + headerBox.height);
+      if (side === "Both") {
+        await page.getByRole("navigation", { name: "Guided tour", exact: true }).getByRole("button", { name: "Next", exact: true }).click();
+        await expect(heading).toBeFocused();
+        await expect.poll(async () => {
+          const title = (await heading.boundingBox())!, stack = (await chrome.boundingBox())!;
+          return title.y - stack.y - stack.height;
+        }).toBeGreaterThanOrEqual(0);
+      }
+      await navigatePrimary(page, "Evaluation");
     }
   });
 }
