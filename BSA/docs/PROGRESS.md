@@ -43,6 +43,14 @@ Raw logs and first-run trace/results copies are retained in this session's
 files directory. This is narrow local acceptance, not the final full-suite
 integration gate or a hosted deployment claim.
 
+2026-09-12 integration update: rebased onto merged Stream S at `22ec345`.
+Append-only decisions/learnings retain both streams' evidence. AppShell
+canonical chapter metadata, focus handling, strict-CSP controls and styles
+remain identical to main. Combined check passes and all 567 units in 19 files
+pass with two workers. No browser matrix was rerun; the earlier ten-scenario
+results remain historical narrow evidence. Final integrated Linux acceptance
+is still required.
+
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
