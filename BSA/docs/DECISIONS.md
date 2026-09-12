@@ -477,3 +477,15 @@ history assertion but records elapsed milliseconds as a JSON artifact instead
 of enforcing a 120-second wall-clock budget. The two-minute narration remains
 a presentation target. Existing test timeout/hang guards and deterministic
 phase-clock assertions are unchanged.
+
+## 2026-09-12: Eight-chapter regression integration preserves separate surfaces
+
+Rebase onto the integrated S/T/helper main before updating existing expectations.
+The tour now traverses nine stops across eight chapters. Pipeline assertions
+target /#pipeline; canonical case assertions stay on /#cases. Preserve all
+keyboard directions, focus destinations, resets and same-item history checks.
+
+Add the separate pipeline to offline, content, generic-label, screenshot and
+default-rule axe matrices without removing Four cases. The coordinator and S
+explicitly authorise adding that one route to both existing accessibility arrays;
+all audit variants and zero-violation assertions remain unchanged.

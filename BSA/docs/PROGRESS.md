@@ -272,6 +272,20 @@ issue #35 records this transient local axe timeout and both CI passes of the
 same case; axe stays blocking and no skip or quarantine tag was introduced.
 Logs/results are r-focused-2 and r-focused-3 in dedicated session subfolders.
 
+## Stream R integration on c95ff1d
+
+Rebased onto main c95ff1d containing strict-CSP serving, S's phone overflow fix,
+the neutral manual pharmacy status and T's eight chapters. Append-only document
+conflicts preserve every stream's entries. Existing tour checks now require
+eight chapters/nine stops; pipeline and Four cases remain separately asserted.
+The extra pipeline route is included in functional and audit inventories.
+
+On this integrated source, `npm run check` passed, exit 0, and
+`npm run test -- --maxWorkers=1` passed 583 tests in 20 files in 13.05 seconds,
+exit 0. Two subsequent narrow accessibility-array edits add pipeline only, with
+S/coordinator approval. New inventory is collected rather than inferred.
+Final rebase onto Queue/Scene and exact-head full Linux CI remain pending.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

@@ -142,7 +142,7 @@ for (const enabled of [false, true]) {
 for (const enabled of [false, true]) {
   test(`rendered copy cap all routes, expanded panels, assistance=${enabled}`, async ({ page }, testInfo) => {
     test.setTimeout(120_000);
-    const routes = [...staticRoutes.map((r) => r.path || "./#scene"), ...["month", "cases", "two-places", "close"].map((c) => `./#${c}`), ...cases.flatMap(({ id }) => [`case/${id}`, `case/${id}/trace`, `case/${id}/record`]), "unknown-page", "case/UNKNOWN"];
+    const routes = [...staticRoutes.map((r) => r.path || "./#scene"), ...["month", "pipeline", "cases", "two-places", "close"].map((c) => `./#${c}`), ...cases.flatMap(({ id }) => [`case/${id}`, `case/${id}/trace`, `case/${id}/record`]), "unknown-page", "case/UNKNOWN"];
     const results = [];
     for (const route of routes) {
       await page.goto(route);
