@@ -193,6 +193,40 @@ elapsed-time assertion with an informational JSON timing artifact. Every
 functional assertion, test timeout and deterministic phase-clock check remains.
 The narration target is not a strict runtime acceptance claim.
 
+## Completed Stream R seven-chapter Linux baseline
+
+CI 34636865707 at 2f398b5 completed check and 569 units successfully, then the
+full production browser command completed with 761 passed and 33 failed
+(794 total) in 23.3 minutes, exit 1. Independent CI 34636861657 at the same SHA
+reported the same counts in 22.6 minutes. These completed failures supersede
+neither the retained interrupted local run nor the final eight-chapter gate.
+
+Thirty-two failures are the existing phone case-pack overflow owned by Stream S:
+two case-presentation, ten route and twenty Task7 cases. One is the new desktop
+resubmission test capturing the outgoing NHSBSA status before pharmacy navigation
+committed. The latter is repaired by awaiting the destination heading and exact
+pharmacy status before history capture. Both same-revision runs failed it; no
+passing-repeat or quarantine claim is made. Approved-response tests passed.
+
+The first focused 21-case local attempt exited 1 before executing tests because
+the existing 120-second webServer deadline terminated its contended build.
+A separate explicit production build then exited 0; the preview-only session
+configuration uses that exact artifact without changing test/expect timeouts.
+Focused execution and correction verification are recorded after completion.
+
+The actual 21-case focused run on the rebuilt artifact completed 20 passed and
+one failed in 7.7 minutes, exit 1. All eight response-approval tests, mixed-mode
+round trip, corrected skip/revisit tests and six canonical control regressions
+passed. The only failure was the phone-dark Off comparison exceeding the
+30-second test deadline inside axe analysis; no violation report was produced.
+
+After the On destination-snapshot correction, the bounded four-case comparison
+repeat passed 4/4 in 1.3 minutes, exit 0, with unchanged browser/test deadlines
+and the same emitted production artifact. Its Off case was unchanged. Follow-up
+issue #35 records this transient local axe timeout and both CI passes of the
+same case; axe stays blocking and no skip or quarantine tag was introduced.
+Logs/results are r-focused-2 and r-focused-3 in dedicated session subfolders.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

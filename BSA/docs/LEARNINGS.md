@@ -533,3 +533,12 @@ summary. Later failure artifacts can exist beyond buffered reporter output;
 neither artifact count nor partial dots establish complete acceptance.
 No timeout is classified as flaky without a controlled reproduction/repeat.
 The new eight-chapter integrated artifact still requires a full production run.
+
+## 2026-09-11: Snapshot the destination after navigation, not the outgoing page
+
+Both Linux CI runs at 2f398b5 exposed the new desktop comparison test reading
+the outgoing NHSBSA history immediately after clicking View pharmacy claim.
+It saved "Referred back" before the pharmacy route committed, then compared
+that with the correct pharmacy label later. Await the exact destination heading
+and pharmacy status before capturing history. Keep every immutable-history and
+state assertion; do not relax the expected label or add sleeps/retries.

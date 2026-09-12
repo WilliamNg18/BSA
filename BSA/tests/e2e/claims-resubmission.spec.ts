@@ -64,10 +64,12 @@ for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
       await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed and approved the dispensing-date instruction");
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
       await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
+      await expect(page.getByRole("heading", { name: "Claim detail: EX-24112", exact: true })).toBeVisible();
       const history = page.getByRole("region", { name: "Shared case history", exact: true });
       const comparison = page.getByRole("region", { name: "Resubmission comparison", exact: true });
       const marker = comparison.getByRole("button");
-      const state = await history.getByRole("status").innerText();
+      const state = "Referred back: correction needed before payment";
+      await expect(history.getByRole("status")).toHaveText(state);
       await history.locator("summary").first().click();
       const originalHistory = await history.innerText();
       const recheck = page.getByRole("button", { name: "Re-check endorsement", exact: true });
