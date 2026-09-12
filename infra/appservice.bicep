@@ -4,6 +4,16 @@ targetScope = 'resourceGroup'
 param appName string = 'bsa-bsa-demo-r2j2l3dxhtohy'
 param planName string = 'bsa-bsa-demo-r2j2l3dxhtohy-plan'
 param location string = 'swedencentral'
+@description('Pass the existing site tags unchanged for recovery; defaults apply only to a fresh site.')
+param siteTags object = {
+  project: 'bsa'
+  'synthetic-data': 'true'
+}
+@description('Pass the existing plan tags unchanged for recovery; defaults apply only to a fresh plan.')
+param planTags object = {
+  project: 'bsa'
+  'synthetic-data': 'true'
+}
 @allowed(['NODE|24-lts', 'NODE|20-lts'])
 @description('Preserve the existing runtime by default; deployment builds use the latest Node 20 patch (>=20.19).')
 param linuxFxVersion string = 'NODE|24-lts'
@@ -18,6 +28,7 @@ param deploymentRoleAssignmentName string = '3e003756-0f4b-4ffb-b415-e6a731fd4cc
 resource plan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: planName
   location: location
+  tags: planTags
   kind: 'linux'
   sku: {
     name: 'F1'
@@ -32,6 +43,7 @@ resource plan 'Microsoft.Web/serverfarms@2023-12-01' = {
 resource site 'Microsoft.Web/sites@2023-12-01' = {
   name: appName
   location: location
+  tags: siteTags
   kind: 'app,linux'
   properties: {
     serverFarmId: plan.id

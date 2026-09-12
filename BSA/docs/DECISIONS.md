@@ -799,3 +799,19 @@ The first real-browser App Service check requested favicon.ico and logged a
 404. Add an explicit same-origin icon generated from generic document shapes,
 not external branding or a runtime dependency. Keep CSP and application
 behaviour unchanged; validate the actual built icon response, not only its link.
+
+## 2026-09-12: Preserve existing metadata during recovery reapplication
+
+App Service recovery accepts independent `siteTags` and `planTags` objects.
+For existing resources, pass the observed tag objects unchanged, including
+empty objects; use the synthetic BSA defaults only when a resource is absent.
+The read-only parameter exporter captures only names, resource types and tags,
+writes outside the repository and returns only its temporary path. Azure read
+failure is not treated as absence.
+
+The coordinator reviews what-if and owns any Incremental apply to the existing
+resources. No app, plan or resource-group deletion is part of this exercise.
+Retain the current ID-bound federation subject and disabled optional RBAC
+bootstrap. Measure only non-destructive reapplication/settings recovery, not
+recovery from deleted resources. Refresh parameters if concurrent metadata
+changes could make the snapshot stale.

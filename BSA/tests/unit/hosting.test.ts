@@ -57,4 +57,18 @@ describe("portable App Service hosting contract", () => {
     const server = readFileSync(root("BSA/scripts/static-server.mjs"), "utf8");
     expect([...server.matchAll(/from "([^"]+)"/g)].map((match) => match[1]).every((module) => module.startsWith("node:"))).toBe(true);
   });
+
+  it("preserves separate existing tags during incremental recovery", () => {
+    const template = readFileSync(root("infra/appservice.bicep"), "utf8");
+    expect(template).toContain("param siteTags object =");
+    expect(template).toContain("param planTags object =");
+    expect(template).toContain("tags: siteTags");
+    expect(template).toContain("tags: planTags");
+    const helper = readFileSync(root("infra/export-recovery-parameters.ps1"), "utf8");
+    expect(helper).toContain("az resource list");
+    expect(helper).toContain("if ($LASTEXITCODE -ne 0)");
+    expect(helper).toContain("[IO.Path]::GetTempPath()");
+    expect(helper).toContain("Write-Output $path");
+    expect(helper).not.toMatch(/az (deployment|webapp)|appsettings|listSecrets/);
+  });
 });
