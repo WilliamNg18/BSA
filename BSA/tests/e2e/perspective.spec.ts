@@ -34,6 +34,31 @@ test("caught-before-submission records only a completed human-applied correction
   await expect(metric).toHaveText("0");
 });
 
+for (const cancellation of ["edit", "scenario", "Agent Off", "leave page", "Reset", "submit"] as const) {
+  test(`unfinished correction evidence is cancelled by ${cancellation}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.clock.install();
+    await page.goto("/pharmacy");
+    await choosePerspective(page, "Pharmacy");
+    await flag(page).setChecked(true);
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
+    await page.clock.pauseAt(new Date());
+    await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+    if (cancellation === "edit") await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO XY 21/08/26");
+    if (cancellation === "scenario") await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+    if (cancellation === "Agent Off") await flag(page).setChecked(false);
+    if (cancellation === "leave page") await navigatePrimary(page, "Pharmacy claims");
+    if (cancellation === "Reset") await confirmReset(page);
+    if (cancellation === "submit") await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.clock.runFor(3000);
+    await navigatePrimary(page, "Pharmacy claims");
+    await flag(page).setChecked(true);
+    const metric = page.getByRole("region", { name: "Selected pharmacy this month", exact: true })
+      .locator("dl > div").filter({ hasText: "Caught before submission" }).getByRole("definition");
+    await expect(metric).toHaveText("0");
+  });
+}
+
 for (const width of [360, 768, 1024, 1440, 1920]) {
   for (const colorScheme of ["light", "dark"] as const) {
     test(`perspective header, filtered navigation and zero-violation axe ${width} ${colorScheme}`, async ({ page }, info) => {
@@ -151,7 +176,10 @@ for (const path of ["/pharmacy", "/pharmacy/claims?caseId=EX-24112", "/queue", "
     await page.getByRole("button", { name: `Switch to ${right}`, exact: true }).click();
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toHaveCount(0);
     await expect(flag(page)).toBeChecked();
-    await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
+    const restoredHeading = path.includes("?caseId=")
+      ? page.getByRole("heading", { name: "Claim detail: EX-24112", exact: true })
+      : page.getByRole("main").getByRole("heading", { level: 1 });
+    await expect(restoredHeading).toBeFocused();
     const disallowed = right === "Pharmacy" ? /^\/(?:queue|case\/)/ : /^\/pharmacy(?:\/|$)/;
     const links = await page.getByRole("main").getByRole("link").evaluateAll((elements) => elements.map((element) => element.getAttribute("href") ?? ""));
     expect(links.filter((href) => disallowed.test(href))).toEqual([]);

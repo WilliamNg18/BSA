@@ -50,7 +50,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(detail(page).getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
     await openHistory(page);
-    const attempts = await history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).innerText();
+    const attempts = await history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).textContent();
     expect(attempts).toContain(endorsement);
     const events = await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).innerText();
     expect(events).toContain(LIFECYCLE_LABELS.submitted.pharmacy);
@@ -71,10 +71,12 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
-    await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toHaveText(attempts);
+    expect(await history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).textContent()).toBe(attempts);
     const reviewingIdentity = await historyIdentity(page);
     expect(reviewingIdentity.slice(0, submittedIdentity.length)).toEqual(submittedIdentity);
-    expect(reviewingIdentity).toHaveLength(submittedIdentity.length + 1);
+    expect(reviewingIdentity.slice(submittedIdentity.length).map((event) => event.message)).toEqual(enabled
+      ? ["Arrived for review.", "Scripted case built; human decision required."]
+      : ["Arrived for review."]);
     await page.getByRole("radio", { name: /^Refer back / }).check();
     if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
     const reason = `Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`;
@@ -101,7 +103,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(detail(page).getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
     await openHistory(page);
-    await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toHaveText(attempts);
+    expect(await history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).textContent()).toBe(attempts);
     const returnedEvents = history(page).getByRole("list", { name: "Lifecycle events", exact: true });
     await expect(returnedEvents.locator(":scope > li")).toHaveCount(eventCount);
     await expect(returnedEvents.locator(":scope > li").last()).toContainText(recordId);
