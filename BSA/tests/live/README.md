@@ -39,6 +39,9 @@ harness does not load or change hosting policy files.
 
 Offline readiness checks, with no browsers or live requests:
 
+The standard `npm test` also discovers the offline `*.test.ts` contracts here,
+but never the live `checklist.spec.ts` browser suite.
+
 ```powershell
 npm run typecheck
 npx eslint tests/live --max-warnings 0
