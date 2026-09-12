@@ -852,3 +852,18 @@ Overview with assistance Off, but its implicit favicon request returned 404.
 Issue #52 adds a local icon and explicit link. Six targeted hosting tests and
 a production HTTP probe passed with image/x-icon and exact built bytes.
 This does not replace the remaining full live checklist.
+
+## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
+
+Comparing parsed floating-point values alone accepted a judging draft just
+above Today's total, such as `12.00000000000000001`. The monthly selector now
+also compares the valid raw decimal fractions. Normalising relative weights
+before scaling the gathering total avoids losing a subnormal positive weight
+when the gathering total is fractional. Dedicated regressions preserve both
+cases without changing legacy baseline arithmetic or frozen signatures.
+
+The initial Task 14 production audit caught a paragraph directly inside a
+definition-list group. The assisted gathering explanation belongs in a `dd`,
+not a sibling paragraph. The run was stopped and its failure artifacts retained;
+that failed run is not acceptance evidence. Nested disclosures also require a
+direct-child summary selector in tests, not an ambiguous descendant selector.

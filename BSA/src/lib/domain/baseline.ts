@@ -229,6 +229,15 @@ export const MONTH_TIME_ASSUMPTIONS = Object.freeze({
   workingMinutes: 6 * 60 * 21,
 });
 export const MONTH_TODAY_RANGE = Object.freeze({ min: 10, max: 15 });
+export const MONTH_FIELDS = [
+  { key: "volume", label: "Items reaching the exception queue each month", integer: true, hint: `Public default: approximately ${formatBaselineNumber(BASELINE_VOLUME_REFERENCE.monthly)} monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.` },
+  { key: "todayMinutes", label: "Minutes an operator spends per item today", integer: false, hint: `gathering the evidence and judging, with no guidance · Assumption: ${MONTH_TIME_ASSUMPTIONS.todayMinutes} minutes, range ${MONTH_TODAY_RANGE.min} to ${MONTH_TODAY_RANGE.max}.` },
+  { key: "judgingMinutes", label: "Minutes an operator spends judging a case the agent has built", integer: false, hint: `reading the built case and deciding · Assumption: ${MONTH_TIME_ASSUMPTIONS.judgingMinutes} minutes.` },
+] as const;
+export const MONTH_DETAIL_FIELDS = BASELINE_FIELDS.filter(({ key }) => !["volume", "judgingMinutes", "builtReviewMinutes"].includes(key)).map((field) =>
+  GATHERING_STEPS.some(({ key }) => key === field.key)
+    ? { ...field, label: field.label.replace(" minutes / item", " weight"), hint: "Assumption · Relative gathering weight, 0 to 1,440" }
+    : field);
 export interface MonthModelInputs extends BaselineInputs {
   todayMinutes: number;
 }
@@ -245,6 +254,12 @@ export interface MonthModelResult extends BaselineResult {
   };
   capacity: { workingMinutes: number; today: number; withAgent: number };
   gatheringSteps: { key: typeof GATHERING_STEPS[number]["key"]; label: string; minutes: number }[];
+}
+
+export function monthSummary(result: MonthModelResult, enabled: boolean): string {
+  const hours = enabled ? result.withAgent.operatorHours : result.today.operatorHours;
+  const capacity = enabled ? result.capacity.withAgent : result.capacity.today;
+  return `${enabled ? "With agent" : "Today"}: ${formatBaselineNumber(hours, 1)} operator hours a month; ${formatBaselineNumber(capacity, 1)} items per operator. Built-case capacity is not mixed-cohort throughput. Estimates, not measured savings.`;
 }
 
 function monthErrors(input: MonthModelInputs): Partial<Record<keyof MonthModelInputs, string>> {
@@ -288,7 +303,7 @@ export function monthModel(input: MonthModelInputs): MonthModelResult {
       today: MONTH_TIME_ASSUMPTIONS.workingMinutes / input.todayMinutes,
       withAgent: MONTH_TIME_ASSUMPTIONS.workingMinutes / input.judgingMinutes },
     gatheringSteps: GATHERING_STEPS.map(({ key, label }) => ({
-      key, label, minutes: weights === 0 ? 0 : gathering * input[key] / weights,
+      key, label, minutes: weights === 0 ? 0 : gathering * (input[key] / weights),
     })),
   };
 }
@@ -300,6 +315,18 @@ export function selectMonthScenario(draft: BaselineDraft, todayMinutes: string) 
   const validToday = /^(?:1[0-4](?:\.\d*)?|15(?:\.0*)?)$/.test(text);
   const candidate: MonthModelInputs = { ...(parsed.input ?? BASELINE_DEFAULTS), todayMinutes: validToday ? Number(text) : NaN };
   const errors = { ...monthErrors(candidate), ...parsed.errors };
+  if (parsed.input && validToday) {
+    // Compare raw decimal fractions before floating-point rounding can hide
+    // judging time just above today's total.
+    const [judgingWhole, judgingFraction = ""] = draft.judgingMinutes.trim().split(".");
+    const [todayWhole, todayFraction = ""] = text.split(".");
+    const digits = Math.max(judgingFraction.length, todayFraction.length);
+    if (Number(judgingWhole || "0") > Number(todayWhole)
+      || (Number(judgingWhole || "0") === Number(todayWhole)
+        && judgingFraction.padEnd(digits, "0") > todayFraction.padEnd(digits, "0"))) {
+      errors.judgingMinutes = "Enter judging minutes greater than zero and no more than today's total.";
+    }
+  }
   const input = Object.keys(errors).length ? null : candidate;
   return { input, errors, result: input ? monthModel(input) : null };
 }
