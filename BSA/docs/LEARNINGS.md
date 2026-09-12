@@ -867,3 +867,9 @@ definition-list group. The assisted gathering explanation belongs in a `dd`,
 not a sibling paragraph. The run was stopped and its failure artifacts retained;
 that failed run is not acceptance evidence. Nested disclosures also require a
 direct-child summary selector in tests, not an ambiguous descendant selector.
+
+The application supplies compact overlays, not the raw tooltip provider.
+Reusing the existing compact tooltip avoids a missing-provider route crash.
+The static-render test must not add a raw provider absent from the real app,
+because that wrapper masks the integration defect. Capacity footnotes must
+also follow the mode: manual-case capacity Today, built-case capacity On.

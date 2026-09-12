@@ -259,7 +259,7 @@ export interface MonthModelResult extends BaselineResult {
 export function monthSummary(result: MonthModelResult, enabled: boolean): string {
   const hours = enabled ? result.withAgent.operatorHours : result.today.operatorHours;
   const capacity = enabled ? result.capacity.withAgent : result.capacity.today;
-  return `${enabled ? "With agent" : "Today"}: ${formatBaselineNumber(hours, 1)} operator hours a month; ${formatBaselineNumber(capacity, 1)} items per operator. Built-case capacity is not mixed-cohort throughput. Estimates, not measured savings.`;
+  return `${enabled ? "With agent" : "Today"}: ${formatBaselineNumber(hours, 1)} operator hours a month; ${formatBaselineNumber(capacity, 1)} items per operator. ${enabled ? "Built-case capacity is not mixed-cohort throughput." : "Manual-case capacity under these assumptions."} Estimates, not measured savings.`;
 }
 
 function monthErrors(input: MonthModelInputs): Partial<Record<keyof MonthModelInputs, string>> {

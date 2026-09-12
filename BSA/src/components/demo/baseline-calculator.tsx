@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 import { BoundaryTag } from "./labels";
 import { BaselineAssumptions } from "./baseline-assumptions";
 import { MONTH_DETAIL_FIELDS, GATHERING_STEPS, MONTH_FIELDS, monthSummary, formatBaselineNumber as number } from "@/lib/domain/baseline";
@@ -53,7 +53,7 @@ export function BaselineCalculator() {
           <h2 className="font-semibold">Items one operator can complete a month</h2>
           <p className="text-sm font-medium" data-month-mode>{mode}</p>
           <p className="text-4xl font-semibold" data-month-capacity><MonthlyNumber value={enabled ? result.capacity.withAgent : result.capacity.today} /></p>
-          <p className="text-xs text-muted-foreground">Assumption: 6 hours a day, 21 days = {number(result.capacity.workingMinutes)} minutes. Built-case capacity, not a mixed-cohort guarantee.</p>
+          <p className="text-xs text-muted-foreground">Assumption: 6 hours a day, 21 days = {number(result.capacity.workingMinutes)} minutes. {enabled ? "Built-case capacity, not a mixed-cohort guarantee." : "Manual-case capacity under these assumptions."}</p>
         </section>
       </div>
       <section aria-label="Operator minutes per item" className="space-y-3 rounded-xl border p-5">

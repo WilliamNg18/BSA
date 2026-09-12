@@ -27,6 +27,7 @@ test("three prominent assumptions and two mode-switched tiles show total effort 
   await expect(page.getByRole("tooltip")).toContainText("not measured total queue arrivals");
   await page.keyboard.press("Escape");
   await expectHeadlines(page, MONTH_MODEL_DEFAULTS, false);
+  await expect(page.getByText(/Manual-case capacity under these assumptions/).first()).toBeVisible();
   await expect(page.locator("[data-per-item-gathering]")).toHaveText("10 minutes");
   await expect(page.locator("[data-per-item-judging]")).toHaveText("2 minutes");
   for (const text of [
