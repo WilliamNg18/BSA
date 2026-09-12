@@ -788,3 +788,17 @@ The first workflow permission test assumed LF on Windows; accept CRLF as well
 without weakening the contents:read assertion. Unit tests also pin PR-only,
 shard-one upload, bounded retention and non-blocking reporting. Actual artifact
 publication must be verified on the PR run, not inferred from YAML.
+
+## 2026-09-12: A focused outgoing heading is not destination readiness
+
+PR build run 34701455982 successfully uploaded its build and summary link,
+while preserving a blocking keyboard-test failure. The browser trace shows
+the URL changed to pharmacy/claims at 139572 ms but the focused H1 was still
+the outgoing Where it ends heading at 139584 ms. Operations ArrowDown began
+at 139585 ms, before the claims heading appeared at 139630 ms.
+
+The generic focused-H1 assertion accepted the outgoing route. Await each
+destination's exact named heading and the Operations trigger's focus, then
+keep the original ArrowDown, menu-item, End/Home, Enter and CSP/axe assertions.
+Three unchanged-timeout repeats of the corrected case passed under strict
+production headers in 58.3 seconds. No application or overlay code changed.
