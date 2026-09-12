@@ -6,6 +6,97 @@ ms.date: 2026-09-12
 
 # Parity audit
 
+## Current reconciliation: R and V merged
+
+This section is the current mapping of the **same 33 rows**, at V merge
+`be623ab507e871c27e0889e7db6e64a8595ad10b`, with application source unchanged
+from R merge `898cda594d0dcb34376bddab7112edcddb172440`. The earlier register and scoped
+S/#20 update below are retained as historical evidence, not current defects.
+No new application or browser audit was run by this reconciliation.
+
+**R proof:** public [CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
+succeeded on `6e424ac75c4980380c31f9e3aab23243a9a013d0`. Its actual log
+records check success, **607 units**, **1,019 blocking browser passes**
+(17.7 minutes), then **three informational quarantine passes** (16.4 seconds).
+The source/tests/default Playwright configuration diff from that tested head
+to R's merged main is empty. The success job skipped artifact upload: no new
+deduplicated axe/CSP output total is claimed. Passing assertions establish
+the tested accessibility, keyboard, reduced-motion and real-header controls,
+not full WCAG certification, manual screen-reader or hosted acceptance.
+One successful quarantine run does not close R-owned #34 or remove its tags.
+
+**V proof:** merged #24 provides current narrative and **107 fresh PNGs and
+107 actual axe audits, 53 Off / 54 On**, against application `898cda5`.
+The [manifest](screens/integrated/manifest.json) and
+[review record](screens/integrated/README.md) record completed capture,
+zero axe violations, browser/page/CSP errors and horizontal-overflow captures.
+V reviewed every full-height image; the coordinator verified all 107 hashes
+and 1440px widths. This light/reduced-motion matrix is not new mobile, dark
+or cross-browser proof. **51 audits contain incomplete results**, retained
+as manual-review candidates, not full conformance or hidden violations.
+The initial harness interruption and same-source continuation remain recorded;
+this is not an uninterrupted-first-attempt claim. These are V's own audit
+outputs, not a deduplicated count inferred from successful R CI.
+
+Row 31 alone remains unverified: no actual hosted root/deep-link proof is
+available and token setup is owner-owned. Follow-up #37 tracks this external
+acceptance, not a missing application capability.
+
+| ID | Current status | Current mapping / evidence boundary |
+| --- | --- | --- |
+| 01 | Preserved | Scene, calculator, pipeline and two-places contrast retained; merged scene count-in and separate pipeline/case chapters included in R's tested source. |
+| 02 | Preserved | Typed manual pharmacy submission and unchecked receipts remain available; R's production guards pass. |
+| 03 | Changed with decision | Merged #20 neutral Off and explicit unavailable statuses retained; original S/#20 evidence below and current R run apply. |
+| 04 | Preserved | Scripted pharmacy stages, explicit correction and D capture stop retained. |
+| 05 | Preserved | Manual/assisted pack, trace and record contrasts and replay covered by R's passing regressions. |
+| 06 | Preserved | Reflective/reference screens and shared governing boundary retained; not fabricated mode-dependent operational work. |
+| 07 | Preserved | Canonical calculator arithmetic, fixed judging, bounds and invalid-input guards retained in passing units. |
+| 08 | Preserved | Qualified public figures and offline attribution remain; external statistics are not independently verified by these tests. |
+| 09 | Preserved | Bounded virtual queue, logical jumps and interactive filler examples retained. |
+| 10 | Preserved | Sweep/day projections remain separate from actual decisions; merged read-only Compare is included in R's tested source. |
+| 11 | Preserved | Canonical A sufficient; passing unit/browser guards. |
+| 12 | Preserved | Canonical B August referral and July sufficient; passing replay guards. |
+| 13 | Preserved | C conflicting quantities surfaced, not automatically resolved. |
+| 14 | Preserved | D abstains with all three reasons, gate NOT_RUN and no draft. |
+| 15 | Preserved | E clears deterministically without an agent call. |
+| 16 | Preserved | F's original decision/history retained across explicit new attempts. |
+| 17 | Preserved | Frozen lifecycle vocabulary, signatures and labels retained. |
+| 18 | Changed with decision | Authorised shared lifecycle/revisions/history implementation retained; current passing unit/browser authority guards. |
+| 19 | Changed with decision | Authorised claims states/actions retained, including R's manual resubmission comparison; no automatic lifecycle changes from comparison. |
+| 20 | Preserved | Pure gate and explicit human decision/approval boundaries retained. |
+| 21 | Changed with decision | #19 fixed by merged R #33: claim-detail gates manual reasons to Off; pharmacy history suppresses raw reasons On and shows only actual approved notes or an honest unavailable explanation. Records are not rewritten. R's exact CI passes the corresponding regressions. |
+| 22 | Changed with decision | Authorised complete mixed-mode same-item round trip now has passing integrated R browser evidence, not merely source coverage. |
+| 23 | Changed with decision | Follow/Switch side same-ID navigation and presentation-only tracking retained and tested. |
+| 24 | Changed with decision | Current authorised tour has eight chapters/nine stops after #30, including separate pipeline/Four cases and claims cycle; R's corrected chapter/navigation regressions pass. Historical seven-chapter text below is superseded here. |
+| 25 | Preserved | Reset restores seeded memory/default Off; offline and state-isolation guards pass. |
+| 26 | Preserved | Integrated tested accessibility/reduced-motion/keyboard controls pass in R's real-header production suite. No fresh artifact count, universal WCAG or manual screen-reader claim. |
+| 27 | Changed with decision | S's merged strict-CSP modal-style repair retained; R's integrated real-header assertions pass without weakening policy. |
+| 28 | Preserved | R's responsive, header-width and both-mode functional regressions pass; V's separately reviewed final visual evidence is recorded in row 30, not inferred from browser success. |
+| 29 | Preserved | Exact public CI completes 1,019 blocking tests plus three separately reported quarantine cases; this supersedes historical failed/interrupted full-run evidence below. |
+| 30 | Preserved | Merged V #24 reconciles SPEC, README, exact-click story, known issues and the reviewed final 107-image/107-audit manifest for application 898cda5. Actual 53 Off/54 On, zero reported violations/errors/overflow; 51 incomplete audit sets remain explicit manual-review limitations. |
+| 31 | Not yet verified | Owner follow-up #37 tracks token setup and actual hosted root/deep-link/header proof; local production server and public CI do not prove deployment. |
+| 32 | Changed with decision | Approved removal of byte/performance budgets retained; metrics informational, functional/axe gates blocking. |
+| 33 | Changed with decision | S's bounded/wrapping another-attempt link repair retained in R's passing reflow coverage; no universal future-layout claim. |
+
+| Status | Current count |
+| --- | ---: |
+| Preserved | 22 |
+| Changed with decision | 10 |
+| Changed without decision | 0 |
+| Missing | 0 |
+| Not yet verified | 1 |
+| Total | 33 |
+
+**32 of 33 rows are accepted at this evidence boundary; hosted acceptance
+alone remains Not yet verified under #37.** This is not all 33 Done or a
+full WCAG certification. R and V have merged with their respective proof;
+S's repairs are integrated. D owns final acceptance records, and R owns timing
+follow-ups #34/#35. No task ticks, SCOPE edits, tag removals or hosting claims
+are made here. Retain the historical 18/6/1/4/4 and intermediate 18/9/0/2/4
+counts below rather than silently replacing their evidence.
+
+## Original audit context
+
 This is a source/evidence audit, not integrated acceptance of Tasks 8-13.
 The comparison starts with preserved integration `62b0f7f`, checks the public
 contracts frozen at `0598e8c`, and examines integration main `d9e06e1`.
