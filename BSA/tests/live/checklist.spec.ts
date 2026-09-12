@@ -69,6 +69,7 @@ test("04 Four case cards open their matching case packs and traces", async ({ pa
     await flag(page).setChecked(true);
     const cards = page.getByRole("list", { name: "Four canonical synthetic cases" });
     await expect(cards.locator(":scope > li")).toHaveCount(4);
+    await expect(cards.locator("[data-outcome]")).toHaveText(["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION", "ABSTAIN"]);
     await cards.getByRole("link", { name: `Open case ${scenario}`, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${cases[index].id}$`));
     await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();

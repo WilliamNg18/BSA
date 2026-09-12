@@ -11,6 +11,7 @@ it("writes an interrupted run as FAIL without inventing executed checks", async 
     const reporter = new ChecklistReporter({
       outputFile, baseURL: "https://example.test/", expectedCommit: "a".repeat(40),
     });
+    reporter.onError({ message: "Run interrupted before browser execution" });
     await reporter.onEnd({ status: "interrupted", startTime: new Date(), duration: 0 });
     const result: unknown = JSON.parse(await readFile(outputFile, "utf8"));
     expect(result).toMatchObject({
@@ -18,6 +19,8 @@ it("writes an interrupted run as FAIL without inventing executed checks", async 
       expectedBuildCommit: "a".repeat(40),
       runnerStatus: "interrupted",
       status: "FAIL",
+      actualBuildCommits: [],
+      symptoms: ["Run interrupted before browser execution"],
       checklist: [],
     });
   } finally {

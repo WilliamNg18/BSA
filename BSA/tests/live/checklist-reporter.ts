@@ -1,16 +1,21 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import type { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from "@playwright/test/reporter";
+import type { FullConfig, FullResult, Reporter, Suite, TestCase, TestError, TestResult } from "@playwright/test/reporter";
+import { isBuildInfo } from "./settings";
 
 interface Options { outputFile: string; baseURL: string; expectedCommit: string }
 
 export default class ChecklistReporter implements Reporter {
   private suite?: Suite;
   private startedAt = "";
+  private errors: string[] = [];
   constructor(private options: Options) {}
   onBegin(_config: FullConfig, suite: Suite) {
     this.suite = suite;
     this.startedAt = new Date().toISOString();
+  }
+  onError(error: TestError) {
+    this.errors.push(error.message ?? error.value ?? "Unspecified runner error");
   }
   private async result(test: TestCase, result?: TestResult) {
     const evidence: { name: string; value: unknown }[] = [];
@@ -32,13 +37,16 @@ export default class ChecklistReporter implements Reporter {
   }
   async onEnd(result: FullResult) {
     const checklist = await Promise.all((this.suite?.allTests() ?? []).map((test) => this.result(test, test.results.at(-1))));
+    const identities = checklist.flatMap((row) => row.evidence.map((entry) => entry.value)).filter(isBuildInfo);
     await mkdir(dirname(this.options.outputFile), { recursive: true });
     await writeFile(this.options.outputFile, JSON.stringify({
       baseURL: this.options.baseURL,
       expectedBuildCommit: this.options.expectedCommit,
+      actualBuildCommits: [...new Set(identities.map((identity) => identity.commit))],
       startedAt: this.startedAt,
       finishedAt: new Date().toISOString(),
       runnerStatus: result.status,
+      symptoms: this.errors,
       status: result.status === "passed" && checklist.length === 13 && checklist.every((row) => row.status === "PASS") ? "PASS" : "FAIL",
       checklist,
     }, null, 2));
