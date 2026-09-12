@@ -890,6 +890,19 @@ navigation after the queue, the single table retains its standard data-slot,
 and queue word counts are informational with functional dialog checks retained.
 Mobile tooltip checks clear stale pointer hover before checking keyboard focus.
 
+## 2026-09-12: Task 16 P claims clarity preserves two different lifetimes
+
+Combining claim fields and history in one visual card must not give them the
+same React remount key. Correction fields reset for a new immutable revision;
+the expanded history disclosure should stay open for the same item. Keep the
+revision-keyed form inside the card alongside the stable history component.
+
+A ready submission snapshot alone cannot prove a pre-submission catch. The
+monthly selected-pharmacy strip consumes explicit before/after correction
+events, excludes other pharmacies and months, and counts each case/revision
+once. Recorded item counts and the shared whole-service model are different
+quantities and need separate labels even when both are synthetic.
+
 ## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
 
 Comparing parsed floating-point values alone accepted a judging draft just
