@@ -16,10 +16,17 @@ node scripts\serve-production.mjs
 ```
 
 Open `http://localhost:4193/` at 1440px. Keep this guide beside the application.
-There is no presenter timer, Discussion mode or `/notes` route. A hosted URL is
-not available: no subscription was selected and no deployment token exists.
-Use [DEPLOYMENT.md](DEPLOYMENT.md) for owner-run Azure Static Web Apps setup,
-not a historical hosting address.
+There is no presenter timer, Discussion mode or `/notes` route. The live demo is
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ on the existing App Service.
+The [hosted evidence](live-verification/README.md) is pinned to its tested build;
+check `/build-info.json` before attributing a rehearsal to a later release.
+No SWA token or new owner setup is needed. Infrastructure remains frozen.
+
+**Verified Task 18 story:** [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md) and the
+[live walk](screens/task18/c0203fc/walk-completed.json) pin the chapter 2/6/7
+observations, perspective switches and human-controlled B cycle to clean
+`c0203fc`, built `2026-09-12T21:16:45.865Z`. The walkthrough used reduced
+motion; with normal motion, wait for settled numbers and advisory results.
 
 Click **Reset demo**, then **Reset demonstration**. Confirm **Agent: Off**.
 Reset retains the current route, so click **Overview** to begin at scene if
@@ -56,8 +63,11 @@ turn the pack's stronger assumption that assembly takes more time than judging
 into an observed fact. The current side-by-side demo is not proof that both
 operational integrations should be deployed together.
 
-The single-row header contains Overview, Operations, How it works, Agent and
-Reset. Under Operations are Pharmacy check, Pharmacy claims and NHSBSA
+The header contains Overview, Operations, How it works, Perspective, Agent and
+Reset. Select **Both** for the full tour; **Pharmacy** or **NHSBSA** filters
+operations and hides the tour/Follow controls without changing session history.
+Perspective and Agent are independent; Reset retains perspective.
+Under Operations in Both are Pharmacy check, Pharmacy claims and NHSBSA
 queue. Under How it works are Evaluation, Boundary, Assumptions and Architecture.
 At narrow widths use **Open navigation**.
 
@@ -70,13 +80,13 @@ Alt+ArrowRight/Left also works outside editable fields and menus.
 | Stop and exact action | What to show and say | Toggle moment |
 | --- | --- | --- |
 | Open `/#scene` | Three attributed figures and existing process. Approximately 85,000 monthly referrals is a subset, not all exceptions. Monthly publication does not prove monthly rule changes. Expand Figure qualification to show the unverified-source caveats. | Stay Off; attribution does not depend on assistance. |
-| Click Next to `/#month` | A month in numbers. Expand assumptions and change an input; Today represents competent manual work, not a broken service. Gathering and judging durations are assumptions, not measured savings. | Switch On to reveal the assisted comparison, then Off to show unchanged inputs and manual baseline. |
+| Click Next to `/#month` | Three assumptions and two tiles. Default Today is 17,000 hours and 630 manual items per operator. Show the public referral-subset qualification; Show the detail holds weights and cohorts. | Switch On: 4,250 displayed hours and 3,780 built-case capacity. Judging stays 2 minutes; abstentions keep all 12 Today minutes. These are not measured savings. |
 | Click Next to `/#pipeline` | What exists today and what changes. Show all six stages; existing scanning, capture and pricing remain existing capabilities. | Start Off, then On. Wait for the phase-related evidence preparation; the animation records no decision. |
 | Click Next to `/#cases` | Four cases has its own chapter. Show Open case and Follow this item on A-D. | Compare Off pain with On results: A sufficient, B needs a date, C retains 56/84, D abstains. |
 | Click Next to `/#two-places` | One agent, two places. Local shared history exists; a shared operational service remains proposed. Follow the same ID rather than imagining two unrelated systems. | Compare On/Off; neither changes a case lifecycle. Finish Off. |
 | Click Next to `/pharmacy` | Information missing is the B example. Manual endorsement and Continue with submission remain usable without advice. | Keep Off here; the live round trip below introduces On at a specific human review. |
-| Click Next to `/queue` | Pinned cases and a bounded virtual month. Click Jump to 17:00, then Compare in Queue controls; show Today versus With agent and Close comparison. Today on a model row opens manual tasks. | On enables Run agent on visible rows; Step sweep/Cancel sweep affect projection only. Compare itself does not toggle assistance. Return Off. |
-| Click Next to `/pharmacy/claims` | What the pharmacy sees. Walk all five Referral cycle guide stages, then distinguish the actual Recorded claim state. Totals are claimed amounts, not payments. Use the uninterrupted cycle below to perform the actions. | Compare Today/With agent preparation. The guide itself changes no stage; On reasons require recorded draft approval. |
+| Click Next to `/queue` | One six-column table and counted filters; 70,833 operator slots excludes 14,167 modelled pharmacy catches. Click Compare, Run one hour, then Close comparison. | Compare shows projected 5 versus 8 decisions, 60 versus 36 operator minutes and 3 versus 3 cited decisions. Agent changes work presentation, never records the projected decisions. |
+| Click Next to `/pharmacy/claims` | Start with Action needed, Waiting on NHSBSA, Paid this month and All; every amount is claimed (synthetic). Open B via Correct and resubmit. | Off shows the raw reason; On shows only an actually approved draft or explicitly says none exists. Use the uninterrupted cycle below to create approval and resubmit. |
 | Click Next to `/#close` | Where it ends. Request two years of item-level referral reasons, test concentration, then proceed, reshape or stop. Open assumptions and discovery questions as needed. | Either state; do not present proposals as validated operational facts. |
 
 Back reverses all nine stops, including Pharmacy check. Dismiss tour hides the
@@ -88,11 +98,52 @@ When comparing numbers, distinguish projected referrals from the risk residual:
 referrals use deficient shares of built and abstained items; risk includes
 every abstention. The referral-free percentage uses the full scenario volume,
 not just the residual queue, and is not measured accuracy. Zero volume or
-residual means Not established. The monthly calculator holds judging hours
-constant; the queue day instead projects one operator's capacity. Neither is
+residual means Not established. Monthly assisted effort charges built cases
+judging only and abstentions all Today minutes. The capacity tile is built-case
+capacity, not mixed throughput; queue Compare uses the same twelve examples
+and one elapsed-time allowance per operator. Neither is
 measured savings, and the two-second presentation is not work completed.
 
 ## Complete round trip: B, manual submission to assisted correction
+
+### Verified chapter 6/7 audience beats
+
+These controls were exercised on the actual live build. The screenshots show
+the initial chapter views; the separate walk record proves the stateful actions.
+
+**Chapter 6, NHSBSA perspective.** Begin Off. Point to the counted work filters
+and ask which items need an operator. Open a Today model row to show competent
+manual work, not an unavailable-service error. Close it, open **Compare** and
+click **Run one hour**. Say: "These are assumed capacities, not items we processed. On prepares
+evidence; a human still makes the decision." Toggle On and distinguish actual
+session rows from illustrative volume; never describe a sweep as recorded work.
+
+**Chapter 7, Pharmacy perspective.** Keep the same session and select the
+**Pharmacy** radio in **Perspective**, not Agent. This retains the current URL;
+open **Operations > Pharmacy claims** if the other-side guard is showing.
+Point first to **Action needed** and open EX-24112.
+Show the exact raw Off reason. If no operator-approved draft exists, On must
+say so rather than give the raw text a new label. Return to the NHSBSA side
+for an explicit review, approve the actual draft and record Refer back. Return
+to the same pharmacy item; now On can show the approved note, rule/version
+and suggested correction. Checking and applying text do not resubmit it.
+
+**Same-item continuation, no Reset or reload.** Follow EX-24112 from its
+submission through operator review, approved referral, pharmacy correction,
+explicit resubmission and human re-check. Switch perspective through the
+visible controls when the other side is hidden. Keep the ID visible after
+every navigation. Before the final sufficient disposition, show that the
+resubmitted state still awaits human review. Afterwards compare Off/On and
+Both: all retain the same attempts, approval and decisions. The synthetic
+paid state belongs to existing pricing; it is not a payment made by the agent.
+
+Use **Both** to show the two operational sides in one tour. Use Pharmacy and
+NHSBSA independently to demonstrate audience filtering. A direct link to an
+opposite-side page is expected to show a guard, not its operational content.
+Change perspective to continue; do not use Reset to get around the guard.
+Perspective survives Reset, but Reset would erase the session story.
+
+### Exact-click sequence, same item without Reset
 
 This is a separate uninterrupted session sequence. Leave time to show the
 human approval boundary, not just a green end state. Use exact button labels
@@ -104,12 +155,13 @@ human approval or uncertainty to meet a stopwatch.
    demonstration**. Confirm **Agent: Off**, **Information missing** and the
    endorsement `NCSO  RK`. Show **Not checked: manual submission** and say:
    "No advisory check has been performed. Submission remains available."
-2. Click **Continue with submission**, then **View submitted claim**. The
+2. Select **Pharmacy** in Perspective. Click **Continue with submission**,
+   then **View submitted claim**. The
    selected ID is **EX-24112**, status **Submitted, awaiting processing**.
-   In **Shared case history**, click **Follow this case**. The Followed item
-   banner now keeps EX-24112 across sides.
-3. Click **Switch side: NHSBSA**. Note that navigation alone did not start a
-   review. Click **Start review**. Keep Agent Off to show the manual pack,
+   Expand **History and attempts** in Shared case history.
+3. Select **NHSBSA** in Perspective. The URL stays on the pharmacy claim and
+   an other-side guard appears. Open **Operations > NHSBSA queue**, locate
+   EX-24112 marked **New**, and click **Open for review**. Keep Agent Off to show the manual pack,
    evidence and human choices without an agent proposal.
 4. **Toggle On now.** Wait for the assembly presentation to complete. Show
    the missing date, August provision and gate PASS. PASS means a proposed
@@ -118,11 +170,13 @@ human approval or uncertainty to meet a stopwatch.
    Tick **Approve this draft for the pharmacy**. Enter
    `Please add the dispensing date beside the initials` in **Reason**.
    Click **Record decision**. Only this human action creates the referral.
-6. On the decision record, choose **July 2026 (2026-07)** in **Replay with**.
-   Show **Sufficient**: July did not require a date. The recorded August
-   referral and original evidence are unchanged. Do not describe this as
-   revising a decision or approving payment.
-7. Click **Switch side: Pharmacy**. Show the **Operator-approved note** and
+6. The decision record proves the recorded referral. Optionally choose
+   **July 2026 (2026-07)** in **Replay with** to show the historical rule
+   counterfactual. July did not require a date; it does not revise the August
+   decision. This optional replay is covered by the separate hosted checklist,
+   not V's 22-checkpoint walk.
+7. Select **Pharmacy**, open **Operations > Pharmacy claims**, and use
+   B's **Correct and resubmit** row action. Show the **Operator-approved note** and
    its approval metadata. Enabling assistance did not approve it; the
    checkbox and recorded decision did. The status is now referred back.
 8. Click **Re-check endorsement**, then **Apply suggested correction**.
@@ -130,8 +184,8 @@ human approval or uncertainty to meet a stopwatch.
    Click **Re-check endorsement** again to get **Ready to resubmit**.
    Applying text and validating that new text are deliberately separate.
 9. Click **Resubmit claim**. Show **Resubmitted, awaiting re-check**.
-   Click **Open shared queue**, find **EX-24112** in the shared session queue,
-   and click its **Open for review** button. A new human review is required.
+   Select **NHSBSA**, open **Operations > NHSBSA queue**, find **EX-24112**
+   and click **Open for review**. A new human review is required.
 10. The corrected B evidence now supports **Sufficient: release to pricing
     once confirmed**. Leave **Accept (as recommended)** selected, enter
     `Human reviewed the corrected date and complete evidence` in **Reason**,
@@ -140,25 +194,38 @@ human approval or uncertainty to meet a stopwatch.
     seed, manual submission and corrected resubmission as separate immutable
     attempts. The latest result did not overwrite the original endorsement
     or the referral's August record.
-12. Click **Switch side: Pharmacy**. Show **Payment approved (synthetic)** and
+12. Select **Pharmacy**, open **Operations > Pharmacy claims**, select **All**
+    and open B via **View**. Show **Payment approved (synthetic)** and
     the matching ID/history. Say: "This label represents release to existing
     pricing in the synthetic story. No payment was calculated or approved
     here, and the agent did not move the lifecycle."
-13. **Toggle Off now.** The final disposition and human history remain.
-    Assisted fields disappear; no decision is undone. Stop following with
-    **Stop following this case** when finished.
+13. **Toggle Off now**, then select **Both**. The final disposition and
+    immutable attempts remain; no decision is undone. Both restores the tour
+    and same-item Follow links; single-side views deliberately omit them.
 
-The same cycle can start from the chapter's **Open this operator case** and
-**Open this pharmacy claim** links. Keep EX-24112 selected and distinguish
-**Recorded claim state** from the five-stage explanation. The explanation is
-not evidence of completion; the recorded human actions and history are.
+### Separate catch-counter demonstration
+
+Use a fresh session for this comparison, not Reset in the middle of the cycle
+above. In Pharmacy perspective, turn On and open Pharmacy claims: **Caught
+before submission** begins at 0. Open B and note its seeded history.
+Navigate to Pharmacy check, wait for **Information may be missing**, click
+**Apply correction**, and wait for **Ready to submit**. There is no receipt.
+Return to claims: the count is 1, but B's original state and attempts are
+unchanged. The event records advisory evidence, not a submission.
+
+Returning to Pharmacy check restores its local example. Apply the correction
+again and wait for ready; this does not double-count the same next attempt.
+Now explicitly click **Continue with submission**, then **View submitted
+claim**. Only this creates the submission; the caught count stays 1. Select
+NHSBSA, open the queue and show the same EX-24112 as **New**,
+**Submitted, awaiting review**, with **Open for review**.
 
 ### Entirely manual comparison
 
 Reset and repeat steps 1-3 with Agent Off throughout. Choose **Refer back**,
 enter the same reason and Record decision. At the pharmacy, type
 `NCSO  RK 21/08/26` into **Corrected endorsement**, then **Resubmit claim**.
-Open the shared queue and **Open for review**. Choose **Sufficient (human
+Select NHSBSA, open the queue and **Open for review**. Choose **Sufficient (human
 choice)** explicitly, enter the review reason and record. There is no
 Re-check, suggested correction, approved agent draft or counterfactual replay
 in this manual comparison. The human still controls the same round trip.

@@ -1,0 +1,772 @@
+{
+  "purpose": "Pre-migration live baseline, not final Task 18 acceptance",
+  "observer": "AI evaluator using isolated Chromium, not a timed human novice study",
+  "startedAt": "2026-09-12T19:24:38.697Z",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "expectedCommit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+  "observations": [
+    {
+      "chapter": 2,
+      "mode": "off",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "capturedAt": "2026-09-12T19:24:41.950Z",
+      "build": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "snapshot": "- main:\n  - status: Assistance Off · Simulated presentation, not a model call\n  - heading \"A month in numbers\" [level=1]\n  - paragraph: Compare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n  - region \"Monthly workload calculator\":\n    - paragraph: Estimates only. Replace these assumptions with validated NHSBSA figures.\n    - group \"Edit the scenario\":\n      - text: Edit the scenario Deterministic code Local arithmetic · No operational forecast Monthly volume proxy\n      - textbox \"Monthly volume proxy\": \"85000\"\n      - text: Items · Whole number · 0 to 1,000,000,000 Built case review minutes / item\n      - textbox \"Built case review minutes / item\": \"1\"\n      - text: Synthetic assumption · Evidence review, separate from judging · 0 to 1,440 Judging minutes / item\n      - textbox \"Judging minutes / item\": \"2\"\n      - text: Synthetic assumption · Same reference cohort on both sides · 0 to 1,440 Pharmacy pre-check %\n      - textbox \"Pharmacy pre-check %\": \"16.666666666666664\"\n      - text: Share of incoming volume · 0 to 100 Rule-cleared %\n      - textbox \"Rule-cleared %\": \"20\"\n      - text: Share remaining after pharmacy pre-check · 0 to 100 Abstention %\n      - textbox \"Abstention %\": \"25\"\n      - text: Share of the uncleared remainder · 0 to 100 Deficient built share %\n      - textbox \"Deficient built share %\": \"25\"\n      - text: Synthetic assumption · Share of built items referred back · 0 to 100 Deficient abstained share %\n      - textbox \"Deficient abstained share %\": \"50\"\n      - text: Synthetic assumption · Share of abstained items referred back · 0 to 100\n      - group: Seven-step gathering breakdown · Synthetic minutes\n      - text: \"Manual gathering: 5 minutes / item, sum of seven synthetic assumptions.\"\n      - paragraph: \"Volume default: 85,000 items/month. Approximate referral-subset scale proxy, not total exceptions. Rates are synthetic assumptions, not measured effectiveness.\"\n    - region \"Today manual scenario\":\n      - heading \"Today\" [level=2]\n      - text: Human decision\n      - paragraph: Manual scenario assumption · Not real today\n      - paragraph: 9,916.7 reference operator hours / month\n      - term: Gathering\n      - definition: 7,083.3 hours\n      - term: Judging\n      - definition: 2,833.3 hours\n      - term: Referrals · Scenario proxy\n      - definition: 85,000\n      - term: Manual review\n      - definition: 85,000 items\n      - term: Expected time before decision\n      - definition: 7 minutes / item\n    - region \"With agent scenario\":\n      - heading \"With agent\" [level=2]\n      - text: Agentic action\n      - paragraph: Agent Off. Today is highlighted; assisted estimates hidden. Enable assistance in the header to compare. Inputs are retained.\n      - 'button \"Manual: Manual gathering assumed\"'\n    - heading \"Comparison boundary\" [level=2]\n    - paragraph: Judging remains V × j / 60 hours on both sides. Pharmacy avoidance creates no assumed judgement savings.\n    - heading \"Referral boundary\" [level=2]\n    - paragraph: Today referrals equal scenario volume, not total exceptions. Assisted referrals use editable deficiency assumptions.\n    - heading \"Scenario summary\" [level=2]\n    - status: \"Synthetic scenario: 85,000 items; 9,916.7 reference hours. Assisted estimates hidden. No measured savings.\"\n    - region \"Scenario cohort definitions\":\n      - heading \"What the cohorts mean\" [level=2]\n      - term: Pharmacy-caught\n      - definition: Assumed caught and corrected before submission, so never enters the NHSBSA queue. Avoidance count only.\n      - term: Rule-cleared\n      - definition: Code establishes certainty without a person touching the case. Existing pricing is unchanged; no AI or model call.\n      - term: Abstained\n      - definition: Cannot safely interpret or find a provision. Reasons accompany the hand-off; the existing manual path remains unchanged.\n      - term: Case built\n      - definition: Evidence and recommendation pass through the deterministic compliance gate. A human reviews and decides; the agent never approves or prices.\n    - group: Calculator assumptions and formula",
+      "visible": {
+        "headings": [
+          {
+            "text": "A month in numbers",
+            "top": 259
+          },
+          {
+            "text": "Today",
+            "top": 1009
+          },
+          {
+            "text": "With agent",
+            "top": 1009
+          },
+          {
+            "text": "Comparison boundary",
+            "top": 1367
+          },
+          {
+            "text": "Referral boundary",
+            "top": 1435
+          },
+          {
+            "text": "Scenario summary",
+            "top": 1520
+          },
+          {
+            "text": "What the cohorts mean",
+            "top": 1626
+          },
+          {
+            "text": "Volume qualification",
+            "top": 0
+          },
+          {
+            "text": "Timing assumptions",
+            "top": 2728
+          },
+          {
+            "text": "Pharmacy proxy: 2/12 incoming rows",
+            "top": 2812
+          },
+          {
+            "text": "Abstained: 2/8 after candidates and clearances",
+            "top": 3008
+          },
+          {
+            "text": "Assembly latency",
+            "top": 3096
+          },
+          {
+            "text": "Validated rule citations: 3/3 active recommended packs",
+            "top": 3224
+          },
+          {
+            "text": "Calculator formula",
+            "top": 3296
+          }
+        ],
+        "inputsAboveFold": 8,
+        "columnCounts": [],
+        "prose": [
+          {
+            "name": "chapter narrative",
+            "text": "A month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.",
+            "words": 24
+          },
+          {
+            "name": "scenario inputs",
+            "text": "Edit the scenario\nDeterministic code\nLocal arithmetic · No operational forecast\nMonthly volume proxy\nItems · Whole number · 0 to 1,000,000,000\nBuilt case review minutes / item\nSynthetic assumption · Evidence review, separate from judging · 0 to 1,440\nJudging minutes / item\nSynthetic assumption · Same reference cohort on both sides · 0 to 1,440\nPharmacy pre-check %\nShare of incoming volume · 0 to 100\nRule-cleared %\nShare remaining after pharmacy pre-check · 0 to 100\nAbstention %\nShare of the uncleared remainder · 0 to 100\nDeficient built share %\nSynthetic assumption · Share of built items referred back · 0 to 100\nDeficient abstained share %\nSynthetic assumption · Share of abstained items referred back · 0 to 100\nSeven-step gathering breakdown · Synthetic minutes\nManual gathering: 5 minutes / item, sum of seven synthetic assumptions.\n\nVolume default: 85,000 items/month. Approximate referral-subset scale proxy, not total exceptions. Rates are synthetic assumptions, not measured effectiveness.",
+            "words": 159
+          },
+          {
+            "name": "comparison boundary",
+            "text": "Comparison boundary\n\nJudging remains V × j / 60 hours on both sides. Pharmacy avoidance creates no assumed judgement savings.",
+            "words": 20
+          },
+          {
+            "name": "referral boundary",
+            "text": "Referral boundary\n\nToday referrals equal scenario volume, not total exceptions. Assisted referrals use editable deficiency assumptions.",
+            "words": 16
+          },
+          {
+            "name": "scenario summary",
+            "text": "Scenario summary\n\nSynthetic scenario: 85,000 items; 9,916.7 reference hours. Assisted estimates hidden. No measured savings.",
+            "words": 15
+          },
+          {
+            "name": "volume qualification",
+            "text": "",
+            "words": 1
+          },
+          {
+            "name": "timing assumptions",
+            "text": "",
+            "words": 1
+          }
+        ],
+        "horizontalOverflow": false
+      }
+    },
+    {
+      "chapter": 2,
+      "mode": "on",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "capturedAt": "2026-09-12T19:24:42.198Z",
+      "build": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "snapshot": "- main:\n  - status: Assistance On · Simulated presentation, not a model call\n  - heading \"A month in numbers\" [level=1]\n  - paragraph: Compare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n  - region \"Monthly workload calculator\":\n    - paragraph: Estimates only. Replace these assumptions with validated NHSBSA figures.\n    - group \"Edit the scenario\":\n      - text: Edit the scenario Deterministic code Local arithmetic · No operational forecast Monthly volume proxy\n      - textbox \"Monthly volume proxy\": \"85000\"\n      - text: Items · Whole number · 0 to 1,000,000,000 Built case review minutes / item\n      - textbox \"Built case review minutes / item\": \"1\"\n      - text: Synthetic assumption · Evidence review, separate from judging · 0 to 1,440 Judging minutes / item\n      - textbox \"Judging minutes / item\": \"2\"\n      - text: Synthetic assumption · Same reference cohort on both sides · 0 to 1,440 Pharmacy pre-check %\n      - textbox \"Pharmacy pre-check %\": \"16.666666666666664\"\n      - text: Share of incoming volume · 0 to 100 Rule-cleared %\n      - textbox \"Rule-cleared %\": \"20\"\n      - text: Share remaining after pharmacy pre-check · 0 to 100 Abstention %\n      - textbox \"Abstention %\": \"25\"\n      - text: Share of the uncleared remainder · 0 to 100 Deficient built share %\n      - textbox \"Deficient built share %\": \"25\"\n      - text: Synthetic assumption · Share of built items referred back · 0 to 100 Deficient abstained share %\n      - textbox \"Deficient abstained share %\": \"50\"\n      - text: Synthetic assumption · Share of abstained items referred back · 0 to 100\n      - group: Seven-step gathering breakdown · Synthetic minutes\n      - text: \"Manual gathering: 5 minutes / item, sum of seven synthetic assumptions.\"\n      - paragraph: \"Volume default: 85,000 items/month. Approximate referral-subset scale proxy, not total exceptions. Rates are synthetic assumptions, not measured effectiveness.\"\n    - region \"Today manual scenario\":\n      - heading \"Today\" [level=2]\n      - text: Human decision\n      - paragraph: Manual scenario assumption · Not real today\n      - paragraph: 9,916.7 reference operator hours / month\n      - term: Gathering\n      - definition: 7,083.3 hours\n      - term: Judging\n      - definition: 2,833.3 hours\n      - term: Referrals · Scenario proxy\n      - definition: 85,000\n      - term: Manual review\n      - definition: 85,000 items\n      - term: Expected time before decision\n      - definition: 7 minutes / item\n    - region \"With agent scenario\":\n      - heading \"With agent\" [level=2]\n      - text: Agentic action\n      - paragraph: Synthetic scenario · Human decisions retained\n      - paragraph: 4,722.2 reference operator hours / month\n      - term: Gathering\n      - definition: 1,888.9 hours\n      - term: Judging\n      - definition: 2,833.3 hours\n      - term: Referrals · Assumed\n      - definition: 17,709\n      - term: Pharmacy-caught (assumed)\n      - definition: 14,167\n      - term: Rule-cleared · No human\n      - definition: 14,167\n      - term: Abstained · Manual fallback\n      - definition: 14,167\n      - term: Built · Human review\n      - definition: 42,499\n      - paragraph: Pharmacy avoidance is count-only. Pharmacy effort excluded; no causal savings claim.\n      - 'button \"Assisted: Assisted review assumed; judging unchanged\"'\n    - heading \"Comparison boundary\" [level=2]\n    - paragraph: Judging remains V × j / 60 hours on both sides. Pharmacy avoidance creates no assumed judgement savings.\n    - heading \"Referral boundary\" [level=2]\n    - paragraph: Today referrals equal scenario volume, not total exceptions. Assisted referrals use editable deficiency assumptions.\n    - figure \"Scenario flow · Four disjoint cohorts\":\n      - text: Scenario flow · Four disjoint cohorts\n      - img \"Proportional monthly scenario flow 85,000 items split into 14,167 Pharmacy-caught, 14,167 Rule-cleared, 14,167 Abstained, 42,499 Built for human review. Ribbon thickness represents item count; zero cohorts have no ribbon. Exact counts are listed below.\"\n      - list \"Flow counts in top-to-bottom order\":\n        - listitem:\n          - text: 1. Pharmacy-caught\n          - paragraph: 14,167 items\n        - listitem:\n          - text: 2. Rule-cleared\n          - paragraph: 14,167 items\n        - listitem:\n          - text: 3. Abstained\n          - paragraph: 14,167 items\n        - listitem:\n          - text: 4. Built for human review\n          - paragraph: 42,499 items\n      - paragraph: Counts sum exactly to 85,000. Pharmacy avoidance is count-only; this flow does not measure operator savings.\n    - region \"Referral-free proxy estimate\":\n      - heading \"Referral-free proxy · Estimate\" [level=2]\n      - term: Scenario proxy · Not observed accuracy\n      - definition: 70.8%\n      - term: Residual risk · All abstained + deficient built\n      - definition: 24,792\n      - paragraph: Rounded down to 0.1%. Zero residual establishes no accuracy. Deficient abstentions counted once; residual risk differs from assumed referrals.\n    - region \"Assembly latency, not operator effort\":\n      - heading \"Assembly latency, not operator effort\" [level=2]\n      - term: Synthetic engine latency\n      - definition: 34.8 seconds / built item\n      - term: Expected time before decision\n      - definition: \"Built: 3.6 minutes; abstained: 7 minutes\"\n      - paragraph: Per-item assumptions apply even to empty cohorts. Queue delay excluded; machine latency is not operator effort.\n    - heading \"Scenario summary\" [level=2]\n    - status: \"Synthetic scenario: 14,167 pharmacy-caught, 14,167 cleared, 14,167 abstained, 42,499 built; 17,709 referrals. Judging unchanged. Not measured savings or decisions.\"\n    - region \"Scenario cohort definitions\":\n      - heading \"What the cohorts mean\" [level=2]\n      - term: Pharmacy-caught\n      - definition: Assumed caught and corrected before submission, so never enters the NHSBSA queue. Avoidance count only.\n      - term: Rule-cleared\n      - definition: Code establishes certainty without a person touching the case. Existing pricing is unchanged; no AI or model call.\n      - term: Abstained\n      - definition: Cannot safely interpret or find a provision. Reasons accompany the hand-off; the existing manual path remains unchanged.\n      - term: Case built\n      - definition: Evidence and recommendation pass through the deterministic compliance gate. A human reviews and decides; the agent never approves or prices.\n    - group: Calculator assumptions and formula",
+      "visible": {
+        "headings": [
+          {
+            "text": "A month in numbers",
+            "top": 259
+          },
+          {
+            "text": "Today",
+            "top": 1009
+          },
+          {
+            "text": "With agent",
+            "top": 1009
+          },
+          {
+            "text": "Comparison boundary",
+            "top": 1482
+          },
+          {
+            "text": "Referral boundary",
+            "top": 1550
+          },
+          {
+            "text": "Referral-free proxy · Estimate",
+            "top": 2524
+          },
+          {
+            "text": "Assembly latency, not operator effort",
+            "top": 2694
+          },
+          {
+            "text": "Scenario summary",
+            "top": 2888
+          },
+          {
+            "text": "What the cohorts mean",
+            "top": 2994
+          },
+          {
+            "text": "Volume qualification",
+            "top": 4040
+          },
+          {
+            "text": "Timing assumptions",
+            "top": 4096
+          },
+          {
+            "text": "Pharmacy proxy: 2/12 incoming rows",
+            "top": 4180
+          },
+          {
+            "text": "Abstained: 2/8 after candidates and clearances",
+            "top": 4376
+          },
+          {
+            "text": "Assembly latency",
+            "top": 4464
+          },
+          {
+            "text": "Validated rule citations: 3/3 active recommended packs",
+            "top": 4592
+          },
+          {
+            "text": "Calculator formula",
+            "top": 4664
+          }
+        ],
+        "inputsAboveFold": 8,
+        "columnCounts": [],
+        "prose": [
+          {
+            "name": "chapter narrative",
+            "text": "A month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.",
+            "words": 24
+          },
+          {
+            "name": "scenario inputs",
+            "text": "Edit the scenario\nDeterministic code\nLocal arithmetic · No operational forecast\nMonthly volume proxy\nItems · Whole number · 0 to 1,000,000,000\nBuilt case review minutes / item\nSynthetic assumption · Evidence review, separate from judging · 0 to 1,440\nJudging minutes / item\nSynthetic assumption · Same reference cohort on both sides · 0 to 1,440\nPharmacy pre-check %\nShare of incoming volume · 0 to 100\nRule-cleared %\nShare remaining after pharmacy pre-check · 0 to 100\nAbstention %\nShare of the uncleared remainder · 0 to 100\nDeficient built share %\nSynthetic assumption · Share of built items referred back · 0 to 100\nDeficient abstained share %\nSynthetic assumption · Share of abstained items referred back · 0 to 100\nSeven-step gathering breakdown · Synthetic minutes\nManual gathering: 5 minutes / item, sum of seven synthetic assumptions.\n\nVolume default: 85,000 items/month. Approximate referral-subset scale proxy, not total exceptions. Rates are synthetic assumptions, not measured effectiveness.",
+            "words": 159
+          },
+          {
+            "name": "comparison boundary",
+            "text": "Comparison boundary\n\nJudging remains V × j / 60 hours on both sides. Pharmacy avoidance creates no assumed judgement savings.",
+            "words": 20
+          },
+          {
+            "name": "referral boundary",
+            "text": "Referral boundary\n\nToday referrals equal scenario volume, not total exceptions. Assisted referrals use editable deficiency assumptions.",
+            "words": 16
+          },
+          {
+            "name": "cohort flow",
+            "text": "Scenario flow · Four disjoint cohorts\n1. Pharmacy-caught\n\n14,167 items\n\n2. Rule-cleared\n\n14,167 items\n\n3. Abstained\n\n14,167 items\n\n4. Built for human review\n\n42,499 items\n\nCounts sum exactly to 85,000. Pharmacy avoidance is count-only; this flow does not measure operator savings.",
+            "words": 41
+          },
+          {
+            "name": "scenario summary",
+            "text": "Scenario summary\n\nSynthetic scenario: 14,167 pharmacy-caught, 14,167 cleared, 14,167 abstained, 42,499 built; 17,709 referrals. Judging unchanged. Not measured savings or decisions.",
+            "words": 21
+          },
+          {
+            "name": "volume qualification",
+            "text": "",
+            "words": 1
+          },
+          {
+            "name": "timing assumptions",
+            "text": "",
+            "words": 1
+          }
+        ],
+        "horizontalOverflow": false
+      }
+    },
+    {
+      "chapter": 2,
+      "after": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "errors": []
+    },
+    {
+      "chapter": 6,
+      "mode": "off",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "capturedAt": "2026-09-12T19:24:45.281Z",
+      "build": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "snapshot": "- main:\n  - status: Assistance Off · Simulated presentation, not a model call\n  - region \"Tour chapter 6\":\n    - heading \"6. The queue\" [level=2]\n    - paragraph: Explore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.\n  - text: Synthetic demonstration data\n  - heading \"NHSBSA exception queue\" [level=1]\n  - paragraph: Synthetic operator queue. Open evidence or trace; assistance adds recommendations, never decisions. Confidence uses structural signals, not a correctness percentage.\n  - region \"Shared session queue\":\n    - heading \"Shared session queue\" [level=2]\n    - paragraph: Actual session submissions and re-checks. Separate from the workload simulation and pinned historical examples.\n    - text: Human decision\n    - list:\n      - listitem:\n        - heading \"EX-24123\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: Awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24104\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: Awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24109\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: Awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24120\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: Awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-1\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-2\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: Awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-5\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-7\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-1\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-5\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-7\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-1\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-5\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-7\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-1\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-5\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-7\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-1\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-5\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-7\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n  - region \"Queue controls\":\n    - 'switch \"Queue assistance: Off\"'\n    - text: Agent Off Agentic action\n    - button \"Run agent on visible rows\" [disabled]\n    - button \"Step sweep\" [disabled]\n    - button \"Cancel sweep\" [disabled]\n    - button \"Compare\"\n    - paragraph: \"Visible-row projection only. Seed evidence and recorded states stay unchanged. Reduced motion: use Step sweep to inspect phases.\"\n    - status: No sweep\n    - term: Cases built · sweep projection\n    - definition: \"0\"\n    - term: Code-cleared · sweep projection\n    - definition: \"0\"\n    - term: Abstained · sweep projection\n    - definition: \"0\"\n    - term: Awaiting human · sweep projection\n    - definition: \"0\"\n  - heading \"Queue\" [level=2]\n  - paragraph: 12 pinned examples. Filter recorded states, not simulation. Independent references never increase projected volume.\n  - radiogroup \"Filter by state\":\n    - radio \"All\" [checked]\n    - text: All\n    - radio \"Agent review complete\"\n    - text: Agent review complete\n    - radio \"Operator review required\"\n    - text: Operator review required\n    - radio \"Additional evidence required\"\n    - text: Additional evidence required\n    - radio \"Agent abstained\"\n    - text: Agent abstained\n    - radio \"Cleared by rules\"\n    - text: Cleared by rules\n    - radio \"Human decision recorded\"\n    - text: Human decision recorded\n  - region \"Exception queue table\":\n    - table:\n      - rowgroup:\n        - row \"Case Exception reason Evidence status Agent recommendation Confidence signals Recorded seed state In queue Actions\":\n          - columnheader \"Case\"\n          - columnheader \"Exception reason\"\n          - columnheader \"Evidence status\"\n          - columnheader \"Agent recommendation\"\n          - columnheader \"Confidence signals\"\n          - columnheader \"Recorded seed state\"\n          - columnheader \"In queue\"\n          - columnheader \"Actions\"\n      - rowgroup:\n        - 'row \"EX-24107 Riverside Chemist Pinned · Case A Sweep visible rows NCSO endorsement present: concession claim requires operator check Pre-checks only No recommendation Not applicable Agent review complete 3h 32m Case pack Trace\"':\n          - cell \"EX-24107 Riverside Chemist Pinned · Case A Sweep visible rows\":\n            - paragraph: EX-24107\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Case A\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"NCSO endorsement present: concession claim requires operator check\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Agent review complete\"\n          - cell \"3h 32m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24107\n            - link \"Trace\":\n              - /url: /case/EX-24107/trace\n        - 'row \"EX-24112 Hillcrest Pharmacy Pinned · Case B Sweep visible rows Handwritten endorsement: NCSO claim requires operator check Pre-checks only No recommendation Not applicable Operator review required 1h 57m Case pack Trace\"':\n          - cell \"EX-24112 Hillcrest Pharmacy Pinned · Case B Sweep visible rows\":\n            - paragraph: EX-24112\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Case B\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Handwritten endorsement: NCSO claim requires operator check\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Operator review required\"\n          - cell \"1h 57m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24112\n            - link \"Trace\":\n              - /url: /case/EX-24112/trace\n        - row \"EX-24119 Oakfield Pharmacy Pinned · Case C Sweep visible rows Claim message quantity differs from captured form Pre-checks only No recommendation Not applicable Operator review required 1h 39m Case pack Trace\":\n          - cell \"EX-24119 Oakfield Pharmacy Pinned · Case C Sweep visible rows\":\n            - paragraph: EX-24119\n            - paragraph: Oakfield Pharmacy\n            - paragraph: Pinned · Case C\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - cell \"Claim message quantity differs from captured form\"\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Operator review required\"\n          - cell \"1h 39m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24119\n            - link \"Trace\":\n              - /url: /case/EX-24119/trace\n        - 'row \"EX-24123 Meadow Lane Dispensary Pinned · Case D Sweep visible rows Handwritten form: low-confidence read of endorsement Pre-checks only No recommendation Not applicable Agent abstained 1h 13m Case pack Trace\"':\n          - cell \"EX-24123 Meadow Lane Dispensary Pinned · Case D Sweep visible rows\":\n            - paragraph: EX-24123\n            - paragraph: Meadow Lane Dispensary\n            - paragraph: Pinned · Case D\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Handwritten form: low-confidence read of endorsement\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Agent abstained\"\n          - cell \"1h 13m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24123\n            - link \"Trace\":\n              - /url: /case/EX-24123/trace\n        - 'row \"EX-24101 Station Road Pharmacy Pinned · Case E Sweep visible rows Referred-back item resubmitted: re-check required Pre-checks only No recommendation Not applicable Cleared by rules 4h 4m Case pack Trace\"':\n          - cell \"EX-24101 Station Road Pharmacy Pinned · Case E Sweep visible rows\":\n            - paragraph: EX-24101\n            - paragraph: Station Road Pharmacy\n            - paragraph: Pinned · Case E\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Referred-back item resubmitted: re-check required\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Cleared by rules\"\n          - cell \"4h 4m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24101\n            - link \"Trace\":\n              - /url: /case/EX-24101/trace\n        - 'row \"EX-24088 Hillcrest Pharmacy Pinned · Case F Sweep visible rows Handwritten endorsement: NCSO claim requires operator check Pre-checks only No recommendation Not applicable Human decision recorded Done Case pack Trace\"':\n          - cell \"EX-24088 Hillcrest Pharmacy Pinned · Case F Sweep visible rows\":\n            - paragraph: EX-24088\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Case F\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Handwritten endorsement: NCSO claim requires operator check\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Human decision recorded\"\n          - cell \"Done\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24088\n            - link \"Trace\":\n              - /url: /case/EX-24088/trace\n        - 'row \"EX-24104 Riverside Chemist Pinned · Example 7 Sweep visible rows Broken bulk endorsement: quantity check Synthetic row No recommendation See case Agent review complete 3h 51m Filler row Today\"':\n          - cell \"EX-24104 Riverside Chemist Pinned · Example 7 Sweep visible rows\":\n            - paragraph: EX-24104\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Example 7\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Broken bulk endorsement: quantity check\"'\n          - cell \"Synthetic row\"\n          - cell \"No recommendation\"\n          - cell \"See case\"\n          - cell \"Agent review complete\"\n          - cell \"3h 51m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24109 Oakfield Pharmacy Pinned · Example 8 Sweep visible rows Specials: invoice price not stated Synthetic row No recommendation See case Operator review required 2h 40m Filler row Today\"':\n          - cell \"EX-24109 Oakfield Pharmacy Pinned · Example 8 Sweep visible rows\":\n            - paragraph: EX-24109\n            - paragraph: Oakfield Pharmacy\n            - paragraph: Pinned · Example 8\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Specials: invoice price not stated\"'\n          - cell \"Synthetic row\"\n          - cell \"No recommendation\"\n          - cell \"See case\"\n          - cell \"Operator review required\"\n          - cell \"2h 40m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - row \"EX-24115 Meadow Lane Dispensary Pinned · Example 9 Sweep visible rows Out-of-pocket expenses claim above threshold Synthetic row No recommendation See case Additional evidence required 1h 48m Filler row Today\":\n          - cell \"EX-24115 Meadow Lane Dispensary Pinned · Example 9 Sweep visible rows\":\n            - paragraph: EX-24115\n            - paragraph: Meadow Lane Dispensary\n            - paragraph: Pinned · Example 9\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - cell \"Out-of-pocket expenses claim above threshold\"\n          - cell \"Synthetic row\"\n          - cell \"No recommendation\"\n          - cell \"See case\"\n          - cell \"Additional evidence required\"\n          - cell \"1h 48m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24120 Station Road Pharmacy Pinned · Example 10 Sweep visible rows Handwritten form: low-confidence read Synthetic row No recommendation See case Agent abstained 1h 31m Filler row Today\"':\n          - cell \"EX-24120 Station Road Pharmacy Pinned · Example 10 Sweep visible rows\":\n            - paragraph: EX-24120\n            - paragraph: Station Road Pharmacy\n            - paragraph: Pinned · Example 10\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Handwritten form: low-confidence read\"'\n          - cell \"Synthetic row\"\n          - cell \"No recommendation\"\n          - cell \"See case\"\n          - cell \"Agent abstained\"\n          - cell \"1h 31m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24098 Riverside Chemist Pinned · Example 11 Sweep visible rows NCSO endorsement present: concession claim Synthetic row No recommendation See case Cleared by rules Done Filler row Today\"':\n          - cell \"EX-24098 Riverside Chemist Pinned · Example 11 Sweep visible rows\":\n            - paragraph: EX-24098\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Example 11\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"NCSO endorsement present: concession claim\"'\n          - cell \"Synthetic row\"\n          - cell \"No recommendation\"\n          - cell \"See case\"\n          - cell \"Cleared by rules\"\n          - cell \"Done\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24093 Hillcrest Pharmacy Pinned · Example 12 Sweep visible rows Handwritten endorsement: NCSO claim Synthetic row No recommendation See case Human decision recorded Done Filler row Today\"':\n          - cell \"EX-24093 Hillcrest Pharmacy Pinned · Example 12 Sweep visible rows\":\n            - paragraph: EX-24093\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Example 12\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\" [disabled]\n          - 'cell \"Handwritten endorsement: NCSO claim\"'\n          - cell \"Synthetic row\"\n          - cell \"No recommendation\"\n          - cell \"See case\"\n          - cell \"Human decision recorded\"\n          - cell \"Done\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n  - region \"Virtual month\":\n    - heading \"Virtual month\" [level=2]\n    - text: Deterministic code\n    - paragraph: Synthetic model slots follow calculator assumptions. Pinned examples excluded. No citations or automatic decisions.\n    - term: Volume · projection\n    - definition: 85,000\n    - term: Pharmacy-caught · projection\n    - definition: 14,167\n    - term: Code-cleared · projection\n    - definition: 14,167\n    - term: Abstained · projection\n    - definition: 14,167\n    - term: Cases built · projection\n    - definition: 42,499\n    - term: Awaiting human · projection\n    - definition: 56,666\n    - text: Jump to item\n    - textbox \"Jump to item\": \"1\"\n    - button \"Jump to item\"\n    - button \"First item\"\n    - button \"Last item\"\n    - button \"Previous segment\" [disabled]\n    - button \"Next segment\"\n    - status: 1 of 85,000 items\n    - term: Segment\n    - definition: \"1\"\n    - term: Positions per segment\n    - definition: 1,000 maximum\n    - term: Keyboard\n    - definition: Arrows, Page Up/Down, Home/End; jump controls\n    - button \"Run visible month sweep\" [disabled]\n    - button \"Step month sweep\" [disabled]\n    - status: No sweep\n    - region \"Month scroll window\":\n      - list \"Month projection rows\":\n        - listitem:\n          - text: 1 · SYN-Q-0000000001 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 2 · SYN-Q-0000000002 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 3 · SYN-Q-0000000003 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 4 · SYN-Q-0000000004 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 5 · SYN-Q-0000000005 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 6 · SYN-Q-0000000006 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 7 · SYN-Q-0000000007 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 8 · SYN-Q-0000000008 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 9 · SYN-Q-0000000009 Generated model example Manual evidence work assumed\n          - button \"Today\"\n        - listitem:\n          - text: 10 · SYN-Q-0000000010 Generated model example Manual evidence work assumed\n          - button \"Today\"\n  - region \"Working day simulation\":\n    - heading \"Simulate a day\" [level=2]\n    - text: Model assumptions · 08:00 to 17:00 Human decision\n    - paragraph: \"One clock, one operator per comparison. Projected actions never change history. Reduced motion: paused step-through; Step or Jump shows the summary.\"\n    - button \"Play day\" [disabled]\n    - button \"Step 15 minutes\"\n    - button \"Jump to 17:00\"\n    - button \"Restart day\"\n    - status \"Shared day clock\": 08:00\n    - group: Day assumptions and capacity\n    - region \"Today day comparison\":\n      - heading \"Today · manual projection · selected\" [level=3]\n      - paragraph: Same twelve examples, same order. Independent illustration, not extra monthly volume. Existing code and historical records remain unchanged.\n      - list \"Today twelve examples\":\n        - listitem: \"Case A · EX-24107 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case B · EX-24112 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case C · EX-24119 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case D · EX-24123 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Case E · EX-24101 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Case F · EX-24088 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 7 · EX-24104 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 8 · EX-24109 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 9 · EX-24115 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 10 · EX-24120 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Example 11 · EX-24098 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 12 · EX-24093 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n      - term: Projected operator actions\n      - definition: \"0\"\n      - term: Gathering minutes\n      - definition: \"0\"\n      - term: Judging minutes\n      - definition: \"0\"\n    - region \"With agent day comparison\":\n      - heading \"With agent · projection\" [level=3]\n      - paragraph: Same twelve examples, same order. Independent illustration, not extra monthly volume. Existing code and historical records remain unchanged.\n      - list \"Assisted twelve examples\":\n        - listitem: \"Case A · EX-24107 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case B · EX-24112 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case C · EX-24119 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case D · EX-24123 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Case E · EX-24101 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Case F · EX-24088 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 7 · EX-24104 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 8 · EX-24109 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 9 · EX-24115 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 10 · EX-24120 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Example 11 · EX-24098 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 12 · EX-24093 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n      - term: Projected operator actions\n      - definition: \"0\"\n      - term: Built reviewed\n      - definition: \"0\"\n      - term: Abstained handled manually\n      - definition: \"0\"\n      - term: Code-cleared; no review\n      - definition: \"0\"\n      - term: Pharmacy-caught; outside queue\n      - definition: \"0\"\n      - term: Awaiting human\n      - definition: 56,666\n      - term: Gathering minutes\n      - definition: \"0\"\n      - term: Review minutes\n      - definition: \"0\"\n      - term: Judging minutes\n      - definition: \"0\"\n    - status: Day projection · 08:00 · No actual decisions, payments or history events written.",
+      "visible": {
+        "headings": [
+          {
+            "text": "6. The queue",
+            "top": 276
+          },
+          {
+            "text": "NHSBSA exception queue",
+            "top": 397
+          },
+          {
+            "text": "Shared session queue",
+            "top": 526
+          },
+          {
+            "text": "EX-24123",
+            "top": 652
+          },
+          {
+            "text": "EX-24104",
+            "top": 652
+          },
+          {
+            "text": "EX-24109",
+            "top": 818
+          },
+          {
+            "text": "EX-24120",
+            "top": 818
+          },
+          {
+            "text": "SYN-FQ123-1",
+            "top": 984
+          },
+          {
+            "text": "SYN-FQ123-2",
+            "top": 984
+          },
+          {
+            "text": "SYN-FQ123-5",
+            "top": 1150
+          },
+          {
+            "text": "SYN-FQ123-7",
+            "top": 1150
+          },
+          {
+            "text": "SYN-FH774-1",
+            "top": 1316
+          },
+          {
+            "text": "SYN-FH774-5",
+            "top": 1316
+          },
+          {
+            "text": "SYN-FH774-7",
+            "top": 1482
+          },
+          {
+            "text": "SYN-FM208-1",
+            "top": 1482
+          },
+          {
+            "text": "SYN-FM208-5",
+            "top": 1648
+          },
+          {
+            "text": "SYN-FM208-7",
+            "top": 1648
+          },
+          {
+            "text": "SYN-FT561-1",
+            "top": 1814
+          },
+          {
+            "text": "SYN-FT561-5",
+            "top": 1814
+          },
+          {
+            "text": "SYN-FT561-7",
+            "top": 1980
+          },
+          {
+            "text": "SYN-FK390-1",
+            "top": 1980
+          },
+          {
+            "text": "SYN-FK390-5",
+            "top": 2146
+          },
+          {
+            "text": "SYN-FK390-7",
+            "top": 2146
+          },
+          {
+            "text": "Today versus With agent",
+            "top": 0
+          },
+          {
+            "text": "Queue",
+            "top": 2542
+          },
+          {
+            "text": "Virtual month",
+            "top": 4337
+          },
+          {
+            "text": "Simulate a day",
+            "top": 5273
+          },
+          {
+            "text": "Today · manual projection · selected",
+            "top": 5466
+          },
+          {
+            "text": "With agent · projection",
+            "top": 5466
+          }
+        ],
+        "inputsAboveFold": 0,
+        "columnCounts": [
+          8
+        ],
+        "prose": [
+          {
+            "name": "panel",
+            "text": "Queue\n\n12 pinned examples. Filter recorded states, not simulation. Independent references never increase projected volume.\n\nAll\nAgent review complete\nOperator review required\nAdditional evidence required\nAgent abstained\nCleared by rules\nHuman decision recorded\nCase\tException reason\tEvidence status\tAgent recommendation\tConfidence signals\tRecorded seed state\tIn queue\t\nActions\n\n\n\nEX-24107\n\nRiverside Chemist\n\nPinned · Case A\n\nManual evidence work · 7 steps\nSweep visible rows\tNCSO endorsement present: concession claim requires operator check\tPre-checks only\tNo recommendation\tNot applicable\tAgent review complete\t3h 32m\t\nCase pack\nTrace\n\n\n\nEX-24112\n\nHillcrest Pharmacy\n\nPinned · Case B\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten endorsement: NCSO claim requires operator check\tPre-checks only\tNo recommendation\tNot applicable\tOperator review required\t1h 57m\t\nCase pack\nTrace\n\n\n\nEX-24119\n\nOakfield Pharmacy\n\nPinned · Case C\n\nManual evidence work · 7 steps\nSweep visible rows\tClaim message quantity differs from captured form\tPre-checks only\tNo recommendation\tNot applicable\tOperator review required\t1h 39m\t\nCase pack\nTrace\n\n\n\nEX-24123\n\nMeadow Lane Dispensary\n\nPinned · Case D\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten form: low-confidence read of endorsement\tPre-checks only\tNo recommendation\tNot applicable\tAgent abstained\t1h 13m\t\nCase pack\nTrace\n\n\n\nEX-24101\n\nStation Road Pharmacy\n\nPinned · Case E\n\nManual evidence work · 7 steps\nSweep visible rows\tReferred-back item resubmitted: re-check required\tPre-checks only\tNo recommendation\tNot applicable\tCleared by rules\t4h 4m\t\nCase pack\nTrace\n\n\n\nEX-24088\n\nHillcrest Pharmacy\n\nPinned · Case F\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten endorsement: NCSO claim requires operator check\tPre-checks only\tNo recommendation\tNot applicable\tHuman decision recorded\tDone\t\nCase pack\nTrace\n\n\n\nEX-24104\n\nRiverside Chemist\n\nPinned · Example 7\n\nManual evidence work · 7 steps\nSweep visible rows\tBroken bulk endorsement: quantity check\tSynthetic row\tNo recommendation\tSee case\tAgent review complete\t3h 51m\t\nFiller rowToday\n\n\n\nEX-24109\n\nOakfield Pharmacy\n\nPinned · Example 8\n\nManual evidence work · 7 steps\nSweep visible rows\tSpecials: invoice price not stated\tSynthetic row\tNo recommendation\tSee case\tOperator review required\t2h 40m\t\nFiller rowToday\n\n\n\nEX-24115\n\nMeadow Lane Dispensary\n\nPinned · Example 9\n\nManual evidence work · 7 steps\nSweep visible rows\tOut-of-pocket expenses claim above threshold\tSynthetic row\tNo recommendation\tSee case\tAdditional evidence required\t1h 48m\t\nFiller rowToday\n\n\n\nEX-24120\n\nStation Road Pharmacy\n\nPinned · Example 10\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten form: low-confidence read\tSynthetic row\tNo recommendation\tSee case\tAgent abstained\t1h 31m\t\nFiller rowToday\n\n\n\nEX-24098\n\nRiverside Chemist\n\nPinned · Example 11\n\nManual evidence work · 7 steps\nSweep visible rows\tNCSO endorsement present: concession claim\tSynthetic row\tNo recommendation\tSee case\tCleared by rules\tDone\t\nFiller rowToday\n\n\n\nEX-24093\n\nHillcrest Pharmacy\n\nPinned · Example 12\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten endorsement: NCSO claim\tSynthetic row\tNo recommendation\tSee case\tHuman decision recorded\tDone\t\nFiller rowToday",
+            "words": 469
+          }
+        ],
+        "horizontalOverflow": false
+      }
+    },
+    {
+      "chapter": 6,
+      "mode": "on",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "capturedAt": "2026-09-12T19:24:46.080Z",
+      "build": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "snapshot": "- main:\n  - status: Assistance On · Simulated presentation, not a model call\n  - region \"Tour chapter 6\":\n    - heading \"6. The queue\" [level=2]\n    - paragraph: Explore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.\n  - text: Synthetic demonstration data\n  - heading \"NHSBSA exception queue\" [level=1]\n  - paragraph: Synthetic operator queue. Open evidence or trace; assistance adds recommendations, never decisions. Confidence uses structural signals, not a correctness percentage.\n  - region \"Shared session queue\":\n    - heading \"Shared session queue\" [level=2]\n    - paragraph: Actual session submissions and re-checks. Separate from the workload simulation and pinned historical examples.\n    - text: Human decision\n    - list:\n      - listitem:\n        - heading \"EX-24123\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24104\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24109\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24120\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-1\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-2\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-5\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-7\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-1\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-5\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-7\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-1\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-5\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-7\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-1\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-5\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-7\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-1\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-5\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-7\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n  - region \"Queue controls\":\n    - 'switch \"Queue assistance: On\" [checked]'\n    - text: Agent On Agentic action\n    - button \"Run agent on visible rows\"\n    - button \"Step sweep\" [disabled]\n    - button \"Cancel sweep\" [disabled]\n    - button \"Compare\"\n    - paragraph: \"Visible-row projection only. Seed evidence and recorded states stay unchanged. Reduced motion: use Step sweep to inspect phases.\"\n    - status: No sweep\n    - term: Cases built · sweep projection\n    - definition: \"0\"\n    - term: Code-cleared · sweep projection\n    - definition: \"0\"\n    - term: Abstained · sweep projection\n    - definition: \"0\"\n    - term: Awaiting human · sweep projection\n    - definition: \"0\"\n  - heading \"Queue\" [level=2]\n  - paragraph: 12 pinned examples. Filter recorded states, not simulation. Independent references never increase projected volume.\n  - radiogroup \"Filter by state\":\n    - radio \"All\" [checked]\n    - text: All\n    - radio \"Agent review complete\"\n    - text: Agent review complete\n    - radio \"Operator review required\"\n    - text: Operator review required\n    - radio \"Additional evidence required\"\n    - text: Additional evidence required\n    - radio \"Agent abstained\"\n    - text: Agent abstained\n    - radio \"Cleared by rules\"\n    - text: Cleared by rules\n    - radio \"Human decision recorded\"\n    - text: Human decision recorded\n  - region \"Exception queue table\":\n    - table:\n      - rowgroup:\n        - row \"Case Exception reason Evidence status Agent recommendation Confidence signals Recorded seed state In queue Actions\":\n          - columnheader \"Case\"\n          - columnheader \"Exception reason\"\n          - columnheader \"Evidence status\"\n          - columnheader \"Agent recommendation\"\n          - columnheader \"Confidence signals\"\n          - columnheader \"Recorded seed state\"\n          - columnheader \"In queue\"\n          - columnheader \"Actions\"\n      - rowgroup:\n        - 'row \"EX-24107 Riverside Chemist Pinned · Case A Sweep visible rows NCSO endorsement present: concession claim requires operator check 7 findings; sources agree Sufficient: release to pricing once confirmed Agent review complete 3h 32m Case pack Trace\"':\n          - cell \"EX-24107 Riverside Chemist Pinned · Case A Sweep visible rows\":\n            - paragraph: EX-24107\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Case A\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"NCSO endorsement present: concession claim requires operator check\"'\n          - cell \"7 findings; sources agree\"\n          - 'cell \"Sufficient: release to pricing once confirmed\"'\n          - cell:\n            - group: High confidence\n          - cell \"Agent review complete\"\n          - cell \"3h 32m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24107\n            - link \"Trace\":\n              - /url: /case/EX-24107/trace\n        - 'row \"EX-24112 Hillcrest Pharmacy Pinned · Case B Sweep visible rows Handwritten endorsement: NCSO claim requires operator check 7 findings; sources agree Refer back with the exact fix Operator review required 1h 57m Case pack Trace\"':\n          - cell \"EX-24112 Hillcrest Pharmacy Pinned · Case B Sweep visible rows\":\n            - paragraph: EX-24112\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Case B\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten endorsement: NCSO claim requires operator check\"'\n          - cell \"7 findings; sources agree\"\n          - cell \"Refer back with the exact fix\"\n          - cell:\n            - group: High confidence\n          - cell \"Operator review required\"\n          - cell \"1h 57m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24112\n            - link \"Trace\":\n              - /url: /case/EX-24112/trace\n        - row \"EX-24119 Oakfield Pharmacy Pinned · Case C Sweep visible rows Claim message quantity differs from captured form 7 findings; 1 conflict Request information from the pharmacy Operator review required 1h 39m Case pack Trace\":\n          - cell \"EX-24119 Oakfield Pharmacy Pinned · Case C Sweep visible rows\":\n            - paragraph: EX-24119\n            - paragraph: Oakfield Pharmacy\n            - paragraph: Pinned · Case C\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - cell \"Claim message quantity differs from captured form\"\n          - cell \"7 findings; 1 conflict\"\n          - cell \"Request information from the pharmacy\"\n          - cell:\n            - group: Medium confidence\n          - cell \"Operator review required\"\n          - cell \"1h 39m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24119\n            - link \"Trace\":\n              - /url: /case/EX-24119/trace\n        - 'row \"EX-24123 Meadow Lane Dispensary Pinned · Case D Sweep visible rows Handwritten form: low-confidence read of endorsement 4 findings; sources agree Abstained: no recommendation Agent abstained 1h 13m Case pack Trace\"':\n          - cell \"EX-24123 Meadow Lane Dispensary Pinned · Case D Sweep visible rows\":\n            - paragraph: EX-24123\n            - paragraph: Meadow Lane Dispensary\n            - paragraph: Pinned · Case D\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten form: low-confidence read of endorsement\"'\n          - cell \"4 findings; sources agree\"\n          - 'cell \"Abstained: no recommendation\"'\n          - cell:\n            - group: Abstained\n          - cell \"Agent abstained\"\n          - cell \"1h 13m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24123\n            - link \"Trace\":\n              - /url: /case/EX-24123/trace\n        - 'row \"EX-24101 Station Road Pharmacy Pinned · Case E Sweep visible rows Referred-back item resubmitted: re-check required Pre-checks only No recommendation Not applicable Cleared by rules 4h 4m Case pack Trace\"':\n          - cell \"EX-24101 Station Road Pharmacy Pinned · Case E Sweep visible rows\":\n            - paragraph: EX-24101\n            - paragraph: Station Road Pharmacy\n            - paragraph: Pinned · Case E\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Referred-back item resubmitted: re-check required\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Cleared by rules\"\n          - cell \"4h 4m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24101\n            - link \"Trace\":\n              - /url: /case/EX-24101/trace\n        - 'row \"EX-24088 Hillcrest Pharmacy Pinned · Case F Sweep visible rows Handwritten endorsement: NCSO claim requires operator check 7 findings; sources agree Refer back with the exact fix Human decision recorded Done Case pack Trace\"':\n          - cell \"EX-24088 Hillcrest Pharmacy Pinned · Case F Sweep visible rows\":\n            - paragraph: EX-24088\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Case F\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten endorsement: NCSO claim requires operator check\"'\n          - cell \"7 findings; sources agree\"\n          - cell \"Refer back with the exact fix\"\n          - cell:\n            - group: High confidence\n          - cell \"Human decision recorded\"\n          - cell \"Done\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24088\n            - link \"Trace\":\n              - /url: /case/EX-24088/trace\n        - 'row \"EX-24104 Riverside Chemist Pinned · Example 7 Sweep visible rows Broken bulk endorsement: quantity check Synthetic row Sufficient See case Agent review complete 3h 51m Filler row Today\"':\n          - cell \"EX-24104 Riverside Chemist Pinned · Example 7 Sweep visible rows\":\n            - paragraph: EX-24104\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Example 7\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Broken bulk endorsement: quantity check\"'\n          - cell \"Synthetic row\"\n          - cell \"Sufficient\"\n          - cell \"See case\"\n          - cell \"Agent review complete\"\n          - cell \"3h 51m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24109 Oakfield Pharmacy Pinned · Example 8 Sweep visible rows Specials: invoice price not stated Synthetic row Refer back See case Operator review required 2h 40m Filler row Today\"':\n          - cell \"EX-24109 Oakfield Pharmacy Pinned · Example 8 Sweep visible rows\":\n            - paragraph: EX-24109\n            - paragraph: Oakfield Pharmacy\n            - paragraph: Pinned · Example 8\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Specials: invoice price not stated\"'\n          - cell \"Synthetic row\"\n          - cell \"Refer back\"\n          - cell \"See case\"\n          - cell \"Operator review required\"\n          - cell \"2h 40m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - row \"EX-24115 Meadow Lane Dispensary Pinned · Example 9 Sweep visible rows Out-of-pocket expenses claim above threshold Synthetic row Request information See case Additional evidence required 1h 48m Filler row Today\":\n          - cell \"EX-24115 Meadow Lane Dispensary Pinned · Example 9 Sweep visible rows\":\n            - paragraph: EX-24115\n            - paragraph: Meadow Lane Dispensary\n            - paragraph: Pinned · Example 9\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - cell \"Out-of-pocket expenses claim above threshold\"\n          - cell \"Synthetic row\"\n          - cell \"Request information\"\n          - cell \"See case\"\n          - cell \"Additional evidence required\"\n          - cell \"1h 48m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24120 Station Road Pharmacy Pinned · Example 10 Sweep visible rows Handwritten form: low-confidence read Synthetic row Abstained See case Agent abstained 1h 31m Filler row Today\"':\n          - cell \"EX-24120 Station Road Pharmacy Pinned · Example 10 Sweep visible rows\":\n            - paragraph: EX-24120\n            - paragraph: Station Road Pharmacy\n            - paragraph: Pinned · Example 10\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten form: low-confidence read\"'\n          - cell \"Synthetic row\"\n          - cell \"Abstained\"\n          - cell \"See case\"\n          - cell \"Agent abstained\"\n          - cell \"1h 31m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24098 Riverside Chemist Pinned · Example 11 Sweep visible rows NCSO endorsement present: concession claim Synthetic row Cleared by rules See case Cleared by rules Done Filler row Today\"':\n          - cell \"EX-24098 Riverside Chemist Pinned · Example 11 Sweep visible rows\":\n            - paragraph: EX-24098\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Example 11\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"NCSO endorsement present: concession claim\"'\n          - cell \"Synthetic row\"\n          - cell \"Cleared by rules\"\n          - cell \"See case\"\n          - cell \"Cleared by rules\"\n          - cell \"Done\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24093 Hillcrest Pharmacy Pinned · Example 12 Sweep visible rows Handwritten endorsement: NCSO claim Synthetic row Refer back (accepted) See case Human decision recorded Done Filler row Today\"':\n          - cell \"EX-24093 Hillcrest Pharmacy Pinned · Example 12 Sweep visible rows\":\n            - paragraph: EX-24093\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Example 12\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten endorsement: NCSO claim\"'\n          - cell \"Synthetic row\"\n          - cell \"Refer back (accepted)\"\n          - cell \"See case\"\n          - cell \"Human decision recorded\"\n          - cell \"Done\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n  - region \"Virtual month\":\n    - heading \"Virtual month\" [level=2]\n    - text: Deterministic code\n    - paragraph: Synthetic model slots follow calculator assumptions. Pinned examples excluded. No citations or automatic decisions.\n    - term: Volume · projection\n    - definition: 85,000\n    - term: Pharmacy-caught · projection\n    - definition: 14,167\n    - term: Code-cleared · projection\n    - definition: 14,167\n    - term: Abstained · projection\n    - definition: 14,167\n    - term: Cases built · projection\n    - definition: 42,499\n    - term: Awaiting human · projection\n    - definition: 56,666\n    - text: Jump to item\n    - textbox \"Jump to item\": \"1\"\n    - button \"Jump to item\"\n    - button \"First item\"\n    - button \"Last item\"\n    - button \"Previous segment\" [disabled]\n    - button \"Next segment\"\n    - status: 1 of 85,000 items\n    - term: Segment\n    - definition: \"1\"\n    - term: Positions per segment\n    - definition: 1,000 maximum\n    - term: Keyboard\n    - definition: Arrows, Page Up/Down, Home/End; jump controls\n    - button \"Run visible month sweep\"\n    - button \"Step month sweep\" [disabled]\n    - status: No sweep\n    - region \"Month scroll window\":\n      - list \"Month projection rows\":\n        - listitem:\n          - text: 1 · SYN-Q-0000000001 Generated model example Abstention projection\n          - button \"Today\"\n        - listitem:\n          - text: 2 · SYN-Q-0000000002 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 3 · SYN-Q-0000000003 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 4 · SYN-Q-0000000004 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 5 · SYN-Q-0000000005 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 6 · SYN-Q-0000000006 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 7 · SYN-Q-0000000007 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 8 · SYN-Q-0000000008 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 9 · SYN-Q-0000000009 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 10 · SYN-Q-0000000010 Generated model example Case-built projection\n          - button \"Today\"\n  - region \"Working day simulation\":\n    - heading \"Simulate a day\" [level=2]\n    - text: Model assumptions · 08:00 to 17:00 Human decision\n    - paragraph: \"One clock, one operator per comparison. Projected actions never change history. Reduced motion: paused step-through; Step or Jump shows the summary.\"\n    - button \"Play day\" [disabled]\n    - button \"Step 15 minutes\"\n    - button \"Jump to 17:00\"\n    - button \"Restart day\"\n    - status \"Shared day clock\": 08:00\n    - group: Day assumptions and capacity\n    - region \"Today day comparison\":\n      - heading \"Today · manual projection\" [level=3]\n      - paragraph: Same twelve examples, same order. Independent illustration, not extra monthly volume. Existing code and historical records remain unchanged.\n      - list \"Today twelve examples\":\n        - listitem: \"Case A · EX-24107 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case B · EX-24112 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case C · EX-24119 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case D · EX-24123 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Case E · EX-24101 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Case F · EX-24088 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 7 · EX-24104 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 8 · EX-24109 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 9 · EX-24115 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 10 · EX-24120 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Example 11 · EX-24098 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 12 · EX-24093 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n      - term: Projected operator actions\n      - definition: \"0\"\n      - term: Gathering minutes\n      - definition: \"0\"\n      - term: Judging minutes\n      - definition: \"0\"\n    - region \"With agent day comparison\":\n      - heading \"With agent · projection · selected\" [level=3]\n      - paragraph: Same twelve examples, same order. Independent illustration, not extra monthly volume. Existing code and historical records remain unchanged.\n      - list \"Assisted twelve examples\":\n        - listitem: \"Case A · EX-24107 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case B · EX-24112 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case C · EX-24119 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case D · EX-24123 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Case E · EX-24101 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Case F · EX-24088 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 7 · EX-24104 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 8 · EX-24109 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 9 · EX-24115 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 10 · EX-24120 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Example 11 · EX-24098 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 12 · EX-24093 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n      - term: Projected operator actions\n      - definition: \"0\"\n      - term: Built reviewed\n      - definition: \"0\"\n      - term: Abstained handled manually\n      - definition: \"0\"\n      - term: Code-cleared; no review\n      - definition: \"0\"\n      - term: Pharmacy-caught; outside queue\n      - definition: \"0\"\n      - term: Awaiting human\n      - definition: 56,666\n      - term: Gathering minutes\n      - definition: \"0\"\n      - term: Review minutes\n      - definition: \"0\"\n      - term: Judging minutes\n      - definition: \"0\"\n    - status: Day projection · 08:00 · No actual decisions, payments or history events written.",
+      "visible": {
+        "headings": [
+          {
+            "text": "6. The queue",
+            "top": 276
+          },
+          {
+            "text": "NHSBSA exception queue",
+            "top": 397
+          },
+          {
+            "text": "Shared session queue",
+            "top": 526
+          },
+          {
+            "text": "EX-24123",
+            "top": 652
+          },
+          {
+            "text": "EX-24104",
+            "top": 652
+          },
+          {
+            "text": "EX-24109",
+            "top": 818
+          },
+          {
+            "text": "EX-24120",
+            "top": 818
+          },
+          {
+            "text": "SYN-FQ123-1",
+            "top": 984
+          },
+          {
+            "text": "SYN-FQ123-2",
+            "top": 984
+          },
+          {
+            "text": "SYN-FQ123-5",
+            "top": 1150
+          },
+          {
+            "text": "SYN-FQ123-7",
+            "top": 1150
+          },
+          {
+            "text": "SYN-FH774-1",
+            "top": 1316
+          },
+          {
+            "text": "SYN-FH774-5",
+            "top": 1316
+          },
+          {
+            "text": "SYN-FH774-7",
+            "top": 1482
+          },
+          {
+            "text": "SYN-FM208-1",
+            "top": 1482
+          },
+          {
+            "text": "SYN-FM208-5",
+            "top": 1648
+          },
+          {
+            "text": "SYN-FM208-7",
+            "top": 1648
+          },
+          {
+            "text": "SYN-FT561-1",
+            "top": 1814
+          },
+          {
+            "text": "SYN-FT561-5",
+            "top": 1814
+          },
+          {
+            "text": "SYN-FT561-7",
+            "top": 1980
+          },
+          {
+            "text": "SYN-FK390-1",
+            "top": 1980
+          },
+          {
+            "text": "SYN-FK390-5",
+            "top": 2146
+          },
+          {
+            "text": "SYN-FK390-7",
+            "top": 2146
+          },
+          {
+            "text": "Today versus With agent",
+            "top": 0
+          },
+          {
+            "text": "Queue",
+            "top": 2542
+          },
+          {
+            "text": "Virtual month",
+            "top": 4529
+          },
+          {
+            "text": "Simulate a day",
+            "top": 5465
+          },
+          {
+            "text": "Today · manual projection",
+            "top": 5658
+          },
+          {
+            "text": "With agent · projection · selected",
+            "top": 5658
+          }
+        ],
+        "inputsAboveFold": 0,
+        "columnCounts": [
+          8
+        ],
+        "prose": [
+          {
+            "name": "panel",
+            "text": "Queue\n\n12 pinned examples. Filter recorded states, not simulation. Independent references never increase projected volume.\n\nAll\nAgent review complete\nOperator review required\nAdditional evidence required\nAgent abstained\nCleared by rules\nHuman decision recorded\nCase\tException reason\tEvidence status\tAgent recommendation\tConfidence signals\tRecorded seed state\tIn queue\t\nActions\n\n\n\nEX-24107\n\nRiverside Chemist\n\nPinned · Case A\n\nManual evidence work · 7 steps\nSweep visible rows\tNCSO endorsement present: concession claim requires operator check\t7 findings; sources agree\tSufficient: release to pricing once confirmed\t\nHigh confidence\n\tAgent review complete\t3h 32m\t\nCase pack\nTrace\n\n\n\nEX-24112\n\nHillcrest Pharmacy\n\nPinned · Case B\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten endorsement: NCSO claim requires operator check\t7 findings; sources agree\tRefer back with the exact fix\t\nHigh confidence\n\tOperator review required\t1h 57m\t\nCase pack\nTrace\n\n\n\nEX-24119\n\nOakfield Pharmacy\n\nPinned · Case C\n\nManual evidence work · 7 steps\nSweep visible rows\tClaim message quantity differs from captured form\t7 findings; 1 conflict\tRequest information from the pharmacy\t\nMedium confidence\n\tOperator review required\t1h 39m\t\nCase pack\nTrace\n\n\n\nEX-24123\n\nMeadow Lane Dispensary\n\nPinned · Case D\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten form: low-confidence read of endorsement\t4 findings; sources agree\tAbstained: no recommendation\t\nAbstained\n\tAgent abstained\t1h 13m\t\nCase pack\nTrace\n\n\n\nEX-24101\n\nStation Road Pharmacy\n\nPinned · Case E\n\nManual evidence work · 7 steps\nSweep visible rows\tReferred-back item resubmitted: re-check required\tPre-checks only\tNo recommendation\tNot applicable\tCleared by rules\t4h 4m\t\nCase pack\nTrace\n\n\n\nEX-24088\n\nHillcrest Pharmacy\n\nPinned · Case F\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten endorsement: NCSO claim requires operator check\t7 findings; sources agree\tRefer back with the exact fix\t\nHigh confidence\n\tHuman decision recorded\tDone\t\nCase pack\nTrace\n\n\n\nEX-24104\n\nRiverside Chemist\n\nPinned · Example 7\n\nManual evidence work · 7 steps\nSweep visible rows\tBroken bulk endorsement: quantity check\tSynthetic row\tSufficient\tSee case\tAgent review complete\t3h 51m\t\nFiller rowToday\n\n\n\nEX-24109\n\nOakfield Pharmacy\n\nPinned · Example 8\n\nManual evidence work · 7 steps\nSweep visible rows\tSpecials: invoice price not stated\tSynthetic row\tRefer back\tSee case\tOperator review required\t2h 40m\t\nFiller rowToday\n\n\n\nEX-24115\n\nMeadow Lane Dispensary\n\nPinned · Example 9\n\nManual evidence work · 7 steps\nSweep visible rows\tOut-of-pocket expenses claim above threshold\tSynthetic row\tRequest information\tSee case\tAdditional evidence required\t1h 48m\t\nFiller rowToday\n\n\n\nEX-24120\n\nStation Road Pharmacy\n\nPinned · Example 10\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten form: low-confidence read\tSynthetic row\tAbstained\tSee case\tAgent abstained\t1h 31m\t\nFiller rowToday\n\n\n\nEX-24098\n\nRiverside Chemist\n\nPinned · Example 11\n\nManual evidence work · 7 steps\nSweep visible rows\tNCSO endorsement present: concession claim\tSynthetic row\tCleared by rules\tSee case\tCleared by rules\tDone\t\nFiller rowToday\n\n\n\nEX-24093\n\nHillcrest Pharmacy\n\nPinned · Example 12\n\nManual evidence work · 7 steps\nSweep visible rows\tHandwritten endorsement: NCSO claim\tSynthetic row\tRefer back (accepted)\tSee case\tHuman decision recorded\tDone\t\nFiller rowToday",
+            "words": 494
+          }
+        ],
+        "horizontalOverflow": false
+      }
+    },
+    {
+      "chapter": 6,
+      "mode": "on-compare",
+      "capturedAt": "2026-09-12T19:24:46.490Z",
+      "snapshot": "- main:\n  - status: Assistance On · Simulated presentation, not a model call\n  - region \"Tour chapter 6\":\n    - heading \"6. The queue\" [level=2]\n    - paragraph: Explore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.\n  - text: Synthetic demonstration data\n  - heading \"NHSBSA exception queue\" [level=1]\n  - paragraph: Synthetic operator queue. Open evidence or trace; assistance adds recommendations, never decisions. Confidence uses structural signals, not a correctness percentage.\n  - region \"Shared session queue\":\n    - heading \"Shared session queue\" [level=2]\n    - paragraph: Actual session submissions and re-checks. Separate from the workload simulation and pinned historical examples.\n    - text: Human decision\n    - list:\n      - listitem:\n        - heading \"EX-24123\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24104\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24109\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"EX-24120\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-1\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-2\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: Case built, awaiting operator\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-5\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FQ123-7\" [level=3]\n        - text: Hillcrest Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-1\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-5\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FH774-7\" [level=3]\n        - text: Riverside Chemist (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-1\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-5\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FM208-7\" [level=3]\n        - text: Oakfield Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-1\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-5\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FT561-7\" [level=3]\n        - text: Station Road Pharmacy (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-1\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: In queue\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-5\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: \"Resubmitted: re-check\"\n        - button \"Open for review\"\n      - listitem:\n        - heading \"SYN-FK390-7\" [level=3]\n        - text: Meadow Lane Dispensary (synthetic)\n        - paragraph: Escalated\n        - button \"Open for review\"\n  - region \"Queue controls\":\n    - 'switch \"Queue assistance: On\" [checked]'\n    - text: Agent On Agentic action\n    - button \"Run agent on visible rows\"\n    - button \"Step sweep\" [disabled]\n    - button \"Cancel sweep\" [disabled]\n    - button \"Compare\" [expanded]\n    - region \"Today versus With agent\":\n      - heading \"Today versus With agent\" [level=2]\n      - text: Model assumptions Deterministic code Human decision\n      - paragraph:\n        - text: Same scenario at\n        - strong: 08:00\n        - text: ; Compare changes no state. Judging counts processed work, unlike the calculator's fixed cohort; no additional savings.\n      - table \"Assumed day projections\":\n        - caption: Assumed day projections\n        - rowgroup:\n          - row \"Operator work Today With agent\":\n            - columnheader \"Operator work\"\n            - columnheader \"Today\"\n            - columnheader \"With agent\"\n        - rowgroup:\n          - row \"Projected operator actions 0 0\":\n            - rowheader \"Projected operator actions\"\n            - cell \"0\"\n            - cell \"0\"\n          - row \"Gathering minutes 0 0\":\n            - rowheader \"Gathering minutes\"\n            - cell \"0\"\n            - cell \"0\"\n          - row \"Built review minutes Included in manual gathering 0\":\n            - rowheader \"Built review minutes\"\n            - cell \"Included in manual gathering\"\n            - cell \"0\"\n          - row \"Judging minutes 0 0\":\n            - rowheader \"Judging minutes\"\n            - cell \"0\"\n            - cell \"0\"\n      - term: Shared monthly source volume\n      - definition: 85,000 items; pinned examples add no volume.\n      - term: Operator source cohorts\n      - definition: \"Today: 85,000 items. With agent: 42,499 built + 14,167 abstained.\"\n      - term: Outside assisted operator work\n      - definition: 14,167 pharmacy-caught + 14,167 code-cleared items in the monthly projection; no operator review.\n      - term: With agent at 08:00\n      - definition: 0 built reviewed; 0 handled manually; 56,666 awaiting human.\n      - term: Shared per-item assumptions\n      - definition: Gathering 5 min; built review 1 min; judging 2 min.\n      - term: Day capacity assumptions\n      - definition: One 540-minute budget each. Built and abstained share assisted capacity proportionally, rounded down; assembly latency, breaks and referral delays excluded.\n      - button \"Close comparison\"\n    - paragraph: \"Visible-row projection only. Seed evidence and recorded states stay unchanged. Reduced motion: use Step sweep to inspect phases.\"\n    - status: No sweep\n    - term: Cases built · sweep projection\n    - definition: \"0\"\n    - term: Code-cleared · sweep projection\n    - definition: \"0\"\n    - term: Abstained · sweep projection\n    - definition: \"0\"\n    - term: Awaiting human · sweep projection\n    - definition: \"0\"\n  - heading \"Queue\" [level=2]\n  - paragraph: 12 pinned examples. Filter recorded states, not simulation. Independent references never increase projected volume.\n  - radiogroup \"Filter by state\":\n    - radio \"All\" [checked]\n    - text: All\n    - radio \"Agent review complete\"\n    - text: Agent review complete\n    - radio \"Operator review required\"\n    - text: Operator review required\n    - radio \"Additional evidence required\"\n    - text: Additional evidence required\n    - radio \"Agent abstained\"\n    - text: Agent abstained\n    - radio \"Cleared by rules\"\n    - text: Cleared by rules\n    - radio \"Human decision recorded\"\n    - text: Human decision recorded\n  - region \"Exception queue table\":\n    - table:\n      - rowgroup:\n        - row \"Case Exception reason Evidence status Agent recommendation Confidence signals Recorded seed state In queue Actions\":\n          - columnheader \"Case\"\n          - columnheader \"Exception reason\"\n          - columnheader \"Evidence status\"\n          - columnheader \"Agent recommendation\"\n          - columnheader \"Confidence signals\"\n          - columnheader \"Recorded seed state\"\n          - columnheader \"In queue\"\n          - columnheader \"Actions\"\n      - rowgroup:\n        - 'row \"EX-24107 Riverside Chemist Pinned · Case A Sweep visible rows NCSO endorsement present: concession claim requires operator check 7 findings; sources agree Sufficient: release to pricing once confirmed Agent review complete 3h 32m Case pack Trace\"':\n          - cell \"EX-24107 Riverside Chemist Pinned · Case A Sweep visible rows\":\n            - paragraph: EX-24107\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Case A\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"NCSO endorsement present: concession claim requires operator check\"'\n          - cell \"7 findings; sources agree\"\n          - 'cell \"Sufficient: release to pricing once confirmed\"'\n          - cell:\n            - group: High confidence\n          - cell \"Agent review complete\"\n          - cell \"3h 32m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24107\n            - link \"Trace\":\n              - /url: /case/EX-24107/trace\n        - 'row \"EX-24112 Hillcrest Pharmacy Pinned · Case B Sweep visible rows Handwritten endorsement: NCSO claim requires operator check 7 findings; sources agree Refer back with the exact fix Operator review required 1h 57m Case pack Trace\"':\n          - cell \"EX-24112 Hillcrest Pharmacy Pinned · Case B Sweep visible rows\":\n            - paragraph: EX-24112\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Case B\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten endorsement: NCSO claim requires operator check\"'\n          - cell \"7 findings; sources agree\"\n          - cell \"Refer back with the exact fix\"\n          - cell:\n            - group: High confidence\n          - cell \"Operator review required\"\n          - cell \"1h 57m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24112\n            - link \"Trace\":\n              - /url: /case/EX-24112/trace\n        - row \"EX-24119 Oakfield Pharmacy Pinned · Case C Sweep visible rows Claim message quantity differs from captured form 7 findings; 1 conflict Request information from the pharmacy Operator review required 1h 39m Case pack Trace\":\n          - cell \"EX-24119 Oakfield Pharmacy Pinned · Case C Sweep visible rows\":\n            - paragraph: EX-24119\n            - paragraph: Oakfield Pharmacy\n            - paragraph: Pinned · Case C\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - cell \"Claim message quantity differs from captured form\"\n          - cell \"7 findings; 1 conflict\"\n          - cell \"Request information from the pharmacy\"\n          - cell:\n            - group: Medium confidence\n          - cell \"Operator review required\"\n          - cell \"1h 39m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24119\n            - link \"Trace\":\n              - /url: /case/EX-24119/trace\n        - 'row \"EX-24123 Meadow Lane Dispensary Pinned · Case D Sweep visible rows Handwritten form: low-confidence read of endorsement 4 findings; sources agree Abstained: no recommendation Agent abstained 1h 13m Case pack Trace\"':\n          - cell \"EX-24123 Meadow Lane Dispensary Pinned · Case D Sweep visible rows\":\n            - paragraph: EX-24123\n            - paragraph: Meadow Lane Dispensary\n            - paragraph: Pinned · Case D\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten form: low-confidence read of endorsement\"'\n          - cell \"4 findings; sources agree\"\n          - 'cell \"Abstained: no recommendation\"'\n          - cell:\n            - group: Abstained\n          - cell \"Agent abstained\"\n          - cell \"1h 13m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24123\n            - link \"Trace\":\n              - /url: /case/EX-24123/trace\n        - 'row \"EX-24101 Station Road Pharmacy Pinned · Case E Sweep visible rows Referred-back item resubmitted: re-check required Pre-checks only No recommendation Not applicable Cleared by rules 4h 4m Case pack Trace\"':\n          - cell \"EX-24101 Station Road Pharmacy Pinned · Case E Sweep visible rows\":\n            - paragraph: EX-24101\n            - paragraph: Station Road Pharmacy\n            - paragraph: Pinned · Case E\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Referred-back item resubmitted: re-check required\"'\n          - cell \"Pre-checks only\"\n          - cell \"No recommendation\"\n          - cell \"Not applicable\"\n          - cell \"Cleared by rules\"\n          - cell \"4h 4m\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24101\n            - link \"Trace\":\n              - /url: /case/EX-24101/trace\n        - 'row \"EX-24088 Hillcrest Pharmacy Pinned · Case F Sweep visible rows Handwritten endorsement: NCSO claim requires operator check 7 findings; sources agree Refer back with the exact fix Human decision recorded Done Case pack Trace\"':\n          - cell \"EX-24088 Hillcrest Pharmacy Pinned · Case F Sweep visible rows\":\n            - paragraph: EX-24088\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Case F\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten endorsement: NCSO claim requires operator check\"'\n          - cell \"7 findings; sources agree\"\n          - cell \"Refer back with the exact fix\"\n          - cell:\n            - group: High confidence\n          - cell \"Human decision recorded\"\n          - cell \"Done\"\n          - cell \"Case pack Trace\":\n            - link \"Case pack\":\n              - /url: /case/EX-24088\n            - link \"Trace\":\n              - /url: /case/EX-24088/trace\n        - 'row \"EX-24104 Riverside Chemist Pinned · Example 7 Sweep visible rows Broken bulk endorsement: quantity check Synthetic row Sufficient See case Agent review complete 3h 51m Filler row Today\"':\n          - cell \"EX-24104 Riverside Chemist Pinned · Example 7 Sweep visible rows\":\n            - paragraph: EX-24104\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Example 7\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Broken bulk endorsement: quantity check\"'\n          - cell \"Synthetic row\"\n          - cell \"Sufficient\"\n          - cell \"See case\"\n          - cell \"Agent review complete\"\n          - cell \"3h 51m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24109 Oakfield Pharmacy Pinned · Example 8 Sweep visible rows Specials: invoice price not stated Synthetic row Refer back See case Operator review required 2h 40m Filler row Today\"':\n          - cell \"EX-24109 Oakfield Pharmacy Pinned · Example 8 Sweep visible rows\":\n            - paragraph: EX-24109\n            - paragraph: Oakfield Pharmacy\n            - paragraph: Pinned · Example 8\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Specials: invoice price not stated\"'\n          - cell \"Synthetic row\"\n          - cell \"Refer back\"\n          - cell \"See case\"\n          - cell \"Operator review required\"\n          - cell \"2h 40m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - row \"EX-24115 Meadow Lane Dispensary Pinned · Example 9 Sweep visible rows Out-of-pocket expenses claim above threshold Synthetic row Request information See case Additional evidence required 1h 48m Filler row Today\":\n          - cell \"EX-24115 Meadow Lane Dispensary Pinned · Example 9 Sweep visible rows\":\n            - paragraph: EX-24115\n            - paragraph: Meadow Lane Dispensary\n            - paragraph: Pinned · Example 9\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - cell \"Out-of-pocket expenses claim above threshold\"\n          - cell \"Synthetic row\"\n          - cell \"Request information\"\n          - cell \"See case\"\n          - cell \"Additional evidence required\"\n          - cell \"1h 48m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24120 Station Road Pharmacy Pinned · Example 10 Sweep visible rows Handwritten form: low-confidence read Synthetic row Abstained See case Agent abstained 1h 31m Filler row Today\"':\n          - cell \"EX-24120 Station Road Pharmacy Pinned · Example 10 Sweep visible rows\":\n            - paragraph: EX-24120\n            - paragraph: Station Road Pharmacy\n            - paragraph: Pinned · Example 10\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten form: low-confidence read\"'\n          - cell \"Synthetic row\"\n          - cell \"Abstained\"\n          - cell \"See case\"\n          - cell \"Agent abstained\"\n          - cell \"1h 31m\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24098 Riverside Chemist Pinned · Example 11 Sweep visible rows NCSO endorsement present: concession claim Synthetic row Cleared by rules See case Cleared by rules Done Filler row Today\"':\n          - cell \"EX-24098 Riverside Chemist Pinned · Example 11 Sweep visible rows\":\n            - paragraph: EX-24098\n            - paragraph: Riverside Chemist\n            - paragraph: Pinned · Example 11\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"NCSO endorsement present: concession claim\"'\n          - cell \"Synthetic row\"\n          - cell \"Cleared by rules\"\n          - cell \"See case\"\n          - cell \"Cleared by rules\"\n          - cell \"Done\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n        - 'row \"EX-24093 Hillcrest Pharmacy Pinned · Example 12 Sweep visible rows Handwritten endorsement: NCSO claim Synthetic row Refer back (accepted) See case Human decision recorded Done Filler row Today\"':\n          - cell \"EX-24093 Hillcrest Pharmacy Pinned · Example 12 Sweep visible rows\":\n            - paragraph: EX-24093\n            - paragraph: Hillcrest Pharmacy\n            - paragraph: Pinned · Example 12\n            - group: Manual evidence work · 7 steps\n            - button \"Sweep visible rows\"\n          - 'cell \"Handwritten endorsement: NCSO claim\"'\n          - cell \"Synthetic row\"\n          - cell \"Refer back (accepted)\"\n          - cell \"See case\"\n          - cell \"Human decision recorded\"\n          - cell \"Done\"\n          - cell \"Filler row Today\":\n            - text: Filler row\n            - button \"Today\"\n  - region \"Virtual month\":\n    - heading \"Virtual month\" [level=2]\n    - text: Deterministic code\n    - paragraph: Synthetic model slots follow calculator assumptions. Pinned examples excluded. No citations or automatic decisions.\n    - term: Volume · projection\n    - definition: 85,000\n    - term: Pharmacy-caught · projection\n    - definition: 14,167\n    - term: Code-cleared · projection\n    - definition: 14,167\n    - term: Abstained · projection\n    - definition: 14,167\n    - term: Cases built · projection\n    - definition: 42,499\n    - term: Awaiting human · projection\n    - definition: 56,666\n    - text: Jump to item\n    - textbox \"Jump to item\": \"1\"\n    - button \"Jump to item\"\n    - button \"First item\"\n    - button \"Last item\"\n    - button \"Previous segment\" [disabled]\n    - button \"Next segment\"\n    - status: 1 of 85,000 items\n    - term: Segment\n    - definition: \"1\"\n    - term: Positions per segment\n    - definition: 1,000 maximum\n    - term: Keyboard\n    - definition: Arrows, Page Up/Down, Home/End; jump controls\n    - button \"Run visible month sweep\"\n    - button \"Step month sweep\" [disabled]\n    - status: No sweep\n    - region \"Month scroll window\":\n      - list \"Month projection rows\":\n        - listitem:\n          - text: 1 · SYN-Q-0000000001 Generated model example Abstention projection\n          - button \"Today\"\n        - listitem:\n          - text: 2 · SYN-Q-0000000002 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 3 · SYN-Q-0000000003 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 4 · SYN-Q-0000000004 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 5 · SYN-Q-0000000005 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 6 · SYN-Q-0000000006 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 7 · SYN-Q-0000000007 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 8 · SYN-Q-0000000008 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 9 · SYN-Q-0000000009 Generated model example Case-built projection\n          - button \"Today\"\n        - listitem:\n          - text: 10 · SYN-Q-0000000010 Generated model example Case-built projection\n          - button \"Today\"\n  - region \"Working day simulation\":\n    - heading \"Simulate a day\" [level=2]\n    - text: Model assumptions · 08:00 to 17:00 Human decision\n    - paragraph: \"One clock, one operator per comparison. Projected actions never change history. Reduced motion: paused step-through; Step or Jump shows the summary.\"\n    - button \"Play day\" [disabled]\n    - button \"Step 15 minutes\"\n    - button \"Jump to 17:00\"\n    - button \"Restart day\"\n    - status \"Shared day clock\": 08:00\n    - group: Day assumptions and capacity\n    - region \"Today day comparison\":\n      - heading \"Today · manual projection\" [level=3]\n      - paragraph: Same twelve examples, same order. Independent illustration, not extra monthly volume. Existing code and historical records remain unchanged.\n      - list \"Today twelve examples\":\n        - listitem: \"Case A · EX-24107 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case B · EX-24112 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case C · EX-24119 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Case D · EX-24123 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Case E · EX-24101 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Case F · EX-24088 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 7 · EX-24104 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 8 · EX-24109 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 9 · EX-24115 Awaiting operator Gathering: 5 min · Judging: 2 min\"\n        - listitem: \"Example 10 · EX-24120 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Example 11 · EX-24098 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 12 · EX-24093 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n      - term: Projected operator actions\n      - definition: \"0\"\n      - term: Gathering minutes\n      - definition: \"0\"\n      - term: Judging minutes\n      - definition: \"0\"\n    - region \"With agent day comparison\":\n      - heading \"With agent · projection · selected\" [level=3]\n      - paragraph: Same twelve examples, same order. Independent illustration, not extra monthly volume. Existing code and historical records remain unchanged.\n      - list \"Assisted twelve examples\":\n        - listitem: \"Case A · EX-24107 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case B · EX-24112 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case C · EX-24119 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Case D · EX-24123 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Case E · EX-24101 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Case F · EX-24088 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 7 · EX-24104 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 8 · EX-24109 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 9 · EX-24115 Awaiting operator Review: 1 min · Judging: 2 min\"\n        - listitem: \"Example 10 · EX-24120 Awaiting operator Gathering: 5 min · Judging: 2 min Manual fallback; never case-ready\"\n        - listitem: \"Example 11 · EX-24098 Existing code; no agent Gathering: 0 min · Judging: 0 min\"\n        - listitem: \"Example 12 · EX-24093 Historical record unchanged Gathering: 0 min · Judging: 0 min\"\n      - term: Projected operator actions\n      - definition: \"0\"\n      - term: Built reviewed\n      - definition: \"0\"\n      - term: Abstained handled manually\n      - definition: \"0\"\n      - term: Code-cleared; no review\n      - definition: \"0\"\n      - term: Pharmacy-caught; outside queue\n      - definition: \"0\"\n      - term: Awaiting human\n      - definition: 56,666\n      - term: Gathering minutes\n      - definition: \"0\"\n      - term: Review minutes\n      - definition: \"0\"\n      - term: Judging minutes\n      - definition: \"0\"\n    - status: Day projection · 08:00 · No actual decisions, payments or history events written."
+    },
+    {
+      "chapter": 6,
+      "after": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "errors": []
+    },
+    {
+      "chapter": 7,
+      "mode": "off",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "capturedAt": "2026-09-12T19:24:49.799Z",
+      "build": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "snapshot": "- main:\n  - status: Assistance Off · Simulated presentation, not a model call\n  - region \"Tour chapter 7\":\n    - heading \"7. What the pharmacy sees\" [level=2]\n    - paragraph: Track the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment.\n  - text: Synthetic demonstration data\n  - heading \"Pharmacy claims\" [level=1]\n  - paragraph: Synthetic claimed amounts, not calculated payments. Shared session history survives navigation, not reloads.\n  - text: Existing NHSBSA capability\n  - link \"Open pharmacy submission\":\n    - /url: /pharmacy\n  - region \"Referral cycle guide\":\n    - heading \"Referral, correction and re-check\" [level=2]\n    - region \"Referral cycle comparison\":\n      - heading \"Today · Manual preparation\" [level=3]\n      - text: Human decision\n      - paragraph: \"Illustrative: humans review the reason, find the rule, correct, resubmit and decide after code validates. Waiting times are not guaranteed.\"\n    - list \"Referral cycle stages\":\n      - listitem:\n        - heading \"1. Referred back\" [level=3]\n        - text: Human decision\n        - paragraph: An operator records the referral reason. With assistance, only an explicitly approved draft becomes the pharmacy note.\n      - listitem:\n        - heading \"2. Corrected\" [level=3]\n        - text: Human decision\n        - paragraph: The pharmacy edits the endorsement. An unsent correction is a local draft, not a lifecycle transition.\n      - listitem:\n        - heading \"3. Resubmitted\" [level=3]\n        - text: Human decision\n        - paragraph: The pharmacy submits its correction. A new revision preserves the earlier evidence and returns the item for re-check.\n      - listitem:\n        - heading \"4. Re-checked\" [level=3]\n        - text: Deterministic code Human decision\n        - paragraph: An operator starts review. Code validates the revised evidence; the operator decides. Missing evidence can require another referral.\n      - listitem:\n        - heading \"5. Paid · Synthetic only\" [level=3]\n        - text: Existing NHSBSA capability\n        - paragraph: For referred items, a sufficient human decision releases the item to existing pricing. The recorded paid result is synthetic, not a calculated payment.\n    - paragraph: This guide is not claim history. Opening it or switching assistance never completes a stage.\n    - region \"Recorded claim state\":\n      - heading \"EX-24112 · Recorded state\" [level=3]\n      - status: \"Referred back: correction needed before payment\"\n      - link \"Open this pharmacy claim\":\n        - /url: /pharmacy/claims?case=EX-24112\n      - link \"Open this operator case\":\n        - /url: /case/EX-24112\n  - text: Pharmacy (synthetic)\n  - combobox \"Pharmacy (synthetic)\":\n    - option \"Hillcrest Pharmacy\" [selected]\n    - option \"Riverside Chemist\"\n    - option \"Oakfield Pharmacy\"\n    - option \"Station Road Pharmacy\"\n    - option \"Meadow Lane Dispensary\"\n  - text: Claim state\n  - combobox \"Claim state\":\n    - option \"All states (9)\" [selected]\n    - option \"submitted (1)\"\n    - option \"in review (1)\"\n    - option \"information requested (1)\"\n    - option \"referred back (3)\"\n    - option \"resubmitted (1)\"\n    - option \"paid (1)\"\n    - option \"escalated (1)\"\n  - term: Matching claims\n  - definition: \"9\"\n  - term: Claimed amount (synthetic, not payments)\n  - definition: £30.70\n  - list \"Pharmacy claims\":\n    - listitem:\n      - heading \"EX-24112\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim EX-24112\"\n    - listitem:\n      - heading \"EX-24088\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim EX-24088\"\n    - listitem:\n      - heading \"EX-24093\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim EX-24093\"\n    - listitem:\n      - heading \"SYN-FQ123-1\" [level=2]\n      - paragraph: Submitted, awaiting processing\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim SYN-FQ123-1\"\n    - listitem:\n      - heading \"SYN-FQ123-2\" [level=2]\n      - paragraph: In review at NHSBSA\n      - text: \"Claimed: £3.86 (synthetic)\"\n      - button \"Open claim SYN-FQ123-2\"\n    - listitem:\n      - heading \"SYN-FQ123-3\" [level=2]\n      - paragraph: \"Information requested: NHSBSA needs you to confirm something\"\n      - text: \"Claimed: £3.90 (synthetic)\"\n      - button \"Open claim SYN-FQ123-3\"\n    - listitem:\n      - heading \"SYN-FQ123-5\" [level=2]\n      - paragraph: Resubmitted, awaiting re-check\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim SYN-FQ123-5\"\n    - listitem:\n      - heading \"SYN-FQ123-6\" [level=2]\n      - paragraph: Payment approved (synthetic)\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim SYN-FQ123-6\"\n    - listitem:\n      - heading \"SYN-FQ123-7\" [level=2]\n      - paragraph: In review at NHSBSA (senior review)\n      - text: \"Claimed: £3.86 (synthetic)\"\n      - button \"Open claim SYN-FQ123-7\"",
+      "visible": {
+        "headings": [
+          {
+            "text": "7. What the pharmacy sees",
+            "top": 276
+          },
+          {
+            "text": "Pharmacy claims",
+            "top": 401
+          },
+          {
+            "text": "Referral, correction and re-check",
+            "top": 556
+          },
+          {
+            "text": "Today · Manual preparation",
+            "top": 616
+          },
+          {
+            "text": "1. Referred back",
+            "top": 746
+          },
+          {
+            "text": "2. Corrected",
+            "top": 746
+          },
+          {
+            "text": "3. Resubmitted",
+            "top": 746
+          },
+          {
+            "text": "4. Re-checked",
+            "top": 746
+          },
+          {
+            "text": "5. Paid · Synthetic only",
+            "top": 746
+          },
+          {
+            "text": "EX-24112 · Recorded state",
+            "top": 1026
+          },
+          {
+            "text": "EX-24112",
+            "top": 1357
+          },
+          {
+            "text": "EX-24088",
+            "top": 1357
+          },
+          {
+            "text": "EX-24093",
+            "top": 1527
+          },
+          {
+            "text": "SYN-FQ123-1",
+            "top": 1527
+          },
+          {
+            "text": "SYN-FQ123-2",
+            "top": 1697
+          },
+          {
+            "text": "SYN-FQ123-3",
+            "top": 1697
+          },
+          {
+            "text": "SYN-FQ123-5",
+            "top": 1867
+          },
+          {
+            "text": "SYN-FQ123-6",
+            "top": 1867
+          },
+          {
+            "text": "SYN-FQ123-7",
+            "top": 2037
+          }
+        ],
+        "inputsAboveFold": 0,
+        "columnCounts": [],
+        "prose": [],
+        "horizontalOverflow": false
+      }
+    },
+    {
+      "chapter": 7,
+      "mode": "on",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "capturedAt": "2026-09-12T19:24:50.036Z",
+      "build": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "snapshot": "- main:\n  - status: Assistance On · Simulated presentation, not a model call\n  - region \"Tour chapter 7\":\n    - heading \"7. What the pharmacy sees\" [level=2]\n    - paragraph: Track the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment.\n  - text: Synthetic demonstration data\n  - heading \"Pharmacy claims\" [level=1]\n  - paragraph: Synthetic claimed amounts, not calculated payments. Shared session history survives navigation, not reloads.\n  - text: Existing NHSBSA capability\n  - link \"Open pharmacy submission\":\n    - /url: /pharmacy\n  - region \"Referral cycle guide\":\n    - heading \"Referral, correction and re-check\" [level=2]\n    - region \"Referral cycle comparison\":\n      - heading \"With agent · Assisted preparation\" [level=3]\n      - text: Agentic action\n      - paragraph: \"Illustrative: operator-approved drafts support human correction and resubmission; code validates and humans decide. Optional checks never guarantee shorter waits.\"\n    - list \"Referral cycle stages\":\n      - listitem:\n        - heading \"1. Referred back\" [level=3]\n        - text: Human decision\n        - paragraph: An operator records the referral reason. With assistance, only an explicitly approved draft becomes the pharmacy note.\n      - listitem:\n        - heading \"2. Corrected\" [level=3]\n        - text: Human decision\n        - paragraph: The pharmacy edits the endorsement. An unsent correction is a local draft, not a lifecycle transition.\n      - listitem:\n        - heading \"3. Resubmitted\" [level=3]\n        - text: Human decision\n        - paragraph: The pharmacy submits its correction. A new revision preserves the earlier evidence and returns the item for re-check.\n      - listitem:\n        - heading \"4. Re-checked\" [level=3]\n        - text: Deterministic code Human decision\n        - paragraph: An operator starts review. Code validates the revised evidence; the operator decides. Missing evidence can require another referral.\n      - listitem:\n        - heading \"5. Paid · Synthetic only\" [level=3]\n        - text: Existing NHSBSA capability\n        - paragraph: For referred items, a sufficient human decision releases the item to existing pricing. The recorded paid result is synthetic, not a calculated payment.\n    - paragraph: This guide is not claim history. Opening it or switching assistance never completes a stage.\n    - region \"Recorded claim state\":\n      - heading \"EX-24112 · Recorded state\" [level=3]\n      - status: \"Referred back: correction needed before payment\"\n      - link \"Open this pharmacy claim\":\n        - /url: /pharmacy/claims?case=EX-24112\n      - link \"Open this operator case\":\n        - /url: /case/EX-24112\n  - text: Pharmacy (synthetic)\n  - combobox \"Pharmacy (synthetic)\":\n    - option \"Hillcrest Pharmacy\" [selected]\n    - option \"Riverside Chemist\"\n    - option \"Oakfield Pharmacy\"\n    - option \"Station Road Pharmacy\"\n    - option \"Meadow Lane Dispensary\"\n  - text: Claim state\n  - combobox \"Claim state\":\n    - option \"All states (9)\" [selected]\n    - option \"submitted (1)\"\n    - option \"in review (1)\"\n    - option \"information requested (1)\"\n    - option \"referred back (3)\"\n    - option \"resubmitted (1)\"\n    - option \"paid (1)\"\n    - option \"escalated (1)\"\n  - term: Matching claims\n  - definition: \"9\"\n  - term: Claimed amount (synthetic, not payments)\n  - definition: £30.70\n  - list \"Pharmacy claims\":\n    - listitem:\n      - heading \"EX-24112\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim EX-24112\"\n    - listitem:\n      - heading \"EX-24088\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim EX-24088\"\n    - listitem:\n      - heading \"EX-24093\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim EX-24093\"\n    - listitem:\n      - heading \"SYN-FQ123-1\" [level=2]\n      - paragraph: Submitted, awaiting processing\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim SYN-FQ123-1\"\n    - listitem:\n      - heading \"SYN-FQ123-2\" [level=2]\n      - paragraph: In review at NHSBSA\n      - text: \"Claimed: £3.86 (synthetic)\"\n      - button \"Open claim SYN-FQ123-2\"\n    - listitem:\n      - heading \"SYN-FQ123-3\" [level=2]\n      - paragraph: \"Information requested: NHSBSA needs you to confirm something\"\n      - text: \"Claimed: £3.90 (synthetic)\"\n      - button \"Open claim SYN-FQ123-3\"\n    - listitem:\n      - heading \"SYN-FQ123-5\" [level=2]\n      - paragraph: Resubmitted, awaiting re-check\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim SYN-FQ123-5\"\n    - listitem:\n      - heading \"SYN-FQ123-6\" [level=2]\n      - paragraph: Payment approved (synthetic)\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim SYN-FQ123-6\"\n    - listitem:\n      - heading \"SYN-FQ123-7\" [level=2]\n      - paragraph: In review at NHSBSA (senior review)\n      - text: \"Claimed: £3.86 (synthetic)\"\n      - button \"Open claim SYN-FQ123-7\"",
+      "visible": {
+        "headings": [
+          {
+            "text": "7. What the pharmacy sees",
+            "top": 276
+          },
+          {
+            "text": "Pharmacy claims",
+            "top": 401
+          },
+          {
+            "text": "Referral, correction and re-check",
+            "top": 556
+          },
+          {
+            "text": "With agent · Assisted preparation",
+            "top": 616
+          },
+          {
+            "text": "1. Referred back",
+            "top": 746
+          },
+          {
+            "text": "2. Corrected",
+            "top": 746
+          },
+          {
+            "text": "3. Resubmitted",
+            "top": 746
+          },
+          {
+            "text": "4. Re-checked",
+            "top": 746
+          },
+          {
+            "text": "5. Paid · Synthetic only",
+            "top": 746
+          },
+          {
+            "text": "EX-24112 · Recorded state",
+            "top": 1026
+          },
+          {
+            "text": "EX-24112",
+            "top": 1357
+          },
+          {
+            "text": "EX-24088",
+            "top": 1357
+          },
+          {
+            "text": "EX-24093",
+            "top": 1527
+          },
+          {
+            "text": "SYN-FQ123-1",
+            "top": 1527
+          },
+          {
+            "text": "SYN-FQ123-2",
+            "top": 1697
+          },
+          {
+            "text": "SYN-FQ123-3",
+            "top": 1697
+          },
+          {
+            "text": "SYN-FQ123-5",
+            "top": 1867
+          },
+          {
+            "text": "SYN-FQ123-6",
+            "top": 1867
+          },
+          {
+            "text": "SYN-FQ123-7",
+            "top": 2037
+          }
+        ],
+        "inputsAboveFold": 0,
+        "columnCounts": [],
+        "prose": [],
+        "horizontalOverflow": false
+      }
+    },
+    {
+      "chapter": 7,
+      "mode": "on-detail-B",
+      "capturedAt": "2026-09-12T19:24:50.276Z",
+      "snapshot": "- main:\n  - status: Assistance On · Simulated presentation, not a model call\n  - region \"Tour chapter 7\":\n    - heading \"7. What the pharmacy sees\" [level=2]\n    - paragraph: Track the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment.\n  - text: Synthetic demonstration data\n  - heading \"Pharmacy claims\" [level=1]\n  - paragraph: Synthetic claimed amounts, not calculated payments. Shared session history survives navigation, not reloads.\n  - text: Existing NHSBSA capability\n  - link \"Open pharmacy submission\":\n    - /url: /pharmacy\n  - region \"Referral cycle guide\":\n    - heading \"Referral, correction and re-check\" [level=2]\n    - region \"Referral cycle comparison\":\n      - heading \"With agent · Assisted preparation\" [level=3]\n      - text: Agentic action\n      - paragraph: \"Illustrative: operator-approved drafts support human correction and resubmission; code validates and humans decide. Optional checks never guarantee shorter waits.\"\n    - list \"Referral cycle stages\":\n      - listitem:\n        - heading \"1. Referred back\" [level=3]\n        - text: Human decision\n        - paragraph: An operator records the referral reason. With assistance, only an explicitly approved draft becomes the pharmacy note.\n      - listitem:\n        - heading \"2. Corrected\" [level=3]\n        - text: Human decision\n        - paragraph: The pharmacy edits the endorsement. An unsent correction is a local draft, not a lifecycle transition.\n      - listitem:\n        - heading \"3. Resubmitted\" [level=3]\n        - text: Human decision\n        - paragraph: The pharmacy submits its correction. A new revision preserves the earlier evidence and returns the item for re-check.\n      - listitem:\n        - heading \"4. Re-checked\" [level=3]\n        - text: Deterministic code Human decision\n        - paragraph: An operator starts review. Code validates the revised evidence; the operator decides. Missing evidence can require another referral.\n      - listitem:\n        - heading \"5. Paid · Synthetic only\" [level=3]\n        - text: Existing NHSBSA capability\n        - paragraph: For referred items, a sufficient human decision releases the item to existing pricing. The recorded paid result is synthetic, not a calculated payment.\n    - paragraph: This guide is not claim history. Opening it or switching assistance never completes a stage.\n    - region \"Recorded claim state\":\n      - heading \"EX-24112 · Recorded state\" [level=3]\n      - status: \"Referred back: correction needed before payment\"\n      - link \"Open this pharmacy claim\":\n        - /url: /pharmacy/claims?case=EX-24112\n      - link \"Open this operator case\":\n        - /url: /case/EX-24112\n  - text: Pharmacy (synthetic)\n  - combobox \"Pharmacy (synthetic)\":\n    - option \"Hillcrest Pharmacy\" [selected]\n    - option \"Riverside Chemist\"\n    - option \"Oakfield Pharmacy\"\n    - option \"Station Road Pharmacy\"\n    - option \"Meadow Lane Dispensary\"\n  - text: Claim state\n  - combobox \"Claim state\":\n    - option \"All states (9)\" [selected]\n    - option \"submitted (1)\"\n    - option \"in review (1)\"\n    - option \"information requested (1)\"\n    - option \"referred back (3)\"\n    - option \"resubmitted (1)\"\n    - option \"paid (1)\"\n    - option \"escalated (1)\"\n  - term: Matching claims\n  - definition: \"9\"\n  - term: Claimed amount (synthetic, not payments)\n  - definition: £30.70\n  - list \"Pharmacy claims\":\n    - listitem:\n      - heading \"EX-24112\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim EX-24112\"\n    - listitem:\n      - heading \"EX-24088\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim EX-24088\"\n    - listitem:\n      - heading \"EX-24093\" [level=2]\n      - paragraph: \"Referred back: correction needed before payment\"\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim EX-24093\"\n    - listitem:\n      - heading \"SYN-FQ123-1\" [level=2]\n      - paragraph: Submitted, awaiting processing\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim SYN-FQ123-1\"\n    - listitem:\n      - heading \"SYN-FQ123-2\" [level=2]\n      - paragraph: In review at NHSBSA\n      - text: \"Claimed: £3.86 (synthetic)\"\n      - button \"Open claim SYN-FQ123-2\"\n    - listitem:\n      - heading \"SYN-FQ123-3\" [level=2]\n      - paragraph: \"Information requested: NHSBSA needs you to confirm something\"\n      - text: \"Claimed: £3.90 (synthetic)\"\n      - button \"Open claim SYN-FQ123-3\"\n    - listitem:\n      - heading \"SYN-FQ123-5\" [level=2]\n      - paragraph: Resubmitted, awaiting re-check\n      - text: \"Claimed: £2.95 (synthetic)\"\n      - button \"Open claim SYN-FQ123-5\"\n    - listitem:\n      - heading \"SYN-FQ123-6\" [level=2]\n      - paragraph: Payment approved (synthetic)\n      - text: \"Claimed: £3.41 (synthetic)\"\n      - button \"Open claim SYN-FQ123-6\"\n    - listitem:\n      - heading \"SYN-FQ123-7\" [level=2]\n      - paragraph: In review at NHSBSA (senior review)\n      - text: \"Claimed: £3.86 (synthetic)\"\n      - button \"Open claim SYN-FQ123-7\"\n  - region \"Claim detail\":\n    - 'heading \"Claim detail: EX-24112\" [level=2]'\n    - status: \"Referred back: correction needed before payment\"\n    - text: Human decision\n    - term: Pharmacy\n    - definition: Hillcrest Pharmacy (synthetic)\n    - term: Dispensing date\n    - definition: 2026-08-21\n    - term: Claimed amount, not payment\n    - definition: £2.95 (synthetic)\n    - term: Current endorsement\n    - definition: NCSO RK\n    - region \"Operator response\":\n      - paragraph: No operator-approved draft. Enabling assistance does not approve a note.\n    - region \"Correction and resubmission\":\n      - text: Corrected endorsement\n      - textbox \"Corrected endorsement\": NCSO RK\n      - region \"Claims precheck\":\n        - text: Deterministic code\n        - paragraph: Scripted typed-field check, not live capture. No payment guarantee.\n        - button \"Re-check endorsement\"\n        - status: Not checked for this edit\n      - region \"Resubmission comparison\":\n        - paragraph: A check supports correction, not payment. Resubmission still requires human re-check.\n        - 'button \"Manual: No operator-approved correction\"'\n      - button \"Resubmit claim\"\n    - group: Demonstration replay\n  - region \"Shared case history\":\n    - heading \"Shared case history\" [level=2]\n    - status: \"Referred back: correction needed before payment\"\n    - text: Human decision\n    - button \"Follow this case\"\n    - link \"View NHSBSA case\":\n      - /url: /case/EX-24112\n    - link \"Open shared queue\":\n      - /url: /queue\n    - group: History and attempts (1)"
+    },
+    {
+      "chapter": 7,
+      "after": {
+        "commit": "6b0632823514b923b54d3ae9f873fabfa9715851",
+        "builtAt": "2026-09-12T19:15:00.916Z",
+        "dirty": false
+      },
+      "errors": []
+    }
+  ],
+  "completed": true,
+  "finishedAt": "2026-09-12T19:24:50.401Z"
+}

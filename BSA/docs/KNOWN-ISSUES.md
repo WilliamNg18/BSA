@@ -6,13 +6,20 @@ ms.date: 2026-09-12
 
 ## Current implementation and acceptance
 
+Tasks 14-18's final live review at clean `c0203fc` is recorded separately in
+[FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md): nine observed clarity points,
+18 reviewed views / unrestricted axe audits with zero violations, and an
+explicit human-controlled round trip and catch-counter walk. Earlier evidence
+below remains historical. Final tracking and release acceptance belong to the
+coordinator; this scoped review does not claim human comprehension testing.
+
 The eight-chapter/nine-stop tour, standalone pipeline and Four cases, complete
 referral-cycle guide, shared lifecycle, scene count-in, queue Compare and
 human-controlled round trip are implemented. Pharmacy On response/history shows
 only labelled operator-approved drafts; intentional Off is a healthy unchecked
 manual path. These are no longer open implementation gaps.
 
-Current source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` includes the route-entry
+Historical accepted source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` includes the route-entry
 contrast repair from #42 and restored blocking pharmacy coverage from #40.
 Exact tested head `f295d7f19363cd101af7401f0ba03188ee7d0b2b` passed
 [Actions run 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977):
@@ -20,19 +27,37 @@ check, 607 units and **1,054 browser tests, all blocking**, in 15.1 minutes.
 There are zero quarantined cases, not three additional informational passes.
 No deduplicated CI audit count is inferred from a browser-test total.
 
+The later pre-redesign
+[CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+at `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed check, 695 unique
+units and 1,055 blocking browsers across four shards in 6m25s, with zero
+quarantine. Shard repetitions do not multiply unique unit counts. This is
+distinct from V's six-state baseline observation and the older screenshot audits.
+
 The agent gathers evidence and recommends; deterministic code validates and
 calculates; a human decides. Nothing in this demonstration calculates or
 approves a payment. `Payment approved (synthetic)` is a lifecycle label
 attributed to existing pricing, not proof of a payment service.
 
-## Owner-run hosting verification remains open
+## Hosted baseline accepted; new interface acceptance remains separate
 
 Issue #48 supersedes the earlier SWA target with the existing App Service F1
-at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. The coordinator verified
-the resource and configured OIDC, but the old HTTP 200 response lacks CSP.
-Verify the new packaged server's actual build commit, headers and deep links
-before hosted acceptance. See [DEPLOYMENT.md](DEPLOYMENT.md). No publish profile
-or SWA token is needed. F1 has no deployment slots; PR artifacts are not previews.
+at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The [source-pinned live record](live-verification/README.md) establishes
+13/13 checks and 26 matching clean identities at
+`b813c6241cc084957a30c6bf48fdd65f623f33f6`, including strict headers and
+deep links. Six actual axe audits had zero violations; a separate same-history
+mixed-mode round trip also passed. The earlier HTTP 200 without CSP was repaired,
+not an outstanding hosting blocker. Main/manual OIDC and bounded non-destructive
+recovery are recorded in [INFRA-DONE](INFRA-DONE.md); infrastructure is frozen.
+
+A fresh V baseline reading on `2026-09-12T19:21:33Z` to `19:22:15Z` observed
+clean Step 0 `6b0632823514b923b54d3ae9f873fabfa9715851` on the live site.
+That six-state chapter reading predates the redesign and is not a repeat of
+the older hosted checklist. Tasks 14-18 now have a distinct merged-source
+live review in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md), not a relabelled baseline.
+See [DEPLOYMENT.md](DEPLOYMENT.md). No publish profile, SWA token, new resource
+or owner setup is needed. F1 has no deployment slots; PR artifacts are not previews.
 
 The account transfer was cancelled on 12 September 2026. WilliamNg18 remains
 owner; repository and approved reference material are public by explicit
@@ -49,7 +74,7 @@ public visibility nor that CI pass proves an Azure deployment.
 | Evidence | Synthetic cases, rule paraphrases and enterprise tool responses, not authentic clinical or tariff evidence |
 | History | Immutable attempts and append-only events within a session, not durable audit storage; reload/Reset restores seeds |
 | Offline | Loaded-session navigation works; a cold offline load or reload is not guaranteed |
-| Queue | Virtual month, sweep, day and Compare are bounded projections, not live work or measured capacity |
+| Queue | Virtual month, legacy day and one-hour Compare are bounded projections, not live work or measured capacity |
 | Today | Model examples show manual tasks without invented retrieved citations or agent results |
 | Outcomes | C's 56/84 conflict survives confirmation; D stays manual with no payment guarantee |
 | Timing/benefits | Gathering, judging, delay and assembly are assumptions; animation is presentation, not elapsed operational work |
@@ -64,6 +89,18 @@ durable record service or payment calculation is included. A shared operational
 service remains a proposal even though the local cross-side workflow works.
 
 ## Remaining verification caveats
+
+V's final 1440px light/reduced-motion matrix has 13 incomplete axe reports
+(11 color-contrast, 8 aria-prohibited-attr, overlapping), preserved for manual
+review despite zero violations. Natural Agent focus tooltips remain in On
+images. The first live walk's All-tile selector timeout is retained as harness
+failure; the corrected full walk passed. No app defect is inferred from it.
+Both perspective puts chapter 7's first table rows below the 1000px fold,
+although its action tiles are visible; Pharmacy view exposes them sooner.
+The exact 26-word queue guides exceed the copy aspiration by one word and are
+intentionally retained, not a blocking budget. No remaining concrete app defect
+was reproduced in this scoped review; mobile/dark and full manual conformance
+are not claimed by these screenshots.
 
 [#34](https://github.com/WilliamNg18/BSA/issues/34) is closed. A controlled
 nine-case repetition passed before the three conditional tags were removed;
@@ -84,7 +121,7 @@ regression verifies 0/75/135/150ms states; scoped acceptance recorded 32 cases,
 40 unrestricted axe audits and zero violations before full CI acceptance.
 Settled screenshots did not prove the old intermediate frames safe.
 
-The [current visual index](screens/integrated/README.md) and
+The [original integrated visual index](screens/integrated/README.md) and
 [manifest](screens/integrated/manifest.json) identify actual source revisions,
 per-image hashes, errors, overflow and axe results. Header-enforced local
 Chromium evidence is not full manual WCAG 2.2 AA conformance, screen-reader
@@ -123,6 +160,6 @@ rechecks in [PROGRESS.md](PROGRESS.md), [LEARNINGS.md](LEARNINGS.md) and
 [HANDOVER.md](HANDOVER.md). Task 7's 503 units, 721 browsers, 334 axe reports,
 91/91/90 Lighthouse scores and 199,651 gzip bytes are not current measurements.
 
-[SCOPE.md](SCOPE.md) distinguishes accepted implementation from final documentation
-and hosted verification. Final task ticks belong to D's
+[SCOPE.md](SCOPE.md) distinguishes the 18 accepted original rows from the new
+Tasks 14-18. Final task ticks belong to the coordinator's
 [PROGRESS.md](PROGRESS.md), not to a screenshot or an old implementation checklist.

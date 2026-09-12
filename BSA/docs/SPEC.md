@@ -6,6 +6,11 @@ ms.date: 2026-09-12
 
 ## 1. Purpose and authority
 
+**Task 14-18 integrated behaviour:** N/Q/P/X are merged at clean `c0203fc`.
+[FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md) records the final source-pinned live
+matrix and actual human-controlled walkthrough, separately from the preserved
+pre-redesign baselines. [PROGRESS](PROGRESS.md) owns final task acceptance.
+
 A static capability demonstration using synthetic prescription exceptions,
 scripted interpretation and a versioned synthetic rulebook. It is not a clinical,
 pricing or operational service.
@@ -14,9 +19,10 @@ pricing or operational service.
 > calculates. A human decides. The prototype does not calculate or approve payments.
 
 The integrated application implements the lifecycle, claims/detail, cross-side
-round trip, eight-chapter tour and navigation. Source `898cda5` has passed
-integrated functional acceptance; [PROGRESS.md](PROGRESS.md) owns final task
-ticks, and owner-run hosted verification remains separate.
+round trip, eight-chapter tour and navigation. Original source `898cda5` passed
+integrated functional acceptance. Later clean `b813c62` passed the
+[hosted checklist](live-verification/README.md); neither historical result is
+relabelled as the redesigned interface's evidence.
 
 ### Reference-grounded aim and outcome boundary
 
@@ -57,9 +63,17 @@ conflict, bypass the pure gate or price an item. `price()` refuses pricing.
 
 The header contains Overview, Operations (Pharmacy check, Pharmacy claims,
 NHSBSA queue) and How it works (Evaluation, Boundary, Assumptions,
-Architecture), plus Agent and Reset. Narrow layouts use Open navigation.
+Architecture), plus Perspective, Agent and Reset. Narrow layouts use Open navigation.
 The shield links home. The synthetic banner and governing principle remain
 available on every route.
+
+Perspective is a native radio group, independent of Agent, defaulting to Both.
+Pharmacy and NHSBSA filter operational navigation and omit the tour/Follow
+controls. Both exposes all routes and the tour. Opposite-side direct links
+retain their URL and show **This view belongs to the other side; switch
+perspective to see it**, with **Switch to Pharmacy** or **Switch to NHSBSA**.
+Switching preserves the item, immutable attempts, approval and lifecycle.
+Reset retains perspective while restoring the seeded demonstration.
 
 ### Eight chapters, nine stops
 
@@ -71,8 +85,8 @@ available on every route.
 | 4: Four cases | `/#cases` | A-D pain/results with Open case and Follow actions in both modes |
 | 5: One agent, two places | `/#two-places` | Longer manual/shorter assisted preparation loops, pharmacy referral experience and same-item links |
 | 5: Pharmacy example | `/pharmacy` | Optional scripted precheck and explicit submission |
-| 6: The queue | `/queue` | Virtual month, manual work, visible-row sweep and read-only Compare |
-| 7: What the pharmacy sees | `/pharmacy/claims` | Full referral-cycle guide, actual recorded state, claim detail and history |
+| 6: The queue | `/queue` | Counted six-column virtual month, actual session arrivals and read-only one-hour Compare |
+| 7: What the pharmacy sees | `/pharmacy/claims` | Four counted action/amount filters, five-column table, selected detail and persistent history |
 | 8: Where it ends | `/#close` | Referral-reason discovery, assumptions and questions |
 
 Next and Back follow this exact sequence. The chapter menu has eight entries;
@@ -89,7 +103,7 @@ Alt+ArrowLeft/Right navigate outside editable fields, menus and dialogs.
 | `/pharmacy` | Pharmacy check |
 | `/pharmacy/claims` | Claims list |
 | `/pharmacy/claims?caseId=:id` | Selected claim detail; legacy `case` query also accepted |
-| `/queue` | Exception queue and shared session queue |
+| `/queue` | One exception queue including shared session arrivals |
 | `/case/:id` | Operator case pack |
 | `/case/:id/trace` | Case-building trace |
 | `/case/:id/record` | Decision and audit record |
@@ -116,14 +130,45 @@ capture quality/regions, extracted fields, claim and scripted readings.
 five confidence signals, composite, recommendation, gate, draft and trace.
 These outputs do not themselves create a human decision or lifecycle event.
 
-### Chapter 2 baseline model
+### Chapter 2 monthly model
 
-The authoritative equations/defaults are in
-[task-1-baseline-model.md](task-1-baseline-model.md). `V` is the scenario volume;
-`g` sums seven editable gathering durations and `j` is judging time per item.
+The frozen Task 14 contract is `monthModel` / `selectMonthScenario` in
+`src/lib/domain/baseline.ts`, shared through `useMonthModel()`. The older
+[Task 1 model](task-1-baseline-model.md) remains historical/legacy behaviour;
+do not apply its fixed `V * j`
+assisted judging formula to the new monthly tiles.
+
+Let `V` be the volume proxy, `t` total Today minutes and `j` judging minutes.
+Today gathering is `g = t - j`, not `t` with judging added again.
 Pharmacy-caught `P`, rule-cleared `C`, abstained `A` and built `B` are disjoint,
-sequentially rounded cohorts summing to `V`. The monthly calculator uses `V * j`
-for judging on both sides; pharmacy catch counts items, not saved minutes.
+sequentially rounded cohorts summing to `V`. The existing percentage inputs
+use successive remaining populations, not four shares of the original volume.
+
+| Quantity | Shared calculation | Default / interpretation |
+| --- | --- | --- |
+| Today monthly hours | `V * t / 60` | `85,000 * 12 / 60 = 17,000` |
+| Assisted monthly hours | `(B * j + A * t) / 60` | `255,002 / 60`, approximately `4,250.03` before display rounding |
+| Built item operator time | `0` gathering plus `j` judging | `2` minutes; not automatic human approval |
+| Abstained item operator time | `g + j = t` | All `12` manual minutes |
+| Caught / cleared operator time | `0` in the assisted model | No operator judgement counted for these cohorts |
+| One operator capacity | `7,560 / t` Today; `7,560 / j` built cases | `630` versus `3,780`; built-case capacity, not mixed-cohort throughput |
+
+The 7,560-minute allowance assumes six working hours on 21 days. Capacity is
+an unrounded quotient in the shared model; the UI formats it. Seven gathering
+inputs become relative weights scaled to `g`; they are not seven extra
+durations added to the total. Assembly animation/latency is not operator labour.
+The legacy built-review input does not add labour to an assisted built item.
+
+The presentation has three primary inputs and two summary tiles;
+seven-step breakdown, cohorts and Sankey sit inside a collapsed detail
+disclosure. The final live matrix verifies all six perspective/mode views,
+including actual visible animated numbers settled to the model's formatted
+targets: 17,000 / 630 Off and 4,250 / 3,780 On. Capacity qualifies manual-case
+Off versus built-case On; On is not a mixed-cohort guarantee.
+Invalid drafts retain explicit field errors and return no result, not stale
+last-valid tiles. Today accepts 10 to 15 minutes; judging must be positive
+and no greater than Today. No arithmetic represents measured NHSBSA staffing,
+completed work, pharmacy handling time or a payment calculation.
 
 Projected referrals are `round(B * db) + round(A * da)`, using editable
 deficient-built and deficient-abstained fractions. The separate risk residual
@@ -132,7 +177,9 @@ no second addition of deficient abstentions. For positive `V` and `R`, the
 referral-free proxy is `(V - R) / V * 100`, rounded down to one decimal for
 display. Zero volume or residual means Not established, never 100% accuracy.
 
-The scene, calculator, pipeline and queue consume shared scenario assumptions.
+The scene, calculator and queue/pharmacy monthly context share scenario
+assumptions; each migrating surface must use the shared result rather than
+copying arithmetic. Operational history remains separate from model projections.
 Approximately 85,000 monthly referrals is a 2024/25-context scale proxy, not the
 whole exception queue. Approximately 1.1 billion primary-care items per year in
 England (reporting year unspecified) and monthly rulebook publication are
@@ -275,15 +322,27 @@ Submission stores an immutable attempt/advisory snapshot and offers
 **View submitted claim**. An illustrative local timeline is not automatic
 lifecycle progress or a payment guarantee.
 
-`/pharmacy/claims` filters five synthetic pharmacies and seven states. Totals sum
-matching claimed amounts, not payments. Open claim selects detail by shared ID.
-Read-only states do not offer correction/confirmation fields.
+`/pharmacy/claims` selects among five synthetic pharmacies. Four counted
+filters, **Action needed**, **Waiting on NHSBSA**, **Paid this month** and
+**All**, lead into a single five-column table. Amounts are **claimed
+(synthetic)**, not payments. Each row offers its state-appropriate **Correct
+and resubmit**, **Send confirmation** or **View** action. Selection opens one
+Claim detail card by shared ID; read-only states have no editable response.
+The previous five-stage guide is no longer the chapter's primary surface.
 
-The **Referral cycle guide** explains Referred back, Corrected, Resubmitted,
-Re-checked and Paid (synthetic only), with distinct Today/With agent preparation
-copy. **Recorded claim state** shows the actual selected lifecycle alongside
-links to **Open this pharmacy claim** and **Open this operator case**. Opening
-the guide changes no stage. A local unsent correction is not a lifecycle state.
+The selected-pharmacy month strip counts distinct recorded items/events in the
+current UTC month, with overlapping categories stated. Corrected/resubmitted
+requires a resubmission revision; paid requires an actual paid lifecycle event.
+Caught before submission requires an explicit shared pre-submission correction
+event, deduplicated per case/next revision. It may increase before submission,
+but applying the text does not append an attempt or advance the lifecycle.
+The shared whole-service projection is separately labelled; its 14,167 modelled
+catches are not the selected pharmacy's recorded counter.
+
+Mode-specific comparison guides have a keyboard-focusable **How was this
+sent?** source tooltip: published submission/referral context is distinct from
+assumed weeks, channels and internal processes. A local unsent correction or
+checking it is not a lifecycle state.
 
 Referred-back claims offer **Corrected endorsement** and **Resubmit claim**.
 On adds **Re-check endorsement**; a permitted date correction requires the
@@ -312,22 +371,35 @@ links keep one ID through navigation. Merely switching sides does not start revi
 
 ## 10. Queue and Today
 
-Pinned canonical cases coexist with a bounded virtual month. State filters,
-manual seven-step work, projection counts and **Run agent on visible rows** /
-**Step sweep** / **Cancel sweep** operate on illustrative work. The shared
-session queue separately exposes submitted/resubmitted cases with **Open for
-review**. A sweep never records a human decision or changes a lifecycle state.
+One bounded virtual table has six headers and counted work filters. The
+default 70,833 operator slots exclude 14,167 pharmacy-caught items from the
+85,000 referral-subset proxy. Twelve examples replace model slots without
+claiming their outcomes represent the month. Real shared-session submissions
+sort to the top, marked **New** with their actual arrival time and lifecycle;
+**Open for review** is an explicit human action. They are not duplicated in
+a second shared-session table.
 
-The day projection is a single-operator capacity model, not the monthly
-calculator's fixed-cohort judging comparison. Built and abstained items share
-one elapsed-time allowance; pharmacy-caught and code-cleared items add no human
-judging time there. Synthetic assembly latency is not operator labour.
+Off represents competent manual gathering and judging, including D's known
+abstention. On shows evidence phases, cited built cases and recommendations
+where permitted; D still has no recommendation and E uses no model.
+Generated rows have no case evidence or fabricated citations. **Queue evidence
+and assumptions** qualifies the exact internal view as an assumption.
+The exact requested 26-word mode guides intentionally exceed the under-25-word
+aspiration; neither that count nor narrative length is a blocking budget.
 
-**Compare** in Queue controls opens the inline **Today versus With agent**
-region using the current scenario and day clock. It does not toggle assistance,
-run a sweep or write a record. **Close comparison** or Escape returns focus to
-Compare. Reset/input revision closes the comparison; invalid inputs disable it.
-**Jump to 17:00** reveals the end-of-day projection, not work actually performed.
+**Compare** opens **Today versus With agent** with the same twelve examples.
+**Run one hour** advances a 60-synthetic-minute clock and reports projected
+operator minutes, decided items, cited decisions and remaining work. At the
+defaults, Today is 60 minutes / 5 decisions / 3 cited; assisted is 36 / 8 / 3.
+Citations are counted after full work using the same evidence-quality
+assumption, not a claim of poor manual practice. No projected decision writes
+history or changes assistance. Close comparison or Escape returns focus.
+Invalid monthly assumptions disable comparison and projections with an alert,
+while the twelve examples remain readable.
+
+**Shared monthly assumptions** is collapsed. **Show legacy full-day
+simulation** separately retains the older day model; it is not the default
+comparison and its synthetic clock is not operator labour or actual work.
 
 Today on a metadata-only item opens a labelled manual-work example with seven
 assumed tasks and judging duration. It must remain usable and honest, not a
@@ -352,11 +424,12 @@ Agent starts Off. On/Off is reversible, never a lifecycle or approval action.
 Reset demo opens confirmation; Keep working/Escape leaves the session unchanged.
 Reset demonstration restores seeds (including DR-000871), calculator defaults,
 Agent Off, tour/disclaimer visibility and local route controls without changing
-the current URL.
+the current URL or selected perspective.
 
 UK English, no em dashes, no vendor/product/document names in interface copy
-outside the permitted Architecture mapping, under 25 words of prose per panel,
-and one qualified Sources line are content requirements. The synthetic label
+outside the permitted Architecture mapping, a concise under-25-word prose
+aspiration (with the exact queue-guide exception above), and qualified source
+context are content requirements. Word count is informational. The synthetic label
 and governing principle cannot disappear with optional disclosure content.
 Keyboard operation, focus visibility, semantic labels, non-colour status,
 live announcements and reduced motion are required by WCAG 2.2 AA intent.
@@ -385,7 +458,9 @@ separate informational quarantine cases. Successful-run audit artifacts were
 not uploaded; do not turn that test result into an invented deduplicated axe
 report count. The screenshot manifest records a separate set of actual audits.
 
-[Current captures](screens/integrated/README.md) are fresh root-path production
-images at 1440px in both Agent states. They are not copied historical captures.
+[Original captures](screens/integrated/README.md) are source-pinned root-path
+production images at 1440px in both Agent states. They retain their actual
+`898cda5` source and timestamps, not the new redesign's provenance.
+[Task 18 captures](screens/task18/README.md) are prepared but not yet executed.
 [KNOWN-ISSUES](KNOWN-ISSUES.md) records genuine limitations and evidence scope;
 older measurement logs remain historical rather than current release claims.

@@ -958,3 +958,42 @@ monthly selected-pharmacy strip consumes explicit before/after correction
 events, excludes other pharmacies and months, and counts each case/revision
 once. Recorded item counts and the shared whole-service model are different
 quantities and need separate labels even when both are synthetic.
+
+## 2026-09-12: Task 18 pre-redesign live clarity baseline
+
+An isolated Chromium reading on 12 September from 19:21:33 to 19:22:15 UTC
+observed clean live Step 0 6b0632823514b923b54d3ae9f873fabfa9715851,
+built at 19:15:00.916Z. All six chapter/mode observations retained the same
+before/after identity. No page or console errors were observed; no axe audit
+or final redesign acceptance is claimed.
+
+The old month exposes eight scenario fields and 9,916.7 reference hours;
+the queue table has eight headers and a separate long session list; claims
+leads with five explanatory cycle stages rather than action tiles. These
+are concrete baselines for N/Q/P's already-assigned work, not new duplicate
+issues. No perspective selector is visible before X's implementation.
+
+Two current narrative files still described hosting as incomplete despite
+the durable accepted live record: demo-script denied a live URL and
+KNOWN-ISSUES retained the old missing-CSP state. Correct those claims while
+preserving the original failed-run and source-pinned screenshot history.
+The repository contains verbatim source excerpts and supplied hashes but
+no original PDF/DOCX binaries; explicitly distinguish excerpt reading from
+a fresh binary or external-publication review.
+
+## 2026-09-12: Final V live evidence needs observable states, not inferred success
+
+The c0203fc matrix passed 18/18 with exact visible/accessible monthly targets,
+four real opposite-side guards and eighteen zero-violation audits. Thirteen
+audits still contained incomplete results, so screenshot review is not a full
+accessibility certification. Natural focus tooltips were retained rather than
+masked to make the On images look cleaner.
+
+The first actual round-trip harness timed out looking for whitespace between
+the All tile's separate label/count spans. Select the exact child label instead
+of assuming DOM text separators. Preserve the failed attempt and rerun the
+whole walk: the successful 22 checkpoints distinguish actual approval and
+submission from display toggles, text application and advisory ready status.
+Pre-submission correction increments the event-based catch counter without
+creating a receipt or attempt; repeated application for that revision remains
+one catch. Navigation remounts the workbench's local example, not session history.

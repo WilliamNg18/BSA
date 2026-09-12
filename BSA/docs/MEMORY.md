@@ -6,14 +6,11 @@ ms.date: 2026-09-12
 
 ## Purpose and principle
 
-New authorised work: Tasks 14-18 simplify numbers, queue and claims and add
-independent Pharmacy/NHSBSA/Both perspectives. PROGRESS owns the frozen Step 0
-contracts and N/Q/P/X/V file ownership. Default Both preserves the existing
-experience; Reset retains perspective. The new `monthModel` supersedes the
-old fixed-reference judging comparison in migrated presentation: built items
-cost judging only, abstentions retain total manual time, caught/cleared cohorts
-cost no operator time. The old arithmetic remains for legacy consumers until
-their owners migrate them. Infrastructure remains frozen.
+Tasks 14-18 simplify numbers, queue and claims and add independent
+Pharmacy/NHSBSA/Both perspectives. Functional and viewer acceptance is complete
+at clean `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`; the final documentation
+merge and latest-main recheck remain release steps. PROGRESS owns the evidence.
+Infrastructure remains frozen.
 
 The Prescription Exception Case Builder is a static, offline React 19 and
 TypeScript demonstration using synthetic prescriptions, pharmacies and tariff
@@ -41,11 +38,16 @@ NHSBSA evidence assembly after an exception. Neither is a live model service.
 * Gate: PASS, FAIL, NOT_RUN; pure code validates citation, mandatory fields,
   recommendation requirements and conflicts. No recommendation means NOT_RUN.
   FAIL withholds recommendation and draft. Image threshold 0.60; agreement 2/3.
-* Calculator: volume V; gathering g is seven steps; judging j is constant across
-  both columns; pharmacy-caught P, rule-cleared C, abstained A and built B are
-  sequential bounded cohorts. Pharmacy catch is items, not minutes. Deficient
-  built and abstained shares determine referral assumptions. Risk includes all
-  abstentions. Zero residual means Not established, not 100% accuracy.
+* Monthly model: volume V is a qualified referral-subset scale proxy. Today
+  total T defaults to 12 minutes (10-15); judging j defaults to 2; gathering
+  is T-j, distributed over seven proportional detail weights. Assisted built
+  items cost j, abstentions T, caught/cleared cohorts no operator time.
+  Sequential rounded cohorts remain disjoint. Capacity uses 7,560 working
+  minutes; assisted capacity means built cases, not mixed-cohort throughput.
+  Deficiency shares determine assumed referrals; risk includes all abstentions.
+  Zero residual means Not established, not 100% accuracy. `monthModel` and
+  `useMonthModel` supply the displayed figures; old pure baseline arithmetic
+  survives only for explicitly legacy comparisons.
 * Lifecycle contracts: submitted, in_review, information_requested,
   referred_back, resubmitted, paid, escalated. Distinct from existing case states.
   Implemented shared lifecycle, immutable revisions and five-pharmacy seeds.
@@ -68,9 +70,16 @@ as such; no automatic approval, referral, correction or payment.
 
 ## Presentation and storage
 
-Header is one row with Overview, Operations and How it works groups. Default
-and confirmed Reset are Agent Off. Opt-in On is reversible. Reset restores
-seeded in-memory data and local controls. Only presentation preferences persist.
+Header has Pharmacy/NHSBSA/Both immediately before Agent. Navigation and cross-side
+links are filtered by perspective; the same pages and operational store remain.
+Both is the default and the only perspective with the tour rail. Hidden deep
+links offer a perspective switch, not an error. The header stays one row at
+normal 360-1920 widths and wraps at narrower widths or enlarged text, with
+measured focus/scroll clearance. Default and confirmed Reset are Agent Off.
+Reset restores seeded data, assumptions and local controls but retains perspective.
+`pharmacyCorrections` records validated missing-to-ready evidence after a human
+applies a correction; it never submits or changes lifecycle/history. It is
+session-only, cleared by Reset, and distinct from whole-scenario projections.
 Use stable Zustand slices; derive arrays with useMemo or useShallow.
 
 Copy uses UK English, no em dashes, no vendor/product/document names outside
@@ -84,8 +93,9 @@ are requirements. Shared two-second animation is presentation, not processing.
 
 Transfer is not proceeding: the enterprise identity is an Enterprise Managed
 User and cannot join or own this external repository. Owner remains WilliamNg18.
-The repository is public for Actions capacity and is to return to private when
-the demo is done. Actions billing/entitlements belong to the repository owner.
+The repository is public for Actions capacity. Any later visibility change
+requires a fresh explicit owner instruction; this task changes none. Actions
+billing/entitlements belong to the repository owner.
 The owner has explicitly authorised all streams to resume from HANDOVER.
 
 Reference documents are public by the owner's decision and remain committed.
@@ -94,10 +104,26 @@ preserving attribution and uncertainty. Naming documents in working docs and
 code comments is allowed; document names remain prohibited in the website UI.
 No deletion or history rewrite was performed. Secret scanning and push
 protection are enabled, `.env*` is ignored, and no actionable credential was
-found in the local tree/reachable-history scan. The owner should reset the
-Azure deployment token and put it only in the repository secret.
+found in the recorded local tree/reachable-history scan. Deployment uses the
+existing site-scoped OIDC identity; no SWA token or publish-profile action remains.
 
-Git root contains the nested application `BSA`. Application main at freeze is
+Current functional release is `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`,
+after N #64, P #66, Q #67 and X #65. Exact final functional CI at `01d9bf9`
+passed check, 774 unique units and 1,086 blocking browsers across four shards
+(272/272/271/271), zero quarantine. Main OIDC 34719477099 succeeded.
+The coordinator's actual live run passed 14/14 checks, 28 clean identities
+and seven axe audits (three Off/four On), zero violations. It includes the
+same-item perspective round trip Off then On without Reset. V separately
+captured/reviewed 18 states (14 content/four guards), with 18 zero-violation axe
+audits; 13 retain incomplete rules requiring judgement. Nine novice clarity
+points and 22 walk checkpoints passed, including the live caught-item counter
+and explicit submission boundary. Its first selector-failed walk is retained.
+Final latest-main verification follows V's documentation merge. No later build
+is silently attributed to these results; no new application issue IDs are deferred.
+
+### Historical foundation and provenance
+
+Git root contains the nested application `BSA`. Application main at transfer freeze was
 `98c888184db1df9c03539413b5e3b1db47f1ebfe`; annotated
 `checkpoint-2026-09-12` pins the main handover/tracking commit. Stream tags
 and full branch heads are listed in [HANDOVER](HANDOVER.md).
@@ -143,7 +169,7 @@ F1 has no slots; PRs get CI/artifacts, not live previews. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
-Current base main is `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`, after recovery
+The pre-redesign records base was `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`, after recovery
 #54 and live evidence #55. Public CI 34705318318 passed at exact head
 `8bee3f205d29178177a6fb1ef5e98394c7655d2c`: check, 695 unique units/26 files
 (repeated by each shard, not 2,780 unique tests), and 1,055 blocking browsers
@@ -180,8 +206,8 @@ Never alter last-known-good, lkg-2026-09-09 or cowork-v1 refs; see
 [branch policy](../../BRANCHES.md) and [current branch record](BRANCHES.md).
 
 Read AGENTS first, then this file, DECISIONS, LEARNINGS, PROGRESS, SCOPE and
-HANDOVER. R/S/V are merged; D's documentation goes through coordinator-serialised
-PR merge, not self-merge. Current acceptance is in PROGRESS; checkpoint sections
+HANDOVER. N/Q/P/X are merged; V's final documentation goes through a
+coordinator-serialised PR merge, not self-merge. Current acceptance is in PROGRESS; checkpoint sections
 in HANDOVER remain historical and all checkpoint tags stay immutable.
 Old issue text mentioning size budgets or transfer waiting is superseded by
 the current gates and the owner's public-repository resumption.
@@ -201,8 +227,8 @@ Latest owner direction: use `bsa-bsa-demo-r2j2l3dxhtohy` in `rg-bsa-bsa-demo`,
 subscription `8b02c7be-06b9-4d15-a916-eba62a775f02`. Azure login works; the
 coordinator created the deployment identity, main-branch federation, site-only
 Website Contributor grant and five GitHub variables. Owner actions for setup:
-none. The strict-header package has actual live acceptance at clean `b813c62`;
-later documentation/IaC revisions do not relabel that run. DEPLOYMENT records
+none. The current strict-header application has actual 14-check live acceptance
+at clean `c0203fc`; earlier `b813c62` evidence remains source-pinned. DEPLOYMENT records
 startup and commit verification; coordinator owns Azure mutations and the
 fresh latest-commit check after this documentation merges.
 

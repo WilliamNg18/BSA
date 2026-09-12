@@ -1,0 +1,102 @@
+- banner:
+  - link "Skip to main content":
+    - /url: "#main-content"
+  - link "Prescription Exception Case Builder":
+    - /url: /#scene
+  - navigation "Primary":
+    - link "Overview":
+      - /url: /
+    - button "Operations"
+    - button "How it works"
+  - group "Perspective":
+    - radio "Pharmacy" [checked]
+    - text: Pharmacy
+    - radio "NHSBSA"
+    - text: NHSBSA
+    - radio "Both"
+    - text: Both
+  - 'switch "Agent: On" [checked]'
+  - text: "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change. Agent : On"
+  - button "Reset demo"
+- region "Demonstration scope and governing principle":
+  - button "Synthetic demonstration data throughout. Hide details" [expanded]
+  - paragraph: No payments calculated or approved. Not measured NHSBSA performance.
+  - paragraph: The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.
+- main:
+  - status: Assistance On · Simulated presentation, not a model call
+  - text: Synthetic demonstration data
+  - heading "Pharmacy claims" [level=1]
+  - region "Referral cycle guide":
+    - paragraph: "With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click."
+    - button "What is assumed?"
+  - link "Open pharmacy submission":
+    - /url: /pharmacy
+  - text: Pharmacy (synthetic)
+  - combobox "Pharmacy (synthetic)":
+    - option "Hillcrest Pharmacy" [selected]
+    - option "Riverside Chemist"
+    - option "Oakfield Pharmacy"
+    - option "Station Road Pharmacy"
+    - option "Meadow Lane Dispensary"
+  - region "Selected pharmacy this month":
+    - heading "This pharmacy · 2026-09" [level=2]
+    - paragraph: Recorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.
+    - term: Submitted this month
+    - definition: "9"
+    - term: Referred back
+    - definition: "4"
+    - term: Corrected/resubmitted
+    - definition: "0"
+    - term: Paid
+    - definition: "1"
+    - term: Caught before submission
+    - definition: "0"
+    - paragraph: Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.
+    - paragraph: "Shared monthly scenario: 85,000 items across the modelled service; 14,167 projected catches before submission. Not this pharmacy's recorded totals."
+  - button "Action needed 4 items £13.21 claimed (synthetic)" [pressed]
+  - button "Waiting on NHSBSA 4 items £14.08 claimed (synthetic)"
+  - button "Paid this month 1 items £3.41 claimed (synthetic)"
+  - button "All 9 items £30.70 claimed (synthetic)"
+  - table "Pharmacy claims":
+    - caption: Action needed. Claimed amounts are synthetic, not calculated payments.
+    - rowgroup:
+      - row "Item Dispensed Amount State Action":
+        - columnheader "Item"
+        - columnheader "Dispensed"
+        - columnheader "Amount"
+        - columnheader "State"
+        - columnheader "Action"
+    - rowgroup:
+      - 'row "EX-24112 2026-08-21 £2.95 Referred back: correction needed before payment Correct and resubmit EX-24112"':
+        - rowheader "EX-24112"
+        - cell "2026-08-21"
+        - cell "£2.95"
+        - 'cell "Referred back: correction needed before payment"'
+        - cell "Correct and resubmit EX-24112":
+          - button "Correct and resubmit EX-24112"
+      - 'row "EX-24088 2026-08-06 £3.41 Referred back: correction needed before payment Correct and resubmit EX-24088"':
+        - rowheader "EX-24088"
+        - cell "2026-08-06"
+        - cell "£3.41"
+        - 'cell "Referred back: correction needed before payment"'
+        - cell "Correct and resubmit EX-24088":
+          - button "Correct and resubmit EX-24088"
+      - 'row "EX-24093 2026-08-21 £2.95 Referred back: correction needed before payment Correct and resubmit EX-24093"':
+        - rowheader "EX-24093"
+        - cell "2026-08-21"
+        - cell "£2.95"
+        - 'cell "Referred back: correction needed before payment"'
+        - cell "Correct and resubmit EX-24093":
+          - button "Correct and resubmit EX-24093"
+      - 'row "SYN-FQ123-3 2026-08-19 £3.90 Information requested: NHSBSA needs you to confirm something Send confirmation SYN-FQ123-3"':
+        - rowheader "SYN-FQ123-3"
+        - cell "2026-08-19"
+        - cell "£3.90"
+        - 'cell "Information requested: NHSBSA needs you to confirm something"'
+        - cell "Send confirmation SYN-FQ123-3":
+          - button "Send confirmation SYN-FQ123-3"
+- contentinfo: Session only · Synthetic cases · No payments calculated or approved
+- complementary "Decision notifications":
+  - status
+- region "Contextual help":
+  - tooltip "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change."
