@@ -873,3 +873,10 @@ Reusing the existing compact tooltip avoids a missing-provider route crash.
 The static-render test must not add a raw provider absent from the real app,
 because that wrapper masks the integration defect. Capacity footnotes must
 also follow the mode: manual-case capacity Today, built-case capacity On.
+
+Counting a delta must not reconstruct the final target as `from + delta`.
+After a very large valid capacity, floating-point cancellation can display
+3,776 or zero instead of 3,780, including in reduced motion. Assign the exact
+model target at completion, retaining it as the next transition's origin.
+Both motion modes now exercise large capacities followed by the default
+judging input and check the visible number against the shared Scene value.

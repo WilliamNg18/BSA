@@ -231,4 +231,30 @@ test.describe("monthly count between modes", () => {
     await page.getByRole("banner").getByRole("switch").setChecked(false);
     await expectHeadlines(page, MONTH_MODEL_DEFAULTS, false);
   });
+
+  for (const reducedMotion of ["reduce", "no-preference"] as const) {
+    test.describe(`monthly exact count ${reducedMotion}`, () => {
+      test.use({ reducedMotion });
+      test("returns exactly from large valid capacities to the shared target", async ({ page }) => {
+        await page.clock.install({ time: new Date("2026-09-12T12:00:00Z") });
+        await page.goto("./#month");
+        await page.clock.pauseAt(new Date("2026-09-12T12:00:10Z"));
+        await page.getByRole("banner").getByRole("switch").setChecked(true);
+        for (const raw of ["0.0000000000001", "0.0000000000000001"]) {
+          await page.locator("#baseline-judgingMinutes").fill(raw);
+          if (reducedMotion === "no-preference") await page.clock.runFor(2016);
+          await expectHeadlines(page, { ...MONTH_MODEL_DEFAULTS, judgingMinutes: Number(raw) });
+          await page.locator("#baseline-judgingMinutes").fill("2");
+          if (reducedMotion === "no-preference") await page.clock.runFor(2016);
+          await expectHeadlines(page);
+          await expect(page.locator("[data-month-capacity]").getByRole("img", { name: "3,780", exact: true })).toBeVisible();
+          await navigatePrimary(page, "Overview");
+          if (reducedMotion === "no-preference") await page.clock.runFor(2016);
+          await expect(page.locator("[data-scene-capacity]")).toHaveText("3,780");
+          await expect(page.locator("[data-scene-hours]")).toHaveText(n(monthModel(MONTH_MODEL_DEFAULTS).withAgent.operatorHours, 1));
+          await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
+        }
+      });
+    });
+  }
 });

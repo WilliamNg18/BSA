@@ -46,13 +46,13 @@ export function BaselineCalculator() {
         <section aria-label="Hours of operator time a month" className="space-y-3 rounded-xl border bg-card p-5">
           <h2 className="font-semibold">Hours of operator time a month</h2>
           <p className="text-sm font-medium" data-month-mode>{mode}</p>
-          <p className="text-4xl font-semibold" data-month-hours><MonthlyNumber value={enabled ? result.withAgent.operatorHours : result.today.operatorHours} /></p>
+          <p className="break-all text-4xl font-semibold" data-month-hours><MonthlyNumber value={enabled ? result.withAgent.operatorHours : result.today.operatorHours} /></p>
           <p className="text-xs text-muted-foreground">All scenario items, including manual fallback for abstentions.</p>
         </section>
         <section aria-label="Items one operator can complete a month" className="space-y-3 rounded-xl border bg-card p-5">
           <h2 className="font-semibold">Items one operator can complete a month</h2>
           <p className="text-sm font-medium" data-month-mode>{mode}</p>
-          <p className="text-4xl font-semibold" data-month-capacity><MonthlyNumber value={enabled ? result.capacity.withAgent : result.capacity.today} /></p>
+          <p className="break-all text-4xl font-semibold" data-month-capacity><MonthlyNumber value={enabled ? result.capacity.withAgent : result.capacity.today} /></p>
           <p className="text-xs text-muted-foreground">Assumption: 6 hours a day, 21 days = {number(result.capacity.workingMinutes)} minutes. {enabled ? "Built-case capacity, not a mixed-cohort guarantee." : "Manual-case capacity under these assumptions."}</p>
         </section>
       </div>

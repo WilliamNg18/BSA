@@ -11,8 +11,10 @@ export function MonthlyNumber({ value }: { value: number }) {
     const element = visual.current;
     if (!element) return;
     const from = current.current;
-    return startSceneCountIn(value - from, (delta) => {
-      current.current = from + delta;
+    const difference = value - from;
+    return startSceneCountIn(difference, (delta) => {
+      // Subtracting a very large prior estimate can lose the target's low bits.
+      current.current = delta === difference ? value : from + delta;
       element.textContent = formatBaselineNumber(current.current, 1);
     });
   }, [value]);
