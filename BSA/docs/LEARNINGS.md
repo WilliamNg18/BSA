@@ -542,3 +542,13 @@ It saved "Referred back" before the pharmacy route committed, then compared
 that with the correct pharmacy label later. Await the exact destination heading
 and pharmacy status before capturing history. Keep every immutable-history and
 state assertion; do not relax the expected label or add sleeps/retries.
+
+## 2026-09-12: Split-chapter assertions must follow their actual surface
+
+The final assembled CI exposed three remaining obsolete assertions, not an
+application failure: two pipeline tests still searched for canonical Case D on
+the now-separate pipeline chapter, and a keyboard test used its former heading.
+Keep every kernel phase/gathering/referral clock check on /#pipeline, then visit
+/#cases and replay the same Off-to-On clock to check D's marker at every phase,
+plus its final ABSTAIN and NOT RUN. Do not navigate away during the kernel loop.
+The focused three-test strict-header rerun passed without retries or new limits.

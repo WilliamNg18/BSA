@@ -381,7 +381,7 @@ test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmati
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
   await page.getByRole("menuitem", { name: "3. What exists today and what changes", exact: true }).click();
   await expect(page).toHaveURL(/#pipeline$/);
-  await expect(page.getByRole("heading", { name: "The exception pipeline", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "What exists today and what changes", exact: true })).toBeFocused();
   await page.getByRole("link", { name: "Skip to main content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();

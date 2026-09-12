@@ -256,6 +256,22 @@ head requires complete Linux CI, including blocking crash/control/outcome and
 zero-violation axe checks. Coordinator controls merge and release; no hosted
 acceptance is inferred from local checks or a successful test listing.
 
+## Stream R first final assembled CI and correction
+
+CI 34687220652 at 1c2a3ba completed 1,016 passed and three failed in 20.8 minutes,
+exit 1: 1,019 blocking browsers executed, with three quarantined tests excluded.
+All three failures were stale split-chapter assertions described in LEARNINGS.
+They are repaired without changing application code, reducing coverage or
+quarantining deterministic failures.
+
+The downloaded failure artifact contains 673 unique axe result files with zero
+violations and 193 unique CSP violation reports with zero entries, excluding
+attachment copies. These are actual file counts for that failed run, not a
+claim that the entire run passed. The corrected focused three tests passed
+against real production CSP headers in 45.5 seconds, exit 0, one worker and no
+retries; typecheck and targeted lint also passed. Port 4183 was released.
+The replacement exact-head full Linux run remains required.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending
