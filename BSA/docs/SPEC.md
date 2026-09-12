@@ -17,6 +17,28 @@ The integrated application implements the lifecycle, claims/detail, cross-side
 round trip and navigation. Implementation is distinct from final acceptance;
 [PROGRESS.md](PROGRESS.md) owns the remaining R/S/V/D gates.
 
+### Reference-grounded aim and outcome boundary
+
+The public [source register](../data/reference/source-audit.ts) retains the
+supplied single-page PDF and version 5 research pack, their locators and
+qualifications. Its PDF-A02/A03/A04 assumptions require validation of material
+assembly effort, evidence across sources and interpretation beyond rules.
+They do not establish that today's tools are absent or that an agent is needed.
+
+The proposed aim is a bounded assistant that assembles evidence and recommends
+while existing capabilities, deterministic validation and human authority remain.
+H08, H10 and H13 identify candidate outcomes: operator capacity, reconstructable
+decisions and reduced pharmacy rework/affected-item delay. D-VALUE requires
+separate benefit/cost accounting without double-counting; D-STOP requires agreed
+evidence to proceed, reshape or stop. These are discovery hypotheses, not measured
+benefits, calibrated accuracy or a payment guarantee.
+
+The two local demonstration surfaces do not establish the existence of a common
+operational service or a deployment commitment. D-PHASES distinguishes a proposed
+operator-first slice from optional pharmacy integration; D-ADVISORY keeps
+submission non-blocking. Document names may appear here and in comments,
+not in website interface copy.
+
 ## 2. Boundary classes
 
 | Class | Responsibility |

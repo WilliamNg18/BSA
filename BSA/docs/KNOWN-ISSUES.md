@@ -19,11 +19,24 @@ existing pricing, not evidence of a payment service.
 
 ## Deployment is not provisioned
 
+The proposed account transfer was cancelled on 12 September 2026. WilliamNg18
+remains owner and the repository is public by explicit owner decision, including
+the approved reference material. Work is authorised to resume; historical
+transfer-freeze statements and interrupted runs remain history, not a current
+instruction to stop. Public visibility alone does not prove a new Actions run
+or deployment succeeded.
+
 Azure Static Web Apps Free at `/` is the only target. No intended subscription
 was selected, no deployment token supplied and no live URL verified.
 [DEPLOYMENT.md](DEPLOYMENT.md) is the owner setup procedure. Local production
 preview does not establish deployed deep links, response headers, cache policy
 or strict-CSP behaviour on Azure.
+
+Replacement CI jobs previously refused before tests because of account
+payments/spending restrictions are not application failures. R is resuming
+full Actions acceptance on public main; no new passing outcome is claimed here.
+The owner-run token reset/replacement stays in Azure and repository secrets,
+never in documentation or the client.
 
 ## Deliberate demonstration limits
 

@@ -561,3 +561,21 @@ Use T's settled `/#pipeline` and `/#cases` as separate destinations. Use queue
 versus With agent region. This plans 107 final images, not a fabricated update
 to the 103-image historical manifest. No capture runs before the coordinator
 releases tested integrations and the browser resource slot.
+
+## 2026-09-12: V resumes with approved public-reference narration
+
+Read the public-main resumption in BSA/docs/HANDOVER.md at `6db3f98` before
+resuming. Transfer is cancelled; WilliamNg18 remains owner. Preserve checkpoint
+`b3acc13`, initial images, evidence and all immutable tags. Preserve main's
+HANDOVER/SCOPE and security additions at the eventual authorised rebase.
+
+Prepare the aim/problem/outcome narrative from the retained source register:
+PDF-A02/A03/A04 for validation needs, H08/H10/H13 for potential outcomes,
+D-VALUE/D-STOP for accounting and stop criteria, and D-PHASES/D-ADVISORY for
+the optional pharmacy boundary. Reference names are allowed in these documents,
+not in website copy. Publication does not independently verify a source claim.
+Do not edit the parent-owned root README or create new product features.
+
+R's corrected public Actions run must actually pass and merge before V's
+expanded 107-image refresh. No new capture, source change or early rebase is
+part of this narration preparation; the frozen evidence remains historical.

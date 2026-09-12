@@ -27,6 +27,27 @@ exception queue. These are attributed public figures, not independently verified
 operational measurements. Monthly publication does not establish monthly rule changes.
 Calculator durations, cohorts and benefits are editable demonstration assumptions.
 
+## Aim, problem and outcomes to test
+
+The supplied references frame the problem as assembling uncertain endorsement
+evidence against the rule in force, not replacing existing capture or pricing.
+Whether operators spend material time on that assembly, and whether a model
+adds value beyond a pre-fetched screen or deterministic rules, need validation.
+
+The aim is to test a bounded evidence-building assistant with inspectable
+sources and human control. Potential outcomes are less repeat handling,
+redeployable operator capacity, easier decision reconstruction and less pharmacy
+rework. These are hypotheses, not delivered savings or guaranteed payment timing.
+Measure pharmacy benefits separately and avoid counting the same handling
+reduction again as a separate capacity saving.
+
+The owner-approved public [reference register](data/reference/source-audit.ts)
+identifies *William Ng Single Page - Embrace the Change.pdf* and
+*nhsbsa-FINAL-complete-pack-v5.docx*, with source locators and qualifications.
+The single-page assumptions and questions guide discovery; stronger pack
+assertions do not override their caveats. Start with referral-reason evidence,
+observe actual work and agree accuracy/stop criteria before assisted use.
+
 | Route | Screen |
 | --- | --- |
 | `/#scene`, `/#month`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: context, calculator, pipeline, two places and first test |
@@ -92,6 +113,12 @@ production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance statu
 [Requested scope](docs/SCOPE.md) tracks the newer eight-chapter request and its
 active implementation owners separately from the current seven-chapter build.
 [AGENTS](AGENTS.md) governs contributions.
+
+The owner cancelled the proposed account transfer and authorised public
+repository resumption on 12 September 2026. Reference material remains public
+by that decision; publication is not independent validation of its claims.
+The initial screenshots/checkpoint are preserved. Final integrated acceptance
+and the expanded 107-image refresh still await R's verified merge.
 
 No real prescriptions, patients, pharmacies, authentic tariff text, live model,
 capture integration, durable audit store, real operational queue or payment

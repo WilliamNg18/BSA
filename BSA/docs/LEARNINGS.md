@@ -625,3 +625,15 @@ identical denominators or a measured productivity effect.
 The reason guard also applies to recommended referrals, information requests
 and escalations, not only overrides or manual decisions. Check both the pack
 label predicate and store validation before describing a numerical threshold.
+
+## 2026-09-12: Public resumption does not change evidence strength
+
+Application-relative docs/HANDOVER.md is BSA/docs/HANDOVER.md at Git root.
+Its public-resumption preface supersedes the retained freeze narrative below.
+Repository publication changes access and Actions eligibility, not whether a
+new CI run passed or a live deployment exists.
+
+The supplied PDF asks whether assembly effort is material; the research pack's
+stronger more-than-judging claim remains an assumption. Capacity, reconstruction
+and pharmacy rework are outcomes to test, not measured benefits. Keep that
+distinction when using the now explicitly public references in final narration.

@@ -33,6 +33,28 @@ Say: "The public figures are attributed, not independently verified. The annual
 figure concerns primary-care items in England with no reporting year specified;
 the monthly referral approximation uses 2024/25 context."
 
+### Frame the aim before the walkthrough
+
+The owner-approved references are *William Ng Single Page - Embrace the
+Change.pdf* and *nhsbsa-FINAL-complete-pack-v5.docx*, indexed with qualifications
+in the [source register](../data/reference/source-audit.ts). Naming them in this
+guide is permitted; do not add their names to the website interface.
+
+Say: "The problem we are testing is evidence assembly for uncertain endorsements
+under a dated rule. Existing capture and pricing stay. We need to establish
+whether assembly effort is material and whether simpler rules or a pre-fetched
+screen would be enough."
+
+Say: "The outcomes to test are less repeat handling, usable operator capacity,
+reconstructable decisions and less pharmacy rework. None is a measured result
+of this demo. Keep pharmacy value separate and agree evidence and stop criteria."
+
+Use PDF-A02/A03/A04 for those validation questions, H08/H10/H13 for candidate
+outcomes and D-VALUE/D-STOP for benefit accounting and stop conditions. Do not
+turn the pack's stronger assumption that assembly takes more time than judging
+into an observed fact. The current side-by-side demo is not proof that both
+operational integrations should be deployed together.
+
 The single-row header contains Overview, Operations, How it works, Agent and
 Reset. Under Operations are Pharmacy check, Pharmacy claims and NHSBSA
 queue. Under How it works are Evaluation, Boundary, Assumptions and Architecture.
