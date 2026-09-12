@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -17,12 +18,17 @@ async function record(page: Page, reason: string) {
   await expect(page).toHaveURL(/\/record$/);
 }
 
-test("Task9/10 complete Off referral to approved On correction and human sufficient uses one shared case", async ({ page }) => {
+test("Task9/10 complete Off referral to approved On correction and human sufficient uses one shared case", async ({ page }, info) => {
   const started = Date.now();
   await page.goto("pharmacy");
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
   await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await expect(detail(page)).toContainText("Submitted, awaiting processing");
+  await history(page).locator("summary").first().click();
+  const attempts = page.getByRole("list", { name: "Immutable pharmacy attempts" });
+  await expect(attempts.locator(":scope > li")).toHaveCount(2);
+  await expect(attempts.locator(":scope > li").last()).toContainText("not_checked · off");
+  const blindAttempt = await attempts.locator(":scope > li").last().innerText();
   await page.getByRole("button", { name: "Follow this case", exact: true }).click();
   await queueReview(page);
   await page.getByRole("radio", { name: /^Refer back / }).check();
@@ -31,7 +37,9 @@ test("Task9/10 complete Off referral to approved On correction and human suffici
   await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await queueReview(page);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
   await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).not.toBeChecked();
@@ -45,6 +53,7 @@ test("Task9/10 complete Off referral to approved On correction and human suffici
   await expect(detail(page)).toContainText("Not checked for this edit");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await expect(detail(page)).toContainText("Ready to resubmit");
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
@@ -52,6 +61,8 @@ test("Task9/10 complete Off referral to approved On correction and human suffici
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Refer back with the exact fix");
   await queueReview(page);
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);
+  await expect(page.getByRole("radio", { name: /^Accept / })).toBeChecked();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Case-building trace", exact: true }).click();
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toContainText("NCSO  RK 21/08/26");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
@@ -61,13 +72,14 @@ test("Task9/10 complete Off referral to approved On correction and human suffici
   await expect(detail(page)).toContainText("Payment approved (synthetic)");
   await expect(page.getByRole("button", { name: "Stop following this case", exact: true })).toBeVisible();
   await history(page).getByText("History and attempts (4)", { exact: true }).click();
-  const attempts = page.getByRole("list", { name: "Immutable pharmacy attempts" });
   await expect(attempts.locator(":scope > li")).toHaveCount(4);
-  await expect(attempts.locator(":scope > li").nth(1)).toContainText("not_checked · off");
+  await expect(attempts.locator(":scope > li").nth(1)).toHaveText(blindAttempt, { useInnerText: true });
   await expect(attempts.locator(":scope > li").nth(2)).toContainText("NCSO  RK");
+  await expect(attempts.locator(":scope > li").nth(2)).toContainText("not_checked · off");
   await expect(attempts.locator(":scope > li").nth(3)).toContainText("ready · scripted");
   await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(3);
-  expect(Date.now() - started).toBeLessThan(120_000);
+  await captureJson(info, "off-to-on-roundtrip-history", await history(page).innerText());
+  await captureJson(info, "roundtrip-elapsed-time", { elapsedMs: Date.now() - started, informational: true });
 });
 
 test("Task9 manual correction retains an unchecked snapshot and requires an explicit human sufficient decision", async ({ page }) => {

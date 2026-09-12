@@ -72,28 +72,36 @@ for (const enabled of [true, false]) {
     await expect(rail.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
     for (const [index, stop] of TOUR_STOPS.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).click();
-      await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${stop.to.replace("/#", "#")}`);
-      await expect(rail).toContainText(`${stop.chapter}/7 · ${stop.label}`);
+      await expect(page).toHaveURL(new URL(stop.to, page.url()).href);
+      await expect(rail).toContainText(`${stop.chapter}/8 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
       if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       else await expect(page.getByRole("banner").getByRole("switch")).toBeFocused();
       if (stop.chapter === 2) await expect(page.getByRole("region", { name: "Monthly workload calculator" })).toBeVisible();
-      if (stop.chapter === 5) await expect(page.getByRole("heading", { name: "5. The queue", exact: true })).toBeVisible();
-      if (stop.chapter === 6) await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
+      if (stop.chapter === 3) {
+        await expect(page.locator("[data-pipeline]")).toBeVisible();
+        await expect(page.locator("[data-case]")).toHaveCount(0);
+      }
+      if (stop.chapter === 4) {
+        await expect(page.locator("[data-case]")).toHaveCount(4);
+        await expect(page.locator("[data-pipeline]")).toHaveCount(0);
+      }
+      if (stop.chapter === 6) await expect(page.getByRole("heading", { name: "6. The queue", exact: true })).toBeVisible();
+      if (stop.chapter === 7) await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
     for (let index = TOUR_STOPS.length - 2; index >= 0; index--) {
       await rail.getByRole("button", { name: "Back", exact: true }).focus();
       await page.keyboard.press("Enter");
       await expect(rail).toContainText(TOUR_STOPS[index].label);
-      await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
+      await expect(page).toHaveURL(new URL(TOUR_STOPS[index].to, page.url()).href);
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     }
     // Exercise the same full route sequence in both directions via shortcuts.
     for (const direction of [1, -1]) {
       for (let index = direction === 1 ? 1 : TOUR_STOPS.length - 2; index >= 0 && index < TOUR_STOPS.length; index += direction) {
         await page.keyboard.press(direction === 1 ? "Alt+ArrowRight" : "Alt+ArrowLeft");
-        await expect(page).toHaveURL((url) => `${url.pathname.replace(/\/$/, "")}${url.hash}` === `/BSA${TOUR_STOPS[index].to.replace("/#", "#")}`);
+        await expect(page).toHaveURL(new URL(TOUR_STOPS[index].to, page.url()).href);
         await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
         await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
       }
@@ -101,11 +109,11 @@ for (const enabled of [true, false]) {
     await page.keyboard.press("Alt+ArrowRight");
     await expect(page).toHaveURL(/#month$/);
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await expect(page.getByRole("menuitem")).toHaveCount(7);
-    await page.getByRole("menuitem", { name: "6. What the pharmacy sees", exact: true }).press("Enter");
+    await expect(page.getByRole("menuitem")).toHaveCount(8);
+    await page.getByRole("menuitem", { name: "7. What the pharmacy sees", exact: true }).press("Enter");
     await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await page.getByRole("menuitem", { name: "4. One agent, two places", exact: true }).click();
+    await page.getByRole("menuitem", { name: "5. One agent, two places", exact: true }).click();
     await expect(page).toHaveURL(/#two-places$/);
     await expect(page.locator("[data-two-places]")).toContainText(`Agent ${enabled ? "On" : "Off"}`);
     await expect(page.getByRole("list", { name: "Pharmacy · Before submission flow" })).toBeVisible();
@@ -256,7 +264,7 @@ test("documentary scene figures are invariant; A–D match runAgent and off is n
   await expect(page.locator("[data-scene-with-gathering], [data-scene-referrals]")).toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: Off" }).click();
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
+  await page.getByRole("menuitem", { name: "4. Four cases", exact: true }).click();
   for (const item of CASES.slice(0, 4)) {
     const card = page.locator(`[data-case="${item.scenario}"]`);
     const pack = runAgent(item);
@@ -308,7 +316,7 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page).toHaveURL(/#cases$/);
   await page.getByRole("button", { name: "Restore tour", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("3/7");
+  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("4/8");
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
   await expect(page.locator("[data-principle]")).toBeVisible();
@@ -371,13 +379,13 @@ test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmati
   await expect(page.getByRole("tooltip")).toContainText("Off withholds recommendations");
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("data-state", "checked");
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
-  await expect(page).toHaveURL(/#cases$/);
-  await expect(page.getByRole("heading", { name: "The exception pipeline", exact: true })).toBeFocused();
+  await page.getByRole("menuitem", { name: "3. What exists today and what changes", exact: true }).click();
+  await expect(page).toHaveURL(/#pipeline$/);
+  await expect(page.getByRole("heading", { level: 1, name: "What exists today and what changes", exact: true })).toBeFocused();
   await page.getByRole("link", { name: "Skip to main content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
-  await expect(page).toHaveURL(/#cases$/);
+  await expect(page).toHaveURL(/#pipeline$/);
 });
 
 test("unknown routes do not claim a tour chapter and retain start and home recovery", async ({ page }) => {
@@ -395,7 +403,7 @@ test("chapter narrative stays within 25 words in both states; selected QA screen
   for (const width of [1440, 360]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ colorScheme: width === 1440 ? "light" : "dark" });
-    for (const fragment of ["scene", "month", "cases", "two-places", "close"]) {
+    for (const fragment of ["scene", "month", "pipeline", "cases", "two-places", "close"]) {
       await page.goto(`./#${fragment}`);
       for (const enabled of [true, false]) {
         // Hash navigation preserves session state, unlike a full page reload.

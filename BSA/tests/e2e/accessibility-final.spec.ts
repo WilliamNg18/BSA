@@ -43,7 +43,7 @@ async function audit(page: Page, info: TestInfo, name: string) {
 }
 
 const surfaces = [
-  ...["scene", "month", "cases", "two-places", "close"].map((chapter) => [`Overview ${chapter}`, `./#${chapter}`]),
+  ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => [`Overview ${chapter}`, `./#${chapter}`]),
   ["Pharmacy check", "pharmacy"], ["Pharmacy claims", "pharmacy/claims"],
   ["Exception queue", "queue"], ["Case pack", "case/EX-24112"],
   ["How the case was built", "case/EX-24112/trace"], ["Decision record", "case/EX-24088/record"],

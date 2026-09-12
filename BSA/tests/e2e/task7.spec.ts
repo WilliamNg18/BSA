@@ -3,7 +3,7 @@ import { captureCheckpoint, captureJson, cases, confirmReset, expect, staticRout
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
 const surfaces = [
-  ...["scene", "month", "cases", "two-places", "close"].map((chapter) => ({ name: `overview-${chapter}`, path: `./#${chapter}` })),
+  ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => ({ name: `overview-${chapter}`, path: `./#${chapter}` })),
   ...staticRoutes.slice(1).map((route) => ({ name: route.path, path: route.path })),
   ...cases.flatMap((c) => ["", "/trace", "/record"].map((suffix) => ({ name: `${c.id}${suffix.replace("/", "-") || "-pack"}`, path: `case/${c.id}${suffix}` }))),
   { name: "claims-contract", path: "pharmacy/claims" },

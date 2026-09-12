@@ -1,0 +1,46 @@
+{
+  "sourceHead": "696f077e9dcd5ca356634bf58b208575f5635397",
+  "branch": "williamng18-production-round-trip",
+  "pullRequest": 33,
+  "issues": [14, 19, 29],
+  "freeze": {
+    "reason": "Account transfer",
+    "resumeMessage": "Resume from docs/HANDOVER.md",
+    "stoppedOwnedShell": "r-exact-final",
+    "port4173Released": true
+  },
+  "check": { "exitCode": 0 },
+  "units": { "passed": 607, "files": 22, "exitCode": 0 },
+  "inventory": { "tests": 1022, "files": 26, "isExecution": false },
+  "completedLinuxRun": {
+    "runId": 34687220652,
+    "sourceHead": "1c2a3ba01673736ff285093d41e1f8016afc89e9",
+    "passed": 1016,
+    "failed": 3,
+    "excludedQuarantine": 3,
+    "exitCode": 1,
+    "axeUniqueReports": 673,
+    "axeViolations": 0,
+    "cspUniqueReports": 193,
+    "cspViolations": 0,
+    "attachmentCopiesExcluded": true
+  },
+  "correctedFocusedRun": { "passed": 3, "failed": 0, "seconds": 45.5, "exitCode": 0 },
+  "replacementLinuxRuns": {
+    "runIds": [34688435023, 34688433548],
+    "started": false,
+    "annotation": "The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings"
+  },
+  "exactHeadLocalFallback": {
+    "status": "INTERRUPTED_FOR_ACCOUNT_TRANSFER",
+    "announcedTests": 1019,
+    "workers": 2,
+    "completedCountsAvailable": false,
+    "finalExitCode": null,
+    "fullPass": false,
+    "quarantineRunPerformed": false,
+    "log": "r-exact-final.log"
+  },
+  "transientAxeTimeoutFollowUpIssue": 35,
+  "hostedAcceptanceClaimed": false
+}

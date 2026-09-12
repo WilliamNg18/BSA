@@ -426,3 +426,66 @@ secrets or Azure, never the static browser bundle. The owner is to reset the SWA
 deployment token in Azure and replace its repository secret. No credential value
 is requested in chat or source. The repository returns to private when the demo
 is done; do not change visibility before that instruction is fulfilled.
+
+## 2026-09-11: Stream R root-path functional acceptance
+
+Compare production destinations with exact root-relative routes, not the retired
+/BSA prefix. Tour checks retain every stop, direction, shortcut and focus
+assertion; rapid keyboard history compares the complete pathname and fragment.
+No route assertions are skipped or replaced with an origin-only check.
+
+Use two browser and two unit workers on the shared machine. Run every production
+spec with zero retries, including blocking crash, control and default-rule axe
+checks. Stream S owns strict-CSP serving and compatibility fixes; Vite preview
+alone cannot establish CSP or Azure-hosted acceptance.
+
+Strengthen the integrated Off-to-On round trip using only public controls and
+visible history. Preserve the initial unchecked submission verbatim, prove the
+unaided resubmission stays unchecked, and verify neither enabling assistance nor
+checking a correction changes lifecycle state. Arrival presents a recommendation;
+only the explicit human decision releases the synthetic item to existing pricing.
+
+## 2026-09-11: Pharmacy response visibility follows explicit draft approval
+
+Issue #19 distinguishes an operator's internal decision reason from a pharmacy
+draft approved for release. With Agent On, both the current pharmacy response
+and expanded pharmacy history show only an actual approved draft, labelled
+Operator-approved note. An unapproved response states that no approved note
+exists; it never promotes manual text by relabelling it.
+
+With Agent Off, the pharmacy retains its manual human response. NHSBSA history
+retains the human reason in both modes. Toggle changes affect presentation only:
+no record, history event, approval, revision or lifecycle state is rewritten.
+Advisory typed-field checks and evidence remain separate from operator responses.
+
+## 2026-09-11: Explicit unchecked-resubmission comparison without new authority
+
+Issue #29 adds a claims-specific comparison using the existing keyboard-readable
+pain marker. Off describes another correction cycle as a synthetic assumption,
+not proof that real pharmacy checks are absent. Submission remains usable and
+unchecked; no new model call, validation or lifecycle action is introduced.
+
+On resolves the marker only when an operator-approved correction instruction
+exists and the existing check reports Ready for the current text. Missing,
+unable, unapproved and edited-but-unchecked states remain unresolved. Even a
+resolved marker explicitly requires human re-check and promises no payment.
+
+## 2026-09-11: Narration timing is informational, not a performance gate
+
+The mixed-mode round-trip test retains every control, both-side, lifecycle and
+history assertion but records elapsed milliseconds as a JSON artifact instead
+of enforcing a 120-second wall-clock budget. The two-minute narration remains
+a presentation target. Existing test timeout/hang guards and deterministic
+phase-clock assertions are unchanged.
+
+## 2026-09-12: Eight-chapter regression integration preserves separate surfaces
+
+Rebase onto the integrated S/T/helper main before updating existing expectations.
+The tour now traverses nine stops across eight chapters. Pipeline assertions
+target /#pipeline; canonical case assertions stay on /#cases. Preserve all
+keyboard directions, focus destinations, resets and same-item history checks.
+
+Add the separate pipeline to offline, content, generic-label, screenshot and
+default-rule axe matrices without removing Four cases. The coordinator and S
+explicitly authorise adding that one route to both existing accessibility arrays;
+all audit variants and zero-violation assertions remain unchanged.

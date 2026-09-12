@@ -149,6 +149,174 @@ lifecycle labels, not the former workbench Off status. Combined check and
 * [ ] Task 12: In progress, paused; navigation implemented, final integrated acceptance pending
 * [ ] Task 13: In progress, paused; final suite/captures/report incomplete
 
+## Stream R: root-route regression preparation
+
+Corrected exact root-path assertions in routes, tour stops and rapid keyboard
+history; strengthened the existing Off-to-On round trip with immutable blind
+submission and no-automatic-transition assertions. Product code is unchanged
+in this regression preparation.
+
+The initial check exited 1 because TypeScript was missing. Locked dependency
+restoration made the tools available but stalled without output and was stopped;
+no successful npm ci completion is claimed. Subsequent npm run check exited 0,
+and npm run test -- --maxWorkers=2 passed 560 tests in 20 files, exit 0.
+The final regression edits also passed npm run typecheck and npm run lint,
+exit 0. The full production run collected 783 tests with two workers on root
+port 4173, zero retries; its completion evidence is pending, not a passing gate.
+
+This run retains Phase 1's then-current payload test. Coordinator policy now
+removes all byte budgets and measurement tests; it will apply after rebase, not
+by changing the artifact during the running suite. No Azure acceptance is
+claimed, and Tasks 8-13 remain unchecked.
+
+## Stream R issue #19 implementation, browser verification pending
+
+The baseline Chromium probe reproduced unapproved seeded EX-24112 reason text
+in both the current Operator response and expanded pharmacy history with On.
+The scoped fix hides raw manual reasons only on the On pharmacy surface,
+preserves labelled approved notes and leaves Off/NHSBSA history unchanged.
+Eight new seeded/new-response browser tests plus the updated Task13 round-trip
+assertions cover that policy. Typecheck and lint passed, exit 0.
+
+The initial full suite still serves its unchanged pre-fix production artifact.
+No #19 browser pass or final acceptance is claimed until a coordinated slot
+rebuilds and exercises this revision. The coordinator owns merge sequencing.
+
+## Stream R issue #29 implementation, browser verification pending
+
+Added a claims-specific unchecked-resubmission comparison and reused the existing
+pain marker. Off names a synthetic possible repeat cycle; On resolves only a
+current Ready result with an actual approved instruction. No lifecycle or
+precheck code changes. Four new browser cases cover keyboard, mode reversals,
+unchecked snapshots, edit invalidation and default-rule axe on two viewports.
+Typecheck and lint passed, exit 0. Runtime verification awaits the coordinated
+browser slot; the running baseline production artifact remains unchanged.
+
+## Stream R obsolete full run interrupted by coordinator
+
+`npm run test:e2e -- --workers=2 --reporter=dot` collected 783 tests at the root
+on port 4173, zero retries. On 11 September at 19:42 local time the coordinator
+requested termination of this obsolete seven-chapter run so implemented changes
+could be validated. Only its owned shell/process tree was stopped; port 4173
+was verified released. This is INTERRUPTED, with no final runner exit code.
+
+The saved reporter output contains 629 pass markers, ten timeout markers and
+one failure. These are partial markers, not final test counts or a full pass.
+The known skip-link failure exposed the stale first-Tab assumption corrected
+above. Timeout artifacts remain unclassified; no assertions were quarantined.
+Raw log, full results/traces and the original dist are preserved under the
+Stream R session artifacts as r-full-browser-1.log, r-full-browser-1-results
+and r-full-browser-1-dist. The earlier four-timeout report was interim only.
+
+Final full production acceptance remains required on the integrated eight-chapter
+build, preferably through exact Linux CI evidence. Neither this interrupted run
+nor the pending focused #19/#29 browser cases establish that acceptance.
+
+### Rebased Stream R check and unit evidence
+
+Source revision 7515c51 rebased cleanly onto origin/main 87923d7. From BSA,
+`npm run check` passed typecheck, lint and production build, exit 0.
+`npm run test -- --maxWorkers=2` passed all 553 tests in 18 files in 14.62 seconds,
+exit 0. This uses the coordinator's no-budget policy; the earlier 560-test
+Phase 1 result included seven subsequently removed budget tests.
+
+The branch contains separate approved-response (#19) and unchecked-resubmission
+comparison (#29) commits, root-route corrections and the keyboard skip regression.
+Its draft PR is not merge-ready: focused browser verification awaits the next
+coordinated slot, and eight-chapter tour expectations await integration of #26.
+No hosted acceptance or final full-suite pass is claimed.
+
+While awaiting the browser slot, sixteen server-rendered component tests covered
+every enabled/approved/check-status combination of the #29 comparison using
+existing React/Vitest dependencies. All sixteen passed, then typecheck and lint
+passed and `npm run test -- --maxWorkers=1` passed the complete 569-test suite in
+19 files in 40.47 seconds, exit 0. This adds no production code and does not
+replace keyboard, lifecycle or axe browser verification.
+
+Coordinator policy also replaces only the mixed-mode round trip's 120-second
+elapsed-time assertion with an informational JSON timing artifact. Every
+functional assertion, test timeout and deterministic phase-clock check remains.
+The narration target is not a strict runtime acceptance claim.
+
+## Completed Stream R seven-chapter Linux baseline
+
+CI 34636865707 at 2f398b5 completed check and 569 units successfully, then the
+full production browser command completed with 761 passed and 33 failed
+(794 total) in 23.3 minutes, exit 1. Independent CI 34636861657 at the same SHA
+reported the same counts in 22.6 minutes. These completed failures supersede
+neither the retained interrupted local run nor the final eight-chapter gate.
+
+Thirty-two failures are the existing phone case-pack overflow owned by Stream S:
+two case-presentation, ten route and twenty Task7 cases. One is the new desktop
+resubmission test capturing the outgoing NHSBSA status before pharmacy navigation
+committed. The latter is repaired by awaiting the destination heading and exact
+pharmacy status before history capture. Both same-revision runs failed it; no
+passing-repeat or quarantine claim is made. Approved-response tests passed.
+
+The first focused 21-case local attempt exited 1 before executing tests because
+the existing 120-second webServer deadline terminated its contended build.
+A separate explicit production build then exited 0; the preview-only session
+configuration uses that exact artifact without changing test/expect timeouts.
+Focused execution and correction verification are recorded after completion.
+
+The actual 21-case focused run on the rebuilt artifact completed 20 passed and
+one failed in 7.7 minutes, exit 1. All eight response-approval tests, mixed-mode
+round trip, corrected skip/revisit tests and six canonical control regressions
+passed. The only failure was the phone-dark Off comparison exceeding the
+30-second test deadline inside axe analysis; no violation report was produced.
+
+After the On destination-snapshot correction, the bounded four-case comparison
+repeat passed 4/4 in 1.3 minutes, exit 0, with unchanged browser/test deadlines
+and the same emitted production artifact. Its Off case was unchanged. Follow-up
+issue #35 records this transient local axe timeout and both CI passes of the
+same case; axe stays blocking and no skip or quarantine tag was introduced.
+Logs/results are r-focused-2 and r-focused-3 in dedicated session subfolders.
+
+## Stream R integration on c95ff1d
+
+Rebased onto main c95ff1d containing strict-CSP serving, S's phone overflow fix,
+the neutral manual pharmacy status and T's eight chapters. Append-only document
+conflicts preserve every stream's entries. Existing tour checks now require
+eight chapters/nine stops; pipeline and Four cases remain separately asserted.
+The extra pipeline route is included in functional and audit inventories.
+
+On this integrated source, `npm run check` passed, exit 0, and
+`npm run test -- --maxWorkers=1` passed 583 tests in 20 files in 13.05 seconds,
+exit 0. Two subsequent narrow accessibility-array edits add pipeline only, with
+S/coordinator approval. New inventory is collected rather than inferred.
+Final rebase onto Queue/Scene and exact-head full Linux CI remain pending.
+
+## Stream R final assembled branch validation
+
+Rebased onto main 98c8881, integrating S, helper, T, Queue and Scene. Tested source
+c935764 passed `npm run check` (typecheck, lint, production build), exit 0.
+`npm run test -- --maxWorkers=1` passed 607 tests in 22 files in 15.59 seconds,
+exit 0. Actual `npm run test:e2e -- --list --reporter=dot` inventory is 1,022
+tests in 26 files, exit 0; listing is not execution or a browser pass.
+
+Root routes, eight chapters/nine stops, separate pipeline/Four cases, approved
+pharmacy responses and the unchecked-resubmission comparison are now assembled.
+Previous focused and failure evidence above remains intact. The exact final PR
+head requires complete Linux CI, including blocking crash/control/outcome and
+zero-violation axe checks. Coordinator controls merge and release; no hosted
+acceptance is inferred from local checks or a successful test listing.
+
+## Stream R first final assembled CI and correction
+
+CI 34687220652 at 1c2a3ba completed 1,016 passed and three failed in 20.8 minutes,
+exit 1: 1,019 blocking browsers executed, with three quarantined tests excluded.
+All three failures were stale split-chapter assertions described in LEARNINGS.
+They are repaired without changing application code, reducing coverage or
+quarantining deterministic failures.
+
+The downloaded failure artifact contains 673 unique axe result files with zero
+violations and 193 unique CSP violation reports with zero entries, excluding
+attachment copies. These are actual file counts for that failed run, not a
+claim that the entire run passed. The corrected focused three tests passed
+against real production CSP headers in 45.5 seconds, exit 0, one worker and no
+retries; typecheck and targeted lint also passed. Port 4183 was released.
+The replacement exact-head full Linux run remains required.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending

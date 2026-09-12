@@ -22,7 +22,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           await expect(page.locator("a[href$='/notes']")).toHaveCount(0);
           await expect(page.getByText("NHSBSA capability demonstration · synthetic data", { exact: true })).toHaveCount(0);
           await expect(page.getByText("This view could not be loaded", { exact: true })).toHaveCount(0);
-          expect(new URL(page.url()).pathname).toMatch(/^\/BSA\//);
+          expect(new URL(page.url()).pathname).toBe(`/${route.path}`);
           // Wait for fonts and the entrance animation before checking overflow.
           await page.evaluate(() => document.fonts.ready);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
@@ -70,8 +70,15 @@ for (const path of ["missing-page", "notes"]) {
 
 test("primary links navigate at the site root and keyboard skip link reaches main", async ({ page }) => {
   await page.goto("./");
-  await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  const skip = page.getByRole("link", { name: "Skip to main content" });
+  // Tour entry focuses its heading; reach the skip link using only the keyboard.
+  for (let step = 0; step < 24 && !await skip.evaluate((element) => element === document.activeElement); step++) {
+    await page.keyboard.press("Shift+Tab");
+  }
+  await expect(skip).toBeFocused();
+  await expect(skip).toBeVisible();
+  await expect(skip).toBeInViewport();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
   for (const [index, label] of ["Overview", "Pharmacy check", "Exception queue", "Evaluation", "Boundary", "Assumptions", "Architecture"].entries()) {

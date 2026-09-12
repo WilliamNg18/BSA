@@ -504,3 +504,85 @@ rotation recommendation is precautionary, not a claim of a discovered leak.
 The owner authorised resumption from HANDOVER. Historical interrupted and
 failed runs remain failures; public visibility alone is not proof that a new
 Actions run or Azure deployment has succeeded.
+
+## 2026-09-11: Stream R root assertions and round-trip history
+
+Changing the production base URL did not update escaped regular expressions or
+bare prefix arithmetic. The deep-link matrix still required /^\/BSA\//, tour
+stop comparisons prepended /BSA, and same-task keyboard history sliced four
+characters from every pathname. These obsolete test assumptions are corrected
+to exact root destinations without relaxing navigation or crash checks.
+
+The new worktree's initial check exited 1 because tsc was absent; dependency
+restoration followed that missing-tool failure. Subsequent check passed and the
+bounded full unit run passed 560 tests in 20 files, exit 0. Full production
+browser results are recorded in progress only after actual completion.
+
+The mixed-mode round trip includes a seeded attempt plus three user submissions:
+blind Off, unaided Off resubmission and corrected On resubmission. Assert four
+immutable attempts rather than confusing the seed with a user submission.
+Retain the blind snapshot exactly and require explicit human acceptance after
+the corrected recommendation; scripted advice is not a lifecycle transition.
+
+## 2026-09-11: Unapproved reason exposure on both pharmacy surfaces
+
+A real Chromium probe of the unchanged Phase 1 production artifact reproduced
+issue #19 on seeded EX-24112. Agent On displayed "Endorsement initialled but not
+dated." beside "No operator-approved draft." The same raw reason also appeared
+in expanded lifecycle history. Correcting only the current response would leave
+the second exposure intact.
+
+The repair gates the human reason to Off pharmacy or either NHSBSA mode, while
+actual approved drafts retain their label in On pharmacy history and response.
+Eight new browser regressions cover seeded B/C and newly recorded manual,
+unapproved assisted and approved assisted responses. They compare unchanged
+history and attempts across Off -> On -> Off and verify NHSBSA still sees the
+original reason. Validation results belong in progress after execution.
+
+## 2026-09-11: Usable manual controls did not explain blind resubmission
+
+The existing textarea and Resubmit claim proved that Off could submit, but the
+single "Manual correction" sentence did not expose the missing-check comparison.
+Issue #29 adds that explanation without treating manual work as broken.
+
+Reuse the revision-safe result already held by ClaimDetail. Its text equality
+guard and edit invalidation prevent stale Ready from resolving the new marker;
+approval is independently required. Four new keyboard/axe browser cases cover
+phone-dark and desktop-light Off/On, tooltip Escape/focus, immutable mode flips,
+unchecked Off snapshots, approved correction and edit invalidation.
+
+## 2026-09-11: Initial focus contract and interrupted obsolete baseline
+
+The root route test assumed the first Tab would focus the skip link. AppShell
+intentionally focuses the tour heading on direct entry, a behaviour covered by
+the existing tour tests. Preserve that contract: await heading focus, traverse
+backwards with a bounded number of real Shift+Tab keys, assert the visible skip
+link is focused, then Enter must focus main. Do not replace the keyboard path
+with programmatic skip-link focus or weaken the destination assertion.
+
+The coordinator interrupted the obsolete seven-chapter full run after more
+than 80 minutes of shared-machine contention. Its retained reporter output has
+629 pass dots, ten timeout markers and one failure, not a completed 783-test
+summary. Later failure artifacts can exist beyond buffered reporter output;
+neither artifact count nor partial dots establish complete acceptance.
+No timeout is classified as flaky without a controlled reproduction/repeat.
+The new eight-chapter integrated artifact still requires a full production run.
+
+## 2026-09-11: Snapshot the destination after navigation, not the outgoing page
+
+Both Linux CI runs at 2f398b5 exposed the new desktop comparison test reading
+the outgoing NHSBSA history immediately after clicking View pharmacy claim.
+It saved "Referred back" before the pharmacy route committed, then compared
+that with the correct pharmacy label later. Await the exact destination heading
+and pharmacy status before capturing history. Keep every immutable-history and
+state assertion; do not relax the expected label or add sleeps/retries.
+
+## 2026-09-12: Split-chapter assertions must follow their actual surface
+
+The final assembled CI exposed three remaining obsolete assertions, not an
+application failure: two pipeline tests still searched for canonical Case D on
+the now-separate pipeline chapter, and a keyboard test used its former heading.
+Keep every kernel phase/gathering/referral clock check on /#pipeline, then visit
+/#cases and replay the same Off-to-On clock to check D's marker at every phase,
+plus its final ABSTAIN and NOT RUN. Do not navigate away during the kernel loop.
+The focused three-test strict-header rerun passed without retries or new limits.

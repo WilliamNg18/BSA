@@ -1,0 +1,8 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test:e2e
+> playwright test --config C:\Users\williamng\.copilot\session-state\***\files\r-chapter-fixes.config.mjs
+
+
+Running 3 tests using 1 worker
+···
+  3 passed (45.5s)

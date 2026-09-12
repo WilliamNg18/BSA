@@ -1,0 +1,6 @@
+
+> bsa-prescription-exception-case-builder@0.6.0 test:e2e
+> playwright test --workers=2 --reporter=dot --grep-invert @quarantine --output C:\Users\williamng\.copilot\session-state\***\files\r-exact-final-results
+
+
+Running 1019 tests using 2 workers

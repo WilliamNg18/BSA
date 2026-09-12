@@ -37,6 +37,22 @@ async function pipeline(page: Page) {
   await expect(page).toHaveURL(/#pipeline$/);
 }
 
+async function expectCaseDThroughPhases(page: Page) {
+  const flag = page.getByRole("banner").getByRole("switch");
+  await flag.setChecked(false);
+  await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page).toHaveURL(/#cases$/);
+  await flag.setChecked(true);
+  const marker = page.locator('[data-case="D"] [data-pain-marker]');
+  for (let phase = 0; phase <= ASSISTANCE_PHASES.length; phase++) {
+    await expect(marker).toHaveCount(1);
+    await expect(marker).toHaveAttribute("data-pain-marker", "open");
+    if (phase < ASSISTANCE_PHASES.length) await page.clock.runFor(ASSISTANCE_DURATION_MS / ASSISTANCE_PHASES.length);
+  }
+  await expect(page.locator('[data-case="D"]')).toContainText("Gate: NOT RUN");
+  await expect(page.locator('[data-case="D"] [data-outcome]')).toHaveText("ABSTAIN");
+}
+
 test("six ordered stages preserve existing capture/pricing, assumptions and built-only assistance", async ({ page }) => {
   await page.goto("./#pipeline");
   const stages = page.locator("[data-pipeline-stage]");
@@ -136,8 +152,8 @@ test("shared two-second clock sequences kernel phases, resolves built pain only,
     await expect(page.locator("[data-kernel-phase=complete]")).toHaveCount(index);
     await expectGathering(page, index);
     await expectReferralMarkers(page, false);
-    await expect(page.locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]')).toHaveCount(2);
-    for (const marker of await page.locator('[data-kernel] [data-pain-marker], [data-case="D"] [data-pain-marker]').all()) await expect(marker).toHaveAttribute("data-pain-marker", "open");
+    await expect(page.locator('[data-kernel] [data-pain-marker]')).toHaveCount(1);
+    await expect(page.locator('[data-kernel] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
     await page.clock.runFor(ASSISTANCE_DURATION_MS / ASSISTANCE_PHASES.length - (index === ASSISTANCE_PHASES.length - 1 ? 1 : 0));
   }
   await expect(page.locator("[data-assistance-host]")).toHaveAttribute("data-phase", "preparing");
@@ -159,6 +175,8 @@ test("shared two-second clock sequences kernel phases, resolves built pain only,
   await expect(page.locator("[data-pipeline-proposals]")).toHaveCount(0);
   await expectGathering(page, 0, false);
   await expectReferralMarkers(page, false);
+  await expectCaseDThroughPhases(page);
+  await flag.setChecked(false);
   await navigatePrimary(page, "Exception queue");
   await expect(page.locator("tbody tr td:nth-child(6)")).toHaveText(states);
 });
@@ -175,9 +193,9 @@ test("all-abstained cohort never resolves a gathering or exact-fix marker during
     await expectGathering(page, phase, false);
     await expectReferralMarkers(page, false);
     await expect(page.locator('[data-pipeline] [data-pain-marker="resolved"]')).toHaveCount(0);
-    await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
     if (phase < ASSISTANCE_PHASES.length) await page.clock.runFor(ASSISTANCE_DURATION_MS / ASSISTANCE_PHASES.length);
   }
+  await expectCaseDThroughPhases(page);
 });
 
 test("live reduced-motion changes finish presentation immediately without autonomous decisions", async ({ page }) => {
