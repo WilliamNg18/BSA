@@ -25,14 +25,25 @@ calculates; a human decides. Nothing in this demonstration calculates or
 approves a payment. `Payment approved (synthetic)` is a lifecycle label
 attributed to existing pricing, not proof of a payment service.
 
-## Owner-run hosting verification remains open
+## Hosted baseline accepted; new interface acceptance remains separate
 
 Issue #48 supersedes the earlier SWA target with the existing App Service F1
-at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. The coordinator verified
-the resource and configured OIDC, but the old HTTP 200 response lacks CSP.
-Verify the new packaged server's actual build commit, headers and deep links
-before hosted acceptance. See [DEPLOYMENT.md](DEPLOYMENT.md). No publish profile
-or SWA token is needed. F1 has no deployment slots; PR artifacts are not previews.
+at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The [source-pinned live record](live-verification/README.md) establishes
+13/13 checks and 26 matching clean identities at
+`b813c6241cc084957a30c6bf48fdd65f623f33f6`, including strict headers and
+deep links. Six actual axe audits had zero violations; a separate same-history
+mixed-mode round trip also passed. The earlier HTTP 200 without CSP was repaired,
+not an outstanding hosting blocker. Main/manual OIDC and bounded non-destructive
+recovery are recorded in [INFRA-DONE](INFRA-DONE.md); infrastructure is frozen.
+
+A fresh V baseline reading on `2026-09-12T19:21:33Z` to `19:22:15Z` observed
+clean Step 0 `6b0632823514b923b54d3ae9f873fabfa9715851` on the live site.
+That six-state chapter reading predates the redesign and is not a repeat of
+the older hosted checklist. Tasks 14-18 still need their own merged-source
+acceptance and latest-main live review in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md).
+See [DEPLOYMENT.md](DEPLOYMENT.md). No publish profile, SWA token, new resource
+or owner setup is needed. F1 has no deployment slots; PR artifacts are not previews.
 
 The account transfer was cancelled on 12 September 2026. WilliamNg18 remains
 owner; repository and approved reference material are public by explicit

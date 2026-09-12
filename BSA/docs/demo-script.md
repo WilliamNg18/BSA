@@ -16,10 +16,17 @@ node scripts\serve-production.mjs
 ```
 
 Open `http://localhost:4193/` at 1440px. Keep this guide beside the application.
-There is no presenter timer, Discussion mode or `/notes` route. A hosted URL is
-not available: no subscription was selected and no deployment token exists.
-Use [DEPLOYMENT.md](DEPLOYMENT.md) for owner-run Azure Static Web Apps setup,
-not a historical hosting address.
+There is no presenter timer, Discussion mode or `/notes` route. The live demo is
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ on the existing App Service.
+The [hosted evidence](live-verification/README.md) is pinned to its tested build;
+check `/build-info.json` before attributing a rehearsal to a later release.
+No SWA token or new owner setup is needed. Infrastructure remains frozen.
+
+**Task 18 revision in progress:** the exact-click story below describes the
+accepted pre-redesign interface. Chapter 6/7 labels and perspective actions
+will be reconciled after N/Q/P/X merge. Do not present these old controls as
+the new interface's live acceptance. [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md)
+records the actual baseline and the pending final walkthrough.
 
 Click **Reset demo**, then **Reset demonstration**. Confirm **Agent: Off**.
 Reset retains the current route, so click **Overview** to begin at scene if

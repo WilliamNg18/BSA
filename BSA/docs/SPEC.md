@@ -6,6 +6,15 @@ ms.date: 2026-09-12
 
 ## 1. Purpose and authority
 
+**Task 14-18 transition:** this specification's detailed controls and baseline
+equations below describe the accepted pre-redesign application. The new
+total-effort model, queue/claims layout and independent perspectives are being
+implemented under the frozen contracts in [PROGRESS](PROGRESS.md).
+They are not accepted merely because Step 0 is deployed.
+[FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md) records review criteria, actual baseline
+observations and the pending final latest-main walkthrough. Replace superseded
+sections with verified integrated behaviour after N/Q/P/X merge.
+
 A static capability demonstration using synthetic prescription exceptions,
 scripted interpretation and a versioned synthetic rulebook. It is not a clinical,
 pricing or operational service.

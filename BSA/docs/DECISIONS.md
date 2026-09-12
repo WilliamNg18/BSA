@@ -971,3 +971,23 @@ modelled referral residual. Catches count explicit shared pre-submission
 correction events once per case and next submission revision. The shared
 monthly model remains separately labelled whole-service context. Perspective
 only hides links and Both-only following controls, never history or revisions.
+
+## 2026-09-12: Task 18 separates baseline observation from final clarity acceptance
+
+V owns documentation and screenshots, not concurrent N/Q/P/X source edits.
+Use an agent novice-perspective review with three ten-second understandings
+and a difference-demonstrating click for chapters 2, 6 and 7. Do not describe
+this as human user testing or introduce a timed comprehension gate.
+
+Keep the explicit 26-word queue guides despite the under-25-word narrative
+aspiration; exact owner copy takes precedence and the count conflict is
+informational. Capture all 18 chapter/mode/perspective combinations after
+the coordinator's functional-merge notice, including four honestly labelled
+opposite-side guards. Actual latest-main live observations and source-pinned
+local images are separate evidence. Preserve all earlier captures and failures.
+
+Correct obsolete no-live-URL and missing-CSP hosting prose using the existing
+accepted b813c62 evidence, not a new infrastructure task. The actual Step 0
+live baseline predates the redesign. Read retained source excerpts directly;
+absence of original PDF/DOCX binaries prevents claiming fresh binary review
+but does not permit stronger external-verification or internal-process claims.

@@ -118,6 +118,11 @@ Informational reporting does not excuse a functional or accessibility defect.
 
 ## Documentation and limits
 
+[First-time viewer review](docs/FIRST-TIME-VIEWER.md) defines chapter 2/6/7
+clarity checks and records the actual pre-redesign live baseline. Tasks 14-18
+are new work: their pending review must not be confused with the older accepted
+application, live checklist or source-pinned screenshots below.
+
 [SPEC](docs/SPEC.md) describes current behaviour. [KNOWN-ISSUES](docs/KNOWN-ISSUES.md)
 separates genuine limitations from historical evidence.
 [Current screenshots](docs/screens/integrated/README.md) include the exact
