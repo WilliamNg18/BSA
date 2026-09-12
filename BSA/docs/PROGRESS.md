@@ -1195,3 +1195,52 @@ Final coordinator-released rebase onto c95ff1d includes merged pharmacy status
 and tour changes. All streams' appended records and the exact tested Compare
 source/specs are preserved. Combined check and all 577 units in 20 files pass.
 No additional browser run; the coordinator retains merge and full integration.
+
+## Issue 41: contrast throughout route entrance
+
+The failure in CI `34693827974` on PR #40 `dc95e5b` was genuine intermediate
+contrast: 1,021 passed / one failed, with 21 contrast-failing nodes beneath the
+opacity-animated route wrapper. It is not quarantined and is not a colour-token
+or CSP failure.
+
+Before source edits, WAAPI-held production frames on runtime-equivalent main
+`8e49884` measured 75 ms opacity 0.839245, intro `#8a8a8a` on white at 3.45:1
+and 21 failing nodes. At 135 ms, eight panel labels still failed. At the
+150 ms endpoint, opacity 1 produced `#737373`, 4.74:1 and zero violations.
+Original artifact `10297534573`, the failed screenshot/trace and the baseline
+three frame audits are retained in S's session evidence.
+
+The runtime fix removes only `motion-safe:fade-in` from AppShell's route
+wrapper, preserving the 6 px slide, 150 ms timing, reduced motion and focus.
+The new regression samples real paused CSS animation at 0, 75, 135 and 150 ms
+across light/dark, Agent Off/On and normal/reduced motion, plus the claims
+midpoint before Follow navigation. It asserts opacity 1, original transform
+and timing semantics, all axe rules, real hosting headers and no CSP errors.
+
+Local validation on the fixed artifact:
+
+| Check | Actual result |
+| --- | --- |
+| `npm run check` | Passed |
+| `npm test -- --reporter=dot` | 607 passed, 22 files |
+| New independently timed frame regression | 32 passed in 6.4 minutes; 40 unrestricted axe reports, zero violations; 32 CSP reports, zero violations |
+| Original Follow variants, keyboard/menu/tour-focus and repeated case navigation | 12 passed in 2.7 minutes; 17 axe reports and 11 CSP reports, zero violations |
+| Fixed midpoint effective intro | Light `#737373` / white 4.74:1; dark `#a1a1a1` / `#0a0a0a` 7.66:1 |
+
+All counts exclude attachment copies. The earlier development version grouped
+five axe scans per test and exhausted the unchanged 30-second deadline; its
+interrupted log is retained, not counted as passing. Independent frame cases
+keep that deadline, without sleeps, quarantine or weakened contrast assertions.
+The optional dev-server configuration excludes this production-header-only
+spec; default CI and production-artifact diagnostics include all 32 cases.
+
+Commands from `BSA`, after the production build:
+
+```powershell
+$env:PLAYWRIGHT_PORT = "4183"
+npx playwright test route-transition-contrast.spec.ts --config tests\e2e\production-artifact.config.ts --workers=1 --reporter=line
+npx playwright test accessibility-final.spec.ts routes.spec.ts --config tests\e2e\production-artifact.config.ts --workers=1 --reporter=line --grep "axe claim detail and Follow banner|keyboard navigation, menus|tour dismissal and restoration|all case views can be revisited"
+```
+
+Port 4183 was confirmed released. Full PR CI and R's post-integration rerun
+remain separate gates; no fresh full-suite or hosted acceptance is claimed here.

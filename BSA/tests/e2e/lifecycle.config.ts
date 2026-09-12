@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: ".",
   // Vite development diagnostics do not enforce production hosting headers.
   // The main CI and production-artifact configurations retain this acceptance.
-  testIgnore: "**/accessibility-final.spec.ts",
+  testIgnore: ["**/accessibility-final.spec.ts", "**/route-transition-contrast.spec.ts"],
   use: { ...base.use, baseURL: "http://127.0.0.1:4179/" },
   webServer: {
     command: "npm run dev -- --host 127.0.0.1 --port 4179 --strictPort --base /",

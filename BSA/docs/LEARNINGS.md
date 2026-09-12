@@ -681,3 +681,23 @@ timing context but does not prove an environmental root cause.
 The unchanged Off test passed its retained repeat and final strict-header
 blocking CI. Close #35 as not reproduced, retain the trace and reopen on a
 concrete recurrence. No code, timeout, assertion, skip or quarantine changed.
+
+## 2026-09-12: Route opacity is a contrast change, not merely presentation
+
+The issue #41 failure returned real contrast violations, unlike #35's timeout.
+Passing same-run light audits reported `#737373`; the failing run reported
+`#7c7c7c` across 21 nodes beneath the route wrapper. Trace timing overlapped
+the 150 ms entrance. A later settled screenshot cannot disprove that result.
+Holding actual animation frames reproduced the defect and separated it from
+a persistent colour-token error.
+
+Even 0.994601 ancestor opacity failed eight muted panel labels. Preserve text
+opacity at 1 throughout motion rather than darkening arbitrary tokens or delaying
+axe. Transform-only motion can retain the entrance without reducing contrast.
+
+The first new regression grouped five unrestricted axe scans in one test.
+On this machine the axe helper's repeated page creation took roughly 3.6-4.1
+seconds each and several tests exhausted the existing 30-second guard after
+returning zero-violation frame reports. Retain that interrupted development run;
+split independent frames into separate cases instead of inflating deadlines.
+This test-structure correction is not evidence of another application defect.
