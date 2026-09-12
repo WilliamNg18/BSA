@@ -91,6 +91,7 @@ export async function startStaticServer(directory) {
   return server;
 }
 
-if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// PM2's fork container imports ESM through pm_exec_path; argv[1] remains the container.
+if ([process.argv[1], process.env.pm_exec_path].some((entry) => entry && resolve(entry) === fileURLToPath(import.meta.url))) {
   await startStaticServer(fileURLToPath(new URL(".", import.meta.url)));
 }

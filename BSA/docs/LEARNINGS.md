@@ -824,3 +824,12 @@ could bypass the exact policy URL denial. Both lexical resolution and realpath
 now deny protected files, including an in-root directory symlink alias. Six raw
 HTTP regressions cover those spellings for policy and server source; containment
 and all public-file checks remain unchanged.
+
+PM2's fork-mode ESM loader imports `pm_exec_path` while retaining its container
+in `argv[1]`. The initial direct-entry-only guard therefore imported without
+starting a listener, despite passing `node server.mjs` checks. A local
+PM2-shaped import of the exact packaged artifact confirmed zero listeners.
+Accept only an exact resolved match of either entry path to this module.
+Positive fork-style HTTP/CSP and negative import-only tests prevent both
+missing startup and accidental double startup by another PM2 application.
+This correction does not itself establish a successful hosted restart.

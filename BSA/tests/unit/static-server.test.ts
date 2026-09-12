@@ -26,6 +26,7 @@ beforeAll(async () => {
   await writeFile(join(directory, "assets", "entry-123.css"), "body{color:black}");
   await writeFile(join(directory, "build-info.json"), JSON.stringify({ commit: "a".repeat(40), dirty: false }));
   await writeFile(join(directory, ".env"), "DO_NOT_SERVE");
+  await writeFile(join(directory, "fork-container.mjs"), 'import { pathToFileURL } from "node:url"; await import(pathToFileURL(process.env.TEST_MODULE)); console.log("Module imported");');
   child = spawn(process.execPath, [join(directory, "server.mjs")], {
     env: { ...process.env, PLAYWRIGHT_PORT: "0" }, stdio: ["ignore", "pipe", "pipe"],
   });
@@ -54,6 +55,54 @@ afterAll(async () => {
 });
 
 describe("standalone packaged static server", () => {
+  it("starts when a PM2-style ESM container imports the matching pm_exec_path", async () => {
+    const module = join(directory, "server.mjs");
+    const app = spawn(process.execPath, [join(directory, "fork-container.mjs")], {
+      env: { ...process.env, PLAYWRIGHT_PORT: "0", TEST_MODULE: module, pm_exec_path: module },
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stderr = "";
+    app.stderr!.on("data", (data) => { stderr += data; });
+    try {
+      const url = await new Promise<string>((resolve, reject) => {
+        app.once("error", reject);
+        app.once("exit", (code) => reject(new Error(`PM2-shaped import exited ${code}: ${stderr}`)));
+        app.stdout!.on("data", (data) => {
+          const match = data.toString().match(/http:\/\/localhost:\d+/);
+          if (match) resolve(match[0]);
+        });
+      });
+      const response = await fetch(`${url}/pharmacy/claims`);
+      expect(response.status).toBe(200);
+      expect(response.headers.get("content-security-policy")).toBe(headers["Content-Security-Policy"]);
+      expect(await response.text()).toContain("Synthetic SPA");
+    } finally {
+      if (app.exitCode === null) {
+        const exit = new Promise<void>((resolve) => app.once("exit", () => resolve()));
+        app.kill(); await exit;
+      }
+    }
+    expect(stderr).toBe("");
+  });
+
+  it("does not auto-start when another PM2 application imports the server helper", async () => {
+    const launcher = join(directory, "fork-container.mjs");
+    const app = spawn(process.execPath, [launcher], {
+      env: { ...process.env, PLAYWRIGHT_PORT: "0", TEST_MODULE: join(directory, "server.mjs"), pm_exec_path: launcher },
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "", stderr = "";
+    app.stdout!.on("data", (data) => { stdout += data; });
+    app.stderr!.on("data", (data) => { stderr += data; });
+    const code = await new Promise<number | null>((resolve, reject) => {
+      app.once("error", reject);
+      app.once("exit", resolve);
+    });
+    expect(code).toBe(0);
+    expect(stdout.trim()).toBe("Module imported");
+    expect(stderr).toBe("");
+  });
+
   for (const variable of ["PORT", "SERVER_PORT"]) {
     it(`binds on all interfaces using App Service ${variable} without a local override`, async () => {
       const env = { ...process.env };
