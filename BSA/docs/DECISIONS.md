@@ -661,3 +661,12 @@ Use independently timed frame cases across both themes, motion preferences and
 Agent states, retaining the existing 30-second guard. The optional development
 diagnostic configuration excludes the new header-only spec, as it does the
 older strict-CSP spec. Default CI and production-artifact diagnostics include it.
+
+## 2026-09-12: Restore the three pharmacy timing instances to blocking coverage
+
+Issue #34's three conditional quarantine tags may be removed after nine
+controlled executions pass on current main: one worker, three repetitions per
+instance, real production CSP headers and unchanged assertions/timeouts.
+This restores existing coverage, not a new application behaviour or proven
+performance repair. Keep the original failures as evidence. Full public CI on
+the proposed tag-removal revision must pass before coordinator merge.
