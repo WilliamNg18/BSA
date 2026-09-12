@@ -11,6 +11,7 @@ export function QueueLifecycle() {
   const enabled = useAppStore((s) => s.agentEnabled);
   const arrive = useAppStore((s) => s.arriveInQueue);
   const followed = useAppStore((s) => s.followedCaseId);
+  const perspective = useAppStore((s) => s.perspective);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const rows = Object.values(lifecycles).filter((row) => ["submitted", "resubmitted", "in_review", "escalated"].includes(row.state));
@@ -18,7 +19,7 @@ export function QueueLifecycle() {
     <h2 className="text-lg font-semibold">Shared session queue</h2>
     <p>Actual session submissions and re-checks. Separate from the workload simulation and pinned historical examples.</p>
     <BoundaryTag cls="human" />
-    {followed && <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(followed)}`}>Followed claim: {followed}</Link></Button>}
+    {followed && perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(followed)}`}>Followed claim: {followed}</Link></Button>}
     {error && <p role="alert">{error}</p>}
     <ul className="grid gap-3 md:grid-cols-2">
       {rows.map((row) => <li key={row.caseId} data-shared-case={row.caseId} className="space-y-2 rounded-md border p-3">

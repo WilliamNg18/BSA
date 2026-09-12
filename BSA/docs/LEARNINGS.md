@@ -852,3 +852,17 @@ Overview with assistance Off, but its implicit favicon request returned 404.
 Issue #52 adds a local icon and explicit link. Six targeted hosting tests and
 a production HTTP probe passed with image/x-icon and exact built bytes.
 This does not replace the remaining full live checklist.
+
+## 2026-09-12: Q queue clarity implementation
+
+Changing audience wording is not a lifecycle transition. Queue tests now inspect
+recorded-state attributes separately from mode-dependent visible labels. A
+submitted row belongs in Needs more evidence until explicit arrival, even if
+its canonical template would normally produce a built case.
+
+Logical fifty-row windows can remain bounded at a billion-item model volume
+without allocating an array for the month. Filter counts must describe the
+same synthetic ranges and seed replacements used by rendering, not copy the
+monthly capacity arithmetic or add pharmacy-prevented work back into the queue.
+The new comparison consumes perItem; legacy gathering weights must not leak a
+seven-minute Today assumption into the main presentation.

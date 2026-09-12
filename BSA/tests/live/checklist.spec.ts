@@ -112,25 +112,28 @@ test("06 Claims seed list opens a matching seeded claim and history", async ({ p
   }
 });
 
-test("07 Queue virtual month counter and sweep preserve recorded states", async ({ page }) => {
+test("07 Queue bounded window and one-hour comparison preserve recorded states", async ({ page }) => {
   await page.goto("/queue");
-  const pinned = page.getByRole("region", { name: "Exception queue table", exact: true });
-  const month = page.getByRole("region", { name: "Virtual month", exact: true });
-  await expect(pinned.locator("tbody > tr")).toHaveCount(12);
-  const states = await pinned.locator("tbody > tr td:nth-child(6)").allTextContents();
-  await expect(month.locator("[data-queue-counter]")).toHaveText("1 of 85,000 items");
-  await month.getByRole("button", { name: "Last item", exact: true }).click();
-  await expect(month.locator("[data-queue-counter]")).toHaveText("85,000 of 85,000 items");
+  const table = page.getByRole("region", { name: "Exception queue table", exact: true });
+  await expect(table.locator("thead th")).toHaveCount(6);
+  await expect(table.locator("tbody tr")).toHaveCount(50);
+  const counter = page.locator("[data-queue-counter]");
+  await expect(counter).toContainText("showing 1 to 50 of ");
+  const states = await table.locator("[data-recorded-state]").evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")));
+  await page.getByRole("button", { name: "Next 50", exact: true }).click();
+  await expect(counter).toContainText("showing 51 to 100 of ");
+  await expect(table.locator("tbody tr")).toHaveCount(50);
+  await page.getByRole("button", { name: "First items", exact: true }).click();
   await flag(page).setChecked(true);
-  await month.getByRole("button", { name: "Run visible month sweep", exact: true }).click();
-  await expect(page.locator("[data-sweep-status]")).toContainText("Plan");
-  for (const phase of ["Gather", "Retrieve", "Reconcile", "Assess", "Hand off"]) {
-    await month.getByRole("button", { name: "Step month sweep", exact: true }).click();
-    await expect(page.locator("[data-sweep-status]")).toContainText(phase);
-  }
-  await expect(pinned.locator("tbody > tr td:nth-child(6)")).toHaveText(states);
+  await page.getByRole("button", { name: "Compare", exact: true }).click();
+  await page.getByRole("button", { name: "Run one hour", exact: true }).click();
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("60 synthetic minutes · Stopped", { timeout: 15_000 });
+  const today = Number(await page.locator('[data-comparison-summary="today"] dd').nth(1).innerText());
+  const assisted = Number(await page.locator('[data-comparison-summary="assisted"] dd').nth(1).innerText());
+  expect(assisted).toBeGreaterThan(today);
+  await page.getByRole("button", { name: "Close comparison", exact: true }).click();
   await flag(page).setChecked(false);
-  await expect(page.locator("[data-sweep-status]")).toHaveText("No sweep");
+  expect(await table.locator("[data-recorded-state]").evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")))).toEqual(states);
 });
 
 test("08 Full Off then On round trips retain Follow and Switch side", async ({ page }, info) => {

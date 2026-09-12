@@ -28,12 +28,12 @@ for (const c of cases.slice(0, 3)) {
 
     await page.goto("queue");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
-    await expect(page.locator("tbody > tr")).toHaveCount(12);
+    await expect(page.locator("tbody > tr")).toHaveCount(50);
     expect(injections).toBe(1);
     const row = page.getByRole("row").filter({ hasText: c.id });
-    await expect(row.locator("td").nth(3)).toHaveText("No recommendation");
-    await expect(row.locator("td").nth(2)).toContainText("findings");
-    await row.getByRole("link", { name: "Case pack", exact: true }).click();
+    await expect(row).toContainText("No recommendation. Gate failed; open evidence.");
+    await expect(row.locator("[data-queue-state]")).toHaveText("Needs more evidence");
+    await row.getByRole("link", { name: "Open", exact: true }).click();
     await startDemonstrationReview(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");
@@ -94,8 +94,8 @@ for (const c of cases.slice(0, 3)) {
       }
     }
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-    await expect(row.locator("td").nth(3)).toHaveText("No recommendation");
-    await expect(row.locator("td").nth(5)).toHaveText("Human decision recorded");
+    await expect(row).toContainText("Human record unchanged");
+    await expect(row.locator("[data-queue-state]")).toHaveText("Decided");
     expect(injections).toBe(1);
   });
 }

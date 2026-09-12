@@ -1,145 +1,86 @@
 import AxeBuilder from "@axe-core/playwright";
-import type { Page } from "@playwright/test";
-import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
-import { BASELINE_DEFAULTS, calculateBaseline, formatBaselineNumber as n } from "../../src/lib/domain/baseline";
-import { projectQueueDay } from "../../src/lib/domain/queue-model";
+import { captureJson, confirmReset, expect, test } from "./fixtures";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
-const comparison = (page: Page) => page.getByRole("region", { name: "Today versus With agent", exact: true });
-const compare = (page: Page) => page.getByRole("button", { name: "Compare", exact: true });
-
-async function queueSnapshot(page: Page) {
-  return {
-    pinned: await page.getByRole("region", { name: "Exception queue table", exact: true }).innerText(),
-    lifecycle: await page.getByRole("region", { name: "Shared session queue", exact: true }).innerText(),
-    clock: await page.getByLabel("Shared day clock", { exact: true }).innerText(),
-    position: await page.locator("[data-queue-counter]").innerText(),
-    sweep: await page.locator("[data-sweep-status]").innerText(),
-    counts: await page.locator("[data-sweep-counts]").innerText(),
-    summaries: await page.locator("[data-day-summary]").allTextContents(),
-    agent: await page.getByRole("banner").getByRole("switch").isChecked(),
-  };
-}
-
-for (const enabled of [false, true]) {
-  test(`Compare keyboard open close focus and no queue or decision writes, Agent ${enabled}`, async ({ page }) => {
-    await page.goto("./#month");
-    const input = { ...BASELINE_DEFAULTS, volume: 1234, builtReviewMinutes: 0.75, judgingMinutes: 3 };
-    await page.getByLabel("Monthly volume proxy", { exact: true }).fill(String(input.volume));
-    await page.getByLabel("Built case review minutes / item", { exact: true }).fill(String(input.builtReviewMinutes));
-    await page.getByLabel("Judging minutes / item", { exact: true }).fill(String(input.judgingMinutes));
-    await navigatePrimary(page, "Exception queue");
-    await page.getByRole("switch", { name: "Queue assistance: Off", exact: true }).setChecked(enabled);
-    await page.getByRole("button", { name: "Step 15 minutes", exact: true }).click();
-    const month = page.getByRole("region", { name: "Virtual month", exact: true });
-    await month.getByRole("button", { name: "Last item", exact: true }).click();
-    if (enabled) {
-      await month.getByRole("button", { name: "Run visible month sweep", exact: true }).click();
-      await month.getByRole("button", { name: "Step month sweep", exact: true }).click();
-    }
-    const before = await queueSnapshot(page);
-    await expect(compare(page)).toHaveAttribute("aria-expanded", "false");
-    await compare(page).focus(); await page.keyboard.press("Enter");
-    await expect(compare(page)).toHaveAttribute("aria-expanded", "true");
-    const region = comparison(page);
-    await expect(region).toBeVisible();
-    await expect(region.getByRole("heading", { name: "Today versus With agent", exact: true })).toBeFocused();
-    await expect(region).toHaveAttribute("id", await compare(page).getAttribute("aria-controls") as string);
-    await expect(region).toContainText("Same scenario at 08:15");
-    const result = calculateBaseline(input), day = projectQueueDay(input, 15);
-    await expect(region).toContainText("1,234 items; pinned examples add no volume.");
-    await expect(region).toContainText(`With agent: ${n(result.built)} built + ${n(result.abstained)} abstained.`);
-    for (const [label, today, assisted] of [
-      ["Projected operator actions", day.today.processed, day.assisted.processed],
-      ["Gathering minutes", day.today.gathering, day.assisted.gathering],
-      ["Judging minutes", day.today.judging, day.assisted.judging],
-    ] as const) {
-      const row = region.getByRole("row").filter({ has: page.getByRole("rowheader", { name: label, exact: true }) });
-      await expect(row.getByRole("cell")).toHaveText([n(today), n(assisted)]);
-    }
-    await expect(region).toContainText("no additional savings");
-    await expect(region.getByRole("button")).toHaveText(["Close comparison"]);
-    expect(await queueSnapshot(page)).toEqual(before);
-    await page.keyboard.press("Tab");
-    await expect(region.getByRole("button", { name: "Close comparison", exact: true })).toBeFocused();
-    await page.keyboard.press("Enter");
-    await expect(region).toHaveCount(0); await expect(compare(page)).toBeFocused();
-    await page.keyboard.press("Space");
-    await expect(region).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(region).toHaveCount(0); await expect(compare(page)).toBeFocused();
-    expect(await queueSnapshot(page)).toEqual(before);
-  });
-}
-
-test("Compare follows the running shared clock without starting pausing or restarting the day", async ({ page }) => {
+test("Task15 one hour plays sixty synthetic minutes in ten seconds and stops, without changing the queue", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("queue");
-  await page.clock.install({ time: new Date("2026-09-11T12:00:00Z") });
-  await page.clock.pauseAt(new Date("2026-09-11T12:00:10Z"));
-  await page.getByRole("button", { name: "Play day", exact: true }).click();
-  await page.clock.runFor(500);
-  await compare(page).click();
-  await expect(comparison(page)).toContainText("Same scenario at 08:30");
-  await expect(page.getByRole("button", { name: "Pause day", exact: true })).toBeEnabled();
-  await page.clock.runFor(250);
-  await expect(comparison(page)).toContainText("Same scenario at 08:45");
-  await comparison(page).getByRole("button", { name: "Close comparison", exact: true }).click();
-  await page.clock.runFor(250);
-  await expect(page.getByLabel("Shared day clock", { exact: true })).toHaveText("09:00");
-  await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
-  await compare(page).click();
-  await expect(comparison(page)).toContainText("Same scenario at 17:00");
-  const day = projectQueueDay(BASELINE_DEFAULTS, 540);
-  await expect(comparison(page).getByRole("row").filter({ has: page.getByRole("rowheader", { name: "Projected operator actions", exact: true }) }).getByRole("cell")).toHaveText([n(day.today.processed), n(day.assisted.processed)]);
-  await expect(page.locator('[data-day-summary="today"] dd').first()).toHaveText(n(day.today.processed));
-  await expect(page.locator('[data-day-summary="assisted"] dd').first()).toHaveText(n(day.assisted.processed));
+  await page.clock.install();
+  const table = page.getByRole("region", { name: "Exception queue table", exact: true });
+  const before = await table.innerText();
+  await page.getByRole("button", { name: "Compare", exact: true }).click();
+  await page.getByRole("button", { name: "Run one hour", exact: true }).click();
+  await page.clock.runFor(5000);
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("30 synthetic minutes · Running");
+  await expect(page.getByRole("region", { name: "Today comparison", exact: true })).toContainText("Operator gathering evidence");
+  await page.clock.runFor(4999);
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("57 synthetic minutes · Running");
+  await page.clock.runFor(1);
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("60 synthetic minutes · Stopped");
+  await page.clock.runFor(5000);
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("60 synthetic minutes · Stopped");
+  const today = page.locator('[data-comparison-summary="today"] dd');
+  const assisted = page.locator('[data-comparison-summary="assisted"] dd');
+  expect(Number(await assisted.nth(1).innerText())).toBeGreaterThan(Number(await today.nth(1).innerText()));
+  await expect(today.nth(2)).toHaveText("0");
+  await expect(assisted.nth(2)).toHaveText("3");
+  await expect(page.locator("[data-compare-seed]")).toHaveCount(24);
+  await expect(page.getByRole("region", { name: "Today comparison", exact: true })).toContainText("Operator gathering evidence");
+  await page.getByRole("button", { name: "Close comparison", exact: true }).click();
+  expect(await table.innerText()).toBe(before);
+  await expect(page.getByRole("button", { name: "Compare", exact: true })).toBeFocused();
 });
 
-test("Compare Reset closes the surface and invalid assumptions disable stale comparisons", async ({ page }) => {
-  await page.goto("queue");
-  await page.getByRole("switch", { name: "Queue assistance: Off", exact: true }).click();
-  await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
-  await compare(page).click();
+test("Task15 reduced motion jumps immediately, end of day and reset remain read-only", async ({ page }) => {
+  await page.goto("case/EX-24112");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await startDemonstrationReview(page);
+  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
+  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "Back to queue", exact: true }).click();
+  await page.getByRole("button", { name: "Compare", exact: true }).click();
+  await page.getByRole("button", { name: "Run one hour", exact: true }).click();
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("60 synthetic minutes · Stopped");
+  for (const side of ["Today comparison", "With agent comparison"]) {
+    const region = page.getByRole("region", { name: side, exact: true });
+    await expect(region.locator('[data-compare-seed="EX-24112"]')).toContainText("Historical record unchanged");
+    await expect(region.locator('[data-compare-seed="EX-24123"]')).toContainText("Manual fallback; never case-ready");
+    await expect(region.locator('[data-compare-seed="EX-24101"]')).toContainText("Cleared by rules; no model call");
+  }
+  await page.getByRole("button", { name: "Run to end of day", exact: true }).click();
+  await expect(page.locator("[data-comparison-clock]")).toHaveText("360 synthetic minutes · Stopped");
+  await page.keyboard.press("Escape");
+  await page.locator('[data-shared-case="EX-24112"]').getByRole("link", { name: "Open", exact: true }).click();
+  await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Record DR-000874", exact: true })).toHaveCount(0);
+  await page.getByRole("link", { name: "Back to queue", exact: true }).click();
+  await page.getByRole("button", { name: "Compare", exact: true }).click();
   await confirmReset(page);
-  await expect(comparison(page)).toHaveCount(0);
-  await expect(compare(page)).toHaveAttribute("aria-expanded", "false");
-  await expect(page.getByRole("switch", { name: "Queue assistance: Off", exact: true })).not.toBeChecked();
-  await compare(page).click();
-  await expect(comparison(page)).toContainText("Same scenario at 08:00");
-  await navigatePrimary(page, "Overview");
-  await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
-  await page.getByLabel("Monthly volume proxy", { exact: true }).fill("");
-  await navigatePrimary(page, "Exception queue");
-  await expect(compare(page)).toBeDisabled();
-  await expect(comparison(page)).toHaveCount(0);
-  await expect(page.getByRole("alert").filter({ hasText: "Invalid calculator assumptions" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Today versus With agent", exact: true })).toHaveCount(0);
 });
 
-for (const { width, colorScheme, enabled } of [
-  { width: 360, colorScheme: "dark", enabled: false },
-  { width: 360, colorScheme: "light", enabled: true },
-  { width: 1440, colorScheme: "light", enabled: false },
-  { width: 1440, colorScheme: "dark", enabled: true },
-] as const) {
-  test(`Compare reduced-motion keyboard and zero-violation axe ${width} ${colorScheme} Agent ${enabled}`, async ({ page }, info) => {
+for (const width of [360, 1440]) for (const enabled of [false, true]) {
+  test(`Task15 Compare keyboard and axe ${width} agent=${enabled}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
-    await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
+    await page.emulateMedia({ colorScheme: enabled ? "dark" : "light", reducedMotion: "reduce" });
     await page.goto("queue");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
-    await compare(page).focus(); await page.keyboard.press("Enter");
-    const region = comparison(page);
-    await expect(region.getByRole("heading")).toBeFocused();
-    await expect(region).toContainText("Same scenario at 17:00");
-    expect(await region.evaluate((element) => getComputedStyle(element).animationName)).toBe("none");
+    const button = page.getByRole("button", { name: "Compare", exact: true });
+    await button.focus(); await page.keyboard.press("Enter");
+    const region = page.getByRole("region", { name: "Today versus With agent", exact: true });
+    await expect(region.getByRole("heading", { name: "Today versus With agent", exact: true })).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Run one hour", exact: true })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.locator("[data-comparison-clock]")).toHaveText("60 synthetic minutes · Stopped");
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     const audit = await new AxeBuilder({ page }).analyze();
     await captureJson(info, "queue-compare-axe", audit);
     expect(audit.violations).toEqual([]);
-    await region.screenshot({ path: info.outputPath(`queue-compare-${width}-${colorScheme}-${enabled}.png`) });
-    await page.keyboard.press("Tab");
-    await expect(region.getByRole("button", { name: "Close comparison", exact: true })).toBeFocused();
-    await page.keyboard.press("Enter");
-    await expect(compare(page)).toBeFocused();
+    await region.screenshot({ path: info.outputPath(`queue-compare-${width}-${enabled}.png`) });
+    await page.keyboard.press("Escape");
+    await expect(button).toBeFocused();
   });
 }

@@ -865,3 +865,31 @@ in the store. N owns monthly presentation/model implementation; Q queue; P
 claims; X perspective/navigation; V copy recommendations and visual/docs
 acceptance. Coordinator owns frozen contracts/store and serialises shared
 changes. Merge N, Q/P, X, V; every main merge uses existing App Service OIDC.
+
+## 2026-09-12: Q queue windows and comparison authority
+
+Task 15 (#58) replaces separate pinned, session and virtual queue surfaces with
+one six-column, fixed-height table. At most fifty logical rows are rendered.
+Counted audience filters and the displayed range describe that table, not
+decisions written by a simulation. Pharmacy-caught model slots stay outside the
+operator queue; the collapsed detail distinguishes its count from the shared
+85,000 public referral-subset proxy. Twelve illustrative seeds replace model
+slots, with an explicit outside-projection qualification for smaller volumes.
+New session submissions move to the top without duplicating existing IDs.
+Only explicit Open for review invokes the existing atomic arrival action.
+
+The exact mode guides are qualified by a public-evidence tooltip and nearby
+abstention/rule-clear exceptions. Pending submissions cannot be labelled built,
+gate failures cannot display advice, and generated rows have no claimed evidence
+or citations. Perspective hides the cross-side followed-claim shortcut in the
+NHSBSA-only view, never filtering lifecycle storage.
+
+The main comparison uses shared monthModel per-item costs: Today twelve minutes
+including two judging, built gathering zero, abstention full Today cost.
+One hour is sixty synthetic minutes over ten seconds; reduced motion presents
+the result immediately. Projected human decisions and validated canonical
+citation-use counters never write records. Historical decisions, rule-clear
+rows and filler citations are excluded from new-decision/citation totals.
+The old nine-hour, raw-weight simulation remains explicitly labelled legacy
+behind a small disclosure; its original model is not silently presented as
+the current twelve-minute assumption.

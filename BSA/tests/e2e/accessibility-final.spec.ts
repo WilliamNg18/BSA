@@ -193,35 +193,22 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       }
     });
 
-    test("simulation and sweep have keyboard-controlled motion alternatives", async ({ page }, info) => {
+    test("queue comparison has keyboard-controlled motion alternatives", async ({ page }, info) => {
       await page.goto("queue");
       await page.getByRole("banner").getByRole("switch").setChecked(true);
-      const clock = page.getByRole("status", { name: "Shared day clock" });
-      await expect(clock).toHaveText("08:00");
-      await page.getByRole("button", { name: "Step 15 minutes", exact: true }).press("Enter");
-      await expect(clock).toHaveText("08:15");
-      const play = page.getByRole("button", { name: "Play day", exact: true });
-      if (reducedMotion === "reduce") await expect(play).toBeDisabled();
-      else {
-        await play.press("Space");
-        await page.getByRole("button", { name: "Pause day", exact: true }).press("Space");
-        await expect(play).toBeEnabled();
-      }
-      await page.getByRole("button", { name: "Jump to 17:00", exact: true }).press("Enter");
-      await expect(clock).toHaveText("17:00");
-      await page.getByRole("button", { name: "Restart day", exact: true }).press("Enter");
-      await expect(clock).toHaveText("08:00");
-      // Scroll to actual seed rows before starting the viewport-scoped sweep.
-      await page.locator("[data-queue-seed]").first().scrollIntoViewIfNeeded();
-      await page.getByRole("button", { name: "Sweep visible rows", exact: true }).first().press("Enter");
-      await expect(page.locator("[data-sweep-status]")).not.toHaveText("No sweep");
+      await page.getByRole("button", { name: "Compare", exact: true }).press("Enter");
+      const clock = page.locator("[data-comparison-clock]");
+      await expect(clock).toHaveText("0 synthetic minutes · Stopped");
+      await page.getByRole("button", { name: "Run one hour", exact: true }).press("Enter");
       if (reducedMotion === "reduce") {
-        const initial = await page.locator("[data-sweep-status]").textContent();
-        await page.getByRole("button", { name: "Step sweep", exact: true }).press("Enter");
-        await expect(page.locator("[data-sweep-status]")).not.toHaveText(initial!);
+        await expect(clock).toHaveText("60 synthetic minutes · Stopped");
+      } else {
+        await expect(clock).toContainText("Running");
+        await page.getByRole("button", { name: "Pause", exact: true }).press("Enter");
+        await expect(clock).toContainText("Stopped");
       }
-      await page.getByRole("button", { name: "Cancel sweep", exact: true }).press("Enter");
-      await expect(page.locator("[data-sweep-status]")).toHaveText("No sweep");
+      await page.getByRole("button", { name: "Restart", exact: true }).press("Enter");
+      await expect(clock).toHaveText("0 synthetic minutes · Stopped");
       await audit(page, info, "simulation-axe");
     });
 

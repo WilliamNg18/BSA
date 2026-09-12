@@ -6,8 +6,14 @@ import { useQueueStore } from "@/lib/queue-store";
 import { useAppStore } from "@/lib/store";
 import { formatBaselineNumber as n, manualGatheringMinutes, type BaselineInputs } from "@/lib/domain/baseline";
 import { dayClock, projectQueueDay, projectSeedDay } from "@/lib/domain/queue-model";
+import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
 
-export function QueueDay({ input }: { input: BaselineInputs }) {
+export function QueueDay() {
+  const { input } = useBaselineScenario();
+  return input ? <LegacyQueueDay input={input} /> : <p role="alert">Invalid legacy day assumptions.</p>;
+}
+
+function LegacyQueueDay({ input }: { input: BaselineInputs }) {
   const day = useQueueStore((s) => s.day), playing = useQueueStore((s) => s.playing);
   const setDay = useQueueStore((s) => s.setDay), play = useQueueStore((s) => s.play);
   const states = useAppStore((s) => s.caseStates);
@@ -23,7 +29,7 @@ export function QueueDay({ input }: { input: BaselineInputs }) {
   const recorded = Object.keys(states).filter((id) => states[id] === "human_decision_recorded");
   return <section aria-label="Working day simulation" className="space-y-4 rounded-xl border bg-card p-4">
     <div className="flex flex-wrap items-center gap-3"><h2 className="text-xl font-semibold">Simulate a day</h2><SyntheticTag>Model assumptions · 08:00 to 17:00</SyntheticTag><BoundaryTag cls="human" /></div>
-    <p className="text-sm text-muted-foreground">One clock, one operator per comparison. Projected actions never change history.{reduced ? " Reduced motion: paused step-through; Step or Jump shows the summary." : " Pause, Step or Jump to inspect progress."}</p>
+    <p className="text-sm text-muted-foreground">Legacy nine-hour model: separate raw gathering weights and built-review cost, not the new Today 12-minute assumption. Use Compare above for the current six-hour working day and shared monthly times. Projected actions never change history.{reduced ? " Reduced motion: paused step-through; Step or Jump shows the summary." : " Pause, Step or Jump to inspect progress."}</p>
     <div className="flex flex-wrap items-center gap-2">
       <Button onClick={() => play(!playing)} disabled={reduced || day === 540}>{playing ? "Pause day" : "Play day"}</Button>
       <Button variant="outline" disabled={day === 540} onClick={() => setDay(day + 15)}>Step 15 minutes</Button>
