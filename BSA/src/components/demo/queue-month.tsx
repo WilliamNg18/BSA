@@ -4,7 +4,7 @@ import { Check, FileSearch, Scale, Search, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 import { formatBaselineNumber as n, type MonthModelResult } from "@/lib/domain/baseline";
 import { QUEUE_PAGE_SIZE, QUEUE_STATUS_LABELS, queueFilters, queueTableWindow, type QueuePreviewRow, type QueueStatus } from "@/lib/domain/queue-model";
 import { useAppStore } from "@/lib/store";

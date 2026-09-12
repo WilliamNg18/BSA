@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NativeSwitch as Switch } from "@/components/ui/native-switch";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
 import { QueueMonth } from "@/components/demo/queue-month";
 import { QueueDay } from "@/components/demo/queue-day";
@@ -57,8 +57,10 @@ export function QueuePage() {
       const item = caseForLifecycle(lifecycle.caseId, lifecycles, revisions);
       if (!item) continue;
       const state = caseStates[item.id] ?? item.initialState;
+      const status = queueStatus(state, agentEnabled, lifecycle);
+      const blocked = agentEnabled && runAgent(item, { agentEnabled: true }).gate.result === "FAIL";
       seeds.push({ id: item.id, pharmacy: item.pharmacy.name, reason: item.routingReason, state,
-        status: queueStatus(state, agentEnabled, lifecycle), fresh: true, canonical: false, reviewable: true,
+        status: status === "built" && blocked ? "evidence" : status, blocked, fresh: true, canonical: false, reviewable: true,
         pending: lifecycle.state === "submitted" || lifecycle.state === "resubmitted", projected: false });
     }
     return seeds.sort((a, b) => Number(b.fresh) - Number(a.fresh) || (a.fresh && b.fresh

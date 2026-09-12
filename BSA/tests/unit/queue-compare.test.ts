@@ -1,5 +1,6 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { QueueCompare, QueueComparison } from "../../src/components/demo/queue-compare";
 import { MONTH_MODEL_DEFAULTS, monthModel } from "../../src/lib/domain/baseline";
@@ -7,6 +8,7 @@ import { projectQueueComparison, QUEUE_SEEDS, queueStatus, queueTableWindow, typ
 import { CASES } from "../../src/lib/domain/cases";
 import { useAppStore } from "../../src/lib/store";
 import { useQueueStore } from "../../src/lib/queue-store";
+import { QueuePage } from "../../src/pages/queue";
 
 afterEach(() => useAppStore.getState().resetDemo());
 const result = monthModel(MONTH_MODEL_DEFAULTS);
@@ -17,6 +19,14 @@ const seeds = (enabled: boolean): QueuePreviewRow[] => QUEUE_SEEDS.map((seed) =>
 }));
 
 describe("current queue comparison", () => {
+  it("renders the whole queue with repository tooltip context in both modes", () => {
+    for (const enabled of [false, true]) {
+      useAppStore.getState().setAgentEnabled(enabled);
+      const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(QueuePage)));
+      expect(html).toContain("NHSBSA exception queue");
+      expect(html).toContain("showing 1 to 50");
+    }
+  });
   it("uses the new total Today12 and judging2, not legacy7", () => {
     const today = projectQueueComparison(result, 60, false);
     const assisted = projectQueueComparison(result, 60, true, [], CASES.slice(0, 3).map((c) => c.id));

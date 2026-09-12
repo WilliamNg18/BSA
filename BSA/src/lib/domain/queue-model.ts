@@ -109,7 +109,8 @@ export function queueStatus(state: CaseState, enabled: boolean, lifecycle?: Case
   if (state === "human_decision_recorded") return "decided";
   const pending = lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted";
   if (!enabled) return state === "cleared_by_rules" ? "decided"
-    : pending || state === "operator_review_required" ? "awaiting" : "progress";
+    : pending ? "awaiting"
+    : lifecycle?.state === "in_review" || state === "additional_evidence_required" ? "progress" : "awaiting";
   if (pending) return "evidence";
   if (state === "cleared_by_rules") return "cleared";
   if (state === "agent_abstained") return "abstained";
@@ -146,7 +147,7 @@ export function queueTableWindow(result: MonthModelResult | null, seeds: readonl
     replaced -= remove;
     return { ...group, size: group.size - remove, status: queueStatus(group.state, enabled) };
   });
-  const counts = Object.fromEntries(queueFilters(enabled).map((status) => [status, 0])) as Record<QueueStatus, number>;
+  const counts: Record<QueueStatus, number> = { awaiting: 0, progress: 0, built: 0, evidence: 0, abstained: 0, cleared: 0, decided: 0 };
   for (const seed of seeds) counts[seed.status] = (counts[seed.status] ?? 0) + 1;
   for (const group of groups) counts[group.status] = (counts[group.status] ?? 0) + group.size;
   const prefix = seeds.filter((seed) => filter === "all" || seed.status === filter);

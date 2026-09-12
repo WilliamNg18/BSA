@@ -5,7 +5,8 @@ import { startDemonstrationReview } from "./lifecycle-helpers";
 test("Task15 one hour plays sixty synthetic minutes in ten seconds and stops, without changing the queue", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("queue");
-  await page.clock.install();
+  await page.clock.install({ time: new Date("2026-09-12T12:00:00Z") });
+  await page.clock.pauseAt(new Date("2026-09-12T12:00:10Z"));
   const table = page.getByRole("region", { name: "Exception queue table", exact: true });
   const before = await table.innerText();
   await page.getByRole("button", { name: "Compare", exact: true }).click();

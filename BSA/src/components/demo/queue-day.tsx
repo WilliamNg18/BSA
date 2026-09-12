@@ -25,6 +25,7 @@ function LegacyQueueDay({ input }: { input: BaselineInputs }) {
     return () => window.clearInterval(timer);
   }, [playing, reduced]);
   useEffect(() => { if (reduced) useQueueStore.getState().play(false); }, [reduced]);
+  useEffect(() => () => useQueueStore.getState().play(false), []);
   const projection = projectQueueDay(input, day);
   const recorded = Object.keys(states).filter((id) => states[id] === "human_decision_recorded");
   return <section aria-label="Working day simulation" className="space-y-4 rounded-xl border bg-card p-4">
