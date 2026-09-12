@@ -1,4 +1,5 @@
 import type { Perspective } from "@/lib/store";
+import { matchPath } from "react-router-dom";
 
 export const PERSPECTIVES = [
   { value: "pharmacy", label: "Pharmacy" },
@@ -8,8 +9,8 @@ export const PERSPECTIVES = [
 
 export function perspectiveForPath(path: string): Exclude<Perspective, "both"> | undefined {
   const pathname = path.split(/[?#]/, 1)[0];
-  if (pathname === "/pharmacy" || pathname.startsWith("/pharmacy/")) return "pharmacy";
-  if (pathname === "/queue" || pathname.startsWith("/case/")) return "nhsbsa";
+  if (matchPath("/pharmacy/*", pathname)) return "pharmacy";
+  if (matchPath("/queue", pathname) || matchPath("/case/*", pathname)) return "nhsbsa";
   return undefined;
 }
 

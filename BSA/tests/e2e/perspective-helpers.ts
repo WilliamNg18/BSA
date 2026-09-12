@@ -20,7 +20,9 @@ export async function openHistory(page: Page) {
 
 export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
   await page.goto("/pharmacy");
-  const receipts: string[] = [];
+  let previousDecision = "";
+  let previousEventCount = 0;
+  let submittedId = "";
   for (const enabled of [false, true]) {
     await choosePerspective(page, "Pharmacy");
     await navigatePrimary(page, "Pharmacy check");
@@ -33,8 +35,8 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     const href = await submitted.getAttribute("href");
     const id = new URL(href!, page.url()).searchParams.get("caseId")!;
     expect(id).toBeTruthy();
-    expect(receipts).not.toContain(id);
-    receipts.push(id);
+    if (submittedId) expect(id).toBe(submittedId);
+    submittedId = id;
     await submitted.click();
     await expect(detail(page).getByRole("heading", { level: 2 })).toContainText(id);
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
@@ -43,6 +45,10 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(attempts).toContain(endorsement);
     const events = await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).innerText();
     expect(events).toContain("submitted");
+    if (previousDecision) {
+      expect(events).toContain(previousDecision);
+      expect(await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").count()).toBe(previousEventCount + 1);
+    }
     await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
     await choosePerspective(page, "NHSBSA");
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
@@ -70,7 +76,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     const eventCount = await decisionEvents.locator(":scope > li").count();
     const lastDecision = decisionEvents.locator(":scope > li").last();
     const recordId = await lastDecision.locator("dl > div").filter({ has: page.getByText("Attempt / record", { exact: true }) }).locator("dd").innerText();
-    expect(recordId).toMatch(/REC-/);
+    expect(recordId).toMatch(/DR-\d+/);
     await expect(lastDecision).toContainText(reason);
     const stableEventFields = await lastDecision.locator("dl > div").filter({ has: page.getByText(/^(Time \/ actor|Transition|Attempt \/ record)$/) }).allTextContents();
     await choosePerspective(page, "Pharmacy");
@@ -88,6 +94,8 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(returnedEvents.locator(":scope > li")).toHaveCount(eventCount);
     await expect(returnedEvents.locator(":scope > li").last()).toContainText(recordId);
     expect(await returnedEvents.locator(":scope > li").last().locator("dl > div").filter({ has: page.getByText(/^(Time \/ actor|Transition|Attempt \/ record)$/) }).allTextContents()).toEqual(stableEventFields);
+    previousDecision = recordId;
+    previousEventCount = eventCount;
     await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);

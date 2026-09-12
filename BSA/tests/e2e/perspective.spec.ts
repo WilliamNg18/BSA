@@ -58,9 +58,10 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
         expect(await header.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
         const nav = page.getByRole("navigation", { name: "Primary", exact: true });
         const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
-        await (await mobile.isVisible() ? mobile : nav.getByRole("button", { name: "Operations", exact: true })).click();
+        const mobileNavigation = await mobile.isVisible();
+        await (mobileNavigation ? mobile : nav.getByRole("button", { name: "Operations", exact: true })).click();
         const expected = perspective === "Pharmacy" ? ["Pharmacy check", "Pharmacy claims"] : perspective === "NHSBSA" ? ["NHSBSA queue"] : ["Pharmacy check", "Pharmacy claims", "NHSBSA queue"];
-        const menu = await mobile.isVisible() ? page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("region", { name: "Operations", exact: true }).getByRole("link") : page.getByRole("menuitem");
+        const menu = mobileNavigation ? page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("region", { name: "Operations", exact: true }).getByRole("link") : page.getByRole("menuitem");
         await expect(menu).toHaveText(expected);
         await page.keyboard.press("Escape");
         await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -100,10 +101,43 @@ test("native perspective keyboard, Reset retention and suspended tour shortcuts"
   await expect(page.getByRole("button", { name: "Choose tour chapter", exact: true })).toBeFocused();
 });
 
-for (const path of ["/pharmacy", "/pharmacy/claims?caseId=EX-24112", "/queue", "/case/EX-24112", "/case/EX-24112/trace", "/case/EX-24112/record"]) {
+test("single perspectives suspend Follow without forgetting the followed item", async ({ page }) => {
+  await page.goto("/#cases");
+  await page.locator('[data-case="B"]').getByRole("button", { name: "Follow this item", exact: true }).click();
+  const followed = page.getByRole("region", { name: "Followed item", exact: true });
+  await expect(followed).toContainText("Following EX-24112");
+  for (const side of ["Pharmacy", "NHSBSA"] as const) {
+    await choosePerspective(page, side);
+    await expect(followed).toHaveCount(0);
+    await expect(page.getByRole("navigation", { name: "Switch side", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /following this item|Follow this item/ })).toHaveCount(0);
+  }
+  await choosePerspective(page, "Both");
+  await expect(followed).toContainText("Following EX-24112");
+  await expect(page.locator('[data-case="B"]').getByRole("button", { name: "Stop following this item", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await followed.getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
+  await expect(page).toHaveURL(/\/case\/EX-24112$/);
+  await expect(followed).toContainText("Following EX-24112");
+});
+
+test("browser history into the hidden side remains a recoverable view, not an error", async ({ page }) => {
+  await page.goto("/case/EX-24112/trace");
+  await navigatePrimary(page, "Pharmacy check");
+  await choosePerspective(page, "Pharmacy");
+  await page.goBack();
+  await expect(page).toHaveURL(/\/case\/EX-24112\/trace$/);
+  await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
+  await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("alert")).toHaveCount(0);
+  await page.getByRole("button", { name: "Switch to NHSBSA", exact: true }).click();
+  await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toHaveCount(0);
+  await expect(page).toHaveURL(/\/case\/EX-24112\/trace$/);
+});
+
+for (const path of ["/pharmacy", "/pharmacy/claims?caseId=EX-24112", "/queue", "/case/EX-24112", "/case/EX-24112/trace", "/case/EX-24112/record", "/queue/", "/Queue", "/Pharmacy", "/Pharmacy/Claims/", "/CASE/EX-24112/trace"]) {
   test(`opposite-side URL guard preserves ${path} and explicitly restores its view`, async ({ page }) => {
     await page.goto(path);
-    const wrong = path.startsWith("/pharmacy") ? "NHSBSA" : "Pharmacy";
+    const wrong = path.toLowerCase().startsWith("/pharmacy") ? "NHSBSA" : "Pharmacy";
     const right = wrong === "Pharmacy" ? "NHSBSA" : "Pharmacy";
     await flag(page).setChecked(true);
     await choosePerspective(page, wrong);

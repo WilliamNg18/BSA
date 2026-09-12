@@ -27,6 +27,8 @@ describe("perspective is presentation only", () => {
     ["/pharmacy", "pharmacy"], ["/pharmacy/claims?caseId=SYN-1", "pharmacy"],
     ["/pharmacy/claims?case=EX-24112", "pharmacy"], ["/queue", "nhsbsa"],
     ["/case/EX-24112", "nhsbsa"], ["/case/SYN-1/trace", "nhsbsa"], ["/case/EX-24112/record", "nhsbsa"],
+    ["/queue/", "nhsbsa"], ["/Queue", "nhsbsa"], ["/Pharmacy", "pharmacy"],
+    ["/Pharmacy/Claims/", "pharmacy"], ["/CASE/EX-24112/trace", "nhsbsa"],
   ] as const)("classifies %s as %s", (path, side) => {
     expect(perspectiveForPath(path)).toBe(side);
     expect(canViewPath(side, path)).toBe(true);
