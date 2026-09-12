@@ -876,3 +876,31 @@ and two zero-violation axe/keyboard checks. The later fair-citation and
 submission hardening passed check, 726 unit tests and eight production smoke
 tests. These local results do not replace exact-head full CI or the coordinator's
 post-merge live checks.
+
+## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
+
+Comparing parsed floating-point values alone accepted a judging draft just
+above Today's total, such as `12.00000000000000001`. The monthly selector now
+also compares the valid raw decimal fractions. Normalising relative weights
+before scaling the gathering total avoids losing a subnormal positive weight
+when the gathering total is fractional. Dedicated regressions preserve both
+cases without changing legacy baseline arithmetic or frozen signatures.
+
+The initial Task 14 production audit caught a paragraph directly inside a
+definition-list group. The assisted gathering explanation belongs in a `dd`,
+not a sibling paragraph. The run was stopped and its failure artifacts retained;
+that failed run is not acceptance evidence. Nested disclosures also require a
+direct-child summary selector in tests, not an ambiguous descendant selector.
+
+The application supplies compact overlays, not the raw tooltip provider.
+Reusing the existing compact tooltip avoids a missing-provider route crash.
+The static-render test must not add a raw provider absent from the real app,
+because that wrapper masks the integration defect. Capacity footnotes must
+also follow the mode: manual-case capacity Today, built-case capacity On.
+
+Counting a delta must not reconstruct the final target as `from + delta`.
+After a very large valid capacity, floating-point cancellation can display
+3,776 or zero instead of 3,780, including in reduced motion. Assign the exact
+model target at completion, retaining it as the next transition's origin.
+Both motion modes now exercise large capacities followed by the default
+judging input and check the visible number against the shared Scene value.
