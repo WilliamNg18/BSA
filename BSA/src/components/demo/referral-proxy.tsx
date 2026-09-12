@@ -6,6 +6,7 @@ export function ReferralProxy({ result }: { result: BaselineResult }) {
     <dl className="grid gap-3 text-sm sm:grid-cols-2">
       <div><dt>Scenario proxy · Not observed accuracy</dt><dd className="text-2xl font-semibold tabular-nums" data-referral-proxy>{referralFreeProxyDisplay(result)}</dd></div>
       <div><dt>Residual risk · All abstained + deficient built</dt><dd className="text-2xl font-semibold tabular-nums" data-risk-residual>{formatBaselineNumber(result.referralRiskResidual, 0)}</dd></div>
+      <div><dt>Assumed referrals · Not observed outcomes</dt><dd className="text-2xl font-semibold tabular-nums" data-referrals-with>{formatBaselineNumber(result.referrals.withAgent, 0)}</dd></div>
     </dl>
     <p className="text-xs text-muted-foreground">Rounded down to 0.1%. Zero residual establishes no accuracy. Deficient abstentions counted once; residual risk differs from assumed referrals.</p>
   </section>;
