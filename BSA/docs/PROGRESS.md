@@ -1408,3 +1408,18 @@ npx playwright test accessibility-final.spec.ts routes.spec.ts --config tests\e2
 
 Port 4183 was confirmed released. Full PR CI and R's post-integration rerun
 remain separate gates; no fresh full-suite or hosted acceptance is claimed here.
+## Issue #37 tag-preserving recovery preparation
+
+The template now exposes separate site/plan tag parameters, and the read-only
+PowerShell exporter preserves existing metadata in a temporary parameter file.
+Existing empty tags stay empty; absent resources use BSA defaults. The recovery
+instructions require reviewed Incremental deployment, never deletion or Complete
+mode. The current ID-bound OIDC subject and application runtime are unchanged.
+
+Local Bicep compilation passed and all six targeted hosting unit guards passed.
+The exporter was executed with local CLI mocks: custom tags, untagged existing
+plan, absent resources and failed CLI lookup all behaved as specified; temporary
+files were cleaned up. An initial mock fixture scoping error was corrected in
+the test invocation, not hidden by a helper fallback. No Azure mutations, live
+requests, browser runs or recovery applies were performed by this stream.
+The coordinator owns actual what-if/apply and measured non-destructive results.

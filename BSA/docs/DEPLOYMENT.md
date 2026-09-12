@@ -137,6 +137,41 @@ The deployment identity/federation/site-role bootstrap is optional and defaults
 **off** because those resources already exist. Its role-assignment name is
 parameterised to avoid creating a duplicate grant.
 
+### Non-destructive recovery of the existing app
+
+Preserve site and plan tags independently. Before what-if, read their existing
+tags into a uniquely named parameter file in the operating-system temporary
+directory, outside the repository. The read-only helper projects only resource
+names/types/tags; it does not read credentials or print tag values. Existing
+empty tags remain empty. Missing resources omit the corresponding parameter
+so Bicep's `project: bsa` / `synthetic-data: true` defaults apply on fresh creation.
+Lookup failures stop rather than masquerading as absent resources.
+
+The coordinator runs the following from repository root after explicitly
+selecting the intended subscription. Inspect what-if before executing the
+separate apply command; do not use Complete mode or delete/recreate the URL.
+
+```powershell
+$parameters = & .\infra\export-recovery-parameters.ps1
+try {
+    az deployment group what-if --resource-group rg-bsa-bsa-demo --template-file .\infra\appservice.bicep --parameters "@$parameters" --mode Incremental
+    if ($LASTEXITCODE -ne 0) { throw 'Recovery what-if failed; do not apply' }
+    # STOP and review proposed changes. The coordinator runs this next line only after approval.
+    # az deployment group create --resource-group rg-bsa-bsa-demo --template-file .\infra\appservice.bicep --parameters "@$parameters" --mode Incremental
+    # if ($LASTEXITCODE -ne 0) { throw 'Recovery apply failed' }
+} finally {
+    Remove-Item -LiteralPath $parameters
+}
+```
+
+Keep the parameter file until the reviewed apply completes, then remove only
+that exact temporary file. If applying later, regenerate and review fresh
+parameters first to avoid overwriting a concurrent tag edit. What-if output can
+show metadata; retain it privately rather than posting tag values in public logs.
+This exercises an incremental reapplication to existing resources/settings,
+not recovery after deleting the app, plan or resource group. Measure and report
+that precise scope only; no destructive recovery test is implied.
+
 F1 has no deployment slots or Always On. PRs get CI and build artifacts, not
 fabricated live previews. Cold starts and Free-tier limits remain real platform
 constraints. Slots require an explicitly approved S1-or-higher upgrade; no
