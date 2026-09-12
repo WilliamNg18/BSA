@@ -6,6 +6,7 @@ import { BASELINE_DEFAULTS, baselineSummary, calculateBaseline, formatBaselineNu
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
+import { startDemonstrationReview } from "../e2e/lifecycle-helpers";
 
 const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -206,8 +207,13 @@ test("10 Case E remains deterministic without an agent call", async ({ page }) =
 });
 
 test("11 Case B July replay is Sufficient while August refers back", async ({ page }) => {
-  await page.goto("/case/EX-24112/record");
+  await page.goto("/case/EX-24112");
+  await startDemonstrationReview(page);
   await flag(page).setChecked(true);
+  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
+  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
   const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
   await replay.selectOption("2026-07");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Sufficient: release to pricing once confirmed");
