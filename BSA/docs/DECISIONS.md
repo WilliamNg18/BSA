@@ -865,3 +865,15 @@ in the store. N owns monthly presentation/model implementation; Q queue; P
 claims; X perspective/navigation; V copy recommendations and visual/docs
 acceptance. Coordinator owns frozen contracts/store and serialises shared
 changes. Merge N, Q/P, X, V; every main merge uses existing App Service OIDC.
+
+## 2026-09-12: Evidence for the selected pharmacy's caught-before-submission count
+
+A submitted ready snapshot does not establish that a missing endorsement was
+caught. Record an immutable advisory event only after a person applies a
+suggested correction and the matching completed precheck changes missing to
+ready. Count one item per next submission revision, with pharmacy code and UTC
+event time. Validate both snapshots and current revision in the shared store.
+This record is neither submission nor lifecycle history, approval or payment;
+all existing operational slices remain identical. Reset clears it. X owns the
+narrow workbench capture; P consumes the selected-pharmacy count. The monthly
+model's whole-cohort estimate remains separate from these observed demo actions.

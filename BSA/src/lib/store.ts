@@ -35,10 +35,11 @@ import { CASES } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
-import type { CaseRevision, HistoryEvent, LifecycleDecisionRecord, LifecycleSlice, LifecycleState } from "@/lib/domain/lifecycle";
+import type { CaseRevision, HistoryEvent, LifecycleDecisionRecord, LifecycleSlice, LifecycleState, PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
 import { appendHistory, caseForLifecycle, immutable, requireLifecycle, requireText, validatePrecheck } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
+import { checkPharmacy } from "@/lib/domain/pharmacy-check";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -72,6 +73,16 @@ function seededRecords(): DecisionRecord[] {
 
 export type Perspective = "pharmacy" | "nhsbsa" | "both";
 
+export interface PharmacyCorrectionEvent {
+  readonly caseId: string;
+  readonly pharmacyCode: string;
+  readonly at: string;
+  /** The next human submission attempt, not a lifecycle transition. */
+  readonly revision: number;
+  readonly before: PharmacyPrecheckSnapshot;
+  readonly after: PharmacyPrecheckSnapshot;
+}
+
 interface AppState extends LifecycleSlice {
   caseStates: Record<string, CaseState>;
   records: LifecycleDecisionRecord[];
@@ -82,6 +93,8 @@ interface AppState extends LifecycleSlice {
   setBaselineInput: (field: BaselineField, value: string) => void;
   todayMinutes: string;
   setTodayMinutes: (value: string) => void;
+  pharmacyCorrections: readonly PharmacyCorrectionEvent[];
+  recordPharmacyCorrection: (caseId: string, before: PharmacyPrecheckSnapshot, after: PharmacyPrecheckSnapshot, revision: number) => void;
   recordDecision: (input: {
     caseId: string;
     tariffVersion: string;
@@ -212,10 +225,28 @@ export const useAppStore = create<AppState>((set, get) => {
     setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
     todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes),
     setTodayMinutes: (todayMinutes) => set({ todayMinutes }),
+    pharmacyCorrections: immutable([]),
+    recordPharmacyCorrection: (caseId, before, after, revision) => {
+      const s = get(), c = currentCase(caseId);
+      validatePrecheck(before, before.typedText, c.extracted.dispensingDate);
+      validatePrecheck(after, after.typedText, c.extracted.dispensingDate);
+      if (!s.agentEnabled || before.status !== "missing" || after.status !== "ready" ||
+        before.typedText === after.typedText || !before.checkedAt || !after.checkedAt ||
+        Date.parse(after.checkedAt) < Date.parse(before.checkedAt) ||
+        revision !== s.caseRevisions[caseId].at(-1)!.number + 1 ||
+        checkPharmacy(c, before.typedText).status !== "missing" || checkPharmacy(c, after.typedText).status !== "ready") {
+        throw new Error("A current human-applied correction with completed before and after checks is required.");
+      }
+      // A repeated ready render is the same caught item, not another correction.
+      if (s.pharmacyCorrections.some((event) => event.caseId === caseId && event.revision === revision)) return;
+      set({ pharmacyCorrections: immutable([...s.pharmacyCorrections, {
+        caseId, pharmacyCode: s.lifecycles[caseId].pharmacyCode, at: new Date().toISOString(), revision, before, after,
+      }]) });
+    },
     recordDecision: ({ approvedDraft, ...input }) => decide(input, true, approvedDraft),
     setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
     // Preserve all three replacement identities used by existing reset subscribers.
-    resetDemo: () => set({ ...seededLifecycleSession(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes) }),
+    resetDemo: () => set({ ...seededLifecycleSession(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]) }),
   };
 });
 

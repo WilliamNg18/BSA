@@ -14,11 +14,11 @@ preserves it while restoring the seeded operational state and Agent Off.
 
 | Task | Stream | Ownership | Status |
 | --- | --- | --- | --- |
-| 14: One understandable monthly model | N | `baseline.ts` implementation within frozen signatures; chapter 1/2 baseline components and their tests | Ready after contracts |
-| 15: Readable NHSBSA queue | Q | Queue page/components, queue projection helpers/store and queue tests | Ready after contracts |
-| 16: Readable pharmacy claims | P | Claims page/detail/history/comparison components and claims tests | Ready after contracts |
-| 17: Independent perspective switch | X | Header, shell, routes, tour/Follow/case-header filtering and perspective tests | Ready after contracts |
-| 18: First-time viewer acceptance | V | Copy recommendations to source owners; FIRST-TIME-VIEWER, screens, demo-script, SPEC, KNOWN-ISSUES, README | Ready after contracts |
+| 14: One understandable monthly model | N, #59 | `baseline.ts` implementation within frozen signatures; chapter 1/2 baseline components and their tests | In progress |
+| 15: Readable NHSBSA queue | Q, #58 | Queue page/components, queue projection helpers/store and queue tests | In progress |
+| 16: Readable pharmacy claims | P, #62 | Claims page/detail/history/comparison components and claims tests | In progress |
+| 17: Independent perspective switch | X, #61 | Header, shell, routes, tour/Follow/case-header filtering and perspective tests | In progress |
+| 18: First-time viewer acceptance | V, #60 | Copy recommendations to source owners; FIRST-TIME-VIEWER, screens, demo-script, SPEC, KNOWN-ISSUES, README | In progress |
 
 Coordinator alone edits shared `store.ts`, frozen model signatures and the
 shared model hook. X requests claim-detail link guards from P instead of
@@ -46,6 +46,15 @@ context. Volume/judging/shares retain `baselineInputs`/`setBaselineInput`;
 the added total Today draft uses `todayMinutes`/`setTodayMinutes`. Invalid
 drafts produce errors and no result. The legacy calculator/projection remains
 unchanged until its owning stream migrates the presentation.
+
+Coordinator follow-up contract: `pharmacyCorrections` records one immutable
+human-applied, missing-to-ready precheck correction per case/next-submission
+revision. `recordPharmacyCorrection(caseId, before, after, revision)` requires
+Agent On, current revision and completed validated snapshots; it does not
+submit, approve, price or change lifecycle/history. X records only after an
+explicit Apply click and the matching ready result; P counts the selected
+pharmacy's events for the month. Reset clears these events, while perspective
+persists. A ready submission alone never proves a caught gap.
 
 Final acceptance requires all five merged streams, latest-main live checklist
 and first-time-viewer observations. No hosting, billing, visibility, protected
