@@ -54,7 +54,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
       >
         Skip to main content
       </a>
-      <div className="flex min-h-[calc(3.5rem-1px)] flex-wrap items-center gap-1 px-2 py-1 sm:gap-2 md:gap-4 md:px-6">
+      <div className="flex min-h-[calc(3.5rem-1px)] flex-wrap items-center gap-0.5 px-1 py-1 sm:gap-2 sm:px-2 md:gap-4 md:px-6">
         <Link to="/#scene" aria-label="Prescription Exception Case Builder" className="flex shrink-0 items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2">
           <span className="flex size-7 items-center justify-center rounded-md bg-teal-700 text-white sm:size-9" aria-hidden="true">
             <ShieldCheck className="size-5" />
@@ -92,9 +92,9 @@ export function TopNav({ onReset }: { onReset: () => void }) {
             </SheetContent>
           </Sheet>
         </nav>
-        <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-3">
+        <div className="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-3">
           <PerspectiveSwitch />
-          <div className="flex items-center gap-1 rounded-md border bg-muted/50 px-1 py-1.5 sm:gap-2 sm:px-2">
+          <div className="flex items-center gap-0.5 rounded-md border bg-muted/50 px-0.5 py-1.5 sm:gap-2 sm:px-2">
             <TooltipProvider><Tooltip>
               <TooltipTrigger asChild><span className="inline-flex"><Switch id="agent-flag" aria-label={`Agent: ${agentEnabled ? "On" : "Off"}`} aria-describedby="agent-help" checked={agentEnabled} onCheckedChange={setAgentEnabled} className="data-[state=checked]:bg-teal-700" /></span></TooltipTrigger>
               <TooltipContent className="max-w-64">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</TooltipContent>

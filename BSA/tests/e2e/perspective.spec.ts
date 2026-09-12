@@ -106,11 +106,14 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
 }
 
 for (const width of [320, 360, 768]) for (const colorScheme of ["light", "dark"] as const) for (const fontSize of [16, 18]) {
-  test(`document reflow for every perspective and Agent mode ${width} ${colorScheme} font ${fontSize}`, async ({ page }, info) => {
+  test(`document reflow for every perspective and Agent mode ${width} ${colorScheme} fallback font ${fontSize}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
     await page.goto("/evaluation");
-    await page.evaluate((size) => { document.documentElement.style.fontSize = `${size}px`; }, fontSize);
+    await page.evaluate((size) => {
+      document.documentElement.style.fontSize = `${size}px`;
+      document.body.style.fontFamily = "Arial, sans-serif";
+    }, fontSize);
     await page.evaluate(() => document.fonts.ready);
     for (const side of ["Pharmacy", "NHSBSA", "Both"] as const) for (const enabled of [false, true]) {
       await choosePerspective(page, side);
@@ -128,6 +131,19 @@ for (const width of [320, 360, 768]) for (const colorScheme of ["light", "dark"]
       await captureJson(info, `reflow-${side}-${enabled}`, layout);
       expect(layout.document).toBeLessThanOrEqual(width);
       expect(layout.body).toBeLessThanOrEqual(width);
+      if (width >= 360 && fontSize === 16) {
+        const header = page.getByRole("banner");
+        expect((await header.boundingBox())!.height).toBeLessThanOrEqual(64);
+        const boxes = await Promise.all([
+          header.getByRole("link", { name: "Prescription Exception Case Builder", exact: true }),
+          header.getByRole("button", { name: "Open navigation", exact: true }),
+          header.getByRole("group", { name: "Perspective", exact: true }),
+          flag(page),
+          header.getByRole("button", { name: "Reset demo", exact: true }),
+        ].map((control) => control.boundingBox()));
+        const centres = boxes.map((box) => box!.y + box!.height / 2);
+        expect(Math.max(...centres) - Math.min(...centres)).toBeLessThanOrEqual(1);
+      }
       const radio = page.getByRole("group", { name: "Perspective", exact: true }).getByRole("radio", { name: side, exact: true });
       await radio.focus();
       await expect(radio).toBeFocused();
