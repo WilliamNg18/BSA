@@ -93,33 +93,51 @@ Git root contains the nested application `BSA`. Application main at freeze is
 `checkpoint-2026-09-12` pins the main handover/tracking commit. Stream tags
 and full branch heads are listed in [HANDOVER](HANDOVER.md).
 
-Tasks 1-7 are Done. Tasks 8-13 are In progress for remaining
-integrated acceptance and final documentation. Eight chapters/nine stops,
+Tasks 1-12 are Done. Task 13 has complete application verification but remains
+In progress for hosted release verification under #37. Eight chapters/nine stops,
 full referral-cycle guide, queue Compare, scene count-in, healthy manual
 pharmacy status and S's CSP/focus/motion fixes are merged. R's approved-only
-On reasons and manual-resubmission pain fixes are on PR #33, not main.
-V's draft #24 preserves 103 initial images; its final 107-image harness is
-prepared but has not run against the complete final application. D has
-completed readiness only and must not tick final tasks yet.
+On reasons and manual-resubmission pain fixes merged through PR #33 at
+`898cda594d0dcb34376bddab7112edcddb172440`. V's final PR #24 merged at
+`be623ab507e871c27e0889e7db6e64a8595ad10b` without changing runtime source.
+The final source-pinned manifest contains 107 reviewed captures/audits:
+53 Off and 54 On, all with zero axe violations, overflow and browser/CSP errors.
+Its 51 audits with incomplete rules still require human judgement; automated
+checks are not complete manual WCAG certification.
+
+Overview has eight chapters/nine stops, including separate Pipeline and Four
+cases chapters and cross-page Queue/Claims stops. Operations includes Pharmacy
+check, Pharmacy claims/detail and Exception queue; case pack, trace and decision
+record preserve all six canonical outcomes. Follow and Switch side retain the
+same item. Pharmacy On reasons are operator-approved drafts, labelled as such;
+the original history and raw Off comparison are preserved.
 
 Azure Static Web Apps Free is the only hosting target; production and local
 browser tests use `/`. Root configuration is emitted into BSA/dist. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
-The token was absent at checkpoint; resource/subscription and live URL remain
-unverified. Private-repository replacement CI jobs failed before starting
-because of an account payment/spending restriction. Public Actions execution
-must now be verified from actual jobs, not assumed unlimited for every runner.
-R's local full fallback was interrupted for transfer, not passed.
-Prior exact evidence: check/607 units,
-Linux 1,016 passes/three stale test failures, then all three corrected tests
-passed; 673 axe and 193 CSP reports from the failed run were clear.
+Public CI 34689966621 passed at exact head
+`6e424ac75c4980380c31f9e3aab23243a9a013d0`: check, 607 units/22 files,
+1,019 blocking browsers and three separately run informational quarantined
+cases. Runtime source matches application main `898cda5` and V merge `be623ab`.
+Successful-run audit artifacts were not uploaded; do not recycle the failed
+run's 673 axe/193 CSP counts as this run's totals. Final capture/build evidence
+is in docs/screens/integrated: 203,723 independent-resource gzip bytes across
+all four emitted files, informational with no budget.
+
+Azure workflow 34692328300 built `be623ab` but failed its explicit missing
+deployment-token prerequisite. No actual live URL, resource provisioning or
+PR preview is verified. Owner token reset/secret setup and hosted checks remain
+#37; follow DEPLOYMENT.md without exposing credentials. Timing follow-ups
+#34 and #35 remain open even though the final execution passed.
 
 Never alter last-known-good, lkg-2026-09-09 or cowork-v1 refs; see
-[branch policy](../../BRANCHES.md).
+[branch policy](../../BRANCHES.md) and [current branch record](BRANCHES.md).
 
 Read AGENTS first, then this file, DECISIONS, LEARNINGS, PROGRESS, SCOPE and
-HANDOVER. Merge R (S already merged), then V, then D's final acceptance record.
+HANDOVER. R/S/V are merged; D's documentation goes through coordinator-serialised
+PR merge, not self-merge. Current acceptance is in PROGRESS; checkpoint sections
+in HANDOVER remain historical and all checkpoint tags stay immutable.
 Old issue text mentioning size budgets or transfer waiting is superseded by
 the current gates and the owner's public-repository resumption.
