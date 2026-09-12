@@ -635,3 +635,29 @@ deployment, and report blockers immediately with an Owner actions for me line.
 Do not repeatedly dispatch an absent/unchanged failed secret. Completed local
 application acceptance is retained; only hosted verification and its final
 records remain blocked. No size/performance gates or extra Azure services.
+
+## 2026-09-12: Issue 41 preserves route contrast during motion
+
+CI `34693827974` on PR #40 reported one genuine contrast failure among 1,022
+tests: 21 muted-text nodes in the Follow-linked case pack. The unchanged light
+token passes when settled; ancestor opacity during the 150 ms route entrance
+made the effective text too light. Do not quarantine axe or wait away this
+visible state.
+
+Measured production frames on runtime-equivalent main `8e49884` confirm the
+defect under the actual strict CSP. At 75 ms, opacity 0.839245 yields
+`#8a8a8a` on white, 3.45:1, with 21 failing nodes. At 135 ms, opacity 0.994601
+still produces eight panel failures. At 150 ms, opacity is 1 and the same
+intro is `#737373`, 4.74:1, with zero violations.
+
+Remove only `motion-safe:fade-in` from the text-bearing AppShell route wrapper.
+Retain the 6 px transform, 150 ms duration, easing, reduced-motion guard and
+focus behaviour. No colour token, domain/store rule, CSP or unrelated animation
+changes. The regression holds the real CSS animation through the Web Animations
+API at 0, 75, 135 and 150 ms; it does not inject replacement styles or sleep
+until contrast passes.
+
+Use independently timed frame cases across both themes, motion preferences and
+Agent states, retaining the existing 30-second guard. The optional development
+diagnostic configuration excludes the new header-only spec, as it does the
+older strict-CSP spec. Default CI and production-artifact diagnostics include it.

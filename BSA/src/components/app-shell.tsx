@@ -77,7 +77,7 @@ export function AppShell() {
             <Outlet/> would animate the NEXT route's content, not the leaving one. */}
         <div
           key={`${pathname}:${resetEpoch}`}
-          className="flex-1 px-4 py-6 md:px-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
+          className="flex-1 px-4 py-6 md:px-6 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
         >
           {pathname === "/queue" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
             <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
