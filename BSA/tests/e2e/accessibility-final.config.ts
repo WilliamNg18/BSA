@@ -2,19 +2,21 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "@playwright/test";
 import production from "../../playwright.config";
 
-const port = Number(process.env.PLAYWRIGHT_PORT ?? 4173);
+const port = Number(process.env.PLAYWRIGHT_PORT ?? 4183);
+const baseURL = `http://localhost:${port}/`;
 
-// Header-enforced diagnostics of an already emitted artifact, without rebuilding.
-// This does not replace the default build-and-test gate.
 export default defineConfig({
   ...production,
   testDir: fileURLToPath(new URL(".", import.meta.url)),
-  retries: 0,
+  testMatch: "accessibility-final.spec.ts",
+  timeout: 60_000,
+  workers: 2,
+  outputDir: "../../test-results/accessibility-final",
+  use: { ...production.use, baseURL },
   webServer: {
-    command: "node scripts/serve-production.mjs",
-    env: { PLAYWRIGHT_PORT: String(port) },
+    command: "npm run build && node scripts/serve-production.mjs",
     cwd: fileURLToPath(new URL("../..", import.meta.url)),
-    url: `http://localhost:${port}/`,
+    url: baseURL,
     reuseExistingServer: false,
     timeout: 120_000,
   },

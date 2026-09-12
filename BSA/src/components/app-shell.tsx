@@ -7,7 +7,7 @@ import { TopNav } from "@/components/demo/top-nav";
 import { RouteErrorBoundary } from "@/components/route-error-boundary";
 import { TourRail } from "@/components/demo/tour-rail";
 import { FollowBanner } from "@/components/demo/follow-banner";
-import { tourStopIndex } from "@/lib/tour-navigation";
+import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { TOUR_CONTENT } from "@/lib/domain/public-facts";
 import { Button } from "@/components/ui/button";
 
@@ -15,10 +15,18 @@ import { Button } from "@/components/ui/button";
 export function AppShell() {
   const { pathname, hash, search } = useLocation();
   const chrome = useRef<HTMLDivElement>(null);
+  const restoreTourFocus = useRef(false);
   const notification = useNotification();
   const [tourVisible, setTourVisible] = useState(true);
   const [disclaimerOpen, setDisclaimerOpen] = useState(true);
   const [resetEpoch, setResetEpoch] = useState(0);
+  const tourStop = TOUR_STOPS[tourStopIndex(pathname, hash)];
+  useLayoutEffect(() => {
+    if (tourVisible && restoreTourFocus.current) {
+      restoreTourFocus.current = false;
+      chrome.current?.querySelector<HTMLButtonElement>('button[aria-label="Choose tour chapter"]')?.focus();
+    }
+  }, [tourVisible]);
   useEffect(() => {
     // Child detail views may focus on mount; a reset must keep its invoking control.
     if (resetEpoch) document.querySelector<HTMLElement>('header button[aria-label="Reset demo"]')?.focus({ preventScroll: true });
@@ -48,7 +56,10 @@ export function AppShell() {
       <div ref={chrome} className="sticky top-0 z-30">
         <TopNav onReset={() => { notification.clear(); setResetEpoch((value) => value + 1); setTourVisible(true); setDisclaimerOpen(true); }} />
         <FollowBanner />
-        <TourRail visible={tourVisible} onDismiss={() => setTourVisible(false)} />
+        <TourRail visible={tourVisible} onDismiss={() => {
+          setTourVisible(false);
+          document.getElementById("main-content")?.focus({ preventScroll: true });
+        }} />
       </div>
       <section aria-label="Demonstration scope and governing principle">
       <div className="border-b border-amber-300 bg-amber-50 px-4 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 md:px-6" data-disclaimer>
@@ -68,14 +79,14 @@ export function AppShell() {
           key={`${pathname}:${resetEpoch}`}
           className="flex-1 px-4 py-6 md:px-6 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
         >
-          {pathname === "/queue" && <section aria-label="Tour chapter 5" className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
-            <h2 className="font-semibold">5. The queue</h2>
+          {pathname === "/queue" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
+            <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
             <p className="mt-1 text-sm text-muted-foreground" data-tour-prose>Explore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.</p>
           </section>}
-          {pathname === "/pharmacy" && <p className="mx-auto mb-6 max-w-7xl rounded-lg border p-3 text-sm">4. Pharmacy example · Existing advisory mock, not a deployed integration or a shared live model.</p>}
-          {pathname === "/pharmacy/claims" && <section aria-label="Tour chapter 6" className="mx-auto mb-6 max-w-7xl space-y-2 rounded-lg border p-4" data-tour-prose>
-            <h2 className="font-semibold">6. What the pharmacy sees</h2>
-            <p className="text-sm text-muted-foreground">{TOUR_CONTENT.chapters.find((chapter) => chapter.chapter === 6)?.prose}</p>
+          {pathname === "/pharmacy" && <p className="mx-auto mb-6 max-w-7xl rounded-lg border p-3 text-sm">{tourStop.chapter}. {tourStop.label} · Existing advisory mock, not a deployed integration or a shared live model.</p>}
+          {pathname === "/pharmacy/claims" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl space-y-2 rounded-lg border p-4" data-tour-prose>
+            <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
+            <p className="text-sm text-muted-foreground">{TOUR_CONTENT.chapters.find((chapter) => chapter.chapter === tourStop.chapter)?.prose}</p>
           </section>}
           <RouteErrorBoundary key={pathname} pathname={pathname}>
             <Outlet />
@@ -85,7 +96,10 @@ export function AppShell() {
       </main>
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-4 text-xs text-muted-foreground md:px-6">
         <span>Session only · Synthetic cases · No payments calculated or approved</span>
-        {tourVisible ? <span>Tour shortcuts: Alt + ← / → outside fields and menus</span> : <Button variant="outline" size="sm" onClick={() => setTourVisible(true)}>Restore tour</Button>}
+        {tourVisible ? <span>Tour shortcuts: Alt + ← / → outside fields and menus</span> : <Button variant="outline" size="sm" onClick={() => {
+          restoreTourFocus.current = true;
+          setTourVisible(true);
+        }}>Restore tour</Button>}
       </footer>
     </div>
   );

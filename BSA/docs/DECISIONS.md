@@ -270,3 +270,63 @@ claims, frozen store/lifecycle changes or Tasks 8-13. Tick Task 7 LOCAL PASS onl
 leave integration unchecked and Task 7 CI/hosted gates pending main-agent action.
 This closeout performs documentation and report work only: no source edits,
 Git commands, account changes, deployment or feature implementation.
+
+## 2026-09-11: Stream S verifies the deployed CSP without relaxing it
+
+Keep root `staticwebapp.config.json` unchanged. Production browser servers read
+the emitted configuration and apply its actual global headers to every response.
+Default Playwright uses port 4173; `PLAYWRIGHT_PORT` supports isolated runs and the
+dedicated accessibility configuration defaults to 4183. The local server covers
+static assets and SPA deep links, not every Azure platform routing behaviour.
+
+Reset and mobile navigation use Radix scroll locking. Its upstream scrollbar
+component injects a style element that `style-src 'self'` blocks. Alias only the
+`react-remove-scroll-bar` entry consumed by Radix to a local component. Preserve
+Radix focus trapping, dismissal, wheel/touch containment and constant subpath
+imports. Apply measured compensation with individual CSSOM properties and
+external CSS, retaining nested-lock counting and previous property priorities.
+Do not add unsafe-inline, nonces, hashes, a runtime service or a different host.
+
+The dedicated unrestricted axe matrix covers the specified screens, both Agent
+states, both motion settings and both themes. Phone claims also cover all seven
+lifecycle states. Keyboard checks assert observable effects and focus, not just
+successful key dispatch. This is local Chromium evidence, not full WCAG 2.2 AA
+conformance, manual screen-reader testing or verified hosted acceptance.
+
+Keep source work parallel, but temporarily serialise heavyweight browser runs
+on this shared machine. Stop only this stream's owned stalled process and retain
+its partial log as interrupted; wait for R's existing run before starting S's
+final matrix. Do not classify contention timeouts as product failures or flaky
+tests without evidence, and do not count interrupted runs as passing.
+
+The historical replay link is present for A/B/C/E/F, but not escalated D. Allow
+its existing label to wrap with bounded width and automatic height. Preserve
+the label, destination and layout; do not conceal overflow. Linux CI reported
+5px overflow at 360px. Windows reproduced 17px with the root text size enlarged
+from 16px to 18px, establishing the same intrinsic-width defect.
+
+Use completed Linux evidence on the exact patch instead of repeating a healthy
+but slow local matrix: CI `34629986842` on `1a103e3` has all 183 S tests and 247
+unique unrestricted axe reports passing. Keep its overall 760 passed / 205 failed
+result separate; no full-CI pass is claimed. Retain artifact `10277495935` and
+the extracted audit/CSP counts. Stop the owned duplicate, not another stream.
+
+After that matrix, fix two explicit accessibility gaps: Dismiss tour moves focus
+to main; Restore tour focuses the remounted chapter chooser. Reset overlay and
+content suppress open/closed animations under reduced motion, while preserving
+normal motion. Verify computed animation names and keyboard focus, not axe alone.
+Use state-qualified reduced-motion classes to match the state animation rules.
+
+AppShell remains the single owner of the claims chapter heading and prose.
+Derive chapter numbers/titles from shared tour stops and look up prose by that
+number. T's referral-cycle component keeps only its distinct flow subheading.
+This avoids duplicated chapter copy and hardcoded 5/4/6 numbering after T merges.
+
+Complete affected-control acceptance without rerunning the full matrix: the
+40-test final-artifact run passed 38 and timed out twice at the existing
+30-second limit. Recheck only those two on the same artifact and unchanged
+configuration; both pass. Retain both outcomes and their traces rather than
+reporting a clean 40-test first run. No assertion, timeout or CI gate is weakened.
+Observed CPU saturation alone does not establish a product-specific flaky test.
+The nine owned keyboard checks, seven follow-up axe reports and nine CSP reports
+all pass on the final control revision. Release the owned server before handoff.

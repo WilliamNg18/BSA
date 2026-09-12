@@ -74,6 +74,17 @@ Open `/`, `/pharmacy/claims` and `/case/EX-24112/trace` directly and reload each
 Check response headers and asset caching on the deployed host. The strict
 self-only CSP must also be verified there, not inferred from Vite preview.
 
+For local header-enforced acceptance, run `npm run test:a11y` from `BSA`.
+It builds production assets and serves the emitted global headers on port 4183.
+The default `npm run test:e2e` uses the same server on port 4173; set
+`$env:PLAYWRIGHT_PORT = "4183"` in PowerShell for an isolated functional run.
+The server fails on a busy port rather than attaching to another stream.
+`tests/e2e/production-artifact.config.ts` applies the same headers to an already
+built artifact without rebuilding. The optional development-only lifecycle
+configuration excludes the production-header spec; default CI does not exclude it.
+This verifies browser behaviour under the configured policy, not Azure resource
+provisioning, platform routing/caching parity or a deployed HTTPS endpoint.
+
 At preparation on 11 September 2026, Azure CLI was unavailable, Azure discovery
 returned multiple subscriptions without a default, and GitHub had no repository
 deployment secret. No subscription was guessed, no resource was created and no
