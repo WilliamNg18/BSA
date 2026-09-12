@@ -893,3 +893,15 @@ rows and filler citations are excluded from new-decision/citation totals.
 The old nine-hour, raw-weight simulation remains explicitly labelled legacy
 behind a small disclosure; its original model is not silently presented as
 the current twelve-minute assumption.
+
+## 2026-09-12: Evidence for the selected pharmacy's caught-before-submission count
+
+A submitted ready snapshot does not establish that a missing endorsement was
+caught. Record an immutable advisory event only after a person applies a
+suggested correction and the matching completed precheck changes missing to
+ready. Count one item per next submission revision, with pharmacy code and UTC
+event time. Validate both snapshots and current revision in the shared store.
+This record is neither submission nor lifecycle history, approval or payment;
+all existing operational slices remain identical. Reset clears it. X owns the
+narrow workbench capture; P consumes the selected-pharmacy count. The monthly
+model's whole-cohort estimate remains separate from these observed demo actions.
