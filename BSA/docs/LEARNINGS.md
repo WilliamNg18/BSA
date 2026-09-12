@@ -852,3 +852,19 @@ Overview with assistance Off, but its implicit favicon request returned 404.
 Issue #52 adds a local icon and explicit link. Six targeted hosting tests and
 a production HTTP probe passed with image/x-icon and exact built bytes.
 This does not replace the remaining full live checklist.
+
+## 2026-09-12: A perspective filter must cover more than the main menu
+
+Shared overview cards, pipeline calls to action, referral guides, historical
+case links and nested lifecycle history all provide cross-side navigation.
+Filter these at their rendering source and guard the route outlet as a final
+presentation boundary. CSS hiding alone would still mount operational pages.
+Keep the Operations menu even when it contains only NHSBSA queue so its label
+and keyboard interaction stay stable.
+
+A ready submission is not evidence that a problem was caught. The workbench
+captures a missing snapshot only on human Apply correction and waits for the
+matching completed ready check before recording advisory evidence. Cancel the
+pending capture when the field, scenario, Agent availability or next revision
+changes; the store validates it again. No submission or lifecycle transition
+is implied by that evidence event.

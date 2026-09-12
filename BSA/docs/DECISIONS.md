@@ -877,3 +877,20 @@ This record is neither submission nor lifecycle history, approval or payment;
 all existing operational slices remain identical. Reset clears it. X owns the
 narrow workbench capture; P consumes the selected-pharmacy count. The monthly
 model's whole-cohort estimate remains separate from these observed demo actions.
+
+## 2026-09-12: Independent perspectives share one operational session
+
+Pharmacy, NHSBSA and Both are a native radio group immediately before Agent.
+Both remains the default. The choice filters navigation and cross-side actions,
+not lifecycle data, revisions, records or Agent. A hidden route retains its URL
+and presents an explicit switch action instead of mounting the opposite page.
+Single-side modes suspend the tour and Follow controls without discarding their
+session choices. Reset retains perspective and otherwise keeps its existing
+behaviour. Overview and How it works remain shared.
+
+Production and live acceptance use the same UI-driven Off-then-On round trip,
+without Reset or reloading the operational session. They compare the exact
+submitted item, immutable attempts and recorded decision identity across side
+switches. Live execution retains the existing before/after build-identity
+fixtures and belongs to the coordinator after the integrated release, not to
+an unmerged feature branch.

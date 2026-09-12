@@ -31,6 +31,7 @@ const gatheringPhase = {
 /** Presentation only. The shared selector supplies every scenario count. */
 export function ExceptionPipeline() {
   const enabled = useAppStore((s) => s.agentEnabled);
+  const perspective = useAppStore((s) => s.perspective);
   const { result, input } = useBaselineScenario();
   const { preparing, phase } = useAssistancePresentation();
   const builtReady = enabled && !preparing && !!result && result.built > 0;
@@ -42,7 +43,7 @@ export function ExceptionPipeline() {
       <div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold">Before stage 1 · Pharmacy pre-check</h2><BoundaryTag cls="deterministic" /></div>
       <p className="text-sm">Assumption: catch and correct missing information before submission. These items never enter the NHSBSA pipeline.</p>
       {enabled && result && <dl className="text-sm"><div><dt>Earlier exits · Estimate</dt><dd data-pipeline-pharmacy>{n(result.pharmacyCaught)}</dd></div></dl>}
-      <Link className="inline-block text-sm underline underline-offset-4" to="/pharmacy">Try the pharmacy check</Link>
+      {perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to="/pharmacy">Try the pharmacy check</Link>}
     </section>
     <div className="flex items-center gap-2 text-xs text-muted-foreground"><ArrowDown className="size-4" aria-hidden="true" />Remaining submissions enter capture</div>
     <ol aria-label="Processing stages" className="grid items-start gap-4 md:grid-cols-3">
@@ -95,7 +96,7 @@ export function ExceptionPipeline() {
         </section>}
         <PainMarker resolved={builtReady} pain="Reason and rule require manual review" resolution="Built-only proposal; operator still decides" />
         <section data-prose="manual residual"><p className="text-sm">Case D has no proposed rule or recommendation. Abstained items retain manual gathering and judgement.</p></section>
-        <Link className="inline-block text-sm underline underline-offset-4" to="/queue">Review the exception queue</Link>
+        {perspective !== "pharmacy" && <Link className="inline-block text-sm underline underline-offset-4" to="/queue">Review the exception queue</Link>}
       </li>
       <li data-pipeline-stage="6" className="space-y-4 rounded-xl border bg-card p-5">
         <h2 className="font-semibold">6. Referral and correction</h2>
@@ -107,7 +108,7 @@ export function ExceptionPipeline() {
         </>}
         <div data-exact-fix-marker><PainMarker resolved={draftReady} pain="Exact correction needs manual drafting" resolution="Exact-fix draft ready · Built only, not sent" /></div>
         <PainMarker resolved={false} pain="Referral risk remains; no perfect outcome claim" resolution="" />
-        <Link className="inline-block text-sm underline underline-offset-4" to="/case/EX-24112">Review case B and decide</Link>
+        {perspective !== "pharmacy" && <Link className="inline-block text-sm underline underline-offset-4" to="/case/EX-24112">Review case B and decide</Link>}
       </li>
     </ol>
     {enabled && result && <ReferralProxy result={result} />}

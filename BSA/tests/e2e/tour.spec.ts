@@ -42,7 +42,8 @@ for (const colorScheme of ["light", "dark"] as const) {
           const box = await header.boundingBox();
           await expect(header.getByRole("switch")).toHaveAttribute("data-state", enabled ? "checked" : "unchecked");
           expect(box?.height).toBeLessThanOrEqual(64);
-          const controls = [header.getByRole("link", { name: "Prescription Exception Case Builder" }), header.getByRole("switch"), header.getByRole("button", { name: "Reset demo" })];
+          await expect(header.getByRole("radio", { name: "Both", exact: true })).toBeChecked();
+          const controls = [header.getByRole("link", { name: "Prescription Exception Case Builder" }), header.getByRole("group", { name: "Perspective", exact: true }), header.getByRole("switch"), header.getByRole("button", { name: "Reset demo" })];
           for (const control of controls) {
             await expect(control).toBeVisible();
             const bounds = await control.boundingBox();

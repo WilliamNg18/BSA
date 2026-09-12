@@ -10,6 +10,8 @@ import { FollowBanner } from "@/components/demo/follow-banner";
 import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { TOUR_CONTENT } from "@/lib/domain/public-facts";
 import { Button } from "@/components/ui/button";
+import { PerspectiveGuard } from "@/components/demo/perspective-guard";
+import { useAppStore } from "@/lib/store";
 
 // One sticky stack: the banner can wrap without overlapping the rail or content.
 export function AppShell() {
@@ -20,6 +22,7 @@ export function AppShell() {
   const [tourVisible, setTourVisible] = useState(true);
   const [disclaimerOpen, setDisclaimerOpen] = useState(true);
   const [resetEpoch, setResetEpoch] = useState(0);
+  const both = useAppStore((s) => s.perspective === "both");
   const tourStop = TOUR_STOPS[tourStopIndex(pathname, hash)];
   useLayoutEffect(() => {
     if (tourVisible && restoreTourFocus.current) {
@@ -79,27 +82,27 @@ export function AppShell() {
           key={`${pathname}:${resetEpoch}`}
           className="flex-1 px-4 py-6 md:px-6 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
         >
-          {pathname === "/queue" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
+          {both && pathname === "/queue" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
             <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
             <p className="mt-1 text-sm text-muted-foreground" data-tour-prose>Explore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.</p>
           </section>}
-          {pathname === "/pharmacy" && <p className="mx-auto mb-6 max-w-7xl rounded-lg border p-3 text-sm">{tourStop.chapter}. {tourStop.label} · Existing advisory mock, not a deployed integration or a shared live model.</p>}
-          {pathname === "/pharmacy/claims" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl space-y-2 rounded-lg border p-4" data-tour-prose>
+          {both && pathname === "/pharmacy" && <p className="mx-auto mb-6 max-w-7xl rounded-lg border p-3 text-sm">{tourStop.chapter}. {tourStop.label} · Existing advisory mock, not a deployed integration or a shared live model.</p>}
+          {both && pathname === "/pharmacy/claims" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl space-y-2 rounded-lg border p-4" data-tour-prose>
             <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
             <p className="text-sm text-muted-foreground">{TOUR_CONTENT.chapters.find((chapter) => chapter.chapter === tourStop.chapter)?.prose}</p>
           </section>}
           <RouteErrorBoundary key={pathname} pathname={pathname}>
-            <Outlet />
+            <PerspectiveGuard><Outlet /></PerspectiveGuard>
           </RouteErrorBoundary>
         </div>
         </AssistanceTransition></TooltipProvider>
       </main>
       <footer className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-4 text-xs text-muted-foreground md:px-6">
         <span>Session only · Synthetic cases · No payments calculated or approved</span>
-        {tourVisible ? <span>Tour shortcuts: Alt + ← / → outside fields and menus</span> : <Button variant="outline" size="sm" onClick={() => {
+        {both && (tourVisible ? <span>Tour shortcuts: Alt + ← / → outside fields and menus</span> : <Button variant="outline" size="sm" onClick={() => {
           restoreTourFocus.current = true;
           setTourVisible(true);
-        }}>Restore tour</Button>}
+        }}>Restore tour</Button>)}
       </footer>
     </div>
   );

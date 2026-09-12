@@ -32,7 +32,7 @@ export const routes: AppRoute[] = [
   { path: "/", element: <HomePage />, label: "Overview", icon: HomeIcon, group: "Overview" },
   { path: "/pharmacy", element: <PharmacyPage />, label: "Pharmacy check", icon: Store, group: "Operations" },
   { path: "/pharmacy/claims", element: <PharmacyClaimsPage />, label: "Pharmacy claims", icon: ClipboardList, group: "Operations" },
-  { path: "/queue", element: <QueuePage />, label: "Exception queue", icon: Inbox, group: "Operations" },
+  { path: "/queue", element: <QueuePage />, label: "NHSBSA queue", icon: Inbox, group: "Operations" },
   { path: "/case/:id", element: <CasePackPage /> },
   { path: "/case/:id/trace", element: <CaseTracePage /> },
   { path: "/case/:id/record", element: <DecisionRecordPage /> },

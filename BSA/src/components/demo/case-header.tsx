@@ -4,9 +4,12 @@ import { StateBadge, SyntheticTag } from "@/components/demo/labels";
 import { pharmacyCaseLink } from "@/lib/case-links";
 import type { CaseState, ExceptionCase } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/lib/store";
+import { canViewPath } from "@/lib/perspective";
 
 export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state: CaseState; title: string; intro: string }) {
   const { pathname } = useLocation();
+  const perspective = useAppStore((s) => s.perspective);
   const tabs = [
     { to: `/case/${c.id}/trace`, label: "Case-building trace" },
     { to: `/case/${c.id}`, label: "Operator case pack" },
@@ -23,7 +26,7 @@ export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state
       <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
       <p className="max-w-3xl text-muted-foreground">{intro}</p>
       <nav aria-label="Case views" className="flex flex-wrap gap-1 border-b">
-        {tabs.map((t) => {
+        {tabs.filter((t) => canViewPath(perspective, t.to)).map((t) => {
           const active = pathname === t.to;
           return (
             <Link
