@@ -15,6 +15,10 @@ const types = {
 export async function startStaticServer(directory) {
   const root = await realpath(directory);
   const policy = JSON.parse(await readFile(resolve(root, "hosting.config.json"), "utf8"));
+  const protectedPaths = new Set([
+    resolve(root, "hosting.config.json"), resolve(root, "server.mjs"), resolve(root, "staticwebapp.config.json"),
+    await realpath(resolve(root, "hosting.config.json")), await realpath(resolve(root, "server.mjs")),
+  ]);
   const port = Number(process.env.PLAYWRIGHT_PORT ?? process.env.PORT ?? process.env.SERVER_PORT ?? 8080);
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("Invalid static server port");
   const host = process.env.PLAYWRIGHT_PORT !== undefined ? "localhost" : "0.0.0.0";
@@ -45,6 +49,7 @@ export async function startStaticServer(directory) {
       }
       let file = resolve(root, `.${pathname}`);
       if (file !== root && !insideRoot(file)) { response.writeHead(400).end("Invalid path"); return; }
+      if (protectedPaths.has(file)) { response.writeHead(404).end(); return; }
       let isFallback = false;
       try {
         if (!(await stat(file)).isFile()) {
@@ -65,7 +70,7 @@ export async function startStaticServer(directory) {
         isFallback = true;
       }
       file = await realpath(file);
-      if (!insideRoot(file) || !types[extname(file)]) { response.writeHead(404).end(); return; }
+      if (!insideRoot(file) || protectedPaths.has(file) || !types[extname(file)]) { response.writeHead(404).end(); return; }
       const body = await readFile(file);
       if (!isFallback && pathname.startsWith(policy.immutableAssetPrefix)) {
         response.setHeader("Cache-Control", "public, max-age=31536000, immutable");

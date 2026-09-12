@@ -1,5 +1,5 @@
 import { spawn, type ChildProcess } from "node:child_process";
-import { mkdtemp, mkdir, readFile, writeFile, copyFile, rm } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile, copyFile, rm, symlink, unlink } from "node:fs/promises";
 import { request } from "node:http";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -19,6 +19,7 @@ beforeAll(async () => {
   await mkdir(join(directory, "assets"));
   await copyFile(source, join(directory, "server.mjs"));
   await copyFile(policyFile, join(directory, "hosting.config.json"));
+  await symlink(directory, join(directory, "alias"), process.platform === "win32" ? "junction" : "dir");
   headers = JSON.parse(await readFile(policyFile, "utf8")).globalHeaders;
   await writeFile(join(directory, "index.html"), '<html><div id="root">Synthetic SPA</div></html>');
   await writeFile(join(directory, "assets", "entry-123.js"), 'console.log("synthetic");');
@@ -45,7 +46,10 @@ afterAll(async () => {
     child.kill();
     await exit;
   }
-  if (directory) await rm(directory, { recursive: true });
+  if (directory) {
+    await unlink(join(directory, "alias"));
+    await rm(directory, { recursive: true });
+  }
   expect(errors).toBe("");
 });
 
@@ -129,6 +133,21 @@ describe("standalone packaged static server", () => {
       });
       expect(response.status).toBe(400);
       expect(response.body).not.toContain("DO_NOT_SERVE");
+    });
+  }
+
+  for (const path of ["//hosting.config.json", "/%2fhosting.config.json", "/alias/hosting.config.json", "//server.mjs", "/%2fserver.mjs", "/alias/server.mjs"]) {
+    it(`denies the resolved private file through raw alias ${path}`, async () => {
+      const response = await new Promise<{ status: number; body: string }>((resolve, reject) => {
+        const req = request(base, { path }, (res) => {
+          let body = "";
+          res.on("data", (data) => { body += data; });
+          res.on("end", () => resolve({ status: res.statusCode!, body }));
+        });
+        req.on("error", reject); req.end();
+      });
+      expect(response.status).toBe(404);
+      expect(response.body).toBe("");
     });
   }
 

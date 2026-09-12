@@ -817,3 +817,10 @@ existing identity grant from optional recovery bootstrap to avoid duplicate
 site-role assignments. F1 cannot supply slots, regardless of PR workflow
 syntax. Keep local/browser verification and deployed-commit verification
 separate, and preserve failures rather than treating a build as a release.
+
+Protect private static-server files by resolved and canonical filesystem paths,
+not only the request spelling. Review found repeated or encoded leading slashes
+could bypass the exact policy URL denial. Both lexical resolution and realpath
+now deny protected files, including an in-root directory symlink alias. Six raw
+HTTP regressions cover those spellings for policy and server source; containment
+and all public-file checks remain unchanged.
