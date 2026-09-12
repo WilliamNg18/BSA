@@ -10,6 +10,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { useAppStore } from "../../src/lib/store";
 import { useQueueStore } from "../../src/lib/queue-store";
 import { QueuePage } from "../../src/pages/queue";
+import { caseForLifecycle } from "../../src/lib/domain/lifecycle-model";
 
 afterEach(() => useAppStore.getState().resetDemo());
 const result = monthModel(MONTH_MODEL_DEFAULTS);
@@ -94,6 +95,34 @@ describe("current queue comparison", () => {
 });
 
 describe("counted logical table windows", () => {
+  it("uses current revised evidence after Off arrival without rewriting stored state or history", () => {
+    const id = CASES[1].id;
+    useAppStore.getState().setAgentEnabled(false);
+    useAppStore.getState().submitFromPharmacy(id, "unreadable endorsement");
+    useAppStore.getState().arriveInQueue(id);
+    const before = useAppStore.getState();
+    const current = caseForLifecycle(id, before.lifecycles, before.caseRevisions)!;
+    const pack = agent.runAgent(current, { agentEnabled: true });
+    expect(before.caseStates[id]).toBe("operator_review_required");
+    expect(pack).toMatchObject({ state: "agent_abstained", recommendation: "ABSTAIN" });
+    expect(queueStatus(before.caseStates[id], false, before.lifecycles[id])).toBe("progress");
+    expect(queueStatus(before.caseStates[id], true, before.lifecycles[id], pack)).toBe("abstained");
+    expect(queueStatus("human_decision_recorded", true, before.lifecycles[id], pack)).toBe("decided");
+    expect(queueStatus(before.caseStates[id], true, { ...before.lifecycles[id], state: "submitted" }, pack)).toBe("evidence");
+    useAppStore.getState().setAgentEnabled(true);
+    expect(useAppStore.getState().caseStates).toBe(before.caseStates);
+    expect(useAppStore.getState().lifecycles).toBe(before.lifecycles);
+    expect(useAppStore.getState().caseRevisions).toBe(before.caseRevisions);
+    expect(useAppStore.getState().records).toBe(before.records);
+  });
+  it("current pack clearances, evidence requests and failed gates override stale assistance labels", () => {
+    const pack = agent.runAgent(CASES[2], { agentEnabled: true });
+    expect(queueStatus("agent_review_complete", true, undefined, pack)).toBe("evidence");
+    const cleared = agent.runAgent(CASES[4], { agentEnabled: true });
+    expect(queueStatus("operator_review_required", true, undefined, cleared)).toBe("cleared");
+    expect(queueStatus("human_decision_recorded", true, undefined, cleared)).toBe("decided");
+    expect(queueStatus("agent_review_complete", true, undefined, { ...pack, state: "operator_review_required", gate: { ...pack.gate, result: "FAIL" } })).toBe("evidence");
+  });
   it.each([0, 1, 12, 13, 85_000, 1e9])("bounds rendered rows with honest counters and filters for volume%s", (volume) => {
     const model = monthModel({ ...MONTH_MODEL_DEFAULTS, volume });
     for (const enabled of [false, true]) {

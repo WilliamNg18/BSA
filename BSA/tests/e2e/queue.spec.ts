@@ -118,6 +118,34 @@ test("Task15 pharmacy submission is first and New without reloading, then opens 
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
 });
 
+test("Task15 revised unreadable B reviewed Off abstains On without changing history or stored state", async ({ page }) => {
+  await page.goto("pharmacy");
+  await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("unreadable endorsement");
+  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("link", { name: "Open shared queue", exact: true }).click();
+  await page.locator('[data-shared-case="EX-24112"]').getByRole("button", { name: "Open for review", exact: true }).click();
+  const history = page.getByRole("region", { name: "Shared case history", exact: true });
+  await history.locator("summary").first().click();
+  const before = await history.getByRole("list", { name: "Lifecycle events", exact: true }).innerText();
+  const attempts = await history.getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).innerText();
+  await page.getByRole("link", { name: "Back to queue", exact: true }).click();
+  const row = page.locator('[data-shared-case="EX-24112"]');
+  await expect(row.locator("[data-recorded-state]")).toHaveAttribute("data-recorded-state", "operator_review_required");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await expect(row.locator("[data-queue-state]")).toHaveText("Abstained worked as today");
+  await expect(row).toContainText("Abstained: no recommendation. Operator gathers evidence.");
+  await expect(row.locator('[aria-label="Agent work phases"]')).toHaveCount(0);
+  await expect(row.locator("[data-recorded-state]")).toHaveAttribute("data-recorded-state", "operator_review_required");
+  await page.getByRole("button", { name: /Case built ready to decide/ }).first().click();
+  await expect(row).toHaveCount(0);
+  await page.getByRole("button", { name: /Abstained worked as today/ }).first().click();
+  await expect(row).toBeVisible();
+  await row.getByRole("link", { name: "Open", exact: true }).click();
+  await history.locator("summary").first().click();
+  await expect(history.getByRole("list", { name: "Lifecycle events", exact: true })).toHaveText(before, { useInnerText: true });
+  await expect(history.getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toHaveText(attempts, { useInnerText: true });
+});
+
 for (const width of [360, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {
   test(`Task15 queue axe ${width} ${colorScheme} agent=${enabled}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
@@ -129,7 +157,11 @@ for (const width of [360, 1440]) for (const colorScheme of ["light", "dark"] as 
     await captureJson(info, "queue-axe", audit);
     expect(audit.violations).toEqual([]);
     await page.screenshot({ path: info.outputPath(`queue-${width}-${colorScheme}-${enabled}.png`), fullPage: true });
-    await page.getByRole("button", { name: "Queue evidence and assumptions" }).focus();
-    await expect(page.getByRole("tooltip")).toContainText("plausible assumptions, not established facts");
+    await page.mouse.move(0, 0);
+    const help = page.getByRole("button", { name: "Queue evidence and assumptions" });
+    await help.scrollIntoViewIfNeeded();
+    await help.focus();
+    await expect(help).toBeFocused();
+    await expect(page.getByRole("tooltip").filter({ hasText: "plausible assumptions, not established facts" })).toBeVisible();
   });
 }

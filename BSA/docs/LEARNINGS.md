@@ -877,6 +877,19 @@ submission hardening passed check, 726 unit tests and eight production smoke
 tests. These local results do not replace exact-head full CI or the coordinator's
 post-merge live checks.
 
+Independent review found a second presentation defect: revised unreadable B
+could arrive with assistance Off, retain its stored operator-review state, then
+look built when assistance was enabled. Active assisted labels now use the
+current case pack's abstention, clearance, evidence and gate outcomes, while
+pending submissions and recorded human decisions take precedence. The adapter
+does not write the current pack's state back into lifecycle storage.
+
+Full CI also exposed old queue assumptions in recovery and keyboard tests, and
+a retained blocking prose-count assertion. Recovery now uses real primary
+navigation after the queue, the single table retains its standard data-slot,
+and queue word counts are informational with functional dialog checks retained.
+Mobile tooltip checks clear stale pointer hover before checking keyboard focus.
+
 ## 2026-09-12: Monthly assumptions need exact bounds and semantic bar labels
 
 Comparing parsed floating-point values alone accepted a judging draft just
