@@ -6,19 +6,54 @@ ms.date: 2026-09-12
 
 # Parity audit
 
-## Current reconciliation: route contrast repaired, quarantine closed
+## Current reconciliation: hosted acceptance verified
 
-This section is the current mapping of the **same 33 rows**, at V's scoped
-documentation merge `c687a9eab181b02f4fca0eb667e8ab8f94468620`, with runtime
-`82c18e49e7d1c765e5392b1bec5c028c8f89fd16`. The earlier register and scoped
+This section is the current mapping of the **same 33 rows**, at main
+`d1f0bddc736ccec6b9ddbf9836c24188e7c954df`. The live checklist is pinned to
+build `b813c6241cc084957a30c6bf48fdd65f623f33f6`; application source is
+unchanged between that build and this documentation snapshot. The earlier register and scoped
 S/#20 update below are retained as historical evidence, not current defects.
 No new application or browser audit was run by this reconciliation.
 
-**Current CI proof:** [CI 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977)
+**Current CI proof:** [CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+succeeded on `8bee3f205d29178177a6fb1ef5e98394c7655d2c`: **695 unique unit
+tests in 26 files** and **1,055 all-blocking browser passes** across four
+shards (264 + 264 + 264 + 263), approximately 6m25 overall. Repeated unit
+runs on shards are not additional unique tests. Source and tests match this
+documentation main; there are zero quarantined cases.
+
+**Live hosted proof:** the owner explicitly selected the existing
+[App Service site](https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/)
+under #48, superseding historical SWA-only instructions. The durable
+[checklist](live-verification/appservice-b813c62.json) and
+[evidence guide](live-verification/README.md) record **13/13 first-run passes**
+on the then-current `b813c62` build, one Chromium worker, no retries,
+16:25:18.335-16:28:07.940 UTC on 12 September 2026. All **26 before/after
+identity observations** matched that commit with `dirty: false`; six deep
+links returned the application with the recorded strict security headers.
+Six actual default-rule axe audits (three Off, three On) had zero violations.
+
+A **separate unchanged mixed-mode test passed once** on the same clean build:
+unaided Off resubmission, then On assistance on the same item/history without
+Reset, retaining four attempts and three human decisions. It is not the
+checklist's Off cycle, Reset, On cycle, and adds no axe audits. The initial
+external grep selecting no tests is retained as a discovery failure.
+
+Automatic OIDC deployment [34704994346](https://github.com/WilliamNg18/BSA/actions/runs/34704994346)
+and manual deployment [34705843955](https://github.com/WilliamNg18/BSA/actions/runs/34705843955)
+both succeeded at `b813c62`. The coordinator's
+[recovery evidence](https://github.com/WilliamNg18/BSA/issues/37#issuecomment-5647265424)
+records an 82.08-second Incremental configuration reapplication: no deletion,
+site/plan tags preserved, and post-apply root/claims/trace, headers and clean
+`b813c62` identity verified. This is non-destructive recovery proof, not
+deleted-resource disaster recovery. Later deployment IDs in that comment
+are separate observations, not a rerun of the 13-item checklist.
+
+**Prior all-blocking CI proof (retained):** [CI 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977)
 succeeded on `f295d7f19363cd101af7401f0ba03188ee7d0b2b`: check, **607 units**
 and **1,054 all-blocking browser passes** (15.1 minutes). There are **zero
 quarantined cases**, not three extra informational passes. Source and tests
-match the current documentation main. #34, #35 and #41 are closed; their
+matched its then-current documentation main. #34, #35 and #41 are closed; their
 earlier failures and quarantine evidence below remain historical.
 
 **Route contrast and visual proof:** #42 removes only the route wrapper's
@@ -60,9 +95,10 @@ The initial harness interruption and same-source continuation remain recorded;
 this is not an uninterrupted-first-attempt claim. These are V's own audit
 outputs, not a deduplicated count inferred from successful R CI.
 
-Row 31 alone remains unverified: no actual hosted root/deep-link proof is
-available and token setup is owner-owned. Follow-up #37 tracks this external
-acceptance, not a missing application capability.
+Row 31 is now accepted from actual live identity, behaviour, deep-link/header
+and deployment evidence recorded under #37, not inferred from local preview
+or successful CI. This scoped evidence does not establish universal WCAG
+conformance or guarantee any later build without its own identity checks.
 
 | ID | Current status | Current mapping / evidence boundary |
 | --- | --- | --- |
@@ -91,30 +127,34 @@ acceptance, not a missing application capability.
 | 23 | Changed with decision | Follow/Switch side same-ID navigation and presentation-only tracking retained and tested. |
 | 24 | Changed with decision | Current authorised tour has eight chapters/nine stops after #30, including separate pipeline/Four cases and claims cycle; R's corrected chapter/navigation regressions pass. Historical seven-chapter text below is superseded here. |
 | 25 | Preserved | Reset restores seeded memory/default Off; offline and state-isolation guards pass. |
-| 26 | Preserved | Current 1,054-test real-header suite passes accessibility/reduced-motion/keyboard and held-frame contrast guards after #41. Actual scoped frame/route audits are distinguished above; no universal WCAG or manual screen-reader claim. |
+| 26 | Preserved | Current 1,055-test suite passes accessibility/reduced-motion/keyboard and held-frame contrast guards. Six separate live default-rule audits (3 Off/3 On) have zero violations; no universal WCAG or manual screen-reader claim. |
 | 27 | Changed with decision | S's strict-CSP modal-style repair remains; route text opacity fade is removed under #42 without weakening CSP, changing slide timing or altering human authority. Current real-header assertions pass. |
 | 28 | Preserved | Current responsive/header/both-mode regressions pass. V's 64 settled route reproductions are byte-identical; intermediate-frame safety comes from held-frame tests, not photographs. |
-| 29 | Preserved | Exact CI 34696637977 completes 1,054 all-blocking browser tests in 15.1 minutes, zero quarantines. #34/#35/#41 are closed; previous 1,019+3 and failed/interrupted runs remain historical. |
+| 29 | Preserved | CI 34705318318 completes 1,055 all-blocking browser tests in four shards, approximately 6m25 overall, zero quarantines; 695 unique units in 26 files. Earlier 1,054 and 1,019+3 results remain historical, not additional current passes. |
 | 30 | Preserved | V #43 adds scoped 64-route parity on runtime82c18e4: 32 Off/32 On, 64 actual axe reports clear, 39 incomplete. Original #24 107-image/107-audit set remains at898cda5 (53 Off/54 On, 51 incomplete); remaining43 state images were not recaptured. Provenance and manual-review limits remain explicit. |
-| 31 | Not yet verified | Owner follow-up #37 tracks token setup and actual hosted root/deep-link/header proof; local production server and public CI do not prove deployment. |
+| 31 | Changed with decision | Owner-approved existing App Service replaces SWA (#48). #37 durable live b813c62 proof: 13 checklist passes, 26 clean identities, six deep links/strict headers and six axe audits clear; separate same-history mixed-mode pass. Automatic/manual OIDC deploys and non-destructive recovery/post-probe evidence are recorded above. |
 | 32 | Changed with decision | Approved removal of byte/performance budgets retained; metrics informational, functional/axe gates blocking. |
 | 33 | Changed with decision | S's bounded/wrapping another-attempt link repair retained in R's passing reflow coverage; no universal future-layout claim. |
 
 | Status | Current count |
 | --- | ---: |
 | Preserved | 22 |
-| Changed with decision | 10 |
+| Changed with decision | 11 |
 | Changed without decision | 0 |
 | Missing | 0 |
-| Not yet verified | 1 |
+| Not yet verified | 0 |
 | Total | 33 |
 
-**32 of 33 rows are accepted at this evidence boundary; hosted acceptance
-alone remains Not yet verified under #37.** This is not all 33 Done or a
-full WCAG certification. R and V have merged with their respective proof;
+**All 33 rows are accepted at this evidence boundary: 22 Preserved and
+11 Changed with decision; none Missing, unexplained or Not yet verified.**
+The host switch is an authorised change, not preservation of SWA deployment.
+This is not full WCAG certification or a promise about unobserved later builds.
+R and V have merged with their respective proof;
 S's repairs are integrated. D owns final acceptance records; timing follow-ups
-#34/#35 and contrast defect #41 are closed. No task ticks, SCOPE edits, tag removals or hosting claims
-are made here. Retain the historical 18/6/1/4/4 and intermediate 18/9/0/2/4
+#34/#35 and contrast defect #41 are closed. No task ticks, SCOPE edits, tag removals or new live tests
+are made here. Historical 32/33 acceptance left #37 unverified; this current
+snapshot supersedes that boundary with the scoped live proof above.
+Retain the historical 18/6/1/4/4 and intermediate 18/9/0/2/4
 counts below rather than silently replacing their evidence.
 
 ## Original audit context
