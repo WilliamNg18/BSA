@@ -120,7 +120,7 @@ for (const enabled of [false, true]) {
 for (const width of [360, 1440]) {
   test(`cycle comparison preserves recorded state, reduced motion and accessible reflow at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
-    await page.goto("pharmacy/claims");
+    await page.goto("pharmacy/claims?caseId=EX-24112");
     const guide = page.getByRole("region", { name: "Referral cycle guide", exact: true });
     for (const enabled of [false, true]) {
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
