@@ -6,14 +6,14 @@ ms.date: 2026-09-12
 
 # Scope register
 
-**Snapshot:** main `c95ff1da094528236a38593c3de18342e0f51374`, 12 September
-2026, includes S PR #22, Helper PR #23 and T PR #30. Other branch work below remains unmerged. Baseline
+**Snapshot:** main `98c888184db1df9c03539413b5e3b1db47f1ebfe`, 12 September
+2026, includes S #22, Helper #23, T #30, Queue #32 and Scene #31. R #33 and V #24 remain unmerged. Baseline
 evidence still names its original revision rather than being relabelled as a
 fresh run. **Eight chapters/nine stops are now implemented on main.**
 Their combined-artifact browser acceptance remains separate from earlier
 branch-local proof and is still R-owned.
 
-**Totals: 2 Done, 16 In progress, 0 Not started, 18 rows.** Every incomplete
+**Totals: 3 Done, 15 In progress, 0 Not started, 18 rows.** Every incomplete
 row has an active implementation or verification owner. Newly identified
 missing increments are linked to #27, #28 and #29, not hidden by the aggregate
 In progress status. Those issues were assigned after discovery. T #26 owns
@@ -77,6 +77,20 @@ branches/PRs in the owner register.
   actual Off/On cycles, navigation and 360/1440 both-mode axe passed in that
   earlier evidence. It is not browser proof for the newly combined artifact;
   integrated Linux acceptance remains pending.
+* **Queue merged:** #32 merged `11ea0427` from `180fa6edd414e1e5c0b9646437e4b52828d2885b`.
+  Combined check and 577 units in 20 files passed; a later rebase was docs-only.
+  All eight Compare tests passed in CI `34635510262` at `6d34988681137663fd8f09b33a3566605b9a629d`,
+  with four zero-violation axe outputs in artifact `10278127926`. Full executed
+  outcome accounting establishes those passes; overall CI still had 227 other
+  failures. Owned source/specs were unchanged at merge. Local startup timeout
+  and three-pass/five-timeout attempt remain historical failures.
+* **Scene merged:** #31 merged `98c88818` from `e144fd47bb5b388f2e9184f85abb922d5fb07b04`.
+  Combined check and 591 units in 21 files passed, including 14 scene units.
+  Owned source/specs match accepted `c902c6e`: six new scene browsers passed,
+  plus an unchanged calculator compatibility test passed on isolated retry;
+  two unrestricted axe reports had zero violations. Earlier build-start
+  timeouts, a corrected snapshot expectation and calculator timeout remain
+  disclosed. This is not a single uninterrupted seven-test pass or full CI pass.
 
 ## Eighteen requested items
 
@@ -85,7 +99,7 @@ tests, are the denominator for the totals.
 
 | Item | Status and revision/owner | Actual implementation and missing increment | Proving test or explicit pending proof |
 | --- | --- | --- | --- |
-| **A1 Scene:** three attributed figures, On count-in, one Sources | **In progress · Scene #27**; foundation on main `8c05b18` | Three qualified cards and one footer exist. `AnimatedNumber` only crossfades the final formatted value; numerical count-in is absent. New scene-only implementation is active, without changing public figures or calculator arithmetic. | **U/P** `baseline.test.ts`: `pins exactly three public context figures...`; `tour.test.ts`: `retains the single exact sourcing statement`. **V** `overview-scene` both states. Count-in/intermediate/final/Off/reduced-motion proof must be supplied by #27; none claimed yet. |
+| **A1 Scene:** three attributed figures, On count-in, one Sources | **Done · main `98c88818`** | Scene-specific count-in now presents five derived estimates without changing the three qualified public cards or one Sources footer. Off/reduced motion are immediate, accessible final values stable, and stale frames cancelled. | **U/P** named public-figure/source guards; **Scene merged** 14 units and six scene browsers cover intermediate/final values, stable accessibility, Off/Reset/navigation, reduced motion and extreme inputs. Two axe reports are zero. Initial V images are historical; final visual replacement remains J. |
 | **A2 Month:** seven steps, constant judging, three plain shares, Sankey, shared scene values | **Done · main `8c05b18`** (unchanged source from `d9e06e1`) | `baseline.ts`, baseline calculator/flow and scene share the selector. Seven gathering inputs, three sequential share inputs with denominator hints, four disjoint flow cohorts and fixed `V*j` judging are implemented. Values remain assumptions, not measured savings. | **U/P** `baseline.test.ts`: `conserves default rounded cohorts and separates gathering, judging and machine latency`, `judging remains V*j on both sides...`, `shared scene/calculator selector has no separate values or stale invalid fallback`. **V** `overview-month`/`overview-scene` Off and On show the controls and flow. |
 | **A3 Separate six-stage pipeline chapter:** phase-resolving pain | **In progress · R acceptance; T merged `c95ff1da`** | Pipeline is now independently reachable at `/#pipeline`, retaining six stages and bounded phase-resolving markers. Final combined-artifact browser acceptance is pending, not implementation. | **T merged** check/units and earlier focused runtime evidence; `pipeline.spec.ts` phase/no-write acceptance remains R-owned. **V** initial images still show the old combined chapter and require replacement. |
 | **A4 Four cases chapter:** Off pain, On result, both actions | **In progress · R acceptance; T merged `c95ff1da`** | A-D cards now have their own `/#cases` chapter with Open case and Follow actions. The previously missing split is implemented on main. | **U/P** six-outcome guards; **T merged** updated contracts and earlier branch browser checks. Final combined route/action proof and V images remain pending. |
@@ -96,7 +110,7 @@ tests, are the denominator for the totals.
 | **Rail:** Next/Back across routes, dismiss/restore | **In progress · R acceptance; T/S merged `c95ff1da`/`22ec3459`** | Eight-chapter/nine-stop mapping, cross-page rail and S's focus/motion corrections are now main. Combined-artifact regressions remain pending. | **S merged** affected focus/motion checks; **T merged** earlier forward/back/menu/dismiss/restore proof. Neither is relabelled as final integrated R acceptance. |
 | **B Pharmacy:** split pain, timeline, staged check, gap/correction/receipt, A/B/D, shared submission | **In progress · R integrated acceptance; Helper merged `ff00b3e7`** | Neutral intentional-Off/unavailable labels and affected expectations are now main. Existing workbench, gap/correction, timeline, immutable receipt and shared submission remain. | **U** named pharmacy timing/correction/immutable-receipt guards; **Helper merged** retains 26/3 then3 outcomes, twelve zero-violation axe outputs and #34's exact three conditional cases. Final combined regressions and V replacement images pending. |
 | **C Claims:** selector, seven states, one list action, plain history/state panel, Off blind-resubmit pain, On approved exact fix | **In progress · R #19 + #29** | Selector/list/detail and immutable actions exist. Main leaks raw unapproved On reasons and lacks the explicit blind-resubmission pain comparison. R reports #19 persisted at `2eb49b4` and #29 at `d558cc1` in `claims-resubmission-comparison.tsx`, resolving only for current Ready plus approved instruction. Neither correction has final runtime proof yet. | **U** `lifecycle-store.test.ts`: `operator API approval is explicit...`, `manual NONE ACCEPT is reasoned human judgement, not an override`. **V** all seven expanded states and round trip are baseline evidence. R's new response tests and four #29 keyboard/axe tests are prepared, not passed. |
-| **D Queue:** virtual month, following counter Off, sweep counters On, 17:00 summary, Compare, local toggle | **In progress · Queue #28 + R #14** | Virtualisation/counter, local `Queue assistance` switch, sweep/step/cancel and `Jump to 17:00` summaries exist. An operable Compare control is absent even though day columns are shown. #28 owns only that missing read-only control, not a duplicate toggle or new arithmetic. | **U/P** `queue.test.ts`: `billion-item classifications are repeatable and call no engine`, `clock boundaries and all seeds stay consistent in both comparisons`, `never writes actual cases, records, lifecycle, receipts or events`. `queue.spec.ts` shared-day and visible-sweep tests are **R pending**. New Compare keyboard/no-write/axe proof pending #28. |
+| **D Queue:** virtual month, following counter Off, sweep counters On, 17:00 summary, Compare, local toggle | **In progress · R integrated acceptance; Queue merged `11ea0427`** | Compare now opens the inline same-scenario/day read-only region, with heading focus/Close/Escape and no state writes. Existing local toggle, virtualisation, logical counter, sweep controls and 17:00 summary remain unchanged. The missing increment is fixed; wider integrated queue regression remains pending. | **Queue merged** eight accepted Compare browsers/four axe outputs; **U/P** queue bounds, day clock and no-write guards. R's existing shared-day/sweep/browser suite still needs final integrated acceptance. |
 | **E Trace/pack/record:** Off absent assisted slots/Today, On assembly/replay/full July record | **In progress · R #14; S wrapping merged `22ec3459`** | Manual trace/pack and missing assisted fields are implemented; On assembles/replays and the original B record replays July. Off says `Not recorded in this synthetic manual comparison; this does not describe real NHSBSA records`, not a false absolute assertion that real records do not exist today. S's narrow-link wrapping is merged; full integrated acceptance remains pending. | **S accepted slice** covers phone reflow. **U** `case-presentation.test.ts`; **V** all six packs/traces/records and July replay. `case-presentation.spec.ts` phase/no-record/assembly checks remain **R pending**. |
 | **F Lifecycle:** seven states/both labels, transition actors, five pharmacies/six cases/Reset | **Done · main `8c05b18`** (unchanged source from `d9e06e1`) | Seeded lifecycle, labels, immutable revisions and Reset are implemented. Only pharmacy/code/operator actions change lifecycle. Same-state agent trace events may exist; they are not agent transitions or payment authority. All five pharmacies and six canonical outcomes remain. | **U** `lifecycle-store.test.ts`: `all seven lifecycle states at $name`, `retains all canonical mappings, original fixtures and historical F record`, `rejects unknown, stale and reasonless decisions, and agent transitions`, and Reset/follow guard. **P** revision/bridge and six-outcome guards; **V** seven-state history captures. |
 | **G Round trip:** two-minute Off then On, Follow everywhere/Switch side, one UI test asserting both sides each step | **In progress · R #14 / PR #33** | Shared same-ID actions and global Follow banner work in the existing rehearsal. Two minutes is a story target, not a performance budget. R is preserving functional/hang-timeout checks while recording elapsed time informationally; integrated both-side acceptance remains pending. | **V** mixed-mode rehearsal and 16 checkpoints, not a timing benchmark. R's `lifecycle-ui.spec.ts` same-case journey and `task13.spec.ts` both-side assertions require its tested result. The obsolete strict 120-second wall-clock assertion is not an acceptance blocker. |
@@ -111,8 +125,8 @@ These are work branches, not claims that their current unmerged contents passed.
 | Owner | Exact branch / PR | Current responsibility |
 | --- | --- | --- |
 | T | `williamng18-eight-chapter-tour-and-referral-cycle`, PR #30 merged `c95ff1da` | Implementation merged; combined check/567 units pass, earlier focused browsers retained separately; R owns integrated acceptance |
-| Scene | `williamng18-scene-estimate-count-in`, #27, no PR yet | Active implementation confirmed; code/units before a browser slot |
-| Queue | `williamng18-queue-comparison-control`, #28, no PR yet | Active inline read-only Compare implementation; preserve local toggle/day controls |
+| Scene | `williamng18-scene-estimate-count-in`, PR #31 merged `98c88818` | Scoped count-in implementation accepted; broader integration remains coordinated |
+| Queue | `williamng18-queue-comparison-control`, PR #32 merged `11ea0427` | Scoped Compare implementation accepted; broader queue regressions remain R-owned |
 | R | `williamng18-production-round-trip`, PR #33 / #14/#19/#29 | Full browser regressions, approved-only pharmacy reasons and claims manual-pain comparison |
 | S | `williamng18-accessibility-strict-csp`, PR #22 merged `22ec3459` | Scoped implementation accepted; later eight-chapter integration remains coordinated work |
 | Helper | `williamng18-parity-verification-and-owned-applicatio`, PR #23 merged `ff00b3e7` | Healthy workbench status merged; #34 tracks three exact conditional timeout instances |
