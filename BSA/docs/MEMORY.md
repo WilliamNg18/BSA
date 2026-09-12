@@ -211,8 +211,10 @@ checks are green; main deploys automatically, followed by a STATUS message with
 the verified live URL and commit. Target issue-to-live time for a small change
 is under one hour, not a correctness waiver or a CI timeout gate.
 
-Infrastructure is complete and frozen for the owner-selected App Service scope.
-INFRA-DONE.md records actual main/manual OIDC, live checks, CI/setup/artifact
+Infrastructure is complete and frozen. No stream spends time on hosting, gates or tooling from here; all effort goes to the application.
+
+This declaration covers the owner-selected App Service scope. INFRA-DONE.md
+records actual main/manual OIDC, live checks, CI/setup/artifact
 evidence and 82.08-second non-destructive Incremental configuration reapplication
 with unchanged tags and post-apply live checks. This is not deleted-resource
 disaster recovery, a future availability guarantee or permission to skip release

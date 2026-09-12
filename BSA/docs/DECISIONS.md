@@ -818,8 +818,10 @@ changes could make the snapshot stale.
 
 ## 2026-09-12: Bounded hosted and infrastructure closeout
 
-Infrastructure is complete and frozen for the owner-selected App Service scope.
-Accept actual clean-release live checks, main/manual OIDC, the shared four-shard
+Infrastructure is complete and frozen. No stream spends time on hosting, gates or tooling from here; all effort goes to the application.
+
+This declaration covers the owner-selected App Service scope. Accept actual
+clean-release live checks, main/manual OIDC, the shared four-shard
 verification command, measured setup and PR artifacts, and reviewed Incremental
 configuration recovery as the completed scope in INFRA-DONE. Reject both the
 obsolete SWA token/preview prerequisite and a stronger destructive-DR claim:

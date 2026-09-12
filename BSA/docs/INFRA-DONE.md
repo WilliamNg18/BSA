@@ -2,8 +2,9 @@
 
 ## Current App Service completion evidence (#48)
 
-**Infrastructure is complete and frozen for the owner-selected App Service scope.**
-This bounded declaration does not claim destructive disaster recovery, unlimited
+Infrastructure is complete and frozen. No stream spends time on hosting, gates or tooling from here; all effort goes to the application.
+
+This bounded declaration covers the owner-selected App Service scope, not destructive disaster recovery, unlimited
 F1 capacity, live PR slots, future availability or automatic acceptance of later
 commits. The coordinator still merges final records and verifies the resulting
 latest-main deployment before the final ALL DONE message.
