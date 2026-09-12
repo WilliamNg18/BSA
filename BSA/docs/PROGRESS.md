@@ -51,6 +51,11 @@ pass with two workers. No browser matrix was rerun; the earlier ten-scenario
 results remain historical narrow evidence. Final integrated Linux acceptance
 is still required.
 
+Final 2026-09-12 rebase includes the merged pharmacy status fix at `ff00b3e`.
+Both streams' appended records are retained. Tour-cycle assertions use claim
+lifecycle labels, not the former workbench Off status. Combined check and
+567 units in 19 files pass again; no redundant browser run was performed.
+
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)
