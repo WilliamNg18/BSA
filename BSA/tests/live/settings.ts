@@ -1,0 +1,34 @@
+import { isAbsolute, relative, resolve, sep } from "node:path";
+
+export function liveSettings(env: NodeJS.ProcessEnv, repositoryRoot: string) {
+  if (!env.LIVE_BASE_URL) throw new Error("LIVE_BASE_URL is required.");
+  const url = new URL(env.LIVE_BASE_URL);
+  if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== "/") {
+    throw new Error("LIVE_BASE_URL must be an HTTPS root URL without credentials, query or fragment.");
+  }
+  if (!/^[a-f0-9]{40}$/i.test(env.EXPECTED_BUILD_COMMIT ?? "")) {
+    throw new Error("EXPECTED_BUILD_COMMIT must be the user-provided full 40-character commit.");
+  }
+  if (!env.LIVE_OUTPUT_DIR || !isAbsolute(env.LIVE_OUTPUT_DIR)) {
+    throw new Error("LIVE_OUTPUT_DIR must be an absolute external artifact directory.");
+  }
+  const output = resolve(env.LIVE_OUTPUT_DIR);
+  const fromRepo = relative(resolve(repositoryRoot), output);
+  if (!fromRepo || (!fromRepo.startsWith(`..${sep}`) && fromRepo !== ".." && !isAbsolute(fromRepo))) {
+    throw new Error("LIVE_OUTPUT_DIR must be outside the repository.");
+  }
+  return { baseURL: url.href, expectedCommit: env.EXPECTED_BUILD_COMMIT!.toLowerCase(), output };
+}
+
+export interface BuildInfo {
+  commit: string;
+  builtAt: string;
+  dirty: boolean;
+}
+
+export function isBuildInfo(value: unknown): value is BuildInfo {
+  if (!value || typeof value !== "object") return false;
+  return "commit" in value && typeof value.commit === "string" && /^[a-f0-9]{40}$/i.test(value.commit) &&
+    "builtAt" in value && typeof value.builtAt === "string" && /^\d{4}-\d{2}-\d{2}T.*Z$/.test(value.builtAt) &&
+    Number.isFinite(Date.parse(value.builtAt)) && "dirty" in value && typeof value.dirty === "boolean";
+}
