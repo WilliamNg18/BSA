@@ -72,6 +72,33 @@
       {"path": "/case/EX-24112/record", "status": 200, "checkedAt": "2026-09-12T16:27:59.145Z"}
     ]
   },
+  "supplementalMixedHistory": {
+    "name": "Task9/10 complete Off referral to approved On correction and human sufficient uses one shared case",
+    "testSource": "BSA/tests/e2e/lifecycle-ui.spec.ts",
+    "testBodyChanged": false,
+    "status": "PASS",
+    "symptoms": [],
+    "passed": 1,
+    "workers": 1,
+    "retries": 0,
+    "runnerStartedAt": "2026-09-12T16:34:10.690Z",
+    "runnerDurationMs": 13793.784,
+    "testStartedAt": "2026-09-12T16:34:11.393Z",
+    "testDurationMs": 9392,
+    "actualBuildCommit": "b813c6241cc084957a30c6bf48fdd65f623f33f6",
+    "identityChecks": [
+      {"placement": "before", "checkedAt": "2026-09-12T16:34:08.9138648Z", "matchedExpectedCommit": true, "dirty": false},
+      {"placement": "after", "checkedAt": "2026-09-12T16:34:25.6863517Z", "matchedExpectedCommit": true, "dirty": false}
+    ],
+    "verified": [
+      "Unaided Off resubmission followed by switching On on the same item without resetting history",
+      "Operator-approved draft, explicit correction and resubmission, code re-check and human sufficient decision",
+      "Four immutable attempts retain the original unchecked Off evidence and final scripted ready snapshot",
+      "Three human decisions and the synthetic existing-pricing result"
+    ],
+    "discoveryNote": "An initial external-config grep selected no tests. That discovery failure is retained separately; only the external grep was corrected before the single test executed and passed.",
+    "axeAudits": 0
+  },
   "boundaries": [
     "Evidence applies only to the observed build and UTC run interval, not later commits or deployments.",
     "Scoped live checklist, not a repeat of the full production browser suite.",
