@@ -56,6 +56,12 @@ captures and two queue Compare captures. The pipeline moves to `/#pipeline`;
 Four cases uses `/#cases`. All eight chapters, including the full-cycle claims
 guide, are covered through their actual routes.
 
+For the merged scene count-in, the On capture also asserts that all five visual
+numbers equal their stable final accessible labels before the screenshot.
+It does not replace intermediate text or mask the animation. Reduced motion
+remains the stated capture preference; animation acceptance belongs to the
+scene stream's normal/reduced-motion tests, not this static matrix.
+
 Queue comparison uses **Jump to 17:00**, then **Compare** in **Queue controls**,
 and requires the inline **Today versus With agent** region. Both Agent states
 use the same scenario/day, without changing lifecycle or assistance as a side
