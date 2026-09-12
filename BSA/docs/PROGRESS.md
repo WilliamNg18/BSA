@@ -31,8 +31,12 @@ passed before testing its exact artifact. All logs, failure traces and axe JSON
 are retained outside OneDrive in this session's files folder.
 
 Port 4193 is released. The coordinator accepts this bounded browser evidence;
-no further browsers are authorised. PR #31 awaits the final integration rebase,
-check and unit count. Merge remains coordinator-owned; Tasks 8-13 stay unchecked.
+no further browsers are authorised. On 12 September, the final rebase onto main
+11ea042 completed cleanly, preserving all append-only documentation. At rebased
+code head ac36e2d, one combined check/full-unit run passed: typecheck, lint and
+production build, then 591 units in 21 files with two workers. Owned scene source
+and tests are unchanged from browser-accepted c902c6e. PR #31 is ready for the
+coordinator's merge; this scope does not tick Tasks 8-13 or claim hosted acceptance.
 
 ## Checklist
 
