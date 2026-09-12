@@ -875,3 +875,8 @@ Rebased onto integrated main 22ec345, preserving S's production CSP server and
 both streams' appended records. Combined check and all 567 units in 20 files
 pass. No Compare source or assertion changes accompanied the rebase. Final
 integrated Linux browser acceptance remains the coordinator's gate.
+
+Final coordinator-released rebase onto c95ff1d includes merged pharmacy status
+and tour changes. All streams' appended records and the exact tested Compare
+source/specs are preserved. Combined check and all 577 units in 20 files pass.
+No additional browser run; the coordinator retains merge and full integration.
