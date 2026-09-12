@@ -29,6 +29,7 @@ are still pending. Row 30 is not promoted on a running capture process,
 an expected inventory or the earlier 103 images. Row 31 remains unverified:
 the deployment token is missing and no actual hosted root/deep-link proof is
 available. Neither condition is disguised as missing functional implementation.
+Owner setup and actual hosted acceptance are tracked explicitly in #37.
 
 | ID | Current status | Current mapping / evidence boundary |
 | --- | --- | --- |
@@ -62,7 +63,7 @@ available. Neither condition is disguised as missing functional implementation.
 | 28 | Preserved | R's responsive, header-width and both-mode functional screen regressions pass; final V visual review remains row 30, not inferred from browser success. |
 | 29 | Preserved | Exact public CI completes 1,019 blocking tests plus three separately reported quarantine cases; this supersedes historical failed/interrupted full-run evidence below. |
 | 30 | Missing | Final current narrative and reviewed capture reconciliation still pending V proof; docs/features exist, but this deliverable is not accepted yet. |
-| 31 | Not yet verified | Actual hosted root/deep-link/header proof absent; local production server and public CI do not prove deployment. |
+| 31 | Not yet verified | Owner follow-up #37 tracks token setup and actual hosted root/deep-link/header proof; local production server and public CI do not prove deployment. |
 | 32 | Changed with decision | Approved removal of byte/performance budgets retained; metrics informational, functional/axe gates blocking. |
 | 33 | Changed with decision | S's bounded/wrapping another-attempt link repair retained in R's passing reflow coverage; no universal future-layout claim. |
 
