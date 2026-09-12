@@ -51,9 +51,7 @@ for (const scenario of [
 ]) {
   for (const globalEnabled of [true, false]) {
     for (const localAvailable of [true, false]) {
-      // #34: quarantine only the shared-load switch timeout instance.
-      const quarantine = scenario.name === "Complete endorsement" && !globalEnabled && localAvailable;
-      test(`pharmacy ${scenario.name}: global=${globalEnabled}, local=${localAvailable} remains advisory`, { tag: quarantine ? ["@quarantine"] : [] }, async ({ page }, testInfo) => {
+      test(`pharmacy ${scenario.name}: global=${globalEnabled}, local=${localAvailable} remains advisory`, async ({ page }, testInfo) => {
         await page.goto("pharmacy");
         await page.getByRole("banner").getByRole("switch").setChecked(true);
         await page.getByRole("radio", { name: scenario.name, exact: true }).click();

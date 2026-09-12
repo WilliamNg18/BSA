@@ -4,6 +4,22 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
+## Issue #34 timing follow-up: tag-removal proposal
+
+Fresh main 58c3879 was built successfully with `npm run build`, exit 0.
+The exact existing tagged subset ran with:
+`npm run test:e2e -- --config tests/e2e/production-artifact.config.ts assistance.spec.ts pharmacy.spec.ts --grep @quarantine --repeat-each=3 --workers=1 --reporter=dot`
+and an explicit session output directory outside OneDrive.
+Actual result: 9 passed in 2.0 minutes, exit 0, six unique axe reports with zero
+violations. Port 4173 was released after the run. Raw evidence is retained in
+the R session artifacts as `issue34-controlled.log` and
+`issue34-controlled-results`; original failure trace timings are in LEARNINGS.
+
+Only the three conditional quarantine instances in the two owned test files
+are proposed for restoration to blocking status. No assertion, timeout, fixture,
+application code or workflow change. Full public CI on the proposed revision
+is pending; earlier accepted 1,019-plus-three counts remain historical evidence.
+
 ## Final application acceptance: 12 September 2026
 
 Main after R, V and final parity PR #38 is

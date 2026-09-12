@@ -701,3 +701,20 @@ seconds each and several tests exhausted the existing 30-second guard after
 returning zero-violation frame reports. Retain that interrupted development run;
 split independent frames into separate cases instead of inflating deadlines.
 This test-structure correction is not evidence of another application defect.
+
+## 2026-09-12: Issue #34 controlled timing follow-up
+
+Original raw traces show page creation taking 5.2-5.7 seconds, navigation taking
+32-34 seconds in two cases, and browser cleanup taking 36-193 seconds. The
+complete-endorsement switch timeout occurred after a 32-second navigation; its
+click itself lasted only 187 milliseconds. The unreadable-form case expired
+during a 21.6-second axe evaluation after slow page setup. These traces do not
+establish a broken control, an axe violation or a causal application defect.
+The original run used Vite preview, not the later real-header server.
+
+On fresh main 58c3879, the exact three tagged instances repeated three times
+with one worker passed 9/9 in 2.0 minutes, exit 0. Six unique axe reports contain
+zero violations. Strict self-only CSP was observed in the served response;
+assertions, 30-second test guards and zero retries were unchanged. No production,
+fixture or scheduling fix was inferred or introduced. Removing only these tags
+still requires a complete public CI run, not just this controlled sample.
