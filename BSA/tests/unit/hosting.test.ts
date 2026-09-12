@@ -6,6 +6,13 @@ const root = (path: string) => fileURLToPath(new URL(`../../../${path}`, import.
 const config = JSON.parse(readFileSync(root("hosting.config.json"), "utf8"));
 
 describe("portable App Service hosting contract", () => {
+  it("declares a valid local favicon instead of a missing implicit request", () => {
+    expect(readFileSync(root("BSA/index.html"), "utf8")).toContain('href="/favicon.ico"');
+    const icon = readFileSync(root("BSA/public/favicon.ico"));
+    expect([...icon.subarray(0, 4)]).toEqual([0, 0, 1, 0]);
+    expect(icon.readUInt16LE(4)).toBeGreaterThan(0);
+  });
+
   it("keeps client navigation separate from missing assets", () => {
     expect(config.spaFallback).toBe("/index.html");
     expect(config.assetPrefixes).toEqual(["/assets/", "/images/", "/fonts/"]);

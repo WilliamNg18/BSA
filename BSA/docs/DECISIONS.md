@@ -792,3 +792,10 @@ existing federation and recovery Bicep to the exact main-branch subject
 `repo:WilliamNg18@101734401/BSA@1362745159:ref:refs/heads/main`.
 Issuer, audience and site-only Website Contributor scope remain unchanged.
 No wildcard, client secret or basic-publishing fallback is introduced.
+
+## 2026-09-12: Serve a local browser icon
+
+The first real-browser App Service check requested favicon.ico and logged a
+404. Add an explicit same-origin icon generated from generic document shapes,
+not external branding or a runtime dependency. Keep CSP and application
+behaviour unchanged; validate the actual built icon response, not only its link.
