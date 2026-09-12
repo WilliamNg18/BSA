@@ -843,3 +843,12 @@ The actual assertion subject contained owner/repository IDs, unlike the
 name-only example in the initial request. Verify those IDs independently and
 match the exact subject rather than broadening trust. The credential update
 succeeded; a new main deployment must prove authentication and release.
+
+## 2026-09-12: OIDC deployment succeeds; live browser exposes a missing asset
+
+Workflow 34703934683 authenticated through the ID-bound federation, deployed
+main 3132c90 and passed commit/header/deep-link probes. A fresh browser reached
+Overview with assistance Off, but its implicit favicon request returned 404.
+Issue #52 adds a local icon and explicit link. Six targeted hosting tests and
+a production HTTP probe passed with image/x-icon and exact built bytes.
+This does not replace the remaining full live checklist.
