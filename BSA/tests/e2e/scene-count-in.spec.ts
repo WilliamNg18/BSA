@@ -1,16 +1,14 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
-import { BASELINE_DEFAULTS, calculateBaseline, formatBaselineNumber, type BaselineResult } from "../../src/lib/domain/baseline";
+import { MONTH_FIELDS, MONTH_MODEL_DEFAULTS, monthModel, formatBaselineNumber, type MonthModelResult } from "../../src/lib/domain/baseline";
 
-const defaults = calculateBaseline(BASELINE_DEFAULTS);
-function estimates(result: BaselineResult) {
+const defaults = monthModel(MONTH_MODEL_DEFAULTS);
+function estimates(result: MonthModelResult, enabled = true) {
   return [
     ["volume", result.volume, 0],
-    ["gathering", result.today.gatheringMinutes / 60, 1],
-    ["judging", result.today.judgingMinutes / 60, 1],
-    ["with-gathering", result.withAgent.gatheringMinutes / 60, 1],
-    ["referrals", result.referrals.withAgent, 0],
+    ["hours", enabled ? result.withAgent.operatorHours : result.today.operatorHours, 1],
+    ["capacity", enabled ? result.capacity.withAgent : result.capacity.today, 1],
   ] as const;
 }
 
@@ -28,15 +26,11 @@ async function toggle(page: Page) {
 }
 
 async function expectFinal(page: Page, result = defaults, enabled = true) {
-  for (const [key, value, digits] of estimates(result)) {
+  for (const [key, value, digits] of estimates(result, enabled)) {
     const number = page.locator(`[data-scene-${key}]`);
-    if (!enabled && (key === "with-gathering" || key === "referrals")) {
-      await expect(number).toHaveCount(0);
-    } else {
-      const text = formatBaselineNumber(value, digits);
-      await expect(number).toHaveText(text);
-      if (enabled) await expect(number.getByRole("img", { name: text, exact: true })).toBeVisible();
-    }
+    const text = formatBaselineNumber(value, digits);
+    await expect(number).toHaveText(text);
+    if (enabled) await expect(number.getByRole("img", { name: text, exact: true })).toBeVisible();
   }
 }
 
@@ -110,7 +104,7 @@ test.describe("scene estimate count-in with motion", () => {
     const oldText = await oldNumber!.textContent();
     await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
     await expect(page.locator("[data-scene-estimates]")).toHaveCount(0);
-    await page.getByLabel("Monthly volume proxy", { exact: true }).fill("120");
+    await page.getByLabel(MONTH_FIELDS[0].label, { exact: true }).fill("120");
     await page.clock.runFor(3000);
     expect(await oldNumber!.textContent()).toBe(oldText);
     await navigatePrimary(page, "Overview");
@@ -119,7 +113,7 @@ test.describe("scene estimate count-in with motion", () => {
     expect(intermediate).toBeGreaterThan(0);
     expect(intermediate).toBeLessThan(120);
     await page.clock.runFor(1016);
-    await expectFinal(page, calculateBaseline({ ...BASELINE_DEFAULTS, volume: 120 }));
+    await expectFinal(page, monthModel({ ...MONTH_MODEL_DEFAULTS, volume: 120 }));
     expect(await oldNumber!.textContent()).toBe(oldText);
     await oldNumber!.dispose();
   });
@@ -147,10 +141,10 @@ test.describe("scene estimate reduced motion", () => {
     await expectFinal(page);
     for (const volume of [0, 1, 1_000_000_000]) {
       await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
-      await page.getByLabel("Monthly volume proxy", { exact: true }).fill(String(volume));
+      await page.getByLabel(MONTH_FIELDS[0].label, { exact: true }).fill(String(volume));
       // The scene link is the first chapter; avoid introducing navigation ownership.
       await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Back", exact: true }).click();
-      await expectFinal(page, calculateBaseline({ ...BASELINE_DEFAULTS, volume }));
+      await expectFinal(page, monthModel({ ...MONTH_MODEL_DEFAULTS, volume }));
     }
     await page.clock.resume();
     const audit = await new AxeBuilder({ page }).analyze();

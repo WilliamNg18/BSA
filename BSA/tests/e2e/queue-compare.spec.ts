@@ -23,10 +23,9 @@ async function queueSnapshot(page: Page) {
 for (const enabled of [false, true]) {
   test(`Compare keyboard open close focus and no queue or decision writes, Agent ${enabled}`, async ({ page }) => {
     await page.goto("./#month");
-    const input = { ...BASELINE_DEFAULTS, volume: 1234, builtReviewMinutes: 0.75, judgingMinutes: 3 };
-    await page.getByLabel("Monthly volume proxy", { exact: true }).fill(String(input.volume));
-    await page.getByLabel("Built case review minutes / item", { exact: true }).fill(String(input.builtReviewMinutes));
-    await page.getByLabel("Judging minutes / item", { exact: true }).fill(String(input.judgingMinutes));
+    const input = { ...BASELINE_DEFAULTS, volume: 1234, judgingMinutes: 3 };
+    await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill(String(input.volume));
+    await page.getByLabel("Minutes an operator spends judging a case the agent has built", { exact: true }).fill(String(input.judgingMinutes));
     await navigatePrimary(page, "Exception queue");
     await page.getByRole("switch", { name: "Queue assistance: Off", exact: true }).setChecked(enabled);
     await page.getByRole("button", { name: "Step 15 minutes", exact: true }).click();
@@ -108,7 +107,7 @@ test("Compare Reset closes the surface and invalid assumptions disable stale com
   await expect(comparison(page)).toContainText("Same scenario at 08:00");
   await navigatePrimary(page, "Overview");
   await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
-  await page.getByLabel("Monthly volume proxy", { exact: true }).fill("");
+  await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill("");
   await navigatePrimary(page, "Exception queue");
   await expect(compare(page)).toBeDisabled();
   await expect(comparison(page)).toHaveCount(0);

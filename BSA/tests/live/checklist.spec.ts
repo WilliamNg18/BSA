@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { audit, captureJson, expect, test } from "./fixtures";
 import { cases, captureCheckpoint, confirmReset, navigatePrimary, staticRoutes } from "../e2e/fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
-import { BASELINE_DEFAULTS, baselineSummary, calculateBaseline, formatBaselineNumber } from "../../src/lib/domain/baseline";
+import { MONTH_MODEL_DEFAULTS, monthModel, formatBaselineNumber } from "../../src/lib/domain/baseline";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
@@ -50,17 +50,26 @@ test("02 Every current route toggles On and back Off without errors", async ({ p
   await audit(page, info, "overview", true);
 });
 
-test("03 Typed calculator volume changes the shared Scene figures", async ({ page }, info) => {
+test("03 Three monthly inputs update both headline tiles and shared Scene figures", async ({ page }, info) => {
   await page.goto("/#month");
-  await flag(page).setChecked(true);
-  await page.getByLabel("Monthly volume proxy", { exact: true }).fill("120");
-  const expected = calculateBaseline({ ...BASELINE_DEFAULTS, volume: 120 });
-  await expect(page.locator("[data-baseline-summary]")).toHaveText(baselineSummary(expected, true));
-  await navigatePrimary(page, "Overview");
-  await expect(page.locator("[data-scene-volume]")).toHaveText("120");
-  await expect(page.locator("[data-scene-gathering]")).toHaveText(formatBaselineNumber(expected.today.gatheringMinutes / 60, 1));
-  await expect(page.locator("[data-scene-with-gathering]")).toHaveText(formatBaselineNumber(expected.withAgent.gatheringMinutes / 60, 1));
-  await captureJson(info, "shared-volume", { volume: 120, expected });
+  await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill("120");
+  await page.getByLabel("Minutes an operator spends per item today", { exact: true }).fill("15");
+  await page.getByLabel("Minutes an operator spends judging a case the agent has built", { exact: true }).fill("3");
+  const input = { ...MONTH_MODEL_DEFAULTS, volume: 120, todayMinutes: 15, judgingMinutes: 3 };
+  const expected = monthModel(input);
+  for (const enabled of [false, true]) {
+    await flag(page).setChecked(enabled);
+    const hours = formatBaselineNumber(enabled ? expected.withAgent.operatorHours : expected.today.operatorHours, 1);
+    const capacity = formatBaselineNumber(enabled ? expected.capacity.withAgent : expected.capacity.today, 1);
+    await expect(page.locator("[data-month-hours]")).toHaveText(hours);
+    await expect(page.locator("[data-month-capacity]")).toHaveText(capacity);
+    await navigatePrimary(page, "Overview");
+    await expect(page.locator("[data-scene-volume]")).toHaveText("120");
+    await expect(page.locator("[data-scene-hours]")).toHaveText(hours);
+    await expect(page.locator("[data-scene-capacity]")).toHaveText(capacity);
+    await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
+  }
+  await captureJson(info, "shared-month-inputs", { input, expected });
 });
 
 test("04 Four case cards open their matching case packs and traces", async ({ page }) => {
@@ -245,7 +254,7 @@ test("12 Six root deep links return the application with strict headers", async 
 
 test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page }) => {
   await page.goto("/#month");
-  await page.getByLabel("Monthly volume proxy", { exact: true }).fill("120");
+  await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill("120");
   await flag(page).setChecked(true);
   await navigatePrimary(page, "Pharmacy claims");
   await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
@@ -259,5 +268,5 @@ test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page 
   await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts" }).locator(":scope > li")).toHaveCount(1);
   await navigatePrimary(page, "Overview");
   await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
-  await expect(page.getByLabel("Monthly volume proxy", { exact: true })).toHaveValue(String(BASELINE_DEFAULTS.volume));
+  await expect(page.getByLabel("Items reaching the exception queue each month", { exact: true })).toHaveValue(String(MONTH_MODEL_DEFAULTS.volume));
 });

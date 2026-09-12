@@ -4,7 +4,7 @@ import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
-import { BASELINE_FIELDS } from "../../src/lib/domain/baseline";
+import { MONTH_FIELDS, MONTH_DETAIL_FIELDS } from "../../src/lib/domain/baseline";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
@@ -145,11 +145,11 @@ for (const enabled of [true, false]) {
           await expect(filter).toBeFocused();
         }
       } else if (route !== "queue") {
-        if (route === "./#month") await page.locator("[data-gathering-breakdown] > summary").click();
+        if (route === "./#month") await page.locator("[data-month-detail] > summary").click();
         const fields = route === "pharmacy"
           ? [page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" })]
           : await page.getByRole("region", { name: "Monthly workload calculator" }).getByRole("textbox").all();
-        expect(fields).toHaveLength(route === "pharmacy" ? 1 : BASELINE_FIELDS.length);
+        expect(fields).toHaveLength(route === "pharmacy" ? 1 : MONTH_FIELDS.length + MONTH_DETAIL_FIELDS.length);
         for (const field of fields) {
           await field.fill(route === "pharmacy" ? "NCSO RK" : "12");
           await field.press("End");
