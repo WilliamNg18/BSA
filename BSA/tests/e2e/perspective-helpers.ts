@@ -18,6 +18,15 @@ export async function openHistory(page: Page) {
   if (await disclosure.getAttribute("open") === null) await disclosure.locator(":scope > summary").click();
 }
 
+async function historyIdentity(page: Page) {
+  return history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").evaluateAll((items) => items.map((item) => ({
+    fields: Array.from(item.querySelectorAll("dl > div"))
+      .filter((field) => ["Time / actor", "Attempt / record"].includes(field.querySelector("dt")?.textContent ?? ""))
+      .map((field) => field.textContent),
+    message: item.querySelector(":scope > p")?.textContent,
+  })));
+}
+
 export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
   await page.goto("/pharmacy");
   let previousDecision = "";
@@ -38,13 +47,14 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     if (submittedId) expect(id).toBe(submittedId);
     submittedId = id;
     await submitted.click();
-    await expect(detail(page).getByRole("heading", { level: 2 })).toContainText(id);
+    await expect(detail(page).getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
     await openHistory(page);
     const attempts = await history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).innerText();
     expect(attempts).toContain(endorsement);
     const events = await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).innerText();
-    expect(events).toContain("submitted");
+    expect(events).toContain(LIFECYCLE_LABELS.submitted.pharmacy);
+    const submittedIdentity = await historyIdentity(page);
     if (previousDecision) {
       expect(events).toContain(previousDecision);
       expect(await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").count()).toBe(previousEventCount + 1);
@@ -62,8 +72,9 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
     await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toHaveText(attempts);
-    const reviewingEvents = await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).innerText();
-    expect(reviewingEvents).toContain(events);
+    const reviewingIdentity = await historyIdentity(page);
+    expect(reviewingIdentity.slice(0, submittedIdentity.length)).toEqual(submittedIdentity);
+    expect(reviewingIdentity).toHaveLength(submittedIdentity.length + 1);
     await page.getByRole("radio", { name: /^Refer back / }).check();
     if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
     const reason = `Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`;
@@ -78,7 +89,8 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     const recordId = await lastDecision.locator("dl > div").filter({ has: page.getByText("Attempt / record", { exact: true }) }).locator("dd").innerText();
     expect(recordId).toMatch(/DR-\d+/);
     await expect(lastDecision).toContainText(reason);
-    const stableEventFields = await lastDecision.locator("dl > div").filter({ has: page.getByText(/^(Time \/ actor|Transition|Attempt \/ record)$/) }).allTextContents();
+    const stableEvents = await historyIdentity(page);
+    await expect(lastDecision).toContainText(`${LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]} → ${LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]}`);
     await choosePerspective(page, "Pharmacy");
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
@@ -86,20 +98,21 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await navigatePrimary(page, "Pharmacy claims");
     const claims = page.getByRole("table", { name: "Pharmacy claims", exact: true });
     await claims.getByRole("row").filter({ hasText: id }).getByRole("button").click();
-    await expect(detail(page).getByRole("heading", { level: 2 })).toContainText(id);
+    await expect(detail(page).getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
     await openHistory(page);
     await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toHaveText(attempts);
     const returnedEvents = history(page).getByRole("list", { name: "Lifecycle events", exact: true });
     await expect(returnedEvents.locator(":scope > li")).toHaveCount(eventCount);
     await expect(returnedEvents.locator(":scope > li").last()).toContainText(recordId);
-    expect(await returnedEvents.locator(":scope > li").last().locator("dl > div").filter({ has: page.getByText(/^(Time \/ actor|Transition|Attempt \/ record)$/) }).allTextContents()).toEqual(stableEventFields);
+    expect(await historyIdentity(page)).toEqual(stableEvents);
+    await expect(returnedEvents.locator(":scope > li").last()).toContainText(`${LIFECYCLE_LABELS.in_review.pharmacy} → ${LIFECYCLE_LABELS.referred_back.pharmacy}`);
     previousDecision = recordId;
     previousEventCount = eventCount;
     await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
-    await captureJson(info, `perspective-${enabled ? "on" : "off"}`, { id, endorsement, attempts, recordId, eventCount, stableEventFields, reason });
+    await captureJson(info, `perspective-${enabled ? "on" : "off"}`, { id, endorsement, attempts, recordId, eventCount, stableEvents, reason });
     await captureCheckpoint(page, info, `perspective-decision-${enabled ? "on" : "off"}`);
   }
 }
