@@ -6,6 +6,15 @@ ms.date: 2026-09-12
 
 ## Purpose and principle
 
+New authorised work: Tasks 14-18 simplify numbers, queue and claims and add
+independent Pharmacy/NHSBSA/Both perspectives. PROGRESS owns the frozen Step 0
+contracts and N/Q/P/X/V file ownership. Default Both preserves the existing
+experience; Reset retains perspective. The new `monthModel` supersedes the
+old fixed-reference judging comparison in migrated presentation: built items
+cost judging only, abstentions retain total manual time, caught/cleared cohorts
+cost no operator time. The old arithmetic remains for legacy consumers until
+their owners migrate them. Infrastructure remains frozen.
+
 The Prescription Exception Case Builder is a static, offline React 19 and
 TypeScript demonstration using synthetic prescriptions, pharmacies and tariff
 clauses. No backend, real patient data, runtime services or payment calculation.

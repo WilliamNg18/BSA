@@ -33,7 +33,7 @@ import { create } from "zustand";
 
 import { CASES } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
-import { BASELINE_DEFAULTS } from "@/lib/domain/baseline";
+import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
 import type { CaseRevision, HistoryEvent, LifecycleDecisionRecord, LifecycleSlice, LifecycleState } from "@/lib/domain/lifecycle";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
@@ -70,12 +70,18 @@ function seededRecords(): DecisionRecord[] {
   ]);
 }
 
+export type Perspective = "pharmacy" | "nhsbsa" | "both";
+
 interface AppState extends LifecycleSlice {
   caseStates: Record<string, CaseState>;
   records: LifecycleDecisionRecord[];
   agentEnabled: boolean;
+  perspective: Perspective;
+  setPerspective: (perspective: Perspective) => void;
   baselineInputs: BaselineDraft;
   setBaselineInput: (field: BaselineField, value: string) => void;
+  todayMinutes: string;
+  setTodayMinutes: (value: string) => void;
   recordDecision: (input: {
     caseId: string;
     tariffVersion: string;
@@ -200,12 +206,16 @@ export const useAppStore = create<AppState>((set, get) => {
     },
     followCase: (id) => { if (id !== null) requireLifecycle(id, get().lifecycles); set({ followedCaseId: id }); },
     caseStates: initialStates(), records: seededRecords(), agentEnabled: false,
+    perspective: "both",
+    setPerspective: (perspective) => set({ perspective }),
     baselineInputs: baselineDraft(BASELINE_DEFAULTS),
     setBaselineInput: (field, value) => set((s) => ({ baselineInputs: { ...s.baselineInputs, [field]: value } })),
+    todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes),
+    setTodayMinutes: (todayMinutes) => set({ todayMinutes }),
     recordDecision: ({ approvedDraft, ...input }) => decide(input, true, approvedDraft),
     setAgentEnabled: (agentEnabled) => set({ agentEnabled }),
     // Preserve all three replacement identities used by existing reset subscribers.
-    resetDemo: () => set({ ...seededLifecycleSession(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS) }),
+    resetDemo: () => set({ ...seededLifecycleSession(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes) }),
   };
 });
 

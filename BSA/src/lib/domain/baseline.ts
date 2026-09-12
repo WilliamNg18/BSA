@@ -221,3 +221,85 @@ export function baselineDefaultCopy(defaults: Readonly<BaselineInputs>) {
     manualAssumptions: `Gathering ${n(manualGatheringMinutes(defaults))}, built review ${n(defaults.builtReviewMinutes)}, judging ${n(defaults.judgingMinutes)} minutes: editable synthetic assumptions, not measurements.`,
   };
 }
+
+/** Task 14 assumptions, not measured handling times or a staffing forecast. */
+export const MONTH_TIME_ASSUMPTIONS = Object.freeze({
+  todayMinutes: 12,
+  judgingMinutes: 2,
+  workingMinutes: 6 * 60 * 21,
+});
+export const MONTH_TODAY_RANGE = Object.freeze({ min: 10, max: 15 });
+export interface MonthModelInputs extends BaselineInputs {
+  todayMinutes: number;
+}
+export const MONTH_MODEL_DEFAULTS: Readonly<MonthModelInputs> = Object.freeze({
+  ...BASELINE_DEFAULTS,
+  todayMinutes: MONTH_TIME_ASSUMPTIONS.todayMinutes,
+  judgingMinutes: MONTH_TIME_ASSUMPTIONS.judgingMinutes,
+});
+export interface MonthModelResult extends BaselineResult {
+  perItem: {
+    today: { gatheringMinutes: number; judgingMinutes: number };
+    withAgent: { gatheringMinutes: number; judgingMinutes: number };
+    abstained: { gatheringMinutes: number; judgingMinutes: number };
+  };
+  capacity: { workingMinutes: number; today: number; withAgent: number };
+  gatheringSteps: { key: typeof GATHERING_STEPS[number]["key"]; label: string; minutes: number }[];
+}
+
+function monthErrors(input: MonthModelInputs): Partial<Record<keyof MonthModelInputs, string>> {
+  const errors: Partial<Record<keyof MonthModelInputs, string>> = baselineErrors(input);
+  if (!Number.isFinite(input.todayMinutes) || input.todayMinutes < MONTH_TODAY_RANGE.min || input.todayMinutes > MONTH_TODAY_RANGE.max) {
+    errors.todayMinutes = "Enter a number from 10 to 15 minutes.";
+  }
+  if (input.judgingMinutes <= 0 || input.judgingMinutes > input.todayMinutes || !Number.isFinite(MONTH_TIME_ASSUMPTIONS.workingMinutes / input.judgingMinutes)) {
+    errors.judgingMinutes = "Enter judging minutes greater than zero and no more than today's total.";
+  }
+  if (manualGatheringMinutes(input) === 0 && input.todayMinutes > input.judgingMinutes) {
+    errors.findFormMinutes = "Enter at least one positive gathering weight in Show the detail.";
+  }
+  return errors;
+}
+
+/** One monthly projection. Cohorts are disjoint; abstentions retain full manual effort. */
+export function monthModel(input: MonthModelInputs): MonthModelResult {
+  if (Object.keys(monthErrors(input)).length) throw new RangeError("Invalid monthly assumptions");
+  const base = calculateBaseline(input);
+  const gathering = input.todayMinutes - input.judgingMinutes;
+  const todayGathering = input.volume * gathering;
+  const todayJudging = input.volume * input.judgingMinutes;
+  const assistedGathering = base.abstained * gathering;
+  const assistedJudging = (base.built + base.abstained) * input.judgingMinutes;
+  const weights = manualGatheringMinutes(input);
+  return {
+    ...base,
+    manualGatheringMinutes: gathering,
+    today: { gatheringMinutes: todayGathering, judgingMinutes: todayJudging, operatorHours: input.volume * input.todayMinutes / 60 },
+    withAgent: { gatheringMinutes: assistedGathering, judgingMinutes: assistedJudging,
+      operatorHours: (base.built * input.judgingMinutes + base.abstained * input.todayMinutes) / 60 },
+    builtBeforeDecisionMinutes: input.judgingMinutes + input.assemblySeconds / 60,
+    abstainBeforeDecisionMinutes: input.todayMinutes,
+    perItem: {
+      today: { gatheringMinutes: gathering, judgingMinutes: input.judgingMinutes },
+      withAgent: { gatheringMinutes: 0, judgingMinutes: input.judgingMinutes },
+      abstained: { gatheringMinutes: gathering, judgingMinutes: input.judgingMinutes },
+    },
+    capacity: { workingMinutes: MONTH_TIME_ASSUMPTIONS.workingMinutes,
+      today: MONTH_TIME_ASSUMPTIONS.workingMinutes / input.todayMinutes,
+      withAgent: MONTH_TIME_ASSUMPTIONS.workingMinutes / input.judgingMinutes },
+    gatheringSteps: GATHERING_STEPS.map(({ key, label }) => ({
+      key, label, minutes: weights === 0 ? 0 : gathering * input[key] / weights,
+    })),
+  };
+}
+
+/** Retains invalid drafts and returns explicit errors, never a stale estimate. */
+export function selectMonthScenario(draft: BaselineDraft, todayMinutes: string) {
+  const parsed = parseBaselineDraft(draft, BASELINE_DEFAULTS.assemblySeconds);
+  const text = todayMinutes.trim().replace(/^0+(?=\d)/, "");
+  const validToday = /^(?:1[0-4](?:\.\d*)?|15(?:\.0*)?)$/.test(text);
+  const candidate: MonthModelInputs = { ...(parsed.input ?? BASELINE_DEFAULTS), todayMinutes: validToday ? Number(text) : NaN };
+  const errors = { ...monthErrors(candidate), ...parsed.errors };
+  const input = Object.keys(errors).length ? null : candidate;
+  return { input, errors, result: input ? monthModel(input) : null };
+}

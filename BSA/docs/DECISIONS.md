@@ -840,3 +840,28 @@ total for the seven-file portable App Service artifact. The coordinator owns
 final documentation merge, latest-main OIDC and fresh URL/identity/header
 verification before ALL DONE. Owner actions are none; future functional
 hosting changes require explicit scope and recorded decisions, not speculation.
+
+## 2026-09-12: Freeze clarity and perspective contracts before parallel work
+
+Tasks 14-18 deliberately replace the earlier fixed-reference judging
+presentation with the owner's total-effort model. Twelve Today minutes include
+two judging minutes: gathering is ten, never twelve plus two. Assisted built
+items cost two operator minutes, abstentions twelve. Existing sequential rounded
+cohorts remain disjoint; caught/cleared items do not incur human judgement.
+Default monthly hours are 17,000 Today and 255,002/60 assisted. The independent
+built-case capacity comparison is 630 versus 3,780 items from 7,560 working
+minutes; it is not a promise about mixed-cohort completions.
+
+The original baseline function remains unchanged for legacy consumers during
+the staged migration. New `monthModel`, its selector and shared hook return
+all monthly values; no page may copy their arithmetic. The seven old gathering
+inputs become proportional weights for the new gathering-only breakdown,
+retaining their relative contributions without double-counting judging.
+Invalid drafts return explicit errors and no result.
+
+Perspective defaults to Both, filters presentation only and survives Reset.
+Operational history, revisions and human decisions are never copied or filtered
+in the store. N owns monthly presentation/model implementation; Q queue; P
+claims; X perspective/navigation; V copy recommendations and visual/docs
+acceptance. Coordinator owns frozen contracts/store and serialises shared
+changes. Merge N, Q/P, X, V; every main merge uses existing App Service OIDC.

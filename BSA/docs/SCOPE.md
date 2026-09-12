@@ -6,6 +6,23 @@ ms.date: 2026-09-12
 
 # Scope register
 
+## New authorised scope: Tasks 14-18
+
+The five clarity/perspective tasks are new, unaccepted scope. The 18 original
+rows below remain historical accepted scope, not proof of this redesign.
+PROGRESS records the frozen contracts, stream ownership and merge order.
+
+| Task | Owner | Status | Required acceptance |
+| --- | --- | --- | --- |
+| 14 Monthly clarity | N | In progress | Shared monthly model, three inputs, two truthful mode-dependent tiles, detail disclosure and matching consumers |
+| 15 Queue clarity | Q | In progress | Counted filters, one virtual table, reactive New items and read-only one-hour comparison |
+| 16 Pharmacy clarity | P | In progress | Action-first tiles, compact claims/detail, approved-only advice and selected-pharmacy progress |
+| 17 Perspective | X | In progress | Independent side switch, navigation/deep-link guards and same-item no-Reset Off/On round trip |
+| 18 First-time viewer | V | In progress | Actual live novice walk, routed fixes, refreshed source-pinned screenshots and demonstration beats |
+
+New-scope totals: 0 Done, 5 In progress. Final acceptance requires latest-main
+live verification after N, Q/P, X and V merge, without changing infrastructure.
+
 ## Current acceptance, 12 September 2026
 
 Current hosted acceptance uses clean `b813c6241cc084957a30c6bf48fdd65f623f33f6`,

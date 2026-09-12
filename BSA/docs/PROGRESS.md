@@ -4,7 +4,54 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
-## Current hosted closeout: 12 September 2026
+## Current work: Tasks 14-18, clarity and perspectives
+
+Tasks 1-13 remain accepted. Tasks 14-18 are new work, not covered by that
+earlier acceptance. The Step 0 coordinator freezes the store additions,
+`MonthModelInputs`/`MonthModelResult`, `selectMonthScenario` and `useMonthModel`
+before the five isolated streams start. Default perspective is Both; Reset
+preserves it while restoring the seeded operational state and Agent Off.
+
+| Task | Stream | Ownership | Status |
+| --- | --- | --- | --- |
+| 14: One understandable monthly model | N | `baseline.ts` implementation within frozen signatures; chapter 1/2 baseline components and their tests | Ready after contracts |
+| 15: Readable NHSBSA queue | Q | Queue page/components, queue projection helpers/store and queue tests | Ready after contracts |
+| 16: Readable pharmacy claims | P | Claims page/detail/history/comparison components and claims tests | Ready after contracts |
+| 17: Independent perspective switch | X | Header, shell, routes, tour/Follow/case-header filtering and perspective tests | Ready after contracts |
+| 18: First-time viewer acceptance | V | Copy recommendations to source owners; FIRST-TIME-VIEWER, screens, demo-script, SPEC, KNOWN-ISSUES, README | Ready after contracts |
+
+Coordinator alone edits shared `store.ts`, frozen model signatures and the
+shared model hook. X requests claim-detail link guards from P instead of
+editing P's file. N supplies chapter 1/2 copy; Q/P supply their own page copy;
+V reviews it without racing their source changes. Global CSS and cross-cutting
+browser suites require a coordinator ownership assignment before editing.
+DECISIONS and LEARNINGS are append-only per stream; coordinator serialises
+PROGRESS/SCOPE and merges. Merge order: N, then Q/P, then X, then V.
+
+`monthModel` uses the existing sequential rounded cohorts. Built items incur
+judging only; abstentions incur all Today minutes; caught/cleared items incur
+no operator time in the assisted projection. One-operator assisted capacity is
+built-case capacity, not the mixed-cohort throughput. Defaults are 12 total
+Today minutes, 2 judging minutes and 7,560 working minutes (6 hours x 21 days).
+The seven gathering inputs are proportional breakdown weights for the new
+Today gathering total (Today minus judging), not extra time. Capacity is an
+unrounded quotient; formatting is the display layer's responsibility.
+Volume remains the public 85,000 referral-subset scale proxy, not a measured
+internal queue. Referral and cohort estimates are not pharmacy history counts.
+P combines the model context with actual selected-pharmacy lifecycle/revisions;
+it must not relabel projected referrals as recorded submissions or payments.
+
+Use `useMonthModel()` in chapter 1/2, queue summary and pharmacy monthly
+context. Volume/judging/shares retain `baselineInputs`/`setBaselineInput`;
+the added total Today draft uses `todayMinutes`/`setTodayMinutes`. Invalid
+drafts produce errors and no result. The legacy calculator/projection remains
+unchanged until its owning stream migrates the presentation.
+
+Final acceptance requires all five merged streams, latest-main live checklist
+and first-time-viewer observations. No hosting, billing, visibility, protected
+ref or checkpoint-tag changes are authorised. Owner actions for me: none.
+
+## Previous hosted closeout: 12 September 2026
 
 Base main `d1f0bddc736ccec6b9ddbf9836c24188e7c954df` includes recovery #54
 and durable live evidence #55. **Tasks 1-13 Done; scope 18 Done, zero In
