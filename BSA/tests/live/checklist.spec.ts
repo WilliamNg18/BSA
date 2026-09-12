@@ -99,9 +99,9 @@ test("05 Three pharmacy scenarios remain advisory in both modes", async ({ page 
 
 test("06 Claims seed list opens a matching seeded claim and history", async ({ page }, info) => {
   await page.goto("/pharmacy/claims");
-  const list = page.getByRole("list", { name: "Pharmacy claims", exact: true });
-  await expect(list.getByRole("button", { name: `Open claim ${B}`, exact: true })).toBeVisible();
-  await list.getByRole("button", { name: `Open claim ${B}`, exact: true }).click();
+  const list = page.getByRole("table", { name: "Pharmacy claims", exact: true });
+  await expect(list.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true })).toBeVisible();
+  await list.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
   await expect(detail(page).getByRole("heading", { name: `Claim detail: ${B}`, exact: true })).toBeVisible();
   await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
   await expect(history(page)).toBeVisible();
@@ -248,7 +248,7 @@ test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page 
   await page.getByLabel("Monthly volume proxy", { exact: true }).fill("120");
   await flag(page).setChecked(true);
   await navigatePrimary(page, "Pharmacy claims");
-  await page.getByRole("button", { name: `Open claim ${B}`, exact: true }).click();
+  await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
   await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);

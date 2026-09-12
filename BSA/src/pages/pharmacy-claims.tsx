@@ -1,14 +1,26 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
-import { LifecycleHistory } from "@/components/demo/lifecycle-history";
+import { CompactTooltip, CompactTooltipContent, CompactTooltipTrigger } from "@/components/ui/compact-tooltip";
+import { SyntheticTag } from "@/components/demo/labels";
 import { ClaimDetail } from "@/components/demo/claim-detail";
-import { ReferralCycle } from "@/components/demo/referral-cycle";
-import { LIFECYCLE_LABELS, type LifecycleState } from "@/lib/domain/lifecycle";
+import { useMonthModel } from "@/hooks/use-month-model";
+import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { PHARMACIES } from "@/lib/domain/reference";
 import { useAppStore } from "@/lib/store";
+
+const filters = ["Action needed", "Waiting on NHSBSA", "Paid this month", "All"] as const;
+type ClaimFilter = typeof filters[number];
+const money = (amount: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(amount);
+const number = (amount: number) => new Intl.NumberFormat("en-GB").format(amount);
+
+function matchesFilter(row: CaseLifecycle, filter: ClaimFilter, month: string) {
+  if (filter === "Action needed") return row.state === "referred_back" || row.state === "information_requested";
+  if (filter === "Waiting on NHSBSA") return ["submitted", "in_review", "resubmitted", "escalated"].includes(row.state);
+  if (filter === "Paid this month") return row.state === "paid" && row.history.some((event) => event.to === "paid" && event.at.startsWith(month));
+  return true;
+}
 
 export function PharmacyClaimsPage() {
   const [params, setParams] = useSearchParams();
@@ -16,50 +28,82 @@ export function PharmacyClaimsPage() {
   const lifecycles = useAppStore((s) => s.lifecycles);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const revisions = useAppStore((s) => s.caseRevisions);
+  const corrections = useAppStore((s) => s.pharmacyCorrections);
+  const model = useMonthModel();
   const [selectedPharmacy, setPharmacy] = useState("FQ123");
   const pharmacy = id && lifecycles[id] ? lifecycles[id].pharmacyCode : selectedPharmacy;
-  const [filter, setFilter] = useState<LifecycleState | "all">("all");
+  const [filter, setFilter] = useState<ClaimFilter>("Action needed");
+  const month = new Date().toISOString().slice(0, 7);
   const rows = useMemo(() => Object.values(lifecycles).filter((row) => row.pharmacyCode === pharmacy).map((row) => ({
     ...row, c: caseForLifecycle(row.caseId, lifecycles, revisions),
   })), [lifecycles, revisions, pharmacy]);
-  const shown = rows.filter((row) => filter === "all" || row.state === filter);
+  const shown = rows.filter((row) => matchesFilter(row, filter, month));
   const selected = rows.find((row) => row.caseId === id);
+  const caught = new Set(corrections.filter((event) => event.pharmacyCode === pharmacy && event.at.startsWith(month))
+    .map((event) => `${event.caseId}:${event.revision}`)).size;
+  const totals = [
+    ["Submitted this month", rows.filter((row) => row.history.some((event) => event.to === "submitted" && event.at.startsWith(month))).length],
+    ["Referred back", rows.filter((row) => row.history.some((event) => event.to === "referred_back" && event.at.startsWith(month))).length],
+    ["Corrected/resubmitted", rows.filter((row) => revisions[row.caseId]?.some((revision) => revision.kind === "resubmission" && revision.at.startsWith(month))).length],
+    ["Paid", rows.filter((row) => row.history.some((event) => event.to === "paid" && event.at.startsWith(month))).length],
+  ] as const;
   return <div className="mx-auto max-w-7xl space-y-6">
     <header className="space-y-2"><SyntheticTag /><h1 className="text-2xl font-semibold">Pharmacy claims</h1>
-      <p>Synthetic claimed amounts, not calculated payments. Shared session history survives navigation, not reloads.</p><BoundaryTag cls="existing" />
+      <section aria-label="Referral cycle guide" className="space-y-2">
+        <p>{agentEnabled
+          ? "With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click."
+          : "Today: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone."}</p>
+        <CompactTooltip><CompactTooltipTrigger asChild><Button variant="link" className="h-auto whitespace-normal p-0">What is assumed?</Button></CompactTooltipTrigger>
+          <CompactTooltipContent>Published context: monthly prescription submissions and referred-back items. Weeks of delay, the delivery channel and internal handling steps are illustrative assumptions, not published facts. The assisted example requires an actual operator-approved note. Applying a correction never submits it; the pharmacy explicitly resubmits.</CompactTooltipContent>
+        </CompactTooltip>
+      </section>
       <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy submission</Link></Button>
     </header>
-    <ReferralCycle enabled={agentEnabled} claim={selected ?? (id ? undefined : rows.find((row) => row.caseId === "EX-24112") ?? rows[0])} />
-    <div className="flex flex-wrap gap-4">
-      <label className="grid gap-1">Pharmacy (synthetic)
-        <select className="rounded-md border bg-background p-2" value={pharmacy} onChange={(e) => { setPharmacy(e.target.value); setParams({}); }}>
-          {PHARMACIES.map((p) => <option key={p.contractorCode} value={p.contractorCode}>{p.name}</option>)}
-        </select>
-      </label>
-      <label className="grid gap-1">Claim state
-        <select className="max-w-full rounded-md border bg-background p-2" value={filter} onChange={(e) => setFilter(e.target.value as LifecycleState | "all")}>
-          <option value="all">All states ({rows.length})</option>
-          {(Object.keys(LIFECYCLE_LABELS) as LifecycleState[]).map((state) => <option key={state} value={state}>{state.replaceAll("_", " ")} ({rows.filter((row) => row.state === state).length})</option>)}
-        </select>
-      </label>
+    <label className="grid max-w-sm gap-1">Pharmacy (synthetic)
+      <select className="min-w-0 rounded-md border bg-background p-2" value={pharmacy} onChange={(e) => { setPharmacy(e.target.value); setParams({}); }}>
+        {PHARMACIES.map((p) => <option key={p.contractorCode} value={p.contractorCode}>{p.name}</option>)}
+      </select>
+    </label>
+    <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
+      <h2 className="font-semibold">This pharmacy · {month}</h2>
+      <p className="text-sm">Recorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.</p>
+      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+        {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{number(total)}</dd></div>)}
+        {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{number(caught)}</dd></div>}
+      </dl>
+      {agentEnabled && <p className="text-sm">Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.</p>}
+      {model.result ? <p className="text-sm">Shared monthly scenario: {number(model.result.volume)} items across the modelled service{agentEnabled ? `; ${number(model.result.pharmacyCaught)} projected catches before submission` : ""}. Not this pharmacy&apos;s recorded totals.</p>
+        : <p role="alert">Shared monthly scenario unavailable. Correct the monthly assumptions: {Object.values(model.errors).join(" ")}</p>}
+    </section>
+    <div aria-label="Claim filters" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      {filters.map((name) => {
+        const matching = rows.filter((row) => matchesFilter(row, name, month));
+        return <button key={name} type="button" aria-pressed={filter === name} onClick={() => setFilter(name)}
+          className="rounded-xl border bg-card p-4 text-left focus-visible:outline-2 focus-visible:outline-ring aria-pressed:border-primary aria-pressed:ring-2 aria-pressed:ring-primary">
+          <span className="block font-semibold">{name}</span>
+          <span className="block">{matching.length} items</span>
+          <span className="block text-sm">{money(matching.reduce((sum, row) => sum + (row.c?.claim.amountClaimed ?? 0), 0))} claimed (synthetic)</span>
+        </button>;
+      })}
     </div>
-    <dl className="grid gap-3 sm:grid-cols-2" aria-label="Synthetic claim totals">
-      <div><dt>Matching claims</dt><dd>{shown.length}</dd></div>
-      <div><dt>Claimed amount (synthetic, not payments)</dt><dd>£{shown.reduce((sum, row) => sum + (row.c?.claim.amountClaimed ?? 0), 0).toFixed(2)}</dd></div>
-    </dl>
-    <ul aria-label="Pharmacy claims" className="grid gap-3 md:grid-cols-2">
-      {shown.map((row) => <li key={row.caseId} className="space-y-2 rounded-xl border bg-card p-4">
-        <h2 className="break-all font-semibold">{row.caseId}</h2>
-        <p className="text-sm">{LIFECYCLE_LABELS[row.state].pharmacy}</p>
-        <div className="text-sm">Claimed: £{row.c?.claim.amountClaimed.toFixed(2) ?? "Not available"} (synthetic)</div>
-        <Button variant="outline" onClick={() => setParams({ caseId: row.caseId })}>Open claim {row.caseId}</Button>
-      </li>)}
-    </ul>
+    <div className="overflow-x-auto rounded-xl border">
+      <table aria-label="Pharmacy claims" className="w-full text-left text-sm">
+        <caption className="p-3 text-left">{filter}. Claimed amounts are synthetic, not calculated payments.</caption>
+        <thead><tr className="border-b"><th scope="col" className="p-3">Item</th><th scope="col" className="p-3">Dispensed</th><th scope="col" className="p-3">Amount</th><th scope="col" className="p-3">State</th><th scope="col" className="p-3">Action</th></tr></thead>
+        <tbody>{shown.map((row) => <tr key={row.caseId} className="border-b last:border-0">
+          <th scope="row" className="break-words p-3 font-medium">{row.caseId}</th>
+          <td className="p-3">{row.c?.extracted.dispensingDate ?? "Not recorded"}</td>
+          <td className="p-3">{row.c ? money(row.c.claim.amountClaimed) : "Not recorded"}</td>
+          <td className="p-3">{LIFECYCLE_LABELS[row.state].pharmacy}</td>
+          <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setPharmacy(pharmacy); setParams({ caseId: row.caseId }); }}>
+            {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
+            <span className="sr-only"> {row.caseId}</span>
+          </Button></td>
+        </tr>)}</tbody>
+      </table>
+    </div>
     {!shown.length && <p role="status">No claims match this filter.</p>}
     {id && !selected && <p role="alert">Unknown synthetic claim. Choose a claim from this pharmacy.</p>}
-    {selected?.c && <>
-      <ClaimDetail key={`${id}-${revisions[selected.caseId].at(-1)?.number}`} c={selected.c} row={selected} />
-      <LifecycleHistory id={selected.caseId} pharmacy />
-    </>}
+    {selected?.c && <ClaimDetail key={selected.caseId} c={selected.c} row={selected} />}
   </div>;
 }

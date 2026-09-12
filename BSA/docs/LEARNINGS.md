@@ -852,3 +852,16 @@ Overview with assistance Off, but its implicit favicon request returned 404.
 Issue #52 adds a local icon and explicit link. Six targeted hosting tests and
 a production HTTP probe passed with image/x-icon and exact built bytes.
 This does not replace the remaining full live checklist.
+
+## 2026-09-12: Task 16 P claims clarity preserves two different lifetimes
+
+Combining claim fields and history in one visual card must not give them the
+same React remount key. Correction fields reset for a new immutable revision;
+the expanded history disclosure should stay open for the same item. Keep the
+revision-keyed form inside the card alongside the stable history component.
+
+A ready submission snapshot alone cannot prove a pre-submission catch. The
+monthly selected-pharmacy strip consumes explicit before/after correction
+events, excludes other pharmacies and months, and counts each case/revision
+once. Recorded item counts and the shared whole-service model are different
+quantities and need separate labels even when both are synthetic.

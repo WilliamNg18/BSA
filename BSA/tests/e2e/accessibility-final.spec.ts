@@ -280,18 +280,15 @@ for (const colorScheme of ["light", "dark"] as const) {
           test(`axe list and action panel ${state}`, async ({ page }, info) => {
             await page.goto("pharmacy/claims");
             await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-            const filter = page.getByRole("combobox", { name: "Claim state", exact: true });
-            // Native selection is keyboard-operated, not assigned through the DOM.
+            const filter = page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / });
             await filter.focus();
-            await filter.press("Home");
-            const index = Object.keys(LIFECYCLE_LABELS).indexOf(state);
-            for (let i = 0; i <= index; i++) await filter.press("ArrowDown");
             await filter.press("Enter");
-            await expect(filter).toHaveValue(state);
+            await expect(filter).toHaveAttribute("aria-pressed", "true");
             await audit(page, info, "claims-list-axe");
-            await page.getByRole("list", { name: "Pharmacy claims", exact: true }).getByRole("button").first().press("Enter");
+            await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
+              .filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) }).first().getByRole("button").press("Enter");
             const detail = page.getByRole("region", { name: "Claim detail", exact: true });
-            await expect(detail.getByRole("heading", { level: 2 })).toBeFocused();
+            await expect(detail.getByRole("heading", { name: /^Claim detail:/ })).toBeFocused();
             await expect(detail.getByRole("status").first()).toHaveText(labels.pharmacy);
             if (enabled && state === "referred_back") {
               await detail.getByRole("button", { name: "Re-check endorsement", exact: true }).press("Enter");
