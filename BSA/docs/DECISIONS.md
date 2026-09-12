@@ -815,3 +815,26 @@ Retain the current ID-bound federation subject and disabled optional RBAC
 bootstrap. Measure only non-destructive reapplication/settings recovery, not
 recovery from deleted resources. Refresh parameters if concurrent metadata
 changes could make the snapshot stale.
+
+## 2026-09-12: Bounded hosted and infrastructure closeout
+
+Infrastructure is complete and frozen for the owner-selected App Service scope.
+Accept actual clean-release live checks, main/manual OIDC, the shared four-shard
+verification command, measured setup and PR artifacts, and reviewed Incremental
+configuration recovery as the completed scope in INFRA-DONE. Reject both the
+obsolete SWA token/preview prerequisite and a stronger destructive-DR claim:
+the owner selected existing F1 App Service, which has no live preview slots.
+
+Live acceptance remains pinned to `b813c6241cc084957a30c6bf48fdd65f623f33f6`:
+13 checks/26 identities/six zero-violation axe audits, plus the separate
+same-history mixed-mode pass. Current CI 34705318318 at `8bee3f2` passed 695
+unique units and 1,055 partitioned blocking browsers in 6m25s. Unit runs on
+each shard are not unique additional cases. Recovery took 82.08 seconds,
+including unchanged tags and post-apply live checks, without deletion.
+
+Preserve source-pinned screenshot/failed-run histories and keep compression
+methods/artifact revisions distinct. Do not reuse a four-file frontend gzip
+total for the seven-file portable App Service artifact. The coordinator owns
+final documentation merge, latest-main OIDC and fresh URL/identity/header
+verification before ALL DONE. Owner actions are none; future functional
+hosting changes require explicit scope and recorded decisions, not speculation.

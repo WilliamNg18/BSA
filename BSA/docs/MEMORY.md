@@ -93,8 +93,11 @@ Git root contains the nested application `BSA`. Application main at freeze is
 `checkpoint-2026-09-12` pins the main handover/tracking commit. Stream tags
 and full branch heads are listed in [HANDOVER](HANDOVER.md).
 
-Tasks 1-12 are Done. Task 13 has complete application verification but remains
-In progress for hosted release verification under #37. Eight chapters/nine stops,
+Tasks 1-13 are Done against the accepted application and hosted evidence in
+PROGRESS. Scope is 18 Done; the separately maintained PARITY record owns its
+final hosted row. Documentation merge and latest-commit deployment recheck
+remain coordinator release steps, not a claim that this unmerged revision is live.
+Eight chapters/nine stops,
 full referral-cycle guide, queue Compare, scene count-in, healthy manual
 pharmacy status and S's CSP/focus/motion fixes are merged. R's approved-only
 On reasons and manual-resubmission pain fixes merged through PR #33 at
@@ -105,7 +108,7 @@ The original source-pinned manifest at `898cda5` contains 107 reviewed captures/
 Its 51 audits with incomplete rules still require human judgement; automated
 checks are not complete manual WCAG certification.
 
-Current main after route-opacity repair #42, quarantine removal #40 and scoped
+Historical main after route-opacity repair #42, quarantine removal #40 and scoped
 V refresh #43 is `c687a9eab181b02f4fca0eb667e8ab8f94468620`, with application
 source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16`. Only the route opacity fade
 was removed to repair intermediate-frame contrast; slide/focus/motion guards
@@ -131,22 +134,34 @@ F1 has no slots; PRs get CI/artifacts, not live previews. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
-Public CI 34696637977 passed at exact head
-`f295d7f19363cd101af7401f0ba03188ee7d0b2b`: check, 607 units/22 files,
-1,054 all-blocking browsers in 15.1 minutes, zero quarantine. Source/tests
-match accepted main `82c18e4`; V #43 is documentation-only. The earlier
-1,019 blocking plus three informational result is historical, not current.
+Current base main is `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`, after recovery
+#54 and live evidence #55. Public CI 34705318318 passed at exact head
+`8bee3f205d29178177a6fb1ef5e98394c7655d2c`: check, 695 unique units/26 files
+(repeated by each shard, not 2,780 unique tests), and 1,055 blocking browsers
+partitioned 264/264/264/263, zero quarantine. Observed verdict: 6m25s.
+Older 607/1,054 and 1,019-plus-three counts remain historical.
 Do not infer CI-wide axe/CSP artifact totals from V's scoped reports.
+The coordinator measured the actual deployed seven-file ZIP at clean
+`d1f0bddc736ccec6b9ddbf9836c24188e7c954df` (build UTC
+`2026-09-12T16:44:36.023Z`): 209,062 bytes, Python independent-resource
+`gzip.compress(mtime=0)` default level 9, informational. It is not a rebuild
+or a fixed total for later commit metadata; PROGRESS records all seven values.
 Historical frontend capture-build evidence is in docs/screens/route-opacity-parity: 203,721 bytes
 across all four independently gzipped resources using the original Python
 method (previously 203,723). The separately recorded Node level-9 variant is
 203,964 bytes; never mix compressor methods. All sizes are informational,
 with no budget.
 
-Azure workflow 34692328300 built `be623ab` but failed its explicit missing
-deployment-token prerequisite. No actual live URL, resource provisioning or
-PR preview is verified. Owner token reset/secret setup and hosted checks remain
-#37; follow DEPLOYMENT.md without exposing credentials. #34 is closed after
+Live URL: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The clean `b813c6241cc084957a30c6bf48fdd65f623f33f6` artifact passed 13/13 live
+checks and 26 matching before/after identities; six actual axe audits
+(three Off/three On) had zero violations. A separate unchanged mixed-mode
+test passed on the same item/history, four attempts and three human decisions.
+Main OIDC 34704994346 and manual OIDC 34705843955 succeeded at `b813c62`;
+main 34705915808 succeeded at `d1fbe85`. Durable evidence is in
+docs/live-verification and the linked recovery record in INFRA-DONE.
+The old SWA token/resource actions are superseded by #48, not outstanding.
+No PR live preview is promised on F1. #34 is closed after
 removal of all three quarantine tags and the all-blocking pass; #41 is closed
 after the route-opacity repair and 32 new frame cases. #35 is closed as not reproduced: its axe error occurred
 during timeout teardown after slow navigation, with no actionable axe defect
@@ -177,9 +192,10 @@ Latest owner direction: use `bsa-bsa-demo-r2j2l3dxhtohy` in `rg-bsa-bsa-demo`,
 subscription `8b02c7be-06b9-4d15-a916-eba62a775f02`. Azure login works; the
 coordinator created the deployment identity, main-branch federation, site-only
 Website Contributor grant and five GitHub variables. Owner actions for setup:
-none. The old live artifact returns HTTP 200 without CSP; that is not acceptance
-of the new strict-header package. DEPLOYMENT records the actual startup and
-commit-verification steps; coordinator owns Azure mutations.
+none. The strict-header package has actual live acceptance at clean `b813c62`;
+later documentation/IaC revisions do not relabel that run. DEPLOYMENT records
+startup and commit verification; coordinator owns Azure mutations and the
+fresh latest-commit check after this documentation merges.
 
 ## How changes land
 
@@ -195,9 +211,13 @@ checks are green; main deploys automatically, followed by a STATUS message with
 the verified live URL and commit. Target issue-to-live time for a small change
 is under one hour, not a correctness waiver or a CI timeout gate.
 
-Infrastructure closure is tracked in INFRA-DONE.md. Do not write "complete and
-frozen" until every checklist item has actual evidence. The current missing
-verified-release/recovery evidence cannot be made true by documentation.
+Infrastructure is complete and frozen for the owner-selected App Service scope.
+INFRA-DONE.md records actual main/manual OIDC, live checks, CI/setup/artifact
+evidence and 82.08-second non-destructive Incremental configuration reapplication
+with unchanged tags and post-apply live checks. This is not deleted-resource
+disaster recovery, a future availability guarantee or permission to skip release
+verification. Final ALL DONE remains the coordinator's post-merge/latest-deploy
+and fresh-URL verdict.
 Revisit hosting only for an explicit owner decision or functional
 requirement, with a decision record; do not weaken the strict CSP for speculation
 about future features.

@@ -4,6 +4,62 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
+## Current hosted closeout: 12 September 2026
+
+Base main `d1f0bddc736ccec6b9ddbf9836c24188e7c954df` includes recovery #54
+and durable live evidence #55. **Tasks 1-13 Done; scope 18 Done, zero In
+progress, zero Not started**, against the evidence below. Final documentation
+merge and latest-main deployment/recheck remain coordinator release steps;
+the live test is not attributed to an untested documentation commit.
+
+* [x] Task 8: lifecycle/history, accepted foundation `898cda5`, retained in current CI
+* [x] Task 9: claims/actions and operator-approved reasons, current CI and live claim checks
+* [x] Task 10: Follow/Switch side, separate Off/On cycles and same-history mixed-mode live supplement
+* [x] Task 11: eight chapters/nine stops and referral guide, retained CI and live route checks
+* [x] Task 12: navigation/header/focus and same-item links, retained CI and live checks
+* [x] Task 13: complete blocking application matrix and actual hosted acceptance at clean `b813c62`
+
+| Evidence | Actual accepted result |
+| --- | --- |
+| [CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318), head `8bee3f205d29178177a6fb1ef5e98394c7655d2c` | `npm run verify` check + 695 unique units/26 files, repeated per shard; 1,055 distinct blocking browsers, shards 264/264/264/263; zero quarantine; 6m25s creation-to-completion |
+| [Live record](live-verification/appservice-b813c62.json), clean `b813c6241cc084957a30c6bf48fdd65f623f33f6` | 13/13 first-run checks, one worker, zero retries, UTC `16:25:18.335` to `16:28:07.940`; 26 exact clean identities |
+| Live axe | Six default-rule audits, three Off/three On, zero violations; separate from CI and historical screenshot audits, not universal WCAG certification |
+| Same-history supplement | One unchanged mixed-mode test passed, four immutable attempts/three human decisions, bracketed clean `b813c62` identities; 9.392s test time, not part of the original 13 or six axe audits |
+| Automatic and manual OIDC | Main [34704994346](https://github.com/WilliamNg18/BSA/actions/runs/34704994346) and manual [34705843955](https://github.com/WilliamNg18/BSA/actions/runs/34705843955) succeeded at `b813c62`; subsequent main [34705915808](https://github.com/WilliamNg18/BSA/actions/runs/34705915808) succeeded at `d1fbe85` |
+| Bounded recovery | [Recorded Incremental apply](https://github.com/WilliamNg18/BSA/issues/37#issuecomment-5647265424) succeeded in 82.08s including unchanged tags and root/claims/trace/header/clean-commit checks; no deletion or disaster recreation |
+
+**Verified URL:** https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The existing F1 App Service, Node 24 runtime and strict self-only CSP are the
+owner-selected target under #48. GitHub OIDC is main-bound and site-scoped;
+owner actions are **none**. Old SWA resource/token/preview requirements are
+superseded, not secretly fulfilled. F1 has no deployment slots: PRs receive
+actual downloadable CI artifacts (#49), not live previews.
+
+Source/runtime/dependencies/policy/Vite are unchanged from the live `b813c62`
+artifact through the recovery/live-evidence base; #54 adds a recovery unit,
+so earlier icon CI's 694 units must not be presented as the latest 695.
+No fresh build/browser run is claimed for this documentation. The coordinator
+measured the actual deployed ZIP, not a local rebuild, at clean
+`d1f0bddc736ccec6b9ddbf9836c24188e7c954df`, build UTC
+`2026-09-12T16:44:36.023Z`: **209,062 independent-resource gzip bytes** over
+exactly seven files, Python `gzip.compress(mtime=0)` at default level 9.
+Contributions: CSS 12,909; JavaScript 189,968; build-info 125; favicon 3,610;
+hosting policy 293; HTML 432; server 1,725 bytes. Final commit/build metadata
+can change this total; the coordinator measures the final artifact again.
+Historical four-file 203,721/203,964-byte reports are not current App Service
+totals. All compression metrics remain informational with no budget.
+
+Setup workflow 34700428815 completed in 24 seconds; #47's shared verify/four
+shards recorded 7m45s before this newer 6m25s verdict. Neither is a timing
+guarantee. Infrastructure's completed/frozen scope and recovery limitations
+are in INFRA-DONE. #34/#35/#41 are closed; #37's former hosted blocker now has
+live/recovery proof, with issue closure and final deployment handled by the
+coordinator. PARITY is independently maintained; its final hosted row must use
+this evidence rather than inferred old screenshot counts.
+
+All records below are historical increments. Their pending task/owner-action
+wording and then-current totals do not override this hosted closeout.
+
 ## PR build artifact execution and keyboard readiness correction
 
 CI 34701455982 at 261cbfe published `pr-build-49`, artifact ID 10299839601,
