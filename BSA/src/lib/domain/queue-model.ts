@@ -1,6 +1,6 @@
 import { calculateBaseline, manualGatheringMinutes, type BaselineInputs, type BaselineResult, type MonthModelResult } from "./baseline";
 import { CASES, QUEUE_FILLER } from "./cases";
-import type { CaseState, ExceptionCase } from "./types";
+import type { CasePack, CaseState, ExceptionCase } from "./types";
 import type { CaseLifecycle } from "./lifecycle";
 import { mandatoryFieldsCheck, sampleAgreement, validateCitation } from "./rules";
 import { versionForDate } from "./tariff";
@@ -107,16 +107,17 @@ export const queueFilters = (enabled: boolean): QueueStatus[] => enabled
   ? ["built", "evidence", "abstained", "cleared", "decided"] : ["awaiting", "progress", "decided"];
 
 /** Audience labels do not rewrite recorded states or imply an agent ran on a submission. */
-export function queueStatus(state: CaseState, enabled: boolean, lifecycle?: CaseLifecycle): QueueStatus {
+export function queueStatus(state: CaseState, enabled: boolean, lifecycle?: CaseLifecycle, pack?: CasePack | null): QueueStatus {
   if (state === "human_decision_recorded") return "decided";
   const pending = lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted";
   if (!enabled) return state === "cleared_by_rules" ? "decided"
     : pending ? "awaiting"
     : lifecycle?.state === "in_review" || state === "additional_evidence_required" ? "progress" : "awaiting";
   if (pending) return "evidence";
-  if (state === "cleared_by_rules") return "cleared";
-  if (state === "agent_abstained") return "abstained";
-  if (state === "additional_evidence_required") return "evidence";
+  const current = pack?.state ?? state;
+  if (current === "cleared_by_rules") return "cleared";
+  if (current === "agent_abstained" || pack?.recommendation === "ABSTAIN") return "abstained";
+  if (current === "additional_evidence_required" || pack?.gate.result === "FAIL") return "evidence";
   return "built";
 }
 

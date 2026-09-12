@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { confirmReset } from "./fixtures";
+import { confirmReset, navigatePrimary } from "./fixtures";
 
 // This test deliberately faults a served production bundle, never the source.
 // Unlike the normal fixture it expects ONLY the injected error and boundary log.
@@ -46,8 +46,9 @@ test("a view failure preserves the shell, logs its pathname and resets on naviga
   await page.getByRole("link", { name: "Go to the queue", exact: true }).click();
   await expect(page.getByRole("heading", { name: "NHSBSA exception queue", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "This view could not be loaded" })).toHaveCount(0);
-  await page.locator("a[href='/case/EX-24112/trace']").first().click();
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("How the case was built: Missing or insufficient information");
+  await navigatePrimary(page, "Evaluation");
+  await expect(page).toHaveURL(/\/evaluation$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Evaluation and guardrails");
   expect(errors).toEqual([]);
   expect(requests).toEqual([]);
 });

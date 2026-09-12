@@ -43,11 +43,11 @@ export function QueuePage() {
       const state = caseStates[item.id] ?? ("state" in item ? item.state : item.initialState);
       const evidence = canonical && agentEnabled ? caseForLifecycle(item.id, lifecycles, revisions) : null;
       const pack = evidence ? runAgent(evidence, { agentEnabled: true }) : null;
-      const status = queueStatus(state, agentEnabled, lifecycle);
+      const status = queueStatus(state, agentEnabled, lifecycle, pack);
       return {
         id: item.id, pharmacy: typeof item.pharmacy === "string" ? item.pharmacy : item.pharmacy.name,
         reason: item.routingReason, state,
-        status: status === "built" && pack?.gate.result === "FAIL" ? "evidence" : status,
+        status,
         fresh, submittedAt: fresh ? latest?.at : undefined, canonical, reviewable: canonical || fresh, blocked: pack?.gate.result === "FAIL",
         pending: lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted", projected: false,
       };
@@ -57,10 +57,11 @@ export function QueuePage() {
       const item = caseForLifecycle(lifecycle.caseId, lifecycles, revisions);
       if (!item) continue;
       const state = caseStates[item.id] ?? item.initialState;
-      const status = queueStatus(state, agentEnabled, lifecycle);
-      const blocked = agentEnabled && runAgent(item, { agentEnabled: true }).gate.result === "FAIL";
+      const pack = agentEnabled ? runAgent(item, { agentEnabled: true }) : null;
+      const status = queueStatus(state, agentEnabled, lifecycle, pack);
+      const blocked = pack?.gate.result === "FAIL";
       seeds.push({ id: item.id, pharmacy: item.pharmacy.name, reason: item.routingReason, state,
-        status: status === "built" && blocked ? "evidence" : status, blocked, fresh: true, submittedAt: revisions[item.id]?.at(-1)?.at, canonical: false, reviewable: true,
+        status, blocked, fresh: true, submittedAt: revisions[item.id]?.at(-1)?.at, canonical: false, reviewable: true,
         pending: lifecycle.state === "submitted" || lifecycle.state === "resubmitted", projected: false });
     }
     return seeds.sort((a, b) => Number(b.fresh) - Number(a.fresh) || (a.fresh && b.fresh

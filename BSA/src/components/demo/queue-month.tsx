@@ -11,13 +11,13 @@ import { useAppStore } from "@/lib/store";
 import { useQueueStore } from "@/lib/queue-store";
 
 function Work({ row, enabled }: { row: QueuePreviewRow; enabled: boolean }) {
-  if (row.state === "cleared_by_rules") return <span>Cleared by rules; no model call</span>;
   if (row.state === "human_decision_recorded") return <span>Human record unchanged</span>;
+  if (row.status === "cleared" || !enabled && !row.pending && row.state === "cleared_by_rules") return <span>Cleared by rules; no model call</span>;
   if (!enabled) return <span>nothing yet, operator to gather</span>;
-  if (row.blocked) return <span>No recommendation. Gate failed; open evidence.</span>;
   if (row.pending) return <span>Awaiting review; no case built yet</span>;
   if (row.status === "abstained") return <span>Abstained: no recommendation. Operator gathers evidence.</span>;
-  if (row.projected || !row.canonical) return <span>Model example only; no evidence or citation</span>;
+  if (row.blocked) return <span>No recommendation. Gate failed; open evidence.</span>;
+  if (row.projected || !row.reviewable) return <span>Model example only; no evidence or citation</span>;
   const phases = [
     { label: "Gather", detail: "Gather the form, claim and product evidence.", Icon: FileSearch },
     { label: "Retrieve", detail: "Retrieve the dated synthetic provision; inspect the case pack for its citation.", Icon: Search },
@@ -70,14 +70,14 @@ export function QueueMonth({ result, seeds, openExample }: { result: MonthModelR
           event.preventDefault(); jump(Math.max(0, Math.min(window.total - 1, window.start + (event.key === "PageDown" ? QUEUE_PAGE_SIZE : -QUEUE_PAGE_SIZE))));
         }
       }}>
-      <table className="w-full min-w-[760px] text-left text-sm">
+      <table data-slot="table" className="w-full min-w-[760px] text-left text-sm">
         <caption className="sr-only">Twelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.</caption>
         <thead className="sticky top-0 z-10 bg-card"><tr>{["Reference", "Pharmacy", "Reason", "State", enabled ? "Agent work" : "Manual work", "Open"].map((label) => <th scope="col" key={label} className="border-b p-3">{label}</th>)}</tr></thead>
         <tbody>{window.rows.map((row) => <tr key={row.id} data-queue-seed={!row.projected ? row.id : undefined} data-shared-case={row.reviewable ? row.id : undefined} data-month-row={row.projected ? row.id : undefined} className="border-b align-top">
           <th scope="row" className="max-w-48 break-words p-3 font-medium">{row.id}{row.fresh && <span className="ml-2 rounded bg-amber-100 px-1 text-xs text-amber-950">New</span>}<span className="block text-xs font-normal text-muted-foreground">{row.projected ? "Projection only" : "Synthetic example"}</span></th>
           <td className="max-w-48 p-3">{row.pharmacy}</td>
           <td className="max-w-64 p-3">{row.reason}</td>
-          <td className="max-w-48 p-3" data-queue-state data-recorded-state={row.state}>{row.state === "cleared_by_rules" ? "Cleared by rules; no model call" : QUEUE_STATUS_LABELS[row.status]}{!enabled && row.state === "agent_abstained" && <span className="block text-xs">Known abstention; manual work</span>}{row.pending && <span className="block text-xs">Submitted, awaiting review</span>}</td>
+          <td className="max-w-48 p-3" data-queue-state data-recorded-state={row.state}>{row.status === "cleared" || !enabled && !row.pending && row.state === "cleared_by_rules" ? "Cleared by rules; no model call" : QUEUE_STATUS_LABELS[row.status]}{!enabled && row.state === "agent_abstained" && <span className="block text-xs">Known abstention; manual work</span>}{row.pending && <span className="block text-xs">Submitted, awaiting review</span>}</td>
           <td className="max-w-56 p-3"><Work row={row} enabled={enabled} /></td>
           <td className="p-3">{row.reviewable ? row.pending
             ? <Button size="sm" variant="outline" onClick={() => {
