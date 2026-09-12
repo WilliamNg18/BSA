@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "source": "Completed live checklist.json and its attached identity, axe and deep-link observations",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+  "expectedBuildCommit": "b813c6241cc084957a30c6bf48fdd65f623f33f6",
+  "actualBuildCommits": ["b813c6241cc084957a30c6bf48fdd65f623f33f6"],
+  "startedAt": "2026-09-12T16:25:18.335Z",
+  "finishedAt": "2026-09-12T16:28:07.940Z",
+  "status": "PASS",
+  "symptoms": [],
+  "execution": {
+    "browser": "Chromium",
+    "workers": 1,
+    "retries": 0,
+    "passed": 13,
+    "failed": 0,
+    "notRun": 0,
+    "firstRun": true
+  },
+  "identityChecks": {
+    "endpoint": "/build-info.json",
+    "count": 26,
+    "placement": "Before and after each of the 13 checklist items",
+    "allMatchedExpectedCommit": true,
+    "allDirtyFalse": true,
+    "allValidUtcBuildTimes": true,
+    "allHttp200JsonNoStore": true
+  },
+  "checklist": [
+    {"name": "01 Root Overview starts Agent Off and serves the approved build", "status": "PASS", "startedAt": "2026-09-12T16:25:19.135Z", "durationMs": 24642, "symptoms": []},
+    {"name": "02 Every current route toggles On and back Off without errors", "status": "PASS", "startedAt": "2026-09-12T16:25:48.318Z", "durationMs": 28186, "symptoms": []},
+    {"name": "03 Typed calculator volume changes the shared Scene figures", "status": "PASS", "startedAt": "2026-09-12T16:26:16.516Z", "durationMs": 6767, "symptoms": []},
+    {"name": "04 Four case cards open their matching case packs and traces", "status": "PASS", "startedAt": "2026-09-12T16:26:23.295Z", "durationMs": 9101, "symptoms": []},
+    {"name": "05 Three pharmacy scenarios remain advisory in both modes", "status": "PASS", "startedAt": "2026-09-12T16:26:32.408Z", "durationMs": 18610, "symptoms": []},
+    {"name": "06 Claims seed list opens a matching seeded claim and history", "status": "PASS", "startedAt": "2026-09-12T16:26:51.029Z", "durationMs": 18418, "symptoms": []},
+    {"name": "07 Queue virtual month counter and sweep preserve recorded states", "status": "PASS", "startedAt": "2026-09-12T16:27:09.458Z", "durationMs": 8846, "symptoms": []},
+    {"name": "08 Full Off then On round trips retain Follow and Switch side", "status": "PASS", "startedAt": "2026-09-12T16:27:18.316Z", "durationMs": 12046, "symptoms": []},
+    {"name": "09 Case D retains three abstention reasons and gate NOT RUN", "status": "PASS", "startedAt": "2026-09-12T16:27:30.373Z", "durationMs": 7322, "symptoms": []},
+    {"name": "10 Case E remains deterministic without an agent call", "status": "PASS", "startedAt": "2026-09-12T16:27:37.704Z", "durationMs": 6416, "symptoms": []},
+    {"name": "11 Case B July replay is Sufficient while August refers back", "status": "PASS", "startedAt": "2026-09-12T16:27:44.132Z", "durationMs": 8008, "symptoms": []},
+    {"name": "12 Six root deep links return the application with strict headers", "status": "PASS", "startedAt": "2026-09-12T16:27:52.151Z", "durationMs": 7147, "symptoms": []},
+    {"name": "13 Reset restores seeded claims, calculator and Agent Off", "status": "PASS", "startedAt": "2026-09-12T16:27:59.310Z", "durationMs": 8367, "symptoms": []}
+  ],
+  "axe": {
+    "rules": "Default axe-core rules; no exclusions",
+    "auditCount": 6,
+    "offCount": 3,
+    "onCount": 3,
+    "totalViolations": 0,
+    "audits": [
+      {"name": "overview-off", "path": "/", "agentEnabled": false, "auditedAt": "2026-09-12T16:25:47.942Z", "violations": 0},
+      {"name": "overview-on", "path": "/", "agentEnabled": true, "auditedAt": "2026-09-12T16:26:16.328Z", "violations": 0},
+      {"name": "pharmacy-off", "path": "/pharmacy", "agentEnabled": false, "auditedAt": "2026-09-12T16:26:44.658Z", "violations": 0},
+      {"name": "pharmacy-on", "path": "/pharmacy", "agentEnabled": true, "auditedAt": "2026-09-12T16:26:50.825Z", "violations": 0},
+      {"name": "claims-off", "path": "/pharmacy/claims?caseId=EX-24112", "agentEnabled": false, "auditedAt": "2026-09-12T16:27:03.504Z", "violations": 0},
+      {"name": "claims-on", "path": "/pharmacy/claims?caseId=EX-24112", "agentEnabled": true, "auditedAt": "2026-09-12T16:27:09.163Z", "violations": 0}
+    ]
+  },
+  "deepLinks": {
+    "sharedObservedHeaderWhitelist": {
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY",
+      "referrer-policy": "strict-origin-when-cross-origin"
+    },
+    "observations": [
+      {"path": "/pharmacy", "status": 200, "checkedAt": "2026-09-12T16:27:57.688Z"},
+      {"path": "/pharmacy/claims", "status": 200, "checkedAt": "2026-09-12T16:27:57.954Z"},
+      {"path": "/queue", "status": 200, "checkedAt": "2026-09-12T16:27:58.373Z"},
+      {"path": "/case/EX-24112", "status": 200, "checkedAt": "2026-09-12T16:27:58.681Z"},
+      {"path": "/case/EX-24112/trace", "status": 200, "checkedAt": "2026-09-12T16:27:58.916Z"},
+      {"path": "/case/EX-24112/record", "status": 200, "checkedAt": "2026-09-12T16:27:59.145Z"}
+    ]
+  },
+  "boundaries": [
+    "Evidence applies only to the observed build and UTC run interval, not later commits or deployments.",
+    "Scoped live checklist, not a repeat of the full production browser suite.",
+    "Six automated axe audits do not establish universal accessibility conformance.",
+    "All interaction used synthetic browser-memory state; no actual payment or backend write.",
+    "Recovery configuration, later deployment verification and final documentation remain separate coordinator work.",
+    "Only selected non-sensitive facts and four whitelisted response headers are retained here; raw session evidence remains preserved separately."
+  ]
+}
