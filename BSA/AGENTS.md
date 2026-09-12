@@ -58,4 +58,10 @@ npm run check      # typecheck + lint + build: must pass before any pull request
 
 ## Working style
 
+At every session start, read docs/MEMORY.md, docs/DECISIONS.md,
+docs/LEARNINGS.md, docs/PROGRESS.md, docs/SCOPE.md and docs/HANDOVER.md.
+Reference documents remain public by the owner's decision. Use them directly
+for the aim, outcomes and problem, with accurate attribution. Document names
+are allowed in documentation and code comments, never in the website interface.
+
 Small pull requests, one theme each, every one deployable. Domain-layer changes come with tests and never share a pull request with interface redesign. When the spec is ambiguous, prefer the reading that keeps the agent's part smaller and the human's part clearer, and record the choice in the pull request.

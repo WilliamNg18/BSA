@@ -71,21 +71,29 @@ one; documentary audit stays outside the client. Synthetic operational citations
 remain visible. Keyboard, focus, contrast, reduced motion and non-colour status
 are requirements. Shared two-second animation is presentation, not processing.
 
-## Transfer freeze and current state
+## Public repository and current state
 
-The repository is about to transfer from WilliamNg18/BSA to an enterprise
-owner whose name has not been supplied. The personal account must remain a
-collaborator as requested; verify the actual transferred permissions after
-resume rather than claiming they have already been configured.
-All streams are stopped. No merge, test or implementation resumes until a
-new-owner session says exactly `Resume from docs/HANDOVER.md`.
+Transfer is not proceeding: the enterprise identity is an Enterprise Managed
+User and cannot join or own this external repository. Owner remains WilliamNg18.
+The repository is public for Actions capacity and is to return to private when
+the demo is done. Actions billing/entitlements belong to the repository owner.
+The owner has explicitly authorised all streams to resume from HANDOVER.
+
+Reference documents are public by the owner's decision and remain committed.
+Use the reference material directly for the aim, problem and outcomes while
+preserving attribution and uncertainty. Naming documents in working docs and
+code comments is allowed; document names remain prohibited in the website UI.
+No deletion or history rewrite was performed. Secret scanning and push
+protection are enabled, `.env*` is ignored, and no actionable credential was
+found in the local tree/reachable-history scan. The owner should reset the
+Azure deployment token and put it only in the repository secret.
 
 Git root contains the nested application `BSA`. Application main at freeze is
 `98c888184db1df9c03539413b5e3b1db47f1ebfe`; annotated
 `checkpoint-2026-09-12` pins the main handover/tracking commit. Stream tags
 and full branch heads are listed in [HANDOVER](HANDOVER.md).
 
-Tasks 1-7 are Done. Tasks 8-13 are In progress and paused for remaining
+Tasks 1-7 are Done. Tasks 8-13 are In progress for remaining
 integrated acceptance and final documentation. Eight chapters/nine stops,
 full referral-cycle guide, queue Compare, scene count-in, healthy manual
 pharmacy status and S's CSP/focus/motion fixes are merged. R's approved-only
@@ -99,10 +107,12 @@ browser tests use `/`. Root configuration is emitted into BSA/dist. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
-The token is absent, resource/subscription and live URL unverified. Replacement
-GitHub CI jobs failed before starting because of an account payment/spending
-restriction; no billing change was made. R's local full fallback was
-interrupted for transfer, not passed. Prior exact evidence: check/607 units,
+The token was absent at checkpoint; resource/subscription and live URL remain
+unverified. Private-repository replacement CI jobs failed before starting
+because of an account payment/spending restriction. Public Actions execution
+must now be verified from actual jobs, not assumed unlimited for every runner.
+R's local full fallback was interrupted for transfer, not passed.
+Prior exact evidence: check/607 units,
 Linux 1,016 passes/three stale test failures, then all three corrected tests
 passed; 673 axe and 193 CSP reports from the failed run were clear.
 
@@ -110,6 +120,6 @@ Never alter last-known-good, lkg-2026-09-09 or cowork-v1 refs; see
 [branch policy](../../BRANCHES.md).
 
 Read AGENTS first, then this file, DECISIONS, LEARNINGS, PROGRESS, SCOPE and
-HANDOVER. After authorised resume, merge R (S already merged), then V, then
-D's final acceptance record. Old issue text mentioning size budgets or
-unconditional autonomous work is superseded by the current gates and freeze.
+HANDOVER. Merge R (S already merged), then V, then D's final acceptance record.
+Old issue text mentioning size budgets or transfer waiting is superseded by
+the current gates and the owner's public-repository resumption.

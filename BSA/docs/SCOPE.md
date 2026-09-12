@@ -6,13 +6,15 @@ ms.date: 2026-09-12
 
 # Scope register
 
-**Frozen, not actively running.** Resume only when the new owner's session says
-`Resume from docs/HANDOVER.md`. Application main is
+**Resumption authorised:** transfer cancelled, repository public and ownership
+remains WilliamNg18. The checkpoint record is preserved; its paused status is
+historical. Streams resume from HANDOVER without waiting for a transfer.
+Application main at the checkpoint was
 `98c888184db1df9c03539413b5e3b1db47f1ebfe`; checkpoint documentation is pinned
 by annotated tag `checkpoint-2026-09-12`. See [HANDOVER](HANDOVER.md) for
 full branch heads, commands, dependencies and evidence boundaries.
 
-**18 rows: 3 Done, 15 In progress (paused), 0 Not started.**
+**18 rows: 3 Done, 15 In progress, 0 Not started.**
 Done is bounded implementation with accepted proof. In progress can mean
 already-merged implementation awaiting the complete integrated acceptance or
 final visual/narrative work. No implementation is described as missing when
@@ -55,6 +57,6 @@ here identify the same commits, not additional unpushed work.
 | Scene | `williamng18-scene-estimate-count-in` | `df5d8eb` | PR #31 merged |
 | Queue | `williamng18-queue-comparison-control` | `2745498` | PR #32 merged |
 
-No scope row is Not started. All streams are stopped for transfer, not
-silently abandoned. Do not merge checkpoint commits from completed streams
-as new features or claim a browser inventory is an executed pass.
+No scope row is Not started. Owner-authorised work resumes from this preserved
+checkpoint. Do not merge empty checkpoint commits from completed streams as
+new features or claim a browser inventory is an executed pass.

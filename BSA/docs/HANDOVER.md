@@ -1,8 +1,22 @@
 # Account transfer handover
 
-**Frozen on 12 September 2026. Do not resume, merge, rebase, run tests or
-start implementation until a session belonging to the new owner says exactly:
-`Resume from docs/HANDOVER.md`.**
+**Transfer not proceeding; repository made public for Actions capacity; state preserved as checkpoint.**
+
+The owner cancelled the transfer on 12 September 2026 and explicitly authorised
+resumption from this handover. Enterprise Managed Users cannot join/own this
+external repository. Ownership remains WilliamNg18; Actions billing belongs to
+the repository owner. The repository is public for the demo and is to return
+to private when the demo is done. Azure Static Web Apps at `/` remains the host.
+
+GitHub secret scanning and push protection are enabled. The local tree/history
+scan identified no actionable credential. The owner explicitly approved public
+reference material; it remains in place. Reset the SWA deployment token in Azure
+and store the replacement only as `AZURE_STATIC_WEB_APPS_API_TOKEN`.
+
+All nine annotated checkpoint tags were pushed. Main checkpoint is
+`b7e63ac6bc1825fe0f92527faf3e9fd647c34126`. The frozen record below remains
+historical evidence; its stop/resume conditions and planned owner transfer
+are superseded by this explicit owner-authorised resumption. Do not move tags.
 
 The Git repository contains the application in `BSA`. Thus `docs/HANDOVER.md`
 in application instructions means this file, `BSA/docs/HANDOVER.md`, from Git

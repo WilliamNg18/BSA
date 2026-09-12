@@ -6,6 +6,12 @@ ms.date: 2026-09-12
 
 ## Account transfer checkpoint: authoritative current status
 
+**Current outcome:** transfer cancelled; repository public, owner WilliamNg18.
+Work is authorised to resume from HANDOVER. Checkpoint `b7e63ac` and all stream
+tags preserve the historical freeze. The statuses below retain unfinished
+acceptance honestly; "paused" refers to the checkpoint, not a new hold.
+GitHub scanning/push protection are enabled; references stay public by decision.
+
 **Frozen on 12 September 2026.** Resume only on the new owner's exact
 `Resume from docs/HANDOVER.md` message. [HANDOVER](HANDOVER.md) is the
 authoritative branch/head/next-action record. Application main at freeze is

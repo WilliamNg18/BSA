@@ -403,3 +403,26 @@ stream heads with annotated checkpoint tags and document actual interrupted
 results, not inferred passes. Main's handover/tracking checkpoint changes no
 application source and does not complete Tasks 8-13. The later owner instruction
 determines whether the proposed transfer proceeds.
+
+## 2026-09-12: Public repository and authorised resumption
+
+Reference documents are public by the owner's decision; they contain nothing sensitive.
+
+Transfer not proceeding; repository made public for Actions capacity; state
+preserved as checkpoint. The enterprise identity is an Enterprise Managed User
+and cannot join or own this external repository. Actions billing sits with the
+repository owner, which remains WilliamNg18. Public visibility does not change
+the single Azure Static Web Apps root-path hosting target or the six outcomes.
+Keep every checkpoint tag immutable and resume all unfinished streams.
+
+No reference document was removed. No ignore rule or CI gate was added to block
+docs/reference or extracted reference material. The existing client-only
+document-name check remains informational and protects interface copy, not
+repository documentation. Reference names in docs/code comments are allowed.
+
+Enable GitHub secret scanning and push protection; both were confirmed enabled
+through the repository API. Ignore `.env*`; credentials stay in repository
+secrets or Azure, never the static browser bundle. The owner is to reset the SWA
+deployment token in Azure and replace its repository secret. No credential value
+is requested in chat or source. The repository returns to private when the demo
+is done; do not change visibility before that instruction is fulfilled.

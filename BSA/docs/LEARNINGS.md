@@ -486,3 +486,21 @@ implementation, scoped evidence and incomplete final acceptance. Compact logs
 and summaries are preserved in Git rather than relying only on session paths.
 No feature PR, protected archive reference or account ownership changed during
 the freeze.
+
+## 2026-09-12: Transfer cancelled; public Actions resumption
+
+The owner cancelled the transfer because Enterprise Managed Users cannot join
+or own this external repository. WilliamNg18 remains owner; Actions capacity
+and billing belong to that repository owner. Public visibility was independently
+confirmed through the GitHub API. The checkpoint and eight stream tags remain.
+
+A local read-only hygiene scan covered 509 reachable commits, 1,403 unique
+blobs and 742 tracked/pending files. No actionable credential was identified.
+Extracted reference material was flagged for publication review; the owner
+explicitly approved it as non-sensitive/public. It was not removed or rewritten.
+Secret scanning and push protection were then enabled and verified. The token
+rotation recommendation is precautionary, not a claim of a discovered leak.
+
+The owner authorised resumption from HANDOVER. Historical interrupted and
+failed runs remain failures; public visibility alone is not proof that a new
+Actions run or Azure deployment has succeeded.
