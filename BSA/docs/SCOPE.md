@@ -1,29 +1,33 @@
 ---
-title: Integrated scope acceptance and remaining owner work
-description: Eighteen requested rows with accepted application proof and explicit hosting/documentation limits.
+title: Integrated scope acceptance
+description: Original eighteen rows plus five clarity tasks, with source-pinned acceptance and release boundaries.
 ms.date: 2026-09-12
 ---
 
 # Scope register
 
-## New authorised scope: Tasks 14-18
+## Clarity and perspective scope: Tasks 14-18
 
-The five clarity/perspective tasks are new, unaccepted scope. The 18 original
-rows below remain historical accepted scope, not proof of this redesign.
-PROGRESS records the frozen contracts, stream ownership and merge order.
+Tasks 14-18 have current functional and viewer acceptance at clean
+`c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`. The 18 original rows below remain
+historical accepted scope, not substituted evidence for this redesign.
+PROGRESS records the frozen contracts, merge order, 774 unique units,
+1,086 blocking browsers and the passing 14-check live release.
 
 | Task | Owner | Status | Required acceptance |
 | --- | --- | --- | --- |
-| 14 Monthly clarity | N | In progress | Shared monthly model, three inputs, two truthful mode-dependent tiles, detail disclosure and matching consumers |
-| 15 Queue clarity | Q | In progress | Counted filters, one virtual table, reactive New items and read-only one-hour comparison |
-| 16 Pharmacy clarity | P | In progress | Action-first tiles, compact claims/detail, approved-only advice and selected-pharmacy progress |
-| 17 Perspective | X | In progress | Independent side switch, navigation/deep-link guards and same-item no-Reset Off/On round trip |
-| 18 First-time viewer | V | In progress | Actual live novice walk, routed fixes, refreshed source-pinned screenshots and demonstration beats |
+| 14 Monthly clarity | N | Done, #64 | Shared monthly model, three inputs, two truthful mode-dependent tiles, detail disclosure and matching consumers |
+| 15 Queue clarity | Q | Done, #67 | Counted filters, one virtual table, reactive New items and read-only one-hour comparison |
+| 16 Pharmacy clarity | P | Done, #66 | Action-first tiles, compact claims/detail, approved-only advice and selected-pharmacy progress |
+| 17 Perspective | X | Done, #65 | Independent side switch, navigation/deep-link guards and same-item no-Reset Off/On round trip |
+| 18 First-time viewer | V | Done against live evidence, #63 merges last | Nine clarity points and 22 walk checkpoints passed; 18 reviewed captures with 18 zero-violation axe audits, including four expected perspective guards |
 
-New-scope totals: 0 Done, 5 In progress. Final acceptance requires latest-main
-live verification after N, Q/P, X and V merge, without changing infrastructure.
+New-scope totals: 5 Done, 0 In progress. These are bounded synthetic-application
+acceptances, not clinical assurance or full manual WCAG certification. V's
+documentation merge and final latest-main live verification remain coordinator
+release steps. Infrastructure is unchanged; no application issue IDs are deferred.
 
-## Current acceptance, 12 September 2026
+## Previous Tasks 1-13 acceptance, 12 September 2026
 
 Current hosted acceptance uses clean `b813c6241cc084957a30c6bf48fdd65f623f33f6`,
 with records/recovery base `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`.

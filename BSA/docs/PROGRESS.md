@@ -1,24 +1,26 @@
 ---
-title: Thirteen-task implementation progress
+title: Eighteen-task implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
 ms.date: 2026-09-12
 ---
 
-## Current work: Tasks 14-18, clarity and perspectives
+## Current acceptance: Tasks 14-18, clarity and perspectives
 
-Tasks 1-13 remain accepted. Tasks 14-18 are new work, not covered by that
-earlier acceptance. The Step 0 coordinator freezes the store additions,
+Tasks 1-13 remain accepted. Tasks 14-18 have completed their bounded functional
+and viewer acceptance at clean `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`.
+V's final documentation merge and latest-main deployment recheck remain release
+steps, not an assertion that this unmerged document is live. The coordinator froze the store additions,
 `MonthModelInputs`/`MonthModelResult`, `selectMonthScenario` and `useMonthModel`
 before the five isolated streams start. Default perspective is Both; Reset
 preserves it while restoring the seeded operational state and Agent Off.
 
 | Task | Stream | Ownership | Status |
 | --- | --- | --- | --- |
-| 14: One understandable monthly model | N, #59 | `baseline.ts` implementation within frozen signatures; chapter 1/2 baseline components and their tests | In progress |
-| 15: Readable NHSBSA queue | Q, #58 | Queue page/components, queue projection helpers/store and queue tests | In progress |
-| 16: Readable pharmacy claims | P, #62 | Claims page/detail/history/comparison components and claims tests | In progress |
-| 17: Independent perspective switch | X, #61 | Header, shell, routes, tour/Follow/case-header filtering and perspective tests | In progress |
-| 18: First-time viewer acceptance | V, #60 | Copy recommendations to source owners; FIRST-TIME-VIEWER, screens, demo-script, SPEC, KNOWN-ISSUES, README | In progress |
+| 14: One understandable monthly model | N, #59 | `baseline.ts` implementation within frozen signatures; chapter 1/2 baseline components and their tests | Done, PR #64 |
+| 15: Readable NHSBSA queue | Q, #58 | Queue page/components, queue projection helpers/store and queue tests | Done, PR #67 |
+| 16: Readable pharmacy claims | P, #62 | Claims page/detail/history/comparison components and claims tests | Done, PR #66 |
+| 17: Independent perspective switch | X, #61 | Header, shell, routes, tour/Follow/case-header filtering and perspective tests | Done, PR #65 |
+| 18: First-time viewer acceptance | V, #60 | Copy recommendations to source owners; FIRST-TIME-VIEWER, screens, demo-script, SPEC, KNOWN-ISSUES, README | Done against source-pinned live evidence; PR #63 merges last |
 
 Coordinator alone edits shared `store.ts`, frozen model signatures and the
 shared model hook. X requests claim-detail link guards from P instead of
@@ -26,7 +28,26 @@ editing P's file. N supplies chapter 1/2 copy; Q/P supply their own page copy;
 V reviews it without racing their source changes. Global CSS and cross-cutting
 browser suites require a coordinator ownership assignment before editing.
 DECISIONS and LEARNINGS are append-only per stream; coordinator serialises
-PROGRESS/SCOPE and merges. Merge order: N, then Q/P, then X, then V.
+PROGRESS/SCOPE and merges. Actual functional merge order: N, P, Q, X; V is last.
+
+| Current evidence | Actual result |
+| --- | --- |
+| [Final functional CI 34718840786](https://github.com/WilliamNg18/BSA/actions/runs/34718840786), exact `01d9bf9c01bf86a225efad8e2273ff41f49e3125` | Check and 774 unique units; 1,086 blocking browsers partitioned 272/272/271/271, all four shards successful; zero quarantine |
+| [Main deployment 34719477099](https://github.com/WilliamNg18/BSA/actions/runs/34719477099) | Existing App Service OIDC deployment and post-deploy identity/header/deep-link checks passed at `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f` |
+| Coordinator live functional checklist | 14/14 passed, one worker, no retries, 1.8 minutes; 28 matching clean before/after build identities |
+| Actual live axe | Seven audits, three Off and four On, zero violations; not a count inferred from browser cases or a manual WCAG certification |
+| Live behaviour | All routes, shared monthly inputs, queue window/Compare, approved claims and both-mode round trips, D abstention, E no model, B July, strict deep links and Reset passed; test 14 preserves the same item/history across Pharmacy/NHSBSA switches Off then On without Reset |
+| V first-time-viewer and capture review | 18/18 captures at `c0203fc`, 14 content views and four expected perspective guards; 18 actual axe audits with zero violations, 13 retaining incomplete rules, zero overflow/errors. All images visually reviewed. Nine clarity points passed; 22 walk checkpoints include the approved round trip and separate caught-before-submission 0-to-1/no-auto-submit/explicit-submit/New-row proof |
+| V provenance | Captures UTC 21:21:35-21:23:54; successful walk retry UTC 21:23:55-21:24:13. The first walk's incorrect All-tile selector failed; its record is retained, the harness was corrected, and no application defect was claimed |
+| Informational served-resource gzip | At clean `c0203fc`, 210,835 bytes across five actual HTTPS resources: HTML 428, CSS 13,116, JavaScript 193,556, build-info 125, favicon 3,610. Python 3.13.14/zlib 1.3.1, independent gzip level 9, mtime 0. Private server/policy files are excluded; this is not the older seven-file ZIP metric |
+
+The final documentation merge changes build identity. These results stay pinned
+to the functional release above; the coordinator must run the complete checklist
+again on the final latest-main deployment before ALL DONE.
+There are no deferred application issue IDs in this scope. Deliberate synthetic,
+measurement and manual-accessibility-assessment limits remain in KNOWN-ISSUES.
+Protected refs and all nine annotated checkpoint tags were checked against
+HANDOVER; they remain unchanged and must be rechecked at final release.
 
 `monthModel` uses the existing sequential rounded cohorts. Built items incur
 judging only; abstentions incur all Today minutes; caught/cleared items incur
@@ -44,8 +65,8 @@ it must not relabel projected referrals as recorded submissions or payments.
 Use `useMonthModel()` in chapter 1/2, queue summary and pharmacy monthly
 context. Volume/judging/shares retain `baselineInputs`/`setBaselineInput`;
 the added total Today draft uses `todayMinutes`/`setTodayMinutes`. Invalid
-drafts produce errors and no result. The legacy calculator/projection remains
-unchanged until its owning stream migrates the presentation.
+drafts produce errors and no result. The legacy pure arithmetic remains for
+explicit legacy consumers, not as a competing monthly headline calculation.
 
 Coordinator follow-up contract: `pharmacyCorrections` records one immutable
 human-applied, missing-to-ready precheck correction per case/next-submission
