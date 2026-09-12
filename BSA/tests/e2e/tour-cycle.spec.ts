@@ -79,10 +79,9 @@ for (const enabled of [false, true]) {
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
-    const guide = page.getByRole("region", { name: "Referral cycle guide", exact: true });
-    const recorded = guide.getByRole("region", { name: "Recorded claim state", exact: true });
+    const recorded = page.getByRole("region", { name: "Shared case history", exact: true });
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
-    await guide.getByRole("link", { name: "Open this operator case", exact: true }).click();
+    await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
     await page.getByRole("radio", { name: /^Refer back / }).check();
     if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
@@ -105,7 +104,7 @@ for (const enabled of [false, true]) {
       await page.getByRole("banner").getByRole("switch").setChecked(mode);
       await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
     }
-    await guide.getByRole("link", { name: "Open this operator case", exact: true }).click();
+    await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
     if (!enabled) await page.getByRole("radio", { name: /^Sufficient \(human choice\)/ }).check();
     else await expect(page.getByRole("radio", { name: /^Accept / })).toBeChecked();
@@ -113,7 +112,7 @@ for (const enabled of [false, true]) {
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
-    await expect(recorded).toContainText("Recorded synthetic outcome attributed to existing pricing");
+    await expect(recorded).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
     await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   });
 }
@@ -125,12 +124,10 @@ for (const width of [360, 1440]) {
     const guide = page.getByRole("region", { name: "Referral cycle guide", exact: true });
     for (const enabled of [false, true]) {
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-      await expect(guide.getByRole("heading", { name: enabled ? "With agent · Assisted preparation" : "Today · Manual preparation" })).toBeVisible();
-      await expect(guide.getByRole("list", { name: "Referral cycle stages" }).getByRole("heading")).toHaveText([
-        "1. Referred back", "2. Corrected", "3. Resubmitted", "4. Re-checked", "5. Paid · Synthetic only",
-      ]);
-      await expect(guide.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
-      await expect(guide).toContainText("This guide is not claim history");
+      await expect(guide).toContainText(enabled
+        ? "With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click."
+        : "Today: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone.");
+      await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
     }
