@@ -4,6 +4,23 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
+## Issue #46 unified verification implementation
+
+The proposed `npm run verify` runner and four-shard CI preserve the same
+blocking functional/accessibility checks and run informational reports without
+failing acceptance. It reuses the strict-header artifact configuration after
+one build, validates shard arguments and avoids duplicate feature-push/PR runs.
+No application code, existing e2e body, timeout or hosting policy changed.
+
+Local `npm run check` passed, exit 0; `npm run test -- --maxWorkers=1` passed
+643 tests in 23 files (607 existing plus 36 runner/CI cases), exit 0. Actual
+Playwright lists prove the four partitions contain 264/264/263/263 unique cases,
+exactly the complete 1,054-case union with no overlap or omissions.
+CI YAML parsing, informational gzip execution and invalid-shard CLI exit 2
+were independently checked. No redundant local full browser run occurred.
+The exact proposed head still needs a complete public sharded CI run and
+measured end-to-end duration; under fifteen minutes is a target, not a gate.
+
 ## Current acceptance refresh: 12 September 2026
 
 Main after #42, #40 and V #43 is

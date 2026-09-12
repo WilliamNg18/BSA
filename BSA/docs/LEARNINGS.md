@@ -742,3 +742,23 @@ A generic bot-assignee probe returned 404, while historical PR #8 was actually
 authored by app/copilot-swe-agent. Neither result alone establishes current
 account entitlement or the startup time of a future agent. Keep configured
 preinstallation, observed execution and unverified platform access distinct.
+
+## 2026-09-12: Verification runner and exact browser shard accounting
+
+Invoking npm.cmd through shell command strings is unnecessary on Windows.
+Using the current Node executable with npm's CLI path and a separate argv
+array preserves paths containing spaces and avoids shell interpolation.
+Invalid, repeated, zero, out-of-range and unsafe shard arguments fail before
+any child process. Runner tests exercise blocking failures, thrown spawn
+errors, signals, informational failures and a real Node child returning seven.
+
+The first runner typecheck found an incomplete mocked SpawnSync result. Supply
+the actual required result fields rather than casting through unknown.
+After correction, 36 new runner/CI tests and all 643 units passed; check passed.
+No local full browser run was launched.
+
+Five real Playwright list invocations used the runner's actual blocking argv:
+unsharded and shards 1/4 through 4/4. Unique case IDs total 1,054. Shards contain
+264, 264, 263 and 263 cases; their union is exactly 1,054 with zero duplicates,
+omissions or unexpected IDs. These are inventory results, not browser passes.
+Public CI must supply actual execution counts and end-to-end duration.
