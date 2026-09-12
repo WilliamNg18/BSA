@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureCheckpoint, captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
-import { BASELINE_DEFAULTS, GATHERING_STEPS, calculateBaseline, referralFreeProxyDisplay, formatBaselineNumber, type BaselineInputs } from "../../src/lib/domain/baseline";
+import { BASELINE_DEFAULTS, MONTH_MODEL_DEFAULTS, monthModel, GATHERING_STEPS, calculateBaseline, referralFreeProxyDisplay, formatBaselineNumber, type BaselineInputs } from "../../src/lib/domain/baseline";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { ASSISTANCE_DURATION_MS, ASSISTANCE_PHASES } from "../../src/hooks/use-assistance-presentation";
@@ -95,8 +95,9 @@ test("pipeline, scene and calculator share live counts, residuals and invalid/ze
   ];
   const results = [];
   for (const input of scenarios) {
+    await page.locator("[data-month-detail] > summary").click();
     for (const key of ["volume", "precheckPercent", "clearedPercent", "abstainPercent", "deficientBuiltPercent", "deficientAbstainPercent"] as const) await page.locator(`#baseline-${key}`).fill(input[key].toLocaleString("en-GB", { useGrouping: false, maximumFractionDigits: 12 }));
-    const result = calculateBaseline(input);
+    const result = monthModel({ ...input, todayMinutes: MONTH_MODEL_DEFAULTS.todayMinutes });
     results.push(result);
     await expect(page.locator("[data-referrals-with]")).toHaveText(formatBaselineNumber(result.referrals.withAgent, 1));
     await expect(page.locator("[data-referral-proxy]")).toHaveText(referralFreeProxyDisplay(result));
@@ -108,8 +109,10 @@ test("pipeline, scene and calculator share live counts, residuals and invalid/ze
     await expect(page.locator('[data-key-figure="accuracy-target"]')).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Public context figures" })).not.toContainText(/99\.85|100%/);
     await expect(page.getByRole("region", { name: "Rulebook context" })).toContainText("Monthly publication");
-    await expect(page.locator("[data-scene-referrals]")).toHaveText(formatBaselineNumber(result.referrals.withAgent, 0));
-    await expect(page.locator("[data-referral-proxy]")).toHaveText(referralFreeProxyDisplay(result));
+    await expect(page.locator("[data-scene-volume]")).toHaveText(formatBaselineNumber(result.volume, 0));
+    await expect(page.locator("[data-scene-hours]")).toHaveText(formatBaselineNumber(result.withAgent.operatorHours, 1));
+    await expect(page.locator("[data-scene-capacity]")).toHaveText(formatBaselineNumber(result.capacity.withAgent, 1));
+    await expect(page.locator("[data-referral-proxy]")).toHaveCount(0);
     await pipeline(page);
     for (const [attr, value] of [["pharmacy", result.pharmacyCaught], ["built", result.built], ["abstained", result.abstained], ["proposals", result.built], ["referrals", result.referrals.withAgent], ["risk", result.referralRiskResidual]] as const) await expect(page.locator(`[data-pipeline-${attr}]`)).toHaveText(formatBaselineNumber(value, 1));
     await expect(page.locator("[data-referral-proxy]")).toHaveText(referralFreeProxyDisplay(result));
@@ -184,6 +187,7 @@ test("shared two-second clock sequences kernel phases, resolves built pain only,
 test("all-abstained cohort never resolves a gathering or exact-fix marker during any phase", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("./#month");
+  await page.locator("[data-month-detail] > summary").click();
   await page.locator("#baseline-abstainPercent").fill("100");
   await pipeline(page);
   await page.clock.install({ time: new Date("2026-09-10T12:00:00Z") });
