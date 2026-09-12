@@ -107,6 +107,7 @@ test("Task9 toggling never approves a draft and arbitrary BB edits never receive
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("BB RK 21/08/26");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await expect(detail(page)).toContainText("Agent unable to determine");
+  await page.getByText("Precheck evidence", { exact: true }).click();
   await expect(detail(page)).toContainText("Clause: NOT RUN");
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
 });
@@ -119,7 +120,7 @@ test("Task9 C shows both conflict values, approved note and confirmation without
   await record(page, "Please confirm the conflicting quantities before a decision");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page)).toContainText("Operator-approved note");
-  const quantities = detail(page).locator("dl").last();
+  const quantities = detail(page).getByRole("region", { name: "Requested confirmation", exact: true }).locator("dl");
   await expect(quantities).toContainText("56");
   await expect(quantities).toContainText("84");
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
@@ -148,6 +149,7 @@ test("Task10 D stops at capture after revision and E clears by code on explicit 
   await record(page, "Please supply readable evidence for a human review");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
+  await page.getByText("Precheck evidence", { exact: true }).click();
   await expect(detail(page)).toContainText("Captured: STOPPED");
   await expect(detail(page)).not.toContainText("Ready to resubmit");
   await page.goto("pharmacy/claims?caseId=EX-24101");
@@ -165,13 +167,16 @@ test("Task9 all pharmacies have seven states, real totals, read-only disposition
   await expect(pharmacy).toHaveValue("FQ123");
   for (const code of ["FQ123", "FH774", "FM208", "FT561", "FK390"]) {
     await pharmacy.selectOption(code);
-    for (const state of ["submitted", "in_review", "information_requested", "referred_back", "resubmitted", "paid", "escalated"]) {
-      await page.getByRole("combobox", { name: "Claim state", exact: true }).selectOption(state);
-      const rows = page.getByRole("list", { name: "Pharmacy claims", exact: true }).locator(":scope > li");
+    await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
+    const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
+    const allRows = table.locator("tbody tr");
+    const amounts = await allRows.locator("td:nth-child(3)").allTextContents();
+    const total = amounts.reduce((sum, text) => sum + Number(text.replace(/[£,]/g, "")), 0);
+    await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText(
+      new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(total));
+    for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
+      const rows = table.getByRole("row").filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) });
       expect(await rows.count()).toBeGreaterThan(0);
-      const amounts = await rows.allTextContents();
-      const total = amounts.reduce((sum, text) => sum + Number(text.match(/Claimed: £([\d.]+)/)?.[1]), 0);
-      await expect(page.locator('[aria-label="Synthetic claim totals"]').getByRole("definition").filter({ hasText: /^£/ })).toHaveText(`£${total.toFixed(2)}`);
       await rows.first().getByRole("button").click();
       if (!["referred_back", "information_requested"].includes(state)) await expect(detail(page).getByRole("textbox")).toHaveCount(0);
       if (code === "FQ123" && state === "submitted") {
@@ -179,6 +184,7 @@ test("Task9 all pharmacies have seven states, real totals, read-only disposition
         await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
         await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
         await expect(detail(page)).toContainText("Submitted, awaiting processing");
+        await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
       }
     }
   }

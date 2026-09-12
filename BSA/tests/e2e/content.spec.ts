@@ -1,5 +1,6 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 /** Executes in the rendered page: no source-code word counting or truncation. */
 function auditProse() {
@@ -124,11 +125,11 @@ for (const enabled of [false, true]) {
     await page.goto("pharmacy/claims");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const audits = [];
-    for (const state of ["submitted", "in_review", "information_requested", "referred_back", "resubmitted", "paid", "escalated"]) {
-      await page.getByRole("combobox", { name: "Claim state", exact: true }).selectOption(state);
-      const open = page.getByRole("list", { name: "Pharmacy claims", exact: true }).getByRole("button").first();
-      const id = (await open.innerText()).replace("Open claim ", "");
-      await open.click();
+    for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
+      await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
+      const row = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) }).first();
+      const id = await row.getByRole("rowheader").innerText();
+      await row.getByRole("button").click();
       await expect(page.getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
       if (enabled && state === "referred_back") await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
       await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));

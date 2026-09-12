@@ -2,12 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
 import { ClaimsResubmissionComparison } from "@/components/demo/claims-resubmission-comparison";
+import { LifecycleHistory } from "@/components/demo/lifecycle-history";
+import { CompactTooltip, CompactTooltipContent, CompactTooltipTrigger } from "@/components/ui/compact-tooltip";
 import { useAppStore } from "@/lib/store";
 import { checkPharmacy, pharmacyDateCorrection, pharmacySnapshot, type PharmacyCheck } from "@/lib/domain/pharmacy-check";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 
 export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
+  const revision = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.number);
+  return <section aria-label="Claim detail" className="space-y-4 rounded-xl border bg-card p-5">
+    <ClaimDetailContent key={`${c.id}-${revision}`} c={c} row={row} />
+    <LifecycleHistory id={c.id} pharmacy />
+  </section>;
+}
+
+function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { heading.current?.focus(); heading.current?.scrollIntoView({ block: "start" }); }, []);
   const enabled = useAppStore((s) => s.agentEnabled);
@@ -31,7 +41,7 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
   function snapshot() {
     return pharmacySnapshot(text, c.extracted.dispensingDate, enabled ? result ? "scripted" : "pending" : "off", result, result ? checked!.at : null);
   }
-  return <section aria-label="Claim detail" className="space-y-4 rounded-xl border bg-card p-5">
+  return <>
     <h2 ref={heading} tabIndex={-1} className="scroll-mt-32 break-all rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {c.id}</h2>
     <p role="status">{LIFECYCLE_LABELS[row.state].pharmacy}</p>
     <BoundaryTag cls="human" />
@@ -43,11 +53,14 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     </dl>
     {(editable || row.state === "information_requested") && <section aria-label="Operator response" className="space-y-2">
       {enabled ? (approved ? <section aria-label="Operator-approved pharmacy note" className="space-y-2 rounded-md border p-3">
-        <h3 className="font-semibold">Operator-approved note</h3><p>{approved.text}</p>
+        <h3 className="font-semibold">Operator-approved note</h3><p>Approved by operator</p><p>{approved.text}</p>
         <div className="text-xs">{approved.approvedBy} · {approved.approvedAt} · {approved.tariffVersion} · {approved.clauseId}</div>
       </section> : <p>No operator-approved draft. Enabling assistance does not approve a note.</p>) : <>
         <h3 className="font-semibold">Human decision reason</h3><p>{event?.reason ?? "No reason recorded."}</p>
         <div className="text-sm">Rule: {event?.tariffVersion ?? "Not recorded"} · Clause: {event?.clauseId ?? "Not recorded"}</div>
+        <CompactTooltip><CompactTooltipTrigger asChild><Button variant="link" className="h-auto p-0">How was this sent?</Button></CompactTooltipTrigger>
+          <CompactTooltipContent>Monthly returns and referred-back items are published context. This synthetic monthly return shows the recorded operator text and code exactly. The delivery channel, weeks of delay and internal handling process are assumptions, not published details.</CompactTooltipContent>
+        </CompactTooltip>
       </>}
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
@@ -60,9 +73,11 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
         <p role="status">{result ? result.status === "ready" ? "Ready to resubmit" : result.status === "missing" ? "Information may be missing" : "Agent unable to determine" : "Not checked for this edit"}</p>
         {result && <>
           <div>Rule: {result.version ?? "Not retrieved"} · Clause: {result.clause?.id ?? "Not retrieved"}</div>
-          <p>{result.gap}</p>
-          <ul aria-label="Claims precheck stages">{result.stages.map((stage, i) => <li key={i}>{["Captured", "Endorsement type", "Dispensing-date version", "Clause", "Requirements"][i]}: {stage}</li>)}</ul>
-          <ul>{result.checks.map((check) => <li key={check.id}>{check.label}: {check.met === true ? "met" : check.met === false ? "not met" : "unknown"}</li>)}</ul>
+          <p className={result.status === "missing" ? "rounded-md border-l-4 border-primary bg-muted p-3 font-semibold" : ""}>Endorsement gap: {result.gap}</p>
+          <details><summary className="cursor-pointer">Precheck evidence</summary>
+            <ul aria-label="Claims precheck stages">{result.stages.map((stage, i) => <li key={i}>{["Captured", "Endorsement type", "Dispensing-date version", "Clause", "Requirements"][i]}: {stage}</li>)}</ul>
+            <ul>{result.checks.map((check) => <li key={check.id}>{check.label}: {check.met === true ? "met" : check.met === false ? "not met" : "unknown"}</li>)}</ul>
+          </details>
         </>}
         {correction !== text && <div className="space-y-2"><p>Append dispensing date: {correction.slice(text.trimEnd().length).trim()}</p>
           <Button variant="outline" onClick={() => { setText(correction); setChecked(null); }}>Apply suggested correction</Button>
@@ -86,5 +101,5 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
       <Button variant="outline" onClick={() => act(() => submit(c.id, c.extracted.endorsementText), "New demonstration attempt submitted.")}>Submit another demonstration attempt</Button>
     </details>
     {error && <p role="alert">{error}</p>}{message && <p role="status">{message}</p>}
-  </section>;
+  </>;
 }

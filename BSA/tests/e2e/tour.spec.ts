@@ -136,10 +136,11 @@ for (const enabled of [true, false]) {
       await expect(flag).toBeFocused();
 
       if (route === "pharmacy/claims") {
-        const filter = page.getByRole("combobox", { name: "Claim state", exact: true });
-        await filter.focus();
-        for (const key of ["Alt+ArrowRight", "Alt+ArrowLeft"]) {
-          await filter.press(key);
+        for (const label of ["Waiting on NHSBSA", "Paid this month", "All", "Action needed"]) {
+          const filter = page.locator('[aria-label="Claim filters"]').getByRole("button", { name: new RegExp(`^${label} `) });
+          await filter.focus();
+          await filter.press("Space");
+          await expect(filter).toHaveAttribute("aria-pressed", "true");
           await expect(page).toHaveURL(url);
           await expect(filter).toBeFocused();
         }

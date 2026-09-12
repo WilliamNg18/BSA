@@ -898,3 +898,23 @@ This record is neither submission nor lifecycle history, approval or payment;
 all existing operational slices remain identical. Reset clears it. X owns the
 narrow workbench capture; P consumes the selected-pharmacy count. The monthly
 model's whole-cohort estimate remains separate from these observed demo actions.
+
+## 2026-09-12: Task 16 P keeps claims actions and recorded counts separate
+
+Chapter 7 uses four counted synthetic-amount filters and one five-column
+table. A selected item owns its correction, explicit resubmission or
+confirmation, and compact audience-labelled history. The exact mode guides
+are illustrative comparisons, qualified by keyboard-accessible provenance
+help; neither one-click wording nor switching assistance approves a draft
+or submits a correction. Off retains the recorded raw reason and rule code.
+On displays only an actual operator-approved note, or explicitly reports its
+absence. The existing editable correction and current-edit precheck remain
+separate from the human submission action.
+
+Selected-pharmacy monthly totals count distinct recorded items in the current
+UTC month, with overlapping categories stated. Corrected/resubmitted requires
+an actual resubmission revision; paid requires an actual paid event, never a
+modelled referral residual. Catches count explicit shared pre-submission
+correction events once per case and next submission revision. The shared
+monthly model remains separately labelled whole-service context. Perspective
+only hides links and Both-only following controls, never history or revisions.
