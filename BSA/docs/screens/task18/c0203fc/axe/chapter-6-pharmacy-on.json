@@ -1,0 +1,275 @@
+{
+  "sourceRevision": "e850dab1e2596f0d8429f63998538b49c4e53183",
+  "applicationSourceRevision": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.13.0"
+  },
+  "timestamp": "2026-09-12T21:22:31.534Z",
+  "violations": [],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscuring",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it partially overlaps other elements"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<div role=\"tooltip\" id=\"_r_7_\" data-slot=\"tooltip-content\" data-side=\"bottom\" class=\"z-50 w-fit rounded-m...\" style=\"position: fixed; top...\">",
+          "target": [
+            "#_r_7_"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
+        }
+      ]
+    }
+  ],
+  "passes": [
+    {
+      "id": "aria-allowed-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-allowed-role",
+      "nodeCount": 4
+    },
+    {
+      "id": "aria-conditional-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-deprecated-role",
+      "nodeCount": 4
+    },
+    {
+      "id": "aria-hidden-body",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-hidden-focus",
+      "nodeCount": 7
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-required-attr",
+      "nodeCount": 4
+    },
+    {
+      "id": "aria-roles",
+      "nodeCount": 4
+    },
+    {
+      "id": "aria-tooltip-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "nodeCount": 15
+    },
+    {
+      "id": "aria-valid-attr",
+      "nodeCount": 15
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "nodeCount": 2
+    },
+    {
+      "id": "button-name",
+      "nodeCount": 5
+    },
+    {
+      "id": "bypass",
+      "nodeCount": 1
+    },
+    {
+      "id": "color-contrast",
+      "nodeCount": 17
+    },
+    {
+      "id": "document-title",
+      "nodeCount": 1
+    },
+    {
+      "id": "duplicate-id-aria",
+      "nodeCount": 4
+    },
+    {
+      "id": "empty-heading",
+      "nodeCount": 1
+    },
+    {
+      "id": "form-field-multiple-labels",
+      "nodeCount": 4
+    },
+    {
+      "id": "heading-order",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-has-lang",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-lang-valid",
+      "nodeCount": 1
+    },
+    {
+      "id": "label-title-only",
+      "nodeCount": 4
+    },
+    {
+      "id": "label",
+      "nodeCount": 4
+    },
+    {
+      "id": "landmark-banner-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-contentinfo-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-banner",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-contentinfo",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-one-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-unique",
+      "nodeCount": 8
+    },
+    {
+      "id": "link-name",
+      "nodeCount": 3
+    },
+    {
+      "id": "meta-viewport-large",
+      "nodeCount": 1
+    },
+    {
+      "id": "meta-viewport",
+      "nodeCount": 1
+    },
+    {
+      "id": "nested-interactive",
+      "nodeCount": 9
+    },
+    {
+      "id": "page-has-heading-one",
+      "nodeCount": 1
+    },
+    {
+      "id": "region",
+      "nodeCount": 50
+    },
+    {
+      "id": "skip-link",
+      "nodeCount": 1
+    },
+    {
+      "id": "tabindex",
+      "nodeCount": 1
+    }
+  ],
+  "inapplicable": [
+    "accesskeys",
+    "area-alt",
+    "aria-braille-equivalent",
+    "aria-command-name",
+    "aria-dialog-name",
+    "aria-input-field-name",
+    "aria-meter-name",
+    "aria-progressbar-name",
+    "aria-required-children",
+    "aria-required-parent",
+    "aria-tab-name",
+    "aria-text",
+    "aria-toggle-field-name",
+    "aria-treeitem-name",
+    "autocomplete-valid",
+    "blink",
+    "definition-list",
+    "dlitem",
+    "empty-table-header",
+    "frame-focusable-content",
+    "frame-tested",
+    "frame-title-unique",
+    "frame-title",
+    "html-xml-lang-mismatch",
+    "image-alt",
+    "image-redundant-alt",
+    "input-button-name",
+    "input-image-alt",
+    "link-in-text-block",
+    "list",
+    "listitem",
+    "marquee",
+    "meta-refresh",
+    "object-alt",
+    "presentation-role-conflict",
+    "role-img-alt",
+    "scope-attr-valid",
+    "scrollable-region-focusable",
+    "select-name",
+    "server-side-image-map",
+    "summary-name",
+    "svg-img-alt",
+    "table-duplicate-name",
+    "td-headers-attr",
+    "th-has-data-cells",
+    "valid-lang",
+    "video-caption",
+    "no-autoplay-audio"
+  ]
+}

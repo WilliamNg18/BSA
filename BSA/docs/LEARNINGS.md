@@ -980,3 +980,20 @@ preserving the original failed-run and source-pinned screenshot history.
 The repository contains verbatim source excerpts and supplied hashes but
 no original PDF/DOCX binaries; explicitly distinguish excerpt reading from
 a fresh binary or external-publication review.
+
+## 2026-09-12: Final V live evidence needs observable states, not inferred success
+
+The c0203fc matrix passed 18/18 with exact visible/accessible monthly targets,
+four real opposite-side guards and eighteen zero-violation audits. Thirteen
+audits still contained incomplete results, so screenshot review is not a full
+accessibility certification. Natural focus tooltips were retained rather than
+masked to make the On images look cleaner.
+
+The first actual round-trip harness timed out looking for whitespace between
+the All tile's separate label/count spans. Select the exact child label instead
+of assuming DOM text separators. Preserve the failed attempt and rerun the
+whole walk: the successful 22 checkpoints distinguish actual approval and
+submission from display toggles, text application and advisory ready status.
+Pre-submission correction increments the event-based catch counter without
+creating a receipt or attempt; repeated application for that revision remains
+one catch. Navigation remounts the workbench's local example, not session history.

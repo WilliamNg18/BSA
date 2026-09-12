@@ -1,0 +1,478 @@
+- banner:
+  - link "Skip to main content":
+    - /url: "#main-content"
+  - link "Prescription Exception Case Builder":
+    - /url: /#scene
+  - navigation "Primary":
+    - link "Overview":
+      - /url: /
+    - button "Operations"
+    - button "How it works"
+  - group "Perspective":
+    - radio "Pharmacy"
+    - text: Pharmacy
+    - radio "NHSBSA"
+    - text: NHSBSA
+    - radio "Both" [checked]
+    - text: Both
+  - 'switch "Agent: Off"'
+  - text: "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change. Agent : Off"
+  - button "Reset demo"
+- navigation "Guided tour":
+  - button "Back"
+  - button "Choose tour chapter": 6/8 · The queue
+  - button "Next"
+  - button "Dismiss tour"
+- region "Demonstration scope and governing principle":
+  - button "Synthetic demonstration data throughout. Hide details" [expanded]
+  - paragraph: No payments calculated or approved. Not measured NHSBSA performance.
+  - paragraph: The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.
+- main:
+  - status: Assistance Off · Simulated presentation, not a model call
+  - region "Tour chapter 6":
+    - heading "6. The queue" [level=2]
+    - paragraph: Explore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.
+  - text: Synthetic demonstration data
+  - heading "NHSBSA exception queue" [level=1]
+  - paragraph: "Today: a list of items that failed a rule. The operator sees a reference and a reason, then gathers everything else by hand."
+  - button "Queue evidence and assumptions"
+  - paragraph: "Illustrative flow, not every outcome: abstentions still need manual work; rule-cleared items use no model. Generated rows have no case evidence or citations."
+  - 'switch "Queue assistance: Off"'
+  - text: Agent Off Human decision
+  - button "Compare"
+  - region "Queue items":
+    - button "70,833 All items Selected" [pressed]
+    - button "56,661 Awaiting an operator"
+    - button "1 In progress"
+    - button "14,171 Decided"
+    - status: showing 1 to 50 of 70,833 this month
+    - region "Exception queue table":
+      - table "Twelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.":
+        - caption: Twelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.
+        - rowgroup:
+          - row "Reference Pharmacy Reason State Manual work Open":
+            - columnheader "Reference"
+            - columnheader "Pharmacy"
+            - columnheader "Reason"
+            - columnheader "State"
+            - columnheader "Manual work"
+            - columnheader "Open"
+        - rowgroup:
+          - 'row "EX-24107 Synthetic example Riverside Chemist NCSO endorsement present: concession claim requires operator check Awaiting an operator nothing yet, operator to gather Open"':
+            - rowheader "EX-24107 Synthetic example"
+            - cell "Riverside Chemist"
+            - 'cell "NCSO endorsement present: concession claim requires operator check"'
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - link "Open":
+                - /url: /case/EX-24107
+          - 'row "EX-24112 Synthetic example Hillcrest Pharmacy Handwritten endorsement: NCSO claim requires operator check Awaiting an operator nothing yet, operator to gather Open"':
+            - rowheader "EX-24112 Synthetic example"
+            - cell "Hillcrest Pharmacy"
+            - 'cell "Handwritten endorsement: NCSO claim requires operator check"'
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - link "Open":
+                - /url: /case/EX-24112
+          - row "EX-24119 Synthetic example Oakfield Pharmacy Claim message quantity differs from captured form Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "EX-24119 Synthetic example"
+            - cell "Oakfield Pharmacy"
+            - cell "Claim message quantity differs from captured form"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - link "Open":
+                - /url: /case/EX-24119
+          - 'row "EX-24123 Synthetic example Meadow Lane Dispensary Handwritten form: low-confidence read of endorsement Awaiting an operator Known abstention; manual work nothing yet, operator to gather Open"':
+            - rowheader "EX-24123 Synthetic example"
+            - cell "Meadow Lane Dispensary"
+            - 'cell "Handwritten form: low-confidence read of endorsement"'
+            - cell "Awaiting an operator Known abstention; manual work"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - link "Open":
+                - /url: /case/EX-24123
+          - 'row "EX-24101 Synthetic example Station Road Pharmacy Referred-back item resubmitted: re-check required Cleared by rules; no model call Cleared by rules; no model call Open"':
+            - rowheader "EX-24101 Synthetic example"
+            - cell "Station Road Pharmacy"
+            - 'cell "Referred-back item resubmitted: re-check required"'
+            - cell "Cleared by rules; no model call"
+            - cell "Cleared by rules; no model call"
+            - cell "Open":
+              - link "Open":
+                - /url: /case/EX-24101
+          - 'row "EX-24088 Synthetic example Hillcrest Pharmacy Handwritten endorsement: NCSO claim requires operator check Decided Human record unchanged Open"':
+            - rowheader "EX-24088 Synthetic example"
+            - cell "Hillcrest Pharmacy"
+            - 'cell "Handwritten endorsement: NCSO claim requires operator check"'
+            - cell "Decided"
+            - cell "Human record unchanged"
+            - cell "Open":
+              - link "Open":
+                - /url: /case/EX-24088
+          - 'row "EX-24104 Synthetic example Riverside Chemist Broken bulk endorsement: quantity check Awaiting an operator nothing yet, operator to gather Open"':
+            - rowheader "EX-24104 Synthetic example"
+            - cell "Riverside Chemist"
+            - 'cell "Broken bulk endorsement: quantity check"'
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - 'row "EX-24109 Synthetic example Oakfield Pharmacy Specials: invoice price not stated Awaiting an operator nothing yet, operator to gather Open"':
+            - rowheader "EX-24109 Synthetic example"
+            - cell "Oakfield Pharmacy"
+            - 'cell "Specials: invoice price not stated"'
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "EX-24115 Synthetic example Meadow Lane Dispensary Out-of-pocket expenses claim above threshold In progress nothing yet, operator to gather Open":
+            - rowheader "EX-24115 Synthetic example"
+            - cell "Meadow Lane Dispensary"
+            - cell "Out-of-pocket expenses claim above threshold"
+            - cell "In progress"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - 'row "EX-24120 Synthetic example Station Road Pharmacy Handwritten form: low-confidence read Awaiting an operator Known abstention; manual work nothing yet, operator to gather Open"':
+            - rowheader "EX-24120 Synthetic example"
+            - cell "Station Road Pharmacy"
+            - 'cell "Handwritten form: low-confidence read"'
+            - cell "Awaiting an operator Known abstention; manual work"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - 'row "EX-24098 Synthetic example Riverside Chemist NCSO endorsement present: concession claim Cleared by rules; no model call Cleared by rules; no model call Open"':
+            - rowheader "EX-24098 Synthetic example"
+            - cell "Riverside Chemist"
+            - 'cell "NCSO endorsement present: concession claim"'
+            - cell "Cleared by rules; no model call"
+            - cell "Cleared by rules; no model call"
+            - cell "Open":
+              - button "Open"
+          - 'row "EX-24093 Synthetic example Hillcrest Pharmacy Handwritten endorsement: NCSO claim Decided Human record unchanged Open"':
+            - rowheader "EX-24093 Synthetic example"
+            - cell "Hillcrest Pharmacy"
+            - 'cell "Handwritten endorsement: NCSO claim"'
+            - cell "Decided"
+            - cell "Human record unchanged"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000001 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000001 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000002 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000002 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000003 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000003 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000004 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000004 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000005 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000005 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000006 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000006 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000007 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000007 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000008 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000008 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000009 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000009 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000010 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000010 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000011 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000011 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000012 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000012 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000013 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000013 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000014 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000014 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000015 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000015 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000016 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000016 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000017 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000017 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000018 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000018 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000019 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000019 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000020 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000020 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000021 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000021 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000022 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000022 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000023 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000023 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000024 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000024 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000025 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000025 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000026 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000026 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000027 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000027 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000028 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000028 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000029 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000029 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000030 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000030 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000031 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000031 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000032 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000032 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000033 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000033 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000034 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000034 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000035 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000035 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000036 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000036 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000037 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000037 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+          - row "SYN-Q-agent_review_complete-0000000038 Projection only Model pharmacy (synthetic) Synthetic failed-rule referral Awaiting an operator nothing yet, operator to gather Open":
+            - rowheader "SYN-Q-agent_review_complete-0000000038 Projection only"
+            - cell "Model pharmacy (synthetic)"
+            - cell "Synthetic failed-rule referral"
+            - cell "Awaiting an operator"
+            - cell "nothing yet, operator to gather"
+            - cell "Open":
+              - button "Open"
+    - button "First items" [disabled]
+    - button "Previous 50" [disabled]
+    - button "Next 50"
+    - button "Last items"
+    - text: Jump to item
+    - textbox "Jump to item": "1"
+    - button "Jump"
+  - group: Shared monthly assumptions
+  - group: Show legacy full-day simulation
+- contentinfo: "Session only · Synthetic cases · No payments calculated or approved Tour shortcuts: Alt + ← / → outside fields and menus"
+- complementary "Decision notifications":
+  - status

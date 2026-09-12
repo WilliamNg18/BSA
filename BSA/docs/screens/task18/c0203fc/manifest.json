@@ -1,0 +1,1090 @@
+{
+  "kind": "live capture",
+  "sourceRevision": "e850dab1e2596f0d8429f63998538b49c4e53183",
+  "applicationSourceRevision": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+  "baseURL": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net",
+  "startedAt": "2026-09-12T21:21:35.674Z",
+  "completed": true,
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "deviceScaleFactor": 1,
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "expectedCaptureCount": 18,
+  "captures": [
+    {
+      "chapter": 2,
+      "route": "/#month",
+      "side": "both",
+      "perspective": "pharmacy",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-2-pharmacy-off-1440.png",
+      "observedAt": "2026-09-12T21:21:41.128Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "heading": "A month in numbers",
+      "text": "Assistance Off · Simulated presentation, not a model call\nA month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n\nEdit the monthly assumptions\nItems reaching the exception queue each month\nAssumption\nPublic default\nPublic default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.\nMinutes an operator spends per item today\nAssumption\ngathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15.\nMinutes an operator spends judging a case the agent has built\nAssumption\nreading the built case and deciding · Assumption: 2 minutes.\n\nEstimates from labelled assumptions; type NHSBSA's own figures above.\n\nHours of operator time a month\n\nToday\n\n17,000\n\nAll scenario items, including manual fallback for abstentions.\n\nItems one operator can complete a month\n\nToday\n\n630\n\nAssumption: 6 hours a day, 21 days = 7,560 minutes. Manual-case capacity under these assumptions.\n\nToday: operator minutes per item\nHuman decision\nGathering\n10 minutes\nJudging\n2 minutes\n\nAbstentions are worked as today: 12 operator minutes per item, including manual gathering.\n\nTime is spent only where a person adds something: the judgement.\n\nToday: 17,000 operator hours a month; 630 items per operator. Manual-case capacity under these assumptions. Estimates, not measured savings.\n\nShow the detail",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": {
+        "hours": "17,000",
+        "capacity": "630",
+        "visualMatchesAccessibleValue": true
+      },
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "d83743aaf481c0c3d0cee10f7442fc29a69af0cc51d579ba0286d8565d3c9072",
+      "auditFile": "axe/chapter-2-pharmacy-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 0,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 2,
+      "route": "/#month",
+      "side": "both",
+      "perspective": "pharmacy",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-2-pharmacy-on-1440.png",
+      "observedAt": "2026-09-12T21:21:48.117Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "heading": "A month in numbers",
+      "text": "Assistance On · Simulated presentation, not a model call\nA month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n\nEdit the monthly assumptions\nItems reaching the exception queue each month\nAssumption\nPublic default\nPublic default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.\nMinutes an operator spends per item today\nAssumption\ngathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15.\nMinutes an operator spends judging a case the agent has built\nAssumption\nreading the built case and deciding · Assumption: 2 minutes.\n\nEstimates from labelled assumptions; type NHSBSA's own figures above.\n\nHours of operator time a month\n\nWith agent\n\n4,250\n\nAll scenario items, including manual fallback for abstentions.\n\nItems one operator can complete a month\n\nWith agent\n\n3,780\n\nAssumption: 6 hours a day, 21 days = 7,560 minutes. Built-case capacity, not a mixed-cohort guarantee.\n\nWith agent: operator minutes per item\nHuman decision\nGathering\n0 minutes\ngathering done by the agent and code in seconds\nJudging\n2 minutes\n\nAbstentions are worked as today: 12 operator minutes per item, including manual gathering.\n\nTime is spent only where a person adds something: the judgement.\n\nWith agent: 4,250 operator hours a month; 3,780 items per operator. Built-case capacity is not mixed-cohort throughput. Estimates, not measured savings.\n\nShow the detail",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": {
+        "hours": "4,250",
+        "capacity": "3,780",
+        "visualMatchesAccessibleValue": true
+      },
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "a9e3f56f2fce3cb9e73b34076da43f74e41a2f2128481616300c9d010409f5b3",
+      "auditFile": "axe/chapter-2-pharmacy-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 2,
+      "route": "/#month",
+      "side": "both",
+      "perspective": "nhsbsa",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-2-nhsbsa-off-1440.png",
+      "observedAt": "2026-09-12T21:21:55.883Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "heading": "A month in numbers",
+      "text": "Assistance Off · Simulated presentation, not a model call\nA month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n\nEdit the monthly assumptions\nItems reaching the exception queue each month\nAssumption\nPublic default\nPublic default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.\nMinutes an operator spends per item today\nAssumption\ngathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15.\nMinutes an operator spends judging a case the agent has built\nAssumption\nreading the built case and deciding · Assumption: 2 minutes.\n\nEstimates from labelled assumptions; type NHSBSA's own figures above.\n\nHours of operator time a month\n\nToday\n\n17,000\n\nAll scenario items, including manual fallback for abstentions.\n\nItems one operator can complete a month\n\nToday\n\n630\n\nAssumption: 6 hours a day, 21 days = 7,560 minutes. Manual-case capacity under these assumptions.\n\nToday: operator minutes per item\nHuman decision\nGathering\n10 minutes\nJudging\n2 minutes\n\nAbstentions are worked as today: 12 operator minutes per item, including manual gathering.\n\nTime is spent only where a person adds something: the judgement.\n\nToday: 17,000 operator hours a month; 630 items per operator. Manual-case capacity under these assumptions. Estimates, not measured savings.\n\nShow the detail",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": {
+        "hours": "17,000",
+        "capacity": "630",
+        "visualMatchesAccessibleValue": true
+      },
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "e86a3e17b28bc125aa3f7ca44d5eac92d71b153dcae868cef9b4d49826abc764",
+      "auditFile": "axe/chapter-2-nhsbsa-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 0,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 2,
+      "route": "/#month",
+      "side": "both",
+      "perspective": "nhsbsa",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-2-nhsbsa-on-1440.png",
+      "observedAt": "2026-09-12T21:22:02.371Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "heading": "A month in numbers",
+      "text": "Assistance On · Simulated presentation, not a model call\nA month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n\nEdit the monthly assumptions\nItems reaching the exception queue each month\nAssumption\nPublic default\nPublic default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.\nMinutes an operator spends per item today\nAssumption\ngathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15.\nMinutes an operator spends judging a case the agent has built\nAssumption\nreading the built case and deciding · Assumption: 2 minutes.\n\nEstimates from labelled assumptions; type NHSBSA's own figures above.\n\nHours of operator time a month\n\nWith agent\n\n4,250\n\nAll scenario items, including manual fallback for abstentions.\n\nItems one operator can complete a month\n\nWith agent\n\n3,780\n\nAssumption: 6 hours a day, 21 days = 7,560 minutes. Built-case capacity, not a mixed-cohort guarantee.\n\nWith agent: operator minutes per item\nHuman decision\nGathering\n0 minutes\ngathering done by the agent and code in seconds\nJudging\n2 minutes\n\nAbstentions are worked as today: 12 operator minutes per item, including manual gathering.\n\nTime is spent only where a person adds something: the judgement.\n\nWith agent: 4,250 operator hours a month; 3,780 items per operator. Built-case capacity is not mixed-cohort throughput. Estimates, not measured savings.\n\nShow the detail",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": {
+        "hours": "4,250",
+        "capacity": "3,780",
+        "visualMatchesAccessibleValue": true
+      },
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "4737aa57863389300996bfbf666831a79aab8f9909a92ab753085d369796c4ef",
+      "auditFile": "axe/chapter-2-nhsbsa-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 2,
+      "route": "/#month",
+      "side": "both",
+      "perspective": "both",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-2-both-off-1440.png",
+      "observedAt": "2026-09-12T21:22:09.783Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "heading": "A month in numbers",
+      "text": "Assistance Off · Simulated presentation, not a model call\nA month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n\nEdit the monthly assumptions\nItems reaching the exception queue each month\nAssumption\nPublic default\nPublic default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.\nMinutes an operator spends per item today\nAssumption\ngathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15.\nMinutes an operator spends judging a case the agent has built\nAssumption\nreading the built case and deciding · Assumption: 2 minutes.\n\nEstimates from labelled assumptions; type NHSBSA's own figures above.\n\nHours of operator time a month\n\nToday\n\n17,000\n\nAll scenario items, including manual fallback for abstentions.\n\nItems one operator can complete a month\n\nToday\n\n630\n\nAssumption: 6 hours a day, 21 days = 7,560 minutes. Manual-case capacity under these assumptions.\n\nToday: operator minutes per item\nHuman decision\nGathering\n10 minutes\nJudging\n2 minutes\n\nAbstentions are worked as today: 12 operator minutes per item, including manual gathering.\n\nTime is spent only where a person adds something: the judgement.\n\nToday: 17,000 operator hours a month; 630 items per operator. Manual-case capacity under these assumptions. Estimates, not measured savings.\n\nShow the detail",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": {
+        "hours": "17,000",
+        "capacity": "630",
+        "visualMatchesAccessibleValue": true
+      },
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "eb003e4dc0766e5f4a1013af15d65319c28fb189d60fd98f462688728d247220",
+      "auditFile": "axe/chapter-2-both-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 0,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 2,
+      "route": "/#month",
+      "side": "both",
+      "perspective": "both",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-2-both-on-1440.png",
+      "observedAt": "2026-09-12T21:22:16.825Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+      "heading": "A month in numbers",
+      "text": "Assistance On · Simulated presentation, not a model call\nA month in numbers\n\nCompare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.\n\nEdit the monthly assumptions\nItems reaching the exception queue each month\nAssumption\nPublic default\nPublic default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume.\nMinutes an operator spends per item today\nAssumption\ngathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15.\nMinutes an operator spends judging a case the agent has built\nAssumption\nreading the built case and deciding · Assumption: 2 minutes.\n\nEstimates from labelled assumptions; type NHSBSA's own figures above.\n\nHours of operator time a month\n\nWith agent\n\n4,250\n\nAll scenario items, including manual fallback for abstentions.\n\nItems one operator can complete a month\n\nWith agent\n\n3,780\n\nAssumption: 6 hours a day, 21 days = 7,560 minutes. Built-case capacity, not a mixed-cohort guarantee.\n\nWith agent: operator minutes per item\nHuman decision\nGathering\n0 minutes\ngathering done by the agent and code in seconds\nJudging\n2 minutes\n\nAbstentions are worked as today: 12 operator minutes per item, including manual gathering.\n\nTime is spent only where a person adds something: the judgement.\n\nWith agent: 4,250 operator hours a month; 3,780 items per operator. Built-case capacity is not mixed-cohort throughput. Estimates, not measured savings.\n\nShow the detail",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": {
+        "hours": "4,250",
+        "capacity": "3,780",
+        "visualMatchesAccessibleValue": true
+      },
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "ed28f6832a240ec67dabbdf542164fe50ace370d57186e8df4ff4e8bf0b7f971",
+      "auditFile": "axe/chapter-2-both-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 6,
+      "route": "/queue",
+      "side": "nhsbsa",
+      "perspective": "pharmacy",
+      "enabled": false,
+      "guardExpected": true,
+      "filename": "chapter-6-pharmacy-off-1440.png",
+      "observedAt": "2026-09-12T21:22:24.462Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "heading": "This view belongs to the other side; switch perspective to see it",
+      "text": "Assistance Off · Simulated presentation, not a model call\nThis view belongs to the other side; switch perspective to see it\nSwitch to NHSBSA",
+      "expectedPresentation": "opposite-side guard",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "cc9b81699c09cb87a89cc33b1be638e168e615e569e411f2c84c7bdcbe23f1a4",
+      "auditFile": "axe/chapter-6-pharmacy-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 0,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      },
+      "guardRecovery": "Visible switch exposed the permitted chapter without changing the URL."
+    },
+    {
+      "chapter": 6,
+      "route": "/queue",
+      "side": "nhsbsa",
+      "perspective": "pharmacy",
+      "enabled": true,
+      "guardExpected": true,
+      "filename": "chapter-6-pharmacy-on-1440.png",
+      "observedAt": "2026-09-12T21:22:31.091Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "heading": "This view belongs to the other side; switch perspective to see it",
+      "text": "Assistance On · Simulated presentation, not a model call\nThis view belongs to the other side; switch perspective to see it\nSwitch to NHSBSA",
+      "expectedPresentation": "opposite-side guard",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "792287901c6c6165137403baa5654d70a194445f0a8698b97f6ec25fd127b909",
+      "auditFile": "axe/chapter-6-pharmacy-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      },
+      "guardRecovery": "Visible switch exposed the permitted chapter without changing the URL."
+    },
+    {
+      "chapter": 6,
+      "route": "/queue",
+      "side": "nhsbsa",
+      "perspective": "nhsbsa",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-6-nhsbsa-off-1440.png",
+      "observedAt": "2026-09-12T21:22:38.155Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "heading": "NHSBSA exception queue",
+      "text": "Assistance Off · Simulated presentation, not a model call\nSynthetic demonstration data\nNHSBSA exception queue\n\nToday: a list of items that failed a rule. The operator sees a reference and a reason, then gathers everything else by hand.\n\nIllustrative flow, not every outcome: abstentions still need manual work; rule-cleared items use no model. Generated rows have no case evidence or citations.\n\nAgent Off\nHuman decision\nCompare\n70,833\nAll items\nSelected\n56,661\nAwaiting an operator\n1\nIn progress\n14,171\nDecided\nshowing 1 to 50 of 70,833 this month\nTwelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.\nReference\tPharmacy\tReason\tState\tManual work\tOpen\nEX-24107\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim requires operator check\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24112\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24119\nSynthetic example\n\tOakfield Pharmacy\tClaim message quantity differs from captured form\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24123\nSynthetic example\n\tMeadow Lane Dispensary\tHandwritten form: low-confidence read of endorsement\tAwaiting an operator\nKnown abstention; manual work\n\tnothing yet, operator to gather\tOpen\nEX-24101\nSynthetic example\n\tStation Road Pharmacy\tReferred-back item resubmitted: re-check required\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24088\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tDecided\tHuman record unchanged\tOpen\nEX-24104\nSynthetic example\n\tRiverside Chemist\tBroken bulk endorsement: quantity check\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24109\nSynthetic example\n\tOakfield Pharmacy\tSpecials: invoice price not stated\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24115\nSynthetic example\n\tMeadow Lane Dispensary\tOut-of-pocket expenses claim above threshold\tIn progress\tnothing yet, operator to gather\tOpen\nEX-24120\nSynthetic example\n\tStation Road Pharmacy\tHandwritten form: low-confidence read\tAwaiting an operator\nKnown abstention; manual work\n\tnothing yet, operator to gather\tOpen\nEX-24098\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24093\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim\tDecided\tHuman record unchanged\tOpen\nSYN-Q-agent_review_complete-0000000001\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000002\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000003\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000004\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000005\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000006\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000007\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000008\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000009\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000010\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000011\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000012\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000013\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000014\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000015\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000016\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000017\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000018\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000019\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000020\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000021\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000022\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000023\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000024\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000025\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000026\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000027\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000028\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000029\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000030\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000031\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000032\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000033\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000034\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000035\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000036\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000037\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000038\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nFirst items\nPrevious 50\nNext 50\nLast items\nJump to item\nJump\nShared monthly assumptions\nShow legacy full-day simulation",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "2b774033c460b668523047ff3672e8f8cd314f4e301170934a751293c7356792",
+      "auditFile": "axe/chapter-6-nhsbsa-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 2,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Reference",
+          "Pharmacy",
+          "Reason",
+          "State",
+          "Manual work",
+          "Open"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 6,
+      "route": "/queue",
+      "side": "nhsbsa",
+      "perspective": "nhsbsa",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-6-nhsbsa-on-1440.png",
+      "observedAt": "2026-09-12T21:22:46.186Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "heading": "NHSBSA exception queue",
+      "text": "Assistance On · Simulated presentation, not a model call\nSynthetic demonstration data\nNHSBSA exception queue\n\nWith the agent: the same list. Each item arrives with its case built, its rule cited and a recommendation; the operator only decides.\n\nIllustrative flow, not every outcome: abstentions still need manual work; rule-cleared items use no model. Generated rows have no case evidence or citations.\n\nAgent On\nHuman decision\nCompare\n70,833\nAll items\nSelected\n42,491\nCase built ready to decide\n2\nNeeds more evidence\n14,169\nAbstained worked as today\n14,169\nCleared by rules no model call\n2\nDecided\nshowing 1 to 50 of 70,833 this month\nTwelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.\nReference\tPharmacy\tReason\tState\tAgent work\tOpen\nEX-24107\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim requires operator check\tCase built ready to decide\t\n\tOpen\nEX-24112\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tCase built ready to decide\t\n\tOpen\nEX-24119\nSynthetic example\n\tOakfield Pharmacy\tClaim message quantity differs from captured form\tNeeds more evidence\t\n\tOpen\nEX-24123\nSynthetic example\n\tMeadow Lane Dispensary\tHandwritten form: low-confidence read of endorsement\tAbstained worked as today\tAbstained: no recommendation. Operator gathers evidence.\tOpen\nEX-24101\nSynthetic example\n\tStation Road Pharmacy\tReferred-back item resubmitted: re-check required\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24088\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tDecided\tHuman record unchanged\tOpen\nEX-24104\nSynthetic example\n\tRiverside Chemist\tBroken bulk endorsement: quantity check\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nEX-24109\nSynthetic example\n\tOakfield Pharmacy\tSpecials: invoice price not stated\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nEX-24115\nSynthetic example\n\tMeadow Lane Dispensary\tOut-of-pocket expenses claim above threshold\tNeeds more evidence\tModel example only; no evidence or citation\tOpen\nEX-24120\nSynthetic example\n\tStation Road Pharmacy\tHandwritten form: low-confidence read\tAbstained worked as today\tAbstained: no recommendation. Operator gathers evidence.\tOpen\nEX-24098\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24093\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim\tDecided\tHuman record unchanged\tOpen\nSYN-Q-agent_review_complete-0000000001\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000002\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000003\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000004\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000005\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000006\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000007\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000008\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000009\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000010\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000011\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000012\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000013\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000014\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000015\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000016\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000017\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000018\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000019\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000020\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000021\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000022\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000023\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000024\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000025\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000026\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000027\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000028\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000029\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000030\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000031\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000032\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000033\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000034\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000035\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000036\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000037\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000038\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nFirst items\nPrevious 50\nNext 50\nLast items\nJump to item\nJump\nShared monthly assumptions\nShow legacy full-day simulation",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "eb993932f3822dedb3f3fec9d2806d7dec34ac666ea5c18a82ca48f8f3e051a2",
+      "auditFile": "axe/chapter-6-nhsbsa-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 2,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Reference",
+          "Pharmacy",
+          "Reason",
+          "State",
+          "Agent work",
+          "Open"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 6,
+      "route": "/queue",
+      "side": "nhsbsa",
+      "perspective": "both",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-6-both-off-1440.png",
+      "observedAt": "2026-09-12T21:22:55.999Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "heading": "NHSBSA exception queue",
+      "text": "Assistance Off · Simulated presentation, not a model call\n6. The queue\n\nExplore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.\n\nSynthetic demonstration data\nNHSBSA exception queue\n\nToday: a list of items that failed a rule. The operator sees a reference and a reason, then gathers everything else by hand.\n\nIllustrative flow, not every outcome: abstentions still need manual work; rule-cleared items use no model. Generated rows have no case evidence or citations.\n\nAgent Off\nHuman decision\nCompare\n70,833\nAll items\nSelected\n56,661\nAwaiting an operator\n1\nIn progress\n14,171\nDecided\nshowing 1 to 50 of 70,833 this month\nTwelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.\nReference\tPharmacy\tReason\tState\tManual work\tOpen\nEX-24107\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim requires operator check\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24112\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24119\nSynthetic example\n\tOakfield Pharmacy\tClaim message quantity differs from captured form\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24123\nSynthetic example\n\tMeadow Lane Dispensary\tHandwritten form: low-confidence read of endorsement\tAwaiting an operator\nKnown abstention; manual work\n\tnothing yet, operator to gather\tOpen\nEX-24101\nSynthetic example\n\tStation Road Pharmacy\tReferred-back item resubmitted: re-check required\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24088\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tDecided\tHuman record unchanged\tOpen\nEX-24104\nSynthetic example\n\tRiverside Chemist\tBroken bulk endorsement: quantity check\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24109\nSynthetic example\n\tOakfield Pharmacy\tSpecials: invoice price not stated\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nEX-24115\nSynthetic example\n\tMeadow Lane Dispensary\tOut-of-pocket expenses claim above threshold\tIn progress\tnothing yet, operator to gather\tOpen\nEX-24120\nSynthetic example\n\tStation Road Pharmacy\tHandwritten form: low-confidence read\tAwaiting an operator\nKnown abstention; manual work\n\tnothing yet, operator to gather\tOpen\nEX-24098\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24093\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim\tDecided\tHuman record unchanged\tOpen\nSYN-Q-agent_review_complete-0000000001\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000002\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000003\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000004\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000005\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000006\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000007\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000008\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000009\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000010\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000011\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000012\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000013\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000014\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000015\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000016\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000017\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000018\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000019\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000020\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000021\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000022\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000023\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000024\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000025\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000026\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000027\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000028\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000029\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000030\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000031\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000032\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000033\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000034\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000035\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000036\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000037\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nSYN-Q-agent_review_complete-0000000038\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tAwaiting an operator\tnothing yet, operator to gather\tOpen\nFirst items\nPrevious 50\nNext 50\nLast items\nJump to item\nJump\nShared monthly assumptions\nShow legacy full-day simulation",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "bffe2552ccaa8c964e77d85b2e090eddd41714a080d5f3f8f5d9958d0bf1ee95",
+      "auditFile": "axe/chapter-6-both-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 2,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Reference",
+          "Pharmacy",
+          "Reason",
+          "State",
+          "Manual work",
+          "Open"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 6,
+      "route": "/queue",
+      "side": "nhsbsa",
+      "perspective": "both",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-6-both-on-1440.png",
+      "observedAt": "2026-09-12T21:23:04.379Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+      "heading": "NHSBSA exception queue",
+      "text": "Assistance On · Simulated presentation, not a model call\n6. The queue\n\nExplore assumed workloads and shared session submissions separately. Synthetic capacity estimates are not measured performance or automatic decisions.\n\nSynthetic demonstration data\nNHSBSA exception queue\n\nWith the agent: the same list. Each item arrives with its case built, its rule cited and a recommendation; the operator only decides.\n\nIllustrative flow, not every outcome: abstentions still need manual work; rule-cleared items use no model. Generated rows have no case evidence or citations.\n\nAgent On\nHuman decision\nCompare\n70,833\nAll items\nSelected\n42,491\nCase built ready to decide\n2\nNeeds more evidence\n14,169\nAbstained worked as today\n14,169\nCleared by rules no model call\n2\nDecided\nshowing 1 to 50 of 70,833 this month\nTwelve seed examples followed by a bounded synthetic monthly window. Status filters count rows, not decisions made by the agent.\nReference\tPharmacy\tReason\tState\tAgent work\tOpen\nEX-24107\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim requires operator check\tCase built ready to decide\t\n\tOpen\nEX-24112\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tCase built ready to decide\t\n\tOpen\nEX-24119\nSynthetic example\n\tOakfield Pharmacy\tClaim message quantity differs from captured form\tNeeds more evidence\t\n\tOpen\nEX-24123\nSynthetic example\n\tMeadow Lane Dispensary\tHandwritten form: low-confidence read of endorsement\tAbstained worked as today\tAbstained: no recommendation. Operator gathers evidence.\tOpen\nEX-24101\nSynthetic example\n\tStation Road Pharmacy\tReferred-back item resubmitted: re-check required\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24088\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim requires operator check\tDecided\tHuman record unchanged\tOpen\nEX-24104\nSynthetic example\n\tRiverside Chemist\tBroken bulk endorsement: quantity check\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nEX-24109\nSynthetic example\n\tOakfield Pharmacy\tSpecials: invoice price not stated\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nEX-24115\nSynthetic example\n\tMeadow Lane Dispensary\tOut-of-pocket expenses claim above threshold\tNeeds more evidence\tModel example only; no evidence or citation\tOpen\nEX-24120\nSynthetic example\n\tStation Road Pharmacy\tHandwritten form: low-confidence read\tAbstained worked as today\tAbstained: no recommendation. Operator gathers evidence.\tOpen\nEX-24098\nSynthetic example\n\tRiverside Chemist\tNCSO endorsement present: concession claim\tCleared by rules; no model call\tCleared by rules; no model call\tOpen\nEX-24093\nSynthetic example\n\tHillcrest Pharmacy\tHandwritten endorsement: NCSO claim\tDecided\tHuman record unchanged\tOpen\nSYN-Q-agent_review_complete-0000000001\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000002\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000003\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000004\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000005\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000006\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000007\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000008\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000009\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000010\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000011\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000012\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000013\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000014\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000015\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000016\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000017\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000018\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000019\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000020\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000021\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000022\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000023\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000024\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000025\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000026\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000027\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000028\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000029\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000030\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000031\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000032\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000033\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000034\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000035\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000036\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000037\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nSYN-Q-agent_review_complete-0000000038\nProjection only\n\tModel pharmacy (synthetic)\tSynthetic failed-rule referral\tCase built ready to decide\tModel example only; no evidence or citation\tOpen\nFirst items\nPrevious 50\nNext 50\nLast items\nJump to item\nJump\nShared monthly assumptions\nShow legacy full-day simulation",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "a64c57a3053b298d5242b9d5bd9862ab40591bbdb162d47606abb6b3a6a990dd",
+      "auditFile": "axe/chapter-6-both-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 2,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Reference",
+          "Pharmacy",
+          "Reason",
+          "State",
+          "Agent work",
+          "Open"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 7,
+      "route": "/pharmacy/claims",
+      "side": "pharmacy",
+      "perspective": "pharmacy",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-7-pharmacy-off-1440.png",
+      "observedAt": "2026-09-12T21:23:13.132Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "heading": "Pharmacy claims",
+      "text": "Assistance Off · Simulated presentation, not a model call\nSynthetic demonstration data\nPharmacy claims\n\nToday: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone.\n\nWhat is assumed?\nOpen pharmacy submission\nPharmacy (synthetic)\nHillcrest Pharmacy\nRiverside Chemist\nOakfield Pharmacy\nStation Road Pharmacy\nMeadow Lane Dispensary\nThis pharmacy · 2026-09\n\nRecorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.\n\nSubmitted this month\n9\nReferred back\n4\nCorrected/resubmitted\n0\nPaid\n1\n\nShared monthly scenario: 85,000 items across the modelled service. Not this pharmacy's recorded totals.\n\nAction needed\n4 items\n£13.21 claimed (synthetic)\nWaiting on NHSBSA\n4 items\n£14.08 claimed (synthetic)\nPaid this month\n1 items\n£3.41 claimed (synthetic)\nAll\n9 items\n£30.70 claimed (synthetic)\nAction needed. Claimed amounts are synthetic, not calculated payments.\nItem\tDispensed\tAmount\tState\tAction\nEX-24112\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24112\n\nEX-24088\t2026-08-06\t£3.41\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24088\n\nEX-24093\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24093\n\nSYN-FQ123-3\t2026-08-19\t£3.90\tInformation requested: NHSBSA needs you to confirm something\tSend confirmation\nSYN-FQ123-3",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "56bc4bc5e09349aa3f419da6d0f38fae88cdb8413b316efe11ec26de36ac2e3e",
+      "auditFile": "axe/chapter-7-pharmacy-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Item",
+          "Dispensed",
+          "Amount",
+          "State",
+          "Action"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 7,
+      "route": "/pharmacy/claims",
+      "side": "pharmacy",
+      "perspective": "pharmacy",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-7-pharmacy-on-1440.png",
+      "observedAt": "2026-09-12T21:23:20.337Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "heading": "Pharmacy claims",
+      "text": "Assistance On · Simulated presentation, not a model call\nSynthetic demonstration data\nPharmacy claims\n\nWith the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click.\n\nWhat is assumed?\nOpen pharmacy submission\nPharmacy (synthetic)\nHillcrest Pharmacy\nRiverside Chemist\nOakfield Pharmacy\nStation Road Pharmacy\nMeadow Lane Dispensary\nThis pharmacy · 2026-09\n\nRecorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.\n\nSubmitted this month\n9\nReferred back\n4\nCorrected/resubmitted\n0\nPaid\n1\nCaught before submission\n0\n\nCaught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.\n\nShared monthly scenario: 85,000 items across the modelled service; 14,167 projected catches before submission. Not this pharmacy's recorded totals.\n\nAction needed\n4 items\n£13.21 claimed (synthetic)\nWaiting on NHSBSA\n4 items\n£14.08 claimed (synthetic)\nPaid this month\n1 items\n£3.41 claimed (synthetic)\nAll\n9 items\n£30.70 claimed (synthetic)\nAction needed. Claimed amounts are synthetic, not calculated payments.\nItem\tDispensed\tAmount\tState\tAction\nEX-24112\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24112\n\nEX-24088\t2026-08-06\t£3.41\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24088\n\nEX-24093\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24093\n\nSYN-FQ123-3\t2026-08-19\t£3.90\tInformation requested: NHSBSA needs you to confirm something\tSend confirmation\nSYN-FQ123-3",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "b86a0c2bc7cf59612cf123b6baecb23d42fd1acc1ef98be82114dad29d353801",
+      "auditFile": "axe/chapter-7-pharmacy-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 2,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Item",
+          "Dispensed",
+          "Amount",
+          "State",
+          "Action"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 7,
+      "route": "/pharmacy/claims",
+      "side": "pharmacy",
+      "perspective": "nhsbsa",
+      "enabled": false,
+      "guardExpected": true,
+      "filename": "chapter-7-nhsbsa-off-1440.png",
+      "observedAt": "2026-09-12T21:23:27.244Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "heading": "This view belongs to the other side; switch perspective to see it",
+      "text": "Assistance Off · Simulated presentation, not a model call\nThis view belongs to the other side; switch perspective to see it\nSwitch to Pharmacy",
+      "expectedPresentation": "opposite-side guard",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "d96c422fbd7cbe8bdd29309519a708c445fbb3be19bfb33aacb6ac68fc0e0a18",
+      "auditFile": "axe/chapter-7-nhsbsa-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 0,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      },
+      "guardRecovery": "Visible switch exposed the permitted chapter without changing the URL."
+    },
+    {
+      "chapter": 7,
+      "route": "/pharmacy/claims",
+      "side": "pharmacy",
+      "perspective": "nhsbsa",
+      "enabled": true,
+      "guardExpected": true,
+      "filename": "chapter-7-nhsbsa-on-1440.png",
+      "observedAt": "2026-09-12T21:23:34.343Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "heading": "This view belongs to the other side; switch perspective to see it",
+      "text": "Assistance On · Simulated presentation, not a model call\nThis view belongs to the other side; switch perspective to see it\nSwitch to Pharmacy",
+      "expectedPresentation": "opposite-side guard",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "a8a60ee141a279bd3d977fcb1d1bb16dcd8f7b802e5e9435452805392739ca9b",
+      "auditFile": "axe/chapter-7-nhsbsa-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      },
+      "guardRecovery": "Visible switch exposed the permitted chapter without changing the URL."
+    },
+    {
+      "chapter": 7,
+      "route": "/pharmacy/claims",
+      "side": "pharmacy",
+      "perspective": "both",
+      "enabled": false,
+      "guardExpected": false,
+      "filename": "chapter-7-both-off-1440.png",
+      "observedAt": "2026-09-12T21:23:43.917Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "heading": "Pharmacy claims",
+      "text": "Assistance Off · Simulated presentation, not a model call\n7. What the pharmacy sees\n\nTrack the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment.\n\nSynthetic demonstration data\nPharmacy claims\n\nToday: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone.\n\nWhat is assumed?\nOpen pharmacy submission\nPharmacy (synthetic)\nHillcrest Pharmacy\nRiverside Chemist\nOakfield Pharmacy\nStation Road Pharmacy\nMeadow Lane Dispensary\nThis pharmacy · 2026-09\n\nRecorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.\n\nSubmitted this month\n9\nReferred back\n4\nCorrected/resubmitted\n0\nPaid\n1\n\nShared monthly scenario: 85,000 items across the modelled service. Not this pharmacy's recorded totals.\n\nAction needed\n4 items\n£13.21 claimed (synthetic)\nWaiting on NHSBSA\n4 items\n£14.08 claimed (synthetic)\nPaid this month\n1 items\n£3.41 claimed (synthetic)\nAll\n9 items\n£30.70 claimed (synthetic)\nAction needed. Claimed amounts are synthetic, not calculated payments.\nItem\tDispensed\tAmount\tState\tAction\nEX-24112\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24112\n\nEX-24088\t2026-08-06\t£3.41\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24088\n\nEX-24093\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24093\n\nSYN-FQ123-3\t2026-08-19\t£3.90\tInformation requested: NHSBSA needs you to confirm something\tSend confirmation\nSYN-FQ123-3",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "865cc5515bc312c99f054bd3e40d2a5cd09d7308f44b7b7f5fe1a6c26c6c738d",
+      "auditFile": "axe/chapter-7-both-off.json",
+      "axeViolations": 0,
+      "axeIncomplete": 1,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Item",
+          "Dispensed",
+          "Amount",
+          "State",
+          "Action"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    },
+    {
+      "chapter": 7,
+      "route": "/pharmacy/claims",
+      "side": "pharmacy",
+      "perspective": "both",
+      "enabled": true,
+      "guardExpected": false,
+      "filename": "chapter-7-both-on-1440.png",
+      "observedAt": "2026-09-12T21:23:52.445Z",
+      "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+      "heading": "Pharmacy claims",
+      "text": "Assistance On · Simulated presentation, not a model call\n7. What the pharmacy sees\n\nTrack the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment.\n\nSynthetic demonstration data\nPharmacy claims\n\nWith the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click.\n\nWhat is assumed?\nOpen pharmacy submission\nPharmacy (synthetic)\nHillcrest Pharmacy\nRiverside Chemist\nOakfield Pharmacy\nStation Road Pharmacy\nMeadow Lane Dispensary\nThis pharmacy · 2026-09\n\nRecorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.\n\nSubmitted this month\n9\nReferred back\n4\nCorrected/resubmitted\n0\nPaid\n1\nCaught before submission\n0\n\nCaught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.\n\nShared monthly scenario: 85,000 items across the modelled service; 14,167 projected catches before submission. Not this pharmacy's recorded totals.\n\nAction needed\n4 items\n£13.21 claimed (synthetic)\nWaiting on NHSBSA\n4 items\n£14.08 claimed (synthetic)\nPaid this month\n1 items\n£3.41 claimed (synthetic)\nAll\n9 items\n£30.70 claimed (synthetic)\nAction needed. Claimed amounts are synthetic, not calculated payments.\nItem\tDispensed\tAmount\tState\tAction\nEX-24112\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24112\n\nEX-24088\t2026-08-06\t£3.41\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24088\n\nEX-24093\t2026-08-21\t£2.95\tReferred back: correction needed before payment\tCorrect and resubmit\nEX-24093\n\nSYN-FQ123-3\t2026-08-19\t£3.90\tInformation requested: NHSBSA needs you to confirm something\tSend confirmation\nSYN-FQ123-3",
+      "expectedPresentation": "chapter content",
+      "presentationVerified": true,
+      "monthlyTargetsVerified": null,
+      "visualReview": "pending",
+      "identityBefore": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "identityAfter": {
+        "commit": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+        "builtAt": "2026-09-12T21:16:45.865Z",
+        "dirty": false
+      },
+      "sha256": "805eb92f0ffcfaaf4a7d834017a05b93d91351adcd741df98aaabfcda7686661",
+      "auditFile": "axe/chapter-7-both-on.json",
+      "axeViolations": 0,
+      "axeIncomplete": 2,
+      "horizontalOverflow": false,
+      "tableHeaders": [
+        [
+          "Item",
+          "Dispensed",
+          "Amount",
+          "State",
+          "Action"
+        ]
+      ],
+      "errors": [],
+      "resourceHashes": [
+        {
+          "path": "/assets/index-D-ctM8l1.css",
+          "status": 200,
+          "bytes": 78933,
+          "sha256": "0a4d0ecb7fd5f845363afb9d6ce0a44b1ad278f500baca4d5a9c21eb69190a0c"
+        },
+        {
+          "path": "/assets/index-DYEQjgRF.js",
+          "status": 200,
+          "bytes": 646606,
+          "sha256": "d1dc79b5825fc5bc8c11052fdfaae20786a7676f8d19a83129a6088a74f76c63"
+        }
+      ],
+      "headers": {
+        "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+        "x-content-type-options": "nosniff",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "permissions-policy": null
+      }
+    }
+  ],
+  "error": null,
+  "browserVersion": "153.0.8010.12",
+  "completedAt": "2026-09-12T21:23:54.316Z",
+  "failures": []
+}

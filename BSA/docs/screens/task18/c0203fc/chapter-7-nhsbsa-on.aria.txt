@@ -1,0 +1,34 @@
+- banner:
+  - link "Skip to main content":
+    - /url: "#main-content"
+  - link "Prescription Exception Case Builder":
+    - /url: /#scene
+  - navigation "Primary":
+    - link "Overview":
+      - /url: /
+    - button "Operations"
+    - button "How it works"
+  - group "Perspective":
+    - radio "Pharmacy"
+    - text: Pharmacy
+    - radio "NHSBSA" [checked]
+    - text: NHSBSA
+    - radio "Both"
+    - text: Both
+  - 'switch "Agent: On" [checked]'
+  - text: "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change. Agent : On"
+  - button "Reset demo"
+- region "Demonstration scope and governing principle":
+  - button "Synthetic demonstration data throughout. Hide details" [expanded]
+  - paragraph: No payments calculated or approved. Not measured NHSBSA performance.
+  - paragraph: The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.
+- main:
+  - status: Assistance On · Simulated presentation, not a model call
+  - region "Other perspective":
+    - heading "This view belongs to the other side; switch perspective to see it" [level=1]
+    - button "Switch to Pharmacy"
+- contentinfo: Session only · Synthetic cases · No payments calculated or approved
+- complementary "Decision notifications":
+  - status
+- region "Contextual help":
+  - tooltip "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change."

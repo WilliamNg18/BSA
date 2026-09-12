@@ -1,0 +1,74 @@
+- banner:
+  - link "Skip to main content":
+    - /url: "#main-content"
+  - link "Prescription Exception Case Builder":
+    - /url: /#scene
+  - navigation "Primary":
+    - link "Overview":
+      - /url: /
+    - button "Operations"
+    - button "How it works"
+  - group "Perspective":
+    - radio "Pharmacy"
+    - text: Pharmacy
+    - radio "NHSBSA"
+    - text: NHSBSA
+    - radio "Both" [checked]
+    - text: Both
+  - 'switch "Agent: Off"'
+  - text: "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change. Agent : Off"
+  - button "Reset demo"
+- navigation "Guided tour":
+  - button "Back"
+  - button "Choose tour chapter": 2/8 · A month in numbers
+  - button "Next"
+  - button "Dismiss tour"
+- region "Demonstration scope and governing principle":
+  - button "Synthetic demonstration data throughout. Hide details" [expanded]
+  - paragraph: No payments calculated or approved. Not measured NHSBSA performance.
+  - paragraph: The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.
+- main:
+  - status: Assistance Off · Simulated presentation, not a model call
+  - heading "A month in numbers" [level=1]
+  - paragraph: Compare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance.
+  - region "Monthly workload calculator":
+    - group "Edit the monthly assumptions":
+      - text: Edit the monthly assumptions Items reaching the exception queue each month
+      - 'button "About assumption: Items reaching the exception queue each month"': Assumption
+      - button "About the public volume default": Public default
+      - textbox "Items reaching the exception queue each month": "85000"
+      - text: "Public default: approximately 85,000 monthly referrals. Referral-subset proxy, not the real total exception queue. Replace with your own volume. Minutes an operator spends per item today"
+      - 'button "About assumption: Minutes an operator spends per item today"': Assumption
+      - textbox "Minutes an operator spends per item today": "12"
+      - text: "gathering the evidence and judging, with no guidance · Assumption: 12 minutes, range 10 to 15. Minutes an operator spends judging a case the agent has built"
+      - 'button "About assumption: Minutes an operator spends judging a case the agent has built"': Assumption
+      - textbox "Minutes an operator spends judging a case the agent has built": "2"
+      - text: "reading the built case and deciding · Assumption: 2 minutes."
+    - paragraph: Estimates from labelled assumptions; type NHSBSA's own figures above.
+    - region "Hours of operator time a month":
+      - heading "Hours of operator time a month" [level=2]
+      - paragraph: Today
+      - paragraph:
+        - img "17,000"
+      - paragraph: All scenario items, including manual fallback for abstentions.
+    - region "Items one operator can complete a month":
+      - heading "Items one operator can complete a month" [level=2]
+      - paragraph: Today
+      - paragraph:
+        - img "630"
+      - paragraph: "Assumption: 6 hours a day, 21 days = 7,560 minutes. Manual-case capacity under these assumptions."
+    - region "Operator minutes per item":
+      - 'heading "Today: operator minutes per item" [level=2]'
+      - text: Human decision
+      - 'img "Today: gathering 10 minutes; judging 2 minutes"'
+      - term: Gathering
+      - definition: 10 minutes
+      - term: Judging
+      - definition: 2 minutes
+      - paragraph: "Abstentions are worked as today: 12 operator minutes per item, including manual gathering."
+    - paragraph: "Time is spent only where a person adds something: the judgement."
+    - status: "Today: 17,000 operator hours a month; 630 items per operator. Manual-case capacity under these assumptions. Estimates, not measured savings."
+    - group: Show the detail
+- contentinfo: "Session only · Synthetic cases · No payments calculated or approved Tour shortcuts: Alt + ← / → outside fields and menus"
+- complementary "Decision notifications":
+  - status

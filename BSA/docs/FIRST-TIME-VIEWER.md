@@ -10,10 +10,11 @@ Task 18, issue #60. This is an **agent novice-perspective review**, not human
 user testing. Ten seconds is a first-glance review target, not a measured human
 comprehension score or a performance gate. No claim of WCAG certification is made.
 
-**Status: preparation and pre-redesign baseline complete; final review pending.**
-The coordinator must explicitly confirm N, Q, P and X are merged before the
-final rebase, captures and latest-main live walkthrough. Old observations below
-cannot establish acceptance of those changes.
+**Status: final live review complete at clean `c0203fc`.** The coordinator
+released the capture gate after N/Q/P/X merged and its 14 live checks passed.
+V then captured and reviewed all 18 requested views and completed the actual
+UI walkthrough below. Old baselines remain unchanged and are not this proof.
+This is bounded AI evaluator acceptance, not measured human comprehension.
 
 ## What should land within ten seconds
 
@@ -47,7 +48,7 @@ remain inspectable but collapsed initially. None of these are measured savings.
 
 The chapter's difference-demonstrating click is **Compare**, followed by
 **Run one hour** to inspect the projection. These are Q's confirmed labels,
-still awaiting final live verification. Check the six-column virtual table,
+confirmed in the final live walkthrough. Check the six-column virtual table,
 reactive New items and side-appropriate states. A synthetic model row must not
 be mistaken for a full clinical evidence pack; Today must open usable manual work.
 
@@ -134,8 +135,8 @@ detail/Compare control. This is a probe correction, not a production failure.
 For source tooltips, `source-audit.ts` N12 classifies weeks of delay as
 illustrative, not a measured distribution. P confirms its guide tooltip says
 "Weeks of delay, the delivery channel and internal handling steps are
-illustrative assumptions, not published facts." Preserve that distinction;
-the final live tooltip still requires observation.
+illustrative assumptions, not published facts." The final live 7.2 checkpoint
+also focuses this tooltip and records that distinction.
 
 ## Source review boundary
 
@@ -156,22 +157,74 @@ and none of these claims establishes deployed NHSBSA internal processes.
 
 ## Final latest-main live walkthrough
 
-**Not run yet.** Do not replace this with a planned or local run described as
-live. After the coordinator's functional-merge notification, record the exact
-live commit, clean build identity before/after, build UTC, observation UTC,
-viewport/theme/motion, actual clicked controls and preserved same-item history.
+**Observed, not planned:** clean live
+`c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`, built
+`2026-09-12T21:16:45.865Z`. The [completed record](screens/task18/c0203fc/walk-completed.json)
+contains 22 checkpoints, each with actual URL, build identity, accessibility
+snapshot and assertions. It ran **21:23:55 to 21:24:13 UTC** on 12 September,
+1440 x 1000, light, reduced motion, isolated Chromium. The first session walks
+the nine points and approved-referral cycle; a separate fresh session proves
+the catch counter. Neither session uses Reset, reload, store injection or
+hidden action hooks. No page/console/CSP error or horizontal overflow occurred.
 
 | Point | Final live result | Observed evidence / limit |
 | --- | --- | --- |
-| 2.1 | Pending | Await merged live interface. |
-| 2.2 | Pending | Await merged live interface. |
-| 2.3 | Pending | Await merged live interface. |
-| 6.1 | Pending | Await merged live interface. |
-| 6.2 | Pending | Await merged live interface. |
-| 6.3 | Pending | Await merged live interface. |
-| 7.1 | Pending | Await merged live interface. |
-| 7.2 | Pending | Await merged live interface. |
-| 7.3 | Pending | Await merged live interface and actual human draft approval. |
+| 2.1 | Lands | Three primary inputs, assumption badges and public-default referral-subset hint precede two visible tiles. Keyboard-focused public tooltip says not measured total queue. Today displays 17,000 hours. |
+| 2.2 | Lands | One Agent click changes hours to 4,250; per-item bar changes gathering 10 to 0 while judging remains 2. The explicit 12-minute abstention caveat remains. |
+| 2.3 | Lands | Same click changes capacity 630 to 3,780. Off says manual-case capacity; On says built-case capacity, not a mixed-cohort guarantee. All six month captures assert exact model-formatted values equal accessible values. |
+| 6.1 | Lands | One six-column table and counted filters; selecting Cleared by rules changes selected state and rows. Initial range is 1 to 50 of 70,833 operator slots, not the whole-service 85,000 proxy. |
+| 6.2 | Lands | Off shows manual work and D's known abstention; On adds evidence phases but D still says no recommendation. Focused source tooltip classifies the internal view as assumptions. |
+| 6.3 | Lands after the required click | Compare then Run one hour gives 60 synthetic minutes: Today 60 operator minutes / 5 decisions / 3 cited, assisted 36 / 8 / 3. Each is explicitly projected; no decision is recorded. |
+| 7.1 | Lands | Four counted/amount filters above the five-column table. Initial Hillcrest counts 4 action, 4 waiting, 1 paid, 9 all; every amount says claimed (synthetic). Monthly recorded categories and projected catches are separately labelled. |
+| 7.2 | Lands on selected detail | Seed B On says no operator-approved draft. Off shows the raw human reason and rule/clause; focused How was this sent? distinguishes published context from assumed channel/delay/internal process. |
+| 7.3 | Lands after real approval | Human submits B, starts review, checks Approve this draft and records Refer back. Only then does the same claim's Agent toggle reveal the actual approved note with operator/time/version/clause. Applying text leaves the referral unchanged; explicit resubmission and another human decision are required. |
+
+The three comprehension targets per chapter are evaluator judgements based
+on these visible observations, not a claim that a human read a detail page or
+completed the workflow within ten seconds. In Both, chapter 7's table begins
+below the 1000px fold, while the action tiles are visible; the single-side
+Pharmacy view removes tour chrome and exposes the first actions sooner.
+This is recorded as a layout limitation, not an invented timing failure.
+
+### Same-item and catch-counter proof
+
+The approved-referral session retains EX-24112 throughout: seed attempt,
+manual submission, approved referral, corrected resubmission, final human
+acceptance and synthetic paid state. The final Off/Both switch preserves the
+same immutable attempts; it does not recreate the item or undo the decision.
+The actual detail distinguishes applying the correction from **Resubmit claim**.
+
+The counter session begins with **Caught before submission = 0**. **Apply
+correction** in Pharmacy check followed by **Ready to submit** changes the
+selected-pharmacy count to **1**, with the original claim state and attempts
+unchanged and no submission receipt. Returning to the workbench restores its
+local missing-date form; applying the same correction again does not double
+count. Only **Continue with submission** creates the new attempt. The same
+EX-24112 then appears as **New**, **Submitted, awaiting review**, with
+**Open for review** in the NHSBSA queue. No automatic submission is inferred.
+
+### Failures, review and remaining limits
+
+The [first walk attempt](screens/task18/c0203fc/walk-attempt-1.json) reached
+corrected resubmission, then its harness timed out searching for whitespace
+between the All tile's separate text spans. The UI was not broken. The selector
+was changed to the exact child label and the entire two-session walk was rerun
+successfully; the first attempt is retained, not described as a first-run pass.
+
+V found and routed one source-copy issue before final capture: N's Off capacity
+footnote incorrectly said built-case capacity. N corrected the calculator,
+scene and accessible summary; the final live manual/built labels are observed
+above. No remaining concrete application defect was reproduced in this scoped
+walk. Existing scope findings were routed to their original issues rather than
+duplicated. The exact 26-word queue-guide exception remains informational.
+
+The [final matrix and visual review](screens/task18/README.md) has 18 images,
+18 unrestricted axe audits with zero violations and 13 audits with incomplete
+results (11 color-contrast, 8 aria-prohibited-attr, overlapping). All images
+were reviewed at full height. Natural Agent focus tooltips remain in On images;
+they were not hidden or pixel-masked. These results do not establish mobile,
+dark, cross-browser, screen-reader or full manual WCAG conformance. The separate
+coordinator 14-check record and seven audits are not added to these totals.
 
 Keep fresh screenshot/audit provenance separate from the original
 [107 captures](screens/integrated/README.md) and

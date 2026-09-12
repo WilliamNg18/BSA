@@ -1,0 +1,294 @@
+{
+  "sourceRevision": "e850dab1e2596f0d8429f63998538b49c4e53183",
+  "applicationSourceRevision": "c0203fc73991c0968329dbc2f4bbfb4aa8c1781f",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.13.0"
+  },
+  "timestamp": "2026-09-12T21:23:13.782Z",
+  "violations": [],
+  "incomplete": [
+    {
+      "id": "aria-prohibited-attr",
+      "impact": "serious",
+      "tags": [
+        "cat.aria",
+        "wcag2a",
+        "wcag412",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "RGAAv4",
+        "RGAA-7.1.1"
+      ],
+      "description": "Ensure ARIA attributes are not prohibited for an element's role",
+      "help": "Elements must only use permitted ARIA attributes",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr?application=playwright",
+      "nodes": [
+        {
+          "any": [],
+          "all": [],
+          "none": [
+            {
+              "id": "aria-prohibited-attr",
+              "data": {
+                "role": null,
+                "nodeName": "div",
+                "messageKey": "noRoleSingular",
+                "prohibited": [
+                  "aria-label"
+                ]
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "aria-label attribute is not well supported on a div with no valid role attribute."
+            }
+          ],
+          "impact": "serious",
+          "html": "<div aria-label=\"Claim filters\" class=\"grid grid-cols-2 gap-3 lg:grid-cols-4\">",
+          "target": [
+            ".lg\\:grid-cols-4"
+          ],
+          "failureSummary": "Fix all of the following:\n  aria-label attribute is not well supported on a div with no valid role attribute."
+        }
+      ]
+    }
+  ],
+  "passes": [
+    {
+      "id": "aria-allowed-attr",
+      "nodeCount": 20
+    },
+    {
+      "id": "aria-allowed-role",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-conditional-attr",
+      "nodeCount": 20
+    },
+    {
+      "id": "aria-deprecated-role",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-hidden-body",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-hidden-focus",
+      "nodeCount": 6
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "nodeCount": 19
+    },
+    {
+      "id": "aria-required-attr",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-roles",
+      "nodeCount": 3
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "nodeCount": 20
+    },
+    {
+      "id": "aria-valid-attr",
+      "nodeCount": 20
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "nodeCount": 1
+    },
+    {
+      "id": "button-name",
+      "nodeCount": 13
+    },
+    {
+      "id": "bypass",
+      "nodeCount": 1
+    },
+    {
+      "id": "color-contrast",
+      "nodeCount": 71
+    },
+    {
+      "id": "definition-list",
+      "nodeCount": 1
+    },
+    {
+      "id": "dlitem",
+      "nodeCount": 8
+    },
+    {
+      "id": "document-title",
+      "nodeCount": 1
+    },
+    {
+      "id": "duplicate-id-aria",
+      "nodeCount": 3
+    },
+    {
+      "id": "empty-heading",
+      "nodeCount": 2
+    },
+    {
+      "id": "empty-table-header",
+      "nodeCount": 9
+    },
+    {
+      "id": "form-field-multiple-labels",
+      "nodeCount": 5
+    },
+    {
+      "id": "heading-order",
+      "nodeCount": 2
+    },
+    {
+      "id": "html-has-lang",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-lang-valid",
+      "nodeCount": 1
+    },
+    {
+      "id": "label-title-only",
+      "nodeCount": 5
+    },
+    {
+      "id": "label",
+      "nodeCount": 4
+    },
+    {
+      "id": "landmark-banner-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-contentinfo-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-banner",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-contentinfo",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-one-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-unique",
+      "nodeCount": 8
+    },
+    {
+      "id": "link-name",
+      "nodeCount": 4
+    },
+    {
+      "id": "meta-viewport-large",
+      "nodeCount": 1
+    },
+    {
+      "id": "meta-viewport",
+      "nodeCount": 1
+    },
+    {
+      "id": "nested-interactive",
+      "nodeCount": 22
+    },
+    {
+      "id": "page-has-heading-one",
+      "nodeCount": 1
+    },
+    {
+      "id": "region",
+      "nodeCount": 138
+    },
+    {
+      "id": "scope-attr-valid",
+      "nodeCount": 9
+    },
+    {
+      "id": "select-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "skip-link",
+      "nodeCount": 1
+    },
+    {
+      "id": "tabindex",
+      "nodeCount": 2
+    },
+    {
+      "id": "table-duplicate-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "td-headers-attr",
+      "nodeCount": 1
+    },
+    {
+      "id": "th-has-data-cells",
+      "nodeCount": 1
+    }
+  ],
+  "inapplicable": [
+    "accesskeys",
+    "area-alt",
+    "aria-braille-equivalent",
+    "aria-command-name",
+    "aria-dialog-name",
+    "aria-input-field-name",
+    "aria-meter-name",
+    "aria-progressbar-name",
+    "aria-required-children",
+    "aria-required-parent",
+    "aria-tab-name",
+    "aria-text",
+    "aria-toggle-field-name",
+    "aria-tooltip-name",
+    "aria-treeitem-name",
+    "autocomplete-valid",
+    "blink",
+    "frame-focusable-content",
+    "frame-tested",
+    "frame-title-unique",
+    "frame-title",
+    "html-xml-lang-mismatch",
+    "image-alt",
+    "image-redundant-alt",
+    "input-button-name",
+    "input-image-alt",
+    "link-in-text-block",
+    "list",
+    "listitem",
+    "marquee",
+    "meta-refresh",
+    "object-alt",
+    "presentation-role-conflict",
+    "role-img-alt",
+    "scrollable-region-focusable",
+    "server-side-image-map",
+    "summary-name",
+    "svg-img-alt",
+    "valid-lang",
+    "video-caption",
+    "no-autoplay-audio"
+  ]
+}

@@ -991,3 +991,20 @@ accepted b813c62 evidence, not a new infrastructure task. The actual Step 0
 live baseline predates the redesign. Read retained source excerpts directly;
 absence of original PDF/DOCX binaries prevents claiming fresh binary review
 but does not permit stronger external-verification or internal-process claims.
+
+## 2026-09-12: V accepts the bounded c0203fc clarity review
+
+After explicit coordinator release, capture the actual deployed c0203fc build,
+not the rebased V documentation SHA. Preserve the original eighteen capture
+records, screenshots and unrestricted axe results, then record subsequent
+full-height visual review separately. Keep baseline timestamps and the first
+walk's corrected selector failure; neither is silently relabelled as final
+first-run success.
+
+The nine clarity points land as AI evaluator observations, not timed human
+research. Stateful approval, correction, explicit resubmission, human acceptance
+and no-Reset side changes require their own live checkpoints, not inference
+from screenshots. The independent catch proof must show 0 to 1 while lifecycle
+and attempts remain unchanged, then explicit submission and the same New queue
+item. Reduced-motion capture context and exact visible monthly numbers are
+part of the evidence; incomplete axe results remain manual-review caveats.

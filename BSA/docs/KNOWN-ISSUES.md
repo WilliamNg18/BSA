@@ -6,10 +6,12 @@ ms.date: 2026-09-12
 
 ## Current implementation and acceptance
 
-Tasks 14-18 are new, unaccepted clarity/perspective scope. Their final live
-review is recorded separately in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md).
-The following implementation summary describes the already-accepted foundation,
-not proof that the redesigned interface has passed.
+Tasks 14-18's final live review at clean `c0203fc` is recorded separately in
+[FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md): nine observed clarity points,
+18 reviewed views / unrestricted axe audits with zero violations, and an
+explicit human-controlled round trip and catch-counter walk. Earlier evidence
+below remains historical. Final tracking and release acceptance belong to the
+coordinator; this scoped review does not claim human comprehension testing.
 
 The eight-chapter/nine-stop tour, standalone pipeline and Four cases, complete
 referral-cycle guide, shared lifecycle, scene count-in, queue Compare and
@@ -52,8 +54,8 @@ recovery are recorded in [INFRA-DONE](INFRA-DONE.md); infrastructure is frozen.
 A fresh V baseline reading on `2026-09-12T19:21:33Z` to `19:22:15Z` observed
 clean Step 0 `6b0632823514b923b54d3ae9f873fabfa9715851` on the live site.
 That six-state chapter reading predates the redesign and is not a repeat of
-the older hosted checklist. Tasks 14-18 still need their own merged-source
-acceptance and latest-main live review in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md).
+the older hosted checklist. Tasks 14-18 now have a distinct merged-source
+live review in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md), not a relabelled baseline.
 See [DEPLOYMENT.md](DEPLOYMENT.md). No publish profile, SWA token, new resource
 or owner setup is needed. F1 has no deployment slots; PR artifacts are not previews.
 
@@ -72,7 +74,7 @@ public visibility nor that CI pass proves an Azure deployment.
 | Evidence | Synthetic cases, rule paraphrases and enterprise tool responses, not authentic clinical or tariff evidence |
 | History | Immutable attempts and append-only events within a session, not durable audit storage; reload/Reset restores seeds |
 | Offline | Loaded-session navigation works; a cold offline load or reload is not guaranteed |
-| Queue | Virtual month, sweep, day and Compare are bounded projections, not live work or measured capacity |
+| Queue | Virtual month, legacy day and one-hour Compare are bounded projections, not live work or measured capacity |
 | Today | Model examples show manual tasks without invented retrieved citations or agent results |
 | Outcomes | C's 56/84 conflict survives confirmation; D stays manual with no payment guarantee |
 | Timing/benefits | Gathering, judging, delay and assembly are assumptions; animation is presentation, not elapsed operational work |
@@ -87,6 +89,18 @@ durable record service or payment calculation is included. A shared operational
 service remains a proposal even though the local cross-side workflow works.
 
 ## Remaining verification caveats
+
+V's final 1440px light/reduced-motion matrix has 13 incomplete axe reports
+(11 color-contrast, 8 aria-prohibited-attr, overlapping), preserved for manual
+review despite zero violations. Natural Agent focus tooltips remain in On
+images. The first live walk's All-tile selector timeout is retained as harness
+failure; the corrected full walk passed. No app defect is inferred from it.
+Both perspective puts chapter 7's first table rows below the 1000px fold,
+although its action tiles are visible; Pharmacy view exposes them sooner.
+The exact 26-word queue guides exceed the copy aspiration by one word and are
+intentionally retained, not a blocking budget. No remaining concrete app defect
+was reproduced in this scoped review; mobile/dark and full manual conformance
+are not claimed by these screenshots.
 
 [#34](https://github.com/WilliamNg18/BSA/issues/34) is closed. A controlled
 nine-case repetition passed before the three conditional tags were removed;

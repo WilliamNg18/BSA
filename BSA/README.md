@@ -52,16 +52,19 @@ observe actual work and agree accuracy/stop criteria before assisted use.
 | --- | --- |
 | `/#scene`, `/#month`, `/#pipeline`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: context, calculator, separate pipeline/Four cases, two places and closing discovery |
 | `/pharmacy` | Manual submission or optional scripted precheck; never blocks submission |
-| `/pharmacy/claims` | Full referral-cycle guide, pharmacy/state filters, claimed totals, detail and shared history |
+| `/pharmacy/claims` | Counted action/waiting/paid/all filters, five-column claims table, approved-only detail and shared history |
 | `/pharmacy/claims?caseId=EX-24112` | Same-item pharmacy link, correction and resubmission |
-| `/queue` | Pinned examples, virtual month, visible-row sweep, shared session queue and read-only Compare |
+| `/queue` | Counted six-column virtual queue, actual New submissions and read-only one-hour Compare |
 | `/case/:id`, `/case/:id/trace`, `/case/:id/record` | Evidence pack, observable trace, human record and counterfactual rule replay |
 | `/evaluation`, `/boundary`, `/assumptions`, `/architecture` | Reflective pages |
 
 Eight tour chapters have nine stops: Pharmacy check is chapter 5's substop;
 Pharmacy claims is chapter 7. Header navigation groups Overview, Operations and
 How it works (the queue menu item is **NHSBSA queue**). Agent defaults **Off**; confirmed Reset restores Off and seeded
-session data. Follow/Switch side links keep the same item. Presenter mode,
+session data. Perspective defaults to **Both** and survives Reset; Pharmacy
+and NHSBSA filter navigation and guard opposite-side routes without redirecting
+or changing history. Both retains the tour and Follow/Switch side links.
+Presenter mode,
 Discussion mode and `/notes` are removed; use the [demo script](docs/demo-script.md).
 
 The six canonical cases remain A sufficient, B missing a date (July replay
@@ -118,17 +121,18 @@ Informational reporting does not excuse a functional or accessibility defect.
 
 ## Documentation and limits
 
-[First-time viewer review](docs/FIRST-TIME-VIEWER.md) defines chapter 2/6/7
-clarity checks and records the actual pre-redesign live baseline. Tasks 14-18
-are new work: their pending review must not be confused with the older accepted
-application, live checklist or source-pinned screenshots below.
+[First-time viewer review](docs/FIRST-TIME-VIEWER.md) records nine observed
+chapter 2/6/7 clarity points, 18 fresh live captures with zero-violation axe
+reports, and a human-controlled same-item/catch-counter walkthrough on clean
+`c0203fc`. It preserves the earlier baseline separately. This is AI evaluator
+review, not timed human testing or full accessibility certification.
 
 [SPEC](docs/SPEC.md) describes current behaviour. [KNOWN-ISSUES](docs/KNOWN-ISSUES.md)
 separates genuine limitations from historical evidence.
 [Original source-pinned screenshots](docs/screens/integrated/README.md) include the exact
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
-[Task 18's capture matrix](docs/screens/task18/README.md) is prepared separately;
-it is not a relabelling of those older images.
+[Task 18's reviewed live matrix](docs/screens/task18/README.md) is separately
+pinned to `c0203fc`; it is not a relabelling of those older images.
 [Requested scope](docs/SCOPE.md) tracks the eight-chapter implementation and
 the 18 accepted scope rows and bounded infrastructure evidence.
 [AGENTS](AGENTS.md) governs contributions.
