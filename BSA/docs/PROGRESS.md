@@ -857,3 +857,21 @@ awaits the coordinator's browser slot. Integration and Tasks 8-13 remain pending
 Coordinator copy review shortened the comparison to one 20-word paragraph and
 the caption "Assumed day projections". Cohort fields, manual handling and all
 no-write/state assertions are unchanged; only exact-copy expectations changed.
+
+Coordinator-accepted browser evidence: CI 34635510262 at exact source 6d34988
+executed 790 tests, with 563 passed and 227 failed, none skipped or unrun.
+All eight named Compare tests are in the executed manifest and none are in
+the complete failed set. Artifact 10278127926 supplies all four named Compare
+axe JSONs with zero violations and their screenshots. This is scoped acceptance,
+not a full-CI pass.
+
+Local acceptance retained separately: the first standard-config attempt built
+the artifact but timed out starting preview, executing zero tests. The existing
+artifact-config retry finished three passed and five timeouts, including two
+page-setup timeouts and one axe timeout. Its anomalous 14.4-hour elapsed report
+is retained, not normalised into a successful local run. Port 4173 was released.
+
+Rebased onto integrated main 22ec345, preserving S's production CSP server and
+both streams' appended records. Combined check and all 567 units in 20 files
+pass. No Compare source or assertion changes accompanied the rebase. Final
+integrated Linux browser acceptance remains the coordinator's gate.

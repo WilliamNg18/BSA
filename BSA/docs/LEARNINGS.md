@@ -433,3 +433,14 @@ The fresh worktree lacked dependencies: the first check stopped at missing tsc.
 Restoring the unchanged lockfile with npm ci allowed check and all 563 units
 to pass, including ten new comparison presentation tests. Browser acceptance
 is separately scheduled with the coordinator; no browser pass is implied here.
+
+The later completed exact-head Linux run provides scoped browser evidence:
+790 scheduled tests equal 563 passed plus 227 failed, with no skipped/unrun
+tests. All eight Compare tests are present in the source manifest and absent
+from the complete failed set; four named axe artifacts each contain zero
+violations. The coordinator accepted this complete accounting, not absence
+from a failure list alone. Do not label the overall CI run successful.
+
+Keep the local zero-test startup timeout and subsequent three passes/five
+timeouts separately, including anomalous elapsed timing. Never weaken assertions
+or repeat a CPU-bound local run solely to duplicate exact-source remote proof.
