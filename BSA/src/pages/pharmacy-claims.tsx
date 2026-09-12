@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { ClaimDetail } from "@/components/demo/claim-detail";
+import { ReferralCycle } from "@/components/demo/referral-cycle";
 import { LIFECYCLE_LABELS, type LifecycleState } from "@/lib/domain/lifecycle";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { PHARMACIES } from "@/lib/domain/reference";
@@ -13,6 +14,7 @@ export function PharmacyClaimsPage() {
   const [params, setParams] = useSearchParams();
   const id = params.get("caseId") ?? params.get("case");
   const lifecycles = useAppStore((s) => s.lifecycles);
+  const agentEnabled = useAppStore((s) => s.agentEnabled);
   const revisions = useAppStore((s) => s.caseRevisions);
   const [selectedPharmacy, setPharmacy] = useState("FQ123");
   const pharmacy = id && lifecycles[id] ? lifecycles[id].pharmacyCode : selectedPharmacy;
@@ -27,6 +29,7 @@ export function PharmacyClaimsPage() {
       <p>Synthetic claimed amounts, not calculated payments. Shared session history survives navigation, not reloads.</p><BoundaryTag cls="existing" />
       <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy submission</Link></Button>
     </header>
+    <ReferralCycle enabled={agentEnabled} claim={selected ?? (id ? undefined : rows.find((row) => row.caseId === "EX-24112") ?? rows[0])} />
     <div className="flex flex-wrap gap-4">
       <label className="grid gap-1">Pharmacy (synthetic)
         <select className="rounded-md border bg-background p-2" value={pharmacy} onChange={(e) => { setPharmacy(e.target.value); setParams({}); }}>

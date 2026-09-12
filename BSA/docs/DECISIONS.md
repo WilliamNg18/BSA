@@ -343,3 +343,24 @@ Reject labelling Off as a failed agent check or implying that unchecked text
 is ready. Submission stays available; receipts, snapshots and canonical cases
 remain unchanged. Coordinator transferred only the pharmacy workbench and
 its matching functional regressions from R to the parity stream for this fix.
+
+## 2026-09-11: Issue 26 explicit chapters and honest referral-cycle presentation
+
+Separate the pipeline at `/#pipeline` from Four cases at `/#cases`. The tour
+has eight chapters and nine stops because pharmacy precheck remains chapter
+five's substop. Preserve scene, calculator, all four case actions and the
+closing disclosures. The coordinator approved changing only the canonical
+chapter metadata array, not source figures, rules, fixtures or calculations.
+
+Show manual evidence-gathering work explicitly in both places and the referral
+loop. Assisted preparation proposes fewer gathering steps, not fewer human
+decisions or measured waiting times. Keep Case D's manual fallback visible.
+
+Compose a read-only cycle guide above existing claims controls. Its five steps
+describe the workflow, never progress. Separately render the selected claim's
+actual lifecycle label and links to its real pharmacy/operator actions. Editing
+is a local draft until human resubmission; paid is shown as a recorded state
+only when the existing store says paid, with existing-pricing attribution.
+The guide never changes lifecycle state or creates approved pharmacy reasons.
+S retains the canonical shell chapter heading and focus ownership; R owns
+existing tour regression updates. New tour-cycle tests use only public UI.

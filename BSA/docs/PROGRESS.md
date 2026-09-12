@@ -6,6 +6,56 @@ ms.date: 2026-09-11
 
 ## Checklist
 
+### Issue 26 implementation stream
+
+Eight explicit chapters now separate the pipeline and Four cases. Both places
+show longer manual evidence-gathering sequences and shorter proposed assisted
+preparation, preserving human decisions and abstention. The claims composition
+includes a five-stage explanatory referral cycle alongside, not instead of,
+actual recorded state and existing pharmacy/operator controls.
+
+New `tour-cycle.spec.ts` covers exact navigation, mode-dependent sequences,
+the actual human/code referral-to-synthetic-pricing journey and responsive axe.
+Unit contracts cover chapter order and complete canonical narratives.
+Local check passes and all 563 units in 18 files pass. The coordinator-approved
+one-worker production selection covers ten tests: six new tour-cycle tests,
+three affected pipeline tests and the calculator navigation/reset test.
+The first run had seven passes and three failures in 10.8 minutes; the narrowed
+three-test retry passed in 2.9 minutes, preserving the first run's evidence.
+Both real human/code referral cycles pass. Responsive axe is zero violations
+at 360 and 1440 in both modes. Port 4173 was verified released after execution.
+R owns existing tour expectations; S owns shell focus/metadata.
+No domain/store mutation, hosting change or integrated acceptance claim.
+
+Parent review tightened the comparison to one qualified paragraph and scoped
+the paid-stage human decision to referred items, not rules-cleared Case E.
+Eight additional server-rendered contracts check all seven lifecycle states
+in both modes and unknown claims, with frozen inputs and no invented progress.
+
+The first browser failures were a blank-page initial navigation timeout,
+a page-fixture timeout, and a menu-to-dismiss focus race in the new test.
+The latter now asserts completed route heading focus and menu closure before
+focusing and keyboard-activating Dismiss. Two existing Case D assertions now
+navigate from pipeline to Four cases while preserving NOT RUN/open-pain checks.
+The coordinator-requested copy-length diagnostic is informational; all
+calculated-value, timing, control-state and reflow assertions remain intact.
+Raw logs and first-run trace/results copies are retained in this session's
+files directory. This is narrow local acceptance, not the final full-suite
+integration gate or a hosted deployment claim.
+
+2026-09-12 integration update: rebased onto merged Stream S at `22ec345`.
+Append-only decisions/learnings retain both streams' evidence. AppShell
+canonical chapter metadata, focus handling, strict-CSP controls and styles
+remain identical to main. Combined check passes and all 567 units in 19 files
+pass with two workers. No browser matrix was rerun; the earlier ten-scenario
+results remain historical narrow evidence. Final integrated Linux acceptance
+is still required.
+
+Final 2026-09-12 rebase includes the merged pharmacy status fix at `ff00b3e`.
+Both streams' appended records are retained. Tour-cycle assertions use claim
+lifecycle labels, not the former workbench Off status. Combined check and
+567 units in 19 files pass again; no redundant browser run was performed.
+
 * [x] Task 1: synthetic baseline model, calculator and shared scene estimates (ad7d5d8)
 * [x] Task 2: local copy, attribution, default-Off and shared motion checks (b7c4451)
 * [x] Task 3: shared scene estimates and six-stage pipeline with individual pain markers (96bf097)

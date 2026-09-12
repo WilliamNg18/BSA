@@ -387,3 +387,36 @@ environmental. Issue #34 tracks investigation and removal criteria. Apply
 @quarantine only to assistance complete-A/global-Off/local-available and the
 pharmacy D-Off/light and B-On/light matrix instances. All three new Issue20
 guards and the other 23 focused cases remain blocking; no assertion is removed.
+
+## 2026-09-11: Issue 26 chapter split integration surfaces
+
+The old tour had eight stops but only seven chapters. Pipeline and case cards
+shared one home branch, and canonical narrative metadata omitted calculator
+and queue chapters. Chapter count alone therefore did not establish independent
+chapter content. Tests now pin the exact nine-stop route/label sequence and
+the complete eight-entry narrative mapping.
+
+Moving the pipeline also requires updating pipeline and calculator browser
+destinations, not Four cases destinations. Shell chapter labels/prose and
+existing tour expectations are coordinated with their separate owners.
+The fresh worktree initially lacked tsc; npm ci restored locked dependencies.
+No local browser is started before the coordinator grants a resource slot.
+
+An explanatory referral guide may also be visible for a rules-cleared claim.
+Scope its human-decision requirement to referred items rather than implying
+that Case E requires an operator. Server-rendering against frozen lifecycle
+inputs verifies that every state label remains unchanged in both modes and
+that an unknown claim never acquires an invented status or action link.
+
+The first selected browser run's pipeline timeout never left about:blank:
+newPage took 6.1 seconds and browser cleanup took 161.8 seconds. A separate
+mobile failure timed out creating the page, before application assertions.
+Do not relabel those failures as passes because the server returns HTTP 200.
+Both passed the unchanged-bound retry; first-run logs and traces are retained.
+
+After keyboard chapter selection, assert the new route heading owns focus and
+the menu has closed before activating another control. The Off test initially
+pressed Dismiss while the shell was still moving focus to the claims heading.
+Keep keyboard activation and the missing-rail assertion, not a sleep or retry
+loop. Splitting chapters also means pipeline tests must navigate to Four cases
+before asserting the actual Case D card; neither assertion should be removed.

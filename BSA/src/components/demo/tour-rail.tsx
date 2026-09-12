@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
+import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 
 export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: () => void }) {
   const { pathname, hash } = useLocation();
@@ -44,7 +44,7 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="min-w-0 flex-1 justify-start px-2" aria-label="Choose tour chapter">
-              <span className="truncate" aria-live="polite">{stop ? `${stop.chapter}/7 · ${stop.label}` : "Explore · Start the tour"}</span><ChevronDown className="shrink-0" aria-hidden="true" />
+              <span className="truncate" aria-live="polite">{stop ? `${stop.chapter}/${TOUR_CHAPTER_COUNT} · ${stop.label}` : "Explore · Start the tour"}</span><ChevronDown className="shrink-0" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" onCloseAutoFocus={(event) => {

@@ -32,13 +32,13 @@ async function expectReferralMarkers(page: Page, ready: boolean) {
 
 async function pipeline(page: Page) {
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await expect(page.getByRole("menuitem")).toHaveCount(7);
-  await page.getByRole("menuitem", { name: "3. The pipeline", exact: true }).click();
-  await expect(page).toHaveURL(/#cases$/);
+  await expect(page.getByRole("menuitem")).toHaveCount(8);
+  await page.getByRole("menuitem", { name: "3. What exists today and what changes", exact: true }).click();
+  await expect(page).toHaveURL(/#pipeline$/);
 }
 
 test("six ordered stages preserve existing capture/pricing, assumptions and built-only assistance", async ({ page }) => {
-  await page.goto("./#cases");
+  await page.goto("./#pipeline");
   const stages = page.locator("[data-pipeline-stage]");
   await expect(stages).toHaveCount(6);
   expect(await stages.evaluateAll((els) => els.map((el) => el.getAttribute("data-pipeline-stage")))).toEqual(["1", "2", "3", "4", "5", "6"]);
@@ -57,11 +57,13 @@ test("six ordered stages preserve existing capture/pricing, assumptions and buil
   await expect(page.locator('[data-kernel] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
   await expect(stages.nth(4)).toContainText("Built exceptions only · Proposed record");
   await expect(stages.nth(4)).toContainText("Case D has no proposed rule or recommendation");
-  await expect(page.locator('[data-case="D"]')).toContainText("Gate: NOT RUN");
   await expect(page.locator("[data-pipeline-correction]")).toHaveText(runAgent(CASES[1]).draftToPharmacy!);
   await expectReferralMarkers(page, true);
-  await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
   await expect(page.locator("[data-pipeline]")).not.toContainText(/Sources:|\.pdf|\.docx|First-time endorsement accuracy/);
+  await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page).toHaveURL(/#cases$/);
+  await expect(page.locator('[data-case="D"]')).toContainText("Gate: NOT RUN");
+  await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
 });
 
 test("pipeline, scene and calculator share live counts, residuals and invalid/zero handling", async ({ page }, testInfo) => {
@@ -180,7 +182,7 @@ test("all-abstained cohort never resolves a gathering or exact-fix marker during
 
 test("live reduced-motion changes finish presentation immediately without autonomous decisions", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("./#cases");
+  await page.goto("./#pipeline");
   await page.clock.install();
   await page.clock.pauseAt(new Date(Date.now() + 1000));
   await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -196,7 +198,7 @@ test("live reduced-motion changes finish presentation immediately without autono
 });
 
 test("pipeline links and pain tooltips are keyboard accessible; Reset describes Off", async ({ page }) => {
-  await page.goto("./#cases");
+  await page.goto("./#pipeline");
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   const marker = page.locator('[data-pipeline-stage="2"] [data-pain-marker]');
   await marker.scrollIntoViewIfNeeded();
@@ -231,7 +233,7 @@ for (const { width, colorScheme } of [{ width: 360, colorScheme: "dark" }, { wid
     test(`pipeline selected ${width} ${colorScheme} ${enabled ? "on" : "off"}: reflow and all-rules axe`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 1000 });
       await page.emulateMedia({ colorScheme });
-      await page.goto("./#cases");
+      await page.goto("./#pipeline");
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await page.locator("main details").evaluateAll((els) => els.forEach((el) => el.setAttribute("open", "")));
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);

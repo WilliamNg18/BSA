@@ -38,16 +38,44 @@ export function TwoPlacesDiagram({ enabled }: { enabled: boolean }) {
       <Flow title="Pharmacy · Before submission" steps={[
         { label: "Endorsement entry", cls: "human" },
         { label: "Required-field checks", cls: "deterministic" },
-        ...(enabled ? [{ label: "Optional sufficiency guidance", cls: "agent" as const }, { label: "Recommendation gate", cls: "deterministic" as const }] : [{ label: "Manual review · no agent guidance", cls: "human" as const }]),
+        ...(enabled ? [{ label: "Optional sufficiency guidance", cls: "agent" as const }, { label: "Recommendation gate", cls: "deterministic" as const }] : [
+          { label: "Locate the relevant monthly rule", cls: "human" as const },
+          { label: "Compare each endorsement requirement", cls: "human" as const },
+          { label: "Find missing evidence and review uncertainty", cls: "human" as const },
+          { label: "Manual review · no agent guidance", cls: "human" as const },
+        ]),
         { label: "Correct or continue · never blocked", cls: "human" },
       ]} />
       <Flow title="NHSBSA · After exception routing" steps={[
         { label: "Existing capture and queue", cls: "existing" },
         { label: "Evidence lookups and checks", cls: "deterministic" },
-        ...(enabled ? [{ label: "Interpret, recommend or abstain", cls: "agent" as const }, { label: "Compliance gate", cls: "deterministic" as const }] : [{ label: "Manual evidence review · no recommendation", cls: "human" as const }]),
+        ...(enabled ? [{ label: "Interpret, recommend or abstain", cls: "agent" as const }, { label: "Compliance gate", cls: "deterministic" as const }] : [
+          { label: "Locate the image, claim and product", cls: "human" as const },
+          { label: "Find the date-specific rule and history", cls: "human" as const },
+          { label: "Compare sources and inspect uncertainty", cls: "human" as const },
+          { label: "Manual evidence review · no recommendation", cls: "human" as const },
+        ]),
         { label: "Operator decides", cls: "human" },
       ]} />
+      <p className="text-sm text-muted-foreground">Fewer gathering steps are proposed, not measured delays. Case D still needs manual review; assistance never removes human judgement or existing pricing.</p>
     </div>
+    <Flow title={enabled ? "Assisted referral loop · Less repeat gathering proposed" : "Today referral loop · Repeated manual gathering"} steps={enabled ? [
+      { label: "Assemble evidence and propose a specific correction", cls: "agent" },
+      { label: "Validate recommendation and draft", cls: "deterministic" },
+      { label: "Operator decides and approves the pharmacy note", cls: "human" },
+      { label: "Pharmacy reviews, corrects and resubmits", cls: "human" },
+      { label: "Validate revised evidence", cls: "deterministic" },
+      { label: "Operator re-checks and decides", cls: "human" },
+    ] : [
+      { label: "Find the image and claim", cls: "human" },
+      { label: "Find the product, rule and previous evidence", cls: "human" },
+      { label: "Compare evidence and record a referral reason", cls: "human" },
+      { label: "Pharmacy reads the reason and finds the rule", cls: "human" },
+      { label: "Pharmacy corrects and resubmits", cls: "human" },
+      { label: "Gather the revised evidence again", cls: "human" },
+      { label: "Validate revised evidence", cls: "deterministic" },
+      { label: "Operator re-checks and decides", cls: "human" },
+    ]} />
     <details className="rounded-lg border p-3 text-sm">
       <summary className="cursor-pointer font-medium">Implementation and current-state assumptions</summary>
       <p className="mt-3 text-muted-foreground">Shared service: proposed, not deployed. Both screens use local mocks, not models. Existing pharmacy checks and manual practice need validation.</p>

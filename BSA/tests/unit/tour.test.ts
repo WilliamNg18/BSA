@@ -1,13 +1,23 @@
 import { describe, expect, it } from "vitest";
-import { isTourShortcut, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { MemoryRouter } from "react-router-dom";
+import { ReferralCycle } from "../../src/components/demo/referral-cycle";
+import { LIFECYCLE_LABELS, type CaseLifecycle, type LifecycleState } from "../../src/lib/domain/lifecycle";
+import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { pharmacyCaseLink } from "../../src/lib/case-links";
 import { useAppStore } from "../../src/lib/store";
 
 describe("tour navigation contract", () => {
-  it("has seven chapters and retains the precheck before queue, claims and close", () => {
-    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 4, 5, 6, 7]);
-    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
+  it("has eight explicit chapters and retains the precheck before queue, claims and close", () => {
+    expect(TOUR_CHAPTER_COUNT).toBe(8);
+    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 5, 5, 6, 7, 8]);
+    expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#pipeline", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
+    expect(TOUR_STOPS.filter((stop) => stop.to !== "/pharmacy").map((stop) => stop.label)).toEqual([
+      "The scene", "A month in numbers", "What exists today and what changes", "Four cases",
+      "One agent, two places", "The queue", "What the pharmacy sees", "Where it ends",
+    ]);
   });
   it("links to the same claim through the supported case query", () => {
     const id = "SYN-FQ123-2";
@@ -38,6 +48,9 @@ describe("tour navigation contract", () => {
 });
 
 describe("curated display boundary", () => {
+  it("supplies one canonical narrative for every explicit chapter", () => {
+    expect(TOUR_CONTENT.chapters.map((chapter) => chapter.chapter)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  });
   it("retains the single exact sourcing statement", () => {
     expect(SOURCES_FOOTER).toBe("Public information (NHSBSA and Community Pharmacy England publications) and stated assumptions. All operational data on this site is synthetic.");
   });
@@ -76,5 +89,38 @@ describe("following is presentation state only", () => {
       expect(reset.caseRevisions).toEqual(before.caseRevisions);
       expect(reset.records).toEqual(before.records);
     } finally { useAppStore.getState().resetDemo(); }
+  });
+
+  describe("referral guide is not lifecycle progress", () => {
+    const render = (enabled: boolean, claim?: CaseLifecycle) => renderToStaticMarkup(
+      createElement(MemoryRouter, null, createElement(ReferralCycle, { enabled, claim })),
+    );
+    it.each(Object.keys(LIFECYCLE_LABELS) as LifecycleState[])("renders only recorded %s state in both modes without mutation", (state) => {
+      const claim: CaseLifecycle = { caseId: "EX-24112", pharmacyCode: "FQ123", state, history: [] };
+      Object.freeze(claim.history);
+      Object.freeze(claim);
+      for (const enabled of [false, true]) {
+        const markup = render(enabled, claim);
+        expect(markup).toContain(`role="status">${LIFECYCLE_LABELS[state].pharmacy}</p>`);
+        expect(markup).toContain("This guide is not claim history");
+        expect(markup).toContain("For referred items, a sufficient human decision");
+        expect(markup).toContain("An unsent correction is a local draft");
+        expect(markup).toContain('href="/case/EX-24112"');
+        expect(markup).toContain(enabled ? "Assisted preparation" : "Manual preparation");
+        expect(markup.includes("Recorded synthetic outcome attributed to existing pricing")).toBe(state === "paid");
+        expect(claim).toEqual({ caseId: "EX-24112", pharmacyCode: "FQ123", state, history: [] });
+      }
+    });
+    it("does not invent a recorded state or working claim link for an unknown claim", () => {
+      for (const enabled of [false, true]) {
+        const markup = render(enabled);
+        expect(markup).not.toContain('role="status"');
+        expect(markup).not.toContain("Recorded claim state");
+        expect(markup).not.toContain("Open this operator case");
+        expect(markup).toContain("Paid");
+        expect(markup).toContain("Synthetic only");
+        expect(markup).toContain("This guide is not claim history");
+      }
+    });
   });
 });
