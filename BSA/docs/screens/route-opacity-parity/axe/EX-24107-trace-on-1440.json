@@ -1,0 +1,260 @@
+{
+  "applicationSourceRevision": "82c18e49e7d1c765e5392b1bec5c028c8f89fd16",
+  "url": "/case/EX-24107/trace",
+  "agent": "on",
+  "testEngine": {
+    "name": "axe-core",
+    "version": "4.13.0"
+  },
+  "timestamp": "2026-09-12T14:02:16.367Z",
+  "violations": [],
+  "passes": [
+    {
+      "id": "aria-allowed-attr",
+      "nodeCount": 40
+    },
+    {
+      "id": "aria-allowed-role",
+      "nodeCount": 12
+    },
+    {
+      "id": "aria-conditional-attr",
+      "nodeCount": 40
+    },
+    {
+      "id": "aria-deprecated-role",
+      "nodeCount": 12
+    },
+    {
+      "id": "aria-hidden-body",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-hidden-focus",
+      "nodeCount": 57
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "nodeCount": 40
+    },
+    {
+      "id": "aria-required-attr",
+      "nodeCount": 12
+    },
+    {
+      "id": "aria-roles",
+      "nodeCount": 12
+    },
+    {
+      "id": "aria-tooltip-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "nodeCount": 40
+    },
+    {
+      "id": "aria-valid-attr",
+      "nodeCount": 40
+    },
+    {
+      "id": "avoid-inline-spacing",
+      "nodeCount": 2
+    },
+    {
+      "id": "button-name",
+      "nodeCount": 14
+    },
+    {
+      "id": "bypass",
+      "nodeCount": 1
+    },
+    {
+      "id": "color-contrast",
+      "nodeCount": 261
+    },
+    {
+      "id": "definition-list",
+      "nodeCount": 8
+    },
+    {
+      "id": "dlitem",
+      "nodeCount": 54
+    },
+    {
+      "id": "document-title",
+      "nodeCount": 1
+    },
+    {
+      "id": "duplicate-id-aria",
+      "nodeCount": 4
+    },
+    {
+      "id": "empty-heading",
+      "nodeCount": 8
+    },
+    {
+      "id": "empty-table-header",
+      "nodeCount": 30
+    },
+    {
+      "id": "form-field-multiple-labels",
+      "nodeCount": 1
+    },
+    {
+      "id": "heading-order",
+      "nodeCount": 8
+    },
+    {
+      "id": "html-has-lang",
+      "nodeCount": 1
+    },
+    {
+      "id": "html-lang-valid",
+      "nodeCount": 1
+    },
+    {
+      "id": "label-title-only",
+      "nodeCount": 1
+    },
+    {
+      "id": "label",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-banner-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-contentinfo-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-main-is-top-level",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-banner",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-contentinfo",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-no-duplicate-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-one-main",
+      "nodeCount": 1
+    },
+    {
+      "id": "landmark-unique",
+      "nodeCount": 16
+    },
+    {
+      "id": "link-name",
+      "nodeCount": 12
+    },
+    {
+      "id": "list",
+      "nodeCount": 3
+    },
+    {
+      "id": "listitem",
+      "nodeCount": 17
+    },
+    {
+      "id": "meta-viewport-large",
+      "nodeCount": 1
+    },
+    {
+      "id": "meta-viewport",
+      "nodeCount": 1
+    },
+    {
+      "id": "nested-interactive",
+      "nodeCount": 16
+    },
+    {
+      "id": "page-has-heading-one",
+      "nodeCount": 1
+    },
+    {
+      "id": "region",
+      "nodeCount": 476
+    },
+    {
+      "id": "skip-link",
+      "nodeCount": 1
+    },
+    {
+      "id": "summary-name",
+      "nodeCount": 1
+    },
+    {
+      "id": "tabindex",
+      "nodeCount": 6
+    },
+    {
+      "id": "table-duplicate-name",
+      "nodeCount": 5
+    },
+    {
+      "id": "td-headers-attr",
+      "nodeCount": 5
+    },
+    {
+      "id": "th-has-data-cells",
+      "nodeCount": 5
+    }
+  ],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "nodeCount": 1
+    }
+  ],
+  "inapplicable": [
+    "accesskeys",
+    "area-alt",
+    "aria-braille-equivalent",
+    "aria-command-name",
+    "aria-dialog-name",
+    "aria-input-field-name",
+    "aria-meter-name",
+    "aria-progressbar-name",
+    "aria-required-children",
+    "aria-required-parent",
+    "aria-tab-name",
+    "aria-text",
+    "aria-toggle-field-name",
+    "aria-treeitem-name",
+    "autocomplete-valid",
+    "blink",
+    "frame-focusable-content",
+    "frame-tested",
+    "frame-title-unique",
+    "frame-title",
+    "html-xml-lang-mismatch",
+    "image-alt",
+    "image-redundant-alt",
+    "input-button-name",
+    "input-image-alt",
+    "link-in-text-block",
+    "marquee",
+    "meta-refresh",
+    "object-alt",
+    "presentation-role-conflict",
+    "role-img-alt",
+    "scope-attr-valid",
+    "scrollable-region-focusable",
+    "select-name",
+    "server-side-image-map",
+    "svg-img-alt",
+    "valid-lang",
+    "video-caption",
+    "no-autoplay-audio"
+  ]
+}

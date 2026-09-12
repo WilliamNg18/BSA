@@ -670,3 +670,29 @@ instance, real production CSP headers and unchanged assertions/timeouts.
 This restores existing coverage, not a new application behaviour or proven
 performance repair. Keep the original failures as evidence. Full public CI on
 the proposed tag-removal revision must pass before coordinator merge.
+
+## 2026-09-12: Scope visual provenance to the route-opacity repair
+
+After accepted main `82c18e4`, compare only the 64 route-entry images from the
+107-image `898cda5` set: 32 destinations in both Agent states. Keep the original
+manifest, PNG hashes, audit files and build report unchanged. The 43 additional
+stateful images retain their old provenance rather than being called recaptured.
+
+The runtime diff removes only AppShell's motion-safe opacity fade, inactive
+under these photographs' reduced-motion setting. Establish settled reproduction
+with actual exact-byte comparisons and new per-route audit/response/computed-style
+evidence. Do not infer safe intermediate frames from those stills: PR #42's
+held-frame tests and the accepted 1,054-case all-blocking run supply that proof.
+No masks, pixel tolerances, replacement styles or full 107-image rerun.
+
+Record the new resource hashes and both compressor methods explicitly.
+Python's original level-9 method gives 203,721 independent gzip bytes for the
+new build; Node's bundled zlib gives a different informational size for identical
+resource bytes. No budget or runtime change follows from that measurement.
+
+The completed scoped run reproduced all 64 route images byte for byte, with
+32 Off/32 On, 64 new unrestricted axe outputs with zero violations, no
+page/console/CSP errors and no overflow. Thirty-nine audits retain incomplete
+color-contrast checks. No image binary or original source metadata was replaced.
+No old-build fallback capture or stateful 43-image rerun was needed. Completion
+is 2026-09-12T14:05:50.955Z on unchanged released runtime `82c18e4`.
