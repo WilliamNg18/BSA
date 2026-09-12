@@ -896,3 +896,27 @@ After a very large valid capacity, floating-point cancellation can display
 model target at completion, retaining it as the next transition's origin.
 Both motion modes now exercise large capacities followed by the default
 judging input and check the visible number against the shared Scene value.
+
+## 2026-09-12: Q queue clarity implementation
+
+Changing audience wording is not a lifecycle transition. Queue tests now inspect
+recorded-state attributes separately from mode-dependent visible labels. A
+submitted row belongs in Needs more evidence until explicit arrival, even if
+its canonical template would normally produce a built case.
+
+Logical fifty-row windows can remain bounded at a billion-item model volume
+without allocating an array for the month. Filter counts must describe the
+same synthetic ranges and seed replacements used by rendering, not copy the
+monthly capacity arithmetic or add pharmacy-prevented work back into the queue.
+The new comparison consumes perItem; legacy gathering weights must not leak a
+seven-minute Today assumption into the main presentation.
+
+The first Q production run caught an actual route crash from importing the raw
+tooltip instead of the repository's CompactTooltip. The failing artifact was
+retained; both new queue surfaces now use the existing provider-free,
+strict-CSP-compatible component, with a whole-page render unit guard.
+The repaired four-test smoke passed both-mode filters, exact one-hour stopping
+and two zero-violation axe/keyboard checks. The later fair-citation and
+submission hardening passed check, 726 unit tests and eight production smoke
+tests. These local results do not replace exact-head full CI or the coordinator's
+post-merge live checks.

@@ -39,7 +39,7 @@ export const useQueueStore = create<QueueState>((set) => ({
 useAppStore.subscribe((state, previous) => {
   if (state.records !== previous.records && state.caseStates !== previous.caseStates && state.baselineInputs !== previous.baselineInputs) {
     useQueueStore.getState().reset();
-  } else if (state.baselineInputs !== previous.baselineInputs) {
+  } else if (state.baselineInputs !== previous.baselineInputs || state.todayMinutes !== previous.todayMinutes) {
     useQueueStore.getState().reset();
   } else if (state.agentEnabled !== previous.agentEnabled) {
     useQueueStore.getState().cancel();

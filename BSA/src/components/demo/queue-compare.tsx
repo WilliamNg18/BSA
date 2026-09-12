@@ -1,60 +1,87 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { BoundaryTag, SyntheticTag } from "./labels";
-import { formatBaselineNumber as n, manualGatheringMinutes, type BaselineInputs, type BaselineResult } from "@/lib/domain/baseline";
-import { dayClock, projectQueueDay } from "@/lib/domain/queue-model";
-import { useQueueStore } from "@/lib/queue-store";
+import { BoundaryTag } from "./labels";
+import { formatBaselineNumber as n, type MonthModelResult } from "@/lib/domain/baseline";
+import { projectQueueComparison, queueCitationAvailable } from "@/lib/domain/queue-model";
+import { useReducedMotion } from "@/hooks/use-reduced-motion";
+import { useAppStore } from "@/lib/store";
+import { CASES } from "@/lib/domain/cases";
+import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 
-type ComparisonProps = { input: BaselineInputs; result: BaselineResult; day: number };
-
-export function QueueComparison({ input, result, day }: ComparisonProps) {
-  const projection = projectQueueDay(input, day);
-  const rows = [
-    ["Projected operator actions", n(projection.today.processed), n(projection.assisted.processed)],
-    ["Gathering minutes", n(projection.today.gathering), n(projection.assisted.gathering)],
-    ["Built review minutes", "Included in manual gathering", n(projection.assisted.review)],
-    ["Judging minutes", n(projection.today.judging), n(projection.assisted.judging)],
-  ];
-  return <div className="space-y-4">
-    <div className="flex flex-wrap items-center gap-2"><SyntheticTag>Model assumptions</SyntheticTag><BoundaryTag cls="deterministic" /><BoundaryTag cls="human" /></div>
-    <p className="text-sm">Same scenario at <strong>{dayClock(day)}</strong>; Compare changes no state. Judging counts processed work, unlike the calculator's fixed cohort; no additional savings.</p>
-    <table className="w-full table-fixed text-left text-sm">
-      <caption className="pb-2 text-left text-muted-foreground">Assumed day projections</caption>
-      <thead><tr>
-        <th scope="col" className="p-2">Operator work</th>
-        <th scope="col" className="p-2">Today</th>
-        <th scope="col" className="p-2">With agent</th>
-      </tr></thead>
-      <tbody>{rows.map(([label, today, assisted]) => <tr key={label} className="border-t">
-        <th scope="row" className="p-2 font-medium">{label}</th>
-        <td className="p-2 tabular-nums">{today}</td><td className="p-2 tabular-nums">{assisted}</td>
-      </tr>)}</tbody>
-    </table>
-    <dl className="grid gap-3 text-sm sm:grid-cols-2">
-      <div><dt className="font-medium">Shared monthly source volume</dt><dd>{n(result.volume)} items; pinned examples add no volume.</dd></div>
-      <div><dt className="font-medium">Operator source cohorts</dt><dd>Today: {n(result.volume)} items. With agent: {n(result.built)} built + {n(result.abstained)} abstained.</dd></div>
-      <div><dt className="font-medium">Outside assisted operator work</dt><dd>{n(result.pharmacyCaught)} pharmacy-caught + {n(result.cleared)} code-cleared items in the monthly projection; no operator review.</dd></div>
-      <div><dt className="font-medium">With agent at {dayClock(day)}</dt><dd>{n(projection.assisted.built)} built reviewed; {n(projection.assisted.abstained)} handled manually; {n(projection.assisted.awaiting)} awaiting human.</dd></div>
-      <div><dt className="font-medium">Shared per-item assumptions</dt><dd>Gathering {n(manualGatheringMinutes(input))} min; built review {n(input.builtReviewMinutes)} min; judging {n(input.judgingMinutes)} min.</dd></div>
-      <div><dt className="font-medium">Day capacity assumptions</dt><dd>One 540-minute budget each. Built and abstained share assisted capacity proportionally, rounded down; assembly latency, breaks and referral delays excluded.</dd></div>
-    </dl>
+export function QueueComparison({ result, elapsed }: { result: MonthModelResult; elapsed: number }) {
+  const states = useAppStore((s) => s.caseStates);
+  const lifecycles = useAppStore((s) => s.lifecycles);
+  const revisions = useAppStore((s) => s.caseRevisions);
+  const recorded = Object.keys(states).filter((id) => states[id] === "human_decision_recorded");
+  const citedIds = useMemo(() => CASES.filter((item) => {
+    const current = caseForLifecycle(item.id, lifecycles, revisions);
+    return current !== null && queueCitationAvailable(current);
+  }).map((item) => item.id), [lifecycles, revisions]);
+  return <div className="grid gap-4 md:grid-cols-2" data-comparison-columns>
+    {[false, true].map((assisted) => {
+      const projection = projectQueueComparison(result, elapsed, assisted, recorded, citedIds);
+      return <section key={String(assisted)} aria-label={assisted ? "With agent comparison" : "Today comparison"} className="min-w-0 space-y-3 rounded-lg border bg-card p-3">
+        <h3 className="text-lg font-semibold">{assisted ? "With agent" : "Today"}</h3>
+        <dl className="grid grid-cols-3 gap-2 text-sm" data-comparison-summary={assisted ? "assisted" : "today"}>
+          {[["Projected operator minutes", n(projection.operatorMinutes)], ["Projected items decided", n(projection.decided)], ["Projected decisions with rule cited", n(projection.cited)]].map(([label, value]) =>
+            <div key={label}><dt>{label}</dt><dd className="text-xl font-semibold tabular-nums">{value}</dd></div>)}
+        </dl>
+        <ol aria-label={assisted ? "With agent twelve examples" : "Today twelve examples"} className="space-y-2">
+          {projection.rows.map((row) => <li key={row.id} data-compare-seed={row.id} className={`rounded border p-2 text-sm ${row.done ? "border-teal-700" : ""}`}>
+            <span className="font-medium">{row.label} · {row.id}</span>
+            <p>{row.phase}</p>
+            {row.kind === "abstained" && <p className="text-xs">Manual fallback; never case-ready</p>}
+            <p className="text-xs text-muted-foreground">Gathering {n(row.gathering)} min · Judging {n(row.judging)} min</p>
+            {row.cited && <p className="text-xs">Validated synthetic rule available; citation use projected</p>}
+          </li>)}
+        </ol>
+      </section>;
+    })}
   </div>;
 }
 
-export function QueueCompare({ input, result }: Omit<ComparisonProps, "day">) {
+export function QueueCompare({ result }: { result: MonthModelResult }) {
   const [open, setOpen] = useState(false);
-  const day = useQueueStore((s) => s.day);
+  const [elapsed, setElapsed] = useState(0);
+  const [target, setTarget] = useState<number | null>(null);
+  const reduced = useReducedMotion();
   const id = useId();
   const trigger = useRef<HTMLButtonElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (open) heading.current?.focus(); }, [open]);
-  const close = () => { setOpen(false); trigger.current?.focus(); };
+  useEffect(() => {
+    if (target === null || reduced || !open) return;
+    const timer = window.setInterval(() => setElapsed((value) => Math.min(target, value + 3)), 500);
+    return () => window.clearInterval(timer);
+  }, [target, reduced, open]);
+  useEffect(() => { if (target !== null && elapsed >= target || reduced) setTarget(null); }, [elapsed, target, reduced]);
+  const close = () => { setOpen(false); setTarget(null); trigger.current?.focus(); };
+  const run = (end: number) => {
+    if (reduced) { setElapsed(end); setTarget(null); }
+    else setTarget(end);
+  };
   return <>
-    <Button ref={trigger} variant="outline" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>Compare</Button>
+    <Button ref={trigger} variant="outline" aria-expanded={open} aria-controls={id} onClick={() => open ? close() : setOpen(true)}>Compare</Button>
     <section id={id} hidden={!open} aria-labelledby={`${id}-title`} className="w-full space-y-4 rounded-lg border p-3"
       onKeyDown={(event) => { if (event.key === "Escape") { event.stopPropagation(); close(); } }}>
       <h2 id={`${id}-title`} ref={heading} tabIndex={-1} className="rounded-sm text-xl font-semibold focus-visible:outline-2">Today versus With agent</h2>
-      {open && <QueueComparison input={input} result={result} day={day} />}
+      {open && <>
+        <BoundaryTag cls="human" />
+        <p className="text-sm">Same twelve examples, one operator on each side. Every decision and citation-use counter is a projection, never a lifecycle write. Historical records and code-only clearances are not new human decisions.</p>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button disabled={elapsed >= 360 || target !== null} onClick={() => run(Math.min(360, elapsed + 60))}>Run one hour</Button>
+          <Button variant="outline" disabled={elapsed >= 360 || target !== null} onClick={() => run(360)}>Run to end of day</Button>
+          <Button variant="outline" disabled={target === null} onClick={() => setTarget(null)}>Pause</Button>
+          <Button variant="outline" onClick={() => { setTarget(null); setElapsed(0); }}>Restart</Button>
+        </div>
+        <output aria-live="polite" data-comparison-clock className="block font-semibold">{n(elapsed)} synthetic minutes · {target === null ? "Stopped" : "Running"}</output>
+        <p className="text-sm text-muted-foreground">{reduced ? "Reduced motion: controls show the result immediately, without playback." : "One hour plays in ten seconds then stops. The end of day is six working hours."} Today {n(result.perItem.today.gatheringMinutes + result.perItem.today.judgingMinutes)} minutes per item; built-case judging {n(result.perItem.withAgent.judgingMinutes)} minutes. Abstentions keep the full Today cost.</p>
+        <QueueComparison result={result} elapsed={elapsed} />
+        <Tooltip><TooltipTrigger asChild><Button variant="link" className="h-auto whitespace-normal p-0 text-left">How projected citations are counted</Button></TooltipTrigger>
+          <TooltipContent className="max-w-xs">Citation use is an assumption for both operators, not measured current practice. Count a canonical validated rule only after gathering and judging finish. No citations for fillers, abstentions, rule-clear rows or historical decisions.</TooltipContent></Tooltip>
+        <p className="text-sm text-muted-foreground">Both operators can cite the same validated synthetic rules after completing their work. This twelve-item illustration is not monthly throughput.</p>
+      </>}
       <Button variant="outline" onClick={close}>Close comparison</Button>
     </section>
   </>;

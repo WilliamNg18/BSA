@@ -123,11 +123,10 @@ test("agent flag hides recommendations on every case without changing case state
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(12);
-  const stateCells = rows.locator("td:nth-child(6)");
-  const states = await stateCells.allTextContents();
+  await expect(rows).toHaveCount(50);
+  const stateCells = rows.locator("[data-queue-state]");
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
-  await expect(stateCells).toHaveText(states);
+  const states = await stateCells.allTextContents();
   await captureCheckpoint(page, testInfo, "queue-assistance-off");
   for (const c of cases) {
     await page.locator(`a[href='/case/${c.id}']`).first().click();
@@ -188,9 +187,12 @@ test("product header retains working controls without presentation UI", async ({
 test("queue state filters are interactive", async ({ page }) => {
   await page.goto("queue");
   const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(12);
-  await page.getByRole("radio", { name: "Agent abstained", exact: true }).click();
-  await expect(rows).toHaveCount(2);
-  await page.getByRole("radio", { name: "All", exact: true }).click();
-  await expect(rows).toHaveCount(12);
+  await expect(rows).toHaveCount(50);
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  const tile = page.getByRole("button", { name: /Abstained worked as today/ });
+  await tile.click();
+  await expect(tile).toHaveAttribute("aria-pressed", "true");
+  await expect(rows.locator("[data-queue-state]")).toHaveText(Array(50).fill("Abstained worked as today"));
+  await page.getByRole("button", { name: /All items/ }).click();
+  await expect(rows).toHaveCount(50);
 });

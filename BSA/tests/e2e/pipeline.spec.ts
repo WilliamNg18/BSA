@@ -137,8 +137,8 @@ test("pipeline, scene and calculator share live counts, residuals and invalid/ze
 test("shared two-second clock sequences kernel phases, resolves built pain only, and cancels safely", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("queue");
-  await expect(page.locator("tbody tr")).toHaveCount(12);
-  const states = await page.locator("tbody tr td:nth-child(6)").allTextContents();
+  await expect(page.locator("tbody tr")).toHaveCount(50);
+  const states = await page.locator("[data-queue-state]").allTextContents();
   await pipeline(page);
   await page.clock.install({ time: new Date("2026-09-10T12:00:00Z") });
   await page.clock.pauseAt(new Date("2026-09-10T12:00:10Z"));
@@ -178,7 +178,7 @@ test("shared two-second clock sequences kernel phases, resolves built pain only,
   await expectCaseDThroughPhases(page);
   await flag.setChecked(false);
   await navigatePrimary(page, "Exception queue");
-  await expect(page.locator("tbody tr td:nth-child(6)")).toHaveText(states);
+  await expect(page.locator("[data-queue-state]")).toHaveText(states);
 });
 
 test("all-abstained cohort never resolves a gathering or exact-fix marker during any phase", async ({ page }) => {

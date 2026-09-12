@@ -1,5 +1,4 @@
 import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
-import { QUEUE_FILLER } from "../../src/lib/domain/cases";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
 test("queue hides all filler recommendations without changing evidence, states or human decisions", async ({ page }) => {
@@ -11,33 +10,16 @@ test("queue hides all filler recommendations without changing evidence, states o
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(12);
-  const states = rows.locator("td:nth-child(6)");
-  const times = rows.locator("td:nth-child(7)");
-  const recommendations = rows.locator("td:nth-child(4)");
-  const originalStates = await states.allTextContents();
-  const originalTimes = await times.allTextContents();
-  const originalRecommendations = await recommendations.allTextContents();
-  const fillerRows = rows.filter({ hasText: "Filler row" });
-  await expect(fillerRows).toHaveCount(6);
-  await expect(fillerRows.locator("td:nth-child(4)")).toHaveText(QUEUE_FILLER.map((f) => f.recommendation));
-
+  await expect(rows).toHaveCount(50);
+  const states = rows.locator("[data-recorded-state]");
+  const originalStates = await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")));
+  await expect(rows.filter({ hasText: "Model example only; no evidence or citation" })).not.toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
-  await expect(recommendations).toHaveText(Array<string>(12).fill("No recommendation"));
-  await expect(states).toHaveText(originalStates);
-  await expect(times).toHaveText(originalTimes);
-  await expect(fillerRows.locator("td:nth-child(3)")).toHaveText(Array<string>(6).fill("Synthetic row"));
-  await expect(rows.filter({ hasText: "Case pack" }).locator("td:nth-child(3)")).toHaveText(Array<string>(6).fill("Pre-checks only"));
-  await page.getByRole("radio", { name: "Agent abstained", exact: true }).click();
-  await expect(rows).toHaveCount(2);
-  await expect(recommendations).toHaveText(Array<string>(2).fill("No recommendation"));
-  await page.getByRole("radio", { name: "All", exact: true }).click();
-  await expect(states).toHaveText(originalStates);
-
+  expect(await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")))).toEqual(originalStates);
+  await expect(rows.locator('[aria-label="Agent work phases"]')).toHaveCount(0);
+  await expect(rows.filter({ hasText: "nothing yet, operator to gather" })).not.toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: Off", exact: true }).click();
-  await expect(recommendations).toHaveText(originalRecommendations);
-  await expect(states).toHaveText(originalStates);
-  await expect(times).toHaveText(originalTimes);
+  expect(await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")))).toEqual(originalStates);
   await page.locator("a[href='/case/EX-24112']").first().click();
   await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
@@ -97,7 +79,7 @@ for (const scenario of [
 test("pharmacy keeps edits and local availability across global assistance changes", async ({ page }) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(12);
+  await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(50);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
   await expect(page).toHaveURL(/\/pharmacy$/);
