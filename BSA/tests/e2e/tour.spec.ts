@@ -138,7 +138,7 @@ for (const enabled of [true, false]) {
 
       if (route === "pharmacy/claims") {
         for (const label of ["Waiting on NHSBSA", "Paid this month", "All", "Action needed"]) {
-          const filter = page.getByRole("button", { name: label, exact: true });
+          const filter = page.locator('[aria-label="Claim filters"]').getByRole("button", { name: new RegExp(`^${label} `) });
           await filter.focus();
           await filter.press("Space");
           await expect(filter).toHaveAttribute("aria-pressed", "true");

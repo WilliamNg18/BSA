@@ -8,24 +8,25 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
   const row = useAppStore((s) => s.lifecycles[id]);
   const revisions = useAppStore((s) => s.caseRevisions[id]);
   const enabled = useAppStore((s) => s.agentEnabled);
+  const perspective = useAppStore((s) => s.perspective);
   const followed = useAppStore((s) => s.followedCaseId);
   const follow = useAppStore((s) => s.followCase);
   if (!row) return null;
-  return <section aria-label="Shared case history" className="space-y-3 rounded-xl border bg-card p-4">
+  return <section aria-label="Shared case history" className={pharmacy ? "space-y-3 border-t pt-4" : "space-y-3 rounded-xl border bg-card p-4"}>
     <h2 className="font-semibold">Shared case history</h2>
     <p role="status">{pharmacy ? LIFECYCLE_LABELS[row.state].pharmacy : LIFECYCLE_LABELS[row.state].nhsbsa[enabled ? "on" : "off"]}</p>
     <div className="flex flex-wrap items-center gap-2">
       <BoundaryTag cls="human" />
-      <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>
-      <Button asChild variant="outline"><Link to={pharmacy ? `/case/${id}` : `/pharmacy/claims?caseId=${encodeURIComponent(id)}`}>{pharmacy ? "View NHSBSA case" : "View pharmacy claim"}</Link></Button>
-      <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>
+      {perspective === "both" && <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>}
+      {(pharmacy ? perspective !== "pharmacy" : perspective !== "nhsbsa") && <Button asChild variant="outline"><Link to={pharmacy ? `/case/${id}` : `/pharmacy/claims?caseId=${encodeURIComponent(id)}`}>{pharmacy ? "View NHSBSA case" : "View pharmacy claim"}</Link></Button>}
+      {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}
     </div>
     <details><summary className="cursor-pointer">History and attempts ({revisions?.length ?? 0})</summary>
       <ol aria-label="Lifecycle events" className="mt-3 space-y-3">
         {row.history.map((event, i) => <li key={i} className="rounded-md border p-3 text-sm">
           <dl className="grid gap-1 sm:grid-cols-2">
             <div><dt>Time / actor</dt><dd>{event.at} · {event.actor}</dd></div>
-            <div><dt>Transition</dt><dd>{event.from ?? "New"} → {event.to}</dd></div>
+            <div><dt>Transition</dt><dd>{event.from ? pharmacy ? LIFECYCLE_LABELS[event.from].pharmacy : LIFECYCLE_LABELS[event.from].nhsbsa[enabled ? "on" : "off"] : "New"} → {pharmacy ? LIFECYCLE_LABELS[event.to].pharmacy : LIFECYCLE_LABELS[event.to].nhsbsa[enabled ? "on" : "off"]}</dd></div>
             <div><dt>Attempt / record</dt><dd>{event.revision ?? "Historical"} · {event.recordId ?? "No decision record"}</dd></div>
             {event.reason && (!pharmacy || !enabled) && <div><dt>Human reason</dt><dd>{event.reason}</dd></div>}
             {event.reason && pharmacy && enabled && !event.approvedDraft && <div><dt>Pharmacy response</dt><dd>No operator-approved note recorded.</dd></div>}

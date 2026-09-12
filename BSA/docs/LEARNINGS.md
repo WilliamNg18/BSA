@@ -920,3 +920,16 @@ and two zero-violation axe/keyboard checks. The later fair-citation and
 submission hardening passed check, 726 unit tests and eight production smoke
 tests. These local results do not replace exact-head full CI or the coordinator's
 post-merge live checks.
+
+## 2026-09-12: Task 16 P claims clarity preserves two different lifetimes
+
+Combining claim fields and history in one visual card must not give them the
+same React remount key. Correction fields reset for a new immutable revision;
+the expanded history disclosure should stay open for the same item. Keep the
+revision-keyed form inside the card alongside the stable history component.
+
+A ready submission snapshot alone cannot prove a pre-submission catch. The
+monthly selected-pharmacy strip consumes explicit before/after correction
+events, excludes other pharmacies and months, and counts each case/revision
+once. Recorded item counts and the shared whole-service model are different
+quantities and need separate labels even when both are synthetic.

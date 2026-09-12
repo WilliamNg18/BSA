@@ -94,8 +94,8 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
         test("list and expanded detail unrestricted axe", async ({ page }, info) => {
           await page.goto("pharmacy/claims");
           await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-          await page.getByRole("combobox", { name: "Claim state", exact: true }).selectOption(state);
-          const rows = page.getByRole("list", { name: "Pharmacy claims", exact: true }).locator(":scope > li");
+          await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
+          const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell", { name: LIFECYCLE_LABELS[state].pharmacy, exact: true }) });
           expect(await rows.count()).toBeGreaterThan(0);
           for (const text of await rows.allTextContents()) expect(text).toContain(LIFECYCLE_LABELS[state].pharmacy);
           const listAudit = await new AxeBuilder({ page }).analyze();
