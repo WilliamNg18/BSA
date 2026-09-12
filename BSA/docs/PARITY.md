@@ -6,15 +6,36 @@ ms.date: 2026-09-12
 
 # Parity audit
 
-## Current reconciliation: R and V merged
+## Current reconciliation: route contrast repaired, quarantine closed
 
-This section is the current mapping of the **same 33 rows**, at V merge
-`be623ab507e871c27e0889e7db6e64a8595ad10b`, with application source unchanged
-from R merge `898cda594d0dcb34376bddab7112edcddb172440`. The earlier register and scoped
+This section is the current mapping of the **same 33 rows**, at V's scoped
+documentation merge `c687a9eab181b02f4fca0eb667e8ab8f94468620`, with runtime
+`82c18e49e7d1c765e5392b1bec5c028c8f89fd16`. The earlier register and scoped
 S/#20 update below are retained as historical evidence, not current defects.
 No new application or browser audit was run by this reconciliation.
 
-**R proof:** public [CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
+**Current CI proof:** [CI 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977)
+succeeded on `f295d7f19363cd101af7401f0ba03188ee7d0b2b`: check, **607 units**
+and **1,054 all-blocking browser passes** (15.1 minutes). There are **zero
+quarantined cases**, not three extra informational passes. Source and tests
+match the current documentation main. #34, #35 and #41 are closed; their
+earlier failures and quarantine evidence below remain historical.
+
+**Route contrast and visual proof:** #42 removes only the route wrapper's
+opacity fade, retaining the 6px slide, 150ms duration, focus and reduced-motion
+behaviour. Held-frame regression evidence at 0/75/135/150ms is distinct from
+settled screenshots: 32 scoped tests produced 40 unrestricted axe audits with
+zero violations. V's [route comparison ledger](screens/route-opacity-parity/route-equivalence.json)
+and [provenance record](screens/route-opacity-parity/README.md) report
+**64/64 byte-identical reproductions, 32 Off / 32 On**, on runtime `82c18e4`,
+with **64 actual new axe reports**, zero violations/errors/overflow and
+**39 incomplete audit sets** retained for manual review. This is settled
+1440px light/reduced-motion evidence, not proof of intermediate-frame contrast.
+The original 107 images/audits remain pinned to `898cda5`; the other **43
+stateful images were not recaptured**. No CI artifact-deduplication count or
+full manual WCAG/hosted acceptance is inferred.
+
+**Prior R proof (retained):** public [CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
 succeeded on `6e424ac75c4980380c31f9e3aab23243a9a013d0`. Its actual log
 records check success, **607 units**, **1,019 blocking browser passes**
 (17.7 minutes), then **three informational quarantine passes** (16.4 seconds).
@@ -23,9 +44,10 @@ to R's merged main is empty. The success job skipped artifact upload: no new
 deduplicated axe/CSP output total is claimed. Passing assertions establish
 the tested accessibility, keyboard, reduced-motion and real-header controls,
 not full WCAG certification, manual screen-reader or hosted acceptance.
-One successful quarantine run does not close R-owned #34 or remove its tags.
+That single successful quarantine run alone did not justify removing tags;
+the later follow-up and all-blocking proof above supersede that status.
 
-**V proof:** merged #24 provides current narrative and **107 fresh PNGs and
+**Original V proof (retained):** merged #24 provided **107 fresh PNGs and
 107 actual axe audits, 53 Off / 54 On**, against application `898cda5`.
 The [manifest](screens/integrated/manifest.json) and
 [review record](screens/integrated/README.md) record completed capture,
@@ -69,11 +91,11 @@ acceptance, not a missing application capability.
 | 23 | Changed with decision | Follow/Switch side same-ID navigation and presentation-only tracking retained and tested. |
 | 24 | Changed with decision | Current authorised tour has eight chapters/nine stops after #30, including separate pipeline/Four cases and claims cycle; R's corrected chapter/navigation regressions pass. Historical seven-chapter text below is superseded here. |
 | 25 | Preserved | Reset restores seeded memory/default Off; offline and state-isolation guards pass. |
-| 26 | Preserved | Integrated tested accessibility/reduced-motion/keyboard controls pass in R's real-header production suite. No fresh artifact count, universal WCAG or manual screen-reader claim. |
-| 27 | Changed with decision | S's merged strict-CSP modal-style repair retained; R's integrated real-header assertions pass without weakening policy. |
-| 28 | Preserved | R's responsive, header-width and both-mode functional regressions pass; V's separately reviewed final visual evidence is recorded in row 30, not inferred from browser success. |
-| 29 | Preserved | Exact public CI completes 1,019 blocking tests plus three separately reported quarantine cases; this supersedes historical failed/interrupted full-run evidence below. |
-| 30 | Preserved | Merged V #24 reconciles SPEC, README, exact-click story, known issues and the reviewed final 107-image/107-audit manifest for application 898cda5. Actual 53 Off/54 On, zero reported violations/errors/overflow; 51 incomplete audit sets remain explicit manual-review limitations. |
+| 26 | Preserved | Current 1,054-test real-header suite passes accessibility/reduced-motion/keyboard and held-frame contrast guards after #41. Actual scoped frame/route audits are distinguished above; no universal WCAG or manual screen-reader claim. |
+| 27 | Changed with decision | S's strict-CSP modal-style repair remains; route text opacity fade is removed under #42 without weakening CSP, changing slide timing or altering human authority. Current real-header assertions pass. |
+| 28 | Preserved | Current responsive/header/both-mode regressions pass. V's 64 settled route reproductions are byte-identical; intermediate-frame safety comes from held-frame tests, not photographs. |
+| 29 | Preserved | Exact CI 34696637977 completes 1,054 all-blocking browser tests in 15.1 minutes, zero quarantines. #34/#35/#41 are closed; previous 1,019+3 and failed/interrupted runs remain historical. |
+| 30 | Preserved | V #43 adds scoped 64-route parity on runtime82c18e4: 32 Off/32 On, 64 actual axe reports clear, 39 incomplete. Original #24 107-image/107-audit set remains at898cda5 (53 Off/54 On, 51 incomplete); remaining43 state images were not recaptured. Provenance and manual-review limits remain explicit. |
 | 31 | Not yet verified | Owner follow-up #37 tracks token setup and actual hosted root/deep-link/header proof; local production server and public CI do not prove deployment. |
 | 32 | Changed with decision | Approved removal of byte/performance budgets retained; metrics informational, functional/axe gates blocking. |
 | 33 | Changed with decision | S's bounded/wrapping another-attempt link repair retained in R's passing reflow coverage; no universal future-layout claim. |
@@ -90,8 +112,8 @@ acceptance, not a missing application capability.
 **32 of 33 rows are accepted at this evidence boundary; hosted acceptance
 alone remains Not yet verified under #37.** This is not all 33 Done or a
 full WCAG certification. R and V have merged with their respective proof;
-S's repairs are integrated. D owns final acceptance records, and R owns timing
-follow-ups #34/#35. No task ticks, SCOPE edits, tag removals or hosting claims
+S's repairs are integrated. D owns final acceptance records; timing follow-ups
+#34/#35 and contrast defect #41 are closed. No task ticks, SCOPE edits, tag removals or hosting claims
 are made here. Retain the historical 18/6/1/4/4 and intermediate 18/9/0/2/4
 counts below rather than silently replacing their evidence.
 
