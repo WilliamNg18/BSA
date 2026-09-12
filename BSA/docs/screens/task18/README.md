@@ -37,6 +37,10 @@ The generated manifest records source and live identities, build/observation
 times, resource and PNG hashes, four selected security headers, browser version,
 actual table headers, browser/CSP errors, overflow and one unrestricted axe
 audit per image. It also preserves the accessibility snapshot and main text.
+Chapter 2 additionally verifies both visible numbers against the default model
+targets (17,000 hours / 630 items Off; 255,002 / 60 hours / 3,780 items On,
+formatted to at most one decimal) and their accessible final-value labels.
+Reduced motion is explicit; checking Agent alone does not prove settled values.
 The `completed` flag means capture enumeration finished, not human comprehension,
 visual acceptance or full manual WCAG conformance. Inspect axe incomplete rules.
 

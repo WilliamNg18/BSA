@@ -110,6 +110,22 @@ async function run() {
         }
         await page.evaluate(() => document.fonts.ready);
         await page.waitForTimeout(2500);
+        const monthlyTargets = item.chapter === 2 ? {
+          hours: new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 }).format(item.enabled ? 255002 / 60 : 17000),
+          capacity: new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 }).format(item.enabled ? 3780 : 630),
+        } : null;
+        if (item.chapter === 2) {
+          const hours = page.locator("[data-month-hours]");
+          const capacity = page.locator("[data-month-capacity]");
+          await expect(hours).toHaveText(monthlyTargets.hours);
+          await expect(capacity).toHaveText(monthlyTargets.capacity);
+          for (const tile of [hours, capacity]) {
+            const number = tile.getByRole("img");
+            await expect.poll(async () => number.evaluate((element) =>
+              element.textContent === element.getAttribute("aria-label"),
+            )).toBe(true);
+          }
+        }
         await page.mouse.move(0, 0);
         await page.evaluate(() => window.scrollTo(0, 0));
         const observedAt = new Date().toISOString();
@@ -139,6 +155,7 @@ async function run() {
           ...item, filename, observedAt, url: page.url(), heading, text,
           expectedPresentation: item.guardExpected ? "opposite-side guard" : "chapter content",
           presentationVerified: true,
+          monthlyTargetsVerified: monthlyTargets ? { ...monthlyTargets, visualMatchesAccessibleValue: true } : null,
           visualReview: "pending", identityBefore,
           identityAfter: await identity(context.request, baseURL, expectedCommit),
           sha256: hash(await readFile(join(output, filename))),
