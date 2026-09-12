@@ -866,3 +866,13 @@ same synthetic ranges and seed replacements used by rendering, not copy the
 monthly capacity arithmetic or add pharmacy-prevented work back into the queue.
 The new comparison consumes perItem; legacy gathering weights must not leak a
 seven-minute Today assumption into the main presentation.
+
+The first Q production run caught an actual route crash from importing the raw
+tooltip instead of the repository's CompactTooltip. The failing artifact was
+retained; both new queue surfaces now use the existing provider-free,
+strict-CSP-compatible component, with a whole-page render unit guard.
+The repaired four-test smoke passed both-mode filters, exact one-hour stopping
+and two zero-violation axe/keyboard checks. The later fair-citation and
+submission hardening passed check, 726 unit tests and eight production smoke
+tests. These local results do not replace exact-head full CI or the coordinator's
+post-merge live checks.

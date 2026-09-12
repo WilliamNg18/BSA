@@ -23,7 +23,7 @@ test("Task15 one hour plays sixty synthetic minutes in ten seconds and stops, wi
   const today = page.locator('[data-comparison-summary="today"] dd');
   const assisted = page.locator('[data-comparison-summary="assisted"] dd');
   expect(Number(await assisted.nth(1).innerText())).toBeGreaterThan(Number(await today.nth(1).innerText()));
-  await expect(today.nth(2)).toHaveText("0");
+  await expect(today.nth(2)).toHaveText("3");
   await expect(assisted.nth(2)).toHaveText("3");
   await expect(page.locator("[data-compare-seed]")).toHaveCount(24);
   await expect(page.getByRole("region", { name: "Today comparison", exact: true })).toContainText("Operator gathering evidence");

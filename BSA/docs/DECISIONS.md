@@ -894,6 +894,14 @@ The old nine-hour, raw-weight simulation remains explicitly labelled legacy
 behind a small disclosure; its original model is not silently presented as
 the current twelve-minute assumption.
 
+Both comparison operators use the same canonical citation eligibility after
+their full gathering and judging work completes. At thirty synthetic minutes
+the default citation counts are two Today and three assisted; at sixty they
+are three each. This is a citation-use assumption, not evidence of poorer
+manual quality. Eligibility reads the current revision's synthetic version,
+consensus and validated clause with deterministic helpers, not a hidden agent
+run. Missing clauses and historical/filler/abstention/rule-clear rows do not count.
+
 ## 2026-09-12: Evidence for the selected pharmacy's caught-before-submission count
 
 A submitted ready snapshot does not establish that a missing endorsement was

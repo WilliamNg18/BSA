@@ -1,7 +1,9 @@
 import { calculateBaseline, manualGatheringMinutes, type BaselineInputs, type BaselineResult, type MonthModelResult } from "./baseline";
 import { CASES, QUEUE_FILLER } from "./cases";
-import type { CaseState } from "./types";
+import type { CaseState, ExceptionCase } from "./types";
 import type { CaseLifecycle } from "./lifecycle";
+import { mandatoryFieldsCheck, sampleAgreement, validateCitation } from "./rules";
+import { versionForDate } from "./tariff";
 
 export const QUEUE_SEGMENT_SIZE = 1000;
 export const QUEUE_ROW_HEIGHT = 112;
@@ -130,6 +132,7 @@ export interface QueuePreviewRow {
   pending: boolean;
   projected: boolean;
   blocked?: boolean;
+  submittedAt?: string;
 }
 
 /** Bounded logical ranges. Pharmacy-caught items never enter the operator queue.
@@ -193,8 +196,19 @@ export function projectQueueComparison(result: MonthModelResult, minutes: number
       : done ? "Human decision projected" : elapsed === 0 || elapsed < start ? "Awaiting an operator"
       : elapsed < start + gathering ? "Operator gathering evidence" : "Operator judging evidence";
     return { ...seed, start, finish: spent, gathering, judging, done, phase,
-      cited: done && assisted && seed.kind === "built" && seed.canonical && citedIds.includes(seed.id) };
+      cited: done && seed.kind === "built" && seed.canonical && citedIds.includes(seed.id) };
   });
   return { rows, operatorMinutes: Math.min(elapsed, spent), decided: rows.filter((row) => row.done).length,
     cited: rows.filter((row) => row.cited).length };
+}
+
+/** Fixture eligibility for a citation-use assumption, not a model run or a human record. */
+export function queueCitationAvailable(item: ExceptionCase): boolean {
+  const seed = QUEUE_SEEDS.find((row) => row.id === item.id);
+  if (!seed?.canonical || seed.kind !== "built" || !mandatoryFieldsCheck(item.extracted).every((check) => check.pass)) return false;
+  const { agree, consensus } = sampleAgreement(item.readings);
+  if (agree < 2 || !consensus) return false;
+  const version = versionForDate(item.extracted.dispensingDate);
+  const clause = version?.clauses.find((entry) => entry.endorsementType === consensus.type) ?? null;
+  return clause !== null && validateCitation(clause, version, clause.text) === true;
 }

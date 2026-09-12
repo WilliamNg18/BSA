@@ -4,7 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { QueueCompare, QueueComparison } from "../../src/components/demo/queue-compare";
 import { MONTH_MODEL_DEFAULTS, monthModel } from "../../src/lib/domain/baseline";
-import { projectQueueComparison, QUEUE_SEEDS, queueStatus, queueTableWindow, type QueuePreviewRow } from "../../src/lib/domain/queue-model";
+import { projectQueueComparison, QUEUE_SEEDS, queueCitationAvailable, queueStatus, queueTableWindow, type QueuePreviewRow } from "../../src/lib/domain/queue-model";
+import * as agent from "../../src/lib/domain/agent";
 import { CASES } from "../../src/lib/domain/cases";
 import { useAppStore } from "../../src/lib/store";
 import { useQueueStore } from "../../src/lib/queue-store";
@@ -28,17 +29,35 @@ describe("current queue comparison", () => {
     }
   });
   it("uses the new total Today12 and judging2, not legacy7", () => {
-    const today = projectQueueComparison(result, 60, false);
+    const cited = CASES.filter(queueCitationAvailable).map((item) => item.id);
+    const today = projectQueueComparison(result, 60, false, [], cited);
     const assisted = projectQueueComparison(result, 60, true, [], CASES.slice(0, 3).map((c) => c.id));
     expect(today.rows[0]).toMatchObject({ gathering: 10, judging: 2, finish: 12 });
     expect(assisted.rows[0]).toMatchObject({ gathering: 0, judging: 2, finish: 2 });
     expect(today.decided).toBe(5);
     expect(assisted.decided).toBeGreaterThan(today.decided);
     expect(assisted.cited).toBe(3);
-    expect(today.cited).toBe(0);
+    expect(today.cited).toBe(3);
     expect(today.rows.some((row) => row.phase === "Operator gathering evidence")).toBe(true);
     expect(projectQueueComparison(result, 59, false).rows.some((row) => row.phase === "Operator judging evidence")).toBe(true);
     expect(projectQueueComparison(result, 30, false).rows.some((row) => row.phase === "Operator gathering evidence")).toBe(true);
+  });
+  it("projects equal citation eligibility only after complete manual or assisted work", () => {
+    const engine = vi.spyOn(agent, "runAgent");
+    try {
+      const cited = CASES.filter(queueCitationAvailable).map((item) => item.id);
+      expect(cited).toEqual(CASES.slice(0, 3).map((item) => item.id));
+      expect(projectQueueComparison(result, 10, false, [], cited).cited).toBe(0);
+      expect(projectQueueComparison(result, 12, false, [], cited).cited).toBe(1);
+      expect(projectQueueComparison(result, 30, false, [], cited).cited).toBe(2);
+      expect(projectQueueComparison(result, 30, true, [], cited).cited).toBe(3);
+      expect(projectQueueComparison(result, 60, false, [], cited).cited).toBe(3);
+      expect(projectQueueComparison(result, 60, true, [], cited).cited).toBe(3);
+      const noVersion = { ...CASES[0], extracted: { ...CASES[0].extracted, dispensingDate: "1900-01-01" } };
+      expect(queueCitationAvailable(noVersion)).toBe(false);
+      expect(queueCitationAvailable({ ...CASES[0], readings: [] })).toBe(false);
+      expect(engine).not.toHaveBeenCalled();
+    } finally { engine.mockRestore(); }
   });
   it.each([0, 3, 60, 360])("is bounded, citation-safe and protects D/E/F at minute%s", (elapsed) => {
     for (const assisted of [false, true]) {
@@ -64,8 +83,8 @@ describe("current queue comparison", () => {
     try {
       expect(renderToStaticMarkup(createElement(QueueCompare, { result }))).toContain('aria-expanded="false"');
       const html = renderToStaticMarkup(createElement(QueueComparison, { result, elapsed: 60 }));
-      expect(html).toContain("Items decided");
-      expect(html).toContain("Decisions with rule cited");
+      expect(html).toContain("Projected items decided");
+      expect(html).toContain("Projected decisions with rule cited");
       expect(writes).not.toHaveBeenCalled();
       expect(useAppStore.getState()).toBe(app);
       expect(useQueueStore.getState()).toBe(queue);

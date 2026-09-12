@@ -2,28 +2,30 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "./labels";
 import { formatBaselineNumber as n, type MonthModelResult } from "@/lib/domain/baseline";
-import { projectQueueComparison } from "@/lib/domain/queue-model";
+import { projectQueueComparison, queueCitationAvailable } from "@/lib/domain/queue-model";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useAppStore } from "@/lib/store";
 import { CASES } from "@/lib/domain/cases";
-import { runAgent } from "@/lib/domain/agent";
-import { permitsProposal } from "@/lib/case-presentation";
+import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 
 export function QueueComparison({ result, elapsed }: { result: MonthModelResult; elapsed: number }) {
   const states = useAppStore((s) => s.caseStates);
+  const lifecycles = useAppStore((s) => s.lifecycles);
+  const revisions = useAppStore((s) => s.caseRevisions);
   const recorded = Object.keys(states).filter((id) => states[id] === "human_decision_recorded");
   const citedIds = useMemo(() => CASES.filter((item) => {
-    const pack = runAgent(item, { agentEnabled: true });
-    return permitsProposal(pack) && pack.clause !== null && pack.citationValid === true;
-  }).map((item) => item.id), []);
+    const current = caseForLifecycle(item.id, lifecycles, revisions);
+    return current !== null && queueCitationAvailable(current);
+  }).map((item) => item.id), [lifecycles, revisions]);
   return <div className="grid gap-4 md:grid-cols-2" data-comparison-columns>
     {[false, true].map((assisted) => {
       const projection = projectQueueComparison(result, elapsed, assisted, recorded, citedIds);
       return <section key={String(assisted)} aria-label={assisted ? "With agent comparison" : "Today comparison"} className="min-w-0 space-y-3 rounded-lg border bg-card p-3">
         <h3 className="text-lg font-semibold">{assisted ? "With agent" : "Today"}</h3>
         <dl className="grid grid-cols-3 gap-2 text-sm" data-comparison-summary={assisted ? "assisted" : "today"}>
-          {[["Operator minutes", n(projection.operatorMinutes)], ["Items decided", n(projection.decided)], ["Decisions with rule cited", n(projection.cited)]].map(([label, value]) =>
-            <div key={label}><dt>{label} <span className="text-xs">(projected)</span></dt><dd className="text-xl font-semibold tabular-nums">{value}</dd></div>)}
+          {[["Projected operator minutes", n(projection.operatorMinutes)], ["Projected items decided", n(projection.decided)], ["Projected decisions with rule cited", n(projection.cited)]].map(([label, value]) =>
+            <div key={label}><dt>{label}</dt><dd className="text-xl font-semibold tabular-nums">{value}</dd></div>)}
         </dl>
         <ol aria-label={assisted ? "With agent twelve examples" : "Today twelve examples"} className="space-y-2">
           {projection.rows.map((row) => <li key={row.id} data-compare-seed={row.id} className={`rounded border p-2 text-sm ${row.done ? "border-teal-700" : ""}`}>
@@ -31,7 +33,7 @@ export function QueueComparison({ result, elapsed }: { result: MonthModelResult;
             <p>{row.phase}</p>
             {row.kind === "abstained" && <p className="text-xs">Manual fallback; never case-ready</p>}
             <p className="text-xs text-muted-foreground">Gathering {n(row.gathering)} min · Judging {n(row.judging)} min</p>
-            {row.cited && <p className="text-xs">Retrieved synthetic rule available; citation use projected</p>}
+            {row.cited && <p className="text-xs">Validated synthetic rule available; citation use projected</p>}
           </li>)}
         </ol>
       </section>;
@@ -76,7 +78,9 @@ export function QueueCompare({ result }: { result: MonthModelResult }) {
         <output aria-live="polite" data-comparison-clock className="block font-semibold">{n(elapsed)} synthetic minutes · {target === null ? "Stopped" : "Running"}</output>
         <p className="text-sm text-muted-foreground">{reduced ? "Reduced motion: controls show the result immediately, without playback." : "One hour plays in ten seconds then stops. The end of day is six working hours."} Today {n(result.perItem.today.gatheringMinutes + result.perItem.today.judgingMinutes)} minutes per item; built-case judging {n(result.perItem.withAgent.judgingMinutes)} minutes. Abstentions keep the full Today cost.</p>
         <QueueComparison result={result} elapsed={elapsed} />
-        <p className="text-sm text-muted-foreground">Citations count only projected use of validated, retrieved rules for canonical built cases. Fillers have none. Manual citation use is not established, not a claim that operators cannot cite rules. This twelve-item illustration is not monthly throughput.</p>
+        <Tooltip><TooltipTrigger asChild><Button variant="link" className="h-auto whitespace-normal p-0 text-left">How projected citations are counted</Button></TooltipTrigger>
+          <TooltipContent className="max-w-xs">Citation use is an assumption for both operators, not measured current practice. Count a canonical validated rule only after gathering and judging finish. No citations for fillers, abstentions, rule-clear rows or historical decisions.</TooltipContent></Tooltip>
+        <p className="text-sm text-muted-foreground">Both operators can cite the same validated synthetic rules after completing their work. This twelve-item illustration is not monthly throughput.</p>
       </>}
       <Button variant="outline" onClick={close}>Close comparison</Button>
     </section>

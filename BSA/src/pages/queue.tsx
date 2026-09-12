@@ -48,7 +48,7 @@ export function QueuePage() {
         id: item.id, pharmacy: typeof item.pharmacy === "string" ? item.pharmacy : item.pharmacy.name,
         reason: item.routingReason, state,
         status: status === "built" && pack?.gate.result === "FAIL" ? "evidence" : status,
-        fresh, canonical, reviewable: canonical || fresh, blocked: pack?.gate.result === "FAIL",
+        fresh, submittedAt: fresh ? latest?.at : undefined, canonical, reviewable: canonical || fresh, blocked: pack?.gate.result === "FAIL",
         pending: lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted", projected: false,
       };
     });
@@ -60,7 +60,7 @@ export function QueuePage() {
       const status = queueStatus(state, agentEnabled, lifecycle);
       const blocked = agentEnabled && runAgent(item, { agentEnabled: true }).gate.result === "FAIL";
       seeds.push({ id: item.id, pharmacy: item.pharmacy.name, reason: item.routingReason, state,
-        status: status === "built" && blocked ? "evidence" : status, blocked, fresh: true, canonical: false, reviewable: true,
+        status: status === "built" && blocked ? "evidence" : status, blocked, fresh: true, submittedAt: revisions[item.id]?.at(-1)?.at, canonical: false, reviewable: true,
         pending: lifecycle.state === "submitted" || lifecycle.state === "resubmitted", projected: false });
     }
     return seeds.sort((a, b) => Number(b.fresh) - Number(a.fresh) || (a.fresh && b.fresh

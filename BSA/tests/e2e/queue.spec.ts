@@ -1,10 +1,41 @@
 import AxeBuilder from "@axe-core/playwright";
-import { captureJson, confirmReset, expect, test } from "./fixtures";
+import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { MONTH_MODEL_DEFAULTS, monthModel, formatBaselineNumber as n } from "../../src/lib/domain/baseline";
 import { QUEUE_SEEDS } from "../../src/lib/domain/queue-model";
 
 const result = monthModel(MONTH_MODEL_DEFAULTS);
 const total = result.volume - result.pharmacyCaught;
+
+for (const volume of [0, 5, 1_000_000_000]) {
+  test(`Task15 shared volume ${volume} keeps seed examples and bounds the logical window`, async ({ page }) => {
+    await page.goto("./#month");
+    await page.locator("#baseline-volume").fill(String(volume));
+    await navigatePrimary(page, "Exception queue");
+    const model = monthModel({ ...MONTH_MODEL_DEFAULTS, volume });
+    const count = Math.max(12, volume - model.pharmacyCaught);
+    const table = page.getByRole("region", { name: "Exception queue table", exact: true });
+    await expect(table.locator("tbody tr")).toHaveCount(Math.min(50, count));
+    await expect(page.locator("[data-queue-counter]")).toHaveText(`showing 1 to ${n(Math.min(50, count))} of ${n(count)} this month`);
+    if (volume < 12) await expect(page.getByText("The twelve examples remain available outside the smaller monthly projection. They do not increase its volume.", { exact: true })).toBeVisible();
+    else {
+      await page.getByLabel("Jump to item", { exact: true }).fill(String(count));
+      await page.getByRole("button", { name: "Jump", exact: true }).click();
+      await expect(table.locator("tbody tr")).toHaveCount(1);
+      await expect(page.locator("[data-queue-counter]")).toHaveText(`showing ${n(count)} to ${n(count)} of ${n(count)} this month`);
+    }
+  });
+}
+
+test("Task15 invalid shared assumptions keep evidence readable and do not display stale estimates", async ({ page }) => {
+  await page.goto("./#month");
+  await page.locator("#baseline-volume").fill("");
+  await navigatePrimary(page, "Exception queue");
+  await expect(page.getByRole("alert").filter({ hasText: "Invalid calculator assumptions" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Compare", exact: true })).toBeDisabled();
+  await expect(page.locator("[data-queue-seed]")).toHaveCount(12);
+  await expect(page.locator("[data-month-row]")).toHaveCount(0);
+  await expect(page.locator("[data-queue-month-summary]")).toHaveCount(0);
+});
 
 test("Task15 exact guides, one bounded six-column table, counted filters and same seeds in both modes", async ({ page }) => {
   await page.goto("queue");
@@ -34,6 +65,7 @@ test("Task15 exact guides, one bounded six-column table, counted filters and sam
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   for (const label of ["Awaiting an operator", "In progress", "Decided"]) await expect(page.getByRole("button", { name: new RegExp(label) }).first()).toBeVisible();
   await expect(table.locator('[data-queue-seed="EX-24123"]')).toContainText("nothing yet, operator to gather");
+  await expect(table.locator('[data-queue-seed="EX-24123"]')).toContainText("Known abstention; manual work");
   await expect(table.locator('[data-queue-seed="EX-24101"]')).toContainText("Cleared by rules; no model call");
   await expect(table.locator('[data-queue-seed="EX-24088"]')).toContainText("Human record unchanged");
 });

@@ -42,7 +42,7 @@ export function QueueMonth({ result, seeds, openExample }: { result: MonthModelR
   const viewport = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const window = queueTableWindow(result, seeds, enabled, filter, position);
-  const freshKey = seeds.filter((row) => row.fresh).map((row) => `${row.id}:${row.state}:${row.pending}`).join("|");
+  const freshKey = seeds.filter((row) => row.fresh).map((row) => `${row.id}:${row.submittedAt}:${row.state}:${row.pending}`).join("|");
   const previousFresh = useRef(freshKey);
   useEffect(() => {
     if (freshKey !== previousFresh.current) { previousFresh.current = freshKey; setFilter("all"); jump(0); }
@@ -77,7 +77,7 @@ export function QueueMonth({ result, seeds, openExample }: { result: MonthModelR
           <th scope="row" className="max-w-48 break-words p-3 font-medium">{row.id}{row.fresh && <span className="ml-2 rounded bg-amber-100 px-1 text-xs text-amber-950">New</span>}<span className="block text-xs font-normal text-muted-foreground">{row.projected ? "Projection only" : "Synthetic example"}</span></th>
           <td className="max-w-48 p-3">{row.pharmacy}</td>
           <td className="max-w-64 p-3">{row.reason}</td>
-          <td className="max-w-48 p-3" data-queue-state data-recorded-state={row.state}>{row.state === "cleared_by_rules" ? "Cleared by rules; no model call" : QUEUE_STATUS_LABELS[row.status]}{row.pending && <span className="block text-xs">Submitted, awaiting review</span>}</td>
+          <td className="max-w-48 p-3" data-queue-state data-recorded-state={row.state}>{row.state === "cleared_by_rules" ? "Cleared by rules; no model call" : QUEUE_STATUS_LABELS[row.status]}{!enabled && row.state === "agent_abstained" && <span className="block text-xs">Known abstention; manual work</span>}{row.pending && <span className="block text-xs">Submitted, awaiting review</span>}</td>
           <td className="max-w-56 p-3"><Work row={row} enabled={enabled} /></td>
           <td className="p-3">{row.reviewable ? row.pending
             ? <Button size="sm" variant="outline" onClick={() => {
