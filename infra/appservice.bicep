@@ -10,7 +10,8 @@ param linuxFxVersion string = 'NODE|24-lts'
 @description('Optional bootstrap only. Existing deployment identity and site grant already exist; leave false for routine recovery.')
 param provisionDeploymentIdentity bool = false
 param deploymentIdentityName string = 'bsa-github-deploy'
-param repository string = 'WilliamNg18/BSA'
+@description('Exact ID-bound GitHub OIDC subject observed and verified for this repository main branch.')
+param federatedSubject string = 'repo:WilliamNg18@101734401/BSA@1362745159:ref:refs/heads/main'
 @description('Use the existing assignment name when adopting an existing identity grant.')
 param deploymentRoleAssignmentName string = '3e003756-0f4b-4ffb-b415-e6a731fd4cca'
 
@@ -93,7 +94,7 @@ resource federation 'Microsoft.ManagedIdentity/userAssignedIdentities/federatedI
   name: 'github-main'
   properties: {
     issuer: 'https://token.actions.githubusercontent.com'
-    subject: 'repo:${repository}:ref:refs/heads/main'
+    subject: federatedSubject
     audiences: ['api://AzureADTokenExchange']
   }
 }

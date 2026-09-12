@@ -833,3 +833,13 @@ Accept only an exact resolved match of either entry path to this module.
 Positive fork-style HTTP/CSP and negative import-only tests prevent both
 missing startup and accidental double startup by another PM2 application.
 This correction does not itself establish a successful hosted restart.
+
+## 2026-09-12: Main deployment requires the ID-bound GitHub subject
+
+Direct Azure deployment and strict-header/commit/deep-link probes passed for
+clean candidate 36fa41a after the PM2 entry fix. Main workflow 34703748465 then
+passed build/package but failed azure/login with AADSTS700213, before upload.
+The actual assertion subject contained owner/repository IDs, unlike the
+name-only example in the initial request. Verify those IDs independently and
+match the exact subject rather than broadening trust. The credential update
+succeeded; a new main deployment must prove authentication and release.

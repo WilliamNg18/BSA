@@ -782,3 +782,13 @@ The coordinator owns all Azure mutations and initial committed-artifact
 deployment before the main workflow triggers. Repository migration does not
 claim that live release/recovery checks have occurred. Preserve #47's verifier
 and four-shard CI; historical SWA records remain explicitly historical.
+
+## 2026-09-12: Use GitHub's actual ID-bound federation subject
+
+The first main deployment reached azure/login but returned AADSTS700213:
+the signed subject includes immutable owner/repository IDs. GitHub API
+independently confirms owner 101734401 and repository 1362745159. Update the
+existing federation and recovery Bicep to the exact main-branch subject
+`repo:WilliamNg18@101734401/BSA@1362745159:ref:refs/heads/main`.
+Issuer, audience and site-only Website Contributor scope remain unchanged.
+No wildcard, client secret or basic-publishing fallback is introduced.

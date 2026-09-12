@@ -81,7 +81,11 @@ The following **repository variables**, not secrets, are configured:
 
 The `bsa-github-deploy` user-assigned identity uses federation issuer
 `https://token.actions.githubusercontent.com`, subject
-`repo:WilliamNg18/BSA:ref:refs/heads/main`, audience `api://AzureADTokenExchange`.
+`repo:WilliamNg18@101734401/BSA@1362745159:ref:refs/heads/main`, audience
+`api://AzureADTokenExchange`. GitHub's actual signed assertion includes the
+immutable owner and repository IDs; the older name-only subject did not match.
+Both IDs were independently checked against the repository API. Keep the
+exact main-only subject; do not replace it with a wildcard to resolve login.
 Website Contributor is scoped **only to this app**. The workflow requests
 `id-token: write`, uses `azure/login@v2`, and calls `az webapp deploy --type zip`.
 Missing identifiers fail preflight explicitly. No publish profile, basic-auth
