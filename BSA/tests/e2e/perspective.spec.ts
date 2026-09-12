@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { captureCheckpoint, confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { captureCheckpoint, captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { choosePerspective, flag, perspectiveGuard, perspectiveRoundTrips } from "./perspective-helpers";
 
 test("Pharmacy submit to NHSBSA decision to Pharmacy same decision, Off then On without Reset", async ({ page }, info) => {
@@ -102,6 +102,38 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
       }
     });
   }
+}
+
+for (const width of [360, 768]) for (const colorScheme of ["light", "dark"] as const) {
+  test(`document reflow for every perspective and Agent mode ${width} ${colorScheme}`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
+    await page.goto("/evaluation");
+    await page.evaluate(() => document.fonts.ready);
+    for (const side of ["Pharmacy", "NHSBSA", "Both"] as const) for (const enabled of [false, true]) {
+      await choosePerspective(page, side);
+      await flag(page).setChecked(enabled);
+      const layout = await page.evaluate(() => ({
+        viewport: innerWidth, document: document.documentElement.scrollWidth, body: document.body.scrollWidth,
+        overflow: Array.from(document.querySelectorAll("body *")).flatMap((element) => {
+          const rect = element.getBoundingClientRect();
+          return rect.right > innerWidth + 1 ? [{
+            tag: element.tagName, class: element.getAttribute("class"), right: rect.right, width: rect.width,
+            text: element.textContent?.slice(0, 100),
+          }] : [];
+        }),
+      }));
+      await captureJson(info, `reflow-${side}-${enabled}`, layout);
+      expect(layout.document).toBeLessThanOrEqual(width);
+      expect(layout.body).toBeLessThanOrEqual(width);
+      const radio = page.getByRole("group", { name: "Perspective", exact: true }).getByRole("radio", { name: side, exact: true });
+      await radio.focus();
+      await expect(radio).toBeFocused();
+      const box = (await radio.boundingBox())!;
+      expect(box.x).toBeGreaterThanOrEqual(2);
+      expect(box.x + box.width).toBeLessThanOrEqual(width - 2);
+    }
+  });
 }
 
 test("native perspective keyboard, Reset retention and suspended tour shortcuts", async ({ page }) => {

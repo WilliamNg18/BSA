@@ -60,7 +60,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
             <ShieldCheck className="size-5" />
           </span>
           <span className="hidden whitespace-nowrap text-sm font-semibold 2xl:inline">Prescription Exception Case Builder</span>
-          <span className="hidden whitespace-nowrap text-sm font-semibold md:inline lg:hidden xl:inline 2xl:hidden" aria-hidden="true">NHSBSA Case Builder</span>
+          <span className="hidden whitespace-nowrap text-sm font-semibold min-[900px]:inline lg:hidden xl:inline 2xl:hidden" aria-hidden="true">NHSBSA Case Builder</span>
         </Link>
         <nav aria-label="Primary" className="order-last ml-auto lg:order-none lg:ml-0 lg:flex-1">
           <div className="hidden items-center gap-1 lg:flex">
@@ -100,7 +100,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
               <TooltipContent className="max-w-64">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</TooltipContent>
             </Tooltip></TooltipProvider>
             <span id="agent-help" className="sr-only">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</span>
-            <Label htmlFor="agent-flag" className="whitespace-nowrap text-xs font-semibold">Agent: {agentEnabled ? "On" : "Off"}</Label>
+            <Label htmlFor="agent-flag" className="whitespace-nowrap text-xs font-semibold">Agent<span className="sr-only sm:not-sr-only">: {agentEnabled ? "On" : "Off"}</span></Label>
           </div>
           <Button type="button" size="sm" variant="ghost" className="size-7 p-0 sm:h-8 sm:w-auto sm:px-3" onClick={reset} aria-label="Reset demo">
             <RotateCcw aria-hidden="true" /><span className="hidden sm:inline">Reset demo</span>
