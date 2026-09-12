@@ -100,10 +100,19 @@ pharmacy status and S's CSP/focus/motion fixes are merged. R's approved-only
 On reasons and manual-resubmission pain fixes merged through PR #33 at
 `898cda594d0dcb34376bddab7112edcddb172440`. V's final PR #24 merged at
 `be623ab507e871c27e0889e7db6e64a8595ad10b` without changing runtime source.
-The final source-pinned manifest contains 107 reviewed captures/audits:
+The original source-pinned manifest at `898cda5` contains 107 reviewed captures/audits:
 53 Off and 54 On, all with zero axe violations, overflow and browser/CSP errors.
 Its 51 audits with incomplete rules still require human judgement; automated
 checks are not complete manual WCAG certification.
+
+Current main after route-opacity repair #42, quarantine removal #40 and scoped
+V refresh #43 is `c687a9eab181b02f4fca0eb667e8ab8f94468620`, with application
+source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16`. Only the route opacity fade
+was removed to repair intermediate-frame contrast; slide/focus/motion guards
+remain. V reproduced 64 settled route images byte-identically (32 Off/32 On):
+64 fresh axe reports have zero violations/errors/overflow; 39 retain incomplete
+rules. The other 43 stateful images were not rerun. Original 107-image provenance
+is unchanged; do not describe all 107 as fresh evidence for the repaired runtime.
 
 Overview has eight chapters/nine stops, including separate Pipeline and Four
 cases chapters and cross-page Queue/Claims stops. Operations includes Pharmacy
@@ -117,20 +126,24 @@ browser tests use `/`. Root configuration is emitted into BSA/dist. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
-Public CI 34689966621 passed at exact head
-`6e424ac75c4980380c31f9e3aab23243a9a013d0`: check, 607 units/22 files,
-1,019 blocking browsers and three separately run informational quarantined
-cases. Runtime source matches application main `898cda5` and V merge `be623ab`.
-Successful-run audit artifacts were not uploaded; do not recycle the failed
-run's 673 axe/193 CSP counts as this run's totals. Final capture/build evidence
-is in docs/screens/integrated: 203,723 independent-resource gzip bytes across
-all four emitted files, informational with no budget.
+Public CI 34696637977 passed at exact head
+`f295d7f19363cd101af7401f0ba03188ee7d0b2b`: check, 607 units/22 files,
+1,054 all-blocking browsers in 15.1 minutes, zero quarantine. Source/tests
+match accepted main `82c18e4`; V #43 is documentation-only. The earlier
+1,019 blocking plus three informational result is historical, not current.
+Do not infer CI-wide axe/CSP artifact totals from V's scoped reports.
+Current build evidence is in docs/screens/route-opacity-parity: 203,721 bytes
+across all four independently gzipped resources using the original Python
+method (previously 203,723). The separately recorded Node level-9 variant is
+203,964 bytes; never mix compressor methods. All sizes are informational,
+with no budget.
 
 Azure workflow 34692328300 built `be623ab` but failed its explicit missing
 deployment-token prerequisite. No actual live URL, resource provisioning or
 PR preview is verified. Owner token reset/secret setup and hosted checks remain
-#37; follow DEPLOYMENT.md without exposing credentials. Timing follow-ups
-#34 remains open. #35 is closed as not reproduced: its axe error occurred
+#37; follow DEPLOYMENT.md without exposing credentials. #34 is closed after
+removal of all three quarantine tags and the all-blocking pass; #41 is closed
+after the route-opacity repair and 32 new frame cases. #35 is closed as not reproduced: its axe error occurred
 during timeout teardown after slow navigation, with no actionable axe defect
 established. Historical evidence is retained; the unchanged blocking test passed.
 
