@@ -12,13 +12,13 @@ human-controlled round trip are implemented. Pharmacy On response/history shows
 only labelled operator-approved drafts; intentional Off is a healthy unchecked
 manual path. These are no longer open implementation gaps.
 
-Application source `898cda594d0dcb34376bddab7112edcddb172440` includes the accepted
-R head `6e424ac75c4980380c31f9e3aab23243a9a013d0`.
-[Actions run 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621)
-passed check, 607 units in 22 files, 1,019 blocking browser tests in 17.7 minutes
-and three separately run informational quarantine cases in 16.4 seconds.
-Successful-run audit artifacts were not uploaded; no deduplicated CI axe/CSP
-report count is invented from that result.
+Current source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` includes the route-entry
+contrast repair from #42 and restored blocking pharmacy coverage from #40.
+Exact tested head `f295d7f19363cd101af7401f0ba03188ee7d0b2b` passed
+[Actions run 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977):
+check, 607 units and **1,054 browser tests, all blocking**, in 15.1 minutes.
+There are zero quarantined cases, not three additional informational passes.
+No deduplicated CI audit count is inferred from a browser-test total.
 
 The agent gathers evidence and recommends; deterministic code validates and
 calculates; a human decides. Nothing in this demonstration calculates or
@@ -65,15 +65,24 @@ service remains a proposal even though the local cross-side workflow works.
 
 ## Remaining verification caveats
 
-[#34](https://github.com/WilliamNg18/BSA/issues/34) tracks three exact conditional
-timing cases run separately as informational quarantine. All three passed in
-the accepted public CI run; one successful run does not itself establish
-long-term stability or authorise removal of their tags. R owns their follow-up.
+[#34](https://github.com/WilliamNg18/BSA/issues/34) is closed. A controlled
+nine-case repetition passed before the three conditional tags were removed;
+all restored cases then passed in final all-blocking acceptance. Original
+timeouts and their unproven environmental cause remain historical evidence,
+not a reason to remove assertions or reinstate blanket quarantine.
 [#35](https://github.com/WilliamNg18/BSA/issues/35) is closed as not reproduced
 in final blocking acceptance. Trace review found axe evaluation failed during
 context teardown after an earlier navigation timeout, not a demonstrated slow
 axe computation. The environmental cause remains unproven and the original
 trace is retained; reopen on a concrete recurrence rather than weaken coverage.
+
+[#41](https://github.com/WilliamNg18/BSA/issues/41) is closed after a genuine
+normal-motion contrast defect was fixed. The route wrapper's 150ms opacity
+fade reduced contrast while text appeared. Removing only that fade retains
+the slide, timing, focus and reduced-motion behaviour. The new held-frame
+regression verifies 0/75/135/150ms states; scoped acceptance recorded 32 cases,
+40 unrestricted axe audits and zero violations before full CI acceptance.
+Settled screenshots did not prove the old intermediate frames safe.
 
 The [current visual index](screens/integrated/README.md) and
 [manifest](screens/integrated/manifest.json) identify actual source revisions,
@@ -81,10 +90,17 @@ per-image hashes, errors, overflow and axe results. Header-enforced local
 Chromium evidence is not full manual WCAG 2.2 AA conformance, screen-reader
 verification, Firefox/WebKit coverage or deployed Azure routing/caching parity.
 Its 1440px light matrix does not claim independent mobile/dark coverage.
-V's completed matrix has 107 images and individual audit JSONs, 53 Off / 54 On,
+V's original completed matrix has 107 images and individual audit JSONs, 53 Off / 54 On,
 with zero violations, overflow and page/console/CSP errors. Fifty-one audits
 retain incomplete-rule results; these are not a full manual accessibility
-assessment. All images were reviewed at full height through slices.
+assessment. All images were reviewed at full height through slices. That
+manifest and build report remain pinned to `898cda5`; they are not relabelled
+as captures of the opacity repair. The
+[scoped route comparison](screens/route-opacity-parity/README.md) records
+64/64 byte-identical reproductions and new build hashes, with 64 separate
+zero-violation axe reports and no browser/CSP errors or overflow. Thirty-nine
+new audits retain incomplete color-contrast checks. The other 43
+stateful images retain their original provenance without a fresh-audit claim.
 
 Only functional/accessibility checks block. There are no size/performance
 budgets; independent-resource gzip, word counts, Lighthouse and visual

@@ -1,0 +1,41 @@
+{
+  "applicationSourceRevision": "82c18e49e7d1c765e5392b1bec5c028c8f89fd16",
+  "priorBuildEvidence": "../integrated/build-evidence.json",
+  "priorGzipTotalBytes": 203723,
+  "method": "Sum of independent Node zlib.gzipSync level9 resources for every emitted dist file; informational only, no threshold",
+  "files": [
+    {
+      "file": "assets/index-L7EeoDzm.css",
+      "bytes": 77349,
+      "gzipBytes": 12953,
+      "sha256": "9fefcfaf56f2c14a4cc096b3a65306b0d6610187cd405b183ba965b8ed9d7772",
+      "pythonComparableGzipBytes": 12909
+    },
+    {
+      "file": "assets/index-XZIqqybj.js",
+      "bytes": 638952,
+      "gzipBytes": 190165,
+      "sha256": "a42ca77986e901619d1b14bff779eacec06cc5c26b4817362a4dc60d34d658c5",
+      "pythonComparableGzipBytes": 189968
+    },
+    {
+      "file": "index.html",
+      "bytes": 736,
+      "gzipBytes": 412,
+      "sha256": "28691722e4201f1b29c2dadb2b877c2d982bd10067d43b903042b7fc446c8bd6",
+      "pythonComparableGzipBytes": 412
+    },
+    {
+      "file": "staticwebapp.config.json",
+      "bytes": 784,
+      "gzipBytes": 434,
+      "sha256": "6f2de3a33179e215ce2e4dc436be9c906939eec2b2a4870f5173a9fb49691c79",
+      "pythonComparableGzipBytes": 432
+    }
+  ],
+  "gzipTotalBytes": 203964,
+  "nodeZlibVersion": "1.3.1-e00f703",
+  "pythonComparableGzipTotalBytes": 203721,
+  "pythonComparableMethod": "Independent Python gzip.compress(data,mtime=0), default level9, matching the original build-evidence method",
+  "pythonZlibVersion": "1.3.1"
+}

@@ -8,16 +8,18 @@ ms.date: 2026-09-12
 
 ## Current acceptance, 12 September 2026
 
-Application main `898cda594d0dcb34376bddab7112edcddb172440` contains all
-S/T/helper/Scene/Queue/R implementation. Exact R head
-`6e424ac75c4980380c31f9e3aab23243a9a013d0` passed
-[public CI 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621):
-check, 607 units in 22 files, 1,019 blocking Chromium tests (17.7 minutes) and
-three separately executed informational quarantine cases (16.4 seconds).
-The 1,022-test inventory is now execution, not merely enumeration.
-Successful-run artifacts were not uploaded; no deduplicated CI axe/CSP
-count is inferred. V's [manifest](screens/integrated/manifest.json) records
-its own source-pinned 1440px captures and individual audit outputs.
+Current main `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` retains the complete
+S/T/helper/Scene/Queue/R implementation and adds the bounded route-opacity
+contrast fix plus removal of three conditional quarantine tags. Exact R head
+`f295d7f19363cd101af7401f0ba03188ee7d0b2b` passed
+[public CI 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977):
+check, 607 units and **1,054 blocking Chromium tests** (15.1 minutes), with
+zero quarantine. These are execution results, not just inventory.
+The row-specific `898cda5` references below identify the earlier accepted
+capability foundation, unchanged except the explicit H repair. V's original
+[manifest](screens/integrated/manifest.json) stays pinned to that old source;
+the [scoped reproduction ledger](screens/route-opacity-parity/README.md)
+separates new-build settled parity from held-frame contrast acceptance.
 
 **Current totals: 17 Done, 1 In progress, 0 Not started, 18 rows.**
 I remains owner-run Azure deployment/verification (#37). J is delivered by V
@@ -44,9 +46,9 @@ tests, not real clinical assurance, live services or full manual WCAG certificat
 | E Trace/pack/record Off/On and July replay | **Done**, `898cda5` | `case-presentation.spec.ts`, `controls.spec.ts`, `gate-failure.spec.ts`: manual slots, assembly/replay controls, gate withholding, human records, original B July Sufficient |
 | F Seven-state lifecycle/labels/actors/five pharmacies/six cases/Reset | **Done**, `898cda5` | `lifecycle-store.test.ts`, revision/bridge tests and `agent.test.ts`: immutable history, agent transition rejection, exact seeds/labels and Reset |
 | G Whole round trip/Follow/Switch side/both-side assertions | **Done**, `898cda5` | `lifecycle-ui.spec.ts`, `task13.spec.ts`: both modes, same ID at each transition, human-approved correction and final history. Two-minute story target/elapsedMs are informational, not performance gates |
-| H Header360-1920/controls/defaultOff/copy/motion/pain/accessibility | **Done**, `898cda5`, scoped automated acceptance | `tour.spec.ts`, `accessibility-final.spec.ts`, accessibility/control matrices: seven widths, keyboard/focus, default/Reset Off, reduced motion, no prohibited interface names. Copy/visual metrics informational; no manual WCAG certification claimed |
+| H Header360-1920/controls/defaultOff/copy/motion/pain/accessibility | **Done**, `82c18e4`, route contrast fixed in `dc979a0` | `route-transition-contrast.spec.ts` holds 0/75/135/150ms frames, both themes/motion/Agent states; scoped 32 cases/40 unrestricted axe clear, then full 1,054 blocking cases pass. Existing keyboard/header matrices retained. Settled parity is not frame-safety proof; no manual WCAG certification |
 | I SWA root/headers/previews/no budgets and actual hosting | **In progress**, owner #37; application/config on `898cda5` | Config/strict-header CI passed. No verified token/resource/live URL; use DEPLOYMENT.md and verify real home/deep links/headers. Three Free preview slots, not unlimited. Missing token does not block local acceptance |
-| J Documentation/memory/progress/story/screens/known issues | **Done**, V PR #24 merged `be623ab`, D #17 documentation deliverable | V final 107 reviewed captures/audits (53 Off/54 On) from `898cda5`, current narrative and known issues; D MEMORY/PROGRESS/BRANCHES record Tasks 8-12 accepted and Task 13 hosted criterion pending #37. Historical 103 images are not final proof |
+| J Documentation/memory/progress/story/screens/known issues | **Done**, V PR #24 merged `be623ab`, D #17 documentation deliverable; scoped provenance follow-up | Original 107 reviewed captures/audits remain from `898cda5`; new route parity/build ledger identifies the opacity-fixed source without claiming all 107 recaptured. D owns final MEMORY/PROGRESS counts; Task 13 hosted criterion remains #37. Historical 103 images are separate |
 
 Reference documents remain public by the owner's decision. Publication does not
 independently verify their figures. The agent gathers evidence/recommends, code

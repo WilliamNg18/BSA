@@ -6,6 +6,14 @@ ms.date: 2026-09-12
 
 ## Status and scope
 
+**Provenance after the route-opacity repair:** this 107-image set and its build
+report remain pinned to `898cda5`, exactly as captured. They are not relabelled
+as new runtime evidence. The [scoped route comparison](../route-opacity-parity/README.md)
+records **64/64 byte-identical** route reproductions on the later `82c18e4` build and retains
+the remaining 43 state images at their original source. Normal-motion frame
+contrast safety is proved by the new held-frame regression, not these
+reduced-motion settled photographs.
+
 **Complete:** 107 fresh images and 107 individual axe JSONs, 53 Off / 54 On.
 The final continuation exited zero at `2026-09-12T11:50:58.433Z`. Every PNG's
 SHA-256 and 1440px width was checked and every full-height image was visually

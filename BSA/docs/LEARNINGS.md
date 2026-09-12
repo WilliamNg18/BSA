@@ -718,3 +718,15 @@ zero violations. Strict self-only CSP was observed in the served response;
 assertions, 30-second test guards and zero retries were unchanged. No production,
 fixture or scheduling fix was inferred or introduced. Removing only these tags
 still requires a complete public CI run, not just this controlled sample.
+
+## 2026-09-12: Identical settled images do not update their source history
+
+A new build can reproduce an older PNG byte for byte without making the original
+capture a new-source capture. Preserve its original timestamp/source and add a
+separate reproduction ledger with the new build and image hashes. Reduced-motion
+settled parity says nothing about the old normal-motion opacity frames.
+
+Node's bundled zlib `1.3.1-e00f703` and Python zlib `1.3.1` produce different gzip
+lengths even at level 9 for identical CSS bytes. The initial attempted equality
+check failed; retaining both method/version results and using Python's matching
+original method for the before/after comparison avoids a false size-change claim.
