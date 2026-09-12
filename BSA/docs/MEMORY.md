@@ -130,7 +130,9 @@ Azure workflow 34692328300 built `be623ab` but failed its explicit missing
 deployment-token prerequisite. No actual live URL, resource provisioning or
 PR preview is verified. Owner token reset/secret setup and hosted checks remain
 #37; follow DEPLOYMENT.md without exposing credentials. Timing follow-ups
-#34 and #35 remain open even though the final execution passed.
+#34 remains open. #35 is closed as not reproduced: its axe error occurred
+during timeout teardown after slow navigation, with no actionable axe defect
+established. Historical evidence is retained; the unchanged blocking test passed.
 
 Never alter last-known-good, lkg-2026-09-09 or cowork-v1 refs; see
 [branch policy](../../BRANCHES.md) and [current branch record](BRANCHES.md).

@@ -30,8 +30,9 @@ records final application evidence and Tasks 1-12 Done; Task 13 retains the
 hosted-release criterion under #37. [SCOPE](SCOPE.md) records 17 Done and
 hosting I In progress; D's final documentation delivery awaits coordinator
 PR merge. [MEMORY](MEMORY.md) and [BRANCHES](BRANCHES.md) describe current
-facts and preserved refs. No live URL is verified; timing follow-ups #34/#35
-remain open. The freeze, pending-transfer and stream statuses below are
+facts and preserved refs. No live URL is verified; timing follow-up #34
+remains open, while #35 is closed as not reproduced in final acceptance.
+The freeze, pending-transfer and stream statuses below are
 historical, not current instructions or acceptance totals.
 
 **Transfer not proceeding; repository made public for Actions capacity; state preserved as checkpoint.**

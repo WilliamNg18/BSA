@@ -669,3 +669,15 @@ runs in a separate prerequisite job, avoiding a pointless build/upload attempt.
 Three targeted hosting tests pass. Node's optional YAML parser was unavailable;
 the installed Python parser validated dispatch and both job dependencies instead.
 No application code or accepted browser behaviour changed.
+
+## 2026-09-12: Distinguish an axe stack frame from the cause of a timeout
+
+Read-only review of #35's actual trace found navigation lasted 30,765 ms.
+Teardown started before it finished; a subsequent axe evaluation failed in
+7.3 ms concurrently with context closure. The stack frame therefore did not
+establish that axe consumed the timeout. Slow fixture disposal reinforces the
+timing context but does not prove an environmental root cause.
+
+The unchanged Off test passed its retained repeat and final strict-header
+blocking CI. Close #35 as not reproduced, retain the trace and reopen on a
+concrete recurrence. No code, timeout, assertion, skip or quarantine changed.

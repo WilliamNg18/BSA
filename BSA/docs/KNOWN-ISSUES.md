@@ -69,9 +69,11 @@ service remains a proposal even though the local cross-side workflow works.
 timing cases run separately as informational quarantine. All three passed in
 the accepted public CI run; one successful run does not itself establish
 long-term stability or authorise removal of their tags. R owns their follow-up.
-[#35](https://github.com/WilliamNg18/BSA/issues/35) retains its named timing
-investigation; historical timeouts are not silently converted into product
-defects or erased by a later pass.
+[#35](https://github.com/WilliamNg18/BSA/issues/35) is closed as not reproduced
+in final blocking acceptance. Trace review found axe evaluation failed during
+context teardown after an earlier navigation timeout, not a demonstrated slow
+axe computation. The environmental cause remains unproven and the original
+trace is retained; reopen on a concrete recurrence rather than weaken coverage.
 
 The [current visual index](screens/integrated/README.md) and
 [manifest](screens/integrated/manifest.json) identify actual source revisions,

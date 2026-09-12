@@ -62,8 +62,10 @@ both modes and preview creation/closure. Owner commands are in DEPLOYMENT.md;
 no resource creation or intended subscription is inferred.
 
 #34 retains three quarantined pharmacy timing cases; their informational pass
-does not remove quarantine. #35 retains the transient local axe-timeout
-investigation. These are transparent timing follow-ups, not failed final
+does not remove quarantine. #35 was closed after trace review established
+that its error surfaced during teardown after navigation exceeded the deadline;
+no actionable axe defect was reproduced in final blocking acceptance.
+These retained timing records are not failed final
 blocking tests or new missing application features. [PARITY](PARITY.md), merged
 through #38, records 33 rows: 22 Preserved, 10 Changed with decision, zero
 Changed without decision, zero Missing and one Not yet verified. That is
