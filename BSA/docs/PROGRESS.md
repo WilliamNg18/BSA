@@ -241,6 +241,21 @@ exit 0. Two subsequent narrow accessibility-array edits add pipeline only, with
 S/coordinator approval. New inventory is collected rather than inferred.
 Final rebase onto Queue/Scene and exact-head full Linux CI remain pending.
 
+## Stream R final assembled branch validation
+
+Rebased onto main 98c8881, integrating S, helper, T, Queue and Scene. Tested source
+c935764 passed `npm run check` (typecheck, lint, production build), exit 0.
+`npm run test -- --maxWorkers=1` passed 607 tests in 22 files in 15.59 seconds,
+exit 0. Actual `npm run test:e2e -- --list --reporter=dot` inventory is 1,022
+tests in 26 files, exit 0; listing is not execution or a browser pass.
+
+Root routes, eight chapters/nine stops, separate pipeline/Four cases, approved
+pharmacy responses and the unchecked-resubmission comparison are now assembled.
+Previous focused and failure evidence above remains intact. The exact final PR
+head requires complete Linux CI, including blocking crash/control/outcome and
+zero-violation axe checks. Coordinator controls merge and release; no hosted
+acceptance is inferred from local checks or a successful test listing.
+
 ## Current handoff: 11 September 2026
 
 ### Issue 15: Stream S scoped acceptance passed; coordinator merge pending
