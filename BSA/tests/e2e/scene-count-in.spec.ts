@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { BASELINE_DEFAULTS, calculateBaseline, formatBaselineNumber, type BaselineResult } from "../../src/lib/domain/baseline";
 
 const defaults = calculateBaseline(BASELINE_DEFAULTS);
@@ -43,7 +43,7 @@ async function expectFinal(page: Page, result = defaults, enabled = true) {
 test.describe("scene estimate count-in with motion", () => {
   test.use({ reducedMotion: "no-preference" });
 
-  test("Agent On visibly interpolates all derived estimates then reaches exact final UK values", async ({ page }) => {
+  test("Agent On visibly interpolates all derived estimates then reaches exact final UK values", async ({ page }, testInfo) => {
     await freezeScene(page);
     await expectFinal(page, defaults, false);
     const facts = page.getByRole("list", { name: "Public context figures" });
@@ -59,7 +59,7 @@ test.describe("scene estimate count-in with motion", () => {
       expect(intermediate, key).toBeLessThan(value);
       const finalText = formatBaselineNumber(value, digits);
       await expect(number.getByRole("img", { name: finalText, exact: true })).toBeVisible();
-      expect(await number.ariaSnapshot()).toBe(`- img "${finalText}"`);
+      expect(await number.ariaSnapshot()).toBe(`- definition:\n  - img "${finalText}"`);
       expect(await number.evaluate((element) => element.closest("[aria-live], [role=status], [role=alert]"))).toBeNull();
     }
     await expect(facts).toHaveText(beforeFacts!);
@@ -68,7 +68,9 @@ test.describe("scene estimate count-in with motion", () => {
     await page.clock.runFor(1016);
     await expectFinal(page);
     await page.clock.resume();
-    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+    const audit = await new AxeBuilder({ page }).analyze();
+    await captureJson(testInfo, "scene-count-in-axe", audit);
+    expect(audit.violations).toEqual([]);
   });
 
   test("Off cancels mid-count immediately and a rapid On restarts cleanly", async ({ page }) => {
@@ -139,7 +141,7 @@ test.describe("scene estimate count-in with motion", () => {
 test.describe("scene estimate reduced motion", () => {
   test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 900 } });
 
-  test("On is immediately exact without clock progress, including zero and billion-item inputs", async ({ page }) => {
+  test("On is immediately exact without clock progress, including zero and billion-item inputs", async ({ page }, testInfo) => {
     await freezeScene(page);
     await toggle(page);
     await expectFinal(page);
@@ -151,6 +153,8 @@ test.describe("scene estimate reduced motion", () => {
       await expectFinal(page, calculateBaseline({ ...BASELINE_DEFAULTS, volume }));
     }
     await page.clock.resume();
-    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+    const audit = await new AxeBuilder({ page }).analyze();
+    await captureJson(testInfo, "scene-count-in-reduced-axe", audit);
+    expect(audit.violations).toEqual([]);
   });
 });

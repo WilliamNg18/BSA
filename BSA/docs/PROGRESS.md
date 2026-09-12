@@ -14,11 +14,25 @@ unmount. No public figures, source qualifications, lifecycle, domain arithmetic,
 shared number helper or T26-owned navigation files changed.
 
 Initial implementation 9e8fb7f: check passed; all 565 units in nineteen files passed
-with two workers, including twelve new count-in cases. Targeted production
-browser tests now cover exact/intermediate values, stable accessible names,
-Off/Reset, route/input cancellation, live reduced motion and zero/one/billion
-inputs. No local browser has been started and no browser acceptance is claimed.
-Draft PR #31 is open; merge remains coordinator-owned and Tasks 8-13 unchecked.
+with two workers, including twelve new count-in cases. Two later SSR accessible
+markup assertions passed with all fourteen targeted units, typecheck and lint;
+this is not an inferred new full-suite total.
+
+Production source 4a71d48 passed all six new scene browsers on the granted
+4193 slot with one worker, plus the unchanged calculator "all seven live steps"
+test in an isolated retry. Two retained default-rule axe reports have zero
+violations (47 normal-motion and 46 reduced-motion passing rules).
+No claim of one clean seven-test run: the first completed run was six passes
+and one incorrect new ariaSnapshot assertion, corrected to include the actual
+definition wrapper; the next was six scene passes and a thirty-second timeout
+in the unchanged calculator test, which then passed unchanged in isolation.
+Two earlier server-start timeouts ran no tests. A separate production build
+passed before testing its exact artifact. All logs, failure traces and axe JSON
+are retained outside OneDrive in this session's files folder.
+
+Port 4193 is released. The coordinator accepts this bounded browser evidence;
+no further browsers are authorised. PR #31 awaits the final integration rebase,
+check and unit count. Merge remains coordinator-owned; Tasks 8-13 stay unchecked.
 
 ## Checklist
 

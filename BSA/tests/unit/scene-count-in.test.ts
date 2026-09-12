@@ -1,5 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { startSceneCountIn } from "../../src/components/demo/scene-count-in";
+import { SceneEstimateNumber } from "../../src/components/demo/scene-estimate-number";
 import { ASSISTANCE_DURATION_MS } from "../../src/hooks/use-assistance-presentation";
 import { BASELINE_DEFAULTS, calculateBaseline, formatBaselineNumber } from "../../src/lib/domain/baseline";
 import { useAppStore } from "../../src/lib/store";
@@ -42,6 +45,22 @@ function advance(elapsed: number) {
 
 describe("scene estimate count-in", () => {
   const result = calculateBaseline(BASELINE_DEFAULTS);
+  it("On markup exposes the exact final value once and hides visual frames without a live region", () => {
+    const markup = renderToStaticMarkup(createElement(SceneEstimateNumber, {
+      value: result.volume, digits: 0, enabled: true, scenario: result,
+    }));
+    expect(markup).toBe('<span class="tabular-nums" role="img" aria-label="85,000"><span aria-hidden="true">85,000</span></span>');
+    expect(markup).not.toContain("aria-live");
+  });
+
+  it("Off markup is immediate readable final text without an animated accessible image", () => {
+    const markup = renderToStaticMarkup(createElement(SceneEstimateNumber, {
+      value: result.volume, digits: 0, enabled: false, scenario: result,
+    }));
+    expect(markup).toBe('<span class="tabular-nums"><span>85,000</span></span>');
+    expect(frames.size).toBe(0);
+  });
+
   for (const [name, value, digits] of [
     ["volume", result.volume, 0],
     ["today gathering", result.today.gatheringMinutes / 60, 1],
