@@ -101,6 +101,46 @@ measured savings, and the two-second presentation is not work completed.
 
 ## Complete round trip: B, manual submission to assisted correction
 
+### Task 18 chapter 6/7 rehearsal beats awaiting integrated control verification
+
+Use these audience beats after the functional merge; their final exact labels
+and live observations will replace the pre-redesign walkthrough below. Do not
+claim the prospective sequence has already run.
+
+**Chapter 6, NHSBSA perspective.** Begin Off. Point to the counted work filters
+and ask which items need an operator. Open a Today model row to show competent
+manual work, not an unavailable-service error. Close it, open **Compare** and
+click **Run one hour**. Say: "These are assumed capacities, not items we processed. On prepares
+evidence; a human still makes the decision." Toggle On and distinguish actual
+session rows from illustrative volume; never describe a sweep as recorded work.
+
+**Chapter 7, Pharmacy perspective.** Keep the same session and select the
+**Pharmacy** radio in **Perspective**, not Agent. This retains the current URL;
+open **Operations > Pharmacy claims** if the other-side guard is showing.
+Point first to **Action needed** and open EX-24112.
+Show the exact raw Off reason. If no operator-approved draft exists, On must
+say so rather than give the raw text a new label. Return to the NHSBSA side
+for an explicit review, approve the actual draft and record Refer back. Return
+to the same pharmacy item; now On can show the approved note, rule/version
+and suggested correction. Checking and applying text do not resubmit it.
+
+**Same-item continuation, no Reset or reload.** Follow EX-24112 from its
+submission through operator review, approved referral, pharmacy correction,
+explicit resubmission and human re-check. Switch perspective through the
+visible controls when the other side is hidden. Keep the ID visible after
+every navigation. Before the final sufficient disposition, show that the
+resubmitted state still awaits human review. Afterwards compare Off/On and
+Both: all retain the same attempts, approval and decisions. The synthetic
+paid state belongs to existing pricing; it is not a payment made by the agent.
+
+Use **Both** to show the two operational sides in one tour. Use Pharmacy and
+NHSBSA independently to demonstrate audience filtering. A direct link to an
+opposite-side page is expected to show a guard, not its operational content.
+Change perspective to continue; do not use Reset to get around the guard.
+Perspective survives Reset, but Reset would erase the session story.
+
+### Pre-redesign exact-click sequence
+
 This is a separate uninterrupted session sequence. Leave time to show the
 human approval boundary, not just a green end state. Use exact button labels
 below; no hidden store edits, test hooks or direct lifecycle manipulation.

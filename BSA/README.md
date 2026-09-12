@@ -125,8 +125,10 @@ application, live checklist or source-pinned screenshots below.
 
 [SPEC](docs/SPEC.md) describes current behaviour. [KNOWN-ISSUES](docs/KNOWN-ISSUES.md)
 separates genuine limitations from historical evidence.
-[Current screenshots](docs/screens/integrated/README.md) include the exact
+[Original source-pinned screenshots](docs/screens/integrated/README.md) include the exact
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
+[Task 18's capture matrix](docs/screens/task18/README.md) is prepared separately;
+it is not a relabelling of those older images.
 [Requested scope](docs/SCOPE.md) tracks the eight-chapter implementation and
 the 18 accepted scope rows and bounded infrastructure evidence.
 [AGENTS](AGENTS.md) governs contributions.
@@ -142,7 +144,7 @@ Successful-run audit artifacts were not uploaded; no new deduplicated CI axe
 count is claimed. The [capture index](docs/screens/integrated/README.md) records
 the separate final visual evidence.
 
-Current [CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+Pre-redesign [CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
 at `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed check, 695 unique
 units in 26 files and 1,055 blocking browsers across four shards in 6m25s,
 with zero quarantine. Unit repeats across shards are not additional unique

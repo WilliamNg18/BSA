@@ -6,10 +6,11 @@ ms.date: 2026-09-12
 
 ## 1. Purpose and authority
 
-**Task 14-18 transition:** this specification's detailed controls and baseline
-equations below describe the accepted pre-redesign application. The new
-total-effort model, queue/claims layout and independent perspectives are being
-implemented under the frozen contracts in [PROGRESS](PROGRESS.md).
+**Task 14-18 transition:** the monthly model section below records the frozen
+Step 0 contract. Detailed queue/claims/navigation controls still describe the
+accepted pre-redesign application pending their owners' integration. The new
+layout and independent perspectives are being implemented under
+[PROGRESS](PROGRESS.md).
 They are not accepted merely because Step 0 is deployed.
 [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md) records review criteria, actual baseline
 observations and the pending final latest-main walkthrough. Replace superseded
@@ -23,9 +24,10 @@ pricing or operational service.
 > calculates. A human decides. The prototype does not calculate or approve payments.
 
 The integrated application implements the lifecycle, claims/detail, cross-side
-round trip, eight-chapter tour and navigation. Source `898cda5` has passed
-integrated functional acceptance; [PROGRESS.md](PROGRESS.md) owns final task
-ticks, and owner-run hosted verification remains separate.
+round trip, eight-chapter tour and navigation. Original source `898cda5` passed
+integrated functional acceptance. Later clean `b813c62` passed the
+[hosted checklist](live-verification/README.md); neither result accepts
+unmerged redesign work. [PROGRESS.md](PROGRESS.md) owns final task ticks.
 
 ### Reference-grounded aim and outcome boundary
 
@@ -125,14 +127,42 @@ capture quality/regions, extracted fields, claim and scripted readings.
 five confidence signals, composite, recommendation, gate, draft and trace.
 These outputs do not themselves create a human decision or lifecycle event.
 
-### Chapter 2 baseline model
+### Chapter 2 monthly model
 
-The authoritative equations/defaults are in
-[task-1-baseline-model.md](task-1-baseline-model.md). `V` is the scenario volume;
-`g` sums seven editable gathering durations and `j` is judging time per item.
+The frozen Task 14 contract is `monthModel` / `selectMonthScenario` in
+`src/lib/domain/baseline.ts`, shared through `useMonthModel()`. The older
+[Task 1 model](task-1-baseline-model.md) remains historical/legacy behaviour
+until each owner migrates its consumers; do not apply its fixed `V * j`
+assisted judging formula to the new monthly tiles.
+
+Let `V` be the volume proxy, `t` total Today minutes and `j` judging minutes.
+Today gathering is `g = t - j`, not `t` with judging added again.
 Pharmacy-caught `P`, rule-cleared `C`, abstained `A` and built `B` are disjoint,
-sequentially rounded cohorts summing to `V`. The monthly calculator uses `V * j`
-for judging on both sides; pharmacy catch counts items, not saved minutes.
+sequentially rounded cohorts summing to `V`. The existing percentage inputs
+use successive remaining populations, not four shares of the original volume.
+
+| Quantity | Shared calculation | Default / interpretation |
+| --- | --- | --- |
+| Today monthly hours | `V * t / 60` | `85,000 * 12 / 60 = 17,000` |
+| Assisted monthly hours | `(B * j + A * t) / 60` | `255,002 / 60`, approximately `4,250.03` before display rounding |
+| Built item operator time | `0` gathering plus `j` judging | `2` minutes; not automatic human approval |
+| Abstained item operator time | `g + j = t` | All `12` manual minutes |
+| Caught / cleared operator time | `0` in the assisted model | No operator judgement counted for these cohorts |
+| One operator capacity | `7,560 / t` Today; `7,560 / j` built cases | `630` versus `3,780`; built-case capacity, not mixed-cohort throughput |
+
+The 7,560-minute allowance assumes six working hours on 21 days. Capacity is
+an unrounded quotient in the shared model; the UI formats it. Seven gathering
+inputs become relative weights scaled to `g`; they are not seven extra
+durations added to the total. Assembly animation/latency is not operator labour.
+The legacy built-review input does not add labour to an assisted built item.
+
+The new presentation requires three primary inputs and two summary tiles;
+seven-step breakdown, cohorts and Sankey sit inside a collapsed detail
+disclosure. These layout requirements still await N's integrated visual review.
+Invalid drafts retain explicit field errors and return no result, not stale
+last-valid tiles. Today accepts 10 to 15 minutes; judging must be positive
+and no greater than Today. No arithmetic represents measured NHSBSA staffing,
+completed work, pharmacy handling time or a payment calculation.
 
 Projected referrals are `round(B * db) + round(A * da)`, using editable
 deficient-built and deficient-abstained fractions. The separate risk residual
@@ -141,7 +171,9 @@ no second addition of deficient abstentions. For positive `V` and `R`, the
 referral-free proxy is `(V - R) / V * 100`, rounded down to one decimal for
 display. Zero volume or residual means Not established, never 100% accuracy.
 
-The scene, calculator, pipeline and queue consume shared scenario assumptions.
+The scene, calculator and queue/pharmacy monthly context share scenario
+assumptions; each migrating surface must use the shared result rather than
+copying arithmetic. Operational history remains separate from model projections.
 Approximately 85,000 monthly referrals is a 2024/25-context scale proxy, not the
 whole exception queue. Approximately 1.1 billion primary-care items per year in
 England (reporting year unspecified) and monthly rulebook publication are
@@ -394,7 +426,9 @@ separate informational quarantine cases. Successful-run audit artifacts were
 not uploaded; do not turn that test result into an invented deduplicated axe
 report count. The screenshot manifest records a separate set of actual audits.
 
-[Current captures](screens/integrated/README.md) are fresh root-path production
-images at 1440px in both Agent states. They are not copied historical captures.
+[Original captures](screens/integrated/README.md) are source-pinned root-path
+production images at 1440px in both Agent states. They retain their actual
+`898cda5` source and timestamps, not the new redesign's provenance.
+[Task 18 captures](screens/task18/README.md) are prepared but not yet executed.
 [KNOWN-ISSUES](KNOWN-ISSUES.md) records genuine limitations and evidence scope;
 older measurement logs remain historical rather than current release claims.

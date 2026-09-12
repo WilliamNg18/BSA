@@ -43,10 +43,11 @@ remain inspectable but collapsed initially. None of these are measured savings.
 | --- | --- | --- |
 | 6.1 | This is NHSBSA work awaiting a human decision, with counted filters that identify the selected work. | Select a counted filter and confirm its rows and selected state agree. |
 | 6.2 | Today remains usable manual work. On adds evidence preparation and recommendations, not automatic decisions or payments. | Toggle Agent for the same visible work; explain what changes and what does not. |
-| 6.3 | The one-hour comparison is a read-only capacity illustration, not work performed or lifecycle progress. | Open Compare one hour and distinguish the two modes without recording a decision. |
+| 6.3 | The one-hour comparison is a read-only capacity illustration, not work performed or lifecycle progress. | Open Compare, then Run one hour; distinguish the two modes without recording a decision. |
 
-The chapter's difference-demonstrating click is **Compare one hour**. Verify
-the final exact label after Q merges. Check the six-column virtual table,
+The chapter's difference-demonstrating click is **Compare**, followed by
+**Run one hour** to inspect the projection. These are Q's confirmed labels,
+still awaiting final live verification. Check the six-column virtual table,
 reactive New items and side-appropriate states. A synthetic model row must not
 be mistaken for a full clinical evidence pack; Today must open usable manual work.
 
@@ -110,6 +111,31 @@ reduced motion. All before/after build identities reported clean commit
 These findings were sent to the owning streams, not fixed through concurrent
 source edits. Existing scope already covers them; do not create duplicate issues.
 New concrete misses after integration will receive their own routed issue.
+
+### Independent continuation baseline supplement
+
+The [settled supplemental record](screens/first-time-viewer/baseline-supplement-settled.json)
+is a separate isolated-browser observation, **19:24:38 to 19:24:50 UTC**, not
+the initial writer's run above. It brackets every chapter with the same clean
+`6b06328` live identity. At 1440 x 1000, eight visible chapter 2 inputs precede
+the result headings at y=1009; the chapter 6 table has eight columns.
+Opening EX-24112 with Agent On confirms "No operator-approved draft. Enabling
+assistance does not approve a note." No submission or decision was performed.
+All six Off/On views have no horizontal overflow or recorded page/console/CSP
+error. No axe or timed human study was performed.
+
+The [initial supplemental probe](screens/first-time-viewer/baseline-supplement-initial.json),
+19:21:46 to 19:21:59 UTC, is retained separately. Its input geometry counted
+hidden disclosure fields and its selected-claim snapshot preceded detail
+rendering. Those observations are not evidence of visible input count or
+detail content. The settled retry filters by actual visibility and awaits the
+detail/Compare control. This is a probe correction, not a production failure.
+
+For source tooltips, `source-audit.ts` N12 classifies weeks of delay as
+illustrative, not a measured distribution. P confirms its guide tooltip says
+"Weeks of delay, the delivery channel and internal handling steps are
+illustrative assumptions, not published facts." Preserve that distinction;
+the final live tooltip still requires observation.
 
 ## Source review boundary
 

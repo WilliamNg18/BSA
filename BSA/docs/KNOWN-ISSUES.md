@@ -6,19 +6,31 @@ ms.date: 2026-09-12
 
 ## Current implementation and acceptance
 
+Tasks 14-18 are new, unaccepted clarity/perspective scope. Their final live
+review is recorded separately in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md).
+The following implementation summary describes the already-accepted foundation,
+not proof that the redesigned interface has passed.
+
 The eight-chapter/nine-stop tour, standalone pipeline and Four cases, complete
 referral-cycle guide, shared lifecycle, scene count-in, queue Compare and
 human-controlled round trip are implemented. Pharmacy On response/history shows
 only labelled operator-approved drafts; intentional Off is a healthy unchecked
 manual path. These are no longer open implementation gaps.
 
-Current source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` includes the route-entry
+Historical accepted source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` includes the route-entry
 contrast repair from #42 and restored blocking pharmacy coverage from #40.
 Exact tested head `f295d7f19363cd101af7401f0ba03188ee7d0b2b` passed
 [Actions run 34696637977](https://github.com/WilliamNg18/BSA/actions/runs/34696637977):
 check, 607 units and **1,054 browser tests, all blocking**, in 15.1 minutes.
 There are zero quarantined cases, not three additional informational passes.
 No deduplicated CI audit count is inferred from a browser-test total.
+
+The later pre-redesign
+[CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+at `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed check, 695 unique
+units and 1,055 blocking browsers across four shards in 6m25s, with zero
+quarantine. Shard repetitions do not multiply unique unit counts. This is
+distinct from V's six-state baseline observation and the older screenshot audits.
 
 The agent gathers evidence and recommends; deterministic code validates and
 calculates; a human decides. Nothing in this demonstration calculates or
@@ -95,7 +107,7 @@ regression verifies 0/75/135/150ms states; scoped acceptance recorded 32 cases,
 40 unrestricted axe audits and zero violations before full CI acceptance.
 Settled screenshots did not prove the old intermediate frames safe.
 
-The [current visual index](screens/integrated/README.md) and
+The [original integrated visual index](screens/integrated/README.md) and
 [manifest](screens/integrated/manifest.json) identify actual source revisions,
 per-image hashes, errors, overflow and axe results. Header-enforced local
 Chromium evidence is not full manual WCAG 2.2 AA conformance, screen-reader
@@ -134,6 +146,6 @@ rechecks in [PROGRESS.md](PROGRESS.md), [LEARNINGS.md](LEARNINGS.md) and
 [HANDOVER.md](HANDOVER.md). Task 7's 503 units, 721 browsers, 334 axe reports,
 91/91/90 Lighthouse scores and 199,651 gzip bytes are not current measurements.
 
-[SCOPE.md](SCOPE.md) distinguishes accepted implementation from final documentation
-and hosted verification. Final task ticks belong to D's
+[SCOPE.md](SCOPE.md) distinguishes the 18 accepted original rows from the new
+Tasks 14-18. Final task ticks belong to the coordinator's
 [PROGRESS.md](PROGRESS.md), not to a screenshot or an old implementation checklist.
