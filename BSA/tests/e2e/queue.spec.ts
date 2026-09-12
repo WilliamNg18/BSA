@@ -141,6 +141,8 @@ test("Task15 revised unreadable B reviewed Off abstains On without changing hist
   await page.getByRole("button", { name: /Abstained worked as today/ }).first().click();
   await expect(row).toBeVisible();
   await row.getByRole("link", { name: "Open", exact: true }).click();
+  // Compare history in the same presentation mode; audience labels change On.
+  await page.getByRole("banner").getByRole("switch").setChecked(false);
   await history.locator("summary").first().click();
   await expect(history.getByRole("list", { name: "Lifecycle events", exact: true })).toHaveText(before, { useInnerText: true });
   await expect(history.getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toHaveText(attempts, { useInnerText: true });
