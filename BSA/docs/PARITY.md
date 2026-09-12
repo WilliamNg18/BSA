@@ -1,7 +1,7 @@
 ---
 title: Application parity and owned acceptance gaps
 description: Source comparison, bounded evidence and follow-up ownership for issue 18.
-ms.date: 2026-09-11
+ms.date: 2026-09-12
 ---
 
 # Parity audit
@@ -20,7 +20,7 @@ are 59 changed source files, including the intended lifecycle, claims and
 navigation implementation. An empty diff does not prove current browser
 acceptance, nor does an unchecked task mean its implementation is absent.
 
-## Status definitions and totals
+## Historical status definitions and totals
 
 Each numbered row counts once. These are capability/evidence counts, not
 test counts, screen counts or a percentage of application completion.
@@ -46,7 +46,7 @@ test counts, screen counts or a percentage of application completion.
 | Not yet verified | 4 |
 | Total | 33 |
 
-## Capability register
+## Historical capability register
 
 Paths below are relative to `BSA` unless explicitly prefixed with `root`.
 Source findings apply to the audited main, not unmerged stream branches.
@@ -89,7 +89,55 @@ files are coverage evidence, not a claim that those tests passed in this audit.
 | 32 | Removal of all byte/performance budgets | Coordinator's explicit no-budget policy; `b23e478` supersedes earlier advisory-budget wording | Seven budget unit tests and one payload-only browser test removed; functional application source unchanged. CI retains one informational gzip line; tagged quarantine runs separately with an issue. These removals are deliberate, not Missing capabilities | Changed with decision | Coordinator; D #17 |
 | 33 | No horizontal overflow in phone case packs | Current responsive requirement; functional controls must remain reachable | Coordinator reports actual 5 px Linux 360-dark pack overflow for A/B/C/E/F in both modes/motion from CI 34625830555. This is a proven reflow gap, distinct from the stale route assertions and pending overall matrix. Exact fixing files/commit remain S-owned | Missing | S #15; V refresh |
 
-## Evidence and limits
+## Scoped merged update: 12 September 2026
+
+This update supersedes only rows **03, 27 and 33** for the merged snapshot
+`ff00b3e7fb5d5b77266868c0d15a0c95d4c53ea3`: S's #22 merged at
+`22ec3459dee77818146ce7dbb99ca5baf47bb9ea`, followed by #20's fix in #23.
+The historical register and its 18/6/1/4/4 counts remain unchanged above.
+Other rows are carried forward, not re-audited or promoted to acceptance.
+In particular, the historical descriptions of then-pending streams are not
+claims about their present activity.
+
+| Row | Historical status | Status at scoped merged snapshot | Merged evidence and remaining limit |
+| --- | --- | --- | --- |
+| 03 | Missing | Changed with decision | #23 distinguishes intentional Off (`Not checked: manual submission`), On/unavailable (`Agent unavailable: manual submission`) and actual scripted inability. DECISIONS records the display-only policy; snapshots, submission and canonical data are unchanged. Focused production evidence: 26/29 first run, then exactly three unchanged rerun passes, not 29/29 single-run. All three new Issue20 guards passed first run; 12 axe outputs across the runs had zero violations. #34 tracks exactly three conditionally quarantined pre-existing timing-sensitive instances; 26 focused cases remain blocking. |
+| 27 | Changed without decision | Changed with decision | #22 replaces the demonstrated injected modal stylesheet through `lib/csp-scroll-lock.ts`, external CSS and a narrow Vite alias, retaining root CSP. S reports 183 owned Linux tests passed, 247 unique axe outputs with zero violations and 183 CSP reports with zero violations at `1a103e3`; overall CI still had 760 passed / 205 failed. Final affected controls: 38/40, then two unchanged isolated passes; all nine owned keyboard checks passed with seven follow-up axe and nine CSP reports clear. These are scoped local/CI results, not full WCAG, manual screen-reader or hosted acceptance. |
+| 33 | Missing | Changed with decision | #22 bounds and wraps the existing another-attempt link in `pages/case-pack.tsx`, retaining its label/destination. S's 360px reflow coverage addresses the Linux 5px and enlarged-text Windows 17px reproduction for A/B/C/E/F. The same S matrix and final affected-control evidence above support this repair; they do not establish every future screen/width or replace V's capture refresh. |
+
+Applying only these three overrides to the same 33-row inventory yields:
+
+| Status | Historical count | Scoped merged count |
+| --- | ---: | ---: |
+| Preserved | 18 | 18 |
+| Changed with decision | 6 | 9 |
+| Changed without decision | 1 | 0 |
+| Missing | 4 | 2 |
+| Not yet verified | 4 | 4 |
+| Total | 33 | 33 |
+
+These counts do not declare the whole application accepted. Rows 21 and 30
+remain carried-forward Missing findings; pending full-suite, visual and hosted
+claims remain bounded by their own evidence. S evidence is stream-reported and
+preserved in its merged decisions/learnings; this update ran no new browser
+or full audit. #23's rebase preserved its workbench and three test files
+byte-for-byte, with both streams' append-only histories retained. The combined
+base now uses S's real-header production server, not the Vite preview used by
+the earlier #20 focused run; do not relabel that run as a postmerge CSP test.
+At ready head `258f803` on S's merged base, combined `npm run check` passed
+without warnings and Vitest passed 557 tests in 19 files. This is a fresh
+combined check/unit result, not a new combined browser or hosted result.
+
+### Later tour integration, outside this scoped count
+
+This document is rebased onto `c95ff1da094528236a38593c3de18342e0f51374`,
+where T's #30 adds the eight-chapter tour and pharmacy referral cycle.
+That later integration is separate from the S/#20 snapshot above. Historical
+row 24 describes the earlier seven-chapter contract, not the new current tour.
+No T capability or acceptance evidence is re-audited here, and the scoped
+18/9/0/2/4 counts do not claim parity verification of the eight-chapter addition.
+
+## Historical evidence and limits
 
 **P: local targeted source-parity guards.** At `b23e478`, from `BSA`:
 
