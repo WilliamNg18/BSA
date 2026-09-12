@@ -82,6 +82,13 @@ async function capture(page, name, enabled, errors) {
   const existing = results.findIndex((entry) => entry.filename === filename);
   if (resume && existing >= 0 && !failed(results[existing]) && !name.startsWith("claims-detail-")) return;
   await settle(page);
+  if (name === "overview-scene" && enabled) {
+    const numbers = page.getByRole("region", { name: "Shared scenario estimates", exact: true }).getByRole("img");
+    await expect(numbers).toHaveCount(5);
+    await expect.poll(async () => numbers.evaluateAll((elements) =>
+      elements.every((element) => element.textContent === element.getAttribute("aria-label")),
+    )).toBe(true);
+  }
   await page.mouse.move(0, 0);
   const dismiss = page.getByRole("button", { name: "Dismiss notification", exact: true });
   if (await dismiss.count()) await dismiss.click();
