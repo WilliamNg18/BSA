@@ -4,6 +4,32 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Issue 27 count-in isolation
+
+The scene's previous AnimatedNumber only faded a final string. A scene-local
+frame controller can interpolate the existing derived value without changing
+the shared formatter, calculator or store. Check media state inside each frame
+as well as on preference-change events to avoid one stale moving frame.
+
+This worktree initially lacked TypeScript, so the first check stopped with
+`tsc` not found. Restoring the existing lockfile with npm ci added no dependency
+or manifest change. The subsequent check passed and 565 units passed with two
+workers, including twelve count-in cases. Browser acceptance awaits the
+coordinator's resource slot; unit interpolation is not browser evidence.
+
+The eventual browser accessibility snapshot includes the `dd` definition role
+around the named final-value image. Correct the exact expected tree rather than
+removing that meaningful semantic wrapper. All six scene tests passed after
+this test-only correction, with two zero-violation axe reports. The unchanged
+calculator compatibility test passed both before and after one retained
+thirty-second timeout in a combined run. No timeout was relaxed.
+
+Two startup attempts timed out while rebuilding under machine contention,
+before any browser test. Completing the production build separately and using
+preview-only session configuration removed the startup-timeout coupling.
+Keep the failed startup logs separate from actual assertion results and never
+report split successful evidence as one clean seven-test run.
+
 ## 2026-09-11: Budget removal and acceptance evidence
 
 The latest user direction removes byte budgets completely, including the

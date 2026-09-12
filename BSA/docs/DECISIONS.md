@@ -4,6 +4,20 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-10
 ---
 
+## 2026-09-11: Issue 27 scene-only estimate count-in
+
+Animate only the five derived scene estimates over the existing two-second
+presentation duration. Public context figures, qualifications, the Sources line,
+calculator arithmetic and shared AnimatedNumber remain unchanged. Use the
+existing UK formatter for intermediate and exact final values.
+
+Expose the final value as one accessible named graphic while its visual text is
+hidden from assistive technology; do not put animation frames in a live region.
+Off and reduced motion are immediate. A new scenario identity cancels and
+restarts presentation even if one resulting metric is unchanged. Unmount, Off,
+Reset and live reduced motion cancel scheduled frames and media listeners.
+No animation writes to application state or implies processing speed.
+
 ## 2026-09-11: Remove all performance and size budgets
 
 No performance or size budgets on this project; a static demo with no back end has no reason to fail a build on bytes. Functional and accessibility checks only.
