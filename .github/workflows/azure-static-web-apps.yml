@@ -15,7 +15,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deployment token prerequisite
+        env:
+          DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        run: |
+          if [ -z "${DEPLOYMENT_TOKEN//[[:space:]]/}" ]; then
+            echo "::error::Deployment token missing or invalid; see docs/DEPLOYMENT.md"
+            echo "Deployment token missing or invalid; see docs/DEPLOYMENT.md" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
   build-and-deploy:
+    needs: preflight
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     permissions:
@@ -32,15 +46,8 @@ jobs:
         working-directory: BSA
       - run: npm run build
         working-directory: BSA
-      - name: Deploy configuration prerequisite
-        env:
-          DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-        run: |
-          if [ -z "$DEPLOYMENT_TOKEN" ]; then
-            echo "::error::Deploy blocked: AZURE_STATIC_WEB_APPS_API_TOKEN is missing. Complete BSA/docs/DEPLOYMENT.md once, then rerun this workflow."
-            exit 1
-          fi
       - name: Deploy production or pull-request preview
+        id: deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
@@ -50,8 +57,23 @@ jobs:
           api_location: ""
           output_location: ""
           skip_app_build: true
+          skip_api_build: true
+          production_branch: main
+      - name: Deployment failure guidance
+        if: failure() && steps.deploy.outcome == 'failure'
+        run: |
+          echo "::error::Deployment token missing or invalid; see docs/DEPLOYMENT.md"
+          echo "Azure upload failed. Check the deploy step for the actual authentication, network or service error; token presence alone does not establish validity." >> "$GITHUB_STEP_SUMMARY"
+      - name: Record deployed URL
+        if: success()
+        env:
+          SITE_URL: ${{ steps.deploy.outputs.static_web_app_url }}
+        run: |
+          printf 'Azure site: %s\n' "$SITE_URL"
+          printf 'Azure site: %s\nBuilt from commit: %s\n' "$SITE_URL" "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
 
   close-preview:
+    needs: preflight
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     steps:

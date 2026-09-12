@@ -141,3 +141,20 @@ PR merge, not self-merge. Current acceptance is in PROGRESS; checkpoint sections
 in HANDOVER remain historical and all checkpoint tags stay immutable.
 Old issue text mentioning size budgets or transfer waiting is superseded by
 the current gates and the owner's public-repository resumption.
+
+## Blockers and status
+
+If anything blocks, stops, or needs an action only the owner can take, post it in the chat immediately as a STATUS message with the exact steps, without waiting for the next scheduled update. Never let a blocker sit silently. Every STATUS message includes an 'Owner actions for me' line, or 'none'. ALL DONE is posted only when every task, every scope row and the live-site verification are complete.
+
+Poll deployment-secret presence and Actions every 15 minutes without printing
+secret values. Do not repeatedly dispatch while the secret is absent. Once it
+exists, dispatch the existing main workflow unless an equivalent deployment
+is already running or succeeded, then verify the actual live site and commit.
+Completed streams remain delivered; do not invent work or rerun accepted tests
+merely to describe them as busy.
+
+Latest lookup: Azure CLI is available and authenticated to subscription
+`8b02c7be-06b9-4d15-a916-eba62a775f02`. Static Web Apps list returned empty;
+the historical App Service is not the selected host. The top of DEPLOYMENT
+provides one Cloud Shell block and one GitHub secret step. Those two owner
+actions remain outstanding under #37 until deployment and live checks succeed.

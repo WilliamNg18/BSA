@@ -655,3 +655,17 @@ invented aggregate of successful CI reports. Fifty-three Off plus fifty-four
 On files account for the July-only extra image. The accepted CI uploaded no
 successful-run artifacts, so its passing browser total and this independently
 counted visual audit set must stay separate.
+
+## 2026-09-12: Resource lookup replaces inferred hosting state
+
+Azure CLI became available after the earlier setup investigation. Its current
+authenticated subscription has no Static Web App. The BSA resource group with
+App Service, plan and identity is historical and distinct; its old HTTPS URL
+timed out when probed. Missing GitHub credentials alone had not established
+whether a resource existed, so report the verified subscription boundary.
+
+The manual deployment trigger already existed. The missing-token check now
+runs in a separate prerequisite job, avoiding a pointless build/upload attempt.
+Three targeted hosting tests pass. Node's optional YAML parser was unavailable;
+the installed Python parser validated dispatch and both job dependencies instead.
+No application code or accepted browser behaviour changed.

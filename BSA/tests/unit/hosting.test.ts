@@ -29,6 +29,11 @@ describe("root Static Web Apps hosting contract", () => {
     expect(workflow).toContain("app_location: BSA/dist");
     expect(workflow).toContain("AZURE_STATIC_WEB_APPS_API_TOKEN");
     expect(workflow).toContain("action: close");
+    expect(workflow).toContain("workflow_dispatch:");
+    expect(workflow).toContain("needs: preflight");
+    expect(workflow).toContain("Deployment token missing or invalid; see docs/DEPLOYMENT.md");
+    expect(workflow).toContain("production_branch: main");
+    expect(workflow).toContain("steps.deploy.outputs.static_web_app_url");
     expect(readFileSync(root("infra/staticwebapp.bicep"), "utf8")).toContain("location: 'westeurope'");
     expect(existsSync(root(".github/workflows/deploy.yml"))).toBe(false);
     expect(existsSync(root("BSA/azure.yaml"))).toBe(false);

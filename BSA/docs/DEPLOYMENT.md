@@ -1,12 +1,80 @@
 # Azure Static Web Apps deployment
 
+## Owner action 1: paste once into Azure Cloud Shell (PowerShell)
+
+Open [Azure Cloud Shell](https://shell.azure.com), select **PowerShell**, and
+paste this whole block. It selects the subscription currently verified for this
+demo, downloads the public repository into a new temporary directory, creates
+the resource group in UK South and the Free Static Web App in West Europe,
+resets its deployment token, then prints that token for the next step.
+If your Cloud Shell account cannot access this subscription, use the intended
+subscription ID from `az account list --output table`; do not select an unrelated
+corporate subscription. The block stops on a failed command.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+function Invoke-DemoAz {
+    & az @args
+    if ($LASTEXITCODE -ne 0) { throw 'Azure command failed; review the error above before continuing.' }
+}
+$subscription = '8b02c7be-06b9-4d15-a916-eba62a775f02'
+$group = 'rg-bsa-demo'
+$site = 'bsa-demo'
+Invoke-DemoAz account set --subscription $subscription
+Invoke-DemoAz account show --query '{subscription:name,id:id}' --output table
+$checkout = Join-Path ([System.IO.Path]::GetTempPath()) ('bsa-demo-' + [guid]::NewGuid())
+git clone --depth 1 https://github.com/WilliamNg18/BSA.git $checkout
+if ($LASTEXITCODE -ne 0) { throw 'Repository download failed.' }
+Set-Location $checkout
+Invoke-DemoAz group create --name $group --location uksouth --output none
+Invoke-DemoAz deployment group create --resource-group $group --template-file .\infra\staticwebapp.bicep --parameters "name=$site" --query properties.outputs --output json
+Invoke-DemoAz staticwebapp secrets reset-api-key --name $site --resource-group $group --output none
+Invoke-DemoAz staticwebapp secrets list --name $site --resource-group $group --query properties.apiKey --output tsv
+```
+
+The final line is a credential. Copy it only into the repository secret below;
+do not paste it into chat, an issue, a source file, a screenshot or a build log.
+The reset invalidates any previous token for this Static Web App.
+
+## Owner action 2: save the GitHub secret
+
+Open **WilliamNg18/BSA > Settings > Secrets and variables > Actions >
+New repository secret**. Name it **`AZURE_STATIC_WEB_APPS_API_TOKEN`**, paste
+the token from Cloud Shell, and select **Add secret**. If it already exists,
+edit that secret instead.
+
+The coordinator checks every 15 minutes and can dispatch deployment once the
+secret exists. To start it immediately yourself: **Actions > Azure Static Web
+Apps > Run workflow**, select **main**, then **Run workflow**. This manual
+trigger is already configured. Its successful summary prints the actual site
+URL and built commit.
+
+The preflight job rejects a missing or blank token before checkout/build with
+`Deployment token missing or invalid; see docs/DEPLOYMENT.md`.
+Only Azure's upload step can establish whether a nonblank token is valid for
+the resource; no local token-shape heuristic claims to authenticate it. Upload
+failures retain their real diagnostic and add plain guidance to the summary.
+
+## Verified hosting state: 12 September 2026
+
+`az staticwebapp list` in the authenticated subscription above returned **[]**.
+GitHub has no deployment-secret entry, no SWA workflow has succeeded, and the
+latest upload step was skipped before reaching Azure. Therefore the Static
+Web App does not exist in this verified subscription and is not deployed.
+This does not claim to inventory inaccessible subscriptions.
+
+The historical `bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net` URL is an old
+App Service, not Static Web Apps; its current HTTPS probe timed out. Its group
+`rg-bsa-bsa-demo` still contains App Service/plan/identity resources, which this
+procedure does not alter or delete. They are not the selected hosting target.
+
 The only hosting target is Azure Static Web Apps Free, at `/`. The application
 is in `BSA`; infrastructure and the authoritative `staticwebapp.config.json`
 are at repository root. Every production build copies that configuration into
 `BSA/dist`. Nothing provisions authentication, telemetry, Front Door, custom
 domains, a backend or another Azure service.
 
-## Once, by the subscription owner
+## Alternative: local CLI setup
 
 Install Azure CLI if needed (`winget install -e --id Microsoft.AzureCLI` on
 Windows), install GitHub CLI, and sign in with `az login` and `gh auth login`.
@@ -85,7 +153,8 @@ configuration excludes the production-header spec; default CI does not exclude i
 This verifies browser behaviour under the configured policy, not Azure resource
 provisioning, platform routing/caching parity or a deployed HTTPS endpoint.
 
-At preparation on 11 September 2026, Azure CLI was unavailable, Azure discovery
+Historically, at preparation on 11 September 2026, Azure CLI was unavailable, Azure discovery
 returned multiple subscriptions without a default, and GitHub had no repository
 deployment secret. No subscription was guessed, no resource was created and no
-deployment URL is claimed. Run the commands above in the intended subscription.
+deployment URL was claimed. The newer authenticated resource lookup and
+copy-and-paste owner actions at the top supersede that historical availability.

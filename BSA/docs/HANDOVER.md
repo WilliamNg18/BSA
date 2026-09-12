@@ -1,5 +1,27 @@
 # Account transfer handover
 
+## Outstanding owner actions and active monitoring
+
+- [ ] **Action 1:** Open Azure Cloud Shell in PowerShell mode and paste the
+  single block at the top of [DEPLOYMENT](DEPLOYMENT.md). It selects the
+  verified subscription, creates the UK South group/West Europe Static Web
+  App, resets the deployment token and prints it for the next step.
+- [ ] **Action 2:** GitHub repository Settings > Secrets and variables >
+  Actions > New repository secret: `AZURE_STATIC_WEB_APPS_API_TOKEN`; paste
+  the token and save. Never paste it in chat or code.
+
+These remain outstanding until a main deployment succeeds and the actual live
+Overview, deep links, both modes and round trip are verified. Then mark them
+done, close #37 and complete Task 13/SCOPE I/PARITY 31. The coordinator checks
+every 15 minutes and dispatches the existing workflow once the token is present;
+Actions > Azure Static Web Apps > Run workflow is also available immediately.
+
+On 12 September, authenticated `az staticwebapp list` returned no sites in the
+verified subscription. The historical App Service is a different resource and
+was not changed. No SWA upload has reached Azure and no successful SWA URL is
+present in Actions history. Report actual events immediately as STATUS with
+an Owner actions for me line; never label this ALL DONE before live checks.
+
 ## Current completion pointer, 12 September 2026
 
 R #33, V #24 and final parity #38 are merged; main is

@@ -614,3 +614,24 @@ visible on some routes; no content is pixel-masked. Build evidence sums all four
 independently gzipped emitted resources to 203,723 bytes, information only.
 Current SCOPE has 16 accepted implementation rows, with owner hosting #37 and
 VD final documentation closeout remaining In progress. D owns final task ticks.
+
+## 2026-09-12: Two-step owner setup and fifteen-minute deployment monitoring
+
+Read the current subscription rather than infer resource existence from a
+failed workflow. Authenticated Static Web Apps listing returned no sites in
+subscription 8b02c7be-06b9-4d15-a916-eba62a775f02. The retained App Service is
+not the selected host and is not modified. No SWA success exists in Actions.
+
+Provide one copy-and-paste PowerShell Cloud Shell block with subscription
+selection, public repository download, UK South group, West Europe Bicep site,
+token reset and retrieval, followed by one GitHub secret step. Keep the manual
+workflow trigger. A separate preflight job rejects missing/blank credentials
+before checkout/build; token validity is determined only by Azure upload,
+not by an invented local pattern or a claim that presence means validity.
+Successful deployment records its actual URL and source commit.
+
+Monitor every fifteen minutes, dispatch only when a usable setup change needs
+deployment, and report blockers immediately with an Owner actions for me line.
+Do not repeatedly dispatch an absent/unchanged failed secret. Completed local
+application acceptance is retained; only hosted verification and its final
+records remain blocked. No size/performance gates or extra Azure services.
