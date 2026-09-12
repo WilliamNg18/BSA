@@ -714,3 +714,28 @@ Issue #46 owns one local/CI verification entry point and four Playwright shards,
 preserving every blocking test. End-to-end CI under fifteen minutes and small
 changes live within an hour are operating targets, not failure budgets or
 permission to skip checks. Existing ownership and reviewed PR flow remain.
+
+## 2026-09-12: One verification entry point with four CI partitions
+
+Issue #46 introduces `cd BSA; npm run verify`: check (typecheck, lint, one
+production build), units, informational content/gzip and the blocking Chromium
+suite, then informational quarantine. Both browser stages reuse the existing
+production-artifact configuration, which applies the actual root hosting
+headers. Missing Chromium has an explicit `npm exec -- playwright install
+chromium` setup instruction; CI installs its Linux prerequisites beforehand.
+
+CI runs `npm run verify -- --shard=INDEX/4` in four parallel jobs. Shard input is
+validated before any command executes, and npm runs through Node with argument
+arrays and shell disabled for Windows compatibility. Any blocking exit/error
+fails that shard; content/gzip/quarantine failures are logged but do not change
+acceptance. Only shard one emits content/gzip reports. Blocking and quarantine
+outputs are separate so an empty informational run cannot overwrite failures.
+
+Keep all existing assertions, timeouts, zero retries, strict CSP and eager
+routes unchanged. The under-fifteen-minute goal is measured after actual CI,
+not a timeout or performance gate. Four jobs repeat check/units intentionally;
+report unique unit coverage separately from those four executions.
+Feature branches run verification only for pull-request events; main retains
+push verification, manual dispatch and reusable invocation. Superseded runs
+cancel, all shards finish even if another fails, and unique shard artifacts
+remain best-effort. No runtime dependency, application or hosting change.

@@ -15,6 +15,7 @@
     "test:e2e": "playwright test",
     "test:a11y": "playwright test --config tests/e2e/accessibility-final.config.ts",
     "check:content": "node scripts/check-content.mjs",
+    "verify": "node scripts/verify.mjs",
     "test:content": "playwright test content.spec.ts --project=chromium --reporter=dot",
     "check": "npm run typecheck && npm run lint && npm run build"
   },

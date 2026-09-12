@@ -4,6 +4,52 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
+## Issue #46 measured four-shard verification
+
+[Public CI 34700392502](https://github.com/WilliamNg18/BSA/actions/runs/34700392502)
+at `a55b66df2ff433bcb58f97208f078b8258f733a9` completed successfully.
+Created at `2026-09-12T14:49:09Z`, its final job completed at
+`2026-09-12T14:56:54Z`: **7 minutes 45 seconds end to end**, including queue,
+checkout, dependencies, browser installation, verification and post-job work.
+This actual run meets the under-fifteen-minute target without adding a timing gate.
+
+| Shard | Blocking Chromium passes | Browser duration | Complete job duration |
+| --- | --- | --- | --- |
+| 1/4 | 264 | 5.0 minutes | 368 seconds |
+| 2/4 | 264 | 5.0 minutes | 373 seconds |
+| 3/4 | 263 | 2.9 minutes | 247 seconds |
+| 4/4 | 263 | 6.4 minutes | 463 seconds |
+
+The total is **1,054 distinct blocking browser cases**, not four whole suites.
+All four jobs ran check and **643 units in 23 files** successfully: 643 unique
+units repeated four times, not 2,572 distinct tests. Every shard's verification
+entry exited 0; empty informational quarantine selections succeeded. Gzip
+appeared once, on shard one, and remained informational. There was one CI
+workflow run for this PR head, not duplicate feature-push and PR verification.
+
+Rebase onto parent main 03bc583 retained its cloud-agent setup, INFRA-DONE,
+MEMORY and documentation changes. Git diff confirms verification scripts,
+package scripts, unit/e2e tests, CI workflow and application source are identical
+to the measured head. Historical hosting references below describe that run;
+the coordinator separately owns the subsequently requested App Service migration.
+
+## Issue #46 unified verification implementation
+
+The proposed `npm run verify` runner and four-shard CI preserve the same
+blocking functional/accessibility checks and run informational reports without
+failing acceptance. It reuses the strict-header artifact configuration after
+one build, validates shard arguments and avoids duplicate feature-push/PR runs.
+No application code, existing e2e body, timeout or hosting policy changed.
+
+Local `npm run check` passed, exit 0; `npm run test -- --maxWorkers=1` passed
+643 tests in 23 files (607 existing plus 36 runner/CI cases), exit 0. Actual
+Playwright lists prove the four partitions contain 264/264/263/263 unique cases,
+exactly the complete 1,054-case union with no overlap or omissions.
+CI YAML parsing, informational gzip execution and invalid-shard CLI exit 2
+were independently checked. No redundant local full browser run occurred.
+The exact proposed head still needs a complete public sharded CI run and
+measured end-to-end duration; under fifteen minutes is a target, not a gate.
+
 ## Current acceptance refresh: 12 September 2026
 
 Main after #42, #40 and V #43 is
