@@ -173,3 +173,26 @@ Latest lookup: Azure CLI is available and authenticated to subscription
 the historical App Service is not the selected host. The top of DEPLOYMENT
 provides one Cloud Shell block and one GitHub secret step. Those two owner
 actions remain outstanding under #37 until deployment and live checks succeed.
+
+## How changes land
+
+Use one issue per functional change, with explicit file ownership. Branch from
+current main, implement the change, run `npm run verify` from `BSA` once #46
+lands, and open a pull request. CI uses the same verification entry point;
+Playwright shards must collectively cover every blocking test. Until that
+command is delivered, retain `npm run check`, Vitest and the full production
+Playwright checks; do not claim a missing command already works.
+
+The Azure workflow creates or updates a pull-request preview when a valid
+deployment token and a Free preview slot are available, and closes it on PR
+closure. Post the actual preview URL, not an inferred URL. Merge when blocking
+checks are green; main deploys automatically, followed by a STATUS message with
+the verified live URL and commit. Target issue-to-live time for a small change
+is under one hour, not a correctness waiver or a CI timeout gate.
+
+Infrastructure closure is tracked in INFRA-DONE.md. Do not write "complete and
+frozen" until every checklist item has actual evidence. The current missing
+site/token, unverified preview/recovery and pending sharded-verifier work cannot
+be made true by documentation. Revisit settled hosting only for a functional
+requirement, with a decision record; do not weaken the strict CSP for speculation
+about future features.

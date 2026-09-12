@@ -26,8 +26,9 @@ $checkout = Join-Path ([System.IO.Path]::GetTempPath()) ('bsa-demo-' + [guid]::N
 git clone --depth 1 https://github.com/WilliamNg18/BSA.git $checkout
 if ($LASTEXITCODE -ne 0) { throw 'Repository download failed.' }
 Set-Location $checkout
+$template = Join-Path (Join-Path $checkout 'infra') 'staticwebapp.bicep'
 Invoke-DemoAz group create --name $group --location uksouth --output none
-Invoke-DemoAz deployment group create --resource-group $group --template-file .\infra\staticwebapp.bicep --parameters "name=$site" --query properties.outputs --output json
+Invoke-DemoAz deployment group create --resource-group $group --template-file $template --parameters "name=$site" --query properties.outputs --output json
 Invoke-DemoAz staticwebapp secrets reset-api-key --name $site --resource-group $group --output none
 Invoke-DemoAz staticwebapp secrets list --name $site --resource-group $group --query properties.apiKey --output tsv
 ```
@@ -54,6 +55,11 @@ The preflight job rejects a missing or blank token before checkout/build with
 Only Azure's upload step can establish whether a nonblank token is valid for
 the resource; no local token-shape heuristic claims to authenticate it. Upload
 failures retain their real diagnostic and add plain guidance to the summary.
+
+The PowerShell block is syntax-checked, and the template and reset command
+are maintained with the repository. **Recovery under ten minutes is a target,
+not a completed measured recovery:** provisioning/token access has not yet
+been exercised here. See [INFRA-DONE.md](INFRA-DONE.md) for exact open evidence.
 
 ## Verified hosting state: 12 September 2026
 

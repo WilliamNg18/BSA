@@ -696,3 +696,21 @@ page/console/CSP errors and no overflow. Thirty-nine audits retain incomplete
 color-contrast checks. No image binary or original source metadata was replaced.
 No old-build fallback capture or stateful 43-image rerun was needed. Completion
 is 2026-09-12T14:05:50.955Z on unchanged released runtime `82c18e4`.
+
+## 2026-09-12: Evidence-based infrastructure closure and fast verification
+
+Do not declare infrastructure complete while resource/token, preview, recovery
+or timing evidence is absent. INFRA-DONE records each criterion separately.
+Strict CSP and platform quotas cannot promise compatibility with unspecified
+future features; reopen only for an actual functional requirement.
+
+The coding-agent setup workflow belonged at repository root, not inside the
+nested application. Move it to the documented discovery path, preinstall the
+locked BSA dependencies with Node 22 and npm cache, and verify compiler
+availability before agent work. Use the standard hosted runner, not a paid
+upgrade. Measure the actual setup run before claiming minute-level readiness.
+
+Issue #46 owns one local/CI verification entry point and four Playwright shards,
+preserving every blocking test. End-to-end CI under fifteen minutes and small
+changes live within an hour are operating targets, not failure budgets or
+permission to skip checks. Existing ownership and reviewed PR flow remain.

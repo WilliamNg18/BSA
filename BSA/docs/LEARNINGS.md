@@ -730,3 +730,15 @@ Node's bundled zlib `1.3.1-e00f703` and Python zlib `1.3.1` produce different gz
 lengths even at level 9 for identical CSS bytes. The initial attempted equality
 check failed; retaining both method/version results and using Python's matching
 original method for the before/after comparison avoids a false size-change claim.
+
+## 2026-09-12: Discoverable cloud-agent setup
+
+The old setup YAML lived under BSA/.github/workflows, which GitHub does not use
+as the repository setup path. The root workflow now uses the required single
+copilot-setup-steps job and explicitly installs in BSA. Local YAML validation
+and compiler readiness passed; a real workflow run is still required.
+
+A generic bot-assignee probe returned 404, while historical PR #8 was actually
+authored by app/copilot-swe-agent. Neither result alone establishes current
+account entitlement or the startup time of a future agent. Keep configured
+preinstallation, observed execution and unverified platform access distinct.

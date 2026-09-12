@@ -1,0 +1,31 @@
+# Pre-installs dependencies in the GitHub Copilot coding agent's environment so it
+# can run `npm run check` and `npm run dev` immediately. The job name is fixed.
+name: Copilot Setup Steps
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+      - BSA/package.json
+      - BSA/package-lock.json
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: BSA/package-lock.json
+      - name: Preinstall locked application dependencies
+        run: npm ci --no-audit --no-fund
+        working-directory: BSA
+      - name: Confirm build tools are ready
+        run: node --version && npm --version && npm exec --no -- tsc --version
+        working-directory: BSA
