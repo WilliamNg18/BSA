@@ -762,3 +762,17 @@ unsharded and shards 1/4 through 4/4. Unique case IDs total 1,054. Shards contai
 264, 264, 263 and 263 cases; their union is exactly 1,054 with zero duplicates,
 omissions or unexpected IDs. These are inventory results, not browser passes.
 Public CI must supply actual execution counts and end-to-end duration.
+
+## 2026-09-12: Four-shard timing is execution evidence, not an inferred speedup
+
+Run 34700392502 completed all four `npm run verify` partitions in 465 seconds
+from workflow creation to final job completion. Shard totals match the proven
+1,054-case partition, and every check/unit stage passed. Report the 643 unique
+unit cases once while acknowledging four repeated executions. The slowest
+browser partition took 6.4 minutes and the fastest 2.9 minutes; equal case
+counts do not imply equal execution cost.
+
+No test body, scheduling guard, CSP or axe assertion changed to reach the
+target. Keep the former 15.1-minute unsharded browser measurement separate:
+its scope excludes other job stages, unlike the new 7m45 end-to-end figure.
+Do not turn either measurement into a hard timeout or universal speed promise.
