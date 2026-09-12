@@ -1,6 +1,13 @@
 # Infrastructure completion evidence
 
-## Current App Service migration evidence (#48)
+## Current App Service completion evidence (#48)
+
+Infrastructure is complete and frozen. No stream spends time on hosting, gates or tooling from here; all effort goes to the application.
+
+This bounded declaration covers the owner-selected App Service scope, not destructive disaster recovery, unlimited
+F1 capacity, live PR slots, future availability or automatic acceptance of later
+commits. The coordinator still merges final records and verifies the resulting
+latest-main deployment before the final ALL DONE message.
 
 The owner explicitly selected the existing App Service on 12 September 2026,
 superseding the SWA checklist below. The existing F1 Linux app/plan are in
@@ -18,15 +25,39 @@ https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
 - [x] Coding-agent setup workflow `34700428815` passed in 24 seconds
   from creation to completion (21-second job), with compiler readiness
   confirmed. This does not guarantee future model latency.
-- [ ] Deploy the clean committed portable package and verify its exact commit,
-  root/deep links, strict headers and browser round trip on the selected URL.
-  The old artifact's HTTP 200 without CSP does not satisfy this gate.
-- [ ] Complete main/manual OIDC workflow deployment after the coordinator's
-  initial local deployment; record the successful run and verified commit.
-- [ ] Exercise and measure recovery. Bicep describes the F1 plan/app/settings,
-  with optional identity/RBAC off by default; a template is not a recovery test.
+- [x] Latest [CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+  at `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed check, 695 unique
+  units/26 files (repeated by each shard), and 1,055 blocking browsers partitioned
+  264/264/264/263, zero quarantine. Creation `16:28:09Z` to update `16:34:34Z`
+  is 6m25s, an observed under-fifteen-minute verdict, not a timeout budget.
+- [x] Clean live `b813c6241cc084957a30c6bf48fdd65f623f33f6` passed all
+  [13 first-run checks](live-verification/appservice-b813c62.json), 26 exact
+  clean identities and six default-rule axe audits (three Off/three On),
+  zero violations. The separate mixed-mode same-history supplement passed
+  with four attempts and three human decisions. Root/deep links and strict
+  headers were actually observed; no full manual WCAG certification claimed.
+- [x] Automatic main [34704994346](https://github.com/WilliamNg18/BSA/actions/runs/34704994346)
+  and manual [34705843955](https://github.com/WilliamNg18/BSA/actions/runs/34705843955)
+  succeeded at `b813c62`; manual creation-to-update was 81 seconds.
+  Subsequent main [34705915808](https://github.com/WilliamNg18/BSA/actions/runs/34705915808)
+  succeeded at recovery merge `d1fbe85`. Federation uses immutable
+  owner/repository IDs and exact main-only subject, not a secret or wildcard.
+- [x] [Actual non-destructive recovery](https://github.com/WilliamNg18/BSA/issues/37#issuecomment-5647265424):
+  deployment `bsa-nondestructive-recovery-20260912`, correlation
+  `4479b2b2-f688-43ed-a8de-68daa4ad85ec`, Incremental state Succeeded.
+  UTC `16:35:46.5704919Z` to post-probe completion `16:37:08.6500791Z`
+  measured 82.08s. Reviewed what-if proposed no deletion/tag change; before/after
+  site/plan tags matched. F1 and existing identities were retained. Root,
+  claims, trace, strict headers and clean `b813c62` passed after apply.
+  This is configuration reapplication, **not deleted-resource disaster recovery**.
+- [x] PR #49 supplied an actual downloadable build artifact. PRs have
+  CI/artifacts, not live previews or F1 slots. This is the owner-selected
+  replacement for the superseded SWA preview requirement.
+- [x] Functional/accessibility gates remain blocking; gzip/copy/visual metrics
+  have no budgets. Public-reference approval, secret scanning/push protection,
+  no committed credentials and protected checkpoint/rollback policy remain.
 
-**Owner actions for me: none for current setup.** Coordinator owns actual Azure
+**Owner actions for me: none.** Coordinator owns actual Azure
 mutations and deployment. No PR live preview is promised: F1 has no slots.
 Any S1 upgrade requires explicit approval, not automatic spending.
 Root `hosting.config.json` preserves the strict browser policy; the packaged

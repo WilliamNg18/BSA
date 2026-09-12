@@ -6,7 +6,16 @@ ms.date: 2026-09-12
 
 # Current integration
 
-Current `main` after opacity repair #42, quarantine removal #40 and V #43 is
+Current base main after recovery #54/live evidence #55 is
+`d1f0bddc736ccec6b9ddbf9836c24188e7c954df`. Exact CI head
+`8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed 695 unique units and
+1,055 blocking browsers (34705318318). Actual live acceptance belongs to
+clean `b813c6241cc084957a30c6bf48fdd65f623f33f6`, not a later documentation
+commit. Runtime/source/dependencies/policy/Vite remain unchanged through this
+base. Final documentation merges and latest-main deployment verification
+are coordinator-owned; no self-merge or automatic rollback promotion.
+
+Historical `main` after opacity repair #42, quarantine removal #40 and V #43 is
 `c687a9eab181b02f4fca0eb667e8ab8f94468620`. Accepted application/test source is
 `82c18e49e7d1c765e5392b1bec5c028c8f89fd16`, matching tested head
 `f295d7f19363cd101af7401f0ba03188ee7d0b2b` (CI 34696637977:
@@ -24,8 +33,8 @@ opacity-repaired runtime. See PROGRESS for current scoped provenance, exact
 evidence and limitations; a documentation merge is not a new browser run.
 
 D delivers on `williamng18-final-acceptance-documentation`, rebased on main
-after V #43. Initial D #39 is merged; the coordinator serialises this scoped
-records refresh PR merge. D does not self-merge.
+after live evidence #55. Initial D #39 and refresh #45 are merged; the coordinator
+serialises this hosted closeout PR merge. D does not self-merge.
 The earlier generated D branch remains the pushed checkpoint, not an active
 acceptance branch. No empty checkpoint is claimed as a feature increment.
 
@@ -48,5 +57,6 @@ was cancelled; WilliamNg18 remains owner and the public-reference/security
 decisions remain in force. Do not move archive, rollback or checkpoint refs.
 
 Application/documentation completion does not promote a new rollback point
-or prove live hosting. Azure deployment remains owner-blocked under #37;
-no live URL or preview is asserted.
+or establish future availability. Actual App Service live acceptance is recorded
+in PROGRESS and live-verification at the exact tested release. F1 has no live
+PR preview slots; no outstanding SWA token/owner action remains.

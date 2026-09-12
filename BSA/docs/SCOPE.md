@@ -8,7 +8,17 @@ ms.date: 2026-09-12
 
 ## Current acceptance, 12 September 2026
 
-Current main `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` retains the complete
+Current hosted acceptance uses clean `b813c6241cc084957a30c6bf48fdd65f623f33f6`,
+with records/recovery base `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`.
+[CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+at `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed check, 695 unique units
+and 1,055 blocking browsers across four shards, zero quarantine, in 6m25s.
+[Live evidence](live-verification/appservice-b813c62.json) records 13/13 checks,
+26 clean identities and six axe audits (three Off/three On), zero violations,
+plus one separate passing same-history mixed-mode test. These are distinct
+from earlier screenshot and CI audit counts.
+
+Earlier main `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` retains the complete
 S/T/helper/Scene/Queue/R implementation and adds the bounded route-opacity
 contrast fix plus removal of three conditional quarantine tags. Exact R head
 `f295d7f19363cd101af7401f0ba03188ee7d0b2b` passed
@@ -21,8 +31,9 @@ capability foundation, unchanged except the explicit H repair. V's original
 the [scoped reproduction ledger](screens/route-opacity-parity/README.md)
 separates new-build settled parity from held-frame contrast acceptance.
 
-**Current totals: 17 Done, 1 In progress, 0 Not started, 18 rows.**
-I remains owner-run Azure deployment/verification (#37). J is delivered by V
+**Current totals: 18 Done, 0 In progress, 0 Not started, 18 rows.**
+I is accepted on the owner-selected existing App Service (#48 supersedes SWA),
+with live/main/manual OIDC and bounded recovery evidence. J is delivered by V
 PR #24 (merged `be623ab`) and D's authoritative task/memory/branch closeout.
 D's documentation is subject to coordinator PR merge, not hosted acceptance. The
 historical checkpoint below is preserved, not a second current checklist.
@@ -47,8 +58,8 @@ tests, not real clinical assurance, live services or full manual WCAG certificat
 | F Seven-state lifecycle/labels/actors/five pharmacies/six cases/Reset | **Done**, `898cda5` | `lifecycle-store.test.ts`, revision/bridge tests and `agent.test.ts`: immutable history, agent transition rejection, exact seeds/labels and Reset |
 | G Whole round trip/Follow/Switch side/both-side assertions | **Done**, `898cda5` | `lifecycle-ui.spec.ts`, `task13.spec.ts`: both modes, same ID at each transition, human-approved correction and final history. Two-minute story target/elapsedMs are informational, not performance gates |
 | H Header360-1920/controls/defaultOff/copy/motion/pain/accessibility | **Done**, `82c18e4`, route contrast fixed in `dc979a0` | `route-transition-contrast.spec.ts` holds 0/75/135/150ms frames, both themes/motion/Agent states; scoped 32 cases/40 unrestricted axe clear, then full 1,054 blocking cases pass. Existing keyboard/header matrices retained. Settled parity is not frame-safety proof; no manual WCAG certification |
-| I App Service root/headers/OIDC and actual hosting | **In progress**, #48 supersedes SWA #37 | Owner selected existing F1 App Service; coordinator configured OIDC and variables. Portable strict-header package and actual deployed commit require live verification. F1 has no slots; PRs receive CI/artifacts, not live previews. Local acceptance remains independent |
-| J Documentation/memory/progress/story/screens/known issues | **Done**, V PR #24 merged `be623ab`, D #17 documentation deliverable; scoped provenance follow-up | Original 107 reviewed captures/audits remain from `898cda5`; new route parity/build ledger identifies the opacity-fixed source without claiming all 107 recaptured. D owns final MEMORY/PROGRESS counts; Task 13 hosted criterion remains #37. Historical 103 images are separate |
+| I App Service root/headers/OIDC and actual hosting | **Done**, clean live `b813c62`, #48 supersedes SWA #37 | Actual root/deep links/strict headers/identity and both-mode round trips passed; automatic 34704994346/manual 34705843955 OIDC succeeded. Recovery Incremental apply plus unchanged tags/live checks passed in 82.08s, not destructive DR. F1 has no slots; actual PR CI/artifacts replace live previews |
+| J Documentation/memory/progress/story/screens/known issues | **Done**, V/D deliveries and hosted closeout | Original 107 reviewed captures/audits remain from `898cda5`; scoped 64-route reproduction does not relabel 43 held state images. Current MEMORY/PROGRESS/INFRA and live record distinguish source/CI/live/recovery evidence; final documentation merge/redeployment remains coordinator release work |
 
 Reference documents remain public by the owner's decision. Publication does not
 independently verify their figures. The agent gathers evidence/recommends, code

@@ -102,7 +102,13 @@ Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md) for the existing App Service,
 `infra/appservice.bicep`, OIDC variables and portable `BSA/dist` package.
 `deploy-appservice.yml` deploys main/manual releases; F1 has no PR slots.
 Root `hosting.config.json` is packaged with a static server and build provenance.
-Hosted deep links, strict headers and the actual commit require verification.
+Verified live site: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+Clean release `b813c6241cc084957a30c6bf48fdd65f623f33f6` passed 13/13
+live checks, 26 exact identities, six axe audits (three Off/three On, zero
+violations) and a separate same-history mixed-mode round trip. See the
+[source-pinned live record](docs/live-verification/README.md). Every later
+deployment must still verify its own commit, deep links and strict headers.
+Main/manual OIDC are verified; no owner token setup or live PR slots are needed.
 
 `npm run check` (typecheck, lint, build), `npm test` (Vitest), production browser
 crash/dead-control checks and zero-violation axe are blocking. There are no size
@@ -117,19 +123,26 @@ separates genuine limitations from historical evidence.
 [Current screenshots](docs/screens/integrated/README.md) include the exact
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
 [Requested scope](docs/SCOPE.md) tracks the eight-chapter implementation and
-the remaining documentation and hosted-verification responsibilities.
+the 18 accepted scope rows and bounded infrastructure evidence.
 [AGENTS](AGENTS.md) governs contributions.
 
 The owner cancelled the proposed account transfer and authorised public
 repository resumption on 12 September 2026. Reference material remains public
 by that decision; publication is not independent validation of its claims.
 The initial screenshots/checkpoint are preserved in Git history. Integrated
-source `898cda5` passed check, 607 units, 1,019 blocking browser tests and three
+source `898cda5` historically passed check, 607 units, 1,019 blocking browser tests and three
 separately run informational quarantine cases in
 [Actions run 34689966621](https://github.com/WilliamNg18/BSA/actions/runs/34689966621).
 Successful-run audit artifacts were not uploaded; no new deduplicated CI axe
 count is claimed. The [capture index](docs/screens/integrated/README.md) records
 the separate final visual evidence.
+
+Current [CI 34705318318](https://github.com/WilliamNg18/BSA/actions/runs/34705318318)
+at `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed check, 695 unique
+units in 26 files and 1,055 blocking browsers across four shards in 6m25s,
+with zero quarantine. Unit repeats across shards are not additional unique
+tests. [Infrastructure evidence](docs/INFRA-DONE.md) includes actual bounded
+configuration recovery, not a destructive disaster-recovery guarantee.
 
 No real prescriptions, patients, pharmacies, authentic tariff text, live model,
 capture integration, durable audit store, real operational queue or payment

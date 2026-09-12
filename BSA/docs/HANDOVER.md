@@ -1,18 +1,30 @@
 # Account transfer handover
 
-## Current hosting override: issue 48
+## Current hosted closeout: issue 48
 
 The owner now selects the existing App Service at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, not SWA. Group
 `rg-bsa-bsa-demo`, F1 Sweden Central, Node 24 remain unchanged. The coordinator
 has Azure login, site-scoped OIDC federation and the five GitHub variables.
-**Owner actions for me: none for setup.** It owns the committed-artifact deploy
-and live verification. Old HTTP 200 without CSP is not new-release acceptance.
+**Owner actions for me: none.** Clean `b813c6241cc084957a30c6bf48fdd65f623f33f6`
+passed 13/13 live checks, 26 exact identities, six axe audits (three Off/three
+On) with zero violations, and a separate same-history mixed-mode test.
+Durable evidence is in [live-verification](live-verification/README.md).
+Main/manual OIDC succeeded; 82.08-second non-destructive Incremental recovery
+plus unchanged tags and live checks is recorded in INFRA-DONE. This is not
+deleted-resource disaster recovery.
 Use `deploy-appservice.yml`, portable `hosting.config.json`/`server.mjs` and
 `build-info.json`; startup is `pm2 start /home/site/wwwroot/server.mjs --no-daemon`.
 F1 has no preview slots. PR #47's `npm run verify` and four-shard CI passed
 in 7m45s; setup workflow `34700428815` passed in 24 seconds. Do not alter those
 runners while migrating hosting. See DEPLOYMENT and INFRA-DONE for current facts.
+
+Current records base is `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`.
+CI 34705318318 passed 695 unique units/26 files and 1,055 blocking browsers
+across four shards in 6m25s, zero quarantine. Tasks 1-13 and scope 18 rows
+are accepted; PARITY's owner records the hosted row separately. Final ALL DONE
+is reserved for the coordinator after documentation merge, latest-main OIDC
+and fresh URL/commit verification. No SWA token reset or owner setup remains.
 
 ## Historical SWA owner actions and monitoring (superseded)
 
@@ -24,7 +36,9 @@ runners while migrating hosting. See DEPLOYMENT and INFRA-DONE for current facts
   Actions > New repository secret: `AZURE_STATIC_WEB_APPS_API_TOKEN`; paste
   the token and save. Never paste it in chat or code.
 
-These remain outstanding until a main deployment succeeds and the actual live
+Historical only: these actions were superseded, not executed as SWA setup.
+OIDC requires neither a resettable deployment token nor either owner action.
+At that earlier snapshot they remained outstanding until a main deployment succeeded and the actual live
 Overview, deep links, both modes and round trip are verified. Then mark them
 done, close #37 and complete Task 13/SCOPE I/PARITY 31. The coordinator checks
 every 15 minutes and dispatches the existing workflow once the token is present;
