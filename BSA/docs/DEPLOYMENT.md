@@ -1,166 +1,159 @@
-# Azure Static Web Apps deployment
+# App Service static deployment
 
-## Owner action 1: paste once into Azure Cloud Shell (PowerShell)
+## Current target and ownership
 
-Open [Azure Cloud Shell](https://shell.azure.com), select **PowerShell**, and
-paste this whole block. It selects the subscription currently verified for this
-demo, downloads the public repository into a new temporary directory, creates
-the resource group in UK South and the Free Static Web App in West Europe,
-resets its deployment token, then prints that token for the next step.
-If your Cloud Shell account cannot access this subscription, use the intended
-subscription ID from `az account list --output table`; do not select an unrelated
-corporate subscription. The block stops on a failed command.
+The owner explicitly selected the existing Linux App Service on 12 September
+2026, superseding the earlier Static Web Apps decision (#48).
 
-```powershell
-$ErrorActionPreference = 'Stop'
-function Invoke-DemoAz {
-    & az @args
-    if ($LASTEXITCODE -ne 0) { throw 'Azure command failed; review the error above before continuing.' }
-}
-$subscription = '8b02c7be-06b9-4d15-a916-eba62a775f02'
-$group = 'rg-bsa-demo'
-$site = 'bsa-demo'
-Invoke-DemoAz account set --subscription $subscription
-Invoke-DemoAz account show --query '{subscription:name,id:id}' --output table
-$checkout = Join-Path ([System.IO.Path]::GetTempPath()) ('bsa-demo-' + [guid]::NewGuid())
-git clone --depth 1 https://github.com/WilliamNg18/BSA.git $checkout
-if ($LASTEXITCODE -ne 0) { throw 'Repository download failed.' }
-Set-Location $checkout
-$template = Join-Path (Join-Path $checkout 'infra') 'staticwebapp.bicep'
-Invoke-DemoAz group create --name $group --location uksouth --output none
-Invoke-DemoAz deployment group create --resource-group $group --template-file $template --parameters "name=$site" --query properties.outputs --output json
-Invoke-DemoAz staticwebapp secrets reset-api-key --name $site --resource-group $group --output none
-Invoke-DemoAz staticwebapp secrets list --name $site --resource-group $group --query properties.apiKey --output tsv
+| Setting | Existing value |
+| --- | --- |
+| URL | https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ |
+| Subscription | `8b02c7be-06b9-4d15-a916-eba62a775f02` |
+| Resource group | `rg-bsa-bsa-demo` |
+| App | `bsa-bsa-demo-r2j2l3dxhtohy` |
+| Plan | `bsa-bsa-demo-r2j2l3dxhtohy-plan`, F1, capacity 1 |
+| Region / runtime | Sweden Central / `NODE|24-lts` |
+| Authentication | Disabled, anonymous static site; SCM/FTP basic credentials disabled |
+
+Keep this resource, URL, Free tier and runtime; do not recreate or delete them
+for a routine release. Deployment builds use the latest Node **20** patch, satisfying
+Vite's >=20.19 requirement; the existing serving runtime stays Node 24.
+This remains a browser-only synthetic demonstration. The Node process delivers
+static files, not business logic, model requests or payment calculations.
+
+**Owner actions for me: none for repository deployment setup.** The coordinator
+has authenticated Azure access and configured the OIDC identity/variables.
+It owns actual Azure mutations and the first deployment from a clean committed
+artifact. URL reachability alone is not proof of the current release: the old
+artifact returned HTTP 200 but lacked CSP. Current commit/header verification
+must succeed before hosted acceptance is claimed.
+
+## Portable artifact and startup
+
+From `BSA`, run `npm ci` then `npm run build`. `dist` contains:
+
+- `index.html` and fingerprinted assets, with the SPA rooted at `/`;
+- `server.mjs`, a dependency-free Node static server;
+- `hosting.config.json`, copied from the provider-neutral root policy;
+- `build-info.json`, containing the actual Git commit, UTC build time and
+  dirty-tree flag. Never identify a dirty artifact as a verified release.
+
+Package the **contents** of `dist` at the zip root, not a containing `dist`
+directory. No node_modules, source checkout or secrets belong in that zip.
+
+App Service settings/startup:
+
+```text
+SCM_DO_BUILD_DURING_DEPLOYMENT=false
+WEBSITE_RUN_FROM_PACKAGE=0
+pm2 start /home/site/wwwroot/server.mjs --no-daemon
 ```
 
-The final line is a credential. Copy it only into the repository secret below;
-do not paste it into chat, an issue, a source file, a screenshot or a build log.
-The reset invalidates any previous token for this Static Web App.
+PM2's built-in `serve --spa` does not provide the required custom CSP/security
+headers. Run the same tested static server **under PM2** instead of silently
+dropping the security policy or injecting unsafe inline styles. The server
+uses `PORT`, then `SERVER_PORT`, then 8080 and binds `0.0.0.0` on App Service.
+Local acceptance uses `PLAYWRIGHT_PORT` and binds only `localhost`.
 
-## Owner action 2: save the GitHub secret
+Root `hosting.config.json` preserves the exact self-only CSP, nosniff,
+referrer and frame headers. Client deep links return `index.html`; missing
+assets stay 404. Fingerprinted `/assets/` responses cache immutably for a year;
+HTML and build metadata use `no-store`. All response statuses carry the
+security headers. Server source, hidden paths and policy files are not public.
+`/build-info.json` intentionally exposes only non-secret release provenance.
 
-Open **WilliamNg18/BSA > Settings > Secrets and variables > Actions >
-New repository secret**. Name it **`AZURE_STATIC_WEB_APPS_API_TOKEN`**, paste
-the token from Cloud Shell, and select **Add secret**. If it already exists,
-edit that secret instead.
+## Main/manual workflow with OIDC
 
-The coordinator checks every 15 minutes and can dispatch deployment once the
-secret exists. To start it immediately yourself: **Actions > Azure Static Web
-Apps > Run workflow**, select **main**, then **Run workflow**. This manual
-trigger is already configured. Its successful summary prints the actual site
-URL and built commit.
+`.github/workflows/deploy-appservice.yml` runs on main pushes and manual
+dispatch **on main**. It does not deploy pull requests or create preview slots.
+The existing CI workflow and `npm run verify` remain the functional gates;
+this migration does not change their runner, four shards or test outcomes.
 
-The preflight job rejects a missing or blank token before checkout/build with
-`Deployment token missing or invalid; see docs/DEPLOYMENT.md`.
-Only Azure's upload step can establish whether a nonblank token is valid for
-the resource; no local token-shape heuristic claims to authenticate it. Upload
-failures retain their real diagnostic and add plain guidance to the summary.
+The following **repository variables**, not secrets, are configured:
 
-The PowerShell block is syntax-checked, and the template and reset command
-are maintained with the repository. **Recovery under ten minutes is a target,
-not a completed measured recovery:** provisioning/token access has not yet
-been exercised here. See [INFRA-DONE.md](INFRA-DONE.md) for exact open evidence.
+| Variable | Value |
+| --- | --- |
+| `AZURE_CLIENT_ID` | `c83aea33-0f59-40a2-9422-df596ed84da9` |
+| `AZURE_TENANT_ID` | `ab64b745-fa60-492a-8b66-5c3511563829` |
+| `AZURE_SUBSCRIPTION_ID` | Subscription above |
+| `AZURE_RESOURCE_GROUP` | Resource group above |
+| `AZURE_WEBAPP_NAME` | App above |
 
-## Verified hosting state: 12 September 2026
+The `bsa-github-deploy` user-assigned identity uses federation issuer
+`https://token.actions.githubusercontent.com`, subject
+`repo:WilliamNg18/BSA:ref:refs/heads/main`, audience `api://AzureADTokenExchange`.
+Website Contributor is scoped **only to this app**. The workflow requests
+`id-token: write`, uses `azure/login@v2`, and calls `az webapp deploy --type zip`.
+Missing identifiers fail preflight explicitly. No publish profile, basic-auth
+fallback, SWA token or long-lived Azure credential is used.
 
-`az staticwebapp list` in the authenticated subscription above returned **[]**.
-GitHub has no deployment-secret entry, no SWA workflow has succeeded, and the
-latest upload step was skipped before reaching Azure. Therefore the Static
-Web App does not exist in this verified subscription and is not deployed.
-This does not claim to inventory inaccessible subscriptions.
+After deploy, `verify-deployment.mjs` retries bounded cold-start probes and
+requires root, pharmacy claims and trace deep links to return the same SPA,
+all strict headers to match, and `/build-info.json` to match the clean workflow
+commit. The summary records the actual hostname and verified commit.
+This smoke check does not replace the browser round trip or accessibility gates.
 
-The historical `bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net` URL is an old
-App Service, not Static Web Apps; its current HTTPS probe timed out. Its group
-`rg-bsa-bsa-demo` still contains App Service/plan/identity resources, which this
-procedure does not alter or delete. They are not the selected hosting target.
+## Coordinator's first deployment from the committed branch
 
-The only hosting target is Azure Static Web Apps Free, at `/`. The application
-is in `BSA`; infrastructure and the authoritative `staticwebapp.config.json`
-are at repository root. Every production build copies that configuration into
-`BSA/dist`. Nothing provisions authentication, telemetry, Front Door, custom
-domains, a backend or another Azure service.
-
-## Alternative: local CLI setup
-
-Install Azure CLI if needed (`winget install -e --id Microsoft.AzureCLI` on
-Windows), install GitHub CLI, and sign in with `az login` and `gh auth login`.
-Select the intended subscription explicitly:
+Do not race this with a main workflow deployment. The coordinator first builds
+and deploys the clean, committed candidate using its current Azure login,
+verifies it, and then enables the main workflow through the reviewed merge.
 
 ```powershell
-az account set --subscription <your-subscription-id>
+# From the candidate repository root; select the verified subscription explicitly.
+az account set --subscription 8b02c7be-06b9-4d15-a916-eba62a775f02
+if ($LASTEXITCODE -ne 0) { throw 'Subscription selection failed' }
+# Stop on each failed command before continuing.
+Set-Location BSA
+npm ci
+if ($LASTEXITCODE -ne 0) { throw 'Dependency restore failed' }
+npm run build
+if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+if ((Get-Content .\dist\build-info.json -Raw | ConvertFrom-Json).dirty) { throw 'Commit the candidate before deploying' }
+$archive = Join-Path $env:TEMP ('bsa-site-' + [guid]::NewGuid() + '.zip')
+Compress-Archive -Path .\dist\* -DestinationPath $archive
+az webapp config set --resource-group rg-bsa-bsa-demo --name bsa-bsa-demo-r2j2l3dxhtohy --startup-file 'pm2 start /home/site/wwwroot/server.mjs --no-daemon'
+if ($LASTEXITCODE -ne 0) { throw 'Startup configuration failed' }
+az webapp deploy --resource-group rg-bsa-bsa-demo --name bsa-bsa-demo-r2j2l3dxhtohy --src-path $archive --type zip --clean true --restart true
+if ($LASTEXITCODE -ne 0) { throw 'Deployment failed' }
+node .\scripts\verify-deployment.mjs https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net (git rev-parse HEAD)
+if ($LASTEXITCODE -ne 0) { throw 'Hosted verification failed' }
 ```
 
-From repository root, create the resource and store its deployment token:
+Azure settings are coordinator-owned. Do not run those commands as an incidental
+local verification step. Preserve any failed response/startup log rather than
+claiming a successful deploy from a build or token-presence check.
 
-```powershell
-az group create --name rg-bsa-demo --location uksouth
-az deployment group create --resource-group rg-bsa-demo --template-file .\infra\staticwebapp.bicep --parameters name=bsa-demo --query properties.outputs
-az staticwebapp secrets list --name bsa-demo --resource-group rg-bsa-demo --query properties.apiKey --output tsv | gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --repo WilliamNg18/BSA
-```
+## Recovery infrastructure and provider limits
 
-Alternatively copy the token into repository Settings > Secrets and variables >
-Actions as `AZURE_STATIC_WEB_APPS_API_TOKEN`. Never commit it or include it in
-an issue, screenshot or command log. Resource-group creation and site deployment
-need appropriate Contributor access; reading the deployment token also needs
-the staticSites listSecrets action. Repository secret creation needs write access.
+`infra/appservice.bicep` describes the actual F1 Linux plan, app, anonymous
+access, HTTPS/TLS, startup and static deployment settings. Use a group-scoped
+what-if before any recovery apply. It is not executed by the deploy workflow.
+The deployment identity/federation/site-role bootstrap is optional and defaults
+**off** because those resources already exist. Its role-assignment name is
+parameterised to avoid creating a duplicate grant.
 
-The resource group is in UK South. The Free site is in West Europe, where
-Static Web Apps is offered. The template returns the HTTPS site URL.
+F1 has no deployment slots or Always On. PRs get CI and build artifacts, not
+fabricated live previews. Cold starts and Free-tier limits remain real platform
+constraints. Slots require an explicitly approved S1-or-higher upgrade; no
+automatic spend, tier change or separate hosting service is introduced.
+Recovery duration has not been measured, so a ten-minute target is not a pass.
 
-## Automatic after setup
+## Local verification and historical hosting
 
-Pushes to `main` build with `npm ci` and `npm run build`, then deploy `BSA/dist`.
-Pull requests create or update previews, and closing a pull request removes its
-preview. Free-tier preview quotas and fork pull requests without access to
-repository secrets remain platform limitations; CI still verifies their code.
+`npm run verify` runs the same check/unit/browser phases as CI. For a narrow
+already-built header check use `tests/e2e/production-artifact.config.ts`;
+default port is 4173, `PLAYWRIGHT_PORT=4183` isolates another run. The existing
+`serve-production.mjs` entry point delegates to the packaged server source.
+No byte, performance, copy or screenshot metric becomes a blocking gate.
 
-If setup is not complete, the workflow still builds and fails at the deployment
-prerequisite with a named-secret error. After setup, rerun that failed workflow
-or run `gh workflow run azure-static-web-apps.yml --repo WilliamNg18/BSA`.
+The former SWA-only policy, absent SWA token and unsuccessful SWA workflow
+records remain historical evidence, not current owner instructions. Root
+`staticwebapp.config.json` and its active workflow are removed. The old template
+is preserved only in `infra/alternatives/`; switching back requires a new
+explicit hosting decision. The owner-approved public reference material and
+all checkpoint/rollback refs remain untouched.
 
-CI runs typecheck, lint, production build, Vitest and the production browser
-regressions including crash/dead-control/six-outcome coverage and zero-violation
-axe checks. No size or performance budget exists. A single CI summary line
-reports gzip size. Word counts, Lighthouse scores and screenshot differences
-are informational. Proven flaky tests require an issue and quarantine tag;
-their separate run is non-blocking. Failed-run artifact upload is best-effort
-with one-day retention, so storage/upload failures do not fail acceptance.
-
-## Provider limits, not project gates
-
-All pull requests trigger preview upload and close events trigger cleanup.
-The Free service permits only three concurrent preview environments, 250 MB
-per environment and 500 MB total; these provider quotas cannot be removed in
-repository configuration. Tokenless/fork pull requests cannot deploy a preview.
-This does not block application work or require changing the settled host.
-Merge and close completed stream PRs promptly to release preview slots.
-
-GitHub Actions is enabled and permits all actions. Billing usage and stored
-artifact totals were readable, but those do not prove unlimited minutes,
-remaining storage or absence of an account-level spending cap. No paid plan,
-billing limit, old artifact or live resource was changed. Duplicate CI runs are
-cancelled, successful-run artifacts are not uploaded, and uploads cannot fail CI.
-See [SWA quotas](https://learn.microsoft.com/azure/static-web-apps/quotas).
-
-## Verification and current provisioning status
-
-Open `/`, `/pharmacy/claims` and `/case/EX-24112/trace` directly and reload each.
-Check response headers and asset caching on the deployed host. The strict
-self-only CSP must also be verified there, not inferred from Vite preview.
-
-For local header-enforced acceptance, run `npm run test:a11y` from `BSA`.
-It builds production assets and serves the emitted global headers on port 4183.
-The default `npm run test:e2e` uses the same server on port 4173; set
-`$env:PLAYWRIGHT_PORT = "4183"` in PowerShell for an isolated functional run.
-The server fails on a busy port rather than attaching to another stream.
-`tests/e2e/production-artifact.config.ts` applies the same headers to an already
-built artifact without rebuilding. The optional development-only lifecycle
-configuration excludes the production-header spec; default CI does not exclude it.
-This verifies browser behaviour under the configured policy, not Azure resource
-provisioning, platform routing/caching parity or a deployed HTTPS endpoint.
-
-Historically, at preparation on 11 September 2026, Azure CLI was unavailable, Azure discovery
-returned multiple subscriptions without a default, and GitHub had no repository
-deployment secret. No subscription was guessed, no resource was created and no
-deployment URL was claimed. The newer authenticated resource lookup and
-copy-and-paste owner actions at the top supersede that historical availability.
+References: [Node App Service configuration](https://learn.microsoft.com/azure/app-service/configure-language-nodejs?pivots=platform-linux),
+[ZIP deployment](https://learn.microsoft.com/azure/app-service/deploy-zip),
+[OIDC with GitHub Actions](https://learn.microsoft.com/azure/app-service/deploy-github-actions?tabs=openid).

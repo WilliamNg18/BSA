@@ -121,8 +121,13 @@ record preserve all six canonical outcomes. Follow and Switch side retain the
 same item. Pharmacy On reasons are operator-approved drafts, labelled as such;
 the original history and raw Off comparison are preserved.
 
-Azure Static Web Apps Free is the only hosting target; production and local
-browser tests use `/`. Root configuration is emitted into BSA/dist. The
+The existing Azure App Service F1 in Sweden Central is the owner-selected
+hosting target (issue #48 supersedes SWA). Production and local browser tests
+use `/`. Root `hosting.config.json`, a portable static server and Git build-info
+are emitted into BSA/dist. PM2 runs the server to preserve strict headers;
+built-in PM2 serve lacks those headers. Main/manual OIDC deployment uses the
+configured five repository variables; no deployment credential in the bundle.
+F1 has no slots; PRs get CI/artifacts, not live previews. The
 project has no byte/performance budgets. Gzip size, word counts, Lighthouse and
 screenshot differences are informational; typecheck, lint, build, units,
 crash/control/six-outcome tests and axe block.
@@ -132,7 +137,7 @@ Public CI 34696637977 passed at exact head
 match accepted main `82c18e4`; V #43 is documentation-only. The earlier
 1,019 blocking plus three informational result is historical, not current.
 Do not infer CI-wide axe/CSP artifact totals from V's scoped reports.
-Current build evidence is in docs/screens/route-opacity-parity: 203,721 bytes
+Historical frontend capture-build evidence is in docs/screens/route-opacity-parity: 203,721 bytes
 across all four independently gzipped resources using the original Python
 method (previously 203,723). The separately recorded Node level-9 variant is
 203,964 bytes; never mix compressor methods. All sizes are informational,
@@ -161,38 +166,38 @@ the current gates and the owner's public-repository resumption.
 
 If anything blocks, stops, or needs an action only the owner can take, post it in the chat immediately as a STATUS message with the exact steps, without waiting for the next scheduled update. Never let a blocker sit silently. Every STATUS message includes an 'Owner actions for me' line, or 'none'. ALL DONE is posted only when every task, every scope row and the live-site verification are complete.
 
-Poll deployment-secret presence and Actions every 15 minutes without printing
-secret values. Do not repeatedly dispatch while the secret is absent. Once it
-exists, dispatch the existing main workflow unless an equivalent deployment
-is already running or succeeded, then verify the actual live site and commit.
+Monitor the selected App Service deployment and Actions without printing
+credentials. Do not race coordinator local deployment with the main workflow.
+OIDC identifiers are repository variables, not a SWA deployment token.
+Verify actual build-info commit, root/deep links and strict headers after deploy.
 Completed streams remain delivered; do not invent work or rerun accepted tests
 merely to describe them as busy.
 
-Latest lookup: Azure CLI is available and authenticated to subscription
-`8b02c7be-06b9-4d15-a916-eba62a775f02`. Static Web Apps list returned empty;
-the historical App Service is not the selected host. The top of DEPLOYMENT
-provides one Cloud Shell block and one GitHub secret step. Those two owner
-actions remain outstanding under #37 until deployment and live checks succeed.
+Latest owner direction: use `bsa-bsa-demo-r2j2l3dxhtohy` in `rg-bsa-bsa-demo`,
+subscription `8b02c7be-06b9-4d15-a916-eba62a775f02`. Azure login works; the
+coordinator created the deployment identity, main-branch federation, site-only
+Website Contributor grant and five GitHub variables. Owner actions for setup:
+none. The old live artifact returns HTTP 200 without CSP; that is not acceptance
+of the new strict-header package. DEPLOYMENT records the actual startup and
+commit-verification steps; coordinator owns Azure mutations.
 
 ## How changes land
 
 Use one issue per functional change, with explicit file ownership. Branch from
-current main, implement the change, run `npm run verify` from `BSA` once #46
-lands, and open a pull request. CI uses the same verification entry point;
-Playwright shards must collectively cover every blocking test. Until that
-command is delivered, retain `npm run check`, Vitest and the full production
-Playwright checks; do not claim a missing command already works.
+current main, implement the change, run `npm run verify` from `BSA`, and open a
+pull request. PR #47 delivered the same entry point for local and four-shard CI,
+with an observed successful verdict in 7m45s. Shards must collectively cover
+every blocking test; this hosting migration does not alter them.
 
-The Azure workflow creates or updates a pull-request preview when a valid
-deployment token and a Free preview slot are available, and closes it on PR
-closure. Post the actual preview URL, not an inferred URL. Merge when blocking
+The App Service workflow deploys main/manual builds using OIDC. F1 has no
+deployment slots; PR build artifacts are not live previews. Merge when blocking
 checks are green; main deploys automatically, followed by a STATUS message with
 the verified live URL and commit. Target issue-to-live time for a small change
 is under one hour, not a correctness waiver or a CI timeout gate.
 
 Infrastructure closure is tracked in INFRA-DONE.md. Do not write "complete and
 frozen" until every checklist item has actual evidence. The current missing
-site/token, unverified preview/recovery and pending sharded-verifier work cannot
-be made true by documentation. Revisit settled hosting only for a functional
+verified-release/recovery evidence cannot be made true by documentation.
+Revisit hosting only for an explicit owner decision or functional
 requirement, with a decision record; do not weaken the strict CSP for speculation
 about future features.

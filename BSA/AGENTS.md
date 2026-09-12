@@ -1,6 +1,6 @@
 # Instructions for coding agents and contributors
 
-This repository holds the **Prescription Exception Case Builder**, a proof of concept of a governed AI agent supporting prescription exception handling at NHS Business Services Authority (NHSBSA). It is a static React application on synthetic data, hosted only on Azure Static Web Apps. Read this file first, then `docs/SPEC.md` (what the application does), `docs/TASK.md` (what to build next) and `docs/KNOWN-ISSUES.md` (what is wrong now).
+This repository holds the **Prescription Exception Case Builder**, a proof of concept of a governed AI agent supporting prescription exception handling at NHS Business Services Authority (NHSBSA). It is a static React application on synthetic data, delivered by the existing Azure App Service. Read this file first, then `docs/SPEC.md` (what the application does), `docs/TASK.md` (what to build next) and `docs/KNOWN-ISSUES.md` (what is wrong now).
 
 ## The one rule that governs everything
 
@@ -17,7 +17,7 @@ Any change that lets the "agent" price an item, change a case state, bypass the 
 - **The gate is code.** `complianceGate` in `src/lib/domain/rules.ts` must stay a pure function the interpretation step cannot influence. Confidence is the five structural signals, never a self-reported percentage.
 - **Accessibility is a requirement**: WCAG 2.2 AA contrast, full keyboard operability, visible focus, correct names and roles, `aria-live` on the trace replay, reduced-motion support, no meaning carried by colour alone.
 - **UK English.** No em dashes in interface copy. No vendor or product branding in the interface (the Architecture page's production mapping is the one place service names belong).
-- **Azure Static Web Apps only.** Vite base and router basename are `/`. Root `staticwebapp.config.json` supplies deep-link fallback and security headers. No other hosting or authentication service.
+- **Existing Azure App Service.** Vite base and router basename are `/`. Root `hosting.config.json` and the packaged static server supply deep-link fallback and strict headers. No business/model backend, added authentication service or unapproved tier change. See issue #48 for the explicit superseding hosting decision.
 - **Gates.** Only check (typecheck, lint, build), Vitest, browser crash/dead-control/six-outcome regressions and zero-violation axe block. No byte or performance budgets. CI reports gzip size once as information; word counts, Lighthouse and screenshot differences are informational. Proven flakes need an issue and `@quarantine` tag.
 
 ## Stack and layout
@@ -33,7 +33,7 @@ src/
   components/ui/   shadcn primitives (edit only to fix a defect; do not restyle here, restyle through tokens and className)
   pages/           one file per route
 docs/              SPEC.md, TASK.md, KNOWN-ISSUES.md
-../.github/workflows  azure-static-web-apps.yml (hosting), ci.yml (verification)
+../.github/workflows  deploy-appservice.yml (hosting), ci.yml (verification)
 ```
 
 ## Commands

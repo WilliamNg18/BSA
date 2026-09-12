@@ -802,3 +802,34 @@ destination's exact named heading and the Operations trigger's focus, then
 keep the original ArrowDown, menu-item, End/Home, Enter and CSP/axe assertions.
 Three unchanged-timeout repeats of the corrected case passed under strict
 production headers in 58.3 seconds. No application or overlay code changed.
+
+## 2026-09-12: Portable static delivery preserves hosting guardrails
+
+An old App Service returning 200 is not proof of the required deployed contract:
+the coordinator observed no CSP on its PM2 built-in static response. Run the
+same dependency-free header server locally and on App Service under PM2.
+Package it beside its policy so it does not rely on a repository-relative path
+that is absent from a dist-only ZIP deployment.
+
+Separate Node build version from the existing serving runtime; a Node 20
+workflow does not authorise downgrading the actual Node 24 app. Separate the
+existing identity grant from optional recovery bootstrap to avoid duplicate
+site-role assignments. F1 cannot supply slots, regardless of PR workflow
+syntax. Keep local/browser verification and deployed-commit verification
+separate, and preserve failures rather than treating a build as a release.
+
+Protect private static-server files by resolved and canonical filesystem paths,
+not only the request spelling. Review found repeated or encoded leading slashes
+could bypass the exact policy URL denial. Both lexical resolution and realpath
+now deny protected files, including an in-root directory symlink alias. Six raw
+HTTP regressions cover those spellings for policy and server source; containment
+and all public-file checks remain unchanged.
+
+PM2's fork-mode ESM loader imports `pm_exec_path` while retaining its container
+in `argv[1]`. The initial direct-entry-only guard therefore imported without
+starting a listener, despite passing `node server.mjs` checks. A local
+PM2-shaped import of the exact packaged artifact confirmed zero listeners.
+Accept only an exact resolved match of either entry path to this module.
+Positive fork-style HTTP/CSP and negative import-only tests prevent both
+missing startup and accidental double startup by another PM2 application.
+This correction does not itself establish a successful hosted restart.

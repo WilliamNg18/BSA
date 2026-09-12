@@ -8,8 +8,10 @@ attributed, not presented as independently verified measurements.
 > The agent gathers evidence and recommends; deterministic code validates and
 > calculates; a human decides. Nothing here calculates or approves a payment.
 
-**Live demo:** Azure Static Web Apps URL pending deployment. The site is served
-at `/`; no live URL is claimed until deployment succeeds.
+**Selected demo URL:** https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/
+on the existing Azure App Service F1. The owner selected this target in #48.
+The old artifact responds, but the new release is not accepted until its
+`build-info.json` commit, strict headers and deep links are verified.
 
 The application is in [`BSA`](BSA). To run it:
 

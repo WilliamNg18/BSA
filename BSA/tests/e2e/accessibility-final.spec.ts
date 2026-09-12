@@ -5,7 +5,7 @@ import { captureJson, expect, test as base } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 
-const hosting = JSON.parse(readFileSync(new URL("../../../staticwebapp.config.json", import.meta.url), "utf8")) as {
+const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
 };
 

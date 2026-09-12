@@ -6,8 +6,8 @@ description: Synthetic prescription exception investigation, shared lifecycle an
 A static demonstration of evidence gathering for prescription exceptions at
 NHS Business Services Authority. React and TypeScript run locally in the browser
 with synthetic cases, scripted interpretation and deterministic guardrails.
-**Azure Static Web Apps Free at `/` is the only hosting target. No live URL or
-provisioned deployment is claimed.**
+**The owner-selected existing Azure App Service F1 delivers the site at `/`.
+Each release must verify its actual build commit and strict headers.**
 
 > The agent gathers evidence and recommends. Deterministic code validates and
 > calculates. A human decides. The prototype does not calculate or approve payments.
@@ -98,12 +98,11 @@ service; offline reload is not guaranteed.
 
 ## Deployment and gates
 
-Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md) for explicit subscription selection,
-the root `infra/staticwebapp.bicep` and the repository deployment secret. No
-subscription was selected, no resource provisioned and no token supplied.
-After owner setup, the workflow deploys `BSA/dist` on `main` and creates eligible
-pull-request previews. Root `staticwebapp.config.json` is copied into the build.
-Hosted deep links and the strict CSP still require verification on that host.
+Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md) for the existing App Service,
+`infra/appservice.bicep`, OIDC variables and portable `BSA/dist` package.
+`deploy-appservice.yml` deploys main/manual releases; F1 has no PR slots.
+Root `hosting.config.json` is packaged with a static server and build provenance.
+Hosted deep links, strict headers and the actual commit require verification.
 
 `npm run check` (typecheck, lint, build), `npm test` (Vitest), production browser
 crash/dead-control checks and zero-violation axe are blocking. There are no size

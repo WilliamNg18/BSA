@@ -7,15 +7,25 @@ import tailwindcss from "@tailwindcss/vite";
 import { runtimeCss } from "./build/runtime-css";
 import { radixTreeShaking } from "./build/radix-tree-shaking";
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 
 const routerRoot = dirname(createRequire(import.meta.url).resolve("react-router/package.json"));
 
 export default defineConfig(({ command }) => ({
   base: "/",
   plugins: [runtimeCss(fileURLToPath(new URL(".", import.meta.url))), radixTreeShaking(), react(), tailwindcss(), {
-    name: "static-web-app-configuration",
+    name: "portable-static-delivery",
     generateBundle() {
-      this.emitFile({ type: "asset", fileName: "staticwebapp.config.json", source: readFileSync(fileURLToPath(new URL("../staticwebapp.config.json", import.meta.url))) });
+      const cwd = fileURLToPath(new URL(".", import.meta.url));
+      const commit = execFileSync("git", ["rev-parse", "HEAD"], { cwd, encoding: "utf8" }).trim();
+      if (!/^[a-f0-9]{40}$/.test(commit)) throw new Error("Build requires an exact Git commit");
+      this.emitFile({ type: "asset", fileName: "hosting.config.json", source: readFileSync(fileURLToPath(new URL("../hosting.config.json", import.meta.url))) });
+      this.emitFile({ type: "asset", fileName: "server.mjs", source: readFileSync(fileURLToPath(new URL("./scripts/static-server.mjs", import.meta.url))) });
+      this.emitFile({ type: "asset", fileName: "build-info.json", source: JSON.stringify({
+        commit,
+        builtAt: new Date().toISOString(),
+        dirty: execFileSync("git", ["status", "--porcelain"], { cwd, encoding: "utf8" }).trim().length > 0,
+      }, null, 2) });
     },
   }],
   resolve: {
