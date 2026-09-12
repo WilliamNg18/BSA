@@ -802,3 +802,18 @@ destination's exact named heading and the Operations trigger's focus, then
 keep the original ArrowDown, menu-item, End/Home, Enter and CSP/axe assertions.
 Three unchanged-timeout repeats of the corrected case passed under strict
 production headers in 58.3 seconds. No application or overlay code changed.
+
+## 2026-09-12: Portable static delivery preserves hosting guardrails
+
+An old App Service returning 200 is not proof of the required deployed contract:
+the coordinator observed no CSP on its PM2 built-in static response. Run the
+same dependency-free header server locally and on App Service under PM2.
+Package it beside its policy so it does not rely on a repository-relative path
+that is absent from a dist-only ZIP deployment.
+
+Separate Node build version from the existing serving runtime; a Node 20
+workflow does not authorise downgrading the actual Node 24 app. Separate the
+existing identity grant from optional recovery bootstrap to avoid duplicate
+site-role assignments. F1 cannot supply slots, regardless of PR workflow
+syntax. Keep local/browser verification and deployed-commit verification
+separate, and preserve failures rather than treating a build as a release.

@@ -1,6 +1,44 @@
 # Infrastructure completion evidence
 
-**Not complete or frozen.** Application acceptance is established, but the
+## Current App Service migration evidence (#48)
+
+The owner explicitly selected the existing App Service on 12 September 2026,
+superseding the SWA checklist below. The existing F1 Linux app/plan are in
+`rg-bsa-bsa-demo`, Sweden Central, with Node 24 and App Service authentication
+disabled (anonymous public access allowed). HTTPS and disabled SCM basic
+credentials are retained. URL:
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+
+- [x] Coordinator reports Azure sign-in and existing resource discovery.
+- [x] Coordinator created UAMI deployment identity, main-branch federation,
+  site-scoped Website Contributor and five non-secret GitHub variables.
+- [x] PR #47 delivered `npm run verify` and four-shard CI; observed PASS
+  in 7m45s, with 643 unique units and 1,054 browser tests partitioned across
+  the shards. Hosting migration leaves that workflow and runner untouched.
+- [x] Coding-agent setup workflow `34700428815` passed in 24 seconds
+  from creation to completion (21-second job), with compiler readiness
+  confirmed. This does not guarantee future model latency.
+- [ ] Deploy the clean committed portable package and verify its exact commit,
+  root/deep links, strict headers and browser round trip on the selected URL.
+  The old artifact's HTTP 200 without CSP does not satisfy this gate.
+- [ ] Complete main/manual OIDC workflow deployment after the coordinator's
+  initial local deployment; record the successful run and verified commit.
+- [ ] Exercise and measure recovery. Bicep describes the F1 plan/app/settings,
+  with optional identity/RBAC off by default; a template is not a recovery test.
+
+**Owner actions for me: none for current setup.** Coordinator owns actual Azure
+mutations and deployment. No PR live preview is promised: F1 has no slots.
+Any S1 upgrade requires explicit approval, not automatic spending.
+Root `hosting.config.json` preserves the strict browser policy; the packaged
+zero-dependency static server runs under PM2 because built-in PM2 serve cannot
+emit that policy. No business/model backend or frontend behaviour changes.
+
+## Historical SWA checklist (superseded, not current instructions)
+
+The following records preserve the earlier target and its uncompleted evidence.
+They are not commands to create SWA, reset a token or alter the current target.
+
+**Historical: not complete or frozen.** Application acceptance was established, but the
 resource/token/live checks and several operational measurements remain open.
 Do not substitute targets, workflow definitions or old App Service evidence
 for actual Static Web Apps deployment.

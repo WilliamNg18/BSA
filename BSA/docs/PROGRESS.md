@@ -28,6 +28,43 @@ runner, e2e body, permissions or blocking check changes. Workflow YAML parsed;
 correction. Actual artifact publication still requires the proposal's PR run.
 No local full browser rerun was started for this workflow-only addition.
 
+## Issue #48 repository hosting migration
+
+The owner-selected existing App Service supersedes the SWA target. This
+increment packages the same frontend with provider-neutral `hosting.config.json`,
+a dependency-free `server.mjs` and actual Git `build-info.json`. PM2 runs that
+server rather than its built-in static serving, which lacked the strict CSP
+on the coordinator's old live response. No frontend/domain/store changes.
+
+Repository changes include main/manual OIDC deployment, zip-root packaging,
+postdeploy root/deep-link/header/commit checks, F1 recovery Bicep with optional
+identity/RBAC off by default, and an explicitly unselected SWA template under
+`infra/alternatives`. Current hosting documents now name the real App Service;
+older SWA evidence is labelled historical. CI's four shards and `verify.mjs`
+remain byte-for-byte unchanged by this migration.
+
+Local check passed. All **666 units in 24 files passed**, including standalone
+server deep links, exact headers, MIME/immutable caching/HEAD parity, private
+metadata/missing-asset denial, malformed-path rejection and both App Service
+port variables binding `0.0.0.0`. The targeted production run passed **18
+tests in 4.4 minutes**: existing Follow/keyboard/modal checks and a packaged
+build API guard. Its **23 unrestricted axe reports and 17 CSP reports have
+zero violations**, excluding attachment copies. Port 4183 was released.
+Bicep compiled without warnings/errors and workflow YAML parsed locally.
+
+The first compile emitted a conditional-identity nullability warning, corrected
+using the same provisioning condition before the clean compile. Initial units
+numbered 664 before the two App Service port tests were added. No Azure resource
+was mutated or deployment performed by this stream. The coordinator must
+deploy from a clean committed artifact and verify the actual release before
+hosted completion; repository configuration is not evidence of that deployment.
+
+Build command: `cd BSA; npm ci; npm run build`. Exact startup:
+`pm2 start /home/site/wwwroot/server.mjs --no-daemon`. Contents of dist, not its
+parent directory, form the ZIP root. `/build-info.json` must identify the expected
+commit and `dirty: false`. Local build before commit truthfully records dirty;
+the coordinator's release build must not.
+
 ## Issue #46 measured four-shard verification
 
 [Public CI 34700392502](https://github.com/WilliamNg18/BSA/actions/runs/34700392502)

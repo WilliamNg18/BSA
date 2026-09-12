@@ -364,12 +364,12 @@ Automated axe is necessary, not proof of full manual conformance.
 
 ## 13. Hosting and verification
 
-Azure Static Web Apps Free at root `/` is the only target. Root
-`staticwebapp.config.json` is emitted to `BSA/dist`; SPA deep links and security
-headers belong to that host. No intended subscription or token is configured
-and no live URL is claimed. See [DEPLOYMENT.md](DEPLOYMENT.md).
-Owner token/resource setup and actual hosted verification are tracked in
-[#37](https://github.com/WilliamNg18/BSA/issues/37), separate from local acceptance.
+The owner-selected existing Azure App Service F1 serves root `/` (issue #48,
+superseding SWA). Root `hosting.config.json`, a static server and Git build-info
+are emitted to `BSA/dist`; SPA deep links and strict headers are preserved.
+Main/manual deployment uses OIDC, not a publish-profile or SWA token. F1 has no
+PR slots. See [DEPLOYMENT.md](DEPLOYMENT.md) for the verified target and separate
+actual hosted-release verification.
 
 Blocking: typecheck, lint, build, Vitest, production crash/dead-control browser
 checks and zero-violation axe. There are no size or performance budgets.

@@ -41,7 +41,7 @@ in the pull request instead. A blocked or unverified check is not a pass.
 7. Verify synthetic disclosures, the principle and boundary tags. Check UK
    English, no em dashes in interface copy, and no vendor branding outside the
    architecture section. Never infer WCAG compliance from axe alone.
-8. Check the deployed Azure Static Web Apps home and a trace deep link in a fresh
+8. Check the deployed Azure App Service home and a trace deep link in a fresh
    unauthenticated browser context. A local preview does not prove deployment.
    Require check, units, crash/control/six-outcome regressions and zero-violation
    axe. There are no size or performance budgets. Gzip size, word counts,

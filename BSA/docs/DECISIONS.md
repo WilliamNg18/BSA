@@ -748,3 +748,37 @@ cannot conceal verification failure or manufacture a download URL. Link only
 the successful action's artifact URL and label it as a build, not a deployment.
 Keep contents:read permissions and normal pull_request execution; no repository
 write access, fork-secret exposure, PR comment token or live preview slot.
+
+## 2026-09-12: Issue 48 selects the existing App Service
+
+The owner's explicit new instruction supersedes SWA-only hosting. Preserve
+`bsa-bsa-demo-r2j2l3dxhtohy` and its URL, F1 plan, Sweden Central location,
+Node 24 runtime and anonymous access. Node 20 (latest patch, >=20.19) is used
+only for the requested deployment build. No tier change, slot, new backend,
+telemetry or frontend/business-code change is authorised.
+
+PM2 built-in static serving does not emit the established CSP/custom headers;
+the coordinator's old live HTTP 200 also lacked CSP. Package the existing
+tested static-serving behaviour as dependency-free `server.mjs` and run it
+under PM2. This necessary adaptation preserves the security contract rather
+than weakening headers or injecting an unsafe shim. Rename the root policy to
+`hosting.config.json`; keep all CSP directives identical. Bind `PORT` or
+`SERVER_PORT` on `0.0.0.0` in App Service, localhost with PLAYWRIGHT_PORT in tests.
+
+Build provenance records the actual Git HEAD, dirty flag and UTC time. Reject
+dirty or wrong-commit artifacts in the hosted release check. Zip the contents
+of dist, including the standalone server and policy, not the checkout or
+node_modules. Hide server source/policy/hidden paths from HTTP; build-info is
+public non-secret provenance. Missing assets remain 404, SPA routes fall back,
+and fingerprinted assets use immutable caching.
+
+Use main/manual OIDC with site-scoped Website Contributor and the existing
+UAMI/federation. Five public identifiers live in repository variables; no
+publish-profile or SWA token is used. Optional Bicep identity/RBAC bootstrap
+defaults off because the grant already exists. F1 has no preview slots; PRs
+receive CI/artifacts. Any S1 slot upgrade is a future explicit cost decision.
+
+The coordinator owns all Azure mutations and initial committed-artifact
+deployment before the main workflow triggers. Repository migration does not
+claim that live release/recovery checks have occurred. Preserve #47's verifier
+and four-shard CI; historical SWA records remain explicitly historical.

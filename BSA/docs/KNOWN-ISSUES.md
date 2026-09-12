@@ -27,12 +27,12 @@ attributed to existing pricing, not proof of a payment service.
 
 ## Owner-run hosting verification remains open
 
-Azure Static Web Apps Free at `/` is the only target. No intended subscription,
-resource, replacement deployment token or current live URL is verified here.
-[#37](https://github.com/WilliamNg18/BSA/issues/37) tracks owner setup and actual
-hosted checks using [DEPLOYMENT.md](DEPLOYMENT.md). Keep credentials in Azure
-and repository secrets, never documentation or the static bundle. Free permits
-three concurrent preview environments; a PR trigger is not proof of a preview.
+Issue #48 supersedes the earlier SWA target with the existing App Service F1
+at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. The coordinator verified
+the resource and configured OIDC, but the old HTTP 200 response lacks CSP.
+Verify the new packaged server's actual build commit, headers and deep links
+before hosted acceptance. See [DEPLOYMENT.md](DEPLOYMENT.md). No publish profile
+or SWA token is needed. F1 has no deployment slots; PR artifacts are not previews.
 
 The account transfer was cancelled on 12 September 2026. WilliamNg18 remains
 owner; repository and approved reference material are public by explicit

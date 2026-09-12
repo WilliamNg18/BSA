@@ -1,6 +1,20 @@
 # Account transfer handover
 
-## Outstanding owner actions and active monitoring
+## Current hosting override: issue 48
+
+The owner now selects the existing App Service at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, not SWA. Group
+`rg-bsa-bsa-demo`, F1 Sweden Central, Node 24 remain unchanged. The coordinator
+has Azure login, site-scoped OIDC federation and the five GitHub variables.
+**Owner actions for me: none for setup.** It owns the committed-artifact deploy
+and live verification. Old HTTP 200 without CSP is not new-release acceptance.
+Use `deploy-appservice.yml`, portable `hosting.config.json`/`server.mjs` and
+`build-info.json`; startup is `pm2 start /home/site/wwwroot/server.mjs --no-daemon`.
+F1 has no preview slots. PR #47's `npm run verify` and four-shard CI passed
+in 7m45s; setup workflow `34700428815` passed in 24 seconds. Do not alter those
+runners while migrating hosting. See DEPLOYMENT and INFRA-DONE for current facts.
+
+## Historical SWA owner actions and monitoring (superseded)
 
 - [ ] **Action 1:** Open Azure Cloud Shell in PowerShell mode and paste the
   single block at the top of [DEPLOYMENT](DEPLOYMENT.md). It selects the
@@ -22,7 +36,7 @@ was not changed. No SWA upload has reached Azure and no successful SWA URL is
 present in Actions history. Report actual events immediately as STATUS with
 an Owner actions for me line; never label this ALL DONE before live checks.
 
-## Current completion pointer, 12 September 2026
+## Historical completion pointer before App Service selection
 
 R #33, V #24, parity #38, D #39, opacity repair #42, quarantine removal #40
 and scoped V #43 are merged; current main is
@@ -36,7 +50,7 @@ hosted-release criterion under #37. [SCOPE](SCOPE.md) records 17 Done and
 hosting I In progress; D's scoped records refresh awaits coordinator
 PR merge. [MEMORY](MEMORY.md) and [BRANCHES](BRANCHES.md) describe current
 facts and preserved refs. No live URL is verified; #34/#35/#41 are closed.
-The two owner actions above remain outstanding.
+The two historical SWA owner actions above are superseded by issue #48.
 The freeze, pending-transfer and stream statuses below are
 historical, not current instructions or acceptance totals.
 

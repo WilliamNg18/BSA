@@ -50,6 +50,10 @@ test("production assets exclude private audit IDs, excerpts and author/employer 
     const bytes = await readFile(file);
     for (const document of SOURCE_DOCUMENTS) expect(normalise(bytes.toString("utf8")), `No documentary filename in ${assetPath}`).not.toContain(normalise(document.filename));
     expect(privateMatches(bytes.toString("utf8")), `Emitted ${assetPath}`).toEqual([]);
+    if (assetPath === "hosting.config.json" || assetPath === "server.mjs") {
+      expect((await request.get(new URL(assetPath, baseURL).href)).status(), `Server-only file: ${assetPath}`).toBe(404);
+      continue;
+    }
     if (!/\.(?:js|css|html|json|map|txt|svg)$/i.test(assetPath)) continue;
     const response = await request.get(new URL(assetPath, baseURL).href);
     expect(response.status(), assetPath).toBe(200);

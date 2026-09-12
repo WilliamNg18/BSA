@@ -1,16 +1,19 @@
-# Static Web Apps
+# Existing App Service
 
-Only the Free Static Web App is provisioned. Resource-group metadata lives in
-UK South; the site lives in West Europe because UK South is not supported.
-Choose the intended subscription with `az account set --subscription <id>`
-after `az login`, then run these three commands from the repository root:
+`appservice.bicep` describes the owner-selected F1 Linux App Service in
+`rg-bsa-bsa-demo`, Sweden Central. It preserves the existing URL and Node 24
+runtime; CI deployment builds use the latest Node 20 patch (>=20.19).
+No slots or tier upgrade.
+
+Routine deployment uploads the built `BSA/dist` contents through OIDC; it does
+not apply infrastructure. Recovery changes require coordinator review/what-if:
 
 ```powershell
-az group create --name rg-bsa-demo --location uksouth
-az deployment group create --resource-group rg-bsa-demo --template-file .\infra\staticwebapp.bicep --parameters name=bsa-demo --query properties.outputs
-az staticwebapp secrets list --name bsa-demo --resource-group rg-bsa-demo --query properties.apiKey --output tsv | gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --repo WilliamNg18/BSA
+az deployment group what-if --resource-group rg-bsa-bsa-demo --template-file .\infra\appservice.bicep
 ```
 
-The final command pipes the token directly into the GitHub repository secret;
-do not print, commit or paste it into logs. See
-[deployment](../BSA/docs/DEPLOYMENT.md) for prerequisites and automatic behaviour.
+Optional identity/federation/RBAC bootstrap defaults off to preserve the
+already-created deployment identity and site-scoped grant. Do not create a
+duplicate role assignment. See [deployment](../BSA/docs/DEPLOYMENT.md) for actual
+resource names, startup, variables and verification. The unselected SWA template
+is retained under `alternatives`, not provisioned by the current workflow.

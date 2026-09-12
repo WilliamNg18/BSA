@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { captureJson, expect, test } from "./fixtures";
 
-const hosting = JSON.parse(readFileSync(new URL("../../../staticwebapp.config.json", import.meta.url), "utf8")) as {
+const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
 };
 const routeSelector = 'main [class*="motion-safe:slide-in-from-bottom-"]';

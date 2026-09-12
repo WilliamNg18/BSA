@@ -20,7 +20,7 @@ Rebuild the application as a **polished, production-quality proof of concept** t
 2. **Uses similar synthetic data.** You may regenerate names, codes, dates and amounts, and you may add more filler rows to make the queue feel like a real working day, but the six behaviours (A valid, B initialled-not-dated, C quantity conflict, D deliberate abstention, E cleared by rules with no model call, F already decided) must survive with the same outcomes, and the August rule change that makes Case B flip under July replay must survive. Everything must remain obviously synthetic (`SYN-` codes, "(synthetic)" labels, the amber banner).
 3. **Raises the visual and interaction quality substantially.** The current interface is functional but generic. I want it to look like a product an NHS operator would be pleased to use: a clear visual hierarchy, a deliberate typographic scale, consistent spacing, strong empty and loading states, well-designed tables that survive long text, a prescription form that reads as a scanned form rather than a diagram, and a case pack an operator can scan in five seconds. Dark mode must be as good as light mode. Mobile and tablet layouts must work, not merely not break.
 4. **Fixes everything that is broken or rough.** Start with `docs/KNOWN-ISSUES.md`, then run the application yourself and fix what you find. Assume the previous author never saw it in a browser.
-5. **Deploys to Azure Static Web Apps** through root `.github/workflows/azure-static-web-apps.yml` at `/`, with deep links configured in root `staticwebapp.config.json`. See `docs/DEPLOYMENT.md`.
+5. **Deploys to the existing Azure App Service** through root `.github/workflows/deploy-appservice.yml` at `/`, with portable static delivery and strict headers from root `hosting.config.json`. This explicit issue #48 decision supersedes the previous SWA target. See `docs/DEPLOYMENT.md`.
 
 ## Constraints
 
@@ -37,7 +37,7 @@ Rebuild the application as a **polished, production-quality proof of concept** t
 - [ ] `npm run check` passes with zero errors and zero warnings.
 - [ ] Unit tests exist for the domain layer and pass; they cover the six cases, the gate, the composite and `versionForDate`.
 - [ ] Every route in `docs/SPEC.md` section 3 renders, at 360, 768, 1024 and 1440 px, in light and dark mode, with no console errors; screenshots of each are attached to the pull request.
-- [ ] Deep links (for example `/case/EX-24112/trace`) open directly on Azure Static Web Apps.
+- [ ] Deep links (for example `/case/EX-24112/trace`) open directly on the selected App Service with the expected build commit and strict headers.
 - [ ] The Replay control on the trace page reveals steps one at a time and is announced to screen readers.
 - [ ] The operator decision refuses to record an override without a reason of at least eight characters, and says why.
 - [ ] Case D abstains and the gate reads NOT RUN; Case E never invokes the agent; Case B replayed under July becomes SUFFICIENT.
