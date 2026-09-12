@@ -489,3 +489,128 @@ Add the separate pipeline to offline, content, generic-label, screenshot and
 default-rule axe matrices without removing Four cases. The coordinator and S
 explicitly authorise adding that one route to both existing accessibility arrays;
 all audit variants and zero-violation assertions remain unchanged.
+
+## 2026-09-11: Stream V integrated visual and narrative reconciliation
+
+Replace the layered historical SPEC, demo script and known-issues narrative
+with the implemented seven-chapter/eight-stop structure and shared lifecycle.
+Keep historical evidence in its existing task records, explicitly labelled,
+rather than treating old feature gaps or measurements as current blockers.
+The script uses exact public controls and an Off-to-On-to-Off B round trip;
+draft approval, resubmission and sufficient disposition remain human actions.
+
+Capture fresh production files at root path on isolated port 4193, 1440 x 1000,
+light theme, device scale 1 and reduced motion. Include every route and Agent
+state, all six case pack/trace/record views, seven expanded claim states and
+round-trip/overlay checkpoints. Assert disclosure expansion and record per-image
+hashes, errors, overflow and axe outcomes. Contact-sheet slices are review aids,
+not extra screenshots. Keep the PR draft until the coordinator confirms R/S
+and the separately owned #20 pharmacy-status correction have merged; then
+rebase and refresh before declaring ready. Do not merge V.
+
+The later user direction removes all size/performance budgets: gzip,
+Lighthouse, word counts and screenshot differences are informational only.
+Functional and accessibility checks still block. Absence of a token does not
+block local work; document owner setup in DEPLOYMENT.md without inventing a
+selected subscription, provisioned resource or live URL.
+
+## 2026-09-11: Stream V numerical narration follow-up (#25)
+
+Count semantic claim families, not repeated numbers, route IDs or list numbering.
+Review 33 families in the four owned current narrative documents against source
+definitions and existing evidence. Correct four narration claims: explicit
+unverified public-figure framing, duration versus cohort units, projected
+referrals versus all-abstention risk, and the full eight-character reason rule.
+The other 29 remain qualified and supported; no application discrepancy or
+deferred narration fix requires another issue.
+
+Keep the monthly calculator's fixed-reference judging separate from the queue's
+single-operator day projection. Neither model measures savings or accuracy.
+Public-source validation remains explicitly unverified, not silently converted
+into a measured fact. No new browser run, source edit or test edit is needed.
+
+## 2026-09-11: Preserve partial capture evidence
+
+Checkpoint the capture manifest after each image and record expected count and
+completion separately from violations. Recompute failures from all retained
+entries during resume, and recapture failed entries instead of skipping them.
+This prevents an interrupted or resumed run from appearing successful merely
+because its new in-memory failure list started empty. Validate this metadata
+logic without launching another browser before the final integration slot.
+
+## 2026-09-11: Latest requested scope and active implementation ownership
+
+Keep the latest eight-chapter request distinct from the seven-chapter source
+used for initial captures. SCOPE.md has exactly 18 requested rows: two bounded
+Done implementations (A2 calculator and F lifecycle), sixteen In progress and
+zero unowned Not started rows after assignment. Evidence names tests and tested
+revisions; source presence and a partial passing run do not establish completion.
+
+Use T #26 for chapter separation, two-place contrast and whole-cycle claims.
+File only additional proven increments: #27 numerical scene count-in (not the
+existing CSS fade), #28 operable queue Compare (not its existing toggle/summary)
+and #29 explicit unchecked claims-resubmission pain. Coordinator assigned all
+three, with #29 staying under R's existing claim-detail ownership. No new
+browser process or delegation by V. Final captures must follow the expanded
+merged scope rather than force the historical 103-image count.
+
+## 2026-09-11: Prepare expanded final capture selectors
+
+Use T's settled `/#pipeline` and `/#cases` as separate destinations. Use queue
+#28's public Compare action after Jump to 17:00, asserting the inline Today
+versus With agent region. This plans 107 final images, not a fabricated update
+to the 103-image historical manifest. No capture runs before the coordinator
+releases tested integrations and the browser resource slot.
+
+## 2026-09-12: V resumes with approved public-reference narration
+
+Read the public-main resumption in BSA/docs/HANDOVER.md at `6db3f98` before
+resuming. Transfer is cancelled; WilliamNg18 remains owner. Preserve checkpoint
+`b3acc13`, initial images, evidence and all immutable tags. Preserve main's
+HANDOVER/SCOPE and security additions at the eventual authorised rebase.
+
+Prepare the aim/problem/outcome narrative from the retained source register:
+PDF-A02/A03/A04 for validation needs, H08/H10/H13 for potential outcomes,
+D-VALUE/D-STOP for accounting and stop criteria, and D-PHASES/D-ADVISORY for
+the optional pharmacy boundary. Reference names are allowed in these documents,
+not in website copy. Publication does not independently verify a source claim.
+Do not edit the parent-owned root README or create new product features.
+
+R's corrected public Actions run must actually pass and merge before V's
+expanded 107-image refresh. No new capture, source change or early rebase is
+part of this narration preparation; the frozen evidence remains historical.
+
+## 2026-09-12: Reconcile V after accepted public integration
+
+The coordinator released V after R merged as `898cda5`. Public CI
+34689966621 passed check, 607 units, 1,019 blocking browser cases and three
+separate informational quarantine cases. No successful-run audit artifacts
+were uploaded; keep test counts distinct from deduplicated report counts.
+
+Rebase V onto that main and retain public root README/security, HANDOVER,
+MEMORY, PROGRESS and SCOPE. Superseded V-only historical SCOPE patches are
+already represented by main's handover; retain the main snapshot and append
+current acceptance rather than discarding public resumption. Verify main's
+DECISIONS and LEARNINGS remain complete prefixes before adding V history.
+Runtime, tests, dependencies and production configuration remain unchanged.
+
+Regenerate the whole expanded matrix with the existing strict-header server
+on granted port 4193 and one sequential capture context. Preserve initial
+103 images through checkpoint `b3acc13`, not a mixed-source resume. Individual
+audit JSONs belong with the new manifest; independent gzip of every emitted
+resource is informational only. Owner-hosted verification remains issue #37.
+
+## 2026-09-12: V final visual acceptance
+
+Accept the completed 107-image source-898cda5 matrix: 53 Off and 54 On,
+107 individual unrestricted axe JSON outputs, zero violations, page/console/CSP
+errors or horizontal-overflow captures. Completion is 2026-09-12T11:50:58.433Z;
+the same-source harness continuation is explicitly recorded. All PNG hashes,
+1440px widths and full-height visual slices were reviewed.
+
+Retain incomplete audit rules (51 audits) rather than claiming manual WCAG
+conformance. Focus-triggered switch tooltips are ordinary UI state and remain
+visible on some routes; no content is pixel-masked. Build evidence sums all four
+independently gzipped emitted resources to 203,723 bytes, information only.
+Current SCOPE has 16 accepted implementation rows, with owner hosting #37 and
+VD final documentation closeout remaining In progress. D owns final task ticks.

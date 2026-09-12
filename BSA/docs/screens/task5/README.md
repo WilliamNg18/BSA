@@ -6,11 +6,14 @@ ms.date: 2026-09-10
 
 ## Capture scope
 
+Historical Task 5 evidence only. The current integrated queue and claims
+captures are indexed in [integrated](../integrated/README.md).
+
 The Task 5 browser tests capture the full queue at 360px and 1440px, light and
 dark, Agent Off and On. Each capture shows the shared clock at 17:00, twelve
 pinned examples, a bounded month window and independently labelled day totals.
-The inherited Stream D "Simulation planned" shell is intentionally visible;
-its copy update remains an explicit integration handoff, not hidden styling.
+The inherited Stream D "Simulation planned" shell was visible in this
+historical build. It is not a current unimplemented-feature claim.
 
 * [Desktop light On](queue-1440-light-on.png)
 * [Desktop light Off](queue-1440-light-off.png)

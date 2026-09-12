@@ -586,3 +586,72 @@ Keep every kernel phase/gathering/referral clock check on /#pipeline, then visit
 /#cases and replay the same Off-to-On clock to check D's marker at every phase,
 plus its final ABSTAIN and NOT RUN. Do not navigate away during the kernel loop.
 The focused three-test strict-header rerun passed without retries or new limits.
+
+## 2026-09-11: Stream V exact-click and capture evidence
+
+Read the rendered navigation adapter as well as routes.tsx: the queue menu item
+is NHSBSA queue, even though the route metadata uses Exception queue.
+The integrated tour has seven chapters/eight stops, including pharmacy claims.
+Reset restores Agent Off. An existing seeded disposition is not an editable
+review; append an explicit demonstration attempt and start review.
+
+Rehearsing the mixed-mode B story through public controls preserved the original
+undated evidence, July Sufficient counterfactual and three immutable attempts.
+Applying the approved date correction invalidates its old advisory result;
+re-checking is a separate action. Turning Off after the human sufficient
+disposition leaves the synthetic lifecycle and human records unchanged.
+
+An instantaneous count() can miss a disclosure before navigation has rendered
+it; awaiting the region and asserting the outer details open attribute avoids
+mislabelled "expanded" photographs. Nested advisory snapshots also make a broad
+summary locator ambiguous. Both were capture-harness issues, not product bugs.
+
+Initial default-worker Vitest execution timed out one budget-CLI test at 5,000ms
+with 559 passing. A bounded two-worker rerun passed all 560 tests. Preserve both
+outcomes; do not change application tests to hide host contention.
+
+## 2026-09-11: Stream V numerical distinctions (#25)
+
+Projected referrals use rounded deficient built and deficient abstained shares.
+Risk instead contains every abstention plus deficient built items. Both use
+the same synthetic cohorts, but they are not interchangeable totals. `V` is a
+volume and `g`/`j` are durations, not additional cohorts.
+
+The monthly calculator deliberately keeps `V * j` on both sides. The queue day
+shares one operator's elapsed allowance between built and abstained work; its
+pharmacy/code-cleared cohorts add no judging time. Shared inputs do not imply
+identical denominators or a measured productivity effect.
+
+The reason guard also applies to recommended referrals, information requests
+and escalations, not only overrides or manual decisions. Check both the pack
+label predicate and store validation before describing a numerical threshold.
+
+## 2026-09-12: Public resumption does not change evidence strength
+
+Application-relative docs/HANDOVER.md is BSA/docs/HANDOVER.md at Git root.
+Its public-resumption preface supersedes the retained freeze narrative below.
+Repository publication changes access and Actions eligibility, not whether a
+new CI run passed or a live deployment exists.
+
+The supplied PDF asks whether assembly effort is material; the research pack's
+stronger more-than-judging claim remains an assumption. Capacity, reconstruction
+and pharmacy rework are outcomes to test, not measured benefits. Keep that
+distinction when using the now explicitly public references in final narration.
+
+## 2026-09-12: Whole-matrix completion must follow both mode loops
+
+The final capture attempt stopped after 32 fresh Off route images because its
+inventory assertion was placed before claims/actions and the On loop. Move the
+unchanged 107-image assertion after both complete mode loops. That is a harness
+control-flow fix, not a product defect or a relaxed count.
+
+The per-image manifest preserved the 32 new-source successes, allowing a
+same-HEAD/same-built-assets continuation without importing old checkpoint
+images. Record the interruption explicitly; a later complete manifest does
+not make the first attempt uninterrupted.
+
+Every audit file represents one retained capture, not an attachment copy or an
+invented aggregate of successful CI reports. Fifty-three Off plus fifty-four
+On files account for the July-only extra image. The accepted CI uploaded no
+successful-run artifacts, so its passing browser total and this independently
+counted visual audit set must stay separate.

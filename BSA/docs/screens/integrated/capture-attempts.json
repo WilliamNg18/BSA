@@ -1,0 +1,13 @@
+{
+  "applicationSourceRevision": "898cda594d0dcb34376bddab7112edcddb172440",
+  "attempts": [
+    {
+      "result": "harness interruption after 32 fresh Off route captures",
+      "error": "Expected 107 unique captures, found 32",
+      "cause": "The harness's final inventory assertion was placed after the first route loop instead of after both complete mode loops.",
+      "fix": "Moved the unchanged 107-unique-image assertion after all captures. No application code, assertion threshold or production asset changed.",
+      "retainedEvidence": "All 32 completed image and axe entries remain in the same-source manifest; zero violations, overflow and browser errors at interruption.",
+      "continuation": "Resume on the identical rebased HEAD and built assets; no captures from the old d9e06e1 manifest are used."
+    }
+  ]
+}
