@@ -4,6 +4,15 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-12
 ---
 
+## PR build artifact follow-up
+
+The artifact-only proposal adds one best-effort seven-day PR build upload on
+verification shard one and a guarded job-summary download link. No production,
+runner, e2e body, permissions or blocking check changes. Workflow YAML parsed;
+38 runner/workflow unit cases and typecheck passed after the CRLF-aware test
+correction. Actual artifact publication still requires the proposal's PR run.
+No local full browser rerun was started for this workflow-only addition.
+
 ## Issue #46 measured four-shard verification
 
 [Public CI 34700392502](https://github.com/WilliamNg18/BSA/actions/runs/34700392502)

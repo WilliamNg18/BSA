@@ -776,3 +776,15 @@ No test body, scheduling guard, CSP or axe assertion changed to reach the
 target. Keep the former 15.1-minute unsharded browser measurement separate:
 its scope excludes other job stages, unlike the new 7m45 end-to-end figure.
 Do not turn either measurement into a hard timeout or universal speed promise.
+
+## 2026-09-12: Available build evidence is separate from deployment
+
+App Service F1 preview requirements can be met with downloadable PR builds and
+the existing Playwright results, without claiming an ephemeral live site.
+Use the upload action's actual artifact-url output in a guarded summary step.
+Retain warnings and empty output when a build is unavailable.
+
+The first workflow permission test assumed LF on Windows; accept CRLF as well
+without weakening the contents:read assertion. Unit tests also pin PR-only,
+shard-one upload, bounded retention and non-blocking reporting. Actual artifact
+publication must be verified on the PR run, not inferred from YAML.

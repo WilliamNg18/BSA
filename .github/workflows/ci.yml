@@ -35,6 +35,23 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run verify -- --shard=${{ matrix.shard }}/4
+      - name: Upload PR build (not a live deployment)
+        id: pr-build
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && github.event_name == 'pull_request' && matrix.shard == 1 }}
+        continue-on-error: true
+        with:
+          name: pr-build-${{ github.event.pull_request.number }}
+          path: BSA/dist/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Link available PR build
+        if: ${{ !cancelled() && steps.pr-build.outputs.artifact-url != '' }}
+        continue-on-error: true
+        env:
+          PR_BUILD_URL: ${{ steps.pr-build.outputs.artifact-url }}
+        run: |
+          printf 'PR build artifact (not a live deployment): [Download](%s)\n' "$PR_BUILD_URL" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: failure()
         continue-on-error: true
