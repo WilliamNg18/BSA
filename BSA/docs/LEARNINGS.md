@@ -420,3 +420,27 @@ pressed Dismiss while the shell was still moving focus to the claims heading.
 Keep keyboard activation and the missing-rail assertion, not a sleep or retry
 loop. Splitting chapters also means pipeline tests must navigate to Four cases
 before asserting the actual Case D card; neither assertion should be removed.
+
+## 2026-09-11: Issue 28 comparison evidence
+
+Existing side-by-side day columns do not provide an operable Compare action.
+A native-button disclosure adds that action without modal focus trapping,
+inline styles, animation or new scroll-lock machinery under the self-only CSP.
+The shared clock continues while the disclosure is open; the comparison must
+read that clock rather than capture a misleading frozen or restarted snapshot.
+
+The fresh worktree lacked dependencies: the first check stopped at missing tsc.
+Restoring the unchanged lockfile with npm ci allowed check and all 563 units
+to pass, including ten new comparison presentation tests. Browser acceptance
+is separately scheduled with the coordinator; no browser pass is implied here.
+
+The later completed exact-head Linux run provides scoped browser evidence:
+790 scheduled tests equal 563 passed plus 227 failed, with no skipped/unrun
+tests. All eight Compare tests are present in the source manifest and absent
+from the complete failed set; four named axe artifacts each contain zero
+violations. The coordinator accepted this complete accounting, not absence
+from a failure list alone. Do not label the overall CI run successful.
+
+Keep the local zero-test startup timeout and subsequent three passes/five
+timeouts separately, including anomalous elapsed timing. Never weaken assertions
+or repeat a CPU-bound local run solely to duplicate exact-source remote proof.

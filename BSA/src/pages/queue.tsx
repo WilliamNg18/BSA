@@ -10,6 +10,7 @@ import { BoundaryTag, RecommendationBadge, StateBadge, SyntheticTag } from "@/co
 import { NativeSwitch as Switch } from "@/components/ui/native-switch";
 import { QueueMonth } from "@/components/demo/queue-month";
 import { QueueDay } from "@/components/demo/queue-day";
+import { QueueCompare } from "@/components/demo/queue-compare";
 import { QueueManualSteps, QueueTodayDialog } from "@/components/demo/queue-manual";
 import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
@@ -128,6 +129,7 @@ export function QueuePage() {
           <Button disabled={!agentEnabled || !input || sweeping} onClick={runVisible}>Run agent on visible rows</Button>
           <Button variant="outline" disabled={!sweeping} onClick={() => useQueueStore.getState().stepSweep()}>Step sweep</Button>
           <Button variant="outline" disabled={!sweep.length} onClick={() => useQueueStore.getState().cancel()}>Cancel sweep</Button>
+          {input && result ? <QueueCompare key={`compare-${revision}`} input={input} result={result} /> : <Button variant="outline" disabled>Compare</Button>}
         </div>
         <p className="text-sm text-muted-foreground">Visible-row projection only. Seed evidence and recorded states stay unchanged.{reduced ? " Reduced motion: use Step sweep to inspect phases." : " Two seconds illustrates assembly, not actual processing time."}</p>
         <output aria-live="polite" className="block" data-sweep-status>{phase < 0 ? "No sweep" : `${SWEEP_PHASES[phase]} · ${sweep.length} visible rows · projection only`}</output>

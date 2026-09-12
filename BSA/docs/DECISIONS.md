@@ -364,3 +364,18 @@ only when the existing store says paid, with existing-pricing attribution.
 The guide never changes lifecycle state or creates approved pharmacy reasons.
 S retains the canonical shell chapter heading and focus ownership; R owns
 existing tour regression updates. New tour-cycle tests use only public UI.
+
+## 2026-09-11: Issue 28 queue Compare is a read-only disclosure
+
+Use an explicit Compare button in Queue controls to reveal an inline named
+region, not another simulation or shared overlay. It consumes the current
+scenario selector and existing day projection helper at the shared clock.
+Opening and closing never pause playback, switch assistance or write stores.
+Focus moves to the comparison heading; Close and Escape return to Compare.
+The existing queue revision remount closes the surface on Reset or input edits.
+
+Keep monthly cohort denominators separate from projected daily operator work.
+Day judging is not an additional calculator saving; abstention remains manual,
+code-cleared cohorts require no operator review, and no payment is calculated.
+Existing virtual month, sweep, twelve examples and day summaries remain intact.
+No shared primitive, global style, lifecycle, store or algorithm changes.
