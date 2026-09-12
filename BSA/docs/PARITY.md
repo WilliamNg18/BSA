@@ -128,6 +128,15 @@ At ready head `258f803` on S's merged base, combined `npm run check` passed
 without warnings and Vitest passed 557 tests in 19 files. This is a fresh
 combined check/unit result, not a new combined browser or hosted result.
 
+### Later tour integration, outside this scoped count
+
+This document is rebased onto `c95ff1da094528236a38593c3de18342e0f51374`,
+where T's #30 adds the eight-chapter tour and pharmacy referral cycle.
+That later integration is separate from the S/#20 snapshot above. Historical
+row 24 describes the earlier seven-chapter contract, not the new current tour.
+No T capability or acceptance evidence is re-audited here, and the scoped
+18/9/0/2/4 counts do not claim parity verification of the eight-chapter addition.
+
 ## Historical evidence and limits
 
 **P: local targeted source-parity guards.** At `b23e478`, from `BSA`:
