@@ -1,5 +1,9 @@
-import { calculateBaseline, manualGatheringMinutes, type BaselineInputs, type BaselineResult } from "./baseline";
+import { calculateBaseline, manualGatheringMinutes, type BaselineInputs, type BaselineResult, type MonthModelResult } from "./baseline";
 import { CASES, QUEUE_FILLER } from "./cases";
+import type { CasePack, CaseState, ExceptionCase } from "./types";
+import type { CaseLifecycle } from "./lifecycle";
+import { mandatoryFieldsCheck, sampleAgreement, validateCitation } from "./rules";
+import { versionForDate } from "./tariff";
 
 export const QUEUE_SEGMENT_SIZE = 1000;
 export const QUEUE_ROW_HEIGHT = 112;
@@ -90,4 +94,122 @@ export function sweepCounts(kinds: readonly (QueueCohort | "recorded")[]) {
   return { built: kinds.filter((k) => k === "built").length, cleared: kinds.filter((k) => k === "cleared").length,
     abstained: kinds.filter((k) => k === "abstained").length,
     awaiting: kinds.filter((k) => k === "built" || k === "abstained").length };
+}
+
+export const QUEUE_PAGE_SIZE = 50;
+export type QueueStatus = "awaiting" | "progress" | "built" | "evidence" | "abstained" | "cleared" | "decided";
+export const QUEUE_STATUS_LABELS: Record<QueueStatus, string> = {
+  awaiting: "Awaiting an operator", progress: "In progress", built: "Case built ready to decide",
+  evidence: "Needs more evidence", abstained: "Abstained worked as today",
+  cleared: "Cleared by rules no model call", decided: "Decided",
+};
+export const queueFilters = (enabled: boolean): QueueStatus[] => enabled
+  ? ["built", "evidence", "abstained", "cleared", "decided"] : ["awaiting", "progress", "decided"];
+
+/** Audience labels do not rewrite recorded states or imply an agent ran on a submission. */
+export function queueStatus(state: CaseState, enabled: boolean, lifecycle?: CaseLifecycle, pack?: CasePack | null): QueueStatus {
+  if (state === "human_decision_recorded") return "decided";
+  const pending = lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted";
+  if (!enabled) return state === "cleared_by_rules" ? "decided"
+    : pending ? "awaiting"
+    : lifecycle?.state === "in_review" || state === "additional_evidence_required" ? "progress" : "awaiting";
+  if (pending) return "evidence";
+  const current = pack?.state ?? state;
+  if (current === "cleared_by_rules") return "cleared";
+  if (current === "agent_abstained" || pack?.recommendation === "ABSTAIN") return "abstained";
+  if (current === "additional_evidence_required" || pack?.gate.result === "FAIL") return "evidence";
+  return "built";
+}
+
+export interface QueuePreviewRow {
+  id: string;
+  pharmacy: string;
+  reason: string;
+  state: CaseState;
+  status: QueueStatus;
+  fresh: boolean;
+  canonical: boolean;
+  reviewable: boolean;
+  pending: boolean;
+  projected: boolean;
+  blocked?: boolean;
+  submittedAt?: string;
+}
+
+/** Bounded logical ranges. Pharmacy-caught items never enter the operator queue.
+ * Seed examples occupy the first slots, not extra monthly work. Their mix is illustrative.
+ */
+export function queueTableWindow(result: MonthModelResult | null, seeds: readonly QueuePreviewRow[], enabled: boolean, filter: QueueStatus | "all", position: number) {
+  const cohorts = result ? [
+    { state: "agent_review_complete" as const, size: result.built },
+    { state: "agent_abstained" as const, size: result.abstained },
+    { state: "cleared_by_rules" as const, size: result.cleared },
+  ] : [];
+  let replaced = Math.min(12, cohorts.reduce((sum, group) => sum + group.size, 0));
+  const groups = cohorts.map((group) => {
+    const remove = Math.min(replaced, group.size);
+    replaced -= remove;
+    return { ...group, size: group.size - remove, status: queueStatus(group.state, enabled) };
+  });
+  const counts: Record<QueueStatus, number> = { awaiting: 0, progress: 0, built: 0, evidence: 0, abstained: 0, cleared: 0, decided: 0 };
+  for (const seed of seeds) counts[seed.status] = (counts[seed.status] ?? 0) + 1;
+  for (const group of groups) counts[group.status] = (counts[group.status] ?? 0) + group.size;
+  const prefix = seeds.filter((seed) => filter === "all" || seed.status === filter);
+  const selected = groups.filter((group) => filter === "all" || group.status === filter);
+  const total = prefix.length + selected.reduce((sum, group) => sum + group.size, 0);
+  const start = total ? Math.max(0, Math.min(total - 1, Number.isFinite(position) ? Math.floor(position) : 0)) : 0;
+  const end = Math.min(total, start + QUEUE_PAGE_SIZE);
+  const rows: QueuePreviewRow[] = [];
+  for (let index = start; index < end; index++) {
+    if (index < prefix.length) { rows.push(prefix[index]); continue; }
+    let offset = index - prefix.length;
+    for (const group of selected) {
+      if (offset >= group.size) { offset -= group.size; continue; }
+      rows.push({
+        id: `SYN-Q-${group.state}-${String(offset + 1).padStart(10, "0")}`,
+        pharmacy: "Model pharmacy (synthetic)", reason: "Synthetic failed-rule referral",
+        state: group.state, status: group.status, fresh: false, canonical: false,
+        reviewable: false, pending: false, projected: true,
+      });
+      break;
+    }
+  }
+  return { rows, start, end, total, counts };
+}
+
+/** New comparison deliberately replaces legacy 5 + 2 minute costs with shared perItem.
+ * Only the twelve examples are simulated; canonical validated citations are supplied by
+ * the caller, never invented for filler rows or assumed for manual work.
+ */
+export function projectQueueComparison(result: MonthModelResult, minutes: number, assisted: boolean, recordedIds: readonly string[] = [], citedIds: readonly string[] = []) {
+  const elapsed = Math.max(0, Math.min(360, Number.isFinite(minutes) ? minutes : 0));
+  let spent = 0;
+  const rows = QUEUE_SEEDS.map((seed) => {
+    const recorded = seed.kind === "recorded" || recordedIds.includes(seed.id);
+    const cleared = seed.kind === "cleared";
+    const cost = assisted && seed.kind === "built" ? result.perItem.withAgent : result.perItem.today;
+    const gathering = recorded || cleared ? 0 : cost.gatheringMinutes;
+    const judging = recorded || cleared ? 0 : cost.judgingMinutes;
+    const start = spent;
+    spent += gathering + judging;
+    const done = !recorded && !cleared && elapsed > 0 && elapsed >= spent;
+    const phase = recorded ? "Historical record unchanged" : cleared ? "Cleared by rules; no model call"
+      : done ? "Human decision projected" : elapsed === 0 || elapsed < start ? "Awaiting an operator"
+      : elapsed < start + gathering ? "Operator gathering evidence" : "Operator judging evidence";
+    return { ...seed, start, finish: spent, gathering, judging, done, phase,
+      cited: done && seed.kind === "built" && seed.canonical && citedIds.includes(seed.id) };
+  });
+  return { rows, operatorMinutes: Math.min(elapsed, spent), decided: rows.filter((row) => row.done).length,
+    cited: rows.filter((row) => row.cited).length };
+}
+
+/** Fixture eligibility for a citation-use assumption, not a model run or a human record. */
+export function queueCitationAvailable(item: ExceptionCase): boolean {
+  const seed = QUEUE_SEEDS.find((row) => row.id === item.id);
+  if (!seed?.canonical || seed.kind !== "built" || !mandatoryFieldsCheck(item.extracted).every((check) => check.pass)) return false;
+  const { agree, consensus } = sampleAgreement(item.readings);
+  if (agree < 2 || !consensus) return false;
+  const version = versionForDate(item.extracted.dispensingDate);
+  const clause = version?.clauses.find((entry) => entry.endorsementType === consensus.type) ?? null;
+  return clause !== null && validateCitation(clause, version, clause.text) === true;
 }

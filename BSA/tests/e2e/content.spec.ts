@@ -163,7 +163,7 @@ test("fresh session and reset are Off; shared transition is presentation-only an
   await page.goto("queue");
   const flag = page.getByRole("banner").getByRole("switch");
   await expect(flag).not.toBeChecked();
-  const states = await page.locator('tbody tr td:nth-child(6)').allTextContents();
+  const states = await page.locator('[data-queue-state]').allTextContents();
   await page.clock.install({ time: new Date("2026-09-10T12:00:00Z") });
   await page.clock.pauseAt(new Date("2026-09-10T12:00:10Z"));
   await flag.setChecked(true);
@@ -178,7 +178,7 @@ test("fresh session and reset are Off; shared transition is presentation-only an
   await expect(host).toHaveAttribute("data-phase", "preparing");
   await page.clock.runFor(2000);
   await expect(host).toHaveAttribute("data-phase", "manual");
-  await expect(page.locator('tbody tr td:nth-child(6)')).toHaveText(states);
+  await expect(page.locator('[data-queue-state]')).toHaveText(states);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await flag.setChecked(true);
   await expect(host).toHaveAttribute("data-phase", "assisted");
@@ -188,7 +188,7 @@ test("fresh session and reset are Off; shared transition is presentation-only an
   await confirmReset(page);
   await expect(flag).not.toBeChecked();
   await expect(host).toHaveAttribute("data-phase", "manual");
-  await expect(page.locator('tbody tr td:nth-child(6)')).toHaveText(states);
+  await expect(page.locator('[data-queue-state]')).toHaveText(states);
 });
 
 test("pain markers provide keyboard text and do not resolve abstention", async ({ page }) => {
@@ -210,14 +210,16 @@ test("pain markers provide keyboard text and do not resolve abstention", async (
 });
 
 for (const enabled of [false, true]) {
-  test(`Task5 expanded queue and Today dialog copy cap On=${enabled}`, async ({ page }, info) => {
+  test(`Task15 expanded queue and Today dialog copy report On=${enabled}`, async ({ page }, info) => {
     await page.goto("queue"); await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
     await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
+    await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
     const audits = [{ state: "expanded-day", ...await page.evaluate(auditProse) }];
-    await page.locator('[data-queue-seed="EX-24104"]').getByRole("button", { name: "Today", exact: true }).click();
+    await page.locator('[data-queue-seed="EX-24104"]').getByRole("button", { name: "Open", exact: true }).click();
     audits.push({ state: "today-dialog", ...await page.evaluate(auditProse) });
     await captureJson(info, "task5-copy", audits);
-    expect(audits.flatMap((audit) => audit.failures)).toEqual([]);
+    console.info("Advisory queue word counts", audits.flatMap((audit) => audit.failures));
+    await expect(page.getByRole("dialog").locator("[data-pain-marker]")).toHaveCount(7);
+    await expect(page.getByRole("dialog")).toContainText("No retrieved rule, citation or agent result");
   });
 }

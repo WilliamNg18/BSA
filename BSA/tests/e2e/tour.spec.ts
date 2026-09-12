@@ -162,10 +162,10 @@ for (const enabled of [true, false]) {
           }
         }
       } else {
-        const filter = page.getByRole("radio", { name: "Agent abstained", exact: true });
+        const filter = page.locator('[aria-label="Queue status filters"]').getByRole("button", { name: enabled ? /Abstained worked as today/ : /Awaiting an operator/ });
         await filter.focus();
         await filter.press("Space");
-        await expect(filter).toBeChecked();
+        await expect(filter).toHaveAttribute("aria-pressed", "true");
         await expect(filter).toBeFocused();
       }
 
