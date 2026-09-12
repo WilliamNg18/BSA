@@ -10,7 +10,7 @@ const month = (page: Page) => page.getByRole("region", { name: "Virtual month", 
 async function setVolume(page: Page, value: string) {
   await navigatePrimary(page, "Overview");
   await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
-  await page.getByLabel("Monthly volume proxy", { exact: true }).fill(value);
+  await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill(value);
   await navigatePrimary(page, "Exception queue");
 }
 
