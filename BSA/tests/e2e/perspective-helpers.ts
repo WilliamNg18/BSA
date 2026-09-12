@@ -56,7 +56,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(page).toHaveURL(new RegExp(`caseId=${id}$`));
     await navigatePrimary(page, "NHSBSA queue");
     const row = page.locator("[data-shared-case]").filter({ hasText: id });
-    await expect(row).toContainText(LIFECYCLE_LABELS.submitted.nhsbsa[enabled ? "on" : "off"]);
+    await expect(row.getByText("Submitted, awaiting review", { exact: true })).toBeVisible();
     await row.getByRole("button", { name: "Open for review", exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]);
