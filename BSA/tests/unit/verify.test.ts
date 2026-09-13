@@ -1,8 +1,11 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { executeStage, parseShard, runVerification, verificationStages, type Stage } from "../../scripts/verify.mjs";
+import { artifactDigest, buildOneStateArtifact } from "../e2e/one-state-artifact.mjs";
 
 vi.mock("node:child_process", async (original) => ({
   ...await original<typeof import("node:child_process")>(),
@@ -37,12 +40,12 @@ describe("verification shard arguments", () => {
 });
 
 describe("shared verification stages", () => {
-  it("builds once, then reuses strict-header artifact config for all browsers", () => {
+  it("retains the ordinary artifact browsers before a separate instrumented equivalence stage", () => {
     const stages = verificationStages(null);
     expect(stages.slice(0, 2).map((stage) => stage.args)).toEqual([["run", "check"], ["test"]]);
     const browser = stages.filter((stage) => stage.args.includes("test:e2e"));
-    expect(browser).toHaveLength(2);
-    for (const stage of browser) {
+    expect(browser).toHaveLength(3);
+    for (const stage of browser.slice(0, 2)) {
       expect(stage.args).toContain("tests/e2e/production-artifact.config.ts");
       expect(stage.args).toContain("--project=chromium");
       expect(stage.args.some((arg) => arg.startsWith("--shard"))).toBe(false);
@@ -52,8 +55,12 @@ describe("shared verification stages", () => {
     expect(browser[1].args).toEqual(expect.arrayContaining(["--grep", "@quarantine", "--pass-with-no-tests"]));
     expect(browser[1].informational).toBe(true);
     expect(browser[0].args.at(-1)).not.toBe(browser[1].args.at(-1));
+    expect(browser[2].args).toContain("tests/e2e/one-state.config.ts");
+    expect(browser[2].args).not.toContain("--pass-with-no-tests");
+    expect(browser[2].informational).toBe(false);
+    expect(browser[2].args.some((arg) => arg.startsWith("--shard"))).toBe(false);
   });
-  it.each([1, 2, 3, 4])("forwards shard %i/4 to both browser stages", (index) => {
+  it.each([1, 2, 3, 4])("forwards shard %i/4 to every browser stage", (index) => {
     const stages = verificationStages({ index, total: 4 });
     for (const stage of stages.filter((stage) => stage.args.includes("test:e2e"))) {
       expect(stage.args.filter((arg) => arg.startsWith("--shard="))).toEqual([`--shard=${index}/4`]);
@@ -61,7 +68,7 @@ describe("shared verification stages", () => {
     expect(stages.some((stage) => stage.name === "Gzip report")).toBe(index === 1);
     expect(stages.some((stage) => stage.name === "Content report")).toBe(index === 1);
   });
-  it.each(["Check (typecheck, lint, build)", "Unit tests", "Blocking production browsers"])(
+  it.each(["Check (typecheck, lint, build)", "Unit tests", "Blocking production browsers", "Blocking instrumented one-state equivalence"])(
     "propagates %s failure and stops later stages", async (name) => {
       const visited: string[] = [];
       const result = await runVerification([], (stage) => {
@@ -77,7 +84,7 @@ describe("shared verification stages", () => {
       const execute = vi.fn((stage: Stage) => stage.name === name ? 9 : 0);
       const log = vi.fn();
       expect(await runVerification([], execute, log)).toBe(0);
-      expect(execute).toHaveBeenCalledTimes(6);
+      expect(execute).toHaveBeenCalledTimes(7);
       expect(log).toHaveBeenCalledWith(expect.stringContaining("informational failure retained"));
     },
   );
@@ -89,6 +96,54 @@ describe("shared verification stages", () => {
       return 0;
     }, log)).toBe(informational ? 0 : 1);
     expect(log).toHaveBeenCalledWith(expect.stringContaining("Spawn failed"));
+  });
+
+  describe("instrumented artifact isolation", () => {
+    const temporaryDirectories: string[] = [];
+    afterEach(() => {
+      for (const directory of temporaryDirectories.splice(0)) rmSync(directory, { recursive: true });
+    });
+    const workspace = () => {
+      const directory = mkdtempSync(join(tmpdir(), "bsa-one-state-"));
+      temporaryDirectories.push(directory);
+      mkdirSync(join(directory, "dist", "assets"), { recursive: true });
+      writeFileSync(join(directory, "dist", "index.html"), "ordinary production page");
+      writeFileSync(join(directory, "dist", "assets", "app.js"), "ordinary production bundle");
+      vi.stubEnv("npm_execpath", "npm-cli.js");
+      return directory;
+    };
+    it("uses a separate output and build-only flag without changing ordinary files or the parent environment", () => {
+      const directory = workspace();
+      vi.stubEnv("VITE_E2E_STATE_OBSERVER", "");
+      const before = artifactDigest(join(directory, "dist"));
+      vi.mocked(spawnSync).mockReturnValue(childResult({ status: 0 }));
+      buildOneStateArtifact(spawnSync, directory);
+      expect(spawnSync).toHaveBeenCalledWith(process.execPath,
+        ["npm-cli.js", "run", "build", "--", "--outDir", join(directory, "test-results", "one-state-site")],
+        expect.objectContaining({ cwd: directory, shell: false, env: expect.objectContaining({ VITE_E2E_STATE_OBSERVER: "true" }) }));
+      expect(artifactDigest(join(directory, "dist"))).toBe(before);
+      expect(process.env.VITE_E2E_STATE_OBSERVER).toBe("");
+    });
+    it("fails closed when the ordinary artifact changes during the instrumented build", () => {
+      const directory = workspace();
+      vi.mocked(spawnSync).mockImplementation(() => {
+        writeFileSync(join(directory, "dist", "assets", "app.js"), "unexpected instrumented bundle");
+        return childResult({ status: 0 });
+      });
+      expect(() => buildOneStateArtifact(spawnSync, directory)).toThrow("changed the ordinary deployment artifact");
+    });
+    it.each([1, 7, null])("propagates instrumented build failure %s", (status) => {
+      const directory = workspace();
+      vi.mocked(spawnSync).mockReturnValue(childResult({ status }));
+      expect(() => buildOneStateArtifact(spawnSync, directory)).toThrow("One-state build failed");
+    });
+    it("retains the exact production server and hosting policy, not a permissive test server", () => {
+      const config = readFileSync(new URL("../e2e/one-state.config.ts", import.meta.url), "utf8");
+      expect(config).toContain('join(instrumentedDirectory, "server.mjs")');
+      expect(config).not.toContain("npm run dev");
+      expect(config).toContain("reuseExistingServer: false");
+      expect(config).toContain("retries: 0");
+    });
   });
   it("rejects an invalid blocking exit status rather than claiming success", async () => {
     expect(await runVerification([], () => NaN, vi.fn())).toBe(1);
