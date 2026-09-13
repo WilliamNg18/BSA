@@ -1,10 +1,10 @@
 /** Pure session projections and validation. No persistence or payment authority. */
 import { caseById } from "./cases";
 import { interpretPharmacyText } from "./pharmacy-check";
-import { PHARMACIES } from "./reference";
+import { PHARMACIES, PRODUCTS, productByCode } from "./reference";
 import { versionForDate } from "./tariff";
-import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot } from "./lifecycle";
-import type { ExceptionCase } from "./types";
+import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot, ProcessSubmission } from "./lifecycle";
+import type { DeclaredItemFields, ExceptionCase, PaperDeclaration } from "./types";
 
 /** Clone before recursively freezing: caller-owned objects and fixtures stay untouched. */
 export function immutable<T>(value: T): T {
@@ -33,6 +33,61 @@ export function appendHistory(current: CaseLifecycle, event: HistoryEvent): Case
   return immutable({ ...current, state: event.to, history: [...current.history, event] });
 }
 
+function requireDate(date: string): void {
+  if (typeof date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+    !Number.isFinite(Date.parse(date)) || new Date(date).toISOString().slice(0, 10) !== date) {
+    throw new Error("A valid dispensing or prescription date is required.");
+  }
+}
+
+/** Exact synthetic catalogue lookup, never an inferred reading of the image. */
+export function paperDeclarationFields(paper: PaperDeclaration): DeclaredItemFields {
+  if (!paper || typeof paper.typedProduct !== "string" || typeof paper.endorsementText !== "string" ||
+    paper.declaredByPharmacy !== true || paper.quantity !== null && (!Number.isSafeInteger(paper.quantity) || paper.quantity <= 0)) {
+    throw new Error("Invalid paper declaration.");
+  }
+  requireDate(paper.dispensingDate);
+  const text = paper.typedProduct.trim();
+  const product = PRODUCTS.find((item) => item.code === text || item.name.toLowerCase() === text.toLowerCase());
+  if (text.startsWith("SYN-") && !product) throw new Error("Unknown synthetic product code.");
+  return { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText };
+}
+
+/** Validate source copies before any state write. Advice cannot replace source fields. */
+export function validateSubmissionSources(submission: ProcessSubmission, expectedRevision: number): void {
+  if (submission.revision !== undefined && submission.revision !== expectedRevision) throw new Error("Stale submission revision.");
+  const { epsPrescription: eps, paperDeclaration: paper, declaration, channel, endorsementText } = submission;
+  if (eps !== undefined) {
+    if (!eps || channel !== "eps" || paper !== undefined || declaration !== undefined) throw new Error("EPS source does not match the submission channel.");
+    if (!Array.isArray(eps.items) || eps.items.length !== 1) throw new Error("Exactly one synthetic EPS item is supported.");
+    if (!eps.prescriber || typeof eps.prescriber.name !== "string" || typeof eps.prescriber.practice !== "string" ||
+      typeof eps.patientLabel !== "string" || !eps.patientLabel.toLowerCase().includes("synthetic") ||
+      typeof eps.prescriberEndorsement !== "string" || typeof eps.dispenserEndorsement !== "string" ||
+      eps.dispenserEndorsement !== endorsementText || eps.claimMessageState !== "submitted" ||
+      !["exempt", "chargeable", "not_recorded"].includes(eps.exemptionStatus)) throw new Error("Invalid or mismatched EPS claim fields.");
+    requireDate(eps.prescriptionDate);
+    requireDate(eps.dispensingDate);
+    const item = eps.items[0];
+    if (!item || !productByCode(item.prescribedCode) || !productByCode(item.dispensedCode) ||
+      productByCode(item.prescribedCode)?.name !== item.product || productByCode(item.dispensedCode)?.name !== item.dispensedName ||
+      !Number.isSafeInteger(item.quantity) || item.quantity <= 0 ||
+      [item.strength, item.form, item.dose].some((value) => typeof value !== "string")) throw new Error("Invalid synthetic EPS item or product copy.");
+    const supply = eps.supplyEvidence;
+    if (supply !== undefined && (!supply || supply.ruleId !== "SYN-EPS-SUPPLY" ||
+      typeof supply.brandManufacturer !== "string" || typeof supply.form !== "string" ||
+      supply.packSize !== null && (!Number.isSafeInteger(supply.packSize) || supply.packSize <= 0))) {
+      throw new Error("Invalid synthetic EPS supply evidence.");
+    }
+  }
+  if (paper !== undefined) {
+    if (channel !== "paper" || eps !== undefined) throw new Error("Paper declaration does not match the submission channel.");
+    const fields = paperDeclarationFields(paper);
+    if (paper.endorsementText !== endorsementText || declaration &&
+      (declaration.fields.productCode !== fields.productCode || declaration.fields.quantity !== fields.quantity ||
+        declaration.fields.endorsementText !== fields.endorsementText)) throw new Error("Paper declaration copies do not match.");
+  }
+}
+
 /**
  * Pure pack/trace input. Seed evidence is unchanged. Only an explicit pharmacy
  * text revision replaces endorsement evidence; confirmations never resolve C's
@@ -56,6 +111,23 @@ export function caseForLifecycle(
     if (!pharmacy) return null;
     c.id = caseId;
     c.pharmacy = { name: pharmacy.name, contractorCode: pharmacy.contractorCode };
+  }
+  if (revision.epsPrescription) {
+    const eps = revision.epsPrescription, item = eps.items[0];
+    c.epsPrescription = eps;
+    c.patientLabel = eps.patientLabel;
+    c.extracted = { ...c.extracted, productCode: item.dispensedCode, productText: item.dispensedName,
+      quantity: item.quantity, endorsementText: eps.dispenserEndorsement, dispensingDate: eps.dispensingDate,
+      prescriber: eps.prescriber.name, productConfidence: 1, quantityConfidence: 1, endorsementConfidence: 1 };
+    c.claim = { ...c.claim, productCode: item.dispensedCode, quantity: item.quantity,
+      endorsementText: eps.dispenserEndorsement, submittedVia: "EPS claim message" };
+    c.regions = [];
+    const facts = interpretPharmacyText(eps.dispenserEndorsement);
+    c.readings = [facts, { ...facts }, { ...facts }];
+  }
+  if (revision.paperDeclaration) {
+    c.paperDeclaration = revision.paperDeclaration;
+    c.extracted.dispensingDate = revision.paperDeclaration.dispensingDate;
   }
   if (c.scenario !== "D" && revision.endorsementText !== original.extracted.endorsementText) {
     const text = revision.endorsementText;
@@ -89,7 +161,7 @@ export function validatePrecheck(snapshot: PharmacyPrecheckSnapshot | undefined,
   }
   if (![snapshot.tariffVersion, snapshot.clauseId].every((v) => v === null || (typeof v === "string" && v.length > 0))) fail();
   const facts = snapshot.facts;
-  if (facts !== null && (!facts || !["NCSO", "BB", "XP", "SP", "NONE", "UNKNOWN"].includes(facts.type) ||
+  if (facts !== null && (!facts || !["NCSO", "BB", "XP", "SP", "SUPPLY", "NONE", "UNKNOWN"].includes(facts.type) ||
     typeof facts.present !== "boolean" || ![true, false, null].includes(facts.initialled) || ![true, false, null].includes(facts.dated) ||
     facts.quotedText !== text || typeof facts.note !== "string")) fail();
   const version = versionForDate(date);
