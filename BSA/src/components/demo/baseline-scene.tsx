@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useProcessMonth } from "@/hooks/use-process-month";
 import { useAppStore } from "@/lib/store";
+import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
 import { SceneEstimateNumber } from "./scene-estimate-number";
 import { ProcessFigure } from "./process-figure";
 
@@ -21,7 +22,7 @@ export function BaselineScene() {
         ["referralOperatorHours", `${enabled ? "With the agent" : "Today"}: referral operator hours`, column.referralOperatorHours],
       ] as const).map(([key, label, value]) => <div key={key}><dt>{label}</dt><dd className="mt-1 text-xl font-semibold" data-scene-metric={key}>
         <ProcessFigure source="Assumption" label={label} explanation="Shared process model using editable public-derived defaults and assumptions. Lane counts overlap; referral hours are not additive with Type 2 hours.">
-          <SceneEstimateNumber value={value} enabled={enabled} scenario={result} />
+          <SceneEstimateNumber value={value} enabled={enabled} scenario={result} format={key === "referralOperatorHours" ? formatProcessHours : formatProcessItems} />
         </ProcessFigure>
       </dd></div>)}
     </dl> : <p role="status">Scenario estimates unavailable: correct the calculator inputs.</p>}
