@@ -6,7 +6,7 @@ export const SOURCES_FOOTER = "Owner-supplied public process context attributed 
 export const TOUR_CONTENT = {
   chapters: [
     { chapter: 1, title: "Most items need no person", prose: "Straightforward items flow to automated pricing. Staff capture uncertain reads and judge endorsements; unresolved items return to the pharmacy." },
-    { chapter: 2, title: "A month in numbers", prose: "Compare referrals and repeat work using shared assumptions. Keep Type 2 judgement, referral investigation and pharmacy completion separate." },
+    { chapter: 2, title: "A month in numbers", prose: "Estimate a smaller referral loop. Count gathering, judgement and double-checks; keep pharmacy labour separate from operator hours." },
     { chapter: 3, title: "Evidence to a decision", prose: "Follow automatic pricing, capture and judgement. Assistance checks declarations and gathers evidence; people confirm uncertain fields and decide." },
     { chapter: 4, title: "Cases and boundaries", prose: "Compare automatic pricing, missing information, unresolved conflict and unreadable paper. Declared evidence needs human confirmation; uncertainty never becomes source agreement." },
     { chapter: 5, title: "One continuous cycle", prose: "Follow Hillcrest's item through submission, judgement, correction and re-check. Switching sides preserves its evidence, decisions and history." },

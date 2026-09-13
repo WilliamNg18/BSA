@@ -1,6 +1,6 @@
 import { ArrowDown, CornerDownRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useProcessMonth } from "@/hooks/use-process-month";
+import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
 import { formatProcessItems } from "@/lib/domain/baseline";
 import { BoundaryTag } from "./labels";
@@ -10,15 +10,15 @@ import { ProcessFigure } from "./process-figure";
 export function ExceptionPipeline() {
   const enabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
-  const { result } = useProcessMonth();
+  const { result } = useManualLoopMonth();
   const column = result && (enabled ? result.withAgent : result.today);
   return <section aria-label="Prescription processing paths" className="space-y-4" data-pipeline>
     <section aria-label="Pharmacy check before submission" className="space-y-3 rounded-xl border border-dashed bg-muted/30 p-5" data-pharmacy-exit>
       <div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold">Pharmacy check before submission</h2><BoundaryTag cls={enabled ? "agent" : "human"} /></div>
       <p className="text-sm">{enabled ? "Check the declaration against the dated rule; show the exact gap. The pharmacist corrects or submits." : "The pharmacist checks the endorsement and submits. Incomplete information can return later as a referral."}</p>
       {enabled && <p className="text-sm font-medium" data-agent-kernel="pharmacy">Agent kernel: verify and advise, never submit or pay.</p>}
-      {enabled && column && <p className="text-sm">Items caught before submission: <ProcessFigure source="Assumption" label="Items caught before submission" explanation="Shared model catch assumption, applied only to would-be referrals. Corrected items still enter normal processing.">
-        <span data-pipeline-pharmacy><MonthlyNumber value={column.caughtBeforeSubmission} format={formatProcessItems} /></span>
+      {enabled && result && <p className="text-sm">Items caught before submission (estimate): <ProcessFigure source="Assumption" label="Items caught before submission" explanation="Shared model prevention assumption, applied only to would-be referrals. Corrected items still enter normal processing.">
+        <span data-pipeline-pharmacy><MonthlyNumber value={result.cohorts.prevented} format={formatProcessItems} /></span>
       </ProcessFigure></p>}
       {perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to="/pharmacy">Try the pharmacy check</Link>}
     </section>
@@ -68,7 +68,7 @@ export function ExceptionPipeline() {
         <h2 className="font-semibold">Referred back</h2><BoundaryTag cls="human" />
         <p className="text-sm">An RB code explains the missing endorsement. Only that item&apos;s payment is delayed.</p>
         {enabled && <p className="text-sm">The operator approves the exact-fix note with its clause and version. The agent does not send or approve it.</p>}
-        {column && <p className="text-sm">Monthly items: <ProcessFigure source="Assumption" label="Monthly referrals" explanation="Shared process scenario; With the agent reduces referrals only by the assumed pre-submission catch.">
+        {column && <p className="text-sm">Monthly items{enabled && " (estimate)"}: <ProcessFigure source="Assumption" label="Monthly referrals" explanation="Shared referral-loop scenario after sequential pharmacy prevention and code clearance; all remaining queued items are assumed referred back.">
           <span data-pipeline-referrals><MonthlyNumber value={column.referredBackItems} format={formatProcessItems} /></span>
         </ProcessFigure></p>}
       </li>

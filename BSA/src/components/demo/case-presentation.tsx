@@ -5,7 +5,7 @@ import { BoundaryTag, KeyValue } from "./labels";
 import { PainMarker } from "./pain-marker";
 import { PrescriptionForm } from "./prescription-form";
 import type { useCasePresentation } from "@/hooks/use-case-presentation";
-import { useProcessMonth } from "@/hooks/use-process-month";
+import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { formatBaselineNumber, GATHERING_STEPS } from "@/lib/domain/baseline";
 import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { ASSISTED_SLOTS } from "@/lib/case-presentation";
@@ -34,7 +34,7 @@ export function MissingAssistedSlots({ markers = false }: { markers?: boolean })
 }
 
 export function ManualCaseTrace() {
-  const { input } = useProcessMonth();
+  const { input } = useManualLoopMonth();
   return <PageSection title="Manual gathering trace" description="Synthetic manual workflow assumptions, not observed NHSBSA steps or measured timings.">
     <ol aria-label="Manual gathering trace" className="grid gap-3 sm:grid-cols-2">
       {GATHERING_STEPS.map(({ key, label }, index) => <li key={key} className="space-y-2 rounded-xl border p-4" data-manual-step={key}>
@@ -44,8 +44,8 @@ export function ManualCaseTrace() {
         <PainMarker resolved={false} pain="Human evidence gathering required" resolution="" />
       </li>)}
     </ol>
-    <p className="mt-3 text-sm" data-manual-total>Referral investigation: {input ? `${formatBaselineNumber(input.investigationMinutesToday)} min / referred-back item` : "Unavailable: correct process inputs"} · Assumption</p>
-    <p className="mt-2 text-sm">Type 2 stream average: {input ? `${formatBaselineNumber(input.type2SecondsToday)} seconds / item` : "Unavailable"} · Public, separate from the investigation tail.</p>
+    <p className="mt-3 text-sm" data-manual-total>Referral gathering: {input ? `${formatBaselineNumber(input.gatheringMinutesToday)} min / referred-back item` : "Unavailable: correct process inputs"} · Assumption</p>
+    <p className="mt-2 text-sm">First judgement: {input ? `${formatBaselineNumber(input.judgingMinutesToday)} minutes / referral-loop item` : "Unavailable"} · Assumption, not the whole-service Type 2 average.</p>
   </PageSection>;
 }
 
