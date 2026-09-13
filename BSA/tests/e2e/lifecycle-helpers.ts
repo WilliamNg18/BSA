@@ -17,6 +17,7 @@ export async function prepareUnseededState(page: Page, state: LifecycleState) {
     await detail.getByText("Demonstration replay", { exact: true }).click();
     await detail.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
     await expect(detail.getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
+    await navigatePrimary(page, "Pharmacy claims");
   } else if (state === "escalated") {
     await navigatePrimary(page, "NHSBSA queue");
     await page.getByRole("link", { name: "Open SYN-FQ123-TYPE2", exact: true }).click();
