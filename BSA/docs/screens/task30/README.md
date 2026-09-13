@@ -34,6 +34,10 @@ after the other functional streams. Its four exact CI checks and complete
 local rehearsal precede normal main deployment. The final hosted run then
 targets that actual deployed runtime, never the earlier eight-chapter site.
 
+The final named inventory has expanded to **30 checks**, including generic
+supplier-field referral correction and human re-check. The earlier 29-check
+local rehearsal is historical, not completion of this expanded inventory.
+
 Use a fresh source-named subdirectory for every hosted run. Export the complete
 inventory, exact clean application source, runner source, timestamps, URLs,
 before/after identities, original symptoms and image hashes without modifying

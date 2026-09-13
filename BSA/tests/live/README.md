@@ -1,9 +1,10 @@
 # Explicit live acceptance
 
 This opt-in checklist is outside `tests/e2e`. Its named inventory currently
-contains 29 checks, including the historical process coverage, Hillcrest-only
+contains 30 checks, including the historical process coverage, Hillcrest-only
 work, visible EPS scenarios, worked paper declaration, contradictory evidence
-six-chapter navigation, and the same-D cycle in Both/switched views, Off/On.
+six-chapter navigation, the same-D cycle in Both/switched views, Off/On, and
+generic EPS referral correction through explicit human re-check.
 Default production CI does
 not discover it. It starts no server, uses one Chromium worker, and only changes
 synthetic browser-memory state. Do not execute until the coordinator confirms

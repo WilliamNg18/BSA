@@ -21,6 +21,7 @@ export const LIVE_CHECKS = {
   declaredPaper: "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
   paperConflict: "22 Contradictory capture of a complete declaration still abstains without invented agreement",
   sixChapters: "23 Six stakeholder chapters retain all nine stops and the editable central bet",
+  genericCorrection: "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
 } as const;
 
 export const LIVE_CYCLE_MODES = ["both", "switched"] as const;

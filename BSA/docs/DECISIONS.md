@@ -1673,3 +1673,19 @@ the coordinator then repeats the complete hosted inventory on latest main,
 checks the URL within ten minutes and confirms the protected-reference gates.
 ALL DONE remains withheld until the whole release, not merely functional V,
 has completed those gates.
+
+## 2026-09-13: Generic correction expands final acceptance to 30 checks
+
+The coordinator required an additional named check after the generic EPS
+referral path lacked editable supplier fields in claim details. E restores
+brand/manufacturer, pack size and form correction using the existing
+resubmission and human re-check APIs. V adds a full same-item hosted check:
+unchecked submission, human referral, structured correction, explicit
+resubmission, human acceptance and Paid with unchanged earlier attempts.
+
+The final named inventory is now **30**, not the earlier 29-check rehearsal.
+The original 29/29 local result remains valid only for its historical source
+and inventory; it cannot substitute for the expanded final local or hosted
+run. The generic check deliberately includes a missing presentation so its
+human-selected RB2B code matches the recorded correction request. It does
+not claim RB2B is a public brand-only referral code.
