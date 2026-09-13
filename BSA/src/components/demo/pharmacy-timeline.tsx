@@ -34,8 +34,8 @@ export function PharmacyTimeline({ caseId, revision }: { caseId: string; revisio
     <div className="flex flex-wrap gap-2">
       <Button variant="outline" onClick={() => { setPlaying(false); setIndex((current) => Math.min(stages.length - 1, current + 1)); }} disabled={index === stages.length - 1}>Step timeline</Button>
       <Button variant="outline" disabled={reduced || index === stages.length - 1} onClick={() => setPlaying((value) => !value)}>{playing && !reduced && index < stages.length - 1 ? "Pause timeline" : "Play timeline"}</Button>
-      <Button variant="outline" onClick={() => { setPlaying(false); setIndex(stages.length - 1); }}>Jump to end</Button>
-      <Button variant="ghost" onClick={() => { setPlaying(false); setIndex(0); }}>Restart timeline</Button>
+      <Button variant="outline" disabled={index === stages.length - 1} onClick={() => { setPlaying(false); setIndex(stages.length - 1); }}>Jump to end</Button>
+      <Button variant="ghost" disabled={index === 0 && !playing} onClick={() => { setPlaying(false); setIndex(0); }}>Restart timeline</Button>
     </div>
     <ol aria-label="Submission timeline" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
       {stages.map((stage, position) => <li key={position} aria-current={position === index ? "step" : undefined} className={`rounded-lg border p-3 ${position === index ? "border-teal-700 ring-1 ring-teal-700" : "border-border"}`}>
