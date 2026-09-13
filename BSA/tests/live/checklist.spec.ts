@@ -382,7 +382,7 @@ test(LIVE_CHECKS.reset, async ({ page }) => {
   await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-  await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+  await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
   await confirmReset(page);
   await expect(flag(page)).not.toBeChecked();
   await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
