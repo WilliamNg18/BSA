@@ -9,6 +9,7 @@ import { runAgent } from "../../src/lib/domain/agent";
 import { startDemonstrationReview } from "../e2e/lifecycle-helpers";
 import { chooseProcessChapter, expandProcessInputs, expectProcessMetrics, expectSceneMetrics } from "../e2e/process-model-helpers";
 import { confirmCompletePaper, openFourCases, submitCompletePaper } from "../e2e/paper-capture-helpers";
+import { LIVE_CHECKS } from "./inventory";
 
 const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -21,7 +22,7 @@ const routes = [...new Set([
   ...cases.flatMap((c) => [`/case/${c.id}`, `/case/${c.id}/trace`, `/case/${c.id}/record`]),
 ])];
 
-test("01 Root Overview starts Agent Off and serves the approved build", async ({ page }, info) => {
+test(LIVE_CHECKS.root, async ({ page }, info) => {
   const response = await page.goto("/");
   expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading", { name: "Most items need no person", exact: true })).toBeVisible();
@@ -33,7 +34,7 @@ test("01 Root Overview starts Agent Off and serves the approved build", async ({
   await captureCheckpoint(page, info, "overview-off");
 });
 
-test("02 Every current route toggles On and back Off without errors", async ({ page }, info) => {
+test(LIVE_CHECKS.routes, async ({ page }, info) => {
   for (const route of routes) {
     await test.step(route, async () => {
       await page.goto(route);
@@ -52,7 +53,7 @@ test("02 Every current route toggles On and back Off without errors", async ({ p
   await audit(page, info, "overview", true);
 });
 
-test("03 Shared monthly inputs update both process columns and Scene figures", async ({ page }, info) => {
+test(LIVE_CHECKS.model, async ({ page }, info) => {
   await page.goto("/#month");
   await expandProcessInputs(page);
   await page.getByRole("textbox", { name: "Items referred back a month", exact: true }).fill("120");
@@ -92,7 +93,7 @@ test("03 Shared monthly inputs update both process columns and Scene figures", a
   await captureJson(info, "shared-month-inputs", { input, expected });
 });
 
-test("04 Four case cards retain automatic, Type 2 and unconfirmed Type 1 routes", async ({ page }) => {
+test(LIVE_CHECKS.cards, async ({ page }) => {
   for (const [index, scenario] of ["A", "B", "C", "D"].entries()) {
     await page.goto("/#cases");
     await flag(page).setChecked(true);
@@ -125,7 +126,7 @@ test("04 Four case cards retain automatic, Type 2 and unconfirmed Type 1 routes"
   }
 });
 
-test("05 Three pharmacy scenarios remain advisory in both modes", async ({ page }, info) => {
+test(LIVE_CHECKS.pharmacy, async ({ page }, info) => {
   const scenarios = [
     { label: "Complete endorsement", status: "Complete: will flow to automated pricing" },
     { label: "Information missing", status: "Information may be missing" },
@@ -144,7 +145,7 @@ test("05 Three pharmacy scenarios remain advisory in both modes", async ({ page 
   }
 });
 
-test("06 Claims seed list opens a matching seeded claim and history", async ({ page }, info) => {
+test(LIVE_CHECKS.claims, async ({ page }, info) => {
   await page.goto("/pharmacy/claims");
   const list = page.getByRole("table", { name: "Pharmacy claims", exact: true });
   await expect(list.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true })).toBeVisible();
@@ -159,7 +160,7 @@ test("06 Claims seed list opens a matching seeded claim and history", async ({ p
   }
 });
 
-test("07 Actual staff work and separate monthly projections survive Agent changes", async ({ page }, info) => {
+test(LIVE_CHECKS.queue, async ({ page }, info) => {
   await page.goto("/queue");
   const table = page.getByRole("region", { name: "Type 2 items", exact: true });
   await expect(table.locator("thead th")).toHaveCount(6);
@@ -190,7 +191,7 @@ test("07 Actual staff work and separate monthly projections survive Agent change
   await expect(page.locator("[data-comparison-clock]")).toHaveCount(0);
 });
 
-test("08 Full Off then On round trips retain Follow and Switch side", async ({ page }, info) => {
+test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
   for (const enabled of [false, true]) {
     await test.step(`Agent ${enabled ? "On" : "Off"}`, async () => {
       await page.goto("/pharmacy");
@@ -248,7 +249,7 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
   }
 });
 
-test("09 D abstains until human capture and retains history through paper referral", async ({ page }, info) => {
+test(LIVE_CHECKS.paper, async ({ page }, info) => {
   for (const enabled of [false, true]) {
     await page.goto("/case/EX-24123");
     await flag(page).setChecked(enabled);
@@ -306,7 +307,7 @@ test("09 D abstains until human capture and retains history through paper referr
   }
 });
 
-test("10 Case E remains deterministic without an agent call", async ({ page }) => {
+test(LIVE_CHECKS.deterministic, async ({ page }) => {
   await page.goto("/case/EX-24101/trace");
   await flag(page).setChecked(true);
   const trace = page.getByRole("list", { name: "Deterministic clearance trace", exact: true });
@@ -316,7 +317,7 @@ test("10 Case E remains deterministic without an agent call", async ({ page }) =
   await expect(trace).not.toContainText("run_endorsement_checks");
 });
 
-test("11 Case B July replay is Sufficient while August refers back", async ({ page }) => {
+test(LIVE_CHECKS.replay, async ({ page }) => {
   await page.goto("/case/EX-24112");
   await startDemonstrationReview(page);
   await flag(page).setChecked(true);
@@ -332,7 +333,7 @@ test("11 Case B July replay is Sufficient while August refers back", async ({ pa
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Refer back with the exact fix");
 });
 
-test("12 Six root deep links return the application with strict headers", async ({ page }, info) => {
+test(LIVE_CHECKS.deepLinks, async ({ page }, info) => {
   const links = ["/pharmacy", "/pharmacy/claims", "/queue", "/case/EX-24112", "/case/EX-24112/trace", "/case/EX-24112/record"];
   const evidence = [];
   for (const path of links) {
@@ -353,7 +354,7 @@ test("12 Six root deep links return the application with strict headers", async 
   await captureJson(info, "six-root-deep-links", evidence);
 });
 
-test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page }) => {
+test(LIVE_CHECKS.reset, async ({ page }) => {
   await page.goto("/#month");
   await expandProcessInputs(page);
   await page.getByRole("textbox", { name: "Items referred back a month", exact: true }).fill("120");
@@ -375,7 +376,7 @@ test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page 
   await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, false);
 });
 
-test("16 C confirmation returns to human review without resolving 56 versus 84", async ({ page }, info) => {
+test(LIVE_CHECKS.conflict, async ({ page }, info) => {
   for (const enabled of [false, true]) {
     await page.goto("/case/EX-24119");
     await flag(page).setChecked(enabled);
@@ -409,7 +410,7 @@ test("16 C confirmation returns to human review without resolving 56 versus 84",
   }
 });
 
-test("17 F retains its original human record through mode changes and replay", async ({ page }, info) => {
+test(LIVE_CHECKS.historical, async ({ page }, info) => {
   await page.goto("/case/EX-24088/record");
   await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
   const records = page.locator("[data-original-records]");
@@ -436,7 +437,7 @@ test("17 F retains its original human record through mode changes and replay", a
   await captureJson(info, "f-original-record-retained", { record: original, url: page.url() });
 });
 
-test("18 Complete paper retains human capture and existing pricing without Type 2 judgement", async ({ page }, info) => {
+test(LIVE_CHECKS.completedCapture, async ({ page }, info) => {
   const action = async (_label: string, _side: "Pharmacy" | "NHSBSA", perform: () => Promise<void>) => perform();
   for (const enabled of [false, true]) {
     await page.goto("/pharmacy");

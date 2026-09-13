@@ -26,6 +26,13 @@ executed items, PASS/FAIL/NOT_RUN, symptoms, timestamps, duration, URL, identity
 attachments and evidence paths. Timing is informational, not a performance
 budget. No skipped item counts as a pass.
 
+The test declarations and reporter share the named inventory in `inventory.ts`.
+Only a complete, unique inventory with one passing attempt per check can report
+full `PASS`. A passing `--grep` selection retains its passing rows but reports
+`selection: partial` and overall `FAIL`, with the missing checks listed.
+Skipped, unrun, duplicate, unexpected and retried checks cannot imply clean full
+acceptance. All retry attempts and their original symptoms remain in the report.
+
 The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,
 `/case/EX-24112`, `/case/EX-24112/trace` and `/case/EX-24112/record`. Route toggling
 also visits every current static route, tour stop and canonical case view.
