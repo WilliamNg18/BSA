@@ -6,8 +6,11 @@ import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { CompactTooltip, CompactTooltipContent, CompactTooltipTrigger } from "@/components/ui/compact-tooltip";
 import { useAppStore } from "@/lib/store";
 import { checkPharmacy, pharmacyDateCorrection, pharmacySnapshot, type PharmacyCheck } from "@/lib/domain/pharmacy-check";
+import { EPS_SUPPLY_RULE } from "@/lib/domain/eps-check";
+import { checkEpsFields } from "@/lib/domain/eps-pharmacy-check";
+import { projectEpsResubmissionDraft } from "@/lib/domain/eps-submission-draft";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
-import type { ExceptionCase, PharmacyDeclaration } from "@/lib/domain/types";
+import type { EpsPrescription, ExceptionCase, PharmacyDeclaration } from "@/lib/domain/types";
 
 export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
   const revision = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.number);
@@ -33,6 +36,9 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
   const [productCode, setProductCode] = useState(revision?.declaration?.fields.productCode ?? "");
   const [quantity, setQuantity] = useState(revision?.declaration?.fields.quantity?.toString() ?? "");
   const [prescriber, setPrescriber] = useState(revision?.declaration?.fields.prescriber ?? "");
+  const [manufacturer, setManufacturer] = useState(revision?.epsPrescription?.supplyEvidence?.brandManufacturer ?? "");
+  const [packSize, setPackSize] = useState(revision?.epsPrescription?.supplyEvidence?.packSize?.toString() ?? "");
+  const [form, setForm] = useState(revision?.epsPrescription?.supplyEvidence?.form ?? "");
   const [confirmation, setConfirmation] = useState("");
   const [checked, setChecked] = useState<{ text: string; at: string; result: PharmacyCheck } | null>(null);
   const [error, setError] = useState("");
@@ -47,12 +53,22 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
   const result = enabled && checked?.text === text ? checked.result : null;
   const correction = result?.status === "missing" && approved ? pharmacyDateCorrection(c, text) : text;
   const editable = row.state === "referred_back";
+  const genericEps = channel === "eps" && revision?.epsPrescription?.items[0]?.dispensedCode === EPS_SUPPLY_RULE.productCode;
+  const epsCorrection: EpsPrescription | undefined = genericEps && revision?.epsPrescription ? {
+    ...revision.epsPrescription, dispenserEndorsement: text, claimMessageState: "submitted",
+    supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: manufacturer, packSize: packSize === "" ? null : Number(packSize), form },
+  } : undefined;
+  function checkCorrection() {
+    if (!epsCorrection) return checkPharmacy(c, text, checkOptions);
+    const s = useAppStore.getState();
+    return checkEpsFields(projectEpsResubmissionDraft(c.id, epsCorrection, s.lifecycles, s.caseRevisions), text);
+  }
   function act(action: () => void, success: string) {
     try { action(); setError(""); setMessage(success); }
     catch (err) { setError(err instanceof Error ? err.message : "Action unavailable. Review the current claim state."); }
   }
   function snapshot() {
-    const fresh = enabled ? checkPharmacy(c, text, checkOptions) : null;
+    const fresh = enabled ? checkCorrection() : null;
     return pharmacySnapshot(text, c.extracted.dispensingDate, enabled ? "scripted" : "off", fresh, fresh ? new Date().toISOString() : null);
   }
   return <>
@@ -92,12 +108,24 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
         <label className="grid gap-1">Declared quantity<input type="number" min="1" step="1" className="rounded-md border bg-background p-2" value={quantity} aria-describedby="claim-declaration-provenance" onChange={(e) => { setQuantity(e.target.value); setChecked(null); }} /></label>
         <label className="grid gap-1 sm:col-span-2">Declared prescriber (synthetic)<input className="rounded-md border bg-background p-2" value={prescriber} aria-describedby="claim-declaration-provenance" onChange={(e) => { setPrescriber(e.target.value); setChecked(null); }} /></label>
       </fieldset>}
+      {genericEps && <fieldset className="grid gap-3 sm:grid-cols-2">
+        <legend className="font-semibold">Correct the EPS supply evidence</legend>
+        <label className="grid gap-1 sm:col-span-2">Brand or manufacturer dispensed
+          <input className="rounded-md border bg-background p-2" value={manufacturer} onChange={(e) => { setManufacturer(e.target.value); setChecked(null); }} />
+        </label>
+        <label className="grid gap-1">Pack size dispensed
+          <input type="number" min="1" step="1" className="rounded-md border bg-background p-2" value={packSize} onChange={(e) => { setPackSize(e.target.value); setChecked(null); }} />
+        </label>
+        <label className="grid gap-1">Form dispensed
+          <input className="rounded-md border bg-background p-2" value={form} onChange={(e) => { setForm(e.target.value); setChecked(null); }} />
+        </label>
+      </fieldset>}
       <label className="grid gap-2" htmlFor="claim-endorsement">Corrected endorsement
         <textarea id="claim-endorsement" className="min-h-20 rounded-md border bg-background p-2" value={text} onChange={(e) => { setText(e.target.value); setChecked(null); }} />
       </label>
       {enabled ? <section aria-label="Claims precheck" className="space-y-2">
         <BoundaryTag cls="deterministic" /><p>Scripted typed-field check, not live capture. No payment guarantee.</p>
-        <Button variant="outline" onClick={() => setChecked({ text, at: new Date().toISOString(), result: checkPharmacy(c, text, checkOptions) })}>Re-check endorsement</Button>
+        <Button variant="outline" onClick={() => setChecked({ text, at: new Date().toISOString(), result: checkCorrection() })}>Re-check endorsement</Button>
         <p role="status">{result ? result.status === "ready" ? "Ready to resubmit" : result.status === "missing" ? "Information may be missing" : "Agent unable to determine" : "Not checked for this edit"}</p>
         {result && <>
           <div>Rule: {result.version ?? "Not retrieved"} · Clause: {result.clause?.id ?? "Not retrieved"}</div>
@@ -112,7 +140,8 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
         </div>}
       </section> : null}
       <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
-      <Button onClick={() => act(() => resubmit({ caseId: c.id, channel, endorsementText: text, declaration, precheck: snapshot() }), "Resubmitted for existing routing. Any required capture or judgement remains human.")}>Resubmit claim</Button>
+      <Button onClick={() => act(() => resubmit({ caseId: c.id, channel, endorsementText: text, declaration,
+        ...(epsCorrection ? { epsPrescription: epsCorrection, revision: revision!.number } : {}), precheck: snapshot() }), "Resubmitted for existing routing. Any required capture or judgement remains human.")}>Resubmit claim</Button>
     </section>}
     {row.state === "information_requested" && <section aria-label="Requested confirmation" className="space-y-3">
       <h3 className="font-semibold">Conflicting quantities</h3>

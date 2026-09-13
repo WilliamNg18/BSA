@@ -5,8 +5,8 @@ import { routeSubmission, routingFactsForCase } from "./routing";
 import { versionForDate } from "./tariff";
 import type { ExceptionCase } from "./types";
 
-/** Uses the same projected source fields and routing authority as actual Send. */
-export function checkEpsPharmacy(c: ExceptionCase, text: string): PharmacyCheck {
+/** Field completeness alone is not permission to price or skip human recheck. */
+export function checkEpsFields(c: ExceptionCase, text: string): PharmacyCheck {
   const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : null;
   const version = versionForDate(c.extracted.dispensingDate);
   const clause = supply ? version?.clauses.find((entry) => entry.id === supply.ruleId) : null;
@@ -29,6 +29,12 @@ export function checkEpsPharmacy(c: ExceptionCase, text: string): PharmacyCheck 
   } else {
     result = checkPharmacy(c, text, { channel: "eps" });
   }
+  return result;
+}
+
+/** Uses the same projected source fields and routing authority as actual Send. */
+export function checkEpsPharmacy(c: ExceptionCase, text: string): PharmacyCheck {
+  const result = checkEpsFields(c, text);
   const routing = routeSubmission(routingFactsForCase(c, "eps"));
   if (result.status === "ready" && routing.outcome !== "auto_priced") {
     return { ...result, status: "unable", gap: routing.reason, stages: [...result.stages.slice(0, -1), "STOPPED"] };
