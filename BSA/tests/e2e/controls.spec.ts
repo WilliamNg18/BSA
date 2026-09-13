@@ -111,7 +111,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toHaveCount(0);
   await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
-  await expect(page.getByText("Replay disabled in this manual comparison. The historical rule version is preserved; enable assistance to inspect it.", { exact: true })).toBeVisible();
+  await expect(page.getByText("Replay disabled in Today comparison. Enable assistance to inspect the preserved rule version.", { exact: true })).toBeVisible();
   await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd"))
     .toContainText("REFER BACK by Demo operator");
   await captureCheckpoint(page, testInfo, "b-july-assistance-off");
