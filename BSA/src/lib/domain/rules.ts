@@ -147,6 +147,9 @@ export function compositeFrom(signals: Signals): Composite {
     abstain = true;
   }
   if (abstain) return { level: "abstain", reasons };
+  if (signals.reconciliation === "not_established") {
+    return { level: "abstain", reasons: ["Source reconciliation is not established from known comparable fields"] };
+  }
   if (signals.reconciliation === "conflict") reasons.push("Evidence sources disagree on a material field");
   if (!signals.inCoverage) reasons.push("Exception category is outside the validated evaluation set");
   if (signals.sampleAgreement.total > 0 && signals.sampleAgreement.agree < signals.sampleAgreement.total) reasons.push("Readings not unanimous");
