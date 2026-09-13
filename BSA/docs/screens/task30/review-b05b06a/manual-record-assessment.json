@@ -1,0 +1,33 @@
+{
+  "status": "PARTIAL EVIDENCE ACCEPTED; overall accessibility NOT VERIFIED",
+  "record_commit": "bf3c96f725abd7495354f1a56506072f0ebc95c7",
+  "record_path": "BSA/docs/screens/task30/manual-b05b06a",
+  "identity": "Both endpoint records pin clean b05b06ad67860fea9d9809eed09b5f1636168f66 and observer absent,21:12:21Z–21:30:26Z. Independent verifier read these records, not a fresh browser context.",
+  "contrast": "Independently recomputed all11 samples: five light, five dark, one tooltip. Ratios match within floating point. Overall minimum4.741667181590045:1 (light muted text; displayed4.74) and maximum19.79814571052481:1 (displayed19.80). Supports only recorded effective foreground/background pairs, not focus indicators, textured SVG, overlays or all routes.",
+  "keyboard_supported": [
+    "H1 focus after chapter navigation;2px solid outline recorded below header.",
+    "Mobile labelled dialog opens with focus inside; Escape returns to labelled trigger;345px document width at360 viewport.",
+    "Rejected unconfirmed capture focuses alert, remains pending and has no Record decision; prescriber edit clears reconciliation, preserving field focus.",
+    "Input Alt+Right remains on same input and case; tooltip Escape preserves Agent switch focus."
+  ],
+  "keyboard_limits": [
+    "Agent toggle artifact records agentChecked:null. It corroborates one switch, focus and URL, but is insufficient standalone proof of the reported Off/On values or complete store invariance.",
+    "One Tab observation inside a dialog does not independently establish a complete forward/backward focus trap.",
+    "Mobile link class contains serialized callback. Native1px auto outline was observed; intended2px custom indicator and its contrast are NOT VERIFIED. Do not upgrade that implementation risk to a clean pass.",
+    "Recorded focus colour/outline widths are not measured focus-indicator contrast or every-control keyboard coverage.",
+    "No supplied768/1024px review, every-control keyboard traversal, screen-reader replay announcement or complete reduced-motion interaction record."
+  ],
+  "incomplete_occurrences_recomputed": {
+    "color-contrast": 129,
+    "th-has-data-cells": 4
+  },
+  "contrast_node_groups_heuristic": {
+    "tooltip": 6,
+    "SVG text": 96,
+    "other": 27
+  },
+  "incomplete_disposition": "Empty-filter0-row tables with explicit statuses explain four th-has-data-cells occurrences in that state, but not general table semantics.96 poor-paper SVG occurrences remain unmeasured, six tooltip and27 other occurrences are not all discharged by representative samples.",
+  "agreement_with_parent": "Independently confirmed declaration-check panel27 words in images17/25/26/55; ordinary generated explanatory sentences are not exempt.",
+  "overall_effect": "Does not change screenshot FAIL or34 failed-image count; does not establish WCAG2.2AA. Broader checks remain NOT VERIFIED.",
+  "contrast_sample_count": 11
+}
