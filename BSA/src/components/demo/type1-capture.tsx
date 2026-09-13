@@ -44,7 +44,7 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
         <p className="text-sm">Capture is recorded. Follow the current routing outcome; no further capture is requested.</p>
-        <dl className="grid gap-3 text-sm sm:grid-cols-2">
+        <dl className="grid gap-3 break-words text-sm sm:grid-cols-2">
           <div><dt className="font-medium">Product code</dt><dd>{capture.fields.productCode ?? "Unreadable"}</dd></div>
           <div><dt className="font-medium">Quantity</dt><dd>{capture.fields.quantity ?? "Unreadable"}</dd></div>
           <div><dt className="font-medium">Endorsement</dt><dd className="break-words">{capture.fields.endorsementText || "Unreadable or absent"}</dd></div>
