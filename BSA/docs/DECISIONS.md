@@ -1689,3 +1689,18 @@ and inventory; it cannot substitute for the expanded final local or hosted
 run. The generic check deliberately includes a missing presentation so its
 human-selected RB2B code matches the recorded correction request. It does
 not claim RB2B is a public brand-only referral code.
+
+## 2026-09-13: Tour cards must describe the current evidence
+
+The case-card capture guidance now reads the current immutable revision's
+declaration presence, actual paper quality/style and current process channel.
+Agent On alone does not establish a pharmacy declaration. Undeclared paper
+keeps explicit manual capture guidance; readable paper is not labelled
+unreadable. Code routes confirmed evidence, with Type 2 only when required.
+Manual EPS tasks name the claim message, not a nonexistent image.
+
+Five rendered regression cases cover B EPS Off, B readable paper Off/On
+without a declaration, D undeclared On and D declared On. They preserve
+complete store identity and assert fewer than 25 explanatory words in each
+capture panel. This corrects presentation only, not source fields, routing,
+capture confirmation or decision authority.

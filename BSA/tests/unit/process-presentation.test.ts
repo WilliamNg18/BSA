@@ -186,6 +186,51 @@ describe("whole-process presentation", () => {
     expect(resubmitted).toContain("Open case A");
   });
 
+  it.each([
+    { name: "B EPS Off", id: "EX-24112", scenario: "B", paper: false, enabled: false, declared: false },
+    { name: "B readable paper Off", id: "EX-24112", scenario: "B", paper: true, enabled: false, declared: false },
+    { name: "B readable paper undeclared On", id: "EX-24112", scenario: "B", paper: true, enabled: true, declared: false },
+    { name: "D unreadable paper undeclared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: false },
+    { name: "D unreadable paper declared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: true },
+  ])("tour guidance reflects current source evidence: $name", ({ id, scenario, paper, enabled, declared }) => {
+    const store = useAppStore.getState();
+    if (!declared) store.submitItem({
+      caseId: id, channel: paper ? "paper" : "eps",
+      endorsementText: paper ? "NCSO RK 21/08/26" : "NCSO RK",
+    });
+    store.setAgentEnabled(enabled);
+    const before = useAppStore.getState();
+    const markup = render(HomePage, "/#cases");
+    const card = markup.split(`data-case="${scenario}"`)[1].split('data-case="C"')[0];
+    expect(useAppStore.getState()).toBe(before);
+    if (!paper) {
+      expect(card).toContain("Read EPS claim message");
+      expect(card).not.toContain("Locate image");
+      expect(card).not.toContain("Locate paper image");
+      expect(card).not.toContain("Awaiting Type 1 capture");
+      return;
+    }
+    expect(card).toContain('data-case-capture="pending"');
+    expect(card).toContain("Type 1 capture");
+    if (scenario === "B") expect(card).not.toContain("Unreadable paper");
+    else expect(card).toContain("Unreadable paper");
+    if (declared) {
+      expect(card).toContain("declared by the pharmacy, not read from the form");
+      expect(card).toContain("Humans confirm compatible evidence");
+      expect(card).toContain("Unreconciled evidence still abstains");
+    } else {
+      expect(card).not.toContain("declared by the pharmacy");
+      expect(card).not.toContain("Agentic action");
+      expect(card).toContain("Type 2 judgement follows only when required.");
+      if (enabled) expect(card).toContain("No pharmacy declaration is available.");
+    }
+    const panel = card.match(/aria-label="Awaiting Type 1 capture">([\s\S]*?)<\/section>/)?.[1];
+    expect(panel).toBeDefined();
+    const prose = [...panel!.matchAll(/<p(?:\s[^>]*)?>([\s\S]*?)<\/p>/g)]
+      .map((match) => match[1].replace(/<[^>]*>/g, "")).join(" ");
+    expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
+  });
+
   it.each([false, true])("retains human attribution after capture-only pricing without another action, Agent %s", (enabled) => {
     const store = useAppStore.getState();
     store.setAgentEnabled(enabled);

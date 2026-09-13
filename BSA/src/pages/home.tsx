@@ -22,12 +22,22 @@ import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 function TourProcessCase({ id }: { id: string }) {
   const item = useLifecycleCase(id);
   const process = useAppStore((s) => s.itemProcesses[id]);
+  const revision = useAppStore((s) => s.caseRevisions[id]?.at(-1));
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
   if (!item || !process) return <li role="alert">Case evidence unavailable for {id}.</li>;
   const automatic = process.routing.outcome === "auto_priced";
   const capture = process.routing.outcome === "type1_capture" && process.routing.requiresHuman;
   const captureComplete = process.routing.outcome === "type1_capture" && !process.routing.requiresHuman;
+  const poorPaper = item.imageQuality < QUALITY_THRESHOLD || item.imageStyle === "handwritten_poor";
+  const hasDeclaration = Boolean(revision?.declaration || revision?.paperDeclaration);
+  const captureGuidance = agentEnabled && hasDeclaration
+    ? poorPaper
+      ? "Proposed: declared by the pharmacy, not read from the form. Humans confirm compatible evidence; image certainty stays unknown. Unreconciled evidence still abstains."
+      : "Proposed: declared by the pharmacy, not read from the form. Humans confirm against the paper; unreconciled evidence still abstains."
+    : agentEnabled
+      ? "No pharmacy declaration is available. Key fields from the paper; code routes confirmed evidence. Type 2 judgement follows only when required."
+      : "Key product, quantity and endorsement from the image. Code routes confirmed evidence; Type 2 judgement follows only when required.";
   const pack = runAgent(item, { agentEnabled });
   return <li className="space-y-4 rounded-xl border bg-card p-5" data-case={item.scenario} data-case-routing={process.routing.outcome}
     data-case-capture={captureComplete ? "complete" : capture ? "pending" : undefined}>
@@ -43,9 +53,9 @@ function TourProcessCase({ id }: { id: string }) {
       <BoundaryTag cls="existing" />
     </section> : capture ? <section className="space-y-3 text-sm" aria-label="Awaiting Type 1 capture">
       <BoundaryTag cls="human" />
-      <p className="font-medium">Unreadable paper · Type 1 capture</p>
-      <p>{agentEnabled ? "Proposed: declared by the pharmacy, not read from the form. Humans confirm compatible evidence; image certainty stays unknown. Unreconciled evidence still abstains." : "Key product, quantity and endorsement manually from the image. Type 2 judgement follows; unresolved presentation returns RB2B."}</p>
-      {agentEnabled && <BoundaryTag cls="agent" />}
+      <h3 className="font-medium">{poorPaper ? "Unreadable paper" : "Paper"} · Type 1 capture</h3>
+      <p>{captureGuidance}</p>
+      {agentEnabled && hasDeclaration && <BoundaryTag cls="agent" />}
     </section> : <>
       <PainMarker resolved={agentEnabled && pack.gate.result === "PASS"} pain="Evidence needs review" resolution="Evidence assembled; human decides" />
       {agentEnabled ? <>
@@ -55,7 +65,7 @@ function TourProcessCase({ id }: { id: string }) {
         {pack.conflicts.map((conflict) => <dl key={conflict.field} className="text-sm"><dt className="font-medium">{conflict.field} · Unresolved</dt>{conflict.values.map((value) => <dd key={value.origin}>{value.origin}: {value.value}</dd>)}</dl>)}
         {pack.abstainReasons.length > 0 && <ul aria-label="Abstention signals" className="space-y-2 text-sm"><li>Provision: {pack.signals.provisionFound ? "Found" : "Not found"}</li><li>Image quality: {pack.signals.imageQuality.toFixed(2)} / threshold {QUALITY_THRESHOLD.toFixed(2)}</li><li>Readings agree: {pack.signals.sampleAgreement.agree} of {pack.signals.sampleAgreement.total}</li></ul>}
         <details className="text-sm"><summary className="cursor-pointer font-medium">Outcome evidence and exact correction</summary><div className="mt-3 space-y-3 text-muted-foreground"><ul aria-label="Requirement checks" className="space-y-2">{pack.requirementResults.map((r) => <li key={r.requirement.id}>{r.requirement.label}: {r.met === true ? "met" : r.met === false ? "not met" : "unknown"}</li>)}</ul>{pack.abstainReasons.length > 0 && <ul aria-label="Abstention reasons" className="list-disc pl-4">{pack.abstainReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}{perspective !== "pharmacy" && <Link className="underline" to={`/case/${item.id}`}>Review full evidence and human decision</Link>}</div></details>
-      </> : <div className="space-y-3 text-sm" data-manual-tasks><BoundaryTag cls="human" /><p className="font-medium">Manual review · No recommendation</p><ul className="list-disc space-y-2 pl-4"><li>Locate image and claim</li><li>Check product and governing rule</li><li>Review evidence and record a decision</li></ul></div>}
+      </> : <div className="space-y-3 text-sm" data-manual-tasks><BoundaryTag cls="human" /><p className="font-medium">Manual review · No recommendation</p><ul className="list-disc space-y-2 pl-4"><li>{process.channel === "eps" ? "Read EPS claim message" : "Locate paper image and claim"}</li><li>Check product and governing rule</li><li>Review evidence and record a decision</li></ul></div>}
     </>}
     {!automatic && !captureComplete && perspective !== "pharmacy" && <Button asChild variant="outline" size="sm"><Link to={`/case/${item.id}`}>Open case {item.scenario}</Link></Button>}
     {automatic && perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to={pharmacyCaseLink(item.id)}>View automatically priced claim</Link>}

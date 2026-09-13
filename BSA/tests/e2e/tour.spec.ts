@@ -315,7 +315,8 @@ test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases foll
   await page.getByRole("switch", { name: "Agent: On" }).click();
   await expect(page.locator("[data-outcome]")).toHaveCount(0);
   await expect(page.locator("[data-manual-tasks]")).toHaveCount(2);
-  await expect(d).toContainText("Key product, quantity and endorsement manually from the image");
+  await expect(d).toContainText("Key product, quantity and endorsement from the image.");
+  await expect(d).toContainText("Type 2 judgement follows only when required.");
   await expect(a).toHaveAttribute("data-case-routing", "auto_priced");
   await expect(a.locator("[data-pain-marker]")).toHaveCount(0);
   await expect(page.locator('[aria-label="Four canonical synthetic cases"]')).not.toContainText(/minutes|seconds|savings|SUFFICIENT|REFER_BACK|REQUEST_INFORMATION|ABSTAIN/);
