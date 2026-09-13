@@ -1,7 +1,7 @@
 import { captureCheckpoint, cases, confirmReset, expect, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-for (const caseId of ["EX-24107", "EX-24112"]) {
+for (const caseId of ["EX-24112", "EX-24119"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
   await page.goto(`case/${caseId}/trace`);
   await page.getByRole("banner").getByRole("switch").setChecked(true);

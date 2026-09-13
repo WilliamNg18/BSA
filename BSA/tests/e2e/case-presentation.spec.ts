@@ -45,14 +45,14 @@ for (const c of cases) {
 
 for (const label of ["Sufficient (human choice)", "Refer back", "Request information", "Escalate"]) {
   test(`Task6 manual ${label} requires reason and records NONE through valid lifecycle review`, async ({ page }) => {
-    await page.goto("case/EX-24107");
+    await page.goto("case/EX-24112");
     await startDemonstrationReview(page);
     await page.getByRole("radio", { name: new RegExp(`^${label.replace(/[()]/g, "\\$&")} `) }).check();
     const reason = page.getByLabel("Reason (required)", { exact: true });
     for (const value of ["", "   1234567   "]) {
       await reason.fill(value);
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
-      await expect(page).toHaveURL(/\/case\/EX-24107$/);
+      await expect(page).toHaveURL(/\/case\/EX-24112$/);
       await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     }
     await reason.fill("Human review of captured evidence");
