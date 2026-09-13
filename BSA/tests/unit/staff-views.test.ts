@@ -7,7 +7,7 @@ import { DecisionRecordPage } from "../../src/pages/decision-record";
 import { CasePackPage } from "../../src/pages/case-pack";
 import { NotificationContext } from "../../src/hooks/use-notification";
 import { useAppStore } from "../../src/lib/store";
-import { formatBaselineNumber, monthModel, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
+import { formatProcessHours, formatProcessItems, monthModel, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -56,7 +56,8 @@ describe("Task 22 current-revision staff presentation", () => {
     const store = useAppStore.getState();
     store.setProcessInput("monthlyItems", "120000000");
     const model = monthModel({ ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120_000_000 });
-    expect(queue()).toContain(`${formatBaselineNumber(model.counts.autoPricedItems)} priced automatically`);
+    expect(queue()).toContain(`${formatProcessItems(model.counts.autoPricedItems)} priced automatically`);
+    expect(queue()).toContain(`${formatProcessHours(model.today.type2OperatorHours)} / ${formatProcessHours(model.withAgent.type2OperatorHours)}`);
     expect(queue()).not.toContain("Show legacy full-day simulation");
   });
 
