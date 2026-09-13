@@ -20,6 +20,7 @@ export function validateEpsCorrection(
     JSON.stringify(sources.before) === JSON.stringify(sources.after)) fail();
   const latest = revisions[caseId].at(-1)!;
   for (const [source, snapshot] of [[sources.before, before], [sources.after, after]] as const) {
+    if (!["draft", "submitted"].includes(source.claimMessageState)) fail();
     validateSubmissionSources({ caseId, channel: "eps", endorsementText: snapshot.typedText,
       epsPrescription: { ...source, claimMessageState: "submitted" } }, latest.number);
     validatePrecheck(snapshot, source.dispenserEndorsement, source.dispensingDate);

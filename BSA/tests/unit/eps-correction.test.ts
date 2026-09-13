@@ -28,6 +28,8 @@ it("records immutable generic sources once without changing attempts or lifecycl
   expect(store().pharmacyCorrections).toHaveLength(1);
   expect(store().pharmacyCorrections[0].epsSources).toEqual(pair);
   expect(Object.isFrozen(store().pharmacyCorrections[0].epsSources?.after.supplyEvidence)).toBe(true);
+  Object.assign(pair.after.supplyEvidence, { brandManufacturer: "Caller changed after recording" });
+  expect(store().pharmacyCorrections[0].epsSources?.after.supplyEvidence?.brandManufacturer).toBe("Demo manufacturer (synthetic)");
   expect(store().lifecycles).toBe(original.lifecycles);
   expect(store().caseRevisions).toBe(original.caseRevisions);
   expect(store().records).toBe(original.records);
@@ -55,6 +57,14 @@ it("rejects stale, Off, reversed or forged snapshot sources", () => {
   expect(() => store().recordPharmacyCorrection(id, after, before, 2, { channel: "eps" }, pair)).toThrow();
   expect(() => store().recordPharmacyCorrection(id, before, { ...after, checks: [] }, 2, { channel: "eps" }, pair)).toThrow();
   expect(() => store().recordPharmacyCorrection(id, before, after, 2, { channel: "eps" }, { before: pair.before, after: pair.before })).toThrow();
+  expect(store().pharmacyCorrections).toEqual([]);
+});
+
+it("rejects identically invalid runtime message states before normalising validation copies", () => {
+  const pair = sources(), before = snapshot(pair.before), after = snapshot(pair.after);
+  Object.assign(pair.before, { claimMessageState: "invalid" });
+  Object.assign(pair.after, { claimMessageState: "invalid" });
+  expect(() => store().recordPharmacyCorrection(id, before, after, 2, { channel: "eps" }, pair)).toThrow();
   expect(store().pharmacyCorrections).toEqual([]);
 });
 
