@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { CompactTooltip, CompactTooltipContent, CompactTooltipTrigger } from "@/components/ui/compact-tooltip";
 import { SyntheticTag } from "@/components/demo/labels";
 import { ClaimDetail } from "@/components/demo/claim-detail";
-import { useProcessMonth } from "@/hooks/use-process-month";
-import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
+import { PharmacyModelStrip } from "@/components/demo/manual-loop-projection";
+import { formatProcessItems } from "@/lib/domain/baseline";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
@@ -30,8 +30,6 @@ export function PharmacyClaimsPage() {
   const revisions = useAppStore((s) => s.caseRevisions);
   const processes = useAppStore((s) => s.itemProcesses);
   const corrections = useAppStore((s) => s.pharmacyCorrections);
-  const model = useProcessMonth();
-  const projection = model.result?.[agentEnabled ? "withAgent" : "today"];
   const pharmacy = HILLCREST_PHARMACY.contractorCode;
   const [filter, setFilter] = useState<ClaimFilter>("Action needed");
   const month = new Date().toISOString().slice(0, 7);
@@ -69,17 +67,7 @@ export function PharmacyClaimsPage() {
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
       </dl>
       {agentEnabled && <p className="text-sm">Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.</p>}
-      {model.result && projection ? <section aria-label="Shared monthly process projection" className="space-y-2 border-t pt-3">
-        <h3 className="font-semibold">{agentEnabled ? "With the agent" : "Today"}: whole-service projection</h3>
-        <p className="text-sm">Shared monthly scenario: {formatProcessItems(model.result.counts.monthlyItems)} items. Public baseline with assumptions, not this pharmacy&apos;s recorded totals.</p>
-        <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-          <div><dt>Items referred back</dt><dd>{formatProcessItems(projection.referredBackItems)}</dd></div>
-          <div><dt>Caught before submission</dt><dd>{formatProcessItems(projection.caughtBeforeSubmission)}</dd></div>
-          <div><dt>Referral-loop operator hours</dt><dd>{formatProcessHours(projection.referralOperatorHours)}</dd></div>
-          <div><dt>Pharmacy completion hours</dt><dd>{formatProcessHours(projection.pharmacyCompletionHours)}</dd></div>
-        </dl>
-      </section>
-        : <p role="alert">Shared monthly scenario unavailable. Correct the monthly assumptions: {Object.values(model.errors).join(" ")}</p>}
+      <PharmacyModelStrip />
     </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>

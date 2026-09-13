@@ -76,7 +76,11 @@ describe("defensible sequential referral-loop estimates", () => {
   });
 
   it("keeps maximum bounded outputs finite and preserves immutable input", () => {
-    const input = Object.freeze(Object.fromEntries(keys.map((key) => [key, manualLoopInputMaximum(key)])) as unknown as ManualLoopMonthInputs);
+    const input = Object.freeze({ ...defaults, monthlyItems: 1_000_000_000, manualLoopItems: 1_000_000_000,
+      epsPercent: 100, type1Percent: 100, type2Percent: 100, staffTouchPercent: 100,
+      gatheringMinutesToday: 1440, judgingMinutesToday: 1440, doubleCheckPercent: 100, builtJudgingMinutes: 1440,
+      preventionPercent: 0, clearancePercent: 0, abstentionPercent: 100, mysCompletionMinutes: 1440,
+      type1KeySeconds: 86400, type1ConfirmSeconds: 86400 });
     const result = monthModel(input);
     for (const group of [result.counts, result.cohorts, result.today, result.withAgent, result.type1]) {
       for (const value of Object.values(group)) {
@@ -85,7 +89,16 @@ describe("defensible sequential referral-loop estimates", () => {
         expect(value).toBeLessThanOrEqual(Number.MAX_SAFE_INTEGER);
       }
     }
+    expect(result.today.operatorHours).toBe(72_000_000_000);
+    expect(result.withAgent.operatorHours).toBe(48_000_000_000);
     expect(monthModel(input)).toEqual(result);
+  });
+
+  it("never exposes an infinite ratio for finite but extremely small positive effort", () => {
+    const result = monthModel({ ...defaults, gatheringMinutesToday: 0, builtJudgingMinutes: 1e-320 });
+    expect(result.withAgent.operatorHours).toBeGreaterThan(0);
+    expect(result.operatorHoursRatio).toBeNull();
+    expect(manualLoopRatio(result)).toContain("unrepresentably small");
   });
 
   it.each(keys)("validates every scalar and decimal draft boundary: %s", (key) => {

@@ -6,7 +6,7 @@ import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { checkPharmacy, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
-import { PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, monthModel } from "@/lib/domain/baseline";
+import { MANUAL_LOOP_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, monthModel } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -55,12 +55,12 @@ describe("claims presentation uses recorded events separately from monthly proje
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.recordPharmacyCorrection(c.id, before, after, 2);
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
-    store.setProcessInput("pharmacyCatchPercent", "30");
-    const projection = monthModel({ ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 30 });
+    store.setManualLoopInput("preventionPercent", "30");
+    const projection = monthModel({ ...MANUAL_LOOP_MONTH_DEFAULTS, preventionPercent: 30 });
     const markup = renderClaims();
-    expect(markup).toContain(`Caught before submission</dt><dd>${formatProcessItems(projection.withAgent.caughtBeforeSubmission)}</dd>`);
-    expect(markup).toContain(`Referral-loop operator hours</dt><dd>${formatProcessHours(projection.withAgent.referralOperatorHours)}</dd>`);
-    expect(markup).toContain(`Pharmacy completion hours</dt><dd>${formatProcessHours(projection.withAgent.pharmacyCompletionHours)}</dd>`);
+    expect(markup).toContain(`data-pharmacy-model="prevented">${formatProcessItems(projection.cohorts.prevented)} (estimate)</dd>`);
+    expect(markup).toMatch(new RegExp(`data-pharmacy-model="operatorHours"[^]*?aria-label="${formatProcessHours(projection.withAgent.operatorHours)}"`));
+    expect(markup).toMatch(new RegExp(`data-pharmacy-model="pharmacyCompletionHours"[^]*?aria-label="${formatProcessHours(projection.withAgent.pharmacyCompletionHours)}"`));
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.setAgentEnabled(false);
     expect(recordedClaims()).not.toContain("Caught before submission");
@@ -86,7 +86,7 @@ describe("claims presentation uses recorded events separately from monthly proje
   });
 
   it("reports invalid model inputs without retaining stale projected values", () => {
-    useAppStore.getState().setProcessInput("monthlyItems", "invalid");
+    useAppStore.getState().setManualLoopInput("monthlyItems", "invalid");
     expect(renderClaims()).toContain("Shared monthly scenario unavailable");
     expect(renderClaims()).not.toContain("100,000,000 items");
   });

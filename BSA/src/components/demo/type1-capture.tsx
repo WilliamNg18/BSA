@@ -241,7 +241,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
 function CaptureTiming({ assisted }: { assisted: boolean }) {
   const id = useId();
   const drafts = useAppStore((s) => s.manualLoopInputs);
-  const setProcessInput = useAppStore((s) => s.setManualLoopInput);
+  const setManualLoopInput = useAppStore((s) => s.setManualLoopInput);
   const selection = useManualLoopMonth();
   const seconds = assisted ? selection.result?.type1.confirmSeconds : selection.result?.type1.keySeconds;
   return (
@@ -256,7 +256,7 @@ function CaptureTiming({ assisted }: { assisted: boolean }) {
             <div key={field} className="space-y-1.5">
               <Label htmlFor={`${id}-${field}`}>{field === "type1KeySeconds" ? "Today keying seconds" : "With declaration confirmation seconds"} (assumption)</Label>
               <Input id={`${id}-${field}`} inputMode="decimal" value={drafts[field]}
-                onChange={(event) => setProcessInput(field, event.target.value)}
+                onChange={(event) => setManualLoopInput(field, event.target.value)}
                 aria-invalid={Boolean(selection.errors[field])} aria-describedby={selection.errors[field] ? `${id}-${field}-error` : undefined} />
               {selection.errors[field] && <p id={`${id}-${field}-error`} role="alert" className="text-sm text-destructive">{selection.errors[field]}</p>}
             </div>
