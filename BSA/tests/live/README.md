@@ -72,8 +72,12 @@ rehearsal verifies test compatibility only, never deployed acceptance; the
 committed live configuration continues to require HTTPS and a clean exact
 coordinator-provided build identity.
 
-Screenshots, traces and JSON live beneath `LIVE_OUTPUT_DIR`; do not commit
-generated evidence. Existing crash/console/network guards and navigation/reset
+Screenshots, traces and JSON first live beneath `LIVE_OUTPUT_DIR`; do not
+overwrite those runs. For the requested durable release record,
+`node tests\live\export-evidence.mjs <checklist.json> <new-directory>` copies
+validated hosted evidence with portable paths and hashes, preserving the original
+report and pending visual-review status. Keep failed evidence separately labelled.
+Existing crash/console/network guards and navigation/reset
 helpers are reused without altering the production suite. The deployed
 build-info contract comes from the App Service strict static server; the
 harness does not load or change hosting policy files.

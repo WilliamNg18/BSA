@@ -12,13 +12,19 @@ EPS resubmissions route automatically; there is no second human approval.
 Generated drafts are optional: an explicit human reason and RB code can record
 a referral without draft approval. Turning Agent On never supplies that approval.
 
-The earlier 30-test instrumented exact-state matrix passed on clean `5ec44c7`.
-It now includes two additional completed-Type-1-only cases (32 total); the
-earlier run does not prove these additions. N's completed-capture card repair
-also has a new paired-mode live check, bringing that checklist to 20.
-The preceding 19 live checks have compatible local rehearsal evidence, including
-03/C/F on `f20cfaa`; these are not final hosted acceptance. Final clean deployed
-identity, screenshots and novice review remain separate coordinator gates.
+The coherent **32-test exact-state matrix passed** on clean `53dac19`, including
+completed-Type-1-only Off/On cases. The new actual Off UI flow exposed a real
+model defect: ordinary manual capture incorrectly required declaration
+reconciliation. M repaired factual compatibility without relaxing D's poor-source
+or proposed-declaration boundaries; N repaired the completed card's awaiting label.
+The original failure and subsequent source-pinned evidence are retained.
+
+After all functional streams merged, **20/20 hosted checks passed** against
+clean `1327e65fffeafebf43df1b1b566c6e4152452b46`, with 40 matching identities,
+41 images and 24 unrestricted axe audits (zero violations). This is distinct
+from the earlier local rehearsals. The [Task 24 evidence](screens/task24/README.md)
+records exact sources and incomplete-audit caveats. Visual/novice review and
+the final merged-V-main coordinator recheck are separate gates.
 See the [live checklist](../tests/live/README.md).
 
 Tasks 14-18's historical live review at clean `c0203fc` is recorded separately in

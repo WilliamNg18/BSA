@@ -13,7 +13,9 @@ Live URL: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
 The historical Tasks 14-18 release `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`
 is pinned by annotated `lkg-2026-09-13` and `last-known-good`.
 Those tags are not evidence for the Tasks 19-24 process migration described
-below. Final integrated deployment acceptance is tracked by the coordinator.
+below. [Tasks 19-24 functional deployment evidence](docs/screens/task24/README.md)
+records 20 hosted checks against clean `1327e65`, separate from the final
+merged-V-main release gate tracked by the coordinator.
 The single Agent On/Off switch is in the header, top right: pharmacy, queue
 and all other pages read that shared state and have no local overrides.
 
@@ -157,6 +159,8 @@ review, not timed human testing or full accessibility certification.
 
 [SPEC](docs/SPEC.md) describes current behaviour. [KNOWN-ISSUES](docs/KNOWN-ISSUES.md)
 separates genuine limitations from historical evidence.
+[Task 24 captures](docs/screens/task24/README.md) pin the complete hosted process,
+including human-capture-only pricing, to functional main `1327e65`.
 [Original source-pinned screenshots](docs/screens/integrated/README.md) include the exact
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
 [Task 18's reviewed live matrix](docs/screens/task18/README.md) is separately

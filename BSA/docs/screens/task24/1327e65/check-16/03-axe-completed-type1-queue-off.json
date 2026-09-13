@@ -1,0 +1,68 @@
+{
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+  "auditedAt": "2026-09-13T14:47:25.465Z",
+  "agentEnabled": false,
+  "violations": [],
+  "passes": 47,
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    ".min-h-14"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Tour chapter 6\" class=\"mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4\">",
+                  "target": [
+                    ".mb-6"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"hidden whitespace-nowrap text-sm font-semibold min-[900px]:inline lg:hidden xl:inline 2xl:hidden\" aria-hidden=\"true\">NHSBSA Case Builder</span>",
+          "target": [
+            ".min-\\[900px\\]\\:inline"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        }
+      ]
+    }
+  ]
+}
