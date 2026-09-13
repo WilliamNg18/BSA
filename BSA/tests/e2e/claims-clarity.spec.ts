@@ -2,8 +2,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
-const offGuide = "Today: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone.";
-const onGuide = "With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click.";
+const offGuide = "Today: referred-back items appear in MYS Unpaid items with an RB code and the operator's reason. The pharmacy corrects and resubmits.";
+const onGuide = "Read the operator-approved fix, correct the endorsement, then explicitly resubmit. The agent verifies the submission and advises; a person decides.";
 
 test("Task16 four counted synthetic amount tiles filter one five-column table", async ({ page }) => {
   await page.goto("pharmacy/claims");
@@ -44,14 +44,14 @@ for (const enabled of [false, true]) {
     await help.scrollIntoViewIfNeeded();
     await help.focus();
     await expect(help).toBeFocused();
-    await expect(page.getByRole("tooltip")).toContainText("not published facts");
-    await expect(page.getByRole("tooltip")).toContainText("never submits");
+    await expect(page.getByRole("tooltip")).toContainText("Owner-supplied public context: MYS Unpaid items and NHSmail notification; expiry after 18 months.");
+    await expect(page.getByRole("tooltip")).toContainText("Weeks of delay are illustrative. No notification is sent here.");
     await page.keyboard.press("Escape");
     await expect(page.getByRole("tooltip")).toHaveCount(0);
     if (!enabled) {
       await page.getByRole("button", { name: "How was this sent?", exact: true }).focus();
-      await expect(page.getByRole("tooltip")).toContainText("recorded operator text and code exactly");
-      await expect(page.getByRole("tooltip")).toContainText("assumptions, not published details");
+      await expect(page.getByRole("tooltip")).toContainText("The operator text and code are recorded synthetic evidence.");
+      await expect(page.getByRole("tooltip")).toContainText("Weeks of delay are illustrative.");
     } else {
       await expect(page.getByRole("region", { name: "Operator response", exact: true })).toContainText("No operator-approved draft");
       await expect(page.getByRole("region", { name: "Operator-approved pharmacy note", exact: true })).toHaveCount(0);
@@ -74,6 +74,6 @@ test("Task16 monthly actual counts and action filters update on explicit resubmi
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
   await expect(corrected).toHaveText(String(before + 1), { timeout: 1000 });
   await expect(actionTile).toContainText(`${beforeActions - 1} items`, { timeout: 1000 });
-  await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Resubmitted, awaiting re-check", { timeout: 1000 });
-  await expect(monthly).toContainText("Not this pharmacy's recorded totals");
+  await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy, { timeout: 1000 });
+  await expect(monthly).toContainText("not this pharmacy's recorded totals");
 });

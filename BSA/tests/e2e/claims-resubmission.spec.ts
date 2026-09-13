@@ -86,7 +86,7 @@ for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
       await recheck.focus();
       await page.keyboard.press("Enter");
       await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
-      await expect(marker).toHaveText("Assisted: Current correction checked · Human re-check required");
+      await expect(marker).toHaveText("Assisted: Current correction checked · Explicit resubmission required");
       await expect(comparison).toContainText("not payment");
       await flag.setChecked(false);
       await expect(marker).toHaveAttribute("data-pain-marker", "open");

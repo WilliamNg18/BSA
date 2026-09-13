@@ -998,6 +998,19 @@ Pre-submission correction increments the event-based catch counter without
 creating a receipt or attempt; repeated application for that revision remains
 one catch. Navigation remounts the workbench's local example, not session history.
 
+## 2026-09-13: Task 20 separates a receipt from a process forecast
+
+A local immutable receipt copy can still become a second operational source.
+Selecting a shared revision instead preserves identical receipt evidence across
+perspectives and leaves Reset under the single store. Recorded-event playback
+also prevents an illustrative timeline from implying a human referral or a
+payment has already occurred.
+
+An unreadable paper image cannot supply default values for a pharmacy
+declaration. Empty labelled fields make the human input explicit, including
+the prescriber needed by the existing mandatory-field gate. A typed declaration
+and a Type 1 operator's confirmation remain separate evidence and actions.
+
 ## 2026-09-13: Task 21 U keeps declaration preparation below the authority boundary
 
 Prefilling a form and reconciling evidence are different actions. Draft
@@ -1018,3 +1031,11 @@ field is safer than bypassing the existing compliance check. Keep original
 capture evidence intact and attach revision-linked human authority separately.
 Typed legacy pharmacy submissions use the claim channel, while new submissions
 carry explicit machine channels on immutable revisions.
+
+## 2026-09-13: P replay keeps the chosen evidence source consistent
+
+Seed D intentionally retains different scan and declaration endorsement text.
+Replaying its retained declaration must use that declaration's endorsement,
+not combine it with the unreadable scan text. The replay disclosure names the
+source before the human submits. Original attempts, image and readings remain
+unchanged; the new paper revision still awaits human Type 1 confirmation.

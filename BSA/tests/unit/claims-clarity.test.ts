@@ -6,7 +6,7 @@ import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { checkPharmacy, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
-import { MONTH_MODEL_DEFAULTS, monthModel } from "@/lib/domain/baseline";
+import { PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, monthModel } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -21,6 +21,10 @@ function renderClaims() {
   return renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: ["/pharmacy/claims"] }, createElement(PharmacyClaimsPage)));
 }
 
+function recordedClaims() {
+  return renderClaims().split('aria-label="Shared monthly process projection"')[0];
+}
+
 beforeEach(() => {
   useAppStore.getState().resetDemo();
   useAppStore.getState().setPerspective("both");
@@ -29,12 +33,12 @@ beforeEach(() => {
 describe("claims presentation uses recorded events separately from monthly projections", () => {
   it("renders exact mode guides, four filters and five columns", () => {
     const markup = renderClaims();
-    expect(markup).toContain("Today: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone.");
+    expect(markup).toContain("Today: referred-back items appear in MYS Unpaid items with an RB code");
     expect(markup.match(/aria-pressed=/g)).toHaveLength(4);
     expect(markup.match(/scope="col"/g)).toHaveLength(5);
-    expect(markup).not.toContain("Caught before submission");
+    expect(recordedClaims()).not.toContain("Caught before submission");
     useAppStore.getState().setAgentEnabled(true);
-    expect(renderClaims()).toContain("With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click.");
+    expect(renderClaims()).toContain("Read the operator-approved fix, correct the endorsement, then explicitly resubmit.");
   });
 
   it("reads caught counts from explicit pharmacy events, not ready revisions or projections", () => {
@@ -45,23 +49,25 @@ describe("claims presentation uses recorded events separately from monthly proje
       checkPharmacy(c, c.extracted.endorsementText), new Date().toISOString());
     const text = `${c.extracted.endorsementText} 21/08/26`;
     const after = pharmacySnapshot(text, c.extracted.dispensingDate, "scripted", checkPharmacy(c, text), new Date().toISOString());
-    expect(renderClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
     store.recordPharmacyCorrection(c.id, before, after, 2);
-    expect(renderClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.recordPharmacyCorrection(c.id, before, after, 2);
-    expect(renderClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
-    store.setBaselineInput("volume", "120");
-    const projection = monthModel({ ...MONTH_MODEL_DEFAULTS, volume: 120 });
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
+    store.setProcessInput("pharmacyCatchPercent", "30");
+    const projection = monthModel({ ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 30 });
     const markup = renderClaims();
-    expect(markup).toContain(`${projection.pharmacyCaught} projected catches before submission`);
-    expect(markup).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
+    expect(markup).toContain(`Caught before submission</dt><dd>${formatProcessItems(projection.withAgent.caughtBeforeSubmission)}</dd>`);
+    expect(markup).toContain(`Referral-loop operator hours</dt><dd>${formatProcessHours(projection.withAgent.referralOperatorHours)}</dd>`);
+    expect(markup).toContain(`Pharmacy completion hours</dt><dd>${formatProcessHours(projection.withAgent.pharmacyCompletionHours)}</dd>`);
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.setAgentEnabled(false);
-    expect(renderClaims()).not.toContain("Caught before submission");
+    expect(recordedClaims()).not.toContain("Caught before submission");
     store.setAgentEnabled(true);
-    expect(renderClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.resetDemo();
     store.setAgentEnabled(true);
-    expect(renderClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
   });
 
   it("excludes another pharmacy and another month from actual catch counts", () => {
@@ -75,13 +81,13 @@ describe("claims presentation uses recorded events separately from monthly proje
     store.recordPharmacyCorrection(c.id, before, after, 2);
     const event = useAppStore.getState().pharmacyCorrections[0];
     useAppStore.setState({ pharmacyCorrections: [{ ...event, pharmacyCode: "FH774" }, { ...event, at: "2000-01-01T00:00:00Z" }] });
-    expect(renderClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
+    expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
   });
 
   it("reports invalid model inputs without retaining stale projected values", () => {
-    useAppStore.getState().setBaselineInput("volume", "invalid");
+    useAppStore.getState().setProcessInput("monthlyItems", "invalid");
     expect(renderClaims()).toContain("Shared monthly scenario unavailable");
-    expect(renderClaims()).not.toContain("85,000 items");
+    expect(renderClaims()).not.toContain("100,000,000 items");
   });
 
   it("counts monthly events once per item while excluding confirmations from corrections", () => {
