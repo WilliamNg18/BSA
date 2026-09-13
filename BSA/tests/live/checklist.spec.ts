@@ -80,7 +80,6 @@ test(LIVE_CHECKS.model, async ({ page }, info) => {
   }
   await navigatePrimary(page, "Pharmacy claims");
   const projection = page.getByRole("region", { name: "Shared monthly process projection", exact: true });
-  const number = new Intl.NumberFormat("en-GB");
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
     for (const [label, key] of [
@@ -88,7 +87,7 @@ test(LIVE_CHECKS.model, async ({ page }, info) => {
       ["Referral-loop operator hours", "referralOperatorHours"], ["Pharmacy completion hours", "pharmacyCompletionHours"],
     ] as const) {
       await expect(projection.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
-        .toHaveText(number.format(expected[enabled ? "withAgent" : "today"][key]));
+        .toHaveText((key.endsWith("Hours") ? formatProcessHours : formatProcessItems)(expected[enabled ? "withAgent" : "today"][key]));
     }
   }
   await captureJson(info, "shared-month-inputs", { input, expected });
