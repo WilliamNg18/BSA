@@ -2,7 +2,7 @@
 import { productByCode } from "./reference";
 import { AGREEMENT_THRESHOLD, QUALITY_THRESHOLD, endorsementRequired, evaluateRequirements, mandatoryFieldsCheck, sampleAgreement, validateCitation } from "./rules";
 import { versionForDate } from "./tariff";
-import type { EndorsementFacts, ExceptionCase, TariffClause } from "./types";
+import type { EndorsementFacts, ExceptionCase, TariffClause, ItemChannel, PharmacyDeclaration } from "./types";
 import type { PharmacyPrecheckSnapshot } from "./lifecycle";
 
 export type PharmacyScenario = "A" | "B" | "D";
@@ -18,6 +18,10 @@ export interface PharmacyCheck {
   stages: PharmacyStepStatus[];
   gap: string;
   agreement: string;
+}
+export interface PharmacyCheckOptions {
+  channel?: ItemChannel;
+  declaration?: PharmacyDeclaration;
 }
 
 /** Strict calendar dates, not arbitrary digit pairs. All readings are scripted. */
@@ -39,15 +43,29 @@ export function pharmacyDateCorrection(c: ExceptionCase, text: string): string {
 }
 
 /** Clone-only projection; never mutate fixtures, readings or the canonical gate. */
-export function checkPharmacy(c: ExceptionCase, text: string): PharmacyCheck {
+export function checkPharmacy(original: ExceptionCase, text: string, options?: PharmacyCheckOptions): PharmacyCheck {
+  const declaration = options?.channel === "paper" ? options.declaration : undefined;
+  const fields = declaration?.fields;
+  const c = fields ? { ...original, extracted: { ...original.extracted,
+    productCode: fields.productCode, quantity: fields.quantity, endorsementText: text,
+    prescriber: fields.prescriber?.trim() || original.extracted.prescriber,
+  } } : original;
   const stop = (stage: number, gap: string, agreement = "NOT RUN", facts: EndorsementFacts | null = null, version: string | null = null): PharmacyCheck => ({
     status: "unable", facts, version, clause: null, checks: [], gap, agreement,
     stages: PHARMACY_STEPS.map((_, index) => index < stage ? "PASS" : index === stage ? "STOPPED" : "NOT RUN"),
   });
   // D stops before rule retrieval, even when a user types a plausible replacement.
-  if (c.scenario === "D" || c.imageQuality < QUALITY_THRESHOLD || !productByCode(c.extracted.productCode)) return stop(0, "Capture uncertain; manual review");
+  if (!declaration && options?.channel !== "eps" && (c.scenario === "D" || c.imageQuality < QUALITY_THRESHOLD) ||
+    !declaration && !productByCode(c.extracted.productCode)) return stop(0, "Capture uncertain; manual review");
   const interpreted = interpretPharmacyText(text);
-  const readings = text === c.extracted.endorsementText ? c.readings : [interpreted, { ...interpreted }, { ...interpreted }];
+  const preVersion = versionForDate(c.extracted.dispensingDate);
+  const required = endorsementRequired(productByCode(c.extracted.productCode), preVersion, c.claim.amountClaimed);
+  if (required.required === false && !text.trim()) {
+    const checks = mandatoryFieldsCheck(c.extracted).map((entry, index) => ({ id: `mandatory-${index}`, label: entry.name, met: entry.pass }));
+    return { status: checks.every((entry) => entry.met) ? "ready" : "missing", facts: interpreted, version: preVersion!.version, clause: null,
+      checks, stages: ["PASS", "PASS", "PASS", "PASS", "PASS"], gap: checks.filter((entry) => !entry.met).map((entry) => entry.label).join(", ") || "None", agreement: "Deterministic checks; no endorsement required" };
+  }
+  const readings = !declaration && options?.channel !== "eps" && text === c.extracted.endorsementText ? c.readings : [interpreted, { ...interpreted }, { ...interpreted }];
   const consensus = sampleAgreement(readings);
   const agreement = `${consensus.agree}/${consensus.total} scripted readings`;
   if (consensus.agree < AGREEMENT_THRESHOLD || !consensus.consensus || ["UNKNOWN", "NONE"].includes(consensus.consensus.type)) return stop(1, "Endorsement type unresolved", agreement);
@@ -60,9 +78,12 @@ export function checkPharmacy(c: ExceptionCase, text: string): PharmacyCheck {
   if (!clause || validateCitation(clause, version, clause.text) !== true) return stop(3, "No validated clause", agreement, facts, version.version);
   const extracted = { ...c.extracted, endorsementText: text };
   const requirements = evaluateRequirements(clause, facts, extracted);
-  const required = endorsementRequired(productByCode(extracted.productCode), version, c.claim.amountClaimed);
   const checks = [
     ...mandatoryFieldsCheck(extracted).map((entry, index) => ({ id: `mandatory-${index}`, label: entry.name, met: entry.pass })),
+    ...(declaration ? [
+      { id: "declared-product", label: "Declared product matches claim", met: Boolean(productByCode(fields!.productCode)) && fields!.productCode === c.claim.productCode },
+      { id: "declared-quantity", label: "Declared quantity matches claim", met: fields!.quantity === c.claim.quantity },
+    ] : []),
     ...requirements.map((entry) => ({ id: entry.requirement.id, label: entry.requirement.label, met: entry.met })),
   ];
   const complete = required.required !== null && checks.length > 0 && checks.every((entry) => entry.met === true);
@@ -100,12 +121,12 @@ export class PharmacyCheckRunner {
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   private publish(value: CheckRevision) { this.value = value; this.listeners.forEach((listener) => listener()); }
   cancel = () => { this.revision++; this.timers.forEach(clearTimeout); this.timers = []; };
-  start(key: string, c: ExceptionCase, text: string, enabled: boolean, reduced: boolean) {
+  start(key: string, c: ExceptionCase, text: string, enabled: boolean, reduced: boolean, options?: PharmacyCheckOptions) {
     this.cancel();
     const revision = this.revision;
     this.publish({ key, phase: 0, result: null, checkedAt: null });
     if (!enabled) return;
-    const complete = () => { if (revision === this.revision) this.publish({ key, phase: PHARMACY_STEPS.length, result: checkPharmacy(c, text), checkedAt: new Date().toISOString() }); };
+    const complete = () => { if (revision === this.revision) this.publish({ key, phase: PHARMACY_STEPS.length, result: checkPharmacy(c, text, options), checkedAt: new Date().toISOString() }); };
     if (reduced) { complete(); return; }
     for (let phase = 1; phase < PHARMACY_STEPS.length; phase++) this.timers.push(setTimeout(() => {
       if (revision === this.revision) this.publish({ key, phase, result: null, checkedAt: null });

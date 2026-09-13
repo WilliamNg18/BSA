@@ -11,12 +11,22 @@ export interface DeclaredItemFields {
   readonly productCode: string | null;
   readonly quantity: number | null;
   readonly endorsementText: string;
+  /** Required for a complete confirmed capture when the original prescriber is unreadable. */
+  readonly prescriber?: string | null;
 }
 
 export interface PharmacyDeclaration {
   readonly fields: DeclaredItemFields;
   readonly declaredAt: string;
   readonly provenance: "pharmacy_declaration";
+}
+
+/** Projected only from the current revision's recorded human Type 1 confirmation. */
+export interface CapturedEvidence {
+  readonly fields: DeclaredItemFields;
+  readonly provenance: "human_capture" | "pharmacy_declaration";
+  readonly declarationReconciled: boolean;
+  readonly revision: number;
 }
 
 /** Deterministic routing inputs, never perspective or a model's recommendation. */
@@ -178,6 +188,7 @@ export interface ExceptionCase {
   readings: EndorsementFacts[];
   inCoverage: boolean;
   initialState: CaseState;
+  readonly capturedEvidence?: CapturedEvidence;
 }
 
 export interface ToolCall {
