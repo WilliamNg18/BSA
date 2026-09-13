@@ -7,7 +7,7 @@ import { DecisionRecordPage } from "../../src/pages/decision-record";
 import { CasePackPage } from "../../src/pages/case-pack";
 import { CaseTracePage } from "../../src/pages/case-trace";
 import { NotificationContext } from "../../src/hooks/use-notification";
-import { useAppStore } from "../../src/lib/store";
+import { sessionCase, useAppStore } from "../../src/lib/store";
 import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
@@ -203,7 +203,7 @@ describe("Task 29 current-revision staff presentation", () => {
       prescriberEndorsement: "Prescriber text", dispenserEndorsement: "NCSO JB 27/08/26",
       exemptionStatus: "not_recorded", claimMessageState: "submitted",
     };
-    const c = { ...CASES[1], epsPrescription: prescription };
+    const c = { ...CASES[1], channel: "Electronic (EPS)" as const, epsPrescription: prescription };
     const original = JSON.stringify(c);
     const html = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
     expect(html).toContain("Electronic prescription, synthetic");
@@ -231,5 +231,42 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(declared.match(/declared by the pharmacy, not read from the form/g)).toHaveLength(4);
     expect(declared).toContain("Human corrections and confirmation are recorded separately");
     expect(declared).toContain(c.paperDeclaration.endorsementText);
+  });
+
+  it.each([false, true])("uses the current paper revision rather than B's original EPS claim, agent %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: "NCSO RK 21/08/26",
+      paperDeclaration: { typedProduct: "SYN-AMLO10-28", quantity: 28, endorsementText: "NCSO RK 21/08/26",
+        dispensingDate: "2026-08-21", declaredByPharmacy: true } });
+    store.setAgentEnabled(enabled);
+    const c = sessionCase("EX-24112")!;
+    expect(c.channel).toBe("Paper FP10");
+    expect(c.claim.submittedVia).toBe("EPS claim message");
+    const before = useAppStore.getState();
+    const evidence = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
+    expect(evidence).toContain("Prescription image");
+    expect(evidence).not.toContain("EPS claim message");
+    expect(evidence).not.toContain("EPS has no image");
+    const pack = casePack(c.id);
+    expect(pack).toContain("Prescription image");
+    expect(pack).not.toContain("EPS has no image");
+    expect(useAppStore.getState()).toBe(before);
+  });
+
+  it.each([false, true])("uses the current EPS revision rather than A's original paper claim, agent %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.setAgentEnabled(enabled);
+    const c = sessionCase("EX-24107")!;
+    expect(c.channel).toBe("Electronic (EPS)");
+    expect(c.claim.submittedVia).toBe("FP34C batch");
+    const before = useAppStore.getState();
+    const evidence = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
+    expect(evidence).toContain("EPS claim message");
+    expect(evidence).not.toContain("Prescription image");
+    const pack = casePack(c.id);
+    expect(pack).toContain("EPS claim message");
+    expect(pack).not.toContain("Prescription image");
+    expect(useAppStore.getState()).toBe(before);
   });
 });
