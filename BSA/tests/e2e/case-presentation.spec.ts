@@ -32,7 +32,13 @@ for (const c of cases) {
     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Applicable Drug Tariff provision", exact: true })).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Confidence signals", exact: true })).toHaveCount(0);
-    await expect(page.locator("[data-pain-marker]")).toHaveCount(4);
+    await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true }).locator("[data-pain-marker]")).toHaveCount(4);
+    if (c.id === "EX-24123") {
+      const capturePain = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true }).locator("[data-pain-marker]");
+      await expect(capturePain).toHaveCount(1);
+      await expect(capturePain).toContainText("No guidance, experience only");
+      await expect(capturePain).toHaveAttribute("data-pain-marker", "open");
+    }
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     if (c.id !== "EX-24088" && c.id !== "EX-24123" && !automaticCaseIds.includes(c.id)) {
       if (c.id !== "EX-24123") await startDemonstrationReview(page);
