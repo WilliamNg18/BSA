@@ -27,7 +27,7 @@ test("queue hides all filler recommendations without changing evidence, states o
 });
 
 for (const scenario of [
-  { name: "Complete endorsement", status: "Ready to submit", readable: true },
+  { name: "Complete endorsement", status: "Complete: will flow to automated pricing", readable: true },
   { name: "Information missing", status: "Information may be missing", readable: true },
   { name: "Unreadable form", status: "Agent unable to determine", readable: false },
 ]) {
@@ -36,10 +36,12 @@ for (const scenario of [
         await page.goto("pharmacy");
         await page.getByRole("banner").getByRole("switch").setChecked(true);
         await page.getByRole("radio", { name: scenario.name, exact: true }).click();
+        await expect(page.getByRole("radio", { name: scenario.readable ? "EPS" : "Paper", exact: true })).toBeChecked();
         const status = page.locator("[data-pharmacy-status]");
         await expect(status).toHaveText(scenario.status);
         const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
         const endorsement = await field.inputValue();
+        if (!scenario.readable) await expect(field).toHaveValue("");
         const checks = page.getByRole("list", { name: "Requirement checkboxes" });
         if (scenario.readable) await expect(checks).toBeVisible();
         else await expect(checks).toHaveCount(0);
@@ -66,6 +68,17 @@ for (const scenario of [
         await captureCheckpoint(page, testInfo, "pharmacy-assistance-state");
         await submit.click();
         await expect(page.getByRole("status").filter({ hasText: "Submitted (synthetic)." })).toBeVisible();
+        const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+        await expect(receipt).toContainText(globalEnabled ? scenario.readable ? scenario.name === "Complete endorsement" ? "ready" : "missing" : "unable" : "not_checked");
+        if (scenario.name === "Complete endorsement") {
+          await expect(receipt).toContainText("priced by NHSBSA's existing rules engine; no person involved");
+        } else {
+          await expect(receipt).not.toContainText("no person involved");
+          await expect(receipt).not.toContainText("Operator-approved note");
+        }
+        const evidence = await receipt.locator(":scope > dl").innerText();
+        await page.getByRole("banner").getByRole("switch").setChecked(!globalEnabled);
+        await expect(receipt.locator(":scope > dl")).toHaveText(evidence, { useInnerText: true });
         await expect(submit).toBeEnabled();
       });
   }
@@ -88,11 +101,11 @@ test("pharmacy keeps edits across header assistance changes and navigation", asy
   await expect(status).toHaveText("Not checked: manual submission");
   await expect(page.getByRole("heading", { name: /^Rule retrieved for/ })).toHaveCount(0);
   await global.click();
-  await expect(status).toHaveText("Ready to submit");
+  await expect(status).toHaveText("Complete: will flow to automated pricing");
   await global.click();
   await expect(status).toHaveText("Not checked: manual submission");
   await global.click();
-  await expect(status).toHaveText("Ready to submit");
+  await expect(status).toHaveText("Complete: will flow to automated pricing");
   await expect(field).toHaveValue("NCSO RK 21/08/26");
   await expect(page.getByRole("radio", { name: "Information missing", exact: true })).toBeChecked();
   await expect(page.getByRole("button", { name: "Continue with submission", exact: true })).toBeEnabled();
