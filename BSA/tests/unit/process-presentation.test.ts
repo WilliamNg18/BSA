@@ -176,7 +176,10 @@ describe("whole-process presentation", () => {
     expect(markup).toContain('data-case="D" data-case-routing="type1_capture"');
     expect(markup).toContain("Unreadable paper");
     expect(markup).toContain("Open case D");
-    if (enabled) expect(markup).toContain("Human-confirmed compatible declarations can support a built case");
+    if (enabled) {
+      expect(markup).toContain("Humans confirm compatible evidence; image certainty stays unknown.");
+      expect(markup).toContain("Unreconciled evidence still abstains.");
+    }
     useAppStore.getState().submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: "NCSO RK" });
     const resubmitted = render(HomePage, "/#cases");
     expect(resubmitted).toContain('data-case="A" data-case-routing="type2_endorsement"');

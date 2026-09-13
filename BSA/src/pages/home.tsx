@@ -34,20 +34,18 @@ function TourProcessCase({ id }: { id: string }) {
     <div><p className="text-xs text-muted-foreground">Case {item.scenario} · {item.id}</p><h2 className="mt-1 font-semibold">{item.title}</h2></div>
     {automatic ? <section className="space-y-3 text-sm" aria-label="Automatically priced case">
       <BoundaryTag cls="existing" />
-      <p className="font-medium">Automated pricing</p>
-      <p>{process.routing.reason}</p>
-      <p>Counted in the monthly automatic total, never an operator queue row. Normal payment schedule, not an agent payment.</p>
+      <h3 className="font-medium">Automated pricing</h3>
+      <p>Priced by NHSBSA&apos;s existing rules engine, no person involved. Normal payment schedule; no operator queue row.</p>
     </section> : captureComplete ? <section className="space-y-3 text-sm" aria-label="Completed Type 1 capture">
       <BoundaryTag cls="human" />
       <p className="font-medium">Capture complete · Existing pricing</p>
-      <p>A person confirmed the captured fields. Existing NHSBSA pricing followed; no Type 2 judgement was needed.</p>
+      <p>A person confirmed the captured fields. Existing pricing followed without Type 2 judgement; human work remains recorded, not untouched automatic pricing.</p>
       <BoundaryTag cls="existing" />
-      <p>Human capture remains in the item history. The agent did not approve or pay.</p>
     </section> : capture ? <section className="space-y-3 text-sm" aria-label="Awaiting Type 1 capture">
       <BoundaryTag cls="human" />
       <p className="font-medium">Unreadable paper · Type 1 capture</p>
-      <p>{agentEnabled ? "Proposed: confirm a pharmacy declaration beside the unreadable image. Fields are declared by the pharmacy, not read from the form." : "Key product, quantity and endorsement manually from the image. Type 2 judgement follows; unresolved presentation returns RB2B."}</p>
-      {agentEnabled && <><BoundaryTag cls="agent" /><p>Unreconciled evidence still abstains. Human-confirmed compatible declarations can support a built case, never invented image certainty.</p></>}
+      <p>{agentEnabled ? "Proposed: declared by the pharmacy, not read from the form. Humans confirm compatible evidence; image certainty stays unknown. Unreconciled evidence still abstains." : "Key product, quantity and endorsement manually from the image. Type 2 judgement follows; unresolved presentation returns RB2B."}</p>
+      {agentEnabled && <BoundaryTag cls="agent" />}
     </section> : <>
       <PainMarker resolved={agentEnabled && pack.gate.result === "PASS"} pain="Evidence needs review" resolution="Evidence assembled; human decides" />
       {agentEnabled ? <>
