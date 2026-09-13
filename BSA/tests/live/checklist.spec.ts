@@ -273,7 +273,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
       await expect(capture).toContainText("declared by the pharmacy, not read from the form");
       await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
       await expect(capture.getByRole("alert")).toContainText("Reconcile the declaration with the paper");
-      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
     } else {
       for (const name of ["Product code", "Quantity", "Endorsement", "Prescriber"]) {
         await expect(capture.getByRole("textbox", { name, exact: true })).toHaveValue("");
@@ -313,7 +313,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
     await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     if (enabled) {
-      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true })).not.toBeChecked();
       await expectUnconfirmedPaperEvidence(page);
     }
     await captureCheckpoint(page, info, `d-fresh-capture-after-referral-${enabled ? "on" : "off"}`);

@@ -347,7 +347,7 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await chooseProcessChapter(page, 4);
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
-  await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+  await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
   await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
   await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeFocused();
   await chooseProcessChapter(page, 4);

@@ -46,7 +46,7 @@ test("one state: observer is read-only and retains every authoritative collectio
           });
           expect(await readDomainState(page), "Failed reconciliation cannot create capture evidence").toEqual(initial);
           await action("Explicitly reconcile the declaration with the paper", "NHSBSA", async () => {
-            await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+            await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
           });
         }
         const confirmed = await action("Confirm the current capture without making a Type 2 decision", "NHSBSA", async () => {
