@@ -127,4 +127,20 @@ describe("whole-process presentation", () => {
     expect(markup).toContain("declared by the pharmacy, not read from the form");
     expect(markup).toContain("Type 2 judgement remains human");
   });
+
+  it.each([false, true])("shows current routing in the four-case tour without an operator action for automatic A: %s", (enabled) => {
+    useAppStore.getState().setAgentEnabled(enabled);
+    const markup = render(HomePage, "/#cases");
+    expect(markup).toContain('data-case="A" data-case-routing="auto_priced"');
+    expect(markup).not.toContain("Open case A");
+    expect(markup).toContain("no person involved");
+    expect(markup).toContain('data-case="D" data-case-routing="type1_capture"');
+    expect(markup).toContain("Unreadable paper");
+    expect(markup).toContain("Open case D");
+    if (enabled) expect(markup).toContain("Human-confirmed compatible declarations can support a built case");
+    useAppStore.getState().submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: "NCSO RK" });
+    const resubmitted = render(HomePage, "/#cases");
+    expect(resubmitted).toContain('data-case="A" data-case-routing="type2_endorsement"');
+    expect(resubmitted).toContain("Open case A");
+  });
 });

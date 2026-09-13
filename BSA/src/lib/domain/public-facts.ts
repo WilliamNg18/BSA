@@ -8,7 +8,7 @@ export const TOUR_CONTENT = {
     { chapter: 1, title: "Most items need no person", prose: "Straightforward items flow to automated pricing. Staff capture uncertain reads and judge endorsements; unresolved items return to the pharmacy." },
     { chapter: 2, title: "A month in numbers", prose: "Compare referrals and repeat work using shared assumptions. Keep Type 2 judgement, referral investigation and pharmacy completion separate." },
     { chapter: 3, title: "What exists today and what changes", prose: "Follow automated pricing, conditional staff paths and resubmission. Assistance checks pharmacy declarations, pre-fills capture and builds evidence; humans confirm and decide." },
-    { chapter: 4, title: "Four cases", prose: "Compare manual evidence gathering with assisted recommendations. Open or follow any case; conflicts remain unresolved and uncertainty stays visible." },
+    { chapter: 4, title: "Four cases", prose: "Compare automatic pricing, endorsement judgement and uncertain paper capture. Follow the shared item history; conflicts remain unresolved and humans retain authority." },
     { chapter: 5, title: "One agent, two places", prose: "Follow referral, pharmacy correction and resubmission through one synthetic history. Humans decide; assistance does not guarantee acceptance, payment or shorter delays." },
     { chapter: 6, title: "The queue", prose: "Review synthetic exceptions, inspect evidence and record a human decision. Assistance prepares recommendations; it never moves claims or approves payment." },
     { chapter: 7, title: "What the pharmacy sees", prose: "Track the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment." },
