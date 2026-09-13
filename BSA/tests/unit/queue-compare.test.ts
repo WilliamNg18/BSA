@@ -21,7 +21,7 @@ const seeds = (enabled: boolean): QueuePreviewRow[] => QUEUE_SEEDS.map((seed) =>
 }));
 
 describe("current queue comparison", () => {
-  it("renders the whole queue with repository tooltip context in both modes", () => {
+  it("renders actual staff items, excluding auto-priced items and monthly projections, in both modes", () => {
     for (const enabled of [false, true]) {
       useAppStore.getState().setAgentEnabled(enabled);
       const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(QueuePage)));
@@ -29,18 +29,25 @@ describe("current queue comparison", () => {
       expect(html).toContain("Actual synthetic session items");
       expect(html).toContain("data-type2-worklist");
       expect(html).not.toContain("showing 1 to 50");
+      expect(html).not.toContain("data-month-row=");
+      for (const c of CASES) {
+        if (c.scenario === "A" || c.scenario === "E") expect(html).not.toContain(`data-case-id="${c.id}"`);
+        else if (c.scenario === "D") expect(html).toContain(`data-type1-case="${c.id}"`);
+        else expect(html).toContain(`data-case-id="${c.id}"`);
+      }
     }
   });
   it("uses the new total Today12 and judging2, not legacy7", () => {
     const cited = CASES.filter(queueCitationAvailable).map((item) => item.id);
     const today = projectQueueComparison(result, 60, false, [], cited);
-    const assisted = projectQueueComparison(result, 60, true, [], CASES.slice(0, 3).map((c) => c.id));
-    expect(today.rows[0]).toMatchObject({ gathering: 10, judging: 2, finish: 12 });
-    expect(assisted.rows[0]).toMatchObject({ gathering: 0, judging: 2, finish: 2 });
+    const assisted = projectQueueComparison(result, 60, true, [], cited);
+    expect(today.rows[0]).toMatchObject({ gathering: 0, judging: 0, done: false, cited: false });
+    expect(today.rows[1]).toMatchObject({ gathering: 10, judging: 2, finish: 12 });
+    expect(assisted.rows[1]).toMatchObject({ gathering: 0, judging: 2, finish: 2 });
     expect(today.decided).toBe(5);
     expect(assisted.decided).toBeGreaterThan(today.decided);
-    expect(assisted.cited).toBe(3);
-    expect(today.cited).toBe(3);
+    expect(assisted.cited).toBe(2);
+    expect(today.cited).toBe(2);
     expect(today.rows.some((row) => row.phase === "Operator gathering evidence")).toBe(true);
     expect(projectQueueComparison(result, 59, false).rows.some((row) => row.phase === "Operator judging evidence")).toBe(true);
     expect(projectQueueComparison(result, 30, false).rows.some((row) => row.phase === "Operator gathering evidence")).toBe(true);
@@ -49,16 +56,16 @@ describe("current queue comparison", () => {
     const engine = vi.spyOn(agent, "runAgent");
     try {
       const cited = CASES.filter(queueCitationAvailable).map((item) => item.id);
-      expect(cited).toEqual(CASES.slice(0, 3).map((item) => item.id));
+      expect(cited).toEqual(CASES.slice(1, 3).map((item) => item.id));
       expect(projectQueueComparison(result, 10, false, [], cited).cited).toBe(0);
       expect(projectQueueComparison(result, 12, false, [], cited).cited).toBe(1);
       expect(projectQueueComparison(result, 30, false, [], cited).cited).toBe(2);
-      expect(projectQueueComparison(result, 30, true, [], cited).cited).toBe(3);
-      expect(projectQueueComparison(result, 60, false, [], cited).cited).toBe(3);
-      expect(projectQueueComparison(result, 60, true, [], cited).cited).toBe(3);
-      const noVersion = { ...CASES[0], extracted: { ...CASES[0].extracted, dispensingDate: "1900-01-01" } };
+      expect(projectQueueComparison(result, 30, true, [], cited).cited).toBe(2);
+      expect(projectQueueComparison(result, 60, false, [], cited).cited).toBe(2);
+      expect(projectQueueComparison(result, 60, true, [], cited).cited).toBe(2);
+      const noVersion = { ...CASES[1], extracted: { ...CASES[1].extracted, dispensingDate: "1900-01-01" } };
       expect(queueCitationAvailable(noVersion)).toBe(false);
-      expect(queueCitationAvailable({ ...CASES[0], readings: [] })).toBe(false);
+      expect(queueCitationAvailable({ ...CASES[1], readings: [] })).toBe(false);
       expect(engine).not.toHaveBeenCalled();
     } finally { engine.mockRestore(); }
   });
@@ -76,7 +83,8 @@ describe("current queue comparison", () => {
   it("uses edited shared costs and excludes actual human records", () => {
     const changed = monthModel({ ...MONTH_MODEL_DEFAULTS, todayMinutes: 15, judgingMinutes: 3 });
     const p = projectQueueComparison(changed, 60, false, [CASES[1].id]);
-    expect(p.rows[0]).toMatchObject({ gathering: 12, judging: 3 });
+    expect(p.rows[0]).toMatchObject({ gathering: 0, judging: 0, done: false });
+    expect(p.rows[2]).toMatchObject({ gathering: 12, judging: 3 });
     expect(p.rows[1]).toMatchObject({ gathering: 0, judging: 0, done: false, phase: "Historical record unchanged" });
   });
   it.each([false, true])("renders without any application or queue writes, mode%s", (enabled) => {
