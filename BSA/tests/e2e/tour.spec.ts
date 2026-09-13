@@ -296,7 +296,7 @@ test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases foll
   for (const item of CASES.filter((item) => ["B", "C"].includes(item.scenario))) {
     const card = page.locator(`[data-case="${item.scenario}"]`);
     const pack = runAgent(item);
-    await expect(card).toHaveAttribute("data-case-routing", "type2_endorsement");
+    await expect(card).toHaveAttribute("data-case-routing", item.scenario === "B" ? "referred_back" : "type2_endorsement");
     await expect(card.locator("[data-outcome]")).toHaveText(pack.recommendation);
     await expect(card).toContainText(`Gate: ${pack.gate.result.replaceAll("_", " ")}`);
     await expect(card.getByRole("link", { name: `Open case ${item.scenario}`, exact: true })).toBeVisible();
