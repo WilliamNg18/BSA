@@ -77,6 +77,9 @@ export async function chooseProcessChapter(page: Page, chapter: 1 | 2 | 3 | 4) {
     3: "3. What exists today and what changes", 4: "4. Four cases",
   }[chapter];
   await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
-  await page.getByRole("menuitem", { name: label, exact: true }).click();
+  const item = page.getByRole("menuitem", { name: label, exact: true });
+  await item.focus();
+  await expect(item).toBeFocused();
+  await item.press("Enter");
   await expect(page).toHaveURL(new RegExp(`#${{ 1: "scene", 2: "month", 3: "pipeline", 4: "cases" }[chapter]}$`));
 }

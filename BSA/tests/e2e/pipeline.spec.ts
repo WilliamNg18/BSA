@@ -42,21 +42,20 @@ test("conditional processing paths retain automatic bypass and human capture, ju
   await expect(pipeline).not.toContainText(/Sources:|\.pdf|\.docx/);
 });
 
-test("pipeline, scene and both calculator columns share live counts and reject invalid scenarios without hiding paths", async ({ page }, testInfo) => {
+const processScenarios: { name: string; input: ProcessMonthInputs }[] = [
+  { name: "defaults", input: { ...PROCESS_MONTH_DEFAULTS } },
+  { name: "small monthly volume", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, monthlyReferrals: 2 } },
+  { name: "all would-be referrals caught", input: { ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 100 } },
+  { name: "all remaining items abstained", input: { ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 0, abstainPercent: 100 } },
+  { name: "zero items", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 0, monthlyReferrals: 0 } },
+  { name: "billion items and small referral effort", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 1_000_000_000, monthlyReferrals: 1, investigationMinutesToday: 0.1 } },
+];
+
+for (const { name, input } of processScenarios) {
+test(`pipeline, scene and calculator share counts and recover invalid inputs: ${name}`, async ({ page }, testInfo) => {
   await page.goto("./#month");
-  const scenarios: ProcessMonthInputs[] = [
-    { ...PROCESS_MONTH_DEFAULTS },
-    { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, monthlyReferrals: 2 },
-    { ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 100 },
-    { ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 0, abstainPercent: 100 },
-    { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 0, monthlyReferrals: 0 },
-    { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 1_000_000_000, monthlyReferrals: 1, investigationMinutesToday: 0.1 },
-  ];
-  const results = [];
-  for (const input of scenarios) {
     await fillProcessInputs(page, input);
     const result = calculateProcessMonth(input);
-    results.push(result);
     for (const enabled of [true, false]) {
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await expectProcessMetrics(page, input, enabled);
@@ -71,7 +70,6 @@ test("pipeline, scene and both calculator columns share live counts and reject i
       if (enabled) await expect(page.locator("[data-pipeline-pharmacy]")).toHaveText(formatProcessItems(column.caughtBeforeSubmission));
       await expect(page.locator("[data-auto-bypass]")).toBeVisible();
       await chooseProcessChapter(page, 2);
-    }
   }
   await expandProcessInputs(page);
   await page.locator("#process-monthlyItems").fill("");
@@ -84,8 +82,9 @@ test("pipeline, scene and both calculator columns share live counts and reject i
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
   await expect(page.locator("[data-agent-kernel]")).toHaveCount(0);
   await expect(page.locator("[data-pipeline-referrals]")).toHaveText(formatProcessItems(calculateProcessMonth(PROCESS_MONTH_DEFAULTS).today.referredBackItems));
-  await captureJson(testInfo, "shared-process-path-scenarios", results);
+  await captureJson(testInfo, "shared-process-path-scenario", { name, input, result });
 });
+}
 
 test("mode changes and reset cancel referral interpolation without inventing kernel countdowns or decisions", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
