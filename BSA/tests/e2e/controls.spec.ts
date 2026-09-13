@@ -93,6 +93,8 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-recommended-decision-record");
@@ -105,7 +107,8 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
   await expect(page.getByText("Replay disabled in this manual comparison. The historical rule version is preserved; enable assistance to inspect it.", { exact: true })).toBeVisible();
-  await expect(page.getByText("REFER BACK by Demo operator", { exact: false })).toBeVisible();
+  await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd"))
+    .toContainText("REFER BACK by Demo operator");
   await captureCheckpoint(page, testInfo, "b-july-assistance-off");
   await confirmReset(page);
   await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
@@ -122,11 +125,12 @@ test("recommended B decision replays under July; flag off applies to replay; Res
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(9);
-  const stateCells = rows.locator("[data-queue-state]");
+  const rows = page.locator("[data-case-id], [data-type1-case]");
+  const ids = () => rows.evaluateAll((elements) => elements.map((element) => element.getAttribute("data-case-id") ?? element.getAttribute("data-type1-case")).sort());
+  const before = await ids();
+  expect(before.length).toBeGreaterThan(0);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
-  const states = await stateCells.allTextContents();
+  expect(await ids()).toEqual(before);
   await captureCheckpoint(page, testInfo, "queue-assistance-off");
   for (const c of cases) {
     await openCaseFromQueueOrClaim(page, c.id);
@@ -135,10 +139,11 @@ test("agent flag hides recommendations on every case without changing case state
     await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
     await captureCheckpoint(page, testInfo, `${c.id}-assistance-off`);
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-    await expect(stateCells).toHaveText(states);
+    await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
+    expect(await ids()).toEqual(before);
   }
   await confirmReset(page);
-  await expect(stateCells).toHaveText(states);
+  expect(await ids()).toEqual(before);
 });
 
 test("D shows its three abstention reasons; E has no agent trace", async ({ page }, testInfo) => {
@@ -186,13 +191,16 @@ test("product header retains working controls without presentation UI", async ({
 
 test("queue state filters are interactive", async ({ page }) => {
   await page.goto("queue");
-  const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(9);
+  const rows = page.locator("[data-case-id], [data-type1-case]");
+  const initialCount = await rows.count();
+  expect(initialCount).toBeGreaterThan(0);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const tile = page.getByRole("button", { name: /Abstained worked as today/ });
+  const tile = page.getByRole("button", { name: /Abstained, worked as today/ });
+  const expectedCount = Number(await tile.locator("span").last().innerText());
   await tile.click();
   await expect(tile).toHaveAttribute("aria-pressed", "true");
-  await expect(rows.locator("[data-queue-state]")).toHaveText(Array(2).fill("Abstained worked as today"));
-  await page.getByRole("button", { name: /All items/ }).click();
-  await expect(rows).toHaveCount(9);
+  await expect(rows).toHaveCount(expectedCount);
+  for (const row of await rows.all()) await expect(row).toContainText("Abstained; worked as today");
+  await page.getByRole("button", { name: /^All staff items/ }).click();
+  await expect(rows).toHaveCount(initialCount);
 });

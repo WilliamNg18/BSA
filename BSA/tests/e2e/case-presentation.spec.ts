@@ -80,6 +80,7 @@ for (const label of ["Sufficient (human choice)", "Refer back", "Request informa
       await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     }
     await reason.fill("Human review of captured evidence");
+    if (label === "Refer back") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     await expect(page.getByText("No. Note: Human review of captured evidence", { exact: true })).toBeVisible();

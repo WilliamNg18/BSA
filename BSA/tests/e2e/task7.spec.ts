@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { captureCheckpoint, captureJson, cases, confirmReset, expect, staticRoutes, test } from "./fixtures";
+import { automaticCaseIds, captureCheckpoint, captureJson, cases, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
 const surfaces = [
@@ -22,7 +22,15 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           await flag.setChecked(enabled);
           await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
           await expect(page.locator("[data-assistance-host]")).toHaveAttribute("data-phase", enabled ? "assisted" : "manual");
-          if (enabled && /EX-.*-pack$/.test(surface.name)) await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "6");
+          if (enabled && /EX-.*-pack$/.test(surface.name)) {
+            if (automaticCaseIds.some((id) => surface.name === `${id}-pack`)) {
+              await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
+              await expect(page.locator("[data-pack-assembly]")).toHaveCount(0);
+              await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+            } else {
+              await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "6");
+            }
+          }
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
           const results = await new AxeBuilder({ page }).analyze();
           await captureJson(testInfo, "axe-results", results);
@@ -57,7 +65,8 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await captureCheckpoint(page, testInfo, "notification-restored-record-focus");
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Operator reviewed the evidence");
   await record.press("Enter");
-  await expect(notices).toContainText("Decision recorded as DR-000873");
+  await expect(notices).toContainText("Human decision recorded");
+  await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
   await replay.focus();
   await replay.press("Home");

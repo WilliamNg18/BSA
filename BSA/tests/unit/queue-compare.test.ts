@@ -25,15 +25,15 @@ describe("current queue comparison", () => {
     for (const enabled of [false, true]) {
       useAppStore.getState().setAgentEnabled(enabled);
       const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(QueuePage)));
-      const staffItems = QUEUE_SEEDS.filter((seed) => useAppStore.getState().itemProcesses[seed.id]?.routing.outcome !== "auto_priced");
       expect(html).toContain("NHSBSA exception queue");
-      expect(html).toContain(`showing 1 to ${staffItems.length} of ${staffItems.length}`);
-      expect([...html.matchAll(/data-queue-seed="([^"]+)"/g)].map((match) => match[1])).toEqual(staffItems.map((seed) => seed.id));
-      expect(html).toContain('aria-label="Queue evidence and assumptions"');
+      expect(html).toContain("Actual synthetic session items");
+      expect(html).toContain("data-type2-worklist");
+      expect(html).not.toContain("showing 1 to 50");
       expect(html).not.toContain("data-month-row=");
       for (const c of CASES) {
-        if (c.scenario === "A" || c.scenario === "E") expect(html).not.toContain(`data-queue-seed="${c.id}"`);
-        else expect(html).toContain(`data-queue-seed="${c.id}"`);
+        if (c.scenario === "A" || c.scenario === "E") expect(html).not.toContain(`data-case-id="${c.id}"`);
+        else if (c.scenario === "D") expect(html).toContain(`data-type1-case="${c.id}"`);
+        else expect(html).toContain(`data-case-id="${c.id}"`);
       }
     }
   });

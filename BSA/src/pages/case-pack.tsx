@@ -20,9 +20,12 @@ import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
-import { manualChoice, permitsProposal } from "@/lib/case-presentation";
+import { caseViewState, manualChoice, permitsProposal } from "@/lib/case-presentation";
 import { CasePlayback, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
+import { Type1Capture } from "@/components/demo/type1-capture";
+import { ManualTariffLookup } from "@/components/demo/case-presentation";
+import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 
 const DECISIONS: { value: HumanDecision; label: string; help: string }[] = [
   { value: "ACCEPT", label: "Accept the recommendation", help: "Proceed as the agent recommends." },
@@ -41,7 +44,9 @@ function suggestedFor(rec: string): HumanDecision {
 
 export function CasePackPage() {
   const { id } = useParams();
-  return <CasePackContent key={id} />;
+  const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
+  const resetRevision = useAppStore((s) => s.queue.revision);
+  return <CasePackContent key={`${id}-${revision}-${resetRevision}`} />;
 }
 
 function CasePackContent() {
@@ -51,16 +56,19 @@ function CasePackContent() {
   const c = useLifecycleCase(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
-  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
   const lifecycle = useAppStore((s) => id ? s.lifecycles[id] : undefined);
   const arrive = useAppStore((s) => s.arriveInQueue);
-  const state = storedState ?? c?.initialState;
-  const recordDecision = useAppStore((s) => s.recordDecision);
+  const recordDecision = useAppStore((s) => s.recordType2Decision);
+  const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
+  const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
   const records = useAppStore((s) => s.records);
   const existing = useMemo(() => records.filter((r) => r.caseId === id), [records, id]);
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
+  const state = caseViewState(pack, process?.revision === revision ? process : undefined,
+    existing.some((record) => (record.revision ?? 1) === revision));
   const [decision, setDecision] = useState<HumanDecision | null>(null);
   const [reason, setReason] = useState("");
+  const [rbCode, setRbCode] = useState("");
   const [compare, setCompare] = useState(false);
   const [approved, setApproved] = useState(false);
   const [error, setError] = useState("");
@@ -75,34 +83,32 @@ function CasePackContent() {
   const chosen = !agentEnabled ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
   const isOverride = showRecommendation && (chosen === "AMEND" || chosen !== suggested && chosen !== "ACCEPT");
   const disposition = chosen === "ACCEPT" && showRecommendation ? suggested : chosen;
-  const needsReason = isOverride || !showRecommendation || (disposition !== "ACCEPT" && disposition !== "AMEND");
-  const decided = lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
+  const currentProcess = process?.revision === revision ? process : undefined;
+  const awaitingCapture = currentProcess?.routing.outcome === "type1_capture" && currentProcess.routing.requiresHuman;
+  const captureCompleted = currentProcess?.routing.outcome === "type1_capture" && !currentProcess.routing.requiresHuman;
+  const automatic = currentProcess?.routing.outcome === "auto_priced";
+  const decided = !currentProcess || awaitingCapture || captureCompleted || automatic || lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
   const canApprove = agentEnabled && showRecommendation && !!pack.draftToPharmacy && (disposition === "REFER_BACK" || disposition === "REQUEST_INFORMATION");
 
   function submit() {
     if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
-    if (needsReason && reason.trim().length < 8) {
+    if (reason.trim().length < 8) {
       setError("A reason of at least eight characters is required for this decision.");
       return;
     }
+    if (disposition === "REFER_BACK" && !rbCode) {
+      setError("Choose an RB code for the referral.");
+      return;
+    }
     try {
-    const rec = recordDecision({
+    recordDecision({
       caseId: c.id,
-      tariffVersion: agentEnabled ? pack.tariffVersion : "n/a",
-      agentVersion: agentEnabled ? pack.agentVersion : "not invoked",
-      inputs: [
-        `Extracted fields: ${c.extracted.productText}, qty ${c.extracted.quantity ?? "?"}, endorsement "${c.extracted.endorsementText || "none"}"`,
-        `Claim: qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, ${c.claim.submittedVia}`,
-        `Image ${c.id}.tif, quality ${c.imageQuality.toFixed(2)}`,
-      ],
-      sources: agentEnabled ? Array.from(new Set(pack.evidence.map((e) => e.origin))) : ["Existing capture", "Claim ledger", "Form image"],
-      checks: agentEnabled ? pack.gate.checks : [],
-      recommendation: pack.recommendation,
-      decision: chosen,
-      overrideReason: reason.trim() || null,
+      decision: disposition,
+      reason: reason.trim(),
+      rbCode: disposition === "REFER_BACK" ? rbCode : undefined,
       approvedDraft: canApprove && approved ? pack.draftToPharmacy! : undefined,
     });
-    notification.show("success", `Decision recorded as ${rec.id}`);
+    notification.show("success", "Human decision recorded");
     navigate(`/case/${c.id}/record`);
     } catch (err) { setError(err instanceof Error ? err.message : "Decision unavailable. Review the current case state."); }
   }
@@ -116,11 +122,21 @@ function CasePackContent() {
         intro="Review the form, evidence, applicable rule, conflicts and gate checks. Assistance recommends only; the operator decides."
       />
       <LifecycleHistory id={c.id} />
-      {(lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
+      {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
+        Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
+      </p>}
+      {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
+      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} />}
+      {automatic && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
+        <BoundaryTag cls="deterministic" />
+        <p>Priced by NHSBSA's existing rules engine; no person involved in automatic pricing.</p>
+        <p className="text-sm text-muted-foreground">No operator action is needed. Any earlier human decisions remain in the history.</p>
+      </section>}
+      {!awaitingCapture && !captureCompleted && !automatic && currentProcess && (lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
         <BoundaryTag cls="human" /><p>Start review explicitly before recording a decision.</p>
         <Button onClick={() => { try { arrive(c.id); setError(""); } catch (err) { setError(err instanceof Error ? err.message : "Review unavailable."); } }}>Start review</Button>
       </section>}
-      {decided && lifecycle?.state !== "submitted" && lifecycle?.state !== "resubmitted" && <section className="space-y-2 rounded-xl border p-4">
+      {decided && !automatic && !awaitingCapture && lifecycle?.state !== "submitted" && lifecycle?.state !== "resubmitted" && <section className="space-y-2 rounded-xl border p-4">
         <p>Historical case view. Submit another demonstration attempt at the pharmacy before starting a new review.</p>
         {perspective !== "nhsbsa" && <Button asChild variant="outline" className="h-auto max-w-full whitespace-normal"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>}
       </section>}
@@ -154,9 +170,11 @@ function CasePackContent() {
       {!agentEnabled && <>
         <div className="flex flex-wrap items-center gap-2"><RecommendationBadge rec="NONE" /><StatusDot status="skipped" label="NOT RUN" /><BoundaryTag cls="human" /></div>
         <RawCaseFields c={c} />
+        {!awaitingCapture && !automatic && <ManualTariffLookup />}
         <MissingAssistedSlots markers />
       </>}
-      {agentEnabled && <>
+      {agentEnabled && !pack.agentInvoked && <RawCaseFields c={c} />}
+      {agentEnabled && pack.agentInvoked && <>
         <CasePlayback clock={clock} total={6} />
         <Button variant="outline" type="button" aria-pressed={compare} onClick={() => setCompare((value) => !value)}>Compare manual view</Button>
         <div className={compare ? "grid gap-6 xl:grid-cols-2" : ""}>
@@ -269,10 +287,12 @@ function CasePackContent() {
 
         <div className="space-y-6 xl:col-span-2">
           {clock.revealed >= 1 && <>
-          <PageSection title="Prescription image" description="The regions the agent read are highlighted.">
-            <PrescriptionForm c={c} highlight={["item", "endorsement"]} />
+          <PageSection title="Prescription image" description={currentProcess?.capture?.provenance === "pharmacy_declaration"
+            ? "Declared by the pharmacy, not read from the form. Human confirmation is recorded."
+            : c.imageStyle === "handwritten_poor" ? "The scan remains unreadable. Do not treat declared fields as image readings." : "Synthetic form evidence; highlighted regions identify the fields considered."}>
+            <PrescriptionForm c={c} highlight={c.imageStyle === "handwritten_poor" ? [] : ["item", "endorsement"]} />
           </PageSection>
-          <PageSection title="Extracted fields, product and claim">
+          <PageSection title="Original machine capture, product and claim">
             <dl className="grid gap-2">
               <KeyValue k="Product (capture)" v={`${c.extracted.productText} · confidence ${c.extracted.productConfidence.toFixed(2)}`} />
               <KeyValue k="Product (master data)" v={pack.product ? `${pack.product.name}, pack ${pack.product.packSize}, category ${pack.product.category}, basic price £${pack.product.basicPrice.toFixed(2)}` : "Not resolved"} />
@@ -306,8 +326,8 @@ function CasePackContent() {
         </div>
       </>}
 
-      {(!agentEnabled || clock.revealed >= 6) && <>
-      <PageSection title="Operator decision" description="The consequential decision is a person's. A reason is mandatory for any override, and whenever there is no recommendation to accept.">
+      {(!agentEnabled || !pack.agentInvoked || clock.revealed >= 6) && <>
+      <PageSection title="Operator decision" description="Record your human reason for every decision. An override must explain why you depart from the recommendation.">
         <Card className="border-orange-600">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>
@@ -326,10 +346,21 @@ function CasePackContent() {
                   </div>
                 ))}
               </RadioGroup>
-              {canApprove && <label className="flex items-start gap-2"><input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>}
+              {canApprove && <div className="space-y-2">
+                <label className="flex items-start gap-2"><input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
+                <p className="text-sm text-muted-foreground">Optional. Without approval, only your human reason is sent; the agent draft is not approved or shared.</p>
+              </div>}
+              {disposition === "REFER_BACK" && <div className="space-y-1.5">
+                <Label htmlFor="rb-code">RB code (required)</Label>
+                <select id="rb-code" value={rbCode} onChange={(event) => setRbCode(event.target.value)} required
+                  className="h-10 w-full rounded-md border bg-background px-3 text-sm">
+                  <option value="">Choose an RB code</option>
+                  {RB_CODE_CATALOG.map((entry) => <option key={entry.code} value={entry.code}>{entry.code}: {entry.reason}</option>)}
+                </select>
+              </div>}
               <div className="space-y-1.5">
-                <Label htmlFor="reason">{needsReason ? "Reason (required)" : "Reason (optional)"}</Label>
-                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Why you are departing from the recommendation. This is the most valuable data the system collects." : needsReason ? "Explain your decision based on the evidence." : "Optional note for the record."} aria-required={needsReason} />
+                <Label htmlFor="reason">Reason (required)</Label>
+                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Explain why you are departing from the recommendation." : "Explain your decision based on the evidence."} aria-required="true" />
               </div>
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision

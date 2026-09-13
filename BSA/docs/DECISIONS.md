@@ -1131,6 +1131,31 @@ Legacy decisions without an RB code say it was not recorded, rather than
 retroactively inventing a code. MYS/NHSmail and payment timing are public process
 context, not services implemented by this static demonstration.
 
+## 2026-09-13: Task 22 staff views follow the current submitted revision
+
+Q replaces the mounted virtual referral projection with an actual-session
+Type 2 worklist and a separate shared Type 1 capture lane. Monthly automatic
+pricing and workload figures come from `useProcessMonth`; they are explicitly
+not session completions. Automatic no-human items have no work rows. A later
+human Type 2 decision remains inspectable, and F's original record is retained.
+Current routing metadata must match the latest revision; inconsistent metadata
+withholds actions and reports an error rather than guessing from seed case state.
+
+The Type 1 lane and case pack embed U's single store-connected component.
+Confirming capture does not approve a Type 2 decision. Manual Type 2 review
+exposes the synthetic monthly Tariff for unaided lookup and M's RB catalogue;
+assisted referrals require explicit approval of the proposed draft. Reasons,
+RB codes and approved rules are written only through M's decision API.
+Q requires a human reason for every recorded decision, including accepting a
+sufficient recommendation, rather than inventing a reason for an empty field.
+The UI's Accept recommendation resolves to its actual disposition before
+calling the new API; it must not confuse a referral recommendation with ACCEPT
+as the API's sufficient outcome.
+
+Agent Off is an experience-only comparison, not a destructive audit filter.
+Actual human reasons and original rule versions remain available in immutable
+record history in both modes. Agent On never manufactures a rule retrospectively.
+
 ## 2026-09-13: Task 21 U proposed paper declaration confirmation
 
 The unreadable-paper design is proposed, not existing NHSBSA functionality.
@@ -1214,6 +1239,17 @@ test observer exposes a deeply immutable domain snapshot, no actions, and is
 compiled only when VITE_E2E_STATE_OBSERVER=true. Normal builds have no hook.
 Q approved the M-first automatic-row filter and disabled legacy generated
 operator rows; its full staff-lane presentation follows this shared model.
+
+## 2026-09-13: Task 22 draft approval is optional, never inferred
+
+The coordinator confirmed that a human may choose their own reason and RB code
+without using the proposed agent draft. Require at least eight trimmed
+characters for the actual human reason and a catalogue RB code for referral.
+Include `approvedDraft` only after the explicit checkbox is checked. Agent On
+alone never approves, sends or retrospectively supplies a draft. An unchecked
+draft must not block an otherwise valid human decision or become an approved
+pharmacy note. This clarifies the earlier Q approval wording: approval is
+mandatory for use of the draft, not mandatory use of the draft itself.
 
 The final process API keeps completed human work in its original lane:
 Type 2 sufficient is `type2_endorsement` with `requiresHuman=false`, and
