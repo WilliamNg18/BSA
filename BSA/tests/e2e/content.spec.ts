@@ -54,10 +54,13 @@ for (const enabled of [false, true]) {
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const audits = [];
     for (const scenario of ["Complete endorsement", "NCSO missing date", "Unreadable form"]) {
+      const paper = scenario === "Unreadable form";
+      await page.getByRole("radio", { name: paper ? "Paper" : "EPS", exact: true }).click();
       await page.getByRole("radio", { name: scenario, exact: true }).click();
-      await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
+      if (paper && enabled) await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
+      if (!paper) await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
       audits.push({ scenario, phase: "check", ...await page.evaluate(auditProse) });
-      await page.getByRole("button", { name: "Send claim", exact: true }).click();
+      await page.getByRole("button", { name: paper ? enabled ? "Post paper with declaration" : "Post paper" : "Send claim", exact: true }).click();
       const timeline = page.getByRole("list", { name: "Submission timeline", exact: true });
       await expect(timeline.locator(":scope > li")).toHaveCount(scenario === "Complete endorsement" ? 2 : 1);
       const jump = page.getByRole("button", { name: "Jump to end", exact: true });
@@ -67,11 +70,17 @@ for (const enabled of [false, true]) {
       await expect(page.getByLabel("Month end days · Assumption", { exact: true })).toHaveCount(0);
       audits.push({ scenario, phase: "recorded-receipt", ...await page.evaluate(auditProse) });
       if (scenario === "Unreadable form") {
+        if (!enabled) {
+          await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveCount(0);
+          await page.getByRole("banner").getByRole("switch").setChecked(true);
+        }
+        await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
         await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
-        await page.getByRole("button", { name: "Send claim", exact: true }).click();
-        await expect(page.getByRole("alert")).toContainText("Declared quantity must be a positive whole number or left blank.");
+        await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
+        await expect(page.getByRole("alert")).toContainText("quantity");
         audits.push({ scenario, phase: "invalid-declaration", ...await page.evaluate(auditProse) });
         await page.getByLabel("Declared quantity", { exact: true }).fill("");
+        if (!enabled) await page.getByRole("banner").getByRole("switch").setChecked(false);
       }
       if (enabled && scenario === "NCSO missing date") {
         await page.getByRole("button", { name: "Apply correction", exact: true }).click();

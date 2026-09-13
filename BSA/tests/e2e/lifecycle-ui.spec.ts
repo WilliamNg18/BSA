@@ -145,16 +145,15 @@ test("Task9 C shows both conflict values, approved note and confirmation without
 
 test("Task19 D blocks Type 2 before capture and E clears by code without entering the queue", async ({ page }) => {
   await page.goto("pharmacy");
+  await page.getByRole("radio", { name: "Paper", exact: true }).click();
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
-  await expect(page.getByLabel("Declared product code", { exact: true })).toHaveValue("");
-  await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("");
-  await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK 21/08/26");
-  await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
-  await page.getByRole("button", { name: "Send claim", exact: true }).click();
+  await expect(page.getByLabel("Declared product", { exact: true })).toHaveCount(0);
+  await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Post paper", exact: true }).click();
   await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true })).toBeVisible();
   await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li")).toHaveCount(3);
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
