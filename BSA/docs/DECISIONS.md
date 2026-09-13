@@ -1641,3 +1641,11 @@ human review rather than claiming untouched automatic pricing. Completed human
 work cannot later acquire a no-person pricing explanation. New complete EPS
 submissions still use automatic pricing when their own evidence permits it.
 
+## 2026-09-13: Concise Paper explanations
+
+Paper explanatory copy stays below 25 words per existing functional panel.
+The main submission narrative and nested declaration-check panel are counted
+separately; medicine fields, exact rule quotations, requirement statuses and
+field-associated provenance labels remain visible structured evidence. Error
+messages replace the main narrative rather than accumulating duplicate prose.
+Focused tests count both Paper variants, both modes and all advice outcomes.

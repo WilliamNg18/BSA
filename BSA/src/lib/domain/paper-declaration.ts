@@ -21,6 +21,12 @@ export const WORKED_PAPER_DECLARATION: PaperDeclarationDraft = {
   endorsementText: "NCSO JB 27/08/26", dispensingDate: "2026-08-27",
 };
 
+export function paperDeclarationAdvice(result: PharmacyCheck | null, validationError: string, submissionError: string): string {
+  if (validationError && !submissionError) return validationError;
+  if (result?.status === "unable") return result.gap;
+  return `${result?.status === "ready" ? "Declaration complete, not capture confirmed. " : ""}Scripted advice: the form needs initials and date. Human reconciliation and prescriber evidence remain mandatory.`;
+}
+
 export function preparePaperDeclaration(draft: PaperDeclarationDraft): PaperDeclaration {
   const quantity = draft.quantity.trim();
   if (quantity && (!/^\d+$/.test(quantity) || !Number.isSafeInteger(Number(quantity)) || Number(quantity) <= 0)) {
