@@ -72,6 +72,7 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     const presentation = prescribedName ? /^(.*?)\s+([\d/]+(?:mg|mcg)?)\s+(tablets|capsules)(?: \(generic synthetic\))?$/.exec(prescribedName) : null;
     const composedName = item ? `${item.product} ${item.strength} ${item.form}` : "";
     if (!item || !productByCode(item.prescribedCode) || !productByCode(item.dispensedCode) ||
+      item.prescribedCode !== item.dispensedCode ||
       prescribedName !== item.product && prescribedName?.replace(" (generic synthetic)", "") !== composedName ||
       !presentation || item.strength !== presentation[2] || item.form !== presentation[3] ||
       productByCode(item.dispensedCode)?.name !== item.dispensedName ||
@@ -133,6 +134,11 @@ export function caseForLifecycle(
   if (revision.paperDeclaration) {
     c = { ...c, paperDeclaration: revision.paperDeclaration };
     c.extracted.dispensingDate = revision.paperDeclaration.dispensingDate;
+  }
+  const humanDecision = lifecycles[caseId].history.filter((event) => event.revision === revision.number && event.actor === "operator" && event.decision).at(-1);
+  if (humanDecision?.to === "paid") c = { ...c, humanPricingConfirmed: true, initialState: "human_decision_recorded" };
+  if (["resubmission", "confirmation"].includes(revision.kind) && !humanDecision) {
+    c = { ...c, requiresHumanRecheck: true, initialState: "operator_review_required" };
   }
   if (c.scenario !== "D" && revision.endorsementText !== original.extracted.endorsementText) {
     const text = revision.endorsementText;

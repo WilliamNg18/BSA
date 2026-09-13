@@ -1493,3 +1493,32 @@ human acceptance, existing pricing and Reset. The read-only gated observer
 compares complete snapshots after each action in Both and switched views,
 separately with Agent Off and On. Timestamps and IDs are controlled, not removed.
 The ordinary production build never gains a writable observer or test API.
+
+## 2026-09-13: Task 25 independent source-authority review repairs
+
+Independent review identified four source/provenance defects. Five focused tests
+reproduced all four before repair, including both recheck modes. The original
+failed reproduction is retained; passing amended assertions are not substituted
+for that evidence.
+
+The generic supplemental item now has its own prescribed identity rather than
+falling back to the ordinary E product when source payloads are omitted. A typed
+paper declaration requires explicit capture before it can support pricing;
+neither its fields nor its product are silently treated as a template image read.
+Missing generic supply evidence still blocks acceptance after that capture.
+Ordinary initial readable paper without a declaration retains its existing
+automatic route. Prescribed/dispensed EPS product substitutions are rejected:
+this demonstration has no approved substitution workflow.
+
+Legacy pharmacy helpers and explicit retained-declaration replay preserve the
+paper source and dispensing date in the next immutable revision. A new explicit
+paper submission with neither declaration payload does not inherit declaration
+or capture authority. Unknown human capture remains possible, but product codes
+must be explicitly synthetic.
+
+Current revision history projects pending human recheck and completed human
+pricing separately into the common case input. Routing and the agent pack now
+agree: an assisted corrected referral builds a sufficient recommendation for
+human review rather than claiming untouched automatic pricing. Completed human
+work cannot later acquire a no-person pricing explanation. New complete EPS
+submissions still use automatic pricing when their own evidence permits it.
