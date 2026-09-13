@@ -1080,6 +1080,57 @@ Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
 
+## 2026-09-13: Task 23 presents separate process and referral measures
+
+N's chapters consume M's frozen `useProcessMonth` result and the same store
+inputs as operational views. The two monthly headline groups are referred-back
+items and referral-loop hours. Operator and pharmacy hours remain separate
+measures within that second group, never a combined labour total. Type 2 hours
+sit beneath them with an explicit non-additivity warning: investigation overlaps
+the Type 2 cohort, and 45-second built-case judgement is not a speed-up over a
+13-second average. No independent cohort arithmetic is introduced in views.
+
+The two comparison columns stay visible. Header mode changes replay the existing
+reduced-motion-aware number animation, with exact endpoints and stable accessible
+values. All fourteen process inputs are available through one reusable editor on
+the month and assumptions pages. The old assumptions register is retained only
+inside a collapsed, explicitly historical referral-only comparison.
+
+Public process context is qualified as owner-supplied and not independently
+verified. Figure provenance lives in keyboard-accessible tooltips. Today zero
+rule records and experience-only assurance describe this synthetic comparison,
+not all NHSBSA staff. Existing human history is not changed.
+
+The process diagram branches: complete items bypass staff, uncertain capture
+uses Type 1 and rerouting, and interpretation uses Type 2 with a human decision.
+Pharmacy-corrected items still enter normal processing; they avoid a referral,
+not submission. The boundary labels poor-paper declaration pre-fill **proposed**:
+fields are declared by the pharmacy, not read from the form. Human confirmation
+is required, and irreconcilable evidence follows today's path.
+
+## 2026-09-13: Task 20 pharmacy process follows recorded authority
+
+P reads receipt contents directly from immutable shared case revisions, retaining
+only the selected case/revision as local presentation state. The pharmacy
+timeline replays recorded events rather than inventing future referrals or Paid
+events. Playback cannot perform a submission, capture confirmation or decision.
+Monthly service projections consume `useProcessMonth`; selected-pharmacy
+recorded counts remain separate, including actual correction evidence.
+
+Channel is local submission input, not another global control. EPS carries
+typed claim text; Paper starts with empty declaration fields alongside the
+synthetic form. Product, quantity, endorsement and optional prescriber are
+explicitly pharmacy-declared, never represented as image reads. D's proposed
+complete declaration still needs human Type 1 confirmation and Type 2 judgement.
+The existing gate is not weakened for an unreadable prescriber.
+
+On correction/resubmission rechecks current declaration/text through the shared
+checker. Applying a fix does not submit. Referral advice is visible only when
+the actual operator-approved note exists; Off preserves the raw human reason.
+Legacy decisions without an RB code say it was not recorded, rather than
+retroactively inventing a code. MYS/NHSmail and payment timing are public process
+context, not services implemented by this static demonstration.
+
 ## 2026-09-13: Task 22 staff views follow the current submitted revision
 
 Q replaces the mounted virtual referral projection with an actual-session
@@ -1148,59 +1199,6 @@ checked reconciliation remains true for that human correction; compatibility
 and the mandatory evidence gate still decide whether advice can be shown.
 The original declaration stays visible and unchanged.
 
-## 2026-09-13: Task 23 presents separate process and referral measures
-
-N's chapters consume M's frozen `useProcessMonth` result and the same store
-inputs as operational views. The two monthly headline groups are referred-back
-items and referral-loop hours. Operator and pharmacy hours remain separate
-measures within that second group, never a combined labour total. Type 2 hours
-sit beneath them with an explicit non-additivity warning: investigation overlaps
-the Type 2 cohort, and 45-second built-case judgement is not a speed-up over a
-13-second average. No independent cohort arithmetic is introduced in views.
-
-The two comparison columns stay visible. Header mode changes replay the existing
-reduced-motion-aware number animation, with exact endpoints and stable accessible
-values. All fourteen process inputs are available through one reusable editor on
-the month and assumptions pages. The old assumptions register is retained only
-inside a collapsed, explicitly historical referral-only comparison.
-
-Public process context is qualified as owner-supplied and not independently
-verified. Figure provenance lives in keyboard-accessible tooltips. Today zero
-rule records and experience-only assurance describe this synthetic comparison,
-not all NHSBSA staff. Existing human history is not changed.
-
-The process diagram branches: complete items bypass staff, uncertain capture
-uses Type 1 and rerouting, and interpretation uses Type 2 with a human decision.
-Pharmacy-corrected items still enter normal processing; they avoid a referral,
-not submission. The boundary labels poor-paper declaration pre-fill **proposed**:
-fields are declared by the pharmacy, not read from the form. Human confirmation
-is required, and irreconcilable evidence follows today's path.
-
-## 2026-09-13: Task 20 pharmacy process follows recorded authority
-
-P reads receipt contents directly from immutable shared case revisions, retaining
-only the selected case/revision as local presentation state. The pharmacy
-timeline replays recorded events rather than inventing future referrals or Paid
-events. Playback cannot perform a submission, capture confirmation or decision.
-Monthly service projections consume `useProcessMonth`; selected-pharmacy
-recorded counts remain separate, including actual correction evidence.
-
-Channel is local submission input, not another global control. EPS carries
-typed claim text; Paper starts with empty declaration fields alongside the
-synthetic form. Product, quantity, endorsement and optional prescriber are
-explicitly pharmacy-declared, never represented as image reads. D's proposed
-complete declaration still needs human Type 1 confirmation and Type 2 judgement.
-The existing gate is not weakened for an unreadable prescriber.
-
-On correction/resubmission rechecks current declaration/text through the shared
-checker. Applying a fix does not submit. Referral advice is visible only when
-the actual operator-approved note exists; Off preserves the raw human reason.
-Legacy decisions without an RB code say it was not recorded, rather than
-retroactively inventing a code. MYS/NHSmail and payment timing are public process
-context, not services implemented by this static demonstration.
-
-## 2026-09-13: Task 21 readable-paper capture wording
-
 The shared capture surface also accepts readable handwritten paper items.
 Only genuinely poor image style or quality below the existing threshold gets
 the poor-scan/cannot-read wording. D keeps its guaranteed Type 2 continuation;
@@ -1247,6 +1245,17 @@ test observer exposes a deeply immutable domain snapshot, no actions, and is
 compiled only when VITE_E2E_STATE_OBSERVER=true. Normal builds have no hook.
 Q approved the M-first automatic-row filter and disabled legacy generated
 operator rows; its full staff-lane presentation follows this shared model.
+
+## 2026-09-13: Task 22 draft approval is optional, never inferred
+
+The coordinator confirmed that a human may choose their own reason and RB code
+without using the proposed agent draft. Require at least eight trimmed
+characters for the actual human reason and a catalogue RB code for referral.
+Include `approvedDraft` only after the explicit checkbox is checked. Agent On
+alone never approves, sends or retrospectively supplies a draft. An unchecked
+draft must not block an otherwise valid human decision or become an approved
+pharmacy note. This clarifies the earlier Q approval wording: approval is
+mandatory for use of the draft, not mandatory use of the draft itself.
 
 The final process API keeps completed human work in its original lane:
 Type 2 sufficient is `type2_endorsement` with `requiresHuman=false`, and

@@ -114,6 +114,15 @@ describe("process claim evidence", () => {
     expect(markup).toContain("2026-09-13T12:00:00Z");
     expect(markup).not.toContain("no person involved");
     expect(useAppStore.getState().itemProcesses[caseId].capture).toBeNull();
+    const revision = useAppStore.getState().caseRevisions[caseId].at(-1)!;
+    store.confirmType1({ caseId, revision: revision.number, fields: revision.declaration!.fields,
+      provenance: "pharmacy_declaration", declarationReconciled: true });
+    const capture = useAppStore.getState().lifecycles[caseId].history.find((event) => event.capture)?.capture;
+    expect(renderClaim(caseId)).toContain('aria-label="Type 1 capture for attempt 2"');
+    store.submitItem({ caseId, channel: "paper", endorsementText: "" });
+    expect(renderClaim(caseId)).toContain('aria-label="Type 1 capture for attempt 2"');
+    expect(useAppStore.getState().lifecycles[caseId].history.find((event) => event.capture)?.capture).toEqual(capture);
+    expect(useAppStore.getState().itemProcesses[caseId].capture).toBeNull();
   });
 
   it("does not describe human-reviewed Paid items as no-person pricing", () => {
@@ -134,9 +143,10 @@ describe("process claim evidence", () => {
     store.submitItem({ caseId, channel: "paper", endorsementText: "" });
     const markup = renderClaim(caseId);
     expect(markup).toContain("Paper");
-    expect(markup).not.toContain("Immutable pharmacy declaration");
+    expect(markup).not.toContain('aria-label="Declaration for attempt 2"');
     expect(markup).not.toContain("no person involved");
     expect(useAppStore.getState().itemProcesses[caseId].routing.outcome).toBe("type1_capture");
     expect(useAppStore.getState().caseRevisions[caseId].at(-1)?.endorsementText).toBe("");
+    expect(useAppStore.getState().caseRevisions[caseId].at(-1)?.declaration).toBeUndefined();
   });
 });

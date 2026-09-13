@@ -10,12 +10,12 @@ import { SceneEstimateNumber } from "@/components/demo/scene-estimate-number";
 import { AssumptionsPage } from "@/pages/assumptions";
 import { BoundaryPage } from "@/pages/boundary";
 import { HomePage } from "@/pages/home";
-import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
 import { ArchitecturePage } from "@/pages/architecture";
 import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
 import { CASES } from "@/lib/domain/cases";
 import { productionServiceLabel } from "@/lib/service-display";
+import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
