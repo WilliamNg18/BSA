@@ -289,7 +289,7 @@ function CasePackContent() {
             {pack.conflicts.length === 0 ? (
               <p className="text-sm text-muted-foreground">{pack.signals.reconciliation === "agree"
                 ? "This comparison does not establish agreement for missing or unreadable evidence."
-                : "Missing, unreadable or unconfirmed fields still need evidence. No detected conflict does not prove agreement."}</p>
+                : "No detected conflict does not establish agreement. Missing, unreadable or unconfirmed fields still need evidence."}</p>
             ) : (
               <ul className="space-y-2">
                 {pack.conflicts.map((k) => (
