@@ -1,5 +1,5 @@
 /** Frozen cross-stream contracts. Synthetic session data, not payment authority. */
-import type { DecisionRecord, EndorsementFacts, HumanDecision, Recommendation } from "./types";
+import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, FieldProvenance, HumanDecision, ItemChannel, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
 
 export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated";
 export type Actor = "pharmacy" | "agent" | "code" | "operator";
@@ -20,6 +20,9 @@ export interface HistoryEvent {
   recommendation?: Recommendation;
   reason?: string;
   approvedDraft?: ApprovedDraft;
+  channel?: ItemChannel;
+  rbCode?: string;
+  processStep?: "submission" | "automatic_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission";
 }
 
 /** Created only by an explicit human approval argument, never by the flag. */
@@ -38,6 +41,7 @@ export interface LifecycleDecisionRecord extends DecisionRecord {
   readonly reason?: string;
   readonly clauseId?: string;
   readonly approvedDraft?: ApprovedDraft;
+  readonly rbCode?: string;
 }
 
 /** Each pharmacy action retains its own text and advisory snapshot forever. */
@@ -49,6 +53,60 @@ export interface CaseRevision {
   readonly endorsementText: string;
   readonly precheck: PharmacyPrecheckSnapshot | null;
   readonly confirmation: string | null;
+  /** Present on process-model submissions; legacy revisions remain immutable. */
+  readonly channel?: ItemChannel;
+  readonly declaration?: PharmacyDeclaration;
+}
+
+export interface Type1Capture {
+  readonly revision: number;
+  readonly confirmedAt: string;
+  readonly operator: string;
+  readonly fields: DeclaredItemFields;
+  readonly provenance: FieldProvenance;
+  readonly declarationReconciled: boolean;
+}
+
+/** Routing metadata only. Lifecycle/history and attempts remain authoritative. */
+export interface ItemProcess {
+  readonly revision: number;
+  readonly channel: ItemChannel;
+  readonly routing: RoutingResult;
+  readonly capture: Type1Capture | null;
+  readonly rbCode: string | null;
+}
+
+export interface ProcessSubmission {
+  caseId: string;
+  channel: ItemChannel;
+  endorsementText: string;
+  declaration?: PharmacyDeclaration;
+  precheck?: PharmacyPrecheckSnapshot;
+}
+
+export interface ConfirmType1Input {
+  caseId: string;
+  revision: number;
+  fields: DeclaredItemFields;
+  provenance: "human_capture" | "pharmacy_declaration";
+  declarationReconciled: boolean;
+}
+
+export interface Type2DecisionInput {
+  caseId: string;
+  decision: HumanDecision;
+  reason: string;
+  rbCode?: string;
+  approvedDraft?: string;
+}
+
+/** Implemented by the single operational store in Task 19, not by view copies. */
+export interface ProcessSlice {
+  itemProcesses: Record<string, ItemProcess>;
+  submitItem: (input: ProcessSubmission) => void;
+  confirmType1: (input: ConfirmType1Input) => void;
+  recordType2Decision: (input: Type2DecisionInput) => void;
+  resubmitItem: (input: ProcessSubmission) => void;
 }
 
 export interface CaseLifecycle {

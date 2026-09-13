@@ -4,6 +4,13 @@ This repository holds the **Prescription Exception Case Builder**, a proof of co
 
 ## The one rule that governs everything
 
+Current work is Tasks 19-24 under MEMORY's **Process model** and **One state**.
+The owner's 13 September process brief explicitly supersedes the older D-only
+abstention and referral-only monthly presentation below. D must still abstain
+on unreconciled evidence, but the proposed human-confirmed declaration path can
+build a case without claiming to read its poor paper image. A becomes automatic
+rules pricing with no operator. Follow current PROGRESS ownership before editing.
+
 > The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides. The prototype does not calculate or approve payments.
 
 Any change that lets the "agent" price an item, change a case state, bypass the compliance gate, cite a rule it did not retrieve, or hide its uncertainty is wrong, however good it looks.

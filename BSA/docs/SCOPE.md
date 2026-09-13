@@ -6,6 +6,17 @@ ms.date: 2026-09-12
 
 # Scope register
 
+## Current new scope: Tasks 19-24
+
+Six new tasks are pending; earlier acceptance below does not cover the revised
+process. M owns shared routing/time/state, P pharmacy flows, U unreadable paper,
+Q Type 1/Type 2 operational views, N numbers/tour, and V equivalence/live/docs.
+PROGRESS records the frozen signatures, ownership and serial merge order.
+The new acceptance must prove auto-priced items never enter the operator list,
+human Type 1 capture and proposed declaration confirmation, Type 2/RB codes,
+truthful separate time cohorts, and identical domain state across perspectives.
+No new-scope row is Done until the shared process and its actual live flow pass.
+
 ## Clarity and perspective scope: Tasks 14-18
 
 Tasks 14-18 have current functional and viewer acceptance at clean

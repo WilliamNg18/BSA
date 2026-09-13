@@ -4,6 +4,52 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-13
 ---
 
+## Current work: Tasks 19-24, process streams and one state
+
+The owner now requires the whole-item process, not a referral-only queue model.
+Prior Tasks 14-18 and the 13 September header-only change remain historical
+acceptance, not evidence that this new scope is done.
+
+| Task | Stream | Exclusive ownership | Status |
+| --- | --- | --- | --- |
+| 19 Shared process model | M | Domain routing/baseline/lifecycle/agent/fixtures and unit tests; store.ts, pharmacy-store/queue-store consolidation; shared model hooks | Pending Step 0 |
+| 20 Pharmacy process | P | Pharmacy check/claims/detail/history/timeline components; pharmacy process UI | Pending Step 0 |
+| 21 Unreadable paper | U | New Type 1 capture component, proposed-D presentation and isolated paper-capture helper; D fixture changes requested through M | Pending Step 0 |
+| 22 NHSBSA work streams | Q | Queue, case pack, trace, decision-record pages/components; Type 1 lane embedding U's component | Pending Step 0 |
+| 23 Numbers and tour | N | Chapters 1/2/3/close, home and baseline/pipeline presentation; public-facts display copy | Pending Step 0 |
+| 24 Verification and docs | V | All e2e/live tests, screenshots, demo-script/SPEC/KNOWN/README; one-state equivalence and final live proof | Pending Step 0 |
+
+Step 0 freezes `ItemChannel`, `RoutingOutcome`, `RoutingFacts`/`RoutingResult`
+and `RouteSubmission` in types.ts; submission/capture/decision inputs,
+`ProcessSlice` and routing metadata in lifecycle.ts; and `ProcessMonthInputs`,
+`ProcessMonthResult`, `ProcessMonthModel`, defaults/provenance and
+`ProcessModelSlice` in baseline.ts. The new signatures are additive: the existing
+site remains usable until M supplies implementations and adapters.
+
+M implements `routeSubmission(facts): RoutingResult`, the new
+`monthModel(ProcessMonthInputs): ProcessMonthResult` overload, and
+`useProcessMonth(): ProcessMonthSelection`, backed by
+`useAppStore.processInputs/setProcessInput`. Existing monthly callers retain
+their legacy overload during migration, never a success-shaped stub. P/U/Q call
+the shared `submitItem`, `confirmType1`, `recordType2Decision`, `resubmitItem`
+APIs. `itemProcesses` is revision-linked routing metadata, not a second
+lifecycle/history store. Legacy entry points must delegate to the same authority.
+
+All six streams run concurrently after the contracts commit reaches main.
+M publishes callable implementation contracts early, then merges first. P/U/Q
+follow in any order, then N, then V. No stream self-merges. V owns e2e files;
+feature owners send exact UI compatibility patches/requests to V so each staged
+main remains green without weakening functional/axe gates. U does not edit
+M's shared cases.ts or Q's case pages; share an importable capture component.
+Q does not change N's public-facts or baseline model. Coordinator owns
+PROGRESS/SCOPE/MEMORY contracts and serialises requested contract amendments.
+DECISIONS/LEARNINGS additions are append-only, preserved during merges.
+
+Final acceptance requires every new flow in Both and switched perspectives,
+equal domain state after every action, latest-main live checks and fresh URL.
+No hosting, billing, visibility, archive or rollback-reference changes.
+Owner actions for me: none.
+
 ## 13 September: rollback checkpoint and single header Agent control
 
 The owner explicitly promoted pre-change main

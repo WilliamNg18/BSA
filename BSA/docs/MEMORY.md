@@ -13,6 +13,56 @@ and all 14 latest-main live checks passed. V's viewer evidence stays pinned to
 the earlier identical runtime at `c0203fc`. PROGRESS owns the evidence.
 Infrastructure remains frozen.
 
+## Process model
+
+The owner's 13 September process brief supersedes the earlier referral-only
+workload model for Tasks 19-24. Treat the following supplied public figures as
+fixed project context, not as a claim of fresh external source verification:
+
+- NHSBSA processes over 100 million items monthly: about 91% EPS claim messages
+  with dm+d codes and typed endorsements, and 9% scanned paper/character recognition.
+- Straightforward items flow to existing rules-engine pricing without a person.
+  Staff do not approve every item; about 4% receive a staff touch.
+- Type 1 captures handwritten/low-confidence products, about 2.2 million items
+  monthly and roughly 880 per hour. After human capture, code routes again.
+- Type 2 handles endorsement interpretation, extra fees and finalisation,
+  about 2 million monthly, 260-300 per hour, roughly 12-14 seconds per item.
+- About 85,000 items monthly remain insufficient and are referred back.
+  Reasons include missing brand/manufacturer, pack size, price, presentation
+  (RB2B, especially handwritten forms) and incomplete NCSO endorsements.
+- Pharmacies receive referrals in MYS, Unpaid items, with an NHSmail email;
+  they complete the endorsement and resubmit. Only that item's payment is
+  delayed; unpaid items expire after 18 months.
+- July 2026 had about 194,000 unpaid items awaiting action, roughly GBP 1.55m,
+  around GBP 150 per pharmacy. Payment context is 80% advance and a balance
+  when priced. The demo calculates or approves no payment.
+
+The new code outcomes are `auto_priced`, `type1_capture`, `type2_endorsement`
+and `referred_back`; channels are `eps` or `paper`. Auto-priced items never
+appear in an operator queue. Case A becomes automatically priced; B retains
+referral/July sufficiency; C retains unresolved conflict; E remains no-model
+clearance; F retains its original record. D deliberately changes: paper capture
+stays unreadable, but a human-confirmed compatible pharmacy declaration can
+support a proposed built-case path. Unreconciled declarations still abstain.
+Never present declared fields as read from the poor image.
+
+## One state
+
+There is one authoritative application store, one header Agent switch and one
+Pharmacy/NHSBSA/Both perspective switch. Perspective is never an input to routing,
+arithmetic, submission, capture confirmation, decisions or history. Identical
+actions in Both and switched perspectives must produce identical domain state.
+Timestamps/IDs are controlled in the equivalence tests, not erased from proof.
+
+The existing pharmacy receipt and queue presentation store modules must become
+adapters over the same store or component-local presentation, not additional
+operational stores. M owns that consolidation; no view may duplicate lifecycle,
+revision or routing state. Local focus/disclosure/playback is not domain state.
+Agent actions never change lifecycle. Code may route/price automatically; humans
+explicitly submit, confirm Type 1 capture, judge Type 2 and approve a referral note.
+Reset restores seeds and Agent Off, retaining perspective. No page-local Agent
+override may return. Apply shared model changes first, then every consuming view.
+
 On 13 September the owner explicitly created annotated `lkg-2026-09-13`
 (**Last known good after Tasks 14 to 18**) and advanced `last-known-good`
 to that pre-change main `80d955b`. Existing tags and `cowork-v1` remain unchanged.

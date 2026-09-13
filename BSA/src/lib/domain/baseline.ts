@@ -330,3 +330,114 @@ export function selectMonthScenario(draft: BaselineDraft, todayMinutes: string) 
   const input = Object.keys(errors).length ? null : candidate;
   return { input, errors, result: input ? monthModel(input) : null };
 }
+
+/** Owner-supplied public process figures; no claim of fresh external verification. */
+export const PROCESS_PUBLIC_FACTS = Object.freeze({
+  monthlyItemsLowerBound: 100_000_000,
+  epsPercent: 91,
+  paperPercent: 9,
+  type1MonthlyItems: 2_200_000,
+  type1ItemsPerHour: 880,
+  type2MonthlyItems: 2_000_000,
+  type2ItemsPerHourMin: 260,
+  type2ItemsPerHourMax: 300,
+  type2SecondsMin: 12,
+  type2SecondsMax: 14,
+  staffTouchPercentApprox: 4,
+  monthlyReferrals: 85_000,
+  unpaidItemsJuly2026: 194_000,
+  unpaidValueJuly2026: 1_550_000,
+  unpaidValuePerPharmacyApprox: 150,
+  unpaidExpiryMonths: 18,
+  advancePercent: 80,
+});
+
+export interface ProcessMonthInputs {
+  monthlyItems: number;
+  epsPercent: number;
+  type1Percent: number;
+  type2Percent: number;
+  staffTouchPercent: number;
+  type2SecondsToday: number;
+  investigationMinutesToday: number;
+  pharmacyCompletionMinutes: number;
+  monthlyReferrals: number;
+  pharmacyCatchPercent: number;
+  abstainPercent: number;
+  builtJudgingSeconds: number;
+  type1KeySeconds: number;
+  type1ConfirmSeconds: number;
+}
+
+export const PROCESS_MONTH_DEFAULTS: Readonly<ProcessMonthInputs> = Object.freeze({
+  monthlyItems: PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound,
+  epsPercent: PROCESS_PUBLIC_FACTS.epsPercent,
+  type1Percent: PROCESS_PUBLIC_FACTS.type1MonthlyItems / (PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound / 100),
+  type2Percent: PROCESS_PUBLIC_FACTS.type2MonthlyItems / (PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound / 100),
+  staffTouchPercent: PROCESS_PUBLIC_FACTS.staffTouchPercentApprox,
+  type2SecondsToday: 13,
+  investigationMinutesToday: 4,
+  pharmacyCompletionMinutes: 6,
+  monthlyReferrals: PROCESS_PUBLIC_FACTS.monthlyReferrals,
+  pharmacyCatchPercent: 20,
+  abstainPercent: 100 / 6,
+  builtJudgingSeconds: 45,
+  type1KeySeconds: 30,
+  type1ConfirmSeconds: 10,
+});
+
+export const PROCESS_INPUT_PROVENANCE: Readonly<Record<keyof ProcessMonthInputs, "public" | "public-derived" | "assumption" | "synthetic-set">> = Object.freeze({
+  monthlyItems: "public-derived",
+  epsPercent: "public",
+  type1Percent: "public-derived",
+  type2Percent: "public-derived",
+  staffTouchPercent: "public",
+  type2SecondsToday: "public",
+  investigationMinutesToday: "assumption",
+  pharmacyCompletionMinutes: "assumption",
+  monthlyReferrals: "public",
+  pharmacyCatchPercent: "assumption",
+  abstainPercent: "synthetic-set",
+  builtJudgingSeconds: "assumption",
+  type1KeySeconds: "assumption",
+  type1ConfirmSeconds: "assumption",
+});
+
+export interface ProcessMonthColumn {
+  type2OperatorHours: number;
+  referralOperatorHours: number;
+  pharmacyCompletionHours: number;
+  referredBackItems: number;
+  caughtBeforeSubmission: number;
+  builtCases: number;
+  abstainedItems: number;
+  decisionsWithRuleAndReason: number;
+  monthlyRuleAssurance: "experience_only" | "clause_and_version_cited";
+}
+
+export interface ProcessMonthResult {
+  counts: {
+    monthlyItems: number;
+    epsItems: number;
+    paperItems: number;
+    type1Items: number;
+    type2Items: number;
+    staffTouchedItems: number;
+    autoPricedItems: number;
+  };
+  today: ProcessMonthColumn;
+  withAgent: ProcessMonthColumn;
+  type1: { keySeconds: number; confirmSeconds: number };
+}
+
+export type ProcessMonthModel = (input: ProcessMonthInputs) => ProcessMonthResult;
+export type ProcessMonthDraft = Record<keyof ProcessMonthInputs, string>;
+export interface ProcessMonthSelection {
+  input: ProcessMonthInputs | null;
+  result: ProcessMonthResult | null;
+  errors: Partial<Record<keyof ProcessMonthInputs, string>>;
+}
+export interface ProcessModelSlice {
+  processInputs: ProcessMonthDraft;
+  setProcessInput: (field: keyof ProcessMonthInputs, value: string) => void;
+}

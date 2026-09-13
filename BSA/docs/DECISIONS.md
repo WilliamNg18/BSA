@@ -1035,3 +1035,47 @@ Before this change, tag the current main
 with **Last known good after Tasks 14 to 18**, and move `last-known-good` to it.
 This is explicit owner authorisation, not automatic rollback promotion.
 `cowork-v1`, older tags and nine transfer checkpoint tags remain untouched.
+
+## 2026-09-13: Freeze whole-process contracts before Tasks 19-24
+
+The new brief explicitly changes Case A routing and adds D's proposed declaration
+path; it is not permission to silently weaken uncertainty or human authority.
+Code alone routes from facts, with no Agent/perspective argument. Agent state
+may change advisory evidence, never automatically confirm capture or decide.
+Channel and optional declaration live in immutable submission revisions;
+revision-linked process metadata does not duplicate lifecycle or history.
+M owns all authoritative transitions and consolidation into one store.
+
+The public statement is **over** 100 million monthly items. Use 100 million as
+an explicitly labelled conservative calculation baseline, not an exact published
+total. Derived Type 1/2 shares are 2.2%/2%; the approximate 4% staff-touch figure
+is not their exact sum. Staff streams can overlap: do not present touch counts
+as mutually exclusive unique items without a labelled modelling assumption.
+M must record cohort arithmetic before implementing it, conserve counts and
+avoid treating the 85,000 referrals as all exceptions or all staff work.
+
+Thirteen Type 2 seconds is the midpoint of the supplied 12-14 second range.
+Four investigation minutes, six pharmacy completion minutes, 45 built-case
+judging seconds and 20% caught before submission are explicit assumptions.
+Initial abstention share is one of six canonical cases (D without a reconciled
+declaration), not measured effectiveness. Proposed difficult-D keying/confirm
+times default to 30/10 seconds, editable assumptions, not the public Type 1
+average inferred from 880 items/hour.
+
+Forty-five seconds is longer than thirteen seconds. Do not label it a universal
+Type 2 speed-up. Separate routine Type 2 work, investigation-tail operator work
+and pharmacy rework; clearly state denominators, whether phases overlap and
+what cannot be summed. No invented additional referral reduction beyond the
+labelled catch assumption. M chooses and records the smallest defensible
+cohort allocation in the shared model, never independent view arithmetic.
+
+Today "none" and "experience only" describe rule-recording in this synthetic
+comparison, not proof that real operators never record or cite a rule. Existing
+human decision reasons and historical rule records must remain immutable.
+MYS, NHSmail, EPS and dm+d are the owner's explicitly required process terms;
+the no-vendor/product/document rule still excludes implementation branding and
+real medicine/product names, not these mandated channel/process identifiers.
+
+Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
+Agent change remains in force. Each new public-process claim is owner-supplied
+context, not a claimed fresh external verification or a real NHSBSA service.

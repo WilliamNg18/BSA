@@ -3,6 +3,45 @@
 
 export type BoundaryClass = "existing" | "deterministic" | "agent" | "human";
 
+export type ItemChannel = "eps" | "paper";
+export type RoutingOutcome = "auto_priced" | "type1_capture" | "type2_endorsement" | "referred_back";
+export type FieldProvenance = "machine_read" | "pharmacy_declaration" | "human_capture";
+
+export interface DeclaredItemFields {
+  readonly productCode: string | null;
+  readonly quantity: number | null;
+  readonly endorsementText: string;
+}
+
+export interface PharmacyDeclaration {
+  readonly fields: DeclaredItemFields;
+  readonly declaredAt: string;
+  readonly provenance: "pharmacy_declaration";
+}
+
+/** Deterministic routing inputs, never perspective or a model's recommendation. */
+export interface RoutingFacts {
+  readonly channel: ItemChannel;
+  readonly readable: boolean;
+  readonly handwritten: boolean;
+  readonly captureConfirmed: boolean;
+  readonly endorsementRequired: boolean;
+  readonly endorsementPresent: boolean;
+  readonly endorsementComplete: boolean;
+  readonly interpretationRequired: boolean;
+  readonly hasConflict: boolean;
+  readonly type2Decision: "not_decided" | "sufficient" | "insufficient" | "request_information";
+}
+
+export interface RoutingResult {
+  readonly outcome: RoutingOutcome;
+  readonly reason: string;
+  readonly requiresHuman: boolean;
+  readonly pricingAuthority: "existing_rules_engine" | null;
+}
+
+export type RouteSubmission = (facts: RoutingFacts) => RoutingResult;
+
 export type CaseState =
   | "cleared_by_rules"
   | "agent_review_complete"
