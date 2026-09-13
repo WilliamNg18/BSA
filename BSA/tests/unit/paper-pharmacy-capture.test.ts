@@ -76,7 +76,8 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain("Original unreadable paper");
     expect(html).toContain("View submitted claim");
     expect(html).toContain("Submission timeline");
-    expect(html).toContain("Playback never advances the claim");
+    expect(html).toContain("playback changes nothing and calculates no payment");
+    expect(html).toContain("Humans decide referrals.");
     expect(getDomainSnapshot()).toEqual(before);
   });
   it.each([false, true])("keeps explanatory submission and declaration-check panels below 25 words, agent=%s", (enabled) => {
