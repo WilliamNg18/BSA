@@ -1,23 +1,35 @@
 ---
 title: Current limitations and verification boundaries
-description: Genuine caveats for the accepted synthetic application, separated from historical failures.
-ms.date: 2026-09-12
+description: Process-model limitations and verification boundaries, separated from historical acceptance.
+ms.date: 2026-09-13
 ---
 
 ## Current implementation and acceptance
 
-Tasks 14-18's final live review at clean `c0203fc` is recorded separately in
+Tasks 19-24 replace the referral-only calculator and virtual queue with a shared
+whole-process model, actual staff work and explicit Type 1 capture. Complete
+EPS resubmissions route automatically; there is no second human approval.
+Generated drafts are optional: an explicit human reason and RB code can record
+a referral without draft approval. Turning Agent On never supplies that approval.
+
+The 30-test instrumented exact-state matrix passed on clean `5ec44c7`.
+The current 19 live checks have compatible local rehearsal evidence, including
+03/C/F on `f20cfaa`; these are not final hosted acceptance. Final clean deployed
+identity, screenshots and novice review remain separate coordinator gates.
+See the [live checklist](../tests/live/README.md).
+
+Tasks 14-18's historical live review at clean `c0203fc` is recorded separately in
 [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md): nine observed clarity points,
 18 reviewed views / unrestricted axe audits with zero violations, and an
 explicit human-controlled round trip and catch-counter walk. Earlier evidence
 below remains historical. Final tracking and release acceptance belong to the
 coordinator; this scoped review does not claim human comprehension testing.
 
-The eight-chapter/nine-stop tour, standalone pipeline and Four cases, complete
-referral-cycle guide, shared lifecycle, scene count-in, queue Compare and
-human-controlled round trip are implemented. Pharmacy On response/history shows
-only labelled operator-approved drafts; intentional Off is a healthy unchecked
-manual path. These are no longer open implementation gaps.
+The eight-chapter/nine-stop tour and shared pharmacy/NHSBSA lifecycle remain.
+The current queue has actual Type 2 items, a separate Type 1 capture lane and
+an automatic-pricing projection; the former virtual-month Compare is not the
+current interface. Pharmacy On shows only labelled operator-approved drafts;
+intentional Off is a healthy unchecked manual path.
 
 Historical accepted source `82c18e49e7d1c765e5392b1bec5c028c8f89fd16` includes the route-entry
 contrast repair from #42 and restored blocking pharmacy coverage from #40.
@@ -36,7 +48,7 @@ distinct from V's six-state baseline observation and the older screenshot audits
 
 The agent gathers evidence and recommends; deterministic code validates and
 calculates; a human decides. Nothing in this demonstration calculates or
-approves a payment. `Payment approved (synthetic)` is a lifecycle label
+approves a payment. `Paid on the normal schedule (synthetic)` is a lifecycle label
 attributed to existing pricing, not proof of a payment service.
 
 ## Hosted baseline accepted; new interface acceptance remains separate
@@ -74,11 +86,12 @@ public visibility nor that CI pass proves an Azure deployment.
 | Evidence | Synthetic cases, rule paraphrases and enterprise tool responses, not authentic clinical or tariff evidence |
 | History | Immutable attempts and append-only events within a session, not durable audit storage; reload/Reset restores seeds |
 | Offline | Loaded-session navigation works; a cold offline load or reload is not guaranteed |
-| Queue | Virtual month, legacy day and one-hour Compare are bounded projections, not live work or measured capacity |
+| Queue | Work rows/counts are actual synthetic session items; monthly automatic-pricing and effort figures are separate projections, not live operational totals |
 | Today | Model examples show manual tasks without invented retrieved citations or agent results |
-| Outcomes | C's 56/84 conflict survives confirmation; D stays manual with no payment guarantee |
-| Timing/benefits | Gathering, judging, delay and assembly are assumptions; animation is presentation, not elapsed operational work |
-| Referral risk | Referral estimates use deficient built/abstained shares; the distinct risk residual includes every abstention. Neither measures accuracy |
+| Outcomes | C's 56/84 conflict survives confirmation; D withholds advice until human capture, with no payment guarantee |
+| Paper capture | Proposed pre-fill is a pharmacy declaration, not image reading; reconciliation is explicit, edits clear it and new paper revisions require fresh capture |
+| Timing/benefits | Type 2 average, referral investigation and pharmacy completion measure different work; lanes can overlap and their hours must not be added |
+| Referral estimates | Pharmacy catches and remaining referrals use editable assumptions, not measured accuracy or guaranteed avoidance |
 | Confidence | Five structural signals and synthetic thresholds, not a calibrated probability |
 | Public context | Attributed figures are not independently verified; referrals are a subset; publication frequency is not change frequency |
 | Fonts | Synthetic handwriting uses platform cursive fallbacks and may differ across operating systems |
@@ -88,18 +101,18 @@ No live retrieval/model, capture or dispensing-system integration, monitoring,
 durable record service or payment calculation is included. A shared operational
 service remains a proposal even though the local cross-side workflow works.
 
-## Remaining verification caveats
+## Historical verification caveats
 
-V's final 1440px light/reduced-motion matrix has 13 incomplete axe reports
+The Tasks 14-18 1440px light/reduced-motion matrix has 13 incomplete axe reports
 (11 color-contrast, 8 aria-prohibited-attr, overlapping), preserved for manual
 review despite zero violations. Natural Agent focus tooltips remain in On
 images. The first live walk's All-tile selector timeout is retained as harness
 failure; the corrected full walk passed. No app defect is inferred from it.
 Both perspective puts chapter 7's first table rows below the 1000px fold,
 although its action tiles are visible; Pharmacy view exposes them sooner.
-The exact 26-word queue guides exceed the copy aspiration by one word and are
-intentionally retained, not a blocking budget. No remaining concrete app defect
-was reproduced in this scoped review; mobile/dark and full manual conformance
+The then-current 26-word queue guides exceeded the copy aspiration by one word
+and were retained, not a blocking budget. No concrete app defect
+was reproduced in that scoped review; mobile/dark and full manual conformance
 are not claimed by these screenshots.
 
 [#34](https://github.com/WilliamNg18/BSA/issues/34) is closed. A controlled
@@ -160,6 +173,6 @@ rechecks in [PROGRESS.md](PROGRESS.md), [LEARNINGS.md](LEARNINGS.md) and
 [HANDOVER.md](HANDOVER.md). Task 7's 503 units, 721 browsers, 334 axe reports,
 91/91/90 Lighthouse scores and 199,651 gzip bytes are not current measurements.
 
-[SCOPE.md](SCOPE.md) distinguishes the 18 accepted original rows from the new
-Tasks 14-18. Final task ticks belong to the coordinator's
+[SCOPE.md](SCOPE.md) preserves the 18 accepted original rows and Tasks 14-18.
+It is not proof of Tasks 19-24 acceptance. Final task ticks belong to the coordinator's
 [PROGRESS.md](PROGRESS.md), not to a screenshot or an old implementation checklist.

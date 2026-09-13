@@ -10,8 +10,10 @@ with synthetic cases, scripted interpretation and deterministic guardrails.
 Each release must verify its actual build commit and strict headers.**
 
 Live URL: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
-The accepted Tasks 14-18 release `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`
+The historical Tasks 14-18 release `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`
 is pinned by annotated `lkg-2026-09-13` and `last-known-good`.
+Those tags are not evidence for the Tasks 19-24 process migration described
+below. Final integrated deployment acceptance is tracked by the coordinator.
 The single Agent On/Off switch is in the header, top right: pharmacy, queue
 and all other pages read that shared state and have no local overrides.
 
@@ -20,18 +22,28 @@ and all other pages read that shared state and have no local overrides.
 
 ## What it demonstrates
 
-An advisory pharmacy check and an NHSBSA evidence pack share one session-only
-case history. A human can refer an item back, approve a draft instruction,
-correct and resubmit it from the pharmacy, then review it again. The final
-`paid` label is synthetic and attributed to existing pricing, not an agent
-payment decision. Toggling assistance never advances the lifecycle.
+Pharmacy submission, Type 1 capture and Type 2 judgement share one session-only
+case history. Complete EPS items, including corrected resubmissions, are
+automatically priced by existing routing without a second human approval.
+Incomplete endorsements require explicit human judgement, a reason and an RB
+code for referrals. Approving a generated pharmacy draft is optional and
+separate from recording the human decision.
 
-The documentary context includes approximately 1.1 billion primary-care items
-per year in England (reporting year unspecified) and approximately 85,000 monthly
-referred-back items (2024/25 context). Referrals are a subset, not the total
-exception queue. These are attributed public figures, not independently verified
-operational measurements. Monthly publication does not establish monthly rule changes.
-Calculator durations, cohorts and benefits are editable demonstration assumptions.
+Unreadable paper remains unconfirmed until explicit human capture. Proposed
+pre-fill comes from a pharmacy declaration, **not from reading the form**;
+the person must reconcile it with the original image. Resubmitted paper needs
+fresh capture. Original attempts, images and decisions remain unchanged.
+**Paid on the normal schedule (synthetic)** is attributed to existing pricing,
+not an agent payment decision. Toggling assistance never advances the lifecycle.
+
+The supplied public context is over 100 million items monthly, roughly 91% EPS /
+9% paper, 2.2 million Type 1 items, 2 million Type 2 items and 85,000 referrals.
+Type 1 and Type 2 overlap; referrals are a subset, not the whole exception queue.
+These are attributed figures, not independently verified operational measurements.
+The shared model separates the roughly 13-second Type 2 average, a four-minute
+referral-investigation assumption and six-minute pharmacy-completion assumption.
+They are not additive phases or measured savings. Today and With the agent
+remain visible together; actual session counters are separate from projections.
 
 ## Aim, problem and outcomes to test
 
@@ -56,11 +68,11 @@ observe actual work and agree accuracy/stop criteria before assisted use.
 
 | Route | Screen |
 | --- | --- |
-| `/#scene`, `/#month`, `/#pipeline`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: context, calculator, separate pipeline/Four cases, two places and closing discovery |
-| `/pharmacy` | Manual submission or optional scripted precheck; never blocks submission |
+| `/#scene`, `/#month`, `/#pipeline`, `/#cases`, `/#two-places`, `/#close` | Overview chapters: whole-process context, shared model, branching process, Four cases, assistance and closing discovery |
+| `/pharmacy` | Explicit EPS/Paper selection, optional declaration and scripted precheck; Apply fix does not submit |
 | `/pharmacy/claims` | Counted action/waiting/paid/all filters, five-column claims table, approved-only detail and shared history |
 | `/pharmacy/claims?caseId=EX-24112` | Same-item pharmacy link, correction and resubmission |
-| `/queue` | Counted six-column virtual queue, actual New submissions and read-only one-hour Compare |
+| `/queue` | Actual Type 2 worklist and separate Type 1 capture lane; modelled automatic pricing is an aggregate, not staff work |
 | `/case/:id`, `/case/:id/trace`, `/case/:id/record` | Evidence pack, observable trace, human record and counterfactual rule replay |
 | `/evaluation`, `/boundary`, `/assumptions`, `/architecture` | Reflective pages |
 
@@ -74,9 +86,11 @@ or changing history. Both retains the tour and Follow/Switch side links.
 Presenter mode,
 Discussion mode and `/notes` are removed; use the [demo script](docs/demo-script.md).
 
-The six canonical cases remain A sufficient, B missing a date (July replay
-sufficient), C unresolved quantity conflict, D abstention, E code-only clearance
-without a model call, and F an existing human record.
+The six canonical cases are A automatic existing-rules pricing, B missing a
+date (July replay sufficient), C unresolved 56/84 quantity conflict, D initial
+capture abstention, E code-only clearance without a model call, and F an
+immutable historical human record. Human-decided work remains in the queue's
+Decided filter; A/E's no-human automatic items do not.
 
 ## Run locally
 
@@ -112,13 +126,20 @@ Follow [DEPLOYMENT.md](docs/DEPLOYMENT.md) for the existing App Service,
 `infra/appservice.bicep`, OIDC variables and portable `BSA/dist` package.
 `deploy-appservice.yml` deploys main/manual releases; F1 has no PR slots.
 Root `hosting.config.json` is packaged with a static server and build provenance.
-Verified live site: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+Historical verified live site: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
 Clean release `b813c6241cc084957a30c6bf48fdd65f623f33f6` passed 13/13
 live checks, 26 exact identities, six axe audits (three Off/three On, zero
 violations) and a separate same-history mixed-mode round trip. See the
 [source-pinned live record](docs/live-verification/README.md). Every later
 deployment must still verify its own commit, deep links and strict headers.
 Main/manual OIDC are verified; no owner token setup or live PR slots are needed.
+
+The current [live checklist](tests/live/README.md) contains 19 checks for the
+integrated process and enforces HTTPS and the exact clean deployment identity
+before and after every test. A separate 30-test instrumented matrix compares
+complete shared state across uninterrupted and perspective-switched flows.
+Local rehearsals and prior stream-specific smoke checks are not final hosted
+acceptance; test instrumentation is not shipped in the ordinary build.
 
 `npm run check` (typecheck, lint, build), `npm test` (Vitest), production browser
 crash/dead-control checks and zero-violation axe are blocking. There are no size
@@ -128,7 +149,7 @@ Informational reporting does not excuse a functional or accessibility defect.
 
 ## Documentation and limits
 
-[First-time viewer review](docs/FIRST-TIME-VIEWER.md) records nine observed
+[Historical first-time viewer review](docs/FIRST-TIME-VIEWER.md) records nine observed
 chapter 2/6/7 clarity points, 18 fresh live captures with zero-violation axe
 reports, and a human-controlled same-item/catch-counter walkthrough on clean
 `c0203fc`. It preserves the earlier baseline separately. This is AI evaluator
@@ -140,8 +161,9 @@ separates genuine limitations from historical evidence.
 production capture procedure; [PROGRESS](docs/PROGRESS.md) owns acceptance status.
 [Task 18's reviewed live matrix](docs/screens/task18/README.md) is separately
 pinned to `c0203fc`; it is not a relabelling of those older images.
-[Requested scope](docs/SCOPE.md) tracks the eight-chapter implementation and
-the 18 accepted scope rows and bounded infrastructure evidence.
+[Requested scope](docs/SCOPE.md) preserves the earlier eight-chapter implementation,
+18 accepted scope rows and bounded infrastructure evidence; it is not a fresh
+Tasks 19-24 acceptance record.
 [AGENTS](AGENTS.md) governs contributions.
 
 The owner cancelled the proposed account transfer and authorised public
