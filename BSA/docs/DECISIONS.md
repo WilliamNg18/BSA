@@ -1592,3 +1592,22 @@ claim-view resubmission action with mandatory human re-check. Agent Off sends
 the literal source fields and an unchecked snapshot without invoking advisory
 interpretation. On only announces automatic completion when the same
 deterministic routing function used by Send returns automatic pricing.
+
+## 2026-09-13: Source-backed human-applied EPS correction evidence
+
+The first E draft CI exposed a genuine missing connection: Apply changed the
+draft but no longer recorded the existing caught-before-submission event.
+Restore that connection rather than replacing its actual count with an estimate.
+
+The existing correction API accepts optional immutable before/after EPS sources.
+Code validates source copies, unchanged prescription identity and current
+revision, then recomputes both checks and their snapshots. Same-text generic
+corrections are valid only when supply fields genuinely move missing to ready.
+Partial multi-gap fixes do not count; final completion counts once per item and
+next revision. No correction event submits, decides or changes lifecycle.
+
+Editing, switching scenario, leaving the page, turning assistance Off or
+submitting before the new check finishes cancels the pending event. Reset
+clears recorded events; perspective changes preserve them. Legacy callers
+retain their original validation. This extension belongs to E, not C's already
+reviewed critical-path source candidate.
