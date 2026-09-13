@@ -114,7 +114,7 @@ for (const enabled of [true, false]) {
         await expect(page.getByRole("main")).toContainText("NHSBSA");
         await expect(page.getByRole("main")).toContainText("dm+d");
         for (const tool of TOOL_DEFINITIONS) {
-          await expect(page.getByRole("cell", { name: tool.name, exact: true })).toBeVisible();
+          await expect(page.getByRole("region", { name: "Tool definitions", exact: true }).getByText(tool.name, { exact: true })).toBeVisible();
         }
       }
       if (route === "case/EX-24088/record") {
