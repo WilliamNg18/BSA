@@ -143,7 +143,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
         </section>
       </PageSection>
       <PageSection title={enabled ? "Pre-submission check" : "Manual submission"}>
-        <h3 role="status" data-pharmacy-status className="text-lg font-semibold">{status}</h3>
+        <h3 className="text-lg font-semibold"><span role="status" data-pharmacy-status>{status}</span></h3>
         <p className="text-sm">The agent verifies and advises; a person decides.</p>
         {!enabled ? <dl className="space-y-2 text-sm"><KeyValue k="Rule check" v="NOT RUN" /><KeyValue k="Version / clause" v="Not retrieved" /></dl> : <>
           <div className="flex flex-wrap gap-2"><BoundaryTag cls="agent" /><BoundaryTag cls="deterministic" /></div>
