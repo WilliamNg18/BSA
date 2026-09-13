@@ -31,17 +31,25 @@ The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,
 also visits every current static route, tour stop and canonical case view.
 The header-only checks count hidden switches too and verify that the single
 header state controls each permitted page while opposite-side guards remain.
-Default-rule axe is actually run for Overview, pharmacy and claims in both
-modes; each audit has its own URL, mode, timestamp and violation report.
+Default-rule axe is run for Overview, pharmacy, claims, actual staff work and
+unconfirmed Type 1 capture in both modes; each audit has its own URL, mode,
+timestamp and violation report.
 Those checks do not claim universal accessibility conformance.
 
-The base checklist still targets the M-stage overview and legacy queue controls.
-Its canonical A/E traces and complete EPS resubmission assertions require
-automatic pricing without another operator approval. These are not the final
-N/P/Q presentation and worklist contracts. Select only checks compatible with
-the coordinator's exact deployed stage; omitted checks remain NOT_RUN, and a
-partial smoke run is not full live acceptance. The integrated final checklist
-must be updated before it is used to accept the whole-process UI.
+The checklist targets the integrated N/P/Q/U interface: shared whole-process
+monthly inputs and both outcome columns, truthful case-card routing, actual
+Type 1 and Type 2 work rather than a virtual queue, and explicit referral RB
+codes. Canonical A/E traces and complete EPS resubmissions require automatic
+pricing without another operator approval. D's Off/On flow retains initial
+uncertainty, explicit human capture, the RB2B referral, original history and
+fresh capture required by a new paper revision.
+
+Do not run this version against an earlier M-only deployment. Select only
+checks compatible with the coordinator's exact deployed stage; omitted checks
+remain NOT_RUN, and a partial smoke run is not full live acceptance. Local
+rehearsal verifies test compatibility only, never deployed acceptance; the
+committed live configuration continues to require HTTPS and a clean exact
+coordinator-provided build identity.
 
 Screenshots, traces and JSON live beneath `LIVE_OUTPUT_DIR`; do not commit
 generated evidence. Existing crash/console/network guards and navigation/reset
