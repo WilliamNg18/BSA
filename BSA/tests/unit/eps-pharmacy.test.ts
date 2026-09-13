@@ -103,6 +103,15 @@ describe("visible EPS prescription", () => {
     expect(checkEpsPharmacy(preview("EX-24107", a), a.dispenserEndorsement).checks.find((check) => check.id === "initialled")?.met).toBe(false);
   });
 
+  it.each(["", "2026-02-31", "2027-01-01"])("keeps incomplete or uncovered draft dates explicit: %s", (dispensingDate) => {
+    const source = { ...createEpsPrescription(caseById("EX-24107")!), dispensingDate };
+    const before = useAppStore.getState();
+    const result = checkEpsPharmacy(preview("EX-24107", source), source.dispenserEndorsement);
+    expect(result.status).not.toBe("ready");
+    expect(result.gap).not.toBe("None");
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it("sends exact Off text and immutable source without a silent precheck", () => {
     const s = useAppStore.getState();
     const original = structuredClone(s.caseRevisions["EX-24112"]);
