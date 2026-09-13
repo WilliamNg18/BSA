@@ -1,4 +1,5 @@
 import { useId, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,16 +11,20 @@ import { useAppStore } from "@/lib/store";
 import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
 import { PAPER_DECLARATION_PROVENANCE } from "@/lib/domain/paper-capture";
 import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, preparePaperDeclaration, WORKED_PAPER_DECLARATION, type PaperDeclarationDraft } from "@/lib/domain/paper-declaration";
-import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
+import { pharmacyDateCorrection, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { CASES } from "@/lib/domain/cases";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import type { PaperDeclaration } from "@/lib/domain/types";
+import { productByCode } from "@/lib/domain/reference";
+import { PharmacyTimeline } from "./pharmacy-timeline";
+import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 
 const defaultCaseId = CASES.find((c) => c.scenario === "D")!.id;
 
-export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: string } = {}) {
+export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: string }) {
   const c = useLifecycleCase(caseId);
   const enabled = useAppStore((s) => s.agentEnabled);
+  const perspective = useAppStore((s) => s.perspective);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const submitItem = useAppStore((s) => s.submitItem);
@@ -34,6 +39,12 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
     setError("");
   }
   if (!c || !revision || !lifecycle) return <p role="alert">Paper item unavailable. Reopen it from the pharmacy workbench.</p>;
+  const poorScan = c.imageQuality < QUALITY_THRESHOLD;
+  const submitted = revision.kind !== "seed";
+  const workedDeclaration = c.scenario === "D" ? WORKED_PAPER_DECLARATION : {
+    typedProduct: productByCode(c.claim.productCode)?.name ?? "", quantity: String(c.claim.quantity),
+    endorsementText: pharmacyDateCorrection(c, c.extracted.endorsementText), dispensingDate: c.extracted.dispensingDate,
+  };
 
   let paper: PaperDeclaration | undefined;
   let validationError = "";
@@ -63,13 +74,15 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
       <div className="min-w-0 space-y-2">
         <BoundaryTag cls="existing" />
         <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} compact />
-        <p className="text-sm">Synthetic poor image. NHSBSA: image cannot be read.</p>
+        <p className="text-sm">{poorScan ? "Synthetic poor image. NHSBSA: image cannot be read." : "Synthetic paper image. A person confirms captured fields before code routes the item."}</p>
       </div>
       <form onSubmit={submit} noValidate className="min-w-0 space-y-4">
         <BoundaryTag cls="human" />
         {enabled ? <>
           <p className="text-sm">Type what is written on the paper. This proposed declaration travels with it, not as an image reading.</p>
-          <Button type="button" variant="outline" onClick={() => { setDraft({ ...WORKED_PAPER_DECLARATION }); setError(""); }}>Load worked declaration</Button>
+          <Button type="button" variant="outline" onClick={() => { setDraft({ ...workedDeclaration }); setError(""); }}>
+            {c.scenario === "D" ? "Load worked declaration" : "Load complete paper declaration"}
+          </Button>
           {(Object.keys(labels) as (keyof PaperDeclarationDraft)[]).map((field) => <div className="space-y-1" key={field}>
             <Label htmlFor={`${id}-${field}`}>{labels[field]}</Label>
             <Input id={`${id}-${field}`} type={field === "dispensingDate" ? "date" : "text"}
@@ -94,9 +107,10 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
             <p className="text-xs">The form must show initials and date. Prescriber evidence and explicit human reconciliation remain necessary at NHSBSA.</p>
           </div>
         </> : <>
-          <p className="text-sm">No typed declaration. The paper is posted; NHSBSA staff key the unreadable scan without guidance.</p>
+          <p className="text-sm">No typed declaration. The paper is posted; NHSBSA staff key {poorScan ? "the unreadable scan" : "the paper image"} without guidance.</p>
           <PainMarker resolved={false} pain="Problems discovered weeks later" resolution="Declaration checked before posting" />
-          <p className="text-sm">Type 1 keys by eye. Type 2 judges from experience and can refer back RB2B.</p>
+          <p className="text-sm">{poorScan ? "Type 1 keys by eye. Type 2 judges from experience and can refer back RB2B."
+            : "Type 1 keys by eye. Code routes complete evidence to existing pricing; unresolved endorsements require Type 2 judgement."}</p>
           <p className="text-xs">Weeks of delay illustrate today's journey, not this demo's elapsed time or a service promise.</p>
         </>}
         {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
@@ -104,9 +118,23 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
         <p className="text-xs">Posting never confirms capture or makes a Type 2 decision.</p>
       </form>
     </div>
-    <section aria-label="Current paper submission" className="space-y-2 rounded-lg border p-4">
+    <section aria-label={submitted ? "Submission receipt" : "Current paper submission"} className="space-y-2 rounded-lg border p-4">
+      {submitted && <h2 className="font-semibold">Submission receipt</h2>}
       <h3 className="font-semibold">Current item: {LIFECYCLE_LABELS[lifecycle.state].pharmacy}</h3>
       <p className="text-sm">Attempt {revision.number}. Shared with NHSBSA in every perspective.</p>
+      {submitted && <>
+        <p role="status" className="text-sm">Submitted (synthetic). No claim sent; no payment changed by this demonstration.</p>
+        <dl className="grid gap-3 text-sm sm:grid-cols-2">
+          <div><dt>Receipt</dt><dd>{caseId}:{revision.number}</dd></div>
+          <div><dt>Submitted at</dt><dd>{revision.at}</dd></div>
+          <div><dt>Endorsement snapshot</dt><dd className="break-words">{revision.endorsementText || "Empty"}</dd></div>
+          <div><dt>Check timestamp</dt><dd>{revision.precheck?.checkedAt ?? "No checks performed"}</dd></div>
+          <div><dt>Version / clause</dt><dd>{revision.precheck?.tariffVersion ?? "Not retrieved"} / {revision.precheck?.clauseId ?? "Not retrieved"}</dd></div>
+          <div><dt>Check result</dt><dd>{revision.precheck?.status ?? "not_checked"}</dd></div>
+        </dl>
+        <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(caseId)}`}>View submitted claim</Link></Button>
+        {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}
+      </>}
       {enabled && revision.paperDeclaration && <dl className="grid gap-3 text-sm sm:grid-cols-2">
         {(Object.keys(labels) as (keyof PaperDeclarationDraft)[]).map((field) => <div key={field}>
           <dt className="font-medium">{labels[field]}</dt>
@@ -115,5 +143,6 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
         </div>)}
       </dl>}
     </section>
+    {submitted && <PharmacyTimeline key={`${caseId}:${revision.number}`} caseId={caseId} revision={revision.number} />}
   </section>;
 }

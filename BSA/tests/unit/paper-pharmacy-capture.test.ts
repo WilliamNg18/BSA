@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PaperPharmacyCapture } from "../../src/components/demo/paper-pharmacy-capture";
 import { Type1Capture } from "../../src/components/demo/type1-capture";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { MemoryRouter } from "react-router-dom";
 
 vi.mock("../../src/lib/store", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../src/lib/store")>();
@@ -52,5 +53,25 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain('type="checkbox"');
     expect(html).not.toContain("checked=");
     expect(html).toContain("Confirm, not key");
+  });
+  it("preserves the ordinary paper variant without describing a readable image as unreadable", () => {
+    const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
+    expect(html).toContain("Code routes complete evidence to existing pricing");
+    expect(html).not.toContain("image cannot be read");
+    useAppStore.getState().setAgentEnabled(true);
+    const assisted = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
+    expect(assisted).toContain("Load complete paper declaration");
+    expect(assisted).not.toContain("Load worked declaration");
+  });
+  it("retains an immutable receipt, claim link and recorded timeline after actual posting", () => {
+    useAppStore.getState().submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: "Original unreadable paper" });
+    const before = getDomainSnapshot();
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(PaperPharmacyCapture)));
+    expect(html).toContain('aria-label="Submission receipt"');
+    expect(html).toContain("Original unreadable paper");
+    expect(html).toContain("View submitted claim");
+    expect(html).toContain("Submission timeline");
+    expect(html).toContain("Playback never advances the claim");
+    expect(getDomainSnapshot()).toEqual(before);
   });
 });

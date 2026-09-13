@@ -1,7 +1,7 @@
 import { paperDeclarationFields } from "./lifecycle-model";
 import { interpretPharmacyText, PHARMACY_STEPS, type PharmacyCheck } from "./pharmacy-check";
 import { productByCode } from "./reference";
-import { evaluateRequirements, validateCitation } from "./rules";
+import { evaluateRequirements, QUALITY_THRESHOLD, validateCitation } from "./rules";
 import { versionForDate } from "./tariff";
 import type { ExceptionCase, PaperDeclaration } from "./types";
 
@@ -40,9 +40,10 @@ export function preparePaperDeclaration(draft: PaperDeclarationDraft): PaperDecl
 /** Checks typed evidence only. Neither completeness nor advice confirms the paper. */
 export function checkPaperDeclaration(c: ExceptionCase, paper: PaperDeclaration): PharmacyCheck {
   const facts = interpretPharmacyText(paper.endorsementText);
+  const agreement = c.imageQuality < QUALITY_THRESHOLD ? "Typed declaration only; image cannot be read" : "Typed declaration only; no image reading";
   const stop = (stage: number, gap: string): PharmacyCheck => ({
     status: "unable", facts, version: null, clause: null, checks: [], gap,
-    agreement: "Typed declaration only; image cannot be read",
+    agreement,
     stages: PHARMACY_STEPS.map((_, index) => index < stage ? "PASS" : index === stage ? "STOPPED" : "NOT RUN"),
   });
   const version = versionForDate(paper.dispensingDate);
@@ -67,6 +68,6 @@ export function checkPaperDeclaration(c: ExceptionCase, paper: PaperDeclaration)
     stages: ["PASS", "PASS", "PASS", "PASS", complete ? "PASS" : "MISSING"],
     gap: complete ? "Declaration complete; human confirmation and prescriber evidence are still required."
       : "Check the missing declaration fields. Your NCSO endorsement needs initials and date; the form must show both.",
-    agreement: "Typed declaration only; image cannot be read",
+    agreement,
   };
 }
