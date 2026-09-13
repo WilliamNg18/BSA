@@ -156,8 +156,8 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   });
 
   // ---- GATHER (agentic orchestration over read-only tools) ----
-  const region = toolReadImageRegion(c, "endorsement");
-  const itemRegion = toolReadImageRegion(c, "item");
+  const region = toolReadImageRegion(original, "endorsement");
+  const itemRegion = toolReadImageRegion(original, "item");
   const history = toolCheckHistory(c);
   evidence.push(
     { id: "e-region", origin: "Form image", field: "Endorsement margin", value: `"${region.text || "unreadable"}"`, provenance: `Region located by layout model; read confidence ${region.confidence.toFixed(2)}`, cls: "existing" },
@@ -167,7 +167,9 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     phase: "GATHER",
     title: "Gather evidence from source systems",
     cls: "agent",
-    summary: "Read-only tool calls, chosen from the plan. Every finding carries its source. A failed or low-confidence read is recorded, not papered over.",
+    summary: c.imageQuality < QUALITY_THRESHOLD
+      ? "Image cannot be read. Raw uncertain readings remain visible; any human-confirmed declaration is separate evidence, not improved image recognition."
+      : "Read-only tool calls, chosen from the plan. Every finding carries its source. A failed or low-confidence read is recorded, not papered over.",
     items: [
       `Endorsement margin read: "${region.text || "unreadable"}" (confidence ${region.confidence.toFixed(2)})`,
       `Item line read: "${itemRegion.text}" (confidence ${itemRegion.confidence.toFixed(2)})`,
@@ -206,7 +208,9 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   });
 
   // ---- RECONCILE (agentic; surfaces, never resolves) ----
-  const conflicts = reconcile(c.extracted, c.claim.quantity, c.claim.productCode, c.claim.amountClaimed, lookup.product, concession?.price ?? null);
+  const conflicts = reconcile(c.extracted, c.claim.quantity, c.claim.productCode, c.claim.amountClaimed, lookup.product, concession?.price ?? null)
+    .map((conflict) => captured ? { ...conflict, values: conflict.values.map((value) => value.origin === "Form image (capture)"
+      ? { ...value, origin: "Human-confirmed fields, not an image reading" } : value) } : conflict);
   const comparableFieldsKnown = Boolean(lookup.product && c.extracted.productCode &&
     c.extracted.quantity !== null && Number.isSafeInteger(c.extracted.quantity) && c.extracted.quantity > 0 &&
     (captured ? compatible : c.imageQuality >= QUALITY_THRESHOLD &&
@@ -221,7 +225,8 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       ? `${conflicts.length} disagreement${conflicts.length === 1 ? "" : "s"} found. The agent flags each with both values and does not choose between them.`
       : reconciliation === "not_established"
         ? "Reconciliation not established. Missing, unreadable or unconfirmed fields cannot establish agreement."
-        : "Comparable fields agree. This does not establish agreement for missing or unreadable evidence.",
+        : captured ? "Human-confirmed fields match the claim. Image agreement remains unknown; the declaration was not read from the form."
+          : "Comparable fields agree. This does not establish agreement for missing or unreadable evidence.",
     items: reconciliation === "conflict"
       ? conflicts.map((k) => `${k.field}: ${k.values.map((v) => `${v.origin} says ${v.value}`).join("; ")}`)
       : reconciliation === "not_established"
@@ -261,8 +266,15 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     inCoverage: c.inCoverage,
   };
   const composite = captured
-    ? !compatible || !clause || reconciliation === "not_established" ? { level: "abstain" as const, reasons: ["Human-confirmed fields cannot be reconciled with the claim and source evidence, or no provision was retrieved."] }
-      : { level: "low" as const, reasons: ["Proposed human-confirmed evidence path, not validated image recognition. Original poor-image confidence and readings are unchanged."] }
+    ? !compatible || !clause || reconciliation !== "agree" || !mandatory.every((check) => check.pass) || requirementResults.some((check) => check.met === null)
+      ? { level: "abstain" as const, reasons: [
+        "Human-confirmed fields remain unknown, conflicting or unreconciled, or no provision was retrieved.",
+        ...mandatory.filter((check) => !check.pass).map((check) => `Missing evidence: ${check.name}`),
+      ] }
+      : { level: "low" as const, reasons: [
+        "Proposed human-confirmed evidence path, not validated image recognition. Original poor-image confidence and readings are unchanged.",
+        ...compositeFrom(signals).reasons,
+      ] }
     : compositeFrom(signals);
 
   // ---- Recommend or abstain ----
@@ -303,7 +315,8 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     } else {
       recommendation = "SUFFICIENT";
       reasons.push(clause ? "Every retrieved endorsement requirement is met." : "No endorsement was required for this item.");
-      reasons.push("Comparable fields agree; missing or unreadable evidence is not established by this comparison.");
+      reasons.push(captured ? "Human-confirmed declaration and claim match. Image agreement is unknown; a person still makes the Type 2 decision."
+        : "Comparable fields agree; missing or unreadable evidence is not established by this comparison.");
       alternative = { outcome: "REFER_BACK", note: "Would delay payment by a cycle with no rule requiring it." };
     }
     trace.push({
