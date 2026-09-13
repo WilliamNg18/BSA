@@ -179,7 +179,7 @@ test(LIVE_CHECKS.queue, async ({ page }, info) => {
   await expect(table.locator("thead th")).toHaveCount(7);
   const rows = page.locator("[data-case-id]");
   const recorded = () => rows.evaluateAll((items) => items.map((row) => ({
-    id: row.getAttribute("data-case-id"), evidence: Array.from(row.querySelectorAll("td")).slice(0, 4).map((cell) => cell.textContent),
+    id: row.getAttribute("data-case-id"), evidence: Array.from(row.querySelectorAll("td")).slice(0, 5).map((cell) => cell.textContent),
   })));
   const before = await recorded();
   expect(before.length).toBeGreaterThan(0);
