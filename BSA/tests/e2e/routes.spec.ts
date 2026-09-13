@@ -1,4 +1,4 @@
-import { cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
+import { cases, expect, navigatePrimary, openCaseFromQueueOrClaim, staticRoutes, test } from "./fixtures";
 
 const caseRoutes = cases.flatMap((c) => [
   { path: `case/${c.id}`, title: `Operator case pack: ${c.title}` },
@@ -90,7 +90,7 @@ test("primary links navigate at the site root and keyboard skip link reaches mai
 test("all case views can be revisited without unstable snapshots", async ({ page }) => {
   await page.goto("queue");
   for (const c of cases) {
-    await page.locator(`a[href='/case/${c.id}']`).first().click();
+    await openCaseFromQueueOrClaim(page, c.id);
     const nav = page.getByRole("navigation", { name: "Case views" });
     for (let repeat = 0; repeat < 2; repeat++) {
       for (const label of ["Decision and audit record", "Case-building trace", "Operator case pack"]) {
