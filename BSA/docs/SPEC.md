@@ -285,6 +285,13 @@ human re-check in either mode; paper resubmission also requires fresh capture.
 On displays only approved
 generated notes; Off and NHSBSA retain the human reason.
 
+Generic EPS referrals also expose the recorded brand/manufacturer, pack size
+and form in **Correct the EPS supply evidence**. Every edit invalidates the
+previous check; **Re-check endorsement** checks all current claim fields
+without submitting. **Resubmit claim** appends the corrected EPS message as
+a new immutable revision and retains explicit human re-check. No field
+correction silently releases the referral to pricing.
+
 C's **Pharmacy confirmation** rejects blank text, appends the actual response
 and returns to human review with 56/84 unchanged. **Demonstration replay >
 Submit another demonstration attempt** creates a new revision for a disposed

@@ -124,6 +124,11 @@ Also show the third EPS scenario: generic missing the brand or manufacturer.
 The advice must address that missing field, not repeat the NCSO date fix.
 Do not represent the simulated delay as elapsed real weeks.
 
+For a referred generic item, use **Correct the EPS supply evidence** in claim
+details. Confirm the actual brand/manufacturer, pack size and form, re-check,
+then explicitly resubmit. Follow the same ID to human review and Paid.
+Retain the original message and referral; a corrected field is not a decision.
+
 ### Unreadable paper: manual capture and RB2B
 
 Choose Paper, Off. Show the synthetic image and the absence of a pharmacy
