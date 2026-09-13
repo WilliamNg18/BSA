@@ -8,6 +8,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { startDemonstrationReview } from "../e2e/lifecycle-helpers";
 import { chooseProcessChapter, expandProcessInputs, expectProcessMetrics, expectSceneMetrics } from "../e2e/process-model-helpers";
+import { confirmCompletePaper, openFourCases, submitCompletePaper } from "../e2e/paper-capture-helpers";
 
 const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -433,4 +434,55 @@ test("17 F retains its original human record through mode changes and replay", a
     }
   }
   await captureJson(info, "f-original-record-retained", { record: original, url: page.url() });
+});
+
+test("18 Complete paper retains human capture and existing pricing without Type 2 judgement", async ({ page }, info) => {
+  const action = async (_label: string, _side: "Pharmacy" | "NHSBSA", perform: () => Promise<void>) => perform();
+  for (const enabled of [false, true]) {
+    await page.goto("/pharmacy");
+    await flag(page).setChecked(enabled);
+    await submitCompletePaper(page, action);
+    await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
+    await history(page).locator("summary").first().click();
+    const attempts = history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li");
+    const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    const originalAttempts = await attempts.allTextContents();
+    const originalEvents = await events.allTextContents();
+    expect(originalAttempts).toHaveLength(2);
+
+    await confirmCompletePaper(page, enabled, action);
+    await page.getByRole("button", { name: /^Decided/ }).click();
+    await expect(page.getByRole("region", { name: "Completed Type 1 captures", exact: true })).toContainText("Human capture confirmed");
+    await expect(page.getByRole("region", { name: "Type 2 items", exact: true })).not.toContainText(B);
+    for (const id of [B, "EX-24107", "EX-24101"]) {
+      await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+    }
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await audit(page, info, "completed-type1-queue", enabled);
+    await captureCheckpoint(page, info, `completed-type1-queue-${enabled ? "on" : "off"}`);
+
+    await openFourCases(page);
+    const card = page.locator('[data-case="B"]');
+    for (const current of [!enabled, enabled]) {
+      await flag(page).setChecked(current);
+      await expect(card).toHaveAttribute("data-case-routing", "type1_capture");
+      await expect(card).toHaveAttribute("data-case-capture", "complete");
+      await expect(card.getByRole("region", { name: "Completed Type 1 capture", exact: true })).toContainText("Capture complete · Existing pricing");
+      await expect(card).toContainText("A person confirmed the captured fields");
+      await expect(card).not.toContainText("Awaiting Type 1 capture");
+      await expect(card).not.toContainText("no person involved");
+      await expect(card.getByRole("link", { name: "Open case", exact: true })).toHaveCount(0);
+    }
+    await audit(page, info, "completed-type1-card", enabled);
+    await captureCheckpoint(page, info, `completed-type1-card-${enabled ? "on" : "off"}`);
+    await card.getByRole("link", { name: "View priced claim", exact: true }).click();
+    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    await history(page).locator("summary").first().click();
+    expect(await attempts.allTextContents()).toEqual(originalAttempts);
+    const completeEvents = await events.allTextContents();
+    expect(completeEvents.slice(0, originalEvents.length)).toEqual(originalEvents);
+    expect(completeEvents).toHaveLength(originalEvents.length + 2);
+    await expect(events).toContainText(["Human capture confirmed; code routed the captured fields."]);
+    await captureJson(info, `completed-type1-retained-history-${enabled ? "on" : "off"}`, { attempts: originalAttempts, events: completeEvents });
+  }
 });
