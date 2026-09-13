@@ -2,6 +2,7 @@
 import { BASELINE_PROVENANCE as provenance } from "./baseline-defaults";
 import { PUBLIC_FACTS } from "./public-facts";
 import { calculateProcessMonth } from "./process-month-model";
+import { calculateManualLoopMonth } from "./manual-loop-month-model";
 
 export interface BaselineInputs {
   volume: number;
@@ -280,9 +281,11 @@ function monthErrors(input: MonthModelInputs): Partial<Record<keyof MonthModelIn
 }
 
 /** One monthly projection. Cohorts are disjoint; abstentions retain full manual effort. */
+export function monthModel(input: ManualLoopMonthInputs): ManualLoopMonthResult;
 export function monthModel(input: ProcessMonthInputs): ProcessMonthResult;
 export function monthModel(input: MonthModelInputs): MonthModelResult;
-export function monthModel(input: MonthModelInputs | ProcessMonthInputs): MonthModelResult | ProcessMonthResult {
+export function monthModel(input: MonthModelInputs | ProcessMonthInputs | ManualLoopMonthInputs): MonthModelResult | ProcessMonthResult | ManualLoopMonthResult {
+  if ("manualLoopItems" in input) return calculateManualLoopMonth(input);
   if ("monthlyItems" in input) return calculateProcessMonth(input);
   if (Object.keys(monthErrors(input)).length) throw new RangeError("Invalid monthly assumptions");
   const base = calculateBaseline(input);
