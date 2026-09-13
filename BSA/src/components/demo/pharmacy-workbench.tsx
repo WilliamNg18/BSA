@@ -213,7 +213,9 @@ export function PharmacyPage() {
           : <p>{receipt.channel === "paper" ? "Paper submitted to existing routing. Required capture and Type 2 judgement remain human actions." : "Submitted for Type 2 judgement. No referral or operator decision has been made by the agent."}</p>}
         {receipt.precheck?.mode === "scripted" && !automaticallyPriced && <section aria-label="Pre-built advisory case" className="space-y-1">
           <h3 className="font-semibold">Advisory case for NHSBSA</h3>
-          <p>Submitted anyway: this check snapshot travels with the item. It is not an operator decision or an approved referral note.</p>
+          <p>{receipt.precheck.status === "ready"
+            ? "The declaration check travels with the paper. Human capture confirmation and any required judgement remain separate."
+            : "Submitted anyway: this check snapshot travels with the item. It is not an operator decision or an approved referral note."}</p>
           <ul>{receipt.precheck.checks.map((check) => <li key={check.id}>{check.label}: {check.met === true ? "met" : check.met === false ? "missing" : "unknown"}</li>)}</ul>
         </section>}
         <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">

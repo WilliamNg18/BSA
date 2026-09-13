@@ -66,8 +66,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     </dl>
     {row.state === "paid" && <section aria-label="Existing pricing outcome" className="space-y-1">
       <BoundaryTag cls="existing" />
-      <p>Paid on the normal schedule (synthetic), priced by NHSBSA&apos;s existing rules engine.</p>
-      {row.history.some((entry) => entry.revision === revision?.number && entry.processStep === "automatic_pricing") && <p>No person involved.</p>}
+      <p>Paid on the normal schedule (synthetic), priced by NHSBSA&apos;s existing rules engine{row.history.some((entry) => entry.revision === revision?.number && entry.processStep === "automatic_pricing") ? "; no person involved." : "."}</p>
     </section>}
     {(editable || row.state === "information_requested") && <section aria-label="Operator response" className="space-y-2">
       {editable && <><h3 className="font-semibold">MYS Unpaid item</h3><p>RB code: {event?.rbCode ?? process?.rbCode ?? "Not recorded in this legacy decision"}</p></>}
