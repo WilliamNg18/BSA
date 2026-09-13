@@ -1,23 +1,23 @@
 /** Curated display facts and assumptions. Research and personal material stay offline. */
 export const PUBLIC_FACTS = Object.freeze({ annualItems: 1_100_000_000, monthlyReferrals: 85_000, annualReferrals: 1_000_000, rulebookPublication: "Monthly" });
 
-export const SOURCES_FOOTER = "Public information (NHSBSA and Community Pharmacy England publications) and stated assumptions. All operational data on this site is synthetic.";
+export const SOURCES_FOOTER = "Owner-supplied public process context attributed to NHSBSA and Community Pharmacy England; not independently verified here. All operational data is synthetic.";
 
 export const TOUR_CONTENT = {
   chapters: [
-    { chapter: 1, title: "The referred-back subset", prose: "Approximately 85,000 items return monthly for clarification. This subset is not the whole operator queue. Rulebook publication does not establish rule-change frequency." },
-    { chapter: 2, title: "A month in numbers", prose: "Compare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured operational performance." },
-    { chapter: 3, title: "What exists today and what changes", prose: "Keep capture and pricing unchanged. Build evidence for uncertain exceptions, retain manual abstention, and let a human decide. Workflow pain points are assumptions." },
+    { chapter: 1, title: "Most items need no person", prose: "Straightforward items flow to automated pricing. Staff capture uncertain reads and judge endorsements; unresolved items return to the pharmacy." },
+    { chapter: 2, title: "A month in numbers", prose: "Compare referrals and repeat work using shared assumptions. Keep Type 2 judgement, referral investigation and pharmacy completion separate." },
+    { chapter: 3, title: "What exists today and what changes", prose: "Follow automated pricing, conditional staff paths and resubmission. Assistance checks pharmacy declarations, pre-fills capture and builds evidence; humans confirm and decide." },
     { chapter: 4, title: "Four cases", prose: "Compare manual evidence gathering with assisted recommendations. Open or follow any case; conflicts remain unresolved and uncertainty stays visible." },
     { chapter: 5, title: "One agent, two places", prose: "Follow referral, pharmacy correction and resubmission through one synthetic history. Humans decide; assistance does not guarantee acceptance, payment or shorter delays." },
     { chapter: 6, title: "The queue", prose: "Review synthetic exceptions, inspect evidence and record a human decision. Assistance prepares recommendations; it never moves claims or approves payment." },
     { chapter: 7, title: "What the pharmacy sees", prose: "Track the same synthetic claim, read the human decision, correct or confirm, then resubmit for re-check. Assistance never guarantees payment." },
-    { chapter: 8, title: "Where it ends", prose: "Test handling time and repeat work against accuracy guardrails. Separate pharmacy benefits. Agree when to proceed, reshape or stop." },
+    { chapter: 8, title: "Where it ends", prose: "Fewer referrals and reconstructable judgements are the proposed outcomes. Test them against real evidence; the agent never calculates or approves payments." },
   ],
   keyFigures: [
-    { id: "annual-items", value: "Approximately 1.1 billion", label: "Primary-care items per year in England", qualifier: "Items, not physical forms. Reporting year unspecified; not independently verified." },
-    { id: "monthly-referrals", value: "Approximately 85,000", label: "Referred-back items per month", qualifier: "Approximate 2024/25 referral subset. One million divided by twelve is approximately 83,333, not exactly 85,000; total operator volume remains unknown." },
-    { id: "rulebook-publication", value: PUBLIC_FACTS.rulebookPublication, label: "Drug Tariff publication", qualifier: "Monthly publication does not establish endorsement-rule change frequency. Not independently verified." },
+    { id: "automated-items", value: "Most items", label: "Priced automatically, no person involved", qualifier: "Straightforward items are priced by NHSBSA's existing rules engine. Owner-supplied public context, not independently verified." },
+    { id: "staff-touch", value: "Approximately 4%", label: "Items receiving a staff touch", qualifier: "Approximate public context. Type 1 and Type 2 can overlap; their lane shares must not be added as unique staff touches." },
+    { id: "monthly-referrals", value: "Approximately 85,000", label: "Referred-back items per month", qualifier: "Owner-supplied public referral context, not independently verified. This subset is neither all items nor all staff work." },
   ],
   assumptionsDisclosure: {
     title: "Five assumptions to validate",

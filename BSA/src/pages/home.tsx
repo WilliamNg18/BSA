@@ -8,6 +8,8 @@ import { BaselineCalculator } from "@/components/demo/baseline-calculator";
 import { BaselineScene } from "@/components/demo/baseline-scene";
 import { ExceptionPipeline } from "@/components/demo/exception-pipeline";
 import { SceneDiagram, TwoPlacesDiagram } from "@/components/demo/tour-diagrams";
+import { ProcessFigure } from "@/components/demo/process-figure";
+import { PROCESS_PUBLIC_FACTS, formatBaselineNumber } from "@/lib/domain/baseline";
 import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { CASES } from "@/lib/domain/cases";
@@ -30,18 +32,24 @@ export function HomePage() {
       {chapterNumber === 1 && <>
         <ul aria-label="Public context figures" className="grid gap-4 lg:grid-cols-3">
           {TOUR_CONTENT.keyFigures.map((figure) => <li key={figure.id} className="space-y-3 rounded-xl border bg-card p-5" data-key-figure={figure.id}>
-            <p className="text-xs font-medium text-muted-foreground">Public context · Approximate, not independently verified</p>
-            <p className="text-3xl font-semibold tracking-tight md:text-4xl">{figure.value}</p>
+            <p className="text-3xl font-semibold tracking-tight md:text-4xl"><ProcessFigure source="Public" label={figure.label} explanation={figure.qualifier}>{figure.value}</ProcessFigure></p>
             <p className="text-sm font-medium">{figure.label}</p>
-            <details className="text-sm"><summary className="cursor-pointer">Figure qualification</summary><p className="mt-2 text-muted-foreground">{figure.qualifier}</p></details>
           </li>)}
         </ul>
         <BaselineScene />
         <div className="grid gap-4 lg:grid-cols-[2fr_1fr]">
           <SceneDiagram />
-          <section className="space-y-4 rounded-xl border bg-muted/30 p-5" aria-label="Rulebook context">
-            <h2 className="font-semibold">Drug Tariff · Monthly publication</h2>
-            <p className="text-sm text-muted-foreground">Endorsement-rule change frequency: unvalidated</p>
+          <section className="space-y-4 rounded-xl border bg-muted/30 p-5" aria-label="Public process context">
+            <h2 className="font-semibold">Whole-process context</h2>
+            <dl className="space-y-4 text-sm">{([
+              ["Monthly items", `Over ${formatBaselineNumber(PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound, 0)}`],
+              ["EPS messages", `${PROCESS_PUBLIC_FACTS.epsPercent}%`],
+              ["Scanned paper", `${PROCESS_PUBLIC_FACTS.paperPercent}%`],
+              ["Type 1 items a month", formatBaselineNumber(PROCESS_PUBLIC_FACTS.type1MonthlyItems, 0)],
+              ["Type 2 items a month", formatBaselineNumber(PROCESS_PUBLIC_FACTS.type2MonthlyItems, 0)],
+            ] as const).map(([label, value]) => <div key={label}><dt>{label}</dt><dd className="font-semibold">
+              <ProcessFigure source="Public" label={label} explanation="Approximate owner-supplied process context, not independently verified. Type 1 and Type 2 may overlap.">{value}</ProcessFigure>
+            </dd></div>)}</dl>
           </section>
         </div>
       </>}
@@ -85,6 +93,12 @@ export function HomePage() {
         {perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>}
       </>}
       {chapterNumber === 8 && <>
+        <section aria-label="Proposed outcomes" className="space-y-3 rounded-xl border bg-card p-5">
+          <h2 className="font-semibold">Fewer items back. A judgement you can reconstruct.</h2>
+          <p className="text-sm">Rule and reason recorded for built cases. People confirm evidence and decide; existing pricing remains unchanged.</p>
+          <p className="text-sm font-medium">The agent verifies the submission and advises; a person decides.</p>
+          <p className="text-sm text-muted-foreground">No agent payments. Referral reduction depends on the assumed pharmacy catch, not a universal Type 2 speed-up.</p>
+        </section>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>
           <div><dt className="text-xs text-muted-foreground">Requested history</dt><dd className="mt-1 font-medium">Two years · Item-level reasons</dd></div>

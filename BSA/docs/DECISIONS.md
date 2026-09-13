@@ -1079,3 +1079,31 @@ real medicine/product names, not these mandated channel/process identifiers.
 Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
+
+## 2026-09-13: Task 23 presents separate process and referral measures
+
+N's chapters consume M's frozen `useProcessMonth` result and the same store
+inputs as operational views. The two monthly headline groups are referred-back
+items and referral-loop hours. Operator and pharmacy hours remain separate
+measures within that second group, never a combined labour total. Type 2 hours
+sit beneath them with an explicit non-additivity warning: investigation overlaps
+the Type 2 cohort, and 45-second built-case judgement is not a speed-up over a
+13-second average. No independent cohort arithmetic is introduced in views.
+
+The two comparison columns stay visible. Header mode changes replay the existing
+reduced-motion-aware number animation, with exact endpoints and stable accessible
+values. All fourteen process inputs are available through one reusable editor on
+the month and assumptions pages. The old assumptions register is retained only
+inside a collapsed, explicitly historical referral-only comparison.
+
+Public process context is qualified as owner-supplied and not independently
+verified. Figure provenance lives in keyboard-accessible tooltips. Today zero
+rule records and experience-only assurance describe this synthetic comparison,
+not all NHSBSA staff. Existing human history is not changed.
+
+The process diagram branches: complete items bypass staff, uncertain capture
+uses Type 1 and rerouting, and interpretation uses Type 2 with a human decision.
+Pharmacy-corrected items still enter normal processing; they avoid a referral,
+not submission. The boundary labels poor-paper declaration pre-fill **proposed**:
+fields are declared by the pharmacy, not read from the form. Human confirmation
+is required, and irreconcilable evidence follows today's path.

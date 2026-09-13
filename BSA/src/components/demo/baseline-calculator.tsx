@@ -1,97 +1,79 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
-import { BoundaryTag } from "./labels";
-import { BaselineAssumptions } from "./baseline-assumptions";
-import { MONTH_DETAIL_FIELDS, GATHERING_STEPS, MONTH_FIELDS, monthSummary, formatBaselineNumber as number } from "@/lib/domain/baseline";
-import { useMonthModel } from "@/hooks/use-month-model";
-import { BaselineFlow } from "./baseline-flow";
+import { useProcessMonth } from "@/hooks/use-process-month";
+import { formatBaselineNumber, type ProcessMonthColumn } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 import { MonthlyNumber } from "./monthly-number";
-import { ReferralProxy } from "./referral-proxy";
+import { ProcessFigure } from "./process-figure";
+import { ProcessAssumptions } from "./process-assumptions";
+
+const METRICS = {
+  referredBackItems: { label: "Items referred back a month", context: "Shared monthly scenario. Today uses the supplied referral default; With the agent applies only the assumed pre-submission catch." },
+  referralOperatorHours: { label: "Operator hours", context: "Referral investigation only, using the assumed minutes per referred-back item. Do not add to overlapping Type 2 stream hours." },
+  pharmacyCompletionHours: { label: "Pharmacy hours", context: "Pharmacy endorsement completion on the referral loop, using assumed minutes per item. Not NHSBSA operator labour." },
+  type2OperatorHours: { label: "Type 2 stream hours", context: "All modelled Type 2 items: average seconds Today; built-case judging or manual abstention With the agent. Not additive with referral investigation." },
+  caughtBeforeSubmission: { label: "Items caught before submission", context: "Modelled corrections from the assumed catch share of would-be referrals. Not observed catches or additional referral reductions." },
+  decisionsWithRuleAndReason: { label: "Decisions with rule and reason recorded", context: "Synthetic comparison assumption: Today zero; With the agent all built cases after human judgement. Not a claim about all real staff." },
+} as const;
 
 export function BaselineCalculator() {
-  const draft = useAppStore((s) => s.baselineInputs);
-  const todayMinutes = useAppStore((s) => s.todayMinutes);
-  const setInput = useAppStore((s) => s.setBaselineInput);
-  const setTodayMinutes = useAppStore((s) => s.setTodayMinutes);
   const enabled = useAppStore((s) => s.agentEnabled);
-  const { result, errors } = useMonthModel();
-  const detailFields = MONTH_DETAIL_FIELDS;
-  const renderField = ({ key, label, hint, integer }: typeof MONTH_FIELDS[number] | typeof detailFields[number]) => <div key={key} className="min-w-0 space-y-2">
-    <div className="flex flex-wrap items-center gap-2">
-      <Label htmlFor={`baseline-${key}`}>{label}</Label>
-      <Tooltip><TooltipTrigger asChild><Badge asChild variant="outline"><button type="button" aria-label={`About assumption: ${label}`}>Assumption</button></Badge></TooltipTrigger><TooltipContent className="max-w-72">{hint}</TooltipContent></Tooltip>
-      {key === "volume" && <Tooltip><TooltipTrigger asChild><Badge asChild variant="outline"><button type="button" aria-label="About the public volume default">Public default</button></Badge></TooltipTrigger><TooltipContent className="max-w-72">Approximate public referrals, not measured total queue arrivals. Using this subset as a monthly scenario volume is an assumption.</TooltipContent></Tooltip>}
-    </div>
-    <Input id={`baseline-${key}`} type="text" inputMode={integer ? "numeric" : "decimal"} autoComplete="off" spellCheck={false}
-      value={key === "todayMinutes" ? todayMinutes : draft[key]} onChange={(event) => key === "todayMinutes" ? setTodayMinutes(event.target.value) : setInput(key, event.target.value)}
-      aria-invalid={Boolean(errors[key])} aria-describedby={`baseline-${key}-hint${errors[key] ? ` baseline-${key}-error` : ""}`} />
-    <span id={`baseline-${key}-hint`} className="block text-xs text-muted-foreground">{hint}</span>
-    {errors[key] && <p id={`baseline-${key}-error`} className="text-sm text-destructive">{errors[key]}</p>}
+  const { result } = useProcessMonth();
+  const modes = [
+    { key: "today", label: "Today", active: !enabled },
+    { key: "withAgent", label: "With the agent", active: enabled },
+  ] as const;
+  const metric = (key: keyof typeof METRICS) => result && <div className="grid grid-cols-2 gap-4">
+    {modes.map((mode) => <div key={mode.key} className="min-w-0 space-y-2" data-process-column={mode.key} data-active={mode.active}>
+      <p className={mode.active ? "text-sm font-semibold" : "text-sm text-muted-foreground"}>{mode.label}</p>
+      <div className="break-words text-2xl font-semibold sm:text-3xl" data-process-metric={`${mode.key}-${key}`}>
+        <ProcessFigure source="Assumption" label={`${mode.label} ${METRICS[key].label}`} explanation={METRICS[key].context}>
+          <MonthlyNumber value={result[mode.key][key]} replayKey={enabled ? "on" : "off"} />
+        </ProcessFigure>
+      </div>
+    </div>)}
   </div>;
-  const mode = enabled ? "With agent" : "Today";
-  const perItem = result && (enabled ? result.perItem.withAgent : result.perItem.today);
+  const assurance = (column: ProcessMonthColumn) => column.monthlyRuleAssurance === "experience_only"
+    ? "Experience only"
+    : "Clause and version cited on every built-case judgement";
 
   return <section aria-label="Monthly workload calculator" className="min-w-0 space-y-5">
-    <fieldset className="min-w-0 rounded-xl border bg-card p-5">
-      <legend className="px-2 text-sm font-semibold">Edit the monthly assumptions</legend>
-      <div className="grid gap-5 lg:grid-cols-3">{MONTH_FIELDS.map(renderField)}</div>
-    </fieldset>
-    <p className="text-sm text-muted-foreground">Estimates from labelled assumptions; type NHSBSA's own figures above.</p>
-
-    {result && perItem ? <>
-      <div className="grid items-stretch gap-4 sm:grid-cols-2" data-month-headlines>
-        <section aria-label="Hours of operator time a month" className="space-y-3 rounded-xl border bg-card p-5">
-          <h2 className="font-semibold">Hours of operator time a month</h2>
-          <p className="text-sm font-medium" data-month-mode>{mode}</p>
-          <p className="break-all text-4xl font-semibold" data-month-hours><MonthlyNumber value={enabled ? result.withAgent.operatorHours : result.today.operatorHours} /></p>
-          <p className="text-xs text-muted-foreground">All scenario items, including manual fallback for abstentions.</p>
+    {result ? <>
+      <div className="grid items-stretch gap-4 lg:grid-cols-2" data-month-headlines>
+        <section aria-label="Items referred back a month" className="min-w-0 space-y-4 rounded-xl border bg-card p-5">
+          <h2 className="font-semibold">Items referred back a month</h2>
+          {metric("referredBackItems")}
         </section>
-        <section aria-label="Items one operator can complete a month" className="space-y-3 rounded-xl border bg-card p-5">
-          <h2 className="font-semibold">Items one operator can complete a month</h2>
-          <p className="text-sm font-medium" data-month-mode>{mode}</p>
-          <p className="break-all text-4xl font-semibold" data-month-capacity><MonthlyNumber value={enabled ? result.capacity.withAgent : result.capacity.today} /></p>
-          <p className="text-xs text-muted-foreground">Assumption: 6 hours a day, 21 days = {number(result.capacity.workingMinutes)} minutes. {enabled ? "Built-case capacity, not a mixed-cohort guarantee." : "Manual-case capacity under these assumptions."}</p>
+        <section aria-label="Hours on the referred-back loop" className="min-w-0 space-y-4 rounded-xl border bg-card p-5">
+          <h2 className="font-semibold">Hours on the referred-back loop</h2>
+          <h3 className="text-sm font-medium">Operator hours</h3>{metric("referralOperatorHours")}
+          <h3 className="text-sm font-medium">Pharmacy hours</h3>{metric("pharmacyCompletionHours")}
         </section>
       </div>
-      <section aria-label="Operator minutes per item" className="space-y-3 rounded-xl border p-5">
-        <div className="flex flex-wrap items-center justify-between gap-2"><h2 className="font-semibold">{mode}: operator minutes per item</h2><BoundaryTag cls="human" /></div>
-        <svg viewBox={`0 0 ${result.abstainBeforeDecisionMinutes} 1`} preserveAspectRatio="none" className="h-6 w-full rounded" role="img"
-          aria-label={`${mode}: gathering ${number(perItem.gatheringMinutes)} minutes; judging ${number(perItem.judgingMinutes)} minutes`}
-          data-per-item-bar>
-          <rect width={result.abstainBeforeDecisionMinutes} height="1" className="fill-muted" />
-          <rect width={perItem.gatheringMinutes} height="1" className="fill-muted-foreground" data-gathering-bar />
-          <rect x={perItem.gatheringMinutes} width={perItem.judgingMinutes} height="1" className="fill-primary" data-judging-bar />
-        </svg>
-        <dl className="grid gap-3 text-sm sm:grid-cols-2">
-          <div><dt>Gathering</dt><dd data-per-item-gathering>{number(perItem.gatheringMinutes)} minutes</dd>{enabled && <dd>gathering done by the agent and code in seconds</dd>}</div>
-          <div><dt>Judging</dt><dd data-per-item-judging>{number(perItem.judgingMinutes)} minutes</dd></div>
-        </dl>
-        <p className="text-sm">Abstentions are worked as today: {number(result.abstainBeforeDecisionMinutes)} operator minutes per item, including manual gathering.</p>
+      <section aria-label="Type 2 stream hours" className="space-y-4 rounded-xl border p-5">
+        <h2 className="font-semibold">Type 2 stream hours</h2>
+        {metric("type2OperatorHours")}
+        <p className="text-sm text-muted-foreground">Built-case judging can take longer than today&apos;s average. Referral investigation overlaps this stream; these hours must not be added together.</p>
       </section>
-    </> : <p role="alert" className="rounded-lg border p-4 text-sm">Estimates unavailable. Correct the highlighted inputs, including any inside Show the detail. No previous result is retained.</p>}
-    <p className="font-medium">Time is spent only where a person adds something: the judgement.</p>
-    <p role="status" aria-live="polite" aria-atomic="true" className="sr-only" data-baseline-summary>{result ? monthSummary(result, enabled) : "Calculator estimates unavailable: check the highlighted inputs."}</p>
-
-    <details className="min-w-0 space-y-4 rounded-xl border p-5" data-month-detail>
-      <summary className="cursor-pointer font-semibold">Show the detail{Object.keys(errors).some((key) => detailFields.some((field) => field.key === key)) ? " · Check invalid inputs" : ""}</summary>
-      <div className="space-y-4 pt-4">
-        <section className="space-y-4" data-gathering-breakdown>
-          <h2 className="font-semibold">Seven-step gathering breakdown</h2>
-          <p className="text-sm">These are proportional weights, not extra minutes. They divide today's gathering-only time; judging is not added again.</p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{detailFields.filter(({ key }) => GATHERING_STEPS.some((step) => step.key === key)).map(renderField)}</div>
-          {result && <><p className="text-sm" data-gathering-total>Manual gathering: {number(result.manualGatheringMinutes)} minutes / item.</p><dl className="grid gap-3 text-sm sm:grid-cols-2">{result.gatheringSteps.map((step) => <div key={step.key}><dt>{step.label.replace(" minutes / item", "")}</dt><dd data-gathering-step={step.key}>{number(step.minutes)} minutes</dd></div>)}</dl></>}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <section className="min-w-0 space-y-4 rounded-xl border p-5" aria-label="Items caught before submission">
+          <h2 className="font-semibold">Items caught before submission</h2>{metric("caughtBeforeSubmission")}
         </section>
-        <section className="space-y-4">
-          <h2 className="font-semibold">Cohort and referral assumptions</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{detailFields.filter(({ key }) => !GATHERING_STEPS.some((step) => step.key === key)).map(renderField)}</div>
-          <p className="text-sm">Pharmacy-caught items are assumed corrected before submission. Rule-cleared items need no model call or human touch. Built cases need a human decision; abstentions retain the manual path.</p>
+        <section className="min-w-0 space-y-4 rounded-xl border p-5" aria-label="Rule and reason recorded">
+          <h2 className="font-semibold">Decisions with rule and reason recorded</h2>{metric("decisionsWithRuleAndReason")}
+          <p className="text-sm text-muted-foreground">Synthetic comparison only, not a statement that real staff never record rules or reasons.</p>
         </section>
-        {result && enabled && <><BaselineFlow result={result} /><ReferralProxy result={result} /></>}
-        <BaselineAssumptions />
       </div>
-    </details>
+      <section className="space-y-3 rounded-xl border p-5" aria-label="Monthly rule change assurance">
+        <h2 className="font-semibold">Monthly rule change assurance</h2>
+        <dl className="grid grid-cols-2 gap-4 text-sm">{modes.map((mode) => <div key={mode.key}>
+          <dt className="font-medium">{mode.label}</dt><dd>{assurance(result[mode.key])}</dd>
+        </div>)}</dl>
+        <p className="text-sm text-muted-foreground">Synthetic comparison, not measured accuracy. Abstentions retain the manual path; historical human records remain unchanged.</p>
+      </section>
+    </> : <p role="alert" className="rounded-lg border p-4 text-sm">Estimates unavailable. Correct the highlighted monthly inputs. No previous result is retained.</p>}
+    <p className="font-medium">Fewer items come back, and every judgement carries its rule and reason; the agent verifies and advises, it does not pay.</p>
+    <p role="status" aria-live="polite" aria-atomic="true" className="sr-only" data-baseline-summary>
+      {result ? `${enabled ? "With the agent" : "Today"}: ${formatBaselineNumber(result[enabled ? "withAgent" : "today"].referredBackItems)} items referred back. Shared monthly estimates updated.` : "Calculator estimates unavailable: check the highlighted inputs."}
+    </p>
+    <ProcessAssumptions />
   </section>;
 }
