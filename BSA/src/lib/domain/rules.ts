@@ -40,10 +40,10 @@ export function endorsementRequired(
 
 export function mandatoryFieldsCheck(f: ExtractedFields): GateCheck[] {
   return [
-    { name: "Product identified", pass: f.productCode !== null, detail: f.productCode ? f.productText : "Product could not be resolved from the read" },
-    { name: "Quantity present", pass: f.quantity !== null, detail: f.quantity !== null ? String(f.quantity) : "Quantity unreadable" },
-    { name: "Dispensing date present", pass: Boolean(f.dispensingDate), detail: f.dispensingDate || "Missing" },
-    { name: "Prescriber present", pass: f.prescriber !== "Illegible", detail: f.prescriber },
+    { name: "Product identified", pass: Boolean(f.productCode?.trim()), detail: f.productCode ? f.productText : "Product could not be resolved from the read" },
+    { name: "Quantity present", pass: f.quantity !== null && Number.isSafeInteger(f.quantity) && f.quantity > 0, detail: f.quantity !== null ? String(f.quantity) : "Quantity unreadable" },
+    { name: "Dispensing date present", pass: Boolean(f.dispensingDate.trim()), detail: f.dispensingDate || "Missing" },
+    { name: "Prescriber present", pass: Boolean(f.prescriber.trim()) && f.prescriber.trim().toLowerCase() !== "illegible", detail: f.prescriber },
   ];
 }
 
