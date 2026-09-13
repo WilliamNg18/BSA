@@ -17,7 +17,7 @@ async function capturePaper(page: Page, action: DomainAction, enabled: boolean, 
     await capture.getByRole("textbox", { name: "Prescriber", exact: true }).fill("Dr Demo (synthetic)");
   });
   if (enabled) await action(`${label}: human reconciles paper evidence`, "NHSBSA", async () => {
-    await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+    await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
   });
   return action(`${label}: confirm capture without deciding Type 2`, "NHSBSA", async () => {
     await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
