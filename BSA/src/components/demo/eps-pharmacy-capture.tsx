@@ -26,30 +26,41 @@ const SCENARIOS = [
   { id: "SYN-FQ123-TYPE2", label: "Generic missing brand" },
 ] as const;
 
+interface EditorState {
+  initialDraft: EpsPrescription;
+  draft: EpsPrescription;
+  observedRevision: number;
+  receiptNumber: number | null;
+}
+
+function initialEditorState(caseId: string): EditorState {
+  const { lifecycles, caseRevisions, itemProcesses } = useAppStore.getState();
+  const source = caseForLifecycle(caseId, lifecycles, caseRevisions, itemProcesses)!;
+  const initial = source.epsPrescription ?? createEpsPrescription(caseById(caseId) ?? source);
+  const initialDraft: EpsPrescription = { ...structuredClone(initial), claimMessageState: "draft" };
+  return { initialDraft, draft: initialDraft, observedRevision: caseRevisions[caseId].at(-1)!.number, receiptNumber: null };
+}
+
 export function EpsPharmacyCapture() {
   const [caseId, setCaseId] = useState<string>("EX-24112");
+  const [editors, setEditors] = useState<Record<string, EditorState>>(() => Object.fromEntries(SCENARIOS.map((scenario) => [scenario.id, initialEditorState(scenario.id)])));
   return <div className="space-y-4">
     <NativeChoiceGroup value={caseId} onValueChange={setCaseId} aria-label="Choose an EPS scenario" className="flex-wrap justify-start">
       {SCENARIOS.map((scenario) => <NativeChoiceItem key={scenario.id} value={scenario.id}>{scenario.label}</NativeChoiceItem>)}
     </NativeChoiceGroup>
-    <EpsClaimEditor key={caseId} caseId={caseId} />
+    <EpsClaimEditor key={caseId} caseId={caseId} editor={editors[caseId]} updateEditor={(patch) => setEditors((current) => ({
+      ...current, [caseId]: { ...current[caseId], ...patch },
+    }))} />
   </div>;
 }
 
-function EpsClaimEditor({ caseId }: { caseId: string }) {
+function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; editor: EditorState; updateEditor: (patch: Partial<EditorState>) => void }) {
   const enabled = useAppStore((state) => state.agentEnabled);
   const perspective = useAppStore((state) => state.perspective);
   const lifecycles = useAppStore((state) => state.lifecycles);
   const revisions = useAppStore((state) => state.caseRevisions);
   const processes = useAppStore((state) => state.itemProcesses);
-  const [observedRevision, setObservedRevision] = useState(revisions[caseId].at(-1)!.number);
-  const [initialDraft] = useState<EpsPrescription>(() => {
-    const source = caseForLifecycle(caseId, lifecycles, revisions, processes)!;
-    const initial = source.epsPrescription ?? createEpsPrescription(caseById(caseId) ?? source);
-    return { ...structuredClone(initial), claimMessageState: "draft" };
-  });
-  const [draft, setDraft] = useState<EpsPrescription>(initialDraft);
-  const [receiptNumber, setReceiptNumber] = useState<number | null>(null);
+  const { draft, initialDraft, observedRevision, receiptNumber } = editor;
   const [error, setError] = useState("");
   const [applied, setApplied] = useState("");
   const projected = useMemo(() => {
@@ -69,7 +80,7 @@ function EpsClaimEditor({ caseId }: { caseId: string }) {
   const supply = draft.supplyEvidence;
   const receipt = revisions[caseId].find((revision) => revision.number === receiptNumber);
   const automatic = lifecycles[caseId].history.some((event) => event.revision === receiptNumber && event.processStep === "automatic_pricing");
-  const update = (next: EpsPrescription) => { setDraft(next); setApplied(""); setError(""); };
+  const update = (next: EpsPrescription) => { updateEditor({ draft: next }); setApplied(""); setError(""); };
   const supplyUpdate = (patch: Partial<NonNullable<EpsPrescription["supplyEvidence"]>>) => update({
     ...draft, supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: null, form: "", ...supply, ...patch },
   });
@@ -181,7 +192,7 @@ function EpsClaimEditor({ caseId }: { caseId: string }) {
               precheck: pharmacySnapshot(draft.dispenserEndorsement, draft.dispensingDate, mode, result, current.checkedAt) };
             store.submitItem(payload);
             const submitted = useAppStore.getState().caseRevisions[caseId].at(-1)!;
-            setObservedRevision(submitted.number); setReceiptNumber(submitted.number); setError("");
+            updateEditor({ observedRevision: submitted.number, receiptNumber: submitted.number }); setError("");
           } catch (err) { setError(err instanceof Error ? err.message : "Claim submission unavailable."); }
         }}><Send aria-hidden="true" />Send claim</Button>
         <BoundaryTag cls="human" />
