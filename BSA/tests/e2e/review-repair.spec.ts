@@ -2,9 +2,10 @@ import { expect, navigatePrimary, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-test("mobile navigation keeps real active classes and a visible keyboard focus indicator", async ({ page }) => {
+for (const colorScheme of ["light", "dark"] as const) {
+test(`mobile navigation keeps active classes and contrasting keyboard focus in ${colorScheme}`, async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 360, height: 900 });
-  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
+  await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
   await page.goto("/pharmacy/claims");
   const trigger = page.getByRole("button", { name: "Open navigation", exact: true });
   await trigger.press("Enter");
@@ -21,10 +22,35 @@ test("mobile navigation keeps real active classes and a visible keyboard focus i
   const focus = await current.evaluate((element) => {
     const style = getComputedStyle(element);
     const rect = element.getBoundingClientRect();
-    return { outlineWidth: style.outlineWidth, outlineStyle: style.outlineStyle, top: rect.top, bottom: rect.bottom, width: rect.width };
+    const dialog = element.closest('[role="dialog"]');
+    if (!dialog) throw new Error("The focused route must be inside its navigation dialog.");
+    const surroundingColor = getComputedStyle(dialog).backgroundColor;
+    const context = document.createElement("canvas").getContext("2d");
+    if (!context) throw new Error("Canvas colour conversion is unavailable.");
+    const rgba = (color: string) => {
+      context.clearRect(0, 0, 1, 1);
+      context.fillStyle = color;
+      context.fillRect(0, 0, 1, 1);
+      return Array.from(context.getImageData(0, 0, 1, 1).data);
+    };
+    const outline = rgba(style.outlineColor);
+    const background = rgba(surroundingColor);
+    const composite = outline.slice(0, 3).map((channel, index) => channel * outline[3] / 255 + background[index] * (1 - outline[3] / 255));
+    const luminance = (rgb: number[]) => rgb.reduce((total, channel, index) => {
+      const value = channel / 255;
+      return total + (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4) * [0.2126, 0.7152, 0.0722][index];
+    }, 0);
+    const foregroundLuminance = luminance(composite);
+    const backgroundLuminance = luminance(background.slice(0, 3));
+    const contrast = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+    return { outlineWidth: style.outlineWidth, outlineStyle: style.outlineStyle, outlineColor: style.outlineColor, surroundingColor, outline, background, contrast, top: rect.top, bottom: rect.bottom, width: rect.width };
   });
+  await testInfo.attach(`mobile-focus-${colorScheme}`, { body: JSON.stringify(focus, null, 2), contentType: "application/json" });
   expect(focus.outlineWidth).toBe("2px");
   expect(focus.outlineStyle).not.toBe("none");
+  expect(focus.background[3]).toBe(255);
+  expect(focus.contrast).toBeGreaterThanOrEqual(3);
+  expect(focus.outline[3]).toBe(255);
   expect(focus.top).toBeGreaterThanOrEqual(0);
   expect(focus.bottom).toBeLessThanOrEqual(900);
   expect(focus.width).toBeGreaterThan(0);
@@ -33,6 +59,7 @@ test("mobile navigation keeps real active classes and a visible keyboard focus i
   await expect(trigger).toBeFocused();
   await expect(page).toHaveURL(/\/pharmacy\/claims$/);
 });
+}
 
 test("complete EPS Off describes hypothetical risk without running a hidden check", async ({ page }) => {
   await page.goto("/pharmacy");

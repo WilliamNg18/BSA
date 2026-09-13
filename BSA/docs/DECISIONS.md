@@ -1817,3 +1817,14 @@ for missing-reason and missing-RB-code errors, preserved values and keyboard
 recovery. Unknown abstention reasons use an own-property check so inherited
 names such as `constructor` and `__proto__` remain unchanged display strings.
 Neither change modifies domain decisions, audit evidence or validation rules.
+
+After `b1a4bef` also passed the complete local inventory, a focused coordinator
+inspection identified insufficient mobile outline contrast from the inherited
+half-opacity ring colour. A keyboard regression reproduced 1.957:1 light and
+1.886:1 dark against the navigation dialog. The mobile route alone now uses
+opaque current-colour focus outlines, retaining the 2px width, active route,
+keyboard order and Escape focus return. Actual computed CSS colours converted
+to sRGB and alpha-composited against the observed dialog background measure
+17.928:1 light and 18.968:1 dark. Both themes must exceed 3:1 in the regression.
+Global theme and desktop styles are unchanged. This repairs the observed focus
+indicator; it does not establish full WCAG conformance or rewrite old evidence.
