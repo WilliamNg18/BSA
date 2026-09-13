@@ -7,6 +7,11 @@ for (const c of cases) {
   test(`Task6 ${c.id} manual trace and raw pack are not agent evidence`, async ({ page }) => {
     await page.goto(`case/${c.id}/trace`);
     const trace = page.getByRole("list", { name: "Manual gathering trace", exact: true });
+    if (automaticCaseIds.includes(c.id)) {
+      await expect(trace).toHaveCount(0);
+      await expect(page.locator("[data-manual-total], [data-assisted-slot]")).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Replay unavailable in manual comparison", exact: true })).toHaveCount(0);
+    } else {
     await expect(trace.locator(":scope > li")).toHaveCount(7);
     for (const { key } of GATHERING_STEPS) {
       const step = trace.locator(`[data-manual-step="${key}"]`);
@@ -19,8 +24,9 @@ for (const c of cases) {
     await expect(page.getByText(`First judgement: ${MANUAL_LOOP_MONTH_DEFAULTS.judgingMinutesToday} minutes / referral-loop item · Assumption, not the whole-service Type 2 average.`, { exact: true })).toBeVisible();
     await expect(page.locator("[data-assisted-slot]")).toHaveCount(4);
     for (const slot of ["Clause", "Requirements", "Alternative", "Confidence"]) await expect(page.locator(`[data-assisted-slot="${slot}"]`)).toContainText("Not recorded");
-    await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Replay unavailable in manual comparison", exact: true })).toBeDisabled();
+    }
+    await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
     if (automaticCaseIds.includes(c.id)) {
       const prechecks = page.getByRole("list", { name: "Deterministic clearance trace" });
       await expect(prechecks.locator(":scope > li")).toHaveCount(2);
@@ -29,6 +35,7 @@ for (const c of cases) {
     }
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Original machine-captured fields", exact: true })).toBeVisible();
+    if (!["EX-24107", "EX-24123"].includes(c.id)) await expect(page.getByRole("main").locator("figure")).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Applicable Drug Tariff provision", exact: true })).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Confidence signals", exact: true })).toHaveCount(0);
@@ -63,7 +70,7 @@ for (const id of automaticCaseIds) for (const enabled of [false, true]) {
     await expect(trace).toContainText("Cleared by rules; agent not invoked");
     await expect(trace).not.toContainText("run_endorsement_checks");
     await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
-    await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+    await expect(page.getByText("priced by NHSBSA's existing rules engine, no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
     await expect(page.getByText("The agent's part is over. The rest is a person.", { exact: true })).toHaveCount(0);
     await expect(page.getByRole("link", { name: "Open case evidence", exact: true })).toHaveAttribute("href", `/case/${id}`);
     for (const name of ["Replay step by step", "Next step", "Show all", "Clear"]) {
