@@ -8,7 +8,8 @@ import { CasePackPage } from "../../src/pages/case-pack";
 import { CaseTracePage } from "../../src/pages/case-trace";
 import { NotificationContext } from "../../src/hooks/use-notification";
 import { useAppStore } from "../../src/lib/store";
-import { formatProcessHours, formatProcessItems, monthModel, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
+import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
+import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { ConfirmedCaptureEvidence } from "../../src/components/demo/case-presentation";
@@ -62,16 +63,18 @@ describe("Task 29 current-revision staff presentation", () => {
     }
     expect(html).toContain('data-type1-case="EX-24123"');
     expect(html).toContain("Priced automatically this month, no person involved:");
-    expect(html).toContain("Shared monthly model, not session completions");
+    expect(html).toContain("Whole-service context, not session completions");
     expect(useAppStore.getState()).toBe(before);
   });
 
   it("uses shared monthly inputs, never the legacy referral-only projection", () => {
     const store = useAppStore.getState();
-    store.setProcessInput("monthlyItems", "120000000");
-    const model = monthModel({ ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120_000_000 });
+    store.setManualLoopInput("monthlyItems", "120000000");
+    const model = monthModel({ ...MANUAL_LOOP_MONTH_DEFAULTS, monthlyItems: 120_000_000 });
     expect(queue()).toContain(`Priced automatically this month, no person involved: ${formatProcessItems(model.counts.autoPricedItems)}`);
-    expect(queue()).toContain(`${formatProcessHours(model.today.type2OperatorHours)} / ${formatProcessHours(model.withAgent.type2OperatorHours)}`);
+    for (const { key, format } of MANUAL_LOOP_METRICS) {
+      expect(queue()).toContain(`${format(model.today[key])} / ${format(model.withAgent[key])} (estimate)`);
+    }
     expect(queue()).not.toContain("Show legacy full-day simulation");
   });
 

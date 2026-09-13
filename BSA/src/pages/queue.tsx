@@ -3,16 +3,15 @@ import { Link } from "react-router-dom";
 import { FileText, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
+import { SyntheticTag } from "@/components/demo/labels";
 import { Type1Capture } from "@/components/demo/type1-capture";
-import { useProcessMonth } from "@/hooks/use-process-month";
+import { AutomaticPricingCount, ManualLoopProjection } from "@/components/demo/manual-loop-projection";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { BACKGROUND_PHARMACIES } from "@/lib/domain/reference";
 import { permitsProposal, recordHasRuleAndReason, staffLane, type StaffLane } from "@/lib/case-presentation";
 import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
-import { formatProcessHours as hours, formatProcessItems as n } from "@/lib/domain/baseline";
 
 type WorkFilter = "all" | StaffLane | "new";
 
@@ -27,7 +26,6 @@ function QueueWorklist() {
   const processes = useAppStore((s) => s.itemProcesses);
   const records = useAppStore((s) => s.records);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  const { result } = useProcessMonth();
   const [filter, setFilter] = useState<WorkFilter>("all");
   const [handoff, setHandoff] = useState<string | null>(null);
   const focusedCapture = useRef<string | null>(null);
@@ -86,11 +84,7 @@ function QueueWorklist() {
       <p className="text-lg" data-queue-guide>{agentEnabled
         ? "Type 2 worklist: the agent verifies and advises; a person decides."
         : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement."}</p>
-      <section aria-label="Automatic pricing monthly aggregate" className="rounded-xl border bg-muted/30 p-4">
-        <BoundaryTag cls="deterministic" />
-        <p className="mt-2 font-semibold" data-auto-priced-count>Priced automatically this month, no person involved: {result ? n(result.counts.autoPricedItems) : "Unavailable"}</p>
-        <p className="text-sm text-muted-foreground">Shared monthly model, not session completions. Items are priced by NHSBSA's existing rules engine.</p>
-      </section>
+      <AutomaticPricingCount />
     </header>
     <section aria-label="Other pharmacies, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
       <h2 className="font-semibold">Other pharmacies, background</h2>
@@ -100,7 +94,6 @@ function QueueWorklist() {
       </ul>
     </section>
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
-    {!result && <p role="alert">Invalid process assumptions. Monthly figures are unavailable; actual session work remains visible.</p>}
     <section aria-label="Actual session work counts" className="space-y-3">
       <h2 className="font-semibold">Actual synthetic session items</h2>
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -152,15 +145,6 @@ function QueueWorklist() {
       <p className="text-sm">Human capture is complete. These items are not awaiting Type 2 judgement.</p>
       {visible.filter((row) => row.captureCompleted).map((row) => <Type1Capture key={row.id} caseId={row.id} />)}
     </section>}
-    {result && <section className="space-y-3 rounded-xl border p-4" data-queue-month-summary>
-      <h2 className="font-semibold">Shared monthly model: Today / With the agent</h2>
-      <p className="text-sm text-muted-foreground">Public stream volumes with assumed handling effort; these projections are not actual session decisions.</p>
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
-        <div><dt>Type 2 operator hours</dt><dd>{hours(result.today.type2OperatorHours)} / {hours(result.withAgent.type2OperatorHours)}</dd></div>
-        <div><dt>Referred-back operator hours</dt><dd>{hours(result.today.referralOperatorHours)} / {hours(result.withAgent.referralOperatorHours)}</dd></div>
-        <div><dt>Pharmacy completion hours</dt><dd>{hours(result.today.pharmacyCompletionHours)} / {hours(result.withAgent.pharmacyCompletionHours)}</dd></div>
-        <div><dt>Items referred back</dt><dd>{n(result.today.referredBackItems)} / {n(result.withAgent.referredBackItems)}</dd></div>
-      </dl>
-    </section>}
+    <div data-queue-month-summary><ManualLoopProjection /></div>
   </div>;
 }
