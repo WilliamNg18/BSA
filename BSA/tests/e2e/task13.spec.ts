@@ -98,7 +98,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           if (state === "submitted") {
             await page.goto("pharmacy");
             await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-            await page.getByRole("button", { name: "Send claim", exact: true }).click();
+            await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
             await navigatePrimary(page, "Pharmacy claims");
           } else if (state === "escalated") {
             await page.goto("case/SYN-FQ123-TYPE2");
