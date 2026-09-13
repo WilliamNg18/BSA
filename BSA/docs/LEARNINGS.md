@@ -1051,3 +1051,11 @@ field is safer than bypassing the existing compliance check. Keep original
 capture evidence intact and attach revision-linked human authority separately.
 Typed legacy pharmacy submissions use the claim channel, while new submissions
 carry explicit machine channels on immutable revisions.
+
+## 2026-09-13: P replay keeps the chosen evidence source consistent
+
+Seed D intentionally retains different scan and declaration endorsement text.
+Replaying its retained declaration must use that declaration's endorsement,
+not combine it with the unreadable scan text. The replay disclosure names the
+source before the human submits. Original attempts, image and readings remain
+unchanged; the new paper revision still awaits human Type 1 confirmation.
