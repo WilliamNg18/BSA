@@ -1199,6 +1199,14 @@ Legacy decisions without an RB code say it was not recorded, rather than
 retroactively inventing a code. MYS/NHSmail and payment timing are public process
 context, not services implemented by this static demonstration.
 
+## 2026-09-13: Task 21 readable-paper capture wording
+
+The shared capture surface also accepts readable handwritten paper items.
+Only genuinely poor image style or quality below the existing threshold gets
+the poor-scan/cannot-read wording. D keeps its guaranteed Type 2 continuation;
+other items use a neutral confirmation label because code may route complete
+captured evidence to existing pricing. This changes copy, not routing authority.
+
 ## 2026-09-13: Task 19 shared process allocations and capture authority
 
 Before implementing the arithmetic, M notified the coordinator and received
