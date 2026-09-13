@@ -73,9 +73,10 @@ describe("Task 29 current-revision staff presentation", () => {
     const store = useAppStore.getState();
     store.setManualLoopInput("monthlyItems", "120000000");
     const model = monthModel({ ...MANUAL_LOOP_MONTH_DEFAULTS, monthlyItems: 120_000_000 });
-    expect(queue()).toContain(`Priced automatically this month, no person involved: ${formatProcessItems(model.counts.autoPricedItems)}`);
+    const html = queue();
+    expect(html).toContain(`Priced automatically this month, no person involved: ${formatProcessItems(model.counts.autoPricedItems)}`);
     for (const { key, format } of MANUAL_LOOP_METRICS) {
-      expect(queue()).toContain(`${format(model.today[key])} / ${format(model.withAgent[key])} (estimate)`);
+      expect(html).toContain(`${format(model.today[key])} / ${format(model.withAgent[key])} (estimate)`);
     }
     expect(queue()).not.toContain("Show legacy full-day simulation");
   });
