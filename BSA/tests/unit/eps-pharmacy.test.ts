@@ -115,6 +115,11 @@ describe("visible EPS prescription", () => {
     expect(missing.gap).toContain("Brand or manufacturer");
     const complete = { ...generic, supplyEvidence: { ...generic.supplyEvidence!, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer } };
     expect(checkEpsPharmacy(preview("EX-24101", complete), "").status).toBe("ready");
+    const missingPrescriber = { ...complete, prescriber: { ...complete.prescriber, name: "" } };
+    const incomplete = checkEpsPharmacy(preview("EX-24101", missingPrescriber), "");
+    expect(incomplete.status).toBe("missing");
+    expect(incomplete.gap).not.toBe("None");
+    expect(incomplete.gap.toLowerCase()).toContain("prescriber");
     expect(useAppStore.getState().caseRevisions["EX-24101"]).toHaveLength(1);
   });
 });

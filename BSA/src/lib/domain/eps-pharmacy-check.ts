@@ -23,7 +23,8 @@ export function checkEpsPharmacy(c: ExceptionCase, text: string): PharmacyCheck 
       facts: { ...interpretPharmacyText(text), type: "SUPPLY", note: "Synthetic generic supply fields, not an image reading" },
       version: supply.version, clause: validated ? structuredClone(clause!) : null, checks,
       stages: ["PASS", "PASS", version ? "PASS" : "STOPPED", validated ? "PASS" : "STOPPED", ready ? "PASS" : "MISSING"],
-      gap: validated ? supply.gap : "No validated dispensing-month supply clause", agreement: "Deterministic source-field checks",
+      gap: validated ? checks.filter((check) => !check.met).map((check) => check.label).join(", ") || "None"
+        : "No validated dispensing-month supply clause", agreement: "Deterministic source-field checks",
     };
   } else {
     result = checkPharmacy(c, text, { channel: "eps" });
