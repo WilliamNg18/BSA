@@ -51,7 +51,7 @@ export function Type1Capture({ caseId }: { caseId: string }) {
           <div><dt className="font-medium">Prescriber</dt><dd>{capture.fields.prescriber || "Unreadable"}</dd></div>
         </dl>
         <p className="text-xs text-muted-foreground">{capture.provenance === "pharmacy_declaration"
-          ? `Original fields ${PAPER_DECLARATION_PROVENANCE}; human corrections retained in this capture.`
+          ? `Fields ${PAPER_DECLARATION_PROVENANCE}; explicitly confirmed by a person.`
           : capture.declarationReconciled ? "Human-corrected capture; declaration and paper explicitly reconciled."
             : "Manually captured by a person; no declaration reconciliation asserted."}</p>
         <CaptureTiming assisted={capture.declarationReconciled} />
@@ -236,7 +236,8 @@ function TimingSteps({ seconds, assisted }: { seconds: number; assisted: boolean
     <div className="flex flex-wrap items-center gap-3">
       <Timer className="size-5" aria-hidden="true" />
       <span className="text-sm font-medium">{assisted ? "Confirm, not key" : "Manual keying"} stopwatch (assumption)</span>
-      <output aria-live="polite" className="font-mono text-lg tabular-nums">{displayedSeconds.toLocaleString("en-GB")} seconds</output>
+      <output aria-label={assisted ? "Assumed confirmation time" : "Assumed manual keying time"} aria-live="polite"
+        className="font-mono text-lg tabular-nums">{displayedSeconds.toLocaleString("en-GB")} seconds</output>
       <span className="text-xs text-muted-foreground">Illustration, not elapsed work</span>
       <Button type="button" variant="outline" size="sm" onClick={() => setStep(step === 2 ? 0 : step + 1)}>
         {step === 2 ? "Restart timing illustration" : "Next timing step"}
