@@ -1,4 +1,4 @@
-import type { ExceptionCase, ExtractedFields } from "./types";
+import type { DeclaredItemFields, ExceptionCase, ExtractedFields } from "./types";
 import { productByCode } from "./reference";
 
 /** An explicit human capture is distinct from, and never repairs, source imagery. */
@@ -19,4 +19,19 @@ export function compatibleCapture(c: ExceptionCase): boolean {
     capture.fields.productCode === c.claim.productCode && capture.fields.quantity === c.claim.quantity &&
     (c.extracted.productCode === null || c.extracted.productCode === capture.fields.productCode) &&
     (c.extracted.quantity === null || c.extracted.quantity === capture.fields.quantity));
+}
+
+export function validateDeclaredFields(fields: DeclaredItemFields): void {
+  if (!fields || typeof fields !== "object" ||
+    fields.productCode !== null && (typeof fields.productCode !== "string" || !fields.productCode.trim()) ||
+    fields.quantity !== null && (!Number.isSafeInteger(fields.quantity) || fields.quantity <= 0) ||
+    typeof fields.endorsementText !== "string" ||
+    fields.prescriber !== undefined && fields.prescriber !== null && typeof fields.prescriber !== "string") {
+    throw new Error("Invalid declared or captured fields.");
+  }
+}
+
+export function sameDeclaredFields(a: DeclaredItemFields, b: DeclaredItemFields): boolean {
+  return a.productCode?.trim() === b.productCode?.trim() && a.quantity === b.quantity &&
+    a.endorsementText.trim() === b.endorsementText.trim() && (a.prescriber?.trim() ?? "") === (b.prescriber?.trim() ?? "");
 }

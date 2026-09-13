@@ -9,18 +9,20 @@ const F = CASES[5], B = CASES[1];
 beforeEach(() => store().resetDemo());
 afterEach(() => store().resetDemo());
 
-it.each([false, true])("F's historical decision never blocks a new human review, flag=%s", (on) => {
+it.each([false, true])("F's historical decision never blocks automatic pricing of a corrected EPS revision, flag=%s", (on) => {
   const original = structuredClone(store().records[0]);
+  const records = store().records;
   store().setAgentEnabled(on);
   store().resubmitFromPharmacy(F.id, "NCSO DL 06/08/26");
-  expect(store().caseStates[F.id]).toBe("operator_review_required");
+  expect(store().itemProcesses[F.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
   store().arriveInQueue(F.id);
   expect(store().caseStates[F.id]).not.toBe("human_decision_recorded");
-  expect(runAgent(sessionCase(F.id)!).recommendation).toBe("SUFFICIENT");
-  store().recordOperatorDecision(F.id, "ACCEPT", "Human checked corrected evidence");
+  expect(runAgent(sessionCase(F.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
   expect(store().lifecycles[F.id].state).toBe("paid");
+  expect(store().records).toBe(records);
   expect(store().records[0]).toEqual(original);
-  expect(store().records.at(-1)?.revision).toBe(2);
+  expect(store().lifecycles[F.id].history.at(-1)).toMatchObject({ actor: "code", revision: 2 });
+  expect(() => store().recordOperatorDecision(F.id, "ACCEPT", "Human checked corrected evidence")).toThrow(/while paid/);
 });
 
 it.each(["off", "pending", "unavailable"] as const)("retains an unperformed %s precheck without inventing results", (mode) => {
