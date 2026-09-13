@@ -3,17 +3,18 @@ import { captureJson, expect } from "./fixtures";
 import { choosePerspective, flag } from "./perspective-helpers";
 
 type Side = "Pharmacy" | "NHSBSA";
+export type DomainSnapshot = ReturnType<typeof import("../../src/lib/store").getDomainSnapshot>;
 type Checkpoint = { action: string; state: unknown };
-type Action = (label: string, side: Side, perform: () => Promise<void>) => Promise<Record<string, unknown>>;
+export type DomainAction = (label: string, side: Side, perform: () => Promise<void>) => Promise<DomainSnapshot>;
 const epoch = Date.parse("2026-09-13T12:00:00.000Z");
 
-export async function readDomainState(page: Page): Promise<Record<string, unknown>> {
+export async function readDomainState(page: Page): Promise<DomainSnapshot> {
   return page.evaluate(() => {
     const read: unknown = Reflect.get(window, "__BSA_READ_DOMAIN_STATE__");
     if (typeof read !== "function") throw new Error("The read-only domain observer is required for equivalence tests.");
     const snapshot: unknown = read();
     if (!snapshot || typeof snapshot !== "object" || Array.isArray(snapshot)) throw new Error("The domain observer returned no state.");
-    return snapshot as Record<string, unknown>;
+    return snapshot as DomainSnapshot;
   });
 }
 
@@ -22,7 +23,7 @@ export async function verifyPerspectiveEquivalence(
   page: Page,
   info: TestInfo,
   enabled: boolean,
-  flow: (action: Action) => Promise<void>,
+  flow: (action: DomainAction) => Promise<void>,
 ) {
   const both: Checkpoint[] = [];
   const switched: Checkpoint[] = [];
@@ -37,15 +38,16 @@ export async function verifyPerspectiveEquivalence(
     const initial = await readDomainState(page);
     checkpoints.push({ action: "initial", state: initial });
     if (mode === "switched") expect(initial, "Both and switched runs must start from identical complete seeds").toEqual(both[0].state);
-    const action: Action = async (label, side, perform) => {
+    const action: DomainAction = async (label, side, perform) => {
       const before = await readDomainState(page);
+      const agentBefore = await flag(page).isChecked();
       if (mode === "switched") {
         for (const perspective of [side === "Pharmacy" ? "NHSBSA" : "Pharmacy", side] as const) {
           await choosePerspective(page, perspective);
           const state = await readDomainState(page);
           switches.push({ action: `${label}: switch to ${perspective}`, state });
           expect(state, `${label}: perspective alone must not mutate any domain field`).toEqual(before);
-          await expect(flag(page)).toBeChecked({ checked: enabled });
+          await expect(flag(page), "Perspective changes must preserve the current explicit Agent setting").toBeChecked({ checked: agentBefore });
         }
       }
       await page.clock.setFixedTime(new Date(epoch + checkpoints.length * 1000));
