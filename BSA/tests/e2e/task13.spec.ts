@@ -76,7 +76,7 @@ for (const enabled of [false, true]) {
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
       const events = history(page).getByRole("list", { name: "Lifecycle events" });
       await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
-      await expect(events).toContainText("Sufficient, released to existing pricing");
+      await expect(events).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
     }
     await captureJson(info, "roundtrip-history", await history(page).innerText());
     await confirmReset(page);

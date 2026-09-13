@@ -66,7 +66,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-08");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Sufficient: release to pricing once confirmed");
-  await expect(history(page)).toContainText("Sufficient, released to existing pricing");
+  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
@@ -98,7 +98,7 @@ test("Task25 manual EPS correction retains an unchecked snapshot until explicit 
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await page.getByRole("radio", { name: /^Sufficient / }).check();
   await record(page, "Human recheck confirms the manually corrected endorsement");
-  await expect(history(page)).toContainText("Sufficient, released to existing pricing");
+  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   await history(page).getByText("History and attempts (3)", { exact: true }).click();
   await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText("not_checked · off");
