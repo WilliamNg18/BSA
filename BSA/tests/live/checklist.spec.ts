@@ -11,6 +11,8 @@ import { startDemonstrationReview } from "../e2e/lifecycle-helpers";
 import { chooseProcessChapter, expandProcessInputs, expectProcessMetrics, expectSceneMetrics } from "../e2e/process-model-helpers";
 import { confirmCompletePaper, openFourCases, submitCompletePaper } from "../e2e/paper-capture-helpers";
 import { LIVE_CHECKS } from "./inventory";
+import { REC_META } from "../../src/components/demo/label-meta";
+import { abstentionReasonLabel } from "../../src/lib/abstention-display";
 
 const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -121,7 +123,7 @@ test(LIVE_CHECKS.cards, async ({ page }, info) => {
       await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     } else {
       if (scenario === "D") await expect(card.locator("[data-outcome]")).toHaveCount(0);
-      else await expect(card.locator("[data-outcome]")).toHaveText(scenario === "B" ? "REFER_BACK" : "REQUEST_INFORMATION");
+      else await expect(card.locator("[data-outcome]")).toHaveText(REC_META[scenario === "B" ? "REFER_BACK" : "REQUEST_INFORMATION"].label);
       await card.getByRole("link", { name: `Open case ${scenario}`, exact: true }).click();
     }
     await expect(page).toHaveURL(new RegExp(`/case/${cases[index].id}$`));
@@ -273,7 +275,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     if (enabled) {
       const reasons = page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li");
-      await expect(reasons).toHaveText(runAgent(CASES[3], { agentEnabled: true }).abstainReasons);
+      await expect(reasons).toHaveText(runAgent(CASES[3], { agentEnabled: true }).abstainReasons.map(abstentionReasonLabel));
       await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
       await expect(capture).toContainText("declared by the pharmacy, not read from the form");
       await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();

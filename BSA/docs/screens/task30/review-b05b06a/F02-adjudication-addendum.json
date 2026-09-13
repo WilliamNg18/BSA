@@ -1,0 +1,72 @@
+{
+  "kind": "Separate F02-only verifier adjudication addendum",
+  "created_at_utc": "2026-09-13T21:47:42.811767+00:00",
+  "original_review_archive_commit": "3ba2eee",
+  "checked_repository_head": "3ba2eee",
+  "capture_source_commit": "b05b06ad67860fea9d9809eed09b5f1636168f66",
+  "finding": "F02",
+  "disposition": "RETRACTED: required-three-failed-structural-signals finding only",
+  "criterion_error": "The review did not cite a current Task25-30 source requiring exactly three failed structural signals. That requirement was an unsupported current-contract claim in F02, not a defect established by the screenshot. The distinction between three abstention reasons and four failed structural signals was not correctly applied in the adjudication.",
+  "current_source": {
+    "file": "BSA/tests/e2e/case-presentation.spec.ts",
+    "lines": [
+      219,
+      240
+    ],
+    "present_at_capture_commit": true,
+    "test_title": "Task6 D keeps three reasons, four failed signals and unestablished reconciliation; E remains no-call On",
+    "assertions": {
+      "line222": "Three alert list items (abstention reasons)",
+      "line224": "Five confidence-signal list items",
+      "line225": "Four failed structural signals",
+      "lines226_231": "Sources reconcile is Not established, not satisfied; no false source-agreement text",
+      "line233": "Gate NOT RUN"
+    }
+  },
+  "observation_retained": {
+    "images": [
+      25,
+      26
+    ],
+    "paths": [
+      "check-09/09-audit-unconfirmed-capture-on.png",
+      "check-09/11-d-fresh-capture-after-referral-on.png"
+    ],
+    "previously_inspected_span": [
+      2850,
+      3900
+    ],
+    "observed_failed_signals": [
+      "Provision found",
+      "Readings agree",
+      "Image quality",
+      "In validated coverage"
+    ],
+    "fifth_signal": "Sources reconcile: Not established. Unknown is not a false satisfied/agreement signal.",
+    "gate": "NOT RUN",
+    "bounded_assessment": "Observed four failed structural signals, unestablished fifth signal and NOT RUN match this current assertion contract. No signal should be hidden or relabelled merely to reduce the count."
+  },
+  "scope_of_retraction": "Only F02 and any derivative statement that the observed four signals fail a required-three-signals beat. This does not retract the observation of four signals or create a whole-image or release PASS.",
+  "unchanged": [
+    "F01",
+    "F03",
+    "F04",
+    "F05",
+    "F06",
+    "All recorded prose findings and46 failing explanatory-panel occurrences",
+    "Overall FAIL",
+    "24 screenshot PASS /34 FAIL /0 unreviewed",
+    "58 paths /53 unique PNG hashes /58 hash matches /202 native tile full-height coverage",
+    "Manual-record accessibility limitations"
+  ],
+  "affected_images_remain_fail": "Images25/26 retain P04, P05, P06 and P07 prose failures. Their count-specific F02 failure is withdrawn; their overall image verdict remains FAIL.",
+  "verification_limits": "Read-only source/assertion check at current checkout and capture commit. No new browser, runtime, test execution, image review, application edit or archive edit. This is not a new test pass. Parent retains final adjudication ownership.",
+  "original_archived_review_file_sha256": {
+    "docs\\screens\\task30\\review-b05b06a\\.gitattributes": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+    "docs\\screens\\task30\\review-b05b06a\\ledger.json": "dc034b9a4730d7459a5b56a64920c57ac76f085431b71dff0b03262514b5869a",
+    "docs\\screens\\task30\\review-b05b06a\\ledger.md": "39ae12a6fbeb466f82c0dbf35e1eaa3fe68c0f1a1ef665b0a565a28c8acbe089",
+    "docs\\screens\\task30\\review-b05b06a\\manual-record-assessment.json": "5201e9b6fa71f52ad400d009d19e81ed5f973f9df3abd78eef41347237589a4b",
+    "docs\\screens\\task30\\review-b05b06a\\review-result.json": "236190636ba001f1f61636469afd435c9c8b744be3ab6a4512ed809e5e4f4e21",
+    "docs\\screens\\task30\\review-b05b06a\\review-result.md": "e4ef022aa3417afc813d48972e3d953d44c6f1d81cb2822680a081580a3a6f01"
+  }
+}

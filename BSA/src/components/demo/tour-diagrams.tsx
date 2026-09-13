@@ -22,7 +22,7 @@ export function SceneDiagram() {
     <ArrowDown className="mx-auto my-3 size-4 text-muted-foreground" aria-hidden="true" />
     <ul aria-label="Alternative processing paths" className="grid gap-3 sm:grid-cols-2">
       <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Straightforward items</p><p>Priced by NHSBSA&apos;s existing rules engine; no person involved.</p><BoundaryTag cls="existing" /></li>
-      <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Uncertain items</p><p>Type 1 captures uncertain reads. Type 2 judges endorsements. Items can need either or both.</p><BoundaryTag cls="human" /><ArrowDown className="size-4" aria-hidden="true" /><p>Still insufficient: referred back to MYS Unpaid items for correction and resubmission.</p></li>
+      <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Uncertain items</p><p>Type 1 captures; Type 2 judges. Items may need both. Insufficient items return through MYS Unpaid items for correction and resubmission.</p><BoundaryTag cls="human" /></li>
     </ul>
   </section>;
 }

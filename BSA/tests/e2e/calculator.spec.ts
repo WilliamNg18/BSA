@@ -15,7 +15,7 @@ test("two referral headlines separate total operator, gathering, judgement and p
   await expect(page.locator("[data-month-headlines] > section").nth(0)).toHaveAttribute("aria-label", "Items referred back a month");
   await expect(page.locator("[data-month-headlines] > section").nth(1)).toHaveAttribute("aria-label", "Operator hours a month");
   await expectProcessMetrics(page);
-  await expect(page.getByText("With total includes manual gathering for abstentions and judgement on every queued item. No second judgement is assumed.", { exact: true })).toBeVisible();
+  await expect(page.getByText("Assumptions: built cases need no human gathering. With total includes abstention gathering and judgement for every queued item, without double-checks.", { exact: true })).toBeVisible();
   await expect(page.getByText("Synthetic comparison: Today experience only; With rule and reason recorded is assumed for all queue decisions, including documented abstention.", { exact: true })).toBeVisible();
   await expect(page.locator('[data-process-metric="withAgent-operatorHours"]')).toHaveText("297.5estimate");
   await expect(page.locator('[data-process-metric="withAgent-gatheringHours"]')).toHaveText("42.5estimate");

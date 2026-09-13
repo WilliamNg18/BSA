@@ -8,6 +8,7 @@ import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "../../src/lib/domain/b
 import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { REC_META } from "../../src/components/demo/label-meta";
 
 // The shared legacy helper's Operations labels are owned by integration QA.
 async function navigatePrimary(page: Page, label: string) {
@@ -297,7 +298,7 @@ test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases foll
     const card = page.locator(`[data-case="${item.scenario}"]`);
     const pack = runAgent(item);
     await expect(card).toHaveAttribute("data-case-routing", item.scenario === "B" ? "referred_back" : "type2_endorsement");
-    await expect(card.locator("[data-outcome]")).toHaveText(pack.recommendation);
+    await expect(card.locator("[data-outcome]")).toHaveText(REC_META[pack.recommendation].label);
     await expect(card).toContainText(`Gate: ${pack.gate.result.replaceAll("_", " ")}`);
     await expect(card.getByRole("link", { name: `Open case ${item.scenario}`, exact: true })).toBeVisible();
   }

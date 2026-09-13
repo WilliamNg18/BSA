@@ -1,0 +1,18 @@
+{
+  "at": "2026-09-13T21:12:38.548Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+  "active": {
+    "tag": "H1",
+    "text": "A month in numbers",
+    "rect": {
+      "x": 72.5,
+      "y": 259,
+      "width": 768,
+      "height": 40
+    },
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "oklab(0.556 0 0 / 0.5)"
+  },
+  "headerBottom": 56
+}

@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-09-13T21:12:21.640Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#scene",
+  "build": {
+    "commit": "b05b06ad67860fea9d9809eed09b5f1636168f66",
+    "builtAt": "2026-09-13T20:59:24.062Z",
+    "dirty": false
+  },
+  "observerPresent": false,
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "active": {
+    "tag": "H1",
+    "text": "Most items need no person"
+  },
+  "reducedMotion": false,
+  "colorScheme": "normal"
+}

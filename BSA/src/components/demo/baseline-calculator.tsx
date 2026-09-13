@@ -27,8 +27,7 @@ export function BaselineCalculator() {
       <div className="grid gap-4 lg:grid-cols-2" data-month-headlines>{MANUAL_LOOP_METRICS.slice(0, 2).map(metric)}</div>
       <p className="font-medium" data-hours-ratio>{manualLoopRatio(result)}</p>
       <div className="grid gap-4 lg:grid-cols-3">{MANUAL_LOOP_METRICS.slice(2, 5).map(metric)}</div>
-      <p className="text-sm">With total includes manual gathering for abstentions and judgement on every queued item. No second judgement is assumed.</p>
-      <p className="text-sm">Built cases assume no human gathering; the agent and code assemble evidence. Abstentions retain manual gathering.</p>
+      <p className="text-sm">Assumptions: built cases need no human gathering. With total includes abstention gathering and judgement for every queued item, without double-checks.</p>
       <section aria-label="Sequential referral cohorts" className="space-y-3 rounded-xl border p-5">
         <h2 className="font-semibold">How the smaller queue is estimated</h2>
         <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">

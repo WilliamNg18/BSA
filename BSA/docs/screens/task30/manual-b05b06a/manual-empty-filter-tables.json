@@ -1,0 +1,123 @@
+{
+  "at": "2026-09-13T21:21:53.207Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+  "filter": [
+    "Decided1"
+  ],
+  "tables": [
+    {
+      "lane": "type2",
+      "headers": [
+        {
+          "text": "Reference",
+          "scope": null
+        },
+        {
+          "text": "Pharmacy",
+          "scope": null
+        },
+        {
+          "text": "Channel",
+          "scope": null
+        },
+        {
+          "text": "State",
+          "scope": null
+        },
+        {
+          "text": "Reason it is here",
+          "scope": null
+        },
+        {
+          "text": "Advice and record",
+          "scope": null
+        },
+        {
+          "text": "Open",
+          "scope": null
+        }
+      ],
+      "rows": 0,
+      "cells": 0,
+      "status": "No type 2 worklist items match this filter."
+    },
+    {
+      "lane": "referred",
+      "headers": [
+        {
+          "text": "Reference",
+          "scope": null
+        },
+        {
+          "text": "Pharmacy",
+          "scope": null
+        },
+        {
+          "text": "Channel",
+          "scope": null
+        },
+        {
+          "text": "State",
+          "scope": null
+        },
+        {
+          "text": "Reason it is here",
+          "scope": null
+        },
+        {
+          "text": "Advice and record",
+          "scope": null
+        },
+        {
+          "text": "Open",
+          "scope": null
+        }
+      ],
+      "rows": 0,
+      "cells": 0,
+      "status": "No referred back items match this filter."
+    },
+    {
+      "lane": "decided",
+      "headers": [
+        {
+          "text": "Reference",
+          "scope": null
+        },
+        {
+          "text": "Pharmacy",
+          "scope": null
+        },
+        {
+          "text": "Channel",
+          "scope": null
+        },
+        {
+          "text": "State",
+          "scope": null
+        },
+        {
+          "text": "Reason it is here",
+          "scope": null
+        },
+        {
+          "text": "Advice and record",
+          "scope": null
+        },
+        {
+          "text": "Open",
+          "scope": null
+        }
+      ],
+      "rows": 1,
+      "cells": 7,
+      "status": null
+    }
+  ],
+  "active": "Decided1",
+  "scrollWidth": 345,
+  "viewport": {
+    "width": 360,
+    "height": 900
+  }
+}

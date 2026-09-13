@@ -1,0 +1,52 @@
+{
+  "id": "EX-24112",
+  "endorsement": "NCSO  RK",
+  "attempts": "Attempt 1 · seedEndorsement snapshotNCSO  RKChannelEPSConfirmationNonePrecheck / modeNot checked · SeedRule / clause / checked atNone · None · Not checkedAttempt 2 · submissionEndorsement snapshotNCSO  RKChannelEPSConfirmationNonePrecheck / modenot_checked · offRule / clause / checked atNone · None · Not checkedFull advisory snapshot{\n  \"typedText\": \"NCSO  RK\",\n  \"dispensingDate\": \"2026-08-21\",\n  \"mode\": \"off\",\n  \"facts\": null,\n  \"tariffVersion\": null,\n  \"clauseId\": null,\n  \"checkedAt\": null,\n  \"status\": \"not_checked\",\n  \"checks\": []\n}",
+  "recordId": "2 · DR-000873",
+  "eventCount": 6,
+  "stableEvents": [
+    {
+      "fields": [
+        "Time / actor2026-09-01T09:00:00.000Z · pharmacy",
+        "Attempt / record1 · No decision record"
+      ],
+      "message": "Synthetic claim submitted."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-01T09:01:00.000Z · code",
+        "Attempt / record1 · No decision record"
+      ],
+      "message": "Routed for operator review."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-01T09:02:00.000Z · operator",
+        "Attempt / record1 · No decision record"
+      ],
+      "message": "Synthetic human decision recorded."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:36.369Z · pharmacy",
+        "Attempt / record2 · No decision record"
+      ],
+      "message": "Explicit demo submission; previous revisions retained."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:37.407Z · code",
+        "Attempt / record2 · No decision record"
+      ],
+      "message": "Arrived for review."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:37.773Z · operator",
+        "Attempt / record2 · DR-000873"
+      ],
+      "message": "Human decision recorded (synthetic)."
+    }
+  ],
+  "reason": "Perspective Off: add the dispensing date beside the initials"
+}

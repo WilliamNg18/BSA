@@ -1,0 +1,4988 @@
+[
+  {
+    "index": 1,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-01\\04-audit-overview-off.png",
+    "relative_path": "check-01/04-audit-overview-off.png",
+    "sha256": "d065eaf4c4156d5a5367b88c53aa6e587fd88c436e2902a32f8c8d2fe3fc4bb4",
+    "manifest_sha256": "d065eaf4c4156d5a5367b88c53aa6e587fd88c436e2902a32f8c8d2fe3fc4bb4",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1323
+    ],
+    "agent": "Off",
+    "check": "01 Root Overview starts Agent Off and serves the approved build",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\01_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\01_00950-01323.png",
+        "span": [
+          950,
+          1323
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P01",
+        "panel": "Overview uncertain-items panel",
+        "word_count": 27,
+        "text": "Type 1 captures uncertain reads. Type 2 judges endorsements. Items can need either or both. Still insufficient: referred back to MYS Unpaid items for correction and resubmission.",
+        "image_indices": [
+          1,
+          2,
+          3
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1323
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Overview Off: automatic majority, separate staff/referral context, EPS versus paper, Type1/Type2 and source qualification visible; prose panel27 words.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 2,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-01\\06-overview-off.png",
+    "relative_path": "check-01/06-overview-off.png",
+    "sha256": "d065eaf4c4156d5a5367b88c53aa6e587fd88c436e2902a32f8c8d2fe3fc4bb4",
+    "manifest_sha256": "d065eaf4c4156d5a5367b88c53aa6e587fd88c436e2902a32f8c8d2fe3fc4bb4",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1323
+    ],
+    "agent": "Off",
+    "check": "01 Root Overview starts Agent Off and serves the approved build",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\02_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\02_00950-01323.png",
+        "span": [
+          950,
+          1323
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P01",
+        "panel": "Overview uncertain-items panel",
+        "word_count": 27,
+        "text": "Type 1 captures uncertain reads. Type 2 judges endorsements. Items can need either or both. Still insufficient: referred back to MYS Unpaid items for correction and resubmission.",
+        "image_indices": [
+          1,
+          2,
+          3
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1323
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Duplicate Overview Off independently viewed full height; same observed facts and prose issue.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 3,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-02\\05-audit-overview-on.png",
+    "relative_path": "check-02/05-audit-overview-on.png",
+    "sha256": "1667af4a34530bc716a63a3c855dde08db5920ea7b46cd1804476552a3e3daaa",
+    "manifest_sha256": "1667af4a34530bc716a63a3c855dde08db5920ea7b46cd1804476552a3e3daaa",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1323
+    ],
+    "agent": "On",
+    "check": "02 Every current route toggles On and back Off without errors",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\03_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\03_00950-01323.png",
+        "span": [
+          950,
+          1323
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P01",
+        "panel": "Overview uncertain-items panel",
+        "word_count": 27,
+        "text": "Type 1 captures uncertain reads. Type 2 judges endorsements. Items can need either or both. Still insufficient: referred back to MYS Unpaid items for correction and resubmission.",
+        "image_indices": [
+          1,
+          2,
+          3
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1323
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Overview On independently viewed full height; separately labelled estimates and whole-process context; no agent-payment claim; same prose issue.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 4,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-03\\04-audit-edited-process-model-off.png",
+    "relative_path": "check-03/04-audit-edited-process-model-off.png",
+    "sha256": "a4945a34a343e5c467fc31e381e665f9de3efdeb6f1d0f3ade9d77c0ffe3e2b7",
+    "manifest_sha256": "a4945a34a343e5c467fc31e381e665f9de3efdeb6f1d0f3ade9d77c0ffe3e2b7",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3038
+    ],
+    "agent": "Off",
+    "check": "03 Shared monthly inputs update both process columns and Scene figures",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\04_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\04_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\04_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\04_02850-03038.png",
+        "span": [
+          2850,
+          3038
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P02",
+        "panel": "Monthly operator-hours explanation",
+        "word_count": 34,
+        "text": "With total includes manual gathering for abstentions and judgement on every queued item. No second judgement is assumed. Built cases assume no human gathering; the agent and code assemble evidence. Abstentions retain manual gathering.",
+        "image_indices": [
+          4,
+          5
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3038
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Edited monthly model Off, open assumptions; Today17.5 vs With0.4 hours and120 vs7 referrals belong to the edited sample, not defaults. Inputs readable; model explanation34 words.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 5,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-03\\07-audit-edited-process-model-on.png",
+    "relative_path": "check-03/07-audit-edited-process-model-on.png",
+    "sha256": "deefdb9d00ccf6fcc348615bff274d6132b73918fd966b2e8a81da9aca1fda9a",
+    "manifest_sha256": "deefdb9d00ccf6fcc348615bff274d6132b73918fd966b2e8a81da9aca1fda9a",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2042
+    ],
+    "agent": "On",
+    "check": "03 Shared monthly inputs update both process columns and Scene figures",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\05_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\05_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\05_01900-02042.png",
+        "span": [
+          1900,
+          2042
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P02",
+        "panel": "Monthly operator-hours explanation",
+        "word_count": 34,
+        "text": "With total includes manual gathering for abstentions and judgement on every queued item. No second judgement is assumed. Built cases assume no human gathering; the agent and code assemble evidence. Abstentions retain manual gathering.",
+        "image_indices": [
+          4,
+          5
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2042
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Edited monthly model On, collapsed assumptions; same edited figures and estimate labelling; 34-word explanation.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 6,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-04\\04-audit-canonical-case-cards-on.png",
+    "relative_path": "check-04/04-audit-canonical-case-cards-on.png",
+    "sha256": "0e6fc91f045bb9f81eef10f55b021e956e37c941d7a5e4e533f2df03e2e3ef54",
+    "manifest_sha256": "0e6fc91f045bb9f81eef10f55b021e956e37c941d7a5e4e533f2df03e2e3ef54",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1061
+    ],
+    "agent": "On",
+    "check": "04 Four case cards retain automatic, Type 2 and unconfirmed Type 1 routes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\06_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\06_00950-01061.png",
+        "span": [
+          950,
+          1061
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "FAIL",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1061
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Case cards show A automatic, B refer-back, C conflict and D unconfirmed capture; D source caveat is visible. C raw outcome enum is poor novice wording.",
+    "findings": [
+      {
+        "id": "F06",
+        "severity": "novice terminology",
+        "images": [
+          6,
+          39,
+          40
+        ],
+        "span": [
+          0,
+          1050
+        ],
+        "symptom": "Case C card exposes REQUEST_INFORMATION as the outcome instead of a plain-language phrase.",
+        "remaining_work": "Use readable interface wording while leaving immutable audit data untouched."
+      }
+    ],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 7,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\03-pharmacy-complete-endorsement-off.png",
+    "relative_path": "check-05/03-pharmacy-complete-endorsement-off.png",
+    "sha256": "d5180e3aec461a8d513b773ccace7cde80420ee1f321ba5d96c698672a902678",
+    "manifest_sha256": "d5180e3aec461a8d513b773ccace7cde80420ee1f321ba5d96c698672a902678",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1999
+    ],
+    "agent": "Off",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\07_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\07_00950-01999.png",
+        "span": [
+          950,
+          1999
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "FAIL (visible wording/required signal beat)",
+    "prose_findings": [],
+    "overall_verdict": "FAIL",
+    "findings": [
+      {
+        "id": "F04",
+        "severity": "novice functional-truth confusion",
+        "images": [
+          7,
+          49
+        ],
+        "span": [
+          0,
+          1050
+        ],
+        "symptom": "Complete EPS Off has Send claim pain marker \"Manual: Problems found at NHSBSA weeks later\" despite its complete automatic route; image49 also shows actual Paid receipt below.",
+        "remaining_work": "Make pain explanation conditional or clearly hypothetical without implying this complete item fails."
+      }
+    ],
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1999
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Complete EPS Off: visible literal NCSO initials/date and structured synthetic prescription. Generic Send claim pain implies future problems although complete route is automatic.",
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 8,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\05-pharmacy-ncso-missing-date-off.png",
+    "relative_path": "check-05/05-pharmacy-ncso-missing-date-off.png",
+    "sha256": "272834e889d3be77a3b266a66de15fed16024fb977e3625d515a2cbec75f2902",
+    "manifest_sha256": "272834e889d3be77a3b266a66de15fed16024fb977e3625d515a2cbec75f2902",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1999
+    ],
+    "agent": "Off",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\08_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\08_00950-01999.png",
+        "span": [
+          950,
+          1999
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1999
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Missing-date EPS Off: literal initialled NCSO lacks date, editable submission stays available, no fake paper-reading/Type1 step.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 9,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\07-pharmacy-generic-missing-brand-off.png",
+    "relative_path": "check-05/07-pharmacy-generic-missing-brand-off.png",
+    "sha256": "0994e211d3ee7d908d2510ce20165858d4d99f4bcc1b1c3a77c3e123ae71ebde",
+    "manifest_sha256": "0994e211d3ee7d908d2510ce20165858d4d99f4bcc1b1c3a77c3e123ae71ebde",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "Off",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\09_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\09_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\09_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2212
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Generic missing-brand EPS Off: visible prescription and actual supply fields; generic advisory route distinct from NCSO date scenario.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 10,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\10-audit-pharmacy-off.png",
+    "relative_path": "check-05/10-audit-pharmacy-off.png",
+    "sha256": "0994e211d3ee7d908d2510ce20165858d4d99f4bcc1b1c3a77c3e123ae71ebde",
+    "manifest_sha256": "0994e211d3ee7d908d2510ce20165858d4d99f4bcc1b1c3a77c3e123ae71ebde",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "Off",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\10_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\10_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\10_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2212
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Duplicate generic Off audit path independently viewed; readable fields, explicit send, labelled model strip.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 11,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\12-pharmacy-complete-endorsement-on.png",
+    "relative_path": "check-05/12-pharmacy-complete-endorsement-on.png",
+    "sha256": "54f047ba829f06385d3c54b283fe94a71ec7f568ef20eafba130882c313d57a6",
+    "manifest_sha256": "54f047ba829f06385d3c54b283fe94a71ec7f568ef20eafba130882c313d57a6",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1999
+    ],
+    "agent": "On",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\11_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\11_00950-01999.png",
+        "span": [
+          950,
+          1999
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "findings": [],
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1999
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "Complete EPS On: explicit rule/date and requirement checks, literal text, separate Send; Assisted catch-correctable-problems label is NOT the Off manual pain label.",
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 12,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\14-pharmacy-ncso-missing-date-on.png",
+    "relative_path": "check-05/14-pharmacy-ncso-missing-date-on.png",
+    "sha256": "3be97932527ed3931c5d437260a4236cf27206459b0712a6b5ce72b75c510271",
+    "manifest_sha256": "3be97932527ed3931c5d437260a4236cf27206459b0712a6b5ce72b75c510271",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2086
+    ],
+    "agent": "On",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\12_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\12_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\12_01900-02086.png",
+        "span": [
+          1900,
+          2086
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2086
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "observation": "NCSO missing-date On: retrieved dated rule, missing-date advice and apply-draft action are distinct from explicit send; prescription remains readable.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 13,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\16-pharmacy-generic-missing-brand-on.png",
+    "relative_path": "check-05/16-pharmacy-generic-missing-brand-on.png",
+    "sha256": "01a4991f7523b64f62614d7e2db68cef78640bb3df65cedb214dd806c84088a7",
+    "manifest_sha256": "01a4991f7523b64f62614d7e2db68cef78640bb3df65cedb214dd806c84088a7",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2268
+    ],
+    "agent": "On",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\13_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\13_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\13_01900-02268.png",
+        "span": [
+          1900,
+          2268
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Generic EPS On independently inspected: actual missing brand/manufacturer advice, visible prescription and literal text, explicit Send separate from applying correction. No claim of a manual pain marker is retained.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2268
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 14,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-05\\19-audit-pharmacy-on.png",
+    "relative_path": "check-05/19-audit-pharmacy-on.png",
+    "sha256": "01a4991f7523b64f62614d7e2db68cef78640bb3df65cedb214dd806c84088a7",
+    "manifest_sha256": "01a4991f7523b64f62614d7e2db68cef78640bb3df65cedb214dd806c84088a7",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2268
+    ],
+    "agent": "On",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\14_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\14_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\14_01900-02268.png",
+        "span": [
+          1900,
+          2268
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Generic EPS On independently inspected: actual missing brand/manufacturer advice, visible prescription and literal text, explicit Send separate from applying correction. No claim of a manual pain marker is retained.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2268
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 15,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-06\\04-audit-claims-off.png",
+    "relative_path": "check-06/04-audit-claims-off.png",
+    "sha256": "3904a897522f8dc22073aefa9ab8fb71a66742bb8068df6069c3d5050e4ee0e9",
+    "manifest_sha256": "3904a897522f8dc22073aefa9ab8fb71a66742bb8068df6069c3d5050e4ee0e9",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2485
+    ],
+    "agent": "Off",
+    "check": "06 Claims seed list opens a matching seeded claim and history",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24112",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\15_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\15_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\15_01900-02485.png",
+        "span": [
+          1900,
+          2485
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Hillcrest eight-item claims and selected B referral retained. MYS timing explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2485
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 16,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-06\\07-audit-claims-on.png",
+    "relative_path": "check-06/07-audit-claims-on.png",
+    "sha256": "65b250b447db01499e33b43967cd899796ef38f4e584919106dfbaefd019a33c",
+    "manifest_sha256": "65b250b447db01499e33b43967cd899796ef38f4e584919106dfbaefd019a33c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2566
+    ],
+    "agent": "On",
+    "check": "06 Claims seed list opens a matching seeded claim and history",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24112",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\16_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\16_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\16_01900-02566.png",
+        "span": [
+          1900,
+          2566
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Hillcrest claims On with separate estimate strip; MYS panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2566
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 17,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-07\\04-audit-actual-worklist-on.png",
+    "relative_path": "check-07/04-audit-actual-worklist-on.png",
+    "sha256": "b6965b999cd1e8e83460d966a89e1469bbd3915f178615422e765db1a9c92a19",
+    "manifest_sha256": "b6965b999cd1e8e83460d966a89e1469bbd3915f178615422e765db1a9c92a19",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3855
+    ],
+    "agent": "On",
+    "check": "07 Actual staff work and separate monthly projections survive Agent changes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\17_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\17_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\17_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\17_02850-03855.png",
+        "span": [
+          2850,
+          3855
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P05",
+        "panel": "Declaration-check explanatory sentences",
+        "word_count": 27,
+        "text": "Declaration complete; human confirmation and prescriber evidence are still required. These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P06",
+        "panel": "Reconciliation consent and explanation",
+        "word_count": 31,
+        "text": "I have reconciled the declaration with the available evidence, including the dispensing date This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Only Hillcrest actual work; other-pharmacy background explicitly unclickable. Type 1 unconfirmed, machine image unreadable; declaration provenance and unchecked human reconciliation; queue default model 297.5 total, 255 judging, 42.5 gathering.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3855
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 18,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-07\\07-audit-actual-worklist-off.png",
+    "relative_path": "check-07/07-audit-actual-worklist-off.png",
+    "sha256": "e8a364022127d69ce8cd93682cf1619fe85b9fed36437b4ec4444c6b386fde7b",
+    "manifest_sha256": "e8a364022127d69ce8cd93682cf1619fe85b9fed36437b4ec4444c6b386fde7b",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3074
+    ],
+    "agent": "Off",
+    "check": "07 Actual staff work and separate monthly projections survive Agent changes",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\18_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\18_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\18_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\18_02850-03074.png",
+        "span": [
+          2850,
+          3074
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Off queue keeps Type 1 separate and manual capture; no E/A operator row. Estimate totals retained; evidence image intentionally poor.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3074
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 19,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-08\\04-audit-human-referral-record-off.png",
+    "relative_path": "check-08/04-audit-human-referral-record-off.png",
+    "sha256": "ab62eb7fa8527c58bae1e78e25686bd5fd2809f82d9d495d73098129ef0fe456",
+    "manifest_sha256": "ab62eb7fa8527c58bae1e78e25686bd5fd2809f82d9d495d73098129ef0fe456",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2369
+    ],
+    "agent": "Off",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\19_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\19_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\19_01900-02369.png",
+        "span": [
+          1900,
+          2369
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Human Off referral record; decision and source fields preserved; session-only audit limit visible.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2369
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 20,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-08\\07-audit-corrected-eps-paid-history-off.png",
+    "relative_path": "check-08/07-audit-corrected-eps-paid-history-off.png",
+    "sha256": "4b2ce7f8023ff37cd4a9f597dda8804db11fbc5a0c62b3554400fd4cf83ca5ac",
+    "manifest_sha256": "4b2ce7f8023ff37cd4a9f597dda8804db11fbc5a0c62b3554400fd4cf83ca5ac",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4379
+    ],
+    "agent": "Off",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?case=EX-24112",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\20_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\20_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\20_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\20_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\20_03800-04379.png",
+        "span": [
+          3800,
+          4379
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Corrected EPS paid history Off: original/referral/correction/resubmission followed by explicit human sufficient decision retained. MYS explanatory panel too long.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4379
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 21,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-08\\11-audit-human-referral-record-on.png",
+    "relative_path": "check-08/11-audit-human-referral-record-on.png",
+    "sha256": "64743606be785f91041f583d4d603ad92a130b8b597181123ba3ec4d03433b20",
+    "manifest_sha256": "64743606be785f91041f583d4d603ad92a130b8b597181123ba3ec4d03433b20",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2347
+    ],
+    "agent": "On",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\21_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\21_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\21_01900-02347.png",
+        "span": [
+          1900,
+          2347
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Assisted human refer-back record with gate/rule, approved text and original history; no payment approval claim.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2347
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 22,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-08\\14-audit-corrected-eps-paid-history-on.png",
+    "relative_path": "check-08/14-audit-corrected-eps-paid-history-on.png",
+    "sha256": "b9a24158cedb03b633f6ecf27b4fbdd6d02115615d1187bbd362a9983fd1f31c",
+    "manifest_sha256": "b9a24158cedb03b633f6ecf27b4fbdd6d02115615d1187bbd362a9983fd1f31c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4667
+    ],
+    "agent": "On",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?case=EX-24112",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\22_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\22_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\22_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\22_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\22_03800-04667.png",
+        "span": [
+          3800,
+          4667
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "On corrected EPS history retains referral and later human decision; toast overlaps estimate strip at y875-984; MYS prose too long.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4667
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content. A transient toast overlaps content near y875-984. Hidden pixels were not inferred; review should obtain unobstructed replacement evidence."
+  },
+  {
+    "index": 23,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-09\\04-audit-unconfirmed-capture-off.png",
+    "relative_path": "check-09/04-audit-unconfirmed-capture-off.png",
+    "sha256": "7f4474b821aa3e594f315a789af7098720c90575dd3cf4b619bd5a296fbb9ce3",
+    "manifest_sha256": "7f4474b821aa3e594f315a789af7098720c90575dd3cf4b619bd5a296fbb9ce3",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2914
+    ],
+    "agent": "Off",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\23_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\23_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\23_01900-02914.png",
+        "span": [
+          1900,
+          2914
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Unconfirmed D Off: Type 1 and poor image preserved, blank human capture, no advice. Deterministic explanatory block 28 words (verify exact transcription/count).",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2914
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 24,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-09\\06-d-fresh-capture-after-referral-off.png",
+    "relative_path": "check-09/06-d-fresh-capture-after-referral-off.png",
+    "sha256": "05f1709676437abd467d3a0d1ff6d0220added2b7361f0f05093cd5040fbf882",
+    "manifest_sha256": "05f1709676437abd467d3a0d1ff6d0220added2b7361f0f05093cd5040fbf882",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2934
+    ],
+    "agent": "Off",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\24_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\24_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\24_01900-02934.png",
+        "span": [
+          1900,
+          2934
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "D fresh revision after referral Off: Type 1 re-capture required; original RB2B record retained. Toast partly covers form at y875-984. Same long capture explanation.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2934
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content. A transient toast overlaps content near y875-984. Hidden pixels were not inferred; review should obtain unobstructed replacement evidence."
+  },
+  {
+    "index": 25,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-09\\09-audit-unconfirmed-capture-on.png",
+    "relative_path": "check-09/09-audit-unconfirmed-capture-on.png",
+    "sha256": "474a5ff577f609966e60851d46ecc67f756dd648ff32717e0faa8e666fa5f7c8",
+    "manifest_sha256": "474a5ff577f609966e60851d46ecc67f756dd648ff32717e0faa8e666fa5f7c8",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5202
+    ],
+    "agent": "On",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\25_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\25_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\25_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\25_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\25_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\25_04750-05202.png",
+        "span": [
+          4750,
+          5202
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "FAIL (visible wording/required signal beat)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P05",
+        "panel": "Declaration-check explanatory sentences",
+        "word_count": 27,
+        "text": "Declaration complete; human confirmation and prescriber evidence are still required. These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P06",
+        "panel": "Reconciliation consent and explanation",
+        "word_count": 31,
+        "text": "I have reconciled the declaration with the available evidence, including the dispensing date This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P07",
+        "panel": "Initial D abstention explanation",
+        "word_count": 48,
+        "text": "No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed. No governing provision could be retrieved for this endorsement type and date Image quality 0.31 is below the 0.60 threshold Only 1 of 3 readings agree",
+        "image_indices": [
+          25,
+          26
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "D unconfirmed On: explicitly not built, poor image remains, reconciliation not established. FOUR red failed signals including validated coverage, not required three; gate NOT RUN. Raw camelCase declaration fields in evidence panel. Long capture explanation.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5202
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F02",
+        "severity": "blocking required beat",
+        "images": [
+          25,
+          26
+        ],
+        "span": [
+          2850,
+          3900
+        ],
+        "symptom": "Four red failed confidence signals (provision, readings, image quality, validated coverage), not exactly three. Sources reconcile is Not established; gate NOT RUN is correct.",
+        "remaining_work": "Resolve the four-versus-three acceptance contract discrepancy explicitly; do not merely conceal a real failed check."
+      }
+    ],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 26,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-09\\11-d-fresh-capture-after-referral-on.png",
+    "relative_path": "check-09/11-d-fresh-capture-after-referral-on.png",
+    "sha256": "9c67868f574619ce3dd5c9ac0ba1e35668f1115356e70d8d356ab232d789664d",
+    "manifest_sha256": "9c67868f574619ce3dd5c9ac0ba1e35668f1115356e70d8d356ab232d789664d",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5222
+    ],
+    "agent": "On",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\26_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\26_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\26_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\26_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\26_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\26_04750-05222.png",
+        "span": [
+          4750,
+          5222
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "FAIL (visible wording/required signal beat)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P05",
+        "panel": "Declaration-check explanatory sentences",
+        "word_count": 27,
+        "text": "Declaration complete; human confirmation and prescriber evidence are still required. These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P06",
+        "panel": "Reconciliation consent and explanation",
+        "word_count": 31,
+        "text": "I have reconciled the declaration with the available evidence, including the dispensing date This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P07",
+        "panel": "Initial D abstention explanation",
+        "word_count": 48,
+        "text": "No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed. No governing provision could be retrieved for this endorsement type and date Image quality 0.31 is below the 0.60 threshold Only 1 of 3 readings agree",
+        "image_indices": [
+          25,
+          26
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "D after referral On: fresh Type 1 and earlier referral retained. Same four failed signals and NOT RUN; no silent source repair. Long explanatory panels.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5222
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F02",
+        "severity": "blocking required beat",
+        "images": [
+          25,
+          26
+        ],
+        "span": [
+          2850,
+          3900
+        ],
+        "symptom": "Four red failed confidence signals (provision, readings, image quality, validated coverage), not exactly three. Sources reconcile is Not established; gate NOT RUN is correct.",
+        "remaining_work": "Resolve the four-versus-three acceptance contract discrepancy explicitly; do not merely conceal a real failed check."
+      }
+    ],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 27,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-10\\04-audit-deterministic-e-trace-on.png",
+    "relative_path": "check-10/04-audit-deterministic-e-trace-on.png",
+    "sha256": "9ba778ebe5d3a65f8eda9242954029e6f2a5746ac7aacf2011d5b686e4cb86a5",
+    "manifest_sha256": "9ba778ebe5d3a65f8eda9242954029e6f2a5746ac7aacf2011d5b686e4cb86a5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1642
+    ],
+    "agent": "On",
+    "check": "10 Case E remains deterministic without an agent call",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24101/trace",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\27_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\27_00950-01642.png",
+        "span": [
+          950,
+          1642
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "E trace deterministic clear with no model run/no human decision. HAND_OFF is explicitly existing-rules processing not person. Generic top Follow text mentions human confirmation despite this automatic item.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1642
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content. Generic Follow summary mentions human confirmation, but visible HAND_OFF explicitly means existing deterministic processing, not a fabricated human decision."
+  },
+  {
+    "index": 28,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-11\\03-b-july-replay.png",
+    "relative_path": "check-11/03-b-july-replay.png",
+    "sha256": "3368fcb70b227b7ac2b06dfa4763fc3ef49b64ecbcfc79d1f218077d13be8666",
+    "manifest_sha256": "3368fcb70b227b7ac2b06dfa4763fc3ef49b64ecbcfc79d1f218077d13be8666",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "On",
+    "check": "11 Case B July replay is Sufficient while August refers back",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\28_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\28_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\28_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "FAIL",
+    "observation": "July replay sufficient/gate PASS, date not required; toast overlaps right advice panel around y875-984; previous record retained.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2212
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F05",
+        "severity": "capture obstruction",
+        "images": [
+          28
+        ],
+        "span": [
+          874,
+          984
+        ],
+        "symptom": "Decision recorded toast covers part of the July Sufficient outcome badge and quotation. Pixels beneath the toast are not inspectable; surrounding checks support sufficient but do not repair the obscured capture.",
+        "remaining_work": "Dismiss/wait for toast and make a new hosted screenshot without altering this archive."
+      }
+    ],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 29,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-11\\05-b-august-replay.png",
+    "relative_path": "check-11/05-b-august-replay.png",
+    "sha256": "e66492e6935bb92110109af49395b9096aa506dddb946fb5d111cec22fd25ffb",
+    "manifest_sha256": "e66492e6935bb92110109af49395b9096aa506dddb946fb5d111cec22fd25ffb",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "On",
+    "check": "11 Case B July replay is Sufficient while August refers back",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\29_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\29_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\29_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "August replay refer-back/gate PASS/date required; same original record, no actual decision changed.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2212
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 30,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-14\\03-c-confirmation-still-conflicted-off.png",
+    "relative_path": "check-14/03-c-confirmation-still-conflicted-off.png",
+    "sha256": "acf4fbd1d27fa675a0a79456f4d69680194636187c906a19c112e0a3d4c9a6a1",
+    "manifest_sha256": "acf4fbd1d27fa675a0a79456f4d69680194636187c906a19c112e0a3d4c9a6a1",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2813
+    ],
+    "agent": "Off",
+    "check": "16 C confirmation returns to human review without resolving 56 versus 84",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24119",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\30_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\30_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\30_01900-02813.png",
+        "span": [
+          1900,
+          2813
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P10-30",
+        "panel": "Operator decision explanatory sentences",
+        "word_count": 47,
+        "text": "Human reason required; explain any override. Your judgement, not an agent recommendation or payment approval. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval.",
+        "image_indices": [
+          30
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "C confirmed Off still 56 vs84 and information requested; confirmation did not resolve material conflict. Human decision options and reason remain.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2813
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 31,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-14\\05-c-confirmation-still-conflicted-on.png",
+    "relative_path": "check-14/05-c-confirmation-still-conflicted-on.png",
+    "sha256": "017ac7805d9bc2d4d60b7fc639d4ed51a912d7c07199d48aa14d6246c0055390",
+    "manifest_sha256": "017ac7805d9bc2d4d60b7fc639d4ed51a912d7c07199d48aa14d6246c0055390",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3066
+    ],
+    "agent": "On",
+    "check": "16 C confirmation returns to human review without resolving 56 versus 84",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24119",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\31_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\31_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\31_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\31_02850-03066.png",
+        "span": [
+          2850,
+          3066
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P10-31",
+        "panel": "Operator decision explanatory sentences",
+        "word_count": 59,
+        "text": "Human reason required; explain any override. Proceed as the agent recommends. Release to existing pricing with a human amendment. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval. Optional. Only approved drafts accompany your human reason.",
+        "image_indices": [
+          31
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "C On still 56 vs84 and gate PASS for request information, not sufficient; supporting evidence and explicit human decision remain. Operator explanatory sentences cumulatively over25.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3066
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 32,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-15\\05-audit-historical-f-record-on.png",
+    "relative_path": "check-15/05-audit-historical-f-record-on.png",
+    "sha256": "f0c6372c4ef3c9a90d3d60c717b5a696f7ce767c4a946453c5738a6d3b30b775",
+    "manifest_sha256": "f0c6372c4ef3c9a90d3d60c717b5a696f7ce767c4a946453c5738a6d3b30b775",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2140
+    ],
+    "agent": "On",
+    "check": "17 F retains its original human record through mode changes and replay",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24088/record",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\32_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\32_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\32_01900-02140.png",
+        "span": [
+          1900,
+          2140
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Historical F DR-000871 appears alongside newer DR-000872, Paid after correction; no rewrite of historical source shown.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2140
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 33,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\04-audit-completed-type1-queue-off.png",
+    "relative_path": "check-16/04-audit-completed-type1-queue-off.png",
+    "sha256": "0d34832627b269923c28820da571929913afb3fa2d485e9ff192ac64e046290b",
+    "manifest_sha256": "0d34832627b269923c28820da571929913afb3fa2d485e9ff192ac64e046290b",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2526
+    ],
+    "agent": "Off",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\33_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\33_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\33_01900-02526.png",
+        "span": [
+          1900,
+          2526
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Completed ordinary-paper Type1 Off: Human capture confirmed and existing pricing retained, not untouched automatic or invented Type2 judgement. On scenario explicitly loads a complete declaration and separate human prescriber; initial provenance concern withdrawn after test-scenario corroboration.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2526
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 34,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\06-completed-type1-queue-off.png",
+    "relative_path": "check-16/06-completed-type1-queue-off.png",
+    "sha256": "5ef659d9d7fcb2b3abd3e8e655c173d8108d684062ed7f4456f72e0830a99c7a",
+    "manifest_sha256": "5ef659d9d7fcb2b3abd3e8e655c173d8108d684062ed7f4456f72e0830a99c7a",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2526
+    ],
+    "agent": "Off",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\34_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\34_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\34_01900-02526.png",
+        "span": [
+          1900,
+          2526
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Completed ordinary-paper Type1 Off: Human capture confirmed and existing pricing retained, not untouched automatic or invented Type2 judgement. On scenario explicitly loads a complete declaration and separate human prescriber; initial provenance concern withdrawn after test-scenario corroboration.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2526
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 35,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\09-audit-completed-type1-card-off.png",
+    "relative_path": "check-16/09-audit-completed-type1-card-off.png",
+    "sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "manifest_sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1000
+    ],
+    "agent": "Off",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\35_00000-01000.png",
+        "span": [
+          0,
+          1000
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Completed case card Off explicitly says person confirmed, no Type2 judgement and not untouched automatic; links tightly adjacent but not clipped.",
+    "inspected_spans": [
+      [
+        0,
+        1000
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 36,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\11-completed-type1-card-off.png",
+    "relative_path": "check-16/11-completed-type1-card-off.png",
+    "sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "manifest_sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1000
+    ],
+    "agent": "Off",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\36_00000-01000.png",
+        "span": [
+          0,
+          1000
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Duplicate completed card Off independently viewed, same human-origin truth.",
+    "inspected_spans": [
+      [
+        0,
+        1000
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 37,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\15-audit-completed-type1-queue-on.png",
+    "relative_path": "check-16/15-audit-completed-type1-queue-on.png",
+    "sha256": "5d6f70da590e081d349366e95d2362ee2dafcbc66a3323f8b1be2af4c8fbc85f",
+    "manifest_sha256": "5d6f70da590e081d349366e95d2362ee2dafcbc66a3323f8b1be2af4c8fbc85f",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2594
+    ],
+    "agent": "On",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\37_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\37_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\37_01900-02594.png",
+        "span": [
+          1900,
+          2594
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Completed ordinary-paper Type1 On: Human capture confirmed and existing pricing retained, not untouched automatic or invented Type2 judgement. On scenario explicitly loads a complete declaration and separate human prescriber; initial provenance concern withdrawn after test-scenario corroboration.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2594
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 38,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\17-completed-type1-queue-on.png",
+    "relative_path": "check-16/17-completed-type1-queue-on.png",
+    "sha256": "82256b15c12bbd3e5b46ee488564315a1a1ab3d4d3a377e078dce29022709c08",
+    "manifest_sha256": "82256b15c12bbd3e5b46ee488564315a1a1ab3d4d3a377e078dce29022709c08",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2594
+    ],
+    "agent": "On",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\38_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\38_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\38_01900-02594.png",
+        "span": [
+          1900,
+          2594
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Completed ordinary-paper Type1 On: Human capture confirmed and existing pricing retained, not untouched automatic or invented Type2 judgement. On scenario explicitly loads a complete declaration and separate human prescriber; initial provenance concern withdrawn after test-scenario corroboration.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2594
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 39,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\20-audit-completed-type1-card-on.png",
+    "relative_path": "check-16/20-audit-completed-type1-card-on.png",
+    "sha256": "bd3ae61ea4b435caa8fc4aac3e65b336bc243d3f0e4c27a35a1a28a2c94a2726",
+    "manifest_sha256": "bd3ae61ea4b435caa8fc4aac3e65b336bc243d3f0e4c27a35a1a28a2c94a2726",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1061
+    ],
+    "agent": "On",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\39_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\39_00950-01061.png",
+        "span": [
+          950,
+          1061
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "FAIL",
+    "observation": "Completed card On explicitly preserves human work; C exposes raw REQUEST_INFORMATION enum, novice-copy defect.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1061
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F06",
+        "severity": "novice terminology",
+        "images": [
+          6,
+          39,
+          40
+        ],
+        "span": [
+          0,
+          1050
+        ],
+        "symptom": "Case C card exposes REQUEST_INFORMATION as the outcome instead of a plain-language phrase.",
+        "remaining_work": "Use readable interface wording while leaving immutable audit data untouched."
+      }
+    ],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 40,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-16\\22-completed-type1-card-on.png",
+    "relative_path": "check-16/22-completed-type1-card-on.png",
+    "sha256": "bd3ae61ea4b435caa8fc4aac3e65b336bc243d3f0e4c27a35a1a28a2c94a2726",
+    "manifest_sha256": "bd3ae61ea4b435caa8fc4aac3e65b336bc243d3f0e4c27a35a1a28a2c94a2726",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1061
+    ],
+    "agent": "On",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\40_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\40_00950-01061.png",
+        "span": [
+          950,
+          1061
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "FAIL",
+    "observation": "Duplicate completed card On independently viewed, same raw enum and human-origin truth.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        1061
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F06",
+        "severity": "novice terminology",
+        "images": [
+          6,
+          39,
+          40
+        ],
+        "span": [
+          0,
+          1050
+        ],
+        "symptom": "Case C card exposes REQUEST_INFORMATION as the outcome instead of a plain-language phrase.",
+        "remaining_work": "Use readable interface wording while leaving immutable audit data untouched."
+      }
+    ],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 41,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-17\\03-same-d-completed-off-both.png",
+    "relative_path": "check-17/03-same-d-completed-off-both.png",
+    "sha256": "653e8a6c02ecbbe70755efd8c7677e64a1036a4cac1aa7765e0ee8266e483740",
+    "manifest_sha256": "653e8a6c02ecbbe70755efd8c7677e64a1036a4cac1aa7765e0ee8266e483740",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5251
+    ],
+    "agent": "Off",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, both",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\41_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\41_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\41_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\41_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\41_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\41_04750-05251.png",
+        "span": [
+          4750,
+          5251
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Same D continuous cycle Off: paper revision, human capture, RB2B referral, corrected resubmission, new capture and later explicit human sufficient judgement retained; Paid attributed to existing rules. No silent poor-image upgrade visible. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5251
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 42,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-18\\03-same-d-completed-off-switched.png",
+    "relative_path": "check-18/03-same-d-completed-off-switched.png",
+    "sha256": "556e56291eb78502a804c3e317633c5978fad632966377f960feb883cb6ef6c5",
+    "manifest_sha256": "556e56291eb78502a804c3e317633c5978fad632966377f960feb883cb6ef6c5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5070
+    ],
+    "agent": "Off",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, switched",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\42_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\42_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\42_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\42_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\42_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\42_04750-05070.png",
+        "span": [
+          4750,
+          5070
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Same D continuous cycle Off: paper revision, human capture, RB2B referral, corrected resubmission, new capture and later explicit human sufficient judgement retained; Paid attributed to existing rules. No silent poor-image upgrade visible. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5070
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content. A transient toast overlaps content near y875-984. Hidden pixels were not inferred; review should obtain unobstructed replacement evidence."
+  },
+  {
+    "index": 43,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-19\\03-same-d-completed-on-both.png",
+    "relative_path": "check-19/03-same-d-completed-on-both.png",
+    "sha256": "94224b88930d5fa4e026116bafc77ae330e6df3aa1020ac9f2804798c1024a2b",
+    "manifest_sha256": "94224b88930d5fa4e026116bafc77ae330e6df3aa1020ac9f2804798c1024a2b",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5191
+    ],
+    "agent": "On",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, both",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\43_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\43_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\43_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\43_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\43_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\43_04750-05191.png",
+        "span": [
+          4750,
+          5191
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Same D continuous cycle On: paper revision, human capture, RB2B referral, corrected resubmission, new capture and later explicit human sufficient judgement retained; Paid attributed to existing rules. No silent poor-image upgrade visible. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5191
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 44,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-20\\03-same-d-completed-on-switched.png",
+    "relative_path": "check-20/03-same-d-completed-on-switched.png",
+    "sha256": "0bf90e8dd74c8239c528bbee32fd9e5853f140fc449dbcfb95887e6ec42553e7",
+    "manifest_sha256": "0bf90e8dd74c8239c528bbee32fd9e5853f140fc449dbcfb95887e6ec42553e7",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5010
+    ],
+    "agent": "On",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, switched",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\44_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\44_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\44_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\44_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\44_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\44_04750-05010.png",
+        "span": [
+          4750,
+          5010
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Same D continuous cycle On: paper revision, human capture, RB2B referral, corrected resubmission, new capture and later explicit human sufficient judgement retained; Paid attributed to existing rules. No silent poor-image upgrade visible. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5010
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 45,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-21\\03-generic-correction-awaiting-human-recheck.png",
+    "relative_path": "check-21/03-generic-correction-awaiting-human-recheck.png",
+    "sha256": "50b6be157214d9137a56b3b288321983b776e7bbd5938f3c6b55444087aa8d1a",
+    "manifest_sha256": "50b6be157214d9137a56b3b288321983b776e7bbd5938f3c6b55444087aa8d1a",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3608
+    ],
+    "agent": "On",
+    "check": "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=SYN-FQ123-TYPE2",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\45_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\45_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\45_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\45_02850-03608.png",
+        "span": [
+          2850,
+          3608
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Generic corrected EPS remains Resubmitted awaiting human re-check, RB2B presentation/form and missing brand corrections retained. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3608
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 46,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-21\\05-generic-correction-human-decided-paid.png",
+    "relative_path": "check-21/05-generic-correction-human-decided-paid.png",
+    "sha256": "24f5243d5b154a337f6618eeaaab2d4eab1f11a19405d1222de83b08cb94c576",
+    "manifest_sha256": "24f5243d5b154a337f6618eeaaab2d4eab1f11a19405d1222de83b08cb94c576",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4415
+    ],
+    "agent": "On",
+    "check": "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=SYN-FQ123-TYPE2",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\46_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\46_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\46_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\46_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\46_03800-04415.png",
+        "span": [
+          3800,
+          4415
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Generic Paid only after explicit human sufficient decision; original EPS, RB2B referral and correction history retained. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4415
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 47,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-25\\08-audit-perspective-round-trip-on.png",
+    "relative_path": "check-25/08-audit-perspective-round-trip-on.png",
+    "sha256": "b23ab9b55d63a8607ca3c597131bcad22b4d9213a52b969eb2f1f8088d463a86",
+    "manifest_sha256": "b23ab9b55d63a8607ca3c597131bcad22b4d9213a52b969eb2f1f8088d463a86",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4745
+    ],
+    "agent": "On",
+    "check": "14 Perspectives preserve the same submitted item and human decision Off then On without Reset",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24112",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\47_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\47_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\47_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\47_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\47_03800-04745.png",
+        "span": [
+          3800,
+          4745
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P03",
+        "panel": "MYS Unpaid items context",
+        "word_count": 33,
+        "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+        "image_indices": [
+          15,
+          16,
+          20,
+          22,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P09",
+        "panel": "This pharmacy monthly count explanation",
+        "word_count": 36,
+        "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+        "image_indices": [
+          16,
+          22,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Perspective round trip retains B original Off and later assisted submissions and human referral; no history erasure. Claims MYS explanatory panel exceeds prose limit.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4745
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 48,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-26\\03-hillcrest-only-operational-work.png",
+    "relative_path": "check-26/03-hillcrest-only-operational-work.png",
+    "sha256": "99e870d7b411df1195f17c29578c4c7a326076923aba2e2e01524863a920c34e",
+    "manifest_sha256": "99e870d7b411df1195f17c29578c4c7a326076923aba2e2e01524863a920c34e",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3074
+    ],
+    "agent": "Off",
+    "check": "19 Hillcrest is the only operational pharmacy and background entries are unclickable",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\48_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\48_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\48_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\48_02850-03074.png",
+        "span": [
+          2850,
+          3074
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Only Hillcrest operational rows, fixed other-pharmacy examples clearly background. Off manual capture unchanged and default model totals visible.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3074
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 49,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-27\\03-visible-eps-ex-24107-off.png",
+    "relative_path": "check-27/03-visible-eps-ex-24107-off.png",
+    "sha256": "ed77d622d71d6b9da47ba6d4efa9167df07c57c25c10c8050cf4c6f5181582d8",
+    "manifest_sha256": "ed77d622d71d6b9da47ba6d4efa9167df07c57c25c10c8050cf4c6f5181582d8",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3101
+    ],
+    "agent": "Off",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\49_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\49_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\49_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\49_02850-03101.png",
+        "span": [
+          2850,
+          3101
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "FAIL (visible wording/required signal beat)",
+    "prose_findings": [],
+    "overall_verdict": "FAIL",
+    "observation": "Complete visible EPS Off: literal NCSO initials/date and structured prescription, Paid by existing code without staff handoff. Contradictory generic manual send pain label persists.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3101
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F04",
+        "severity": "novice functional-truth confusion",
+        "images": [
+          7,
+          49
+        ],
+        "span": [
+          0,
+          1050
+        ],
+        "symptom": "Complete EPS Off has Send claim pain marker \"Manual: Problems found at NHSBSA weeks later\" despite its complete automatic route; image49 also shows actual Paid receipt below.",
+        "remaining_work": "Make pain explanation conditional or clearly hypothetical without implying this complete item fails."
+      }
+    ],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 50,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-27\\05-visible-eps-ex-24107-on.png",
+    "relative_path": "check-27/05-visible-eps-ex-24107-on.png",
+    "sha256": "47bc34a06ab341313024d2d4a9f0adad3a6537bda4b241d553b4c0e34ab37394",
+    "manifest_sha256": "47bc34a06ab341313024d2d4a9f0adad3a6537bda4b241d553b4c0e34ab37394",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3101
+    ],
+    "agent": "On",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\50_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\50_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\50_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\50_02850-03101.png",
+        "span": [
+          2850,
+          3101
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Complete visible EPS On: literal prescription and receipt; existing automatic pricing, not agent payment or human decision.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3101
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 51,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-27\\07-visible-eps-ex-24112-off.png",
+    "relative_path": "check-27/07-visible-eps-ex-24112-off.png",
+    "sha256": "f693e1906afe270f1a59b732f1ca0ee75674c2b382a32139a832855eb8ce946c",
+    "manifest_sha256": "f693e1906afe270f1a59b732f1ca0ee75674c2b382a32139a832855eb8ce946c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3081
+    ],
+    "agent": "Off",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\51_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\51_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\51_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\51_02850-03081.png",
+        "span": [
+          2850,
+          3081
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Missing-date EPS Off: literal initialled NCSO, no date, Type2 not Type1, unchanged image-free EPS route.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3081
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 52,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-27\\09-visible-eps-ex-24112-on.png",
+    "relative_path": "check-27/09-visible-eps-ex-24112-on.png",
+    "sha256": "e60b6457e044ce6077bebc4a7f002e18e52af1fc6cb406a9755ab091ee2b542c",
+    "manifest_sha256": "e60b6457e044ce6077bebc4a7f002e18e52af1fc6cb406a9755ab091ee2b542c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3101
+    ],
+    "agent": "On",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\52_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\52_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\52_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\52_02850-03101.png",
+        "span": [
+          2850,
+          3101
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Missing-date EPS On: applied date visible in literal text and receipt; explicit submission then existing pricing. Draft corrected/not submitted message alongside receipt may confuse, but send-new-attempt distinguishes draft.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3101
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content. Draft-corrected/not-submitted notice appears alongside a receipt; Send a new synthetic attempt distinguishes them, but the draft/receipt boundary could be clearer."
+  },
+  {
+    "index": 53,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-27\\11-visible-eps-syn-fq123-type2-off.png",
+    "relative_path": "check-27/11-visible-eps-syn-fq123-type2-off.png",
+    "sha256": "95ccf4185c576ed278fa967fadce4462e9730b7e9b9a8782294eed94a092f67e",
+    "manifest_sha256": "95ccf4185c576ed278fa967fadce4462e9730b7e9b9a8782294eed94a092f67e",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3294
+    ],
+    "agent": "Off",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\53_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\53_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\53_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\53_02850-03294.png",
+        "span": [
+          2850,
+          3294
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Generic EPS Off: visible supplied fields and literal endorsement snapshot, incomplete fields route Type2, no imaginary unreadable EPS.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3294
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 54,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-27\\13-visible-eps-syn-fq123-type2-on.png",
+    "relative_path": "check-27/13-visible-eps-syn-fq123-type2-on.png",
+    "sha256": "dd63bf75df8933f4e6299f56d34f91543f6a39e4e742c6bd5d31b41f415a99fe",
+    "manifest_sha256": "dd63bf75df8933f4e6299f56d34f91543f6a39e4e742c6bd5d31b41f415a99fe",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3314
+    ],
+    "agent": "On",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\54_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\54_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\54_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\54_02850-03314.png",
+        "span": [
+          2850,
+          3314
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Generic EPS On: actual brand, pack/form corrections visible; new complete EPS clears by code. Existing referred generic re-check is separately shown in45/46.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3314
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content. Draft-corrected/not-submitted notice appears alongside a receipt; Send a new synthetic attempt distinguishes them, but the draft/receipt boundary could be clearer."
+  },
+  {
+    "index": 55,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-28\\04-audit-worked-declaration-unconfirmed-on.png",
+    "relative_path": "check-28/04-audit-worked-declaration-unconfirmed-on.png",
+    "sha256": "9271429c1ee2dc57fd7e416edf3657202206f9ddfdc49aee407fd3f292f374c4",
+    "manifest_sha256": "9271429c1ee2dc57fd7e416edf3657202206f9ddfdc49aee407fd3f292f374c4",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3887
+    ],
+    "agent": "On",
+    "check": "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\55_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\55_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\55_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\55_02850-03887.png",
+        "span": [
+          2850,
+          3887
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [
+      {
+        "id": "P04",
+        "panel": "Capture routing explanation",
+        "word_count": 28,
+        "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+        "image_indices": [
+          17,
+          18,
+          23,
+          24,
+          25,
+          26,
+          48,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P05",
+        "panel": "Declaration-check explanatory sentences",
+        "word_count": 27,
+        "text": "Declaration complete; human confirmation and prescriber evidence are still required. These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P06",
+        "panel": "Reconciliation consent and explanation",
+        "word_count": 31,
+        "text": "I have reconciled the declaration with the available evidence, including the dispensing date This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.",
+        "image_indices": [
+          17,
+          25,
+          26,
+          55
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Worked declaration unconfirmed: prescriber not supplied, machine image cannot be read, per-field declared-not-read labels, not built, confirm disabled, no advice. Long capture explanation.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3887
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 56,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-28\\07-audit-worked-declaration-human-confirmed-on.png",
+    "relative_path": "check-28/07-audit-worked-declaration-human-confirmed-on.png",
+    "sha256": "224b19605f4c05222049235fe5be8ae446d3bf7b42ed9c00d58e0f05c58d6218",
+    "manifest_sha256": "224b19605f4c05222049235fe5be8ae446d3bf7b42ed9c00d58e0f05c58d6218",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4817
+    ],
+    "agent": "On",
+    "check": "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\56_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\56_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\56_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\56_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\56_03800-04817.png",
+        "span": [
+          3800,
+          4817
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "FAIL (visible wording/required signal beat)",
+    "prose_findings": [
+      {
+        "id": "P10-56",
+        "panel": "Operator decision explanatory sentences",
+        "word_count": 51,
+        "text": "Human reason required; explain any override. Proceed as the agent recommends. Release to existing pricing with a human amendment. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval.",
+        "image_indices": [
+          56
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Worked declaration human-confirmed: separate Dr Demo prescriber, old poor machine evidence remains, sufficient and gate PASS only after human confirmation. FALSE wording All mandatory fields read in deterministic checks. Header still Deliberate failure and abstention. Operator prose exceeds25.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4817
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F01",
+        "severity": "blocking functional-truth copy",
+        "images": [
+          56
+        ],
+        "span": [
+          1900,
+          2950
+        ],
+        "symptom": "Deterministic check says \"All mandatory fields read\" despite unreadable original image, quality 0.31 and 1 of 3 readings. Human-confirmed fields are not machine-read fields.",
+        "remaining_work": "Describe mandatory fields as supplied/confirmed with their actual origin; retain original machine uncertainty. Recapture affected hosted state."
+      }
+    ],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 57,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-29\\03-declared-paper-unreconciled-evidence-abstains.png",
+    "relative_path": "check-29/03-declared-paper-unreconciled-evidence-abstains.png",
+    "sha256": "2452f8617d2ee68ba9147125dc4f033b7970c518f3fdb11db1e33a067daefc08",
+    "manifest_sha256": "2452f8617d2ee68ba9147125dc4f033b7970c518f3fdb11db1e33a067daefc08",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5026
+    ],
+    "agent": "On",
+    "check": "22 Contradictory capture of a complete declaration still abstains without invented agreement",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\57_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\57_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\57_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\57_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\57_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa\\57_04750-05026.png",
+        "span": [
+          4750,
+          5026
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "FAIL",
+    "functional_truth_verdict": "FAIL (visible wording/required signal beat)",
+    "prose_findings": [
+      {
+        "id": "P08",
+        "panel": "Conflicted D abstention explanation",
+        "word_count": 34,
+        "text": "No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed. Human-confirmed fields remain unknown, conflicting or unreconciled, or no provision was retrieved.",
+        "image_indices": [
+          57
+        ],
+        "status": "FAIL"
+      },
+      {
+        "id": "P10-57",
+        "panel": "Operator decision explanatory sentences",
+        "word_count": 55,
+        "text": "Human reason required; explain any override. Your judgement, not an agent recommendation or payment approval. Release to existing pricing with a human amendment. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval.",
+        "image_indices": [
+          57
+        ],
+        "status": "FAIL"
+      }
+    ],
+    "overall_verdict": "FAIL",
+    "observation": "Unreconciled declared paper: abstain and NOT RUN, product mismatch retained. Contradictory capture summary declaration and paper explicitly reconciled versus Sources reconcile Conflict. Long explanatory panels.",
+    "inspected_spans": [
+      [
+        0,
+        1050
+      ],
+      [
+        950,
+        2000
+      ],
+      [
+        1900,
+        2950
+      ],
+      [
+        2850,
+        3900
+      ],
+      [
+        3800,
+        4850
+      ],
+      [
+        4750,
+        5026
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [
+      {
+        "id": "F03",
+        "severity": "blocking source-authority wording",
+        "images": [
+          57
+        ],
+        "span": [
+          950,
+          2950
+        ],
+        "symptom": "Capture summary says \"declaration and paper explicitly reconciled\", while human product SYN-AMLO10-28 differs from original declared/ledger SYN-COCOD-100 and Sources reconcile says Conflict. Abstention/NOT RUN correctly preserve the unresolved state.",
+        "remaining_work": "Qualify what a person attested versus what remains unreconciled. Do not claim successful paper reconciliation from an unreadable image."
+      }
+    ],
+    "prose_verdict": "FAIL",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  },
+  {
+    "index": 58,
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\b05b06a\\check-30\\03-central-bet-follows-edited-assumption.png",
+    "relative_path": "check-30/03-central-bet-follows-edited-assumption.png",
+    "sha256": "c461aacf7fff30742be17a339ff3b30374795139a4294bfe37fcce017392d8e3",
+    "manifest_sha256": "c461aacf7fff30742be17a339ff3b30374795139a4294bfe37fcce017392d8e3",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1002
+    ],
+    "agent": "Off",
+    "check": "23 Six stakeholder chapters retain all nine stops and the editable central bet",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#close",
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa\\58_00000-01002.png",
+        "span": [
+          0,
+          1002
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "PASS (visible screenshot only)",
+    "functional_truth_verdict": "PASS (visible state only; interaction not re-executed)",
+    "prose_findings": [],
+    "overall_verdict": "PASS (screenshot only)",
+    "observation": "Closing shows 6/6 and edited40% prevention assumption, stop condition, no-payment boundary, first test/history/proceed-reshape-stop. Collapsed five assumptions and seven questions contents not visible, not claimed inspected.",
+    "inspected_spans": [
+      [
+        0,
+        1002
+      ]
+    ],
+    "coverage_complete": true,
+    "coverage_coordinate_system": "Original PNG y, zero-based, half-open [start,end); each tile spans x=[0,1440), no resizing.",
+    "findings": [],
+    "prose_verdict": "PASS (observed explanatory prose; collapsed contents not inspected)",
+    "uncertainty": "Screenshot cannot establish keyboard operation, semantic names, contrast ratio, reduced-motion behaviour, live route reliability or unseen collapsed content."
+  }
+]

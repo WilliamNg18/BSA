@@ -77,7 +77,7 @@ describe("whole-process presentation", () => {
         expect(markup).toMatch(new RegExp(`data-process-metric="${column}-${key}"[^]*?aria-label="${format(expected[column][key])}"`));
       }
     }
-    expect(markup).toContain("With total includes manual gathering for abstentions");
+    expect(markup).toContain("With total includes abstention gathering and judgement for every queued item");
     expect(markup).toContain("This is not a claim about real staff or historical records");
     expect(markup).toContain("297.5 operator hours gathering and judging");
     expect(markup).not.toContain("Items one operator can complete");

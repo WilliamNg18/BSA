@@ -1,0 +1,7 @@
+{
+  "at": "2026-09-13T21:18:44.106Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#close",
+  "dialog": "<div role=\"dialog\" id=\"radix-_r_4_\" data-state=\"open\" data-slot=\"sheet-content\" class=\"fixed z-50 flex flex-col gap-4 bg-background shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm overflow-y-auto data-[state=closed]:animate-none data-[state=closed]:duration-0 motion-reduce:data-[state=open]:animate-none motion-reduce:data-[state=open]:duration-0\" tabindex=\"-1\" aria-describedby=\"radix-_r_6_\" aria-labelledby=\"radix-_r_5_\" style=\"pointer-events: auto;\"><div data-slot=\"sheet-header\" class=\"fle",
+  "active": "<button type=\"button\" class=\"absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x size-4\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg><span class=\"sr-only\">Close</span></button>",
+  "backgroundHidden": "true"
+}

@@ -217,7 +217,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
           } catch (err) { setError(err instanceof Error ? err.message : "Claim submission unavailable."); }
         }}><Send aria-hidden="true" />Send claim</Button>
         <BoundaryTag cls="human" />
-        <PainMarker resolved={enabled && result?.status === "ready"} pain="Problems found at NHSBSA weeks later" resolution="Advice checked before sending; no payment guarantee" />
+        <PainMarker resolved={enabled && result?.status === "ready"} pain="If incomplete, problems may be found at NHSBSA weeks later" resolution="Advice checked before sending; no payment guarantee" />
         <p className="text-xs text-muted-foreground">Send a new synthetic attempt; correct referrals in claim details.</p>
         {error && <p role="alert">{error}</p>}
       </PageSection>

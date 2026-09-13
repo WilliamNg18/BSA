@@ -1,0 +1,723 @@
+{
+  "status": "FAIL",
+  "source_commit": "b05b06ad67860fea9d9809eed09b5f1636168f66",
+  "export_commit": "c1912e6aff989270a5357db2ac95da3231b23e71",
+  "archive_preservation_commit": "d35e605b7b7b18521d0ab163cf4b274a084974be",
+  "deployment_url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+  "counts": {
+    "images": 58,
+    "off": 25,
+    "on": 33,
+    "sha256_matches": 58,
+    "full_height_images": 58,
+    "native_tiles": 202,
+    "unique_png_hashes": 53,
+    "total_original_vertical_pixels": 167702,
+    "image_pass": 24,
+    "image_fail": 34,
+    "image_not_verified": 0,
+    "prose_block_occurrences": 46
+  },
+  "archive_reported_counts": {
+    "checks": 30,
+    "identities": 60,
+    "images": 58,
+    "offImages": 25,
+    "onImages": 33,
+    "audits": 26,
+    "offAudits": 10,
+    "onAudits": 16,
+    "violations": 0,
+    "incompleteAudits": 18
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "blocking functional-truth copy",
+      "images": [
+        56
+      ],
+      "span": [
+        1900,
+        2950
+      ],
+      "symptom": "Deterministic check says \"All mandatory fields read\" despite unreadable original image, quality 0.31 and 1 of 3 readings. Human-confirmed fields are not machine-read fields.",
+      "remaining_work": "Describe mandatory fields as supplied/confirmed with their actual origin; retain original machine uncertainty. Recapture affected hosted state."
+    },
+    {
+      "id": "F02",
+      "severity": "blocking required beat",
+      "images": [
+        25,
+        26
+      ],
+      "span": [
+        2850,
+        3900
+      ],
+      "symptom": "Four red failed confidence signals (provision, readings, image quality, validated coverage), not exactly three. Sources reconcile is Not established; gate NOT RUN is correct.",
+      "remaining_work": "Resolve the four-versus-three acceptance contract discrepancy explicitly; do not merely conceal a real failed check."
+    },
+    {
+      "id": "F03",
+      "severity": "blocking source-authority wording",
+      "images": [
+        57
+      ],
+      "span": [
+        950,
+        2950
+      ],
+      "symptom": "Capture summary says \"declaration and paper explicitly reconciled\", while human product SYN-AMLO10-28 differs from original declared/ledger SYN-COCOD-100 and Sources reconcile says Conflict. Abstention/NOT RUN correctly preserve the unresolved state.",
+      "remaining_work": "Qualify what a person attested versus what remains unreconciled. Do not claim successful paper reconciliation from an unreadable image."
+    },
+    {
+      "id": "F04",
+      "severity": "novice functional-truth confusion",
+      "images": [
+        7,
+        49
+      ],
+      "span": [
+        0,
+        1050
+      ],
+      "symptom": "Complete EPS Off has Send claim pain marker \"Manual: Problems found at NHSBSA weeks later\" despite its complete automatic route; image49 also shows actual Paid receipt below.",
+      "remaining_work": "Make pain explanation conditional or clearly hypothetical without implying this complete item fails."
+    },
+    {
+      "id": "F05",
+      "severity": "capture obstruction",
+      "images": [
+        28
+      ],
+      "span": [
+        874,
+        984
+      ],
+      "symptom": "Decision recorded toast covers part of the July Sufficient outcome badge and quotation. Pixels beneath the toast are not inspectable; surrounding checks support sufficient but do not repair the obscured capture.",
+      "remaining_work": "Dismiss/wait for toast and make a new hosted screenshot without altering this archive."
+    },
+    {
+      "id": "F06",
+      "severity": "novice terminology",
+      "images": [
+        6,
+        39,
+        40
+      ],
+      "span": [
+        0,
+        1050
+      ],
+      "symptom": "Case C card exposes REQUEST_INFORMATION as the outcome instead of a plain-language phrase.",
+      "remaining_work": "Use readable interface wording while leaving immutable audit data untouched."
+    }
+  ],
+  "prose_blocks": [
+    {
+      "id": "P01",
+      "panel": "Overview uncertain-items panel",
+      "word_count": 27,
+      "text": "Type 1 captures uncertain reads. Type 2 judges endorsements. Items can need either or both. Still insufficient: referred back to MYS Unpaid items for correction and resubmission.",
+      "image_indices": [
+        1,
+        2,
+        3
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P02",
+      "panel": "Monthly operator-hours explanation",
+      "word_count": 34,
+      "text": "With total includes manual gathering for abstentions and judgement on every queued item. No second judgement is assumed. Built cases assume no human gathering; the agent and code assemble evidence. Abstentions retain manual gathering.",
+      "image_indices": [
+        4,
+        5
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P03",
+      "panel": "MYS Unpaid items context",
+      "word_count": 33,
+      "text": "NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed. Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.",
+      "image_indices": [
+        15,
+        16,
+        20,
+        22,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P04",
+      "panel": "Capture routing explanation",
+      "word_count": 28,
+      "text": "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause. the agent verifies and advises; a person decides",
+      "image_indices": [
+        17,
+        18,
+        23,
+        24,
+        25,
+        26,
+        48,
+        55
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P05",
+      "panel": "Declaration-check explanatory sentences",
+      "word_count": 27,
+      "text": "Declaration complete; human confirmation and prescriber evidence are still required. These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.",
+      "image_indices": [
+        17,
+        25,
+        26,
+        55
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P06",
+      "panel": "Reconciliation consent and explanation",
+      "word_count": 31,
+      "text": "I have reconciled the declaration with the available evidence, including the dispensing date This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.",
+      "image_indices": [
+        17,
+        25,
+        26,
+        55
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P07",
+      "panel": "Initial D abstention explanation",
+      "word_count": 48,
+      "text": "No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed. No governing provision could be retrieved for this endorsement type and date Image quality 0.31 is below the 0.60 threshold Only 1 of 3 readings agree",
+      "image_indices": [
+        25,
+        26
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P08",
+      "panel": "Conflicted D abstention explanation",
+      "word_count": 34,
+      "text": "No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed. Human-confirmed fields remain unknown, conflicting or unreconciled, or no provision was retrieved.",
+      "image_indices": [
+        57
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P09",
+      "panel": "This pharmacy monthly count explanation",
+      "word_count": 36,
+      "text": "Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment. Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.",
+      "image_indices": [
+        16,
+        22,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P10-30",
+      "panel": "Operator decision explanatory sentences",
+      "word_count": 47,
+      "text": "Human reason required; explain any override. Your judgement, not an agent recommendation or payment approval. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval.",
+      "image_indices": [
+        30
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P10-31",
+      "panel": "Operator decision explanatory sentences",
+      "word_count": 59,
+      "text": "Human reason required; explain any override. Proceed as the agent recommends. Release to existing pricing with a human amendment. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval. Optional. Only approved drafts accompany your human reason.",
+      "image_indices": [
+        31
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P10-56",
+      "panel": "Operator decision explanatory sentences",
+      "word_count": 51,
+      "text": "Human reason required; explain any override. Proceed as the agent recommends. Release to existing pricing with a human amendment. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval.",
+      "image_indices": [
+        56
+      ],
+      "status": "FAIL"
+    },
+    {
+      "id": "P10-57",
+      "panel": "Operator decision explanatory sentences",
+      "word_count": 55,
+      "text": "Human reason required; explain any override. Your judgement, not an agent recommendation or payment approval. Release to existing pricing with a human amendment. Ask the pharmacy to confirm a fact before any outcome. Return the item with the exact fix; payment waits. Send to a senior operator, as today. Session record only. No payment approval.",
+      "image_indices": [
+        57
+      ],
+      "status": "FAIL"
+    }
+  ],
+  "checks": [
+    {
+      "archive_directory": "check-01",
+      "name": "01 Root Overview starts Agent Off and serves the approved build",
+      "capture_indices": [
+        1,
+        2
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-02",
+      "name": "02 Every current route toggles On and back Off without errors",
+      "capture_indices": [
+        3
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-03",
+      "name": "03 Shared monthly inputs update both process columns and Scene figures",
+      "capture_indices": [
+        4,
+        5
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-04",
+      "name": "04 Four case cards retain automatic, Type 2 and unconfirmed Type 1 routes",
+      "capture_indices": [
+        6
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-05",
+      "name": "05 Three pharmacy scenarios remain advisory in both modes",
+      "capture_indices": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-06",
+      "name": "06 Claims seed list opens a matching seeded claim and history",
+      "capture_indices": [
+        15,
+        16
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-07",
+      "name": "07 Actual staff work and separate monthly projections survive Agent changes",
+      "capture_indices": [
+        17,
+        18
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-08",
+      "name": "08 Full Off then On round trips retain Follow and Switch side",
+      "capture_indices": [
+        19,
+        20,
+        21,
+        22
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-09",
+      "name": "09 D abstains until human capture and retains history through paper referral",
+      "capture_indices": [
+        23,
+        24,
+        25,
+        26
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-10",
+      "name": "10 Case E remains deterministic without an agent call",
+      "capture_indices": [
+        27
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "PASS (captured pixels only; full named functional check not re-executed)"
+    },
+    {
+      "archive_directory": "check-11",
+      "name": "11 Case B July replay is Sufficient while August refers back",
+      "capture_indices": [
+        28,
+        29
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-12",
+      "name": "12 Six root deep links return the application with strict headers",
+      "capture_indices": [],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "NOT VERIFIED (no PNG checkpoint)"
+    },
+    {
+      "archive_directory": "check-13",
+      "name": "13 Reset restores seeded claims, calculator and Agent Off",
+      "capture_indices": [],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "NOT VERIFIED (no PNG checkpoint)"
+    },
+    {
+      "archive_directory": "check-14",
+      "name": "16 C confirmation returns to human review without resolving 56 versus 84",
+      "capture_indices": [
+        30,
+        31
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-15",
+      "name": "17 F retains its original human record through mode changes and replay",
+      "capture_indices": [
+        32
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "PASS (captured pixels only; full named functional check not re-executed)"
+    },
+    {
+      "archive_directory": "check-16",
+      "name": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+      "capture_indices": [
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-17",
+      "name": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, both",
+      "capture_indices": [
+        41
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-18",
+      "name": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, switched",
+      "capture_indices": [
+        42
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-19",
+      "name": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, both",
+      "capture_indices": [
+        43
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-20",
+      "name": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, switched",
+      "capture_indices": [
+        44
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-21",
+      "name": "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
+      "capture_indices": [
+        45,
+        46
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-22",
+      "name": "15 Single header Agent toggle on every route in pharmacy",
+      "capture_indices": [],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "NOT VERIFIED (no PNG checkpoint)"
+    },
+    {
+      "archive_directory": "check-23",
+      "name": "15 Single header Agent toggle on every route in nhsbsa",
+      "capture_indices": [],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "NOT VERIFIED (no PNG checkpoint)"
+    },
+    {
+      "archive_directory": "check-24",
+      "name": "15 Single header Agent toggle on every route in both",
+      "capture_indices": [],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "NOT VERIFIED (no PNG checkpoint)"
+    },
+    {
+      "archive_directory": "check-25",
+      "name": "14 Perspectives preserve the same submitted item and human decision Off then On without Reset",
+      "capture_indices": [
+        47
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-26",
+      "name": "19 Hillcrest is the only operational pharmacy and background entries are unclickable",
+      "capture_indices": [
+        48
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-27",
+      "name": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+      "capture_indices": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-28",
+      "name": "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+      "capture_indices": [
+        55,
+        56
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-29",
+      "name": "22 Contradictory capture of a complete declaration still abstains without invented agreement",
+      "capture_indices": [
+        57
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "FAIL"
+    },
+    {
+      "archive_directory": "check-30",
+      "name": "23 Six stakeholder chapters retain all nine stops and the editable central bet",
+      "capture_indices": [
+        58
+      ],
+      "archive_reported_status": "PASS",
+      "independent_screenshot_status": "PASS (captured pixels only; full named functional check not re-executed)"
+    }
+  ],
+  "runtime_keyboard_contrast_wcag": "Parent direct hosted record read and assessed independently;11 contrast ratios recomputed successfully; sampled keyboard evidence supported with gaps. No new browser/runtime/CI run by this verifier. Site-wide accessibility and WCAG remain NOT VERIFIED.",
+  "withdrawn_concerns": [
+    "Complete EPS On has assisted pain wording, not the misleading Off wording.",
+    "Ordinary complete-paper On explicitly includes a declaration; no unsupported-declaration defect is retained."
+  ],
+  "artifacts": {
+    "ledger": "C:\\Users\\WILLIA~1\\AppData\\Local\\Temp\\task30-fresh-qa-20260913\\ledger.json",
+    "review_json": "C:\\Users\\WILLIA~1\\AppData\\Local\\Temp\\task30-fresh-qa-20260913\\review-result.json",
+    "review_markdown": "C:\\Users\\WILLIA~1\\AppData\\Local\\Temp\\task30-fresh-qa-20260913\\review-result.md",
+    "tiles": "C:/Temp/task30qa",
+    "manual_record_assessment": "C:\\Users\\WILLIA~1\\AppData\\Local\\Temp\\task30-fresh-qa-20260913\\manual-record-assessment.json"
+  },
+  "archive_unchanged": true,
+  "reviewed_at_utc": "2026-09-13T21:40:33.620530+00:00",
+  "identity_commit_matches": 60,
+  "screenshot_modes": [
+    "1440px light only"
+  ],
+  "prose_count_method": "Whitespace-delimited words; punctuation attached, hyphenated compounds and before/after count as one word. Meaningful panel sentences are cumulative. Excluded headings/control names, structured prescription fields, exact rule quotations, immutable audit/history records and required field-associated provenance. Normal generated explanations and consent explanations are counted. Under25 means at most24. Counts are conservative minima where other prose also exists.",
+  "beats": [
+    {
+      "beat": "Archive identity and PNG integrity",
+      "status": "PASS",
+      "evidence": "58/58 SHA256 match; 60/60 archived identity commits match source; this is archive verification, not fresh hosting verification."
+    },
+    {
+      "beat": "All58 full-height native readable inspection",
+      "status": "PASS",
+      "evidence": "202 individual full-width native tiles, 50-100px overlap as applicable; x0..1440; y spans in ledger cover every source row. 53 unique hashes, all58 paths viewed separately."
+    },
+    {
+      "beat": "Only Hillcrest operational items",
+      "status": "PASS (visible)",
+      "evidence": "Actual worklist Hillcrest only; other-pharmacy filler explicitly labelled background, not clickable in the picture. Clickability not re-tested."
+    },
+    {
+      "beat": "Visible EPS and three scenarios, Off/On",
+      "status": "FAIL (novice wording)",
+      "evidence": "Literal text/fields visible in all scenarios; no EPS Type1-unreadability fiction observed. Complete Off item has misleading future-problem pain marker F04."
+    },
+    {
+      "beat": "Poor paper, per-field provenance, explicit confirmation",
+      "status": "FAIL",
+      "evidence": "Original poor image and unconfirmed provenance retained; F01 falsely says all mandatory fields read after confirmation; F03 overstates reconciliation in conflicted state."
+    },
+    {
+      "beat": "A/E automatic without model/human handoff",
+      "status": "PASS (visible)",
+      "evidence": "A complete EPS Paid via existing rules; E trace explicitly no agent call and no human judgement. Deterministic HAND_OFF does not represent a person."
+    },
+    {
+      "beat": "Ordinary complete-paper human origin",
+      "status": "PASS (visible)",
+      "evidence": "Eight completed queue/card captures preserve human capture and existing pricing without invented Type2 judgement. On scenario explicitly supplied declaration, confirmed using helper source as corroboration."
+    },
+    {
+      "beat": "Same D cycle and generic RB2B + brand correction",
+      "status": "PASS (visible histories)",
+      "evidence": "D four combinations and generic Resubmitted-to-human-Paid retain original attempts, RB2B/corrections and explicit human re-check. No runtime state observation independently performed."
+    },
+    {
+      "beat": "Current monthly model",
+      "status": "PASS (visible rounded figures)",
+      "evidence": "Default queue/claims show19,479.2 Today,297.5 With total,255 judging+42.5 abstention gathering,85,000vs5,100 referrals,8,500vs510 pharmacy hours; With values labelled estimate. Screenshots do not show full19479.1667 precision; arithmetic separately gives19479.166666666668. Images4/5 are edited120-referral sample, not defaults."
+    },
+    {
+      "beat": "D exactly three failed signals and gate NOT RUN",
+      "status": "FAIL",
+      "evidence": "NOT RUN correct; four red signals in25/26, F02."
+    },
+    {
+      "beat": "July replay sufficient and August refer back",
+      "status": "FAIL (capture obstruction)",
+      "evidence": "July/ August rule-dependent checks and preserved records visible, but toast obscures July Sufficient badge/quote F05."
+    },
+    {
+      "beat": "Six chapters, nine stops, central bet",
+      "status": "NOT VERIFIED (full navigation); PASS (visible close)",
+      "evidence": "Menu/6-of6 and edited40% central bet visible; archive lacks a full image of every chapter/operational stop. Closed assumption/question disclosures not opened by this review. Parent manual record additionally supports chapter2/6 keyboard focus and default80% closing text, but not allnine stops."
+    },
+    {
+      "beat": "Under25 explanatory prose",
+      "status": "FAIL",
+      "evidence": "46 panel occurrences exceed limit; exact text/counts listed. No fake-label/disclosure exemptions applied."
+    },
+    {
+      "beat": "Synthetic disclosures, principle, no agent payments",
+      "status": "PASS (visible)",
+      "evidence": "Synthetic/banner boundary and no-payments statement visible. No agent payment approval asserted in inspected pixels."
+    },
+    {
+      "beat": "UK English, no em dash, vendor branding",
+      "status": "PASS (visible copy, with novice enum defect separately)",
+      "evidence": "UK terminology observed; no em dash in58 mainText transcriptions corroborating image read. No vendor branding observed. Raw REQUEST_INFORMATION is F06."
+    },
+    {
+      "beat": "Rejected override without reason; crash/boundary recovery; every route/control; toggle invariance; independent pharmacy availability",
+      "status": "NOT VERIFIED",
+      "evidence": "Not re-executed; screenshot inventory cannot establish interaction or unseen rejected-override state. No new captures created."
+    },
+    {
+      "beat": "Fresh hosted home/deep link, keyboard, contrast, dark/360/768/1024, reduced motion and replay announcements",
+      "status": "PARTIAL parent evidence; overall NOT VERIFIED",
+      "evidence": "Parent committed bf3c96f record reviewed; eleven sampled contrast ratios independently recalculated. Sampled keyboard focus/rejection supported. Null agentChecked, focus styling limitation, unmeasured SVG/overlap cases and missing full route/viewport/announcement coverage remain. No fresh browser by this verifier."
+    },
+    {
+      "beat": "npm ci / check / unit / chromium gates",
+      "status": "NOT VERIFIED",
+      "evidence": "Not run in this bounded screenshot-only review. Archive reports30 hosted checks passed, not a new local/CI run."
+    }
+  ],
+  "manual_record_assessment": {
+    "status": "PARTIAL EVIDENCE ACCEPTED; overall accessibility NOT VERIFIED",
+    "record_commit": "bf3c96f725abd7495354f1a56506072f0ebc95c7",
+    "record_path": "BSA/docs/screens/task30/manual-b05b06a",
+    "identity": "Both endpoint records pin clean b05b06ad67860fea9d9809eed09b5f1636168f66 and observer absent,21:12:21Z–21:30:26Z. Independent verifier read these records, not a fresh browser context.",
+    "contrast": "Independently recomputed all11 samples: five light, five dark, one tooltip. Ratios match within floating point. Overall minimum4.741667181590045:1 (light muted text; displayed4.74) and maximum19.79814571052481:1 (displayed19.80). Supports only recorded effective foreground/background pairs, not focus indicators, textured SVG, overlays or all routes.",
+    "keyboard_supported": [
+      "H1 focus after chapter navigation;2px solid outline recorded below header.",
+      "Mobile labelled dialog opens with focus inside; Escape returns to labelled trigger;345px document width at360 viewport.",
+      "Rejected unconfirmed capture focuses alert, remains pending and has no Record decision; prescriber edit clears reconciliation, preserving field focus.",
+      "Input Alt+Right remains on same input and case; tooltip Escape preserves Agent switch focus."
+    ],
+    "keyboard_limits": [
+      "Agent toggle artifact records agentChecked:null. It corroborates one switch, focus and URL, but is insufficient standalone proof of the reported Off/On values or complete store invariance.",
+      "One Tab observation inside a dialog does not independently establish a complete forward/backward focus trap.",
+      "Mobile link class contains serialized callback. Native1px auto outline was observed; intended2px custom indicator and its contrast are NOT VERIFIED. Do not upgrade that implementation risk to a clean pass.",
+      "Recorded focus colour/outline widths are not measured focus-indicator contrast or every-control keyboard coverage.",
+      "No supplied768/1024px review, every-control keyboard traversal, screen-reader replay announcement or complete reduced-motion interaction record."
+    ],
+    "incomplete_occurrences_recomputed": {
+      "color-contrast": 129,
+      "th-has-data-cells": 4
+    },
+    "contrast_node_groups_heuristic": {
+      "tooltip": 6,
+      "SVG text": 96,
+      "other": 27
+    },
+    "incomplete_disposition": "Empty-filter0-row tables with explicit statuses explain four th-has-data-cells occurrences in that state, but not general table semantics.96 poor-paper SVG occurrences remain unmeasured, six tooltip and27 other occurrences are not all discharged by representative samples.",
+    "agreement_with_parent": "Independently confirmed declaration-check panel27 words in images17/25/26/55; ordinary generated explanatory sentences are not exempt.",
+    "overall_effect": "Does not change screenshot FAIL or34 failed-image count; does not establish WCAG2.2AA. Broader checks remain NOT VERIFIED.",
+    "contrast_sample_count": 11
+  },
+  "checkout_at_start": "d35e605b7b7b18521d0ab163cf4b274a084974be",
+  "checkout_at_final_verification": "bf3c96f725abd7495354f1a56506072f0ebc95c7"
+}

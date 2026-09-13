@@ -18,6 +18,7 @@ import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { useAppStore } from "@/lib/store";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
+import { REC_META } from "@/components/demo/label-meta";
 
 function TourProcessCase({ id }: { id: string }) {
   const item = useLifecycleCase(id);
@@ -59,7 +60,7 @@ function TourProcessCase({ id }: { id: string }) {
     </section> : <>
       <PainMarker resolved={agentEnabled && pack.gate.result === "PASS"} pain="Evidence needs review" resolution="Evidence assembled; human decides" />
       {agentEnabled ? <>
-        <div className="space-y-2" aria-live="polite"><BoundaryTag cls="agent" /><p className="font-mono text-sm font-semibold" data-outcome>{pack.recommendation}</p></div>
+        <div className="space-y-2" aria-live="polite"><BoundaryTag cls="agent" /><p className="text-sm font-semibold" data-outcome>{REC_META[pack.recommendation].label}</p></div>
         <p className="text-sm">Gate: {pack.gate.result.replaceAll("_", " ")}</p>
         {item.scenario === "B" && pack.recommendation === "REFER_BACK" && <p className="text-sm" data-correction>Fix: add the date beside the initials.</p>}
         {pack.conflicts.map((conflict) => <dl key={conflict.field} className="text-sm"><dt className="font-medium">{conflict.field} · Unresolved</dt>{conflict.values.map((value) => <dd key={value.origin}>{value.origin}: {value.value}</dd>)}</dl>)}

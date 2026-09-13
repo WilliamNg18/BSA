@@ -1766,3 +1766,65 @@ without a declaration, D undeclared On and D declared On. They preserve
 complete store identity and assert fewer than 25 explanatory words in each
 capture panel. This corrects presentation only, not source fields, routing,
 capture confirmation or decision authority.
+
+## 2026-09-13: One bounded repair after the complete b05 visual review
+
+The initial b05 hosted inventory passed all 30 checks, but its independent
+58-image, full-height review failed. The original capture bundle, failed review,
+manual observations and F02 correction remain immutable. F02 is not a defect:
+three abstention reasons and four failed structural signals are distinct.
+No signal, reason, gate, fixture, arithmetic or decision authority changes.
+
+The coordinator authorised one presentation-and-verification repair batch.
+Generated mandatory-field checks say supplied, never implying a poor image was
+read. Capture summaries distinguish a human reconciliation attestation from
+proven source agreement. EPS Off describes hypothetical incompleteness risk
+without running a hidden check. Tour recommendations use the existing readable
+label mapping; original enums and audit records remain untouched.
+
+The ten natural explanatory-panel groups identified by review are condensed
+cumulatively below 25 words. Initial D reasons have concise display aliases;
+the original three domain reasons, five signals and immutable trace remain
+unchanged. Required field provenance, rule quotations and stored audit records
+are not truncated. Tests cover complete, missing, unsupported, conflicted,
+manual and assisted variants, including all operator choices and optional
+human draft approval.
+
+The same batch fixes the observed mobile navigation class serialization:
+resolve its route-dependent class string before SheetClose's slot composition.
+Desktop navigation, route matching intent, aria-current and focus return remain.
+An actual keyboard regression first reproduced the serialized callback, then
+verified the repaired active classes and visible 2px focus indicator.
+
+Before every live audit or image, the harness uses the real Dismiss notification
+control if a decision notice is present. It verifies unchanged main evidence
+and records the dismissed message. It does not hide overlays with CSS, alter
+screenshots or relax any original pass/identity requirement.
+
+The repair needs a separate runtime pull request with exact CI and a coherent
+full local inventory, then coordinator merge/deployment. Only a new complete
+hosted run and the same independent reviewer's full-height review can establish
+acceptance. The b05 failures cannot be overwritten or promoted to a pass.
+
+The first repair candidate, `049073c`, passed the complete 30-check local
+rehearsal, not hosted acceptance. After its clean-source capture freeze ended,
+the coordinator's two queued corrections completed the same bounded batch.
+Operator errors retain their full text and focus, every choice and field, and
+optional draft approval. While an error is visible, redundant choice help is
+omitted and the description retains the no-payment boundary. Browser regressions
+first measured 28/34 cumulative words Off/On, then verified fewer than 25 words
+for missing-reason and missing-RB-code errors, preserved values and keyboard
+recovery. Unknown abstention reasons use an own-property check so inherited
+names such as `constructor` and `__proto__` remain unchanged display strings.
+Neither change modifies domain decisions, audit evidence or validation rules.
+
+After `b1a4bef` also passed the complete local inventory, a focused coordinator
+inspection identified insufficient mobile outline contrast from the inherited
+half-opacity ring colour. A keyboard regression reproduced 1.957:1 light and
+1.886:1 dark against the navigation dialog. The mobile route alone now uses
+opaque current-colour focus outlines, retaining the 2px width, active route,
+keyboard order and Escape focus return. Actual computed CSS colours converted
+to sRGB and alpha-composited against the observed dialog background measure
+17.928:1 light and 18.968:1 dark. Both themes must exceed 3:1 in the regression.
+Global theme and desktop styles are unchanged. This repairs the observed focus
+indicator; it does not establish full WCAG conformance or rewrite old evidence.

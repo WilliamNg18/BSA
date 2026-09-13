@@ -1,0 +1,33 @@
+{
+  "at": "2026-09-13T21:29:57.551Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#scene",
+  "text": "On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.",
+  "rect": {
+    "x": 1047.90625,
+    "y": 40.6875,
+    "width": 256,
+    "height": 76,
+    "top": 40.6875,
+    "right": 1303.90625,
+    "bottom": 116.6875,
+    "left": 1047.90625
+  },
+  "color": "oklch(1 0 0)",
+  "background": "oklch(0.145 0 0)",
+  "foregroundRGBA": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "backgroundRGBA": [
+    10,
+    10,
+    10,
+    255
+  ],
+  "ratio": 19.79814571052481,
+  "font": "12px",
+  "opacity": "1",
+  "limitations": []
+}

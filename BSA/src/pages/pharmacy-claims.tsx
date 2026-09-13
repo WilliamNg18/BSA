@@ -61,18 +61,17 @@ export function PharmacyClaimsPage() {
     <p data-pharmacy-identity>{HILLCREST_PHARMACY.name} ({pharmacy}) · Synthetic pharmacy</p>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
-      <p className="text-sm">Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment.</p>
+      <p className="text-sm">Recorded UTC-month synthetic items; categories overlap. Paid requires recorded pricing; no payments calculated.</p>
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{formatProcessItems(total)}</dd></div>)}
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
       </dl>
-      {agentEnabled && <p className="text-sm">Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.</p>}
+      {agentEnabled && <p className="text-sm">Catches count checked, human-applied corrections once per attempt.</p>}
       <PharmacyModelStrip />
     </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>
-      <p>NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed.</p>
-      <p>Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.</p>
+      <p>NHSmail prompts resubmission within 18 months; only affected items wait. Advance: 80%; balance when priced. Demonstration sends nothing and calculates no payments.</p>
     </section>
     <div role="group" aria-label="Claim filters" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {filters.map((name) => {
