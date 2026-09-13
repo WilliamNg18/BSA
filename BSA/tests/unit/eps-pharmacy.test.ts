@@ -7,7 +7,7 @@ import { EpsPrescriptionMessage } from "@/components/demo/eps-prescription-messa
 import { caseById } from "@/lib/domain/cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "@/lib/domain/eps-check";
 import { checkEpsPharmacy } from "@/lib/domain/eps-pharmacy-check";
-import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { projectEpsSubmissionDraft } from "@/lib/domain/eps-submission-draft";
 import { PharmacyCheckRunner, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import type { EpsPrescription } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
@@ -21,16 +21,46 @@ vi.mock("@/lib/store", async (importOriginal) => {
 });
 
 function preview(caseId: string, eps: EpsPrescription) {
-  const s = useAppStore.getState(), latest = s.caseRevisions[caseId].at(-1)!;
-  return caseForLifecycle(caseId, s.lifecycles, {
-    ...s.caseRevisions,
-    [caseId]: [...s.caseRevisions[caseId].slice(0, -1), { ...latest, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps }],
-  }, s.itemProcesses)!;
+  const s = useAppStore.getState();
+  return projectEpsSubmissionDraft(caseId, eps, s.lifecycles, s.caseRevisions);
 }
 
 beforeEach(() => useAppStore.getState().resetDemo());
 
 describe("visible EPS prescription", () => {
+  it.each(["pending", "ACCEPT", "ESCALATE", "REFER_BACK"] as const)("previews a fresh EPS attempt after human recheck: %s", (decision) => {
+    const id = "EX-24112", s = useAppStore.getState();
+    const eps = { ...createEpsPrescription(caseById(id)!), dispenserEndorsement: "NCSO RK 21/08/26", claimMessageState: "submitted" as const };
+    s.resubmitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
+    if (decision !== "pending") {
+      s.arriveInQueue(id);
+      s.recordType2Decision({ caseId: id, decision, reason: "Human checked the corrected date.", ...(decision === "REFER_BACK" ? { rbCode: "SYN-NCSO" } : {}) });
+    }
+    const before = useAppStore.getState();
+    expect(checkEpsPharmacy(preview(id, eps), eps.dispenserEndorsement).status).toBe("ready");
+    expect(useAppStore.getState()).toBe(before);
+    s.submitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
+    expect(useAppStore.getState().itemProcesses[id].routing.outcome).toBe("auto_priced");
+    expect(useAppStore.getState().caseRevisions[id].slice(0, -1)).toEqual(before.caseRevisions[id]);
+  });
+
+  it("does not borrow a prior paper declaration or confirmed capture for a new EPS draft", () => {
+    const id = "EX-24112", s = useAppStore.getState();
+    const eps = { ...createEpsPrescription(caseById(id)!), dispenserEndorsement: "NCSO RK 21/08/26", claimMessageState: "submitted" as const };
+    const fields = { productCode: eps.items[0].dispensedCode, quantity: 28, endorsementText: eps.dispenserEndorsement, prescriber: eps.prescriber.name };
+    s.submitItem({ caseId: id, channel: "paper", endorsementText: eps.dispenserEndorsement,
+      declaration: { fields, provenance: "pharmacy_declaration", declaredAt: "2026-09-13T12:00:00.000Z" } });
+    s.confirmType1({ caseId: id, revision: s.caseRevisions[id].at(-1)!.number + 1, fields, provenance: "pharmacy_declaration", declarationReconciled: true });
+    const before = useAppStore.getState();
+    const projected = preview(id, eps);
+    expect(projected.capturedEvidence).toBeUndefined();
+    expect(projected.paperDeclaration).toBeUndefined();
+    expect(checkEpsPharmacy(projected, eps.dispenserEndorsement).status).toBe("ready");
+    expect(useAppStore.getState()).toBe(before);
+    s.submitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
+    expect(useAppStore.getState().itemProcesses[id].routing.outcome).toBe("auto_priced");
+  });
+
   it("separates the prescription from dispenser fields and never renders an image", () => {
     const draft = createEpsPrescription(caseById("EX-24107")!);
     const html = renderToStaticMarkup(createElement(EpsPrescriptionMessage, { prescription: draft }));

@@ -1,6 +1,7 @@
 import type { EpsPrescription } from "./types";
 import type { CaseLifecycle, CaseRevision, PharmacyPrecheckSnapshot } from "./lifecycle";
-import { caseForLifecycle, validatePrecheck, validateSubmissionSources } from "./lifecycle-model";
+import { validatePrecheck, validateSubmissionSources } from "./lifecycle-model";
+import { projectEpsSubmissionDraft } from "./eps-submission-draft";
 import { checkEpsPharmacy } from "./eps-pharmacy-check";
 import { pharmacySnapshot } from "./pharmacy-check";
 
@@ -24,11 +25,7 @@ export function validateEpsCorrection(
     validateSubmissionSources({ caseId, channel: "eps", endorsementText: snapshot.typedText,
       epsPrescription: { ...source, claimMessageState: "submitted" } }, latest.number);
     validatePrecheck(snapshot, source.dispenserEndorsement, source.dispensingDate);
-    const projected = caseForLifecycle(caseId, lifecycles, {
-      ...revisions, [caseId]: [...revisions[caseId].slice(0, -1), {
-        ...latest, channel: "eps", endorsementText: source.dispenserEndorsement, epsPrescription: source,
-      }],
-    })!;
+    const projected = projectEpsSubmissionDraft(caseId, source, lifecycles, revisions);
     const result = checkEpsPharmacy(projected, source.dispenserEndorsement);
     const expected = pharmacySnapshot(source.dispenserEndorsement, source.dispensingDate, "scripted", result, snapshot.checkedAt);
     if (JSON.stringify(expected) !== JSON.stringify(snapshot)) fail();

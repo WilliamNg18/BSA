@@ -1,6 +1,6 @@
 import { beforeEach, expect, it } from "vitest";
 import { useAppStore } from "@/lib/store";
-import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { projectEpsSubmissionDraft } from "@/lib/domain/eps-submission-draft";
 import { checkEpsPharmacy } from "@/lib/domain/eps-pharmacy-check";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import type { EpsPrescription } from "@/lib/domain/types";
@@ -8,10 +8,8 @@ import type { EpsPrescription } from "@/lib/domain/types";
 const id = "SYN-FQ123-TYPE2";
 const store = () => useAppStore.getState();
 function snapshot(source: EpsPrescription) {
-  const s = store(), latest = s.caseRevisions[id].at(-1)!;
-  const c = caseForLifecycle(id, s.lifecycles, { ...s.caseRevisions, [id]: [
-    ...s.caseRevisions[id].slice(0, -1), { ...latest, epsPrescription: source, endorsementText: source.dispenserEndorsement },
-  ] })!;
+  const s = store();
+  const c = projectEpsSubmissionDraft(id, source, s.lifecycles, s.caseRevisions);
   return pharmacySnapshot(source.dispenserEndorsement, source.dispensingDate, "scripted", checkEpsPharmacy(c, source.dispenserEndorsement), "2026-09-13T12:00:00.000Z");
 }
 function sources() {
