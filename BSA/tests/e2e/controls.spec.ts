@@ -203,12 +203,15 @@ test("queue state filters are interactive", async ({ page }) => {
   const initialCount = await rows.count();
   expect(initialCount).toBeGreaterThan(0);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const tile = page.getByRole("button", { name: /Abstained, worked as today/ });
+  const tile = page.getByRole("button", { name: /^Type 1 capture lane\s+\d+$/ });
   const expectedCount = Number(await tile.locator("span").last().innerText());
   await tile.click();
   await expect(tile).toHaveAttribute("aria-pressed", "true");
   await expect(rows).toHaveCount(expectedCount);
-  for (const row of await rows.all()) await expect(row).toContainText("Abstained; worked as today");
+  for (const row of await rows.all()) {
+    await expect(row).toHaveAttribute("data-type1-case");
+    await expect(row).toContainText("Human decision");
+  }
   await page.getByRole("button", { name: /^All staff items/ }).click();
   await expect(rows).toHaveCount(initialCount);
 });

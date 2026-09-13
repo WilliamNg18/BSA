@@ -145,7 +145,8 @@ test("Task6 full pack assembles in two seconds, with no decision pane before com
   await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "0");
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   await page.clock.runFor(333);
-  await expect(page.getByRole("heading", { name: "Prescription image", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "EPS claim message", exact: true })).toBeVisible();
+  await expect(page.getByRole("main").locator("figure")).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toHaveCount(0);
   await page.clock.runFor(334);
   await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toBeVisible();
@@ -234,7 +235,7 @@ test("Task6 D keeps three reasons, four failed signals and unestablished reconci
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true }).locator(":scope > li")).toHaveCount(2);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
-  await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+  await expect(page.getByText("priced by NHSBSA's existing rules engine, no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
   await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).not.toContainText("run_endorsement_checks");
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
 });
