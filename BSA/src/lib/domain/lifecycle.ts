@@ -146,7 +146,7 @@ export interface LifecycleSlice {
 
 export const LIFECYCLE_LABELS = {
   submitted: { pharmacy: "Submitted, awaiting processing", nhsbsa: { on: "In queue", off: "In queue" } },
-  in_review: { pharmacy: "In review at NHSBSA", nhsbsa: { on: "Case built, awaiting operator", off: "Awaiting operator" } },
+  in_review: { pharmacy: "In review at NHSBSA", nhsbsa: { on: "Awaiting operator", off: "Awaiting operator" } },
   information_requested: { pharmacy: "Information requested: NHSBSA needs you to confirm something", nhsbsa: { on: "Request information sent", off: "Request information sent" } },
   referred_back: { pharmacy: "Referred back: correction needed before payment", nhsbsa: { on: "Referred back", off: "Referred back" } },
   resubmitted: { pharmacy: "Resubmitted, awaiting re-check", nhsbsa: { on: "Resubmitted: re-check", off: "Resubmitted: re-check" } },
