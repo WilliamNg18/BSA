@@ -1189,6 +1189,17 @@ compiled only when VITE_E2E_STATE_OBSERVER=true. Normal builds have no hook.
 Q approved the M-first automatic-row filter and disabled legacy generated
 operator rows; its full staff-lane presentation follows this shared model.
 
+## 2026-09-13: Task 22 draft approval is optional, never inferred
+
+The coordinator confirmed that a human may choose their own reason and RB code
+without using the proposed agent draft. Require at least eight trimmed
+characters for the actual human reason and a catalogue RB code for referral.
+Include `approvedDraft` only after the explicit checkbox is checked. Agent On
+alone never approves, sends or retrospectively supplies a draft. An unchecked
+draft must not block an otherwise valid human decision or become an approved
+pharmacy note. This clarifies the earlier Q approval wording: approval is
+mandatory for use of the draft, not mandatory use of the draft itself.
+
 The final process API keeps completed human work in its original lane:
 Type 2 sufficient is `type2_endorsement` with `requiresHuman=false`, and
 completed Type 1-only work similarly remains Type 1. Only untouched rules
