@@ -45,7 +45,8 @@ function suggestedFor(rec: string): HumanDecision {
 export function CasePackPage() {
   const { id } = useParams();
   const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
-  return <CasePackContent key={`${id}-${revision}`} />;
+  const resetRevision = useAppStore((s) => s.queue.revision);
+  return <CasePackContent key={`${id}-${revision}-${resetRevision}`} />;
 }
 
 function CasePackContent() {
@@ -82,7 +83,6 @@ function CasePackContent() {
   const chosen = !agentEnabled ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
   const isOverride = showRecommendation && (chosen === "AMEND" || chosen !== suggested && chosen !== "ACCEPT");
   const disposition = chosen === "ACCEPT" && showRecommendation ? suggested : chosen;
-  const needsReason = true;
   const currentProcess = process?.revision === revision ? process : undefined;
   const awaitingCapture = currentProcess?.routing.outcome === "type1_capture" && currentProcess.routing.requiresHuman;
   const captureCompleted = currentProcess?.routing.outcome === "type1_capture" && !currentProcess.routing.requiresHuman;
@@ -92,7 +92,7 @@ function CasePackContent() {
 
   function submit() {
     if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
-    if (needsReason && reason.trim().length < 8) {
+    if (reason.trim().length < 8) {
       setError("A reason of at least eight characters is required for this decision.");
       return;
     }
@@ -360,8 +360,8 @@ function CasePackContent() {
                 </select>
               </div>}
               <div className="space-y-1.5">
-                <Label htmlFor="reason">{needsReason ? "Reason (required)" : "Reason (optional)"}</Label>
-                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Why you are departing from the recommendation. This is the most valuable data the system collects." : needsReason ? "Explain your decision based on the evidence." : "Optional note for the record."} aria-required={needsReason} />
+                <Label htmlFor="reason">Reason (required)</Label>
+                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Explain why you are departing from the recommendation." : "Explain your decision based on the evidence."} aria-required="true" />
               </div>
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision

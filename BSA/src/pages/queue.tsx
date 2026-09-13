@@ -14,6 +14,11 @@ import { formatBaselineNumber as n } from "@/lib/domain/baseline";
 type WorkFilter = "all" | "type1" | "type2" | "built" | "evidence" | "abstained" | "referred" | "decided" | "new";
 
 export function QueuePage() {
+  const resetRevision = useAppStore((s) => s.queue.revision);
+  return <QueueWorklist key={resetRevision} />;
+}
+
+function QueueWorklist() {
   const lifecycles = useAppStore((s) => s.lifecycles);
   const revisions = useAppStore((s) => s.caseRevisions);
   const processes = useAppStore((s) => s.itemProcesses);
@@ -43,7 +48,8 @@ export function QueuePage() {
     const agentWork = !agentEnabled ? "Not invoked; experience only"
       : type1 ? "Declaration pre-fill where available; human confirmation required"
       : referred ? record?.approvedDraft ? "Operator-approved exact fix recorded" : "No approved draft; human reason retained"
-      : decided ? record?.clauseId ? "Recorded clause and version retained" : "No rule recorded for this decision"
+      : captureCompleted ? "Human capture complete; existing pricing follows"
+      : decided ? record && record.tariffVersion !== "n/a" ? "Original rule version retained in the human record" : "No rule recorded for this decision"
       : category === "abstained" ? "Abstained; worked as today"
       : category === "evidence" ? "Evidence assembled; unresolved facts remain"
       : "Case built; dated clause and requirements checked";
@@ -127,7 +133,7 @@ export function QueuePage() {
       {type1.map((row) => <article key={row.id} className="space-y-3 rounded-xl border p-4" data-type1-case={row.id}
         onFocusCapture={() => { focusedCapture.current = row.id; }}
         onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
-        <h3 className="font-semibold">{row.id} · {row.c.pharmacy.name} · Paper</h3>
+        <h3 className="font-semibold">{row.id} · {row.c.pharmacy.name} · {row.process.channel === "eps" ? "EPS" : "Paper"}</h3>
         <Type1Capture caseId={row.id} />
         <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
       </article>)}

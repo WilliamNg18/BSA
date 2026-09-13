@@ -22,7 +22,8 @@ import { MissingAssistedSlots } from "@/components/demo/case-presentation";
 
 export function DecisionRecordPage() {
   const { id } = useParams();
-  return <DecisionRecordContent key={id} />;
+  const resetRevision = useAppStore((s) => s.queue.revision);
+  return <DecisionRecordContent key={`${id}-${resetRevision}`} />;
 }
 
 function DecisionRecordContent() {
