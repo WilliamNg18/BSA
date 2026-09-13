@@ -33,7 +33,7 @@ for (const enabled of [false, true]) {
     }
     await expect(page.getByRole("region", { name: "Automatic pricing monthly aggregate", exact: true }))
       .toContainText("Whole-service context, not session completions or a projection of this pharmacy's activity.");
-    await expect(page.locator("[data-queue-month-summary]")).toContainText("Rule-record coverage is a synthetic comparison assumption, not evidence of real staff records or a retrieved clause on every case.");
+    await expect(page.locator("[data-queue-month-summary]")).toContainText("Rule-record coverage is a synthetic assumption, not evidence of staff records or a retrieved clause.");
     const ids = await rowIds(page);
     expect(ids.length).toBeGreaterThan(0);
     expect(new Set(ids).size).toBe(ids.length);
