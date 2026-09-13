@@ -68,8 +68,11 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     requireDate(eps.prescriptionDate);
     requireDate(eps.dispensingDate);
     const item = eps.items[0];
+    const prescribedName = productByCode(item?.prescribedCode)?.name;
+    const composedName = item ? `${item.product} ${item.strength} ${item.form}` : "";
     if (!item || !productByCode(item.prescribedCode) || !productByCode(item.dispensedCode) ||
-      productByCode(item.prescribedCode)?.name !== item.product || productByCode(item.dispensedCode)?.name !== item.dispensedName ||
+      prescribedName !== item.product && prescribedName?.replace(" (generic synthetic)", "") !== composedName ||
+      productByCode(item.dispensedCode)?.name !== item.dispensedName ||
       !Number.isSafeInteger(item.quantity) || item.quantity <= 0 ||
       [item.strength, item.form, item.dose].some((value) => typeof value !== "string")) throw new Error("Invalid synthetic EPS item or product copy.");
     const supply = eps.supplyEvidence;
@@ -104,7 +107,7 @@ export function caseForLifecycle(
   const revision = caseRevisions[caseId]?.at(-1);
   const original = caseById(caseId) ?? caseById(revision?.templateCaseId);
   if (!original || !revision) return null;
-  const c = structuredClone(original);
+  let c = structuredClone(original);
   if (revision.channel) c.channel = revision.channel === "eps" ? "Electronic (EPS)" : "Paper FP10";
   if (c.id !== caseId) {
     const pharmacy = PHARMACIES.find((p) => p.contractorCode === lifecycles[caseId].pharmacyCode);
@@ -114,7 +117,7 @@ export function caseForLifecycle(
   }
   if (revision.epsPrescription) {
     const eps = revision.epsPrescription, item = eps.items[0];
-    c.epsPrescription = eps;
+    c = { ...c, epsPrescription: eps };
     c.patientLabel = eps.patientLabel;
     c.extracted = { ...c.extracted, productCode: item.dispensedCode, productText: item.dispensedName,
       quantity: item.quantity, endorsementText: eps.dispenserEndorsement, dispensingDate: eps.dispensingDate,
@@ -126,7 +129,7 @@ export function caseForLifecycle(
     c.readings = [facts, { ...facts }, { ...facts }];
   }
   if (revision.paperDeclaration) {
-    c.paperDeclaration = revision.paperDeclaration;
+    c = { ...c, paperDeclaration: revision.paperDeclaration };
     c.extracted.dispensingDate = revision.paperDeclaration.dispensingDate;
   }
   if (c.scenario !== "D" && revision.endorsementText !== original.extracted.endorsementText) {

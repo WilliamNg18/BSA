@@ -1,7 +1,7 @@
 /** Synthetic month for the single operational pharmacy. */
-import { CASES, QUEUE_FILLER } from "./cases";
-import { HILLCREST_PHARMACY, PHARMACIES } from "./reference";
-import { LIFECYCLE_LABELS, type CaseLifecycle, type CaseRevision, type HistoryEvent, type LifecycleState } from "./lifecycle";
+import { CASES } from "./cases";
+import { HILLCREST_PHARMACY, productByCode } from "./reference";
+import { type CaseLifecycle, type CaseRevision, type HistoryEvent, type LifecycleState } from "./lifecycle";
 import { immutable } from "./lifecycle-model";
 
 const canonicalStates: LifecycleState[] = ["paid", "referred_back", "information_requested", "in_review", "paid", "referred_back"];
@@ -39,23 +39,49 @@ export function seededLifecycleSession(): {
     caseRevisions[caseId] = [{ number: 1, at: history[0].at, kind: "seed", templateCaseId: c.id, endorsementText: c.extracted.endorsementText, precheck: null, confirmation: null,
       channel: c.claim.submittedVia === "EPS claim message" ? "eps" : "paper",
       ...(caseId === CASES[3].id ? { declaration: {
-        fields: { productCode: c.claim.productCode, quantity: c.claim.quantity, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" },
+        fields: { productCode: c.claim.productCode, quantity: c.claim.quantity, endorsementText: "NCSO JB 27/08/26" },
         declaredAt: history[0].at, provenance: "pharmacy_declaration" as const,
-      } } : {}),
+      }, paperDeclaration: { typedProduct: "Co-codamol 30/500 tablets", quantity: 100, endorsementText: "NCSO JB 27/08/26",
+        dispensingDate: "2026-08-27", declaredByPharmacy: true as const } } : {}),
     }];
   };
   CASES.forEach((c, i) => add(c.id, c.pharmacy.contractorCode, canonicalStates[i], i));
-  QUEUE_FILLER.forEach((row) => {
-    const state = row.state === "cleared_by_rules" ? "paid" : row.state === "human_decision_recorded" ? "referred_back" : row.state === "additional_evidence_required" ? "information_requested" : "in_review";
-    add(row.id, HILLCREST_PHARMACY.contractorCode, state);
-  });
-  PHARMACIES.forEach((pharmacy) => {
-    (Object.keys(LIFECYCLE_LABELS) as LifecycleState[]).forEach((state, index) => {
-      if (!Object.values(lifecycles).some((row) => row.pharmacyCode === pharmacy.contractorCode && row.state === state)) {
-        add(`SYN-${pharmacy.contractorCode}-${index + 1}`, pharmacy.contractorCode, state);
-      }
-    });
-  });
+  add("SYN-FQ123-TYPE2", HILLCREST_PHARMACY.contractorCode, "in_review", 4);
+  const pending = caseRevisions["SYN-FQ123-TYPE2"][0];
+  const generic = productByCode("SYN-AMOX500-GENERIC-21")!;
+  caseRevisions["SYN-FQ123-TYPE2"] = [{ ...pending, epsPrescription: {
+    prescriber: { name: CASES[4].extracted.prescriber, practice: "Hillcrest practice (synthetic)" },
+    patientLabel: "Generic example patient (synthetic)", prescriptionDate: "2026-08-11", dispensingDate: "2026-08-11",
+    items: [{ prescribedCode: generic.code, product: generic.name, strength: "500mg", form: "capsules", quantity: 21,
+      dose: "Synthetic instruction, not for clinical use", dispensedCode: generic.code, dispensedName: generic.name }],
+    prescriberEndorsement: "", dispenserEndorsement: "", exemptionStatus: "not_recorded", claimMessageState: "submitted",
+    supplyEvidence: { ruleId: "SYN-EPS-SUPPLY", brandManufacturer: "", packSize: 21, form: "capsules" },
+  } }];
+  add("SYN-FQ123-RECHECK", HILLCREST_PHARMACY.contractorCode, "referred_back", 1);
+  const appendCorrection = (id: string, text: string, at: string) => {
+    const previous = caseRevisions[id][0], row = lifecycles[id];
+    caseRevisions[id] = [...caseRevisions[id], { ...previous, number: 2, at, kind: "resubmission", endorsementText: text }];
+    row.history.push({ at, actor: "pharmacy", from: "referred_back", to: "resubmitted", revision: 2, channel: "eps",
+      processStep: "resubmission", message: "Pharmacy corrected the endorsement and resubmitted; human re-check required." });
+    row.state = "resubmitted";
+  };
+  appendCorrection("SYN-FQ123-RECHECK", "NCSO RK 21/08/26", "2026-09-04T09:00:00.000Z");
+  // Preserve F's original three events and decision. The later story has its own revision and record.
+  appendCorrection(CASES[5].id, "NCSO DL 06/08/26", "2026-09-04T09:01:00.000Z");
+  const f = lifecycles[CASES[5].id];
+  f.history.push(
+    { at: "2026-09-04T09:02:00.000Z", actor: "code", from: "resubmitted", to: "in_review", revision: 2, channel: "eps", message: "Corrected item arrived for human re-check." },
+    { at: "2026-09-04T09:03:00.000Z", actor: "operator", from: "in_review", to: "paid", revision: 2, channel: "eps",
+      processStep: "type2_judgement", recordId: "DR-000872", decision: "ACCEPT", recommendation: "NONE",
+      reason: "Human checked the corrected initials and date.", message: "Human accepted the corrected endorsement (synthetic)." },
+    { at: "2026-09-04T09:03:00.001Z", actor: "code", from: "paid", to: "paid", revision: 2, channel: "eps",
+      processStep: "existing_pricing", message: "Priced by NHSBSA's existing rules engine after human judgement; normal payment schedule (synthetic)." },
+  );
+  f.state = "paid";
+  for (const id of [CASES[1].id, "SYN-FQ123-RECHECK"]) {
+    const referral = lifecycles[id].history.find((event) => event.to === "referred_back")!;
+    Object.assign(referral, { rbCode: "SYN-NCSO", processStep: "referral", exactFix: "Add the endorsement date beside the initials." });
+  }
   return immutable({ lifecycles, caseRevisions });
 }
 
