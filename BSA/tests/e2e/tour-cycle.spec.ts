@@ -98,18 +98,17 @@ for (const enabled of [false, true]) {
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
+    const priorHistory = await recorded.getByRole("listitem").allTextContents();
     await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+    expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
     for (const mode of [!enabled, enabled]) {
       await page.getByRole("banner").getByRole("switch").setChecked(mode);
-      await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+      await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
     }
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
-    await page.getByRole("button", { name: "Start review", exact: true }).click();
-    if (!enabled) await page.getByRole("radio", { name: /^Sufficient \(human choice\)/ }).check();
-    else await expect(page.getByRole("radio", { name: /^Accept / })).toBeChecked();
-    await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed the corrected date and complete evidence");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
     await expect(recorded).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
