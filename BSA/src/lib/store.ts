@@ -33,6 +33,8 @@ import { create } from "zustand";
 //   const addItem = useAppStore((s) => s.addItem);  // action (stable reference)
 
 import { CASES } from "@/lib/domain/cases";
+import { createManualLoopDraft } from "@/lib/domain/manual-loop-month-model";
+import type { ManualLoopModelSlice } from "@/lib/domain/baseline";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS, PHARMACY_ASSUMPTION_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessModelSlice, type ProcessMonthDraft } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
@@ -89,7 +91,7 @@ export interface PharmacyCorrectionEvent {
   readonly after: PharmacyPrecheckSnapshot;
 }
 
-interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice {
+interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, ManualLoopModelSlice {
   pharmacy: PharmacyState;
   queue: QueueState;
   caseStates: Record<string, CaseState>;
@@ -239,6 +241,8 @@ export const useAppStore = create<AppState>((set, get) => {
     pharmacy: createPharmacyState((update) => set((s) => ({ pharmacy: { ...s.pharmacy, ...(typeof update === "function" ? update(s.pharmacy) : update) } })), () => get().pharmacy),
     queue: createQueueState((update) => set((s) => ({ queue: { ...s.queue, ...(typeof update === "function" ? update(s.queue) : update) } }))),
     processInputs: processDraft(),
+    manualLoopInputs: createManualLoopDraft(),
+    setManualLoopInput: (field, value) => set((s) => ({ manualLoopInputs: { ...s.manualLoopInputs, [field]: value } })),
     setProcessInput: (field, value) => set((s) => ({ processInputs: { ...s.processInputs, [field]: value } })),
     itemProcesses: seededProcesses(),
     submitItem: (input) => pharmacyAction(input.caseId, input.endorsementText, "submission", input.precheck, input),
@@ -336,7 +340,7 @@ export const useAppStore = create<AppState>((set, get) => {
     setAgentEnabled: (agentEnabled) => set((s) => ({ agentEnabled, queue: { ...s.queue, sweep: [], phase: -1, sweeping: false, playing: false } })),
     // Preserve all three replacement identities used by existing reset subscribers.
     resetDemo: () => {
-      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), processInputs: processDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
+      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
         pharmacy: { ...s.pharmacy, assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS }, receipts: [] },
         queue: { ...s.queue, position: 0, day: 0, playing: false, sweep: [], phase: -1, sweeping: false, revision: s.queue.revision + 1 },
       }));
@@ -354,7 +358,7 @@ export function sessionCase(caseId: string) {
 export function getDomainSnapshot() {
   const s = useAppStore.getState();
   return immutable({ lifecycles: s.lifecycles, caseRevisions: s.caseRevisions, itemProcesses: s.itemProcesses, records: s.records,
-    caseStates: s.caseStates, processInputs: s.processInputs, baselineInputs: s.baselineInputs, todayMinutes: s.todayMinutes,
+    caseStates: s.caseStates, processInputs: s.processInputs, manualLoopInputs: s.manualLoopInputs, baselineInputs: s.baselineInputs, todayMinutes: s.todayMinutes,
     pharmacyCorrections: s.pharmacyCorrections, pharmacy: { assumptions: s.pharmacy.assumptions, receipts: s.pharmacy.receipts } });
 }
 
