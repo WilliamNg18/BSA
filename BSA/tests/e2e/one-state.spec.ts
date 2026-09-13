@@ -72,7 +72,9 @@ test("one state: observer is read-only and retains every authoritative collectio
         expect(await readDomainState(page)).toEqual(confirmed);
         if (enabled) {
           await expect(page.getByText("Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.", { exact: true })).toBeVisible();
-          await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toHaveCount(0);
+          expect(confirmed.itemProcesses["EX-24123"].capture?.fields.prescriber).toBeNull();
+          await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
+          await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
         }
       });
     });

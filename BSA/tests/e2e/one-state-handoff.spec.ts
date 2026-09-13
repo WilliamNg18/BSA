@@ -47,6 +47,10 @@ for (const enabled of [false, true]) {
       expect(requested.records.at(-1)).toMatchObject({ caseId: C, decision: "REQUEST_INFORMATION" });
       if (enabled) expect(requested.records.at(-1)?.approvedDraft).toMatchObject({ decision: "REQUEST_INFORMATION", approvedBy: "Demo operator" });
       else expect(requested.records.at(-1)?.approvedDraft).toBeUndefined();
+      await action("Dismiss the human information-request notification", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      });
+      expect(await readDomainState(page), "Dismissing a notification cannot change the recorded request").toEqual(requested);
       await action("Navigate to pharmacy claims", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
       await action("Verify C's pharmacy for the new request", "Pharmacy", async () => {
         await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[C].pharmacyCode})`);
@@ -131,6 +135,10 @@ for (const enabled of [false, true]) {
       expect(referred.records.at(-1)).toMatchObject({ caseId: D, decision: "REFER_BACK", rbCode: "RB2B" });
       expect(referred.records.at(-1)?.approvedDraft).toBeUndefined();
       expect(referred.itemProcesses[D].capture).toEqual(captured.itemProcesses[D].capture);
+      await action("Dismiss the human referral notification", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      });
+      expect(await readDomainState(page), "Dismissing a notification cannot change the referral or capture").toEqual(referred);
       await action("Navigate to the pharmacy D referral", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
       await action("Verify Hillcrest owns D without a selector", "Pharmacy", async () => {
         await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[D].pharmacyCode})`);
