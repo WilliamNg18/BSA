@@ -69,9 +69,11 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     requireDate(eps.dispensingDate);
     const item = eps.items[0];
     const prescribedName = productByCode(item?.prescribedCode)?.name;
+    const presentation = prescribedName ? /^(.*?)\s+([\d/]+(?:mg|mcg)?)\s+(tablets|capsules)(?: \(generic synthetic\))?$/.exec(prescribedName) : null;
     const composedName = item ? `${item.product} ${item.strength} ${item.form}` : "";
     if (!item || !productByCode(item.prescribedCode) || !productByCode(item.dispensedCode) ||
       prescribedName !== item.product && prescribedName?.replace(" (generic synthetic)", "") !== composedName ||
+      !presentation || item.strength !== presentation[2] || item.form !== presentation[3] ||
       productByCode(item.dispensedCode)?.name !== item.dispensedName ||
       !Number.isSafeInteger(item.quantity) || item.quantity <= 0 ||
       [item.strength, item.form, item.dose].some((value) => typeof value !== "string")) throw new Error("Invalid synthetic EPS item or product copy.");
