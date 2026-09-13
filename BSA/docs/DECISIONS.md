@@ -1079,3 +1079,44 @@ real medicine/product names, not these mandated channel/process identifiers.
 Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
+
+## 2026-09-13: Task 19 shared process allocations and capture authority
+
+Before implementing the arithmetic, M notified the coordinator and received
+approval for these scenario allocations. Round EPS items, with paper the
+remainder. Round Type 1, Type 2 and staff-touch counts separately; automatic
+items are total minus staff touch. Validate maximum lane count <= staff touch
+<= sum of lanes. The derived lane overlap is a modelling reconciliation of
+approximate public figures, not a published unique-item count.
+
+Round pharmacy catches from the referral cohort only. Assume those caught
+items would have reached Type 2, subtract them once, round abstentions from
+the surviving Type 2 cohort, and assign the remainder to built cases.
+Referrals cannot exceed Type 2 and catches cannot exceed referrals. No further
+referral reduction is invented. Type 2 today uses 13 seconds; assisted built
+cases use 45 seconds and abstentions retain 13 seconds. Assisted Type 2 hours
+can increase. Investigation-tail hours use referrals times four minutes and
+pharmacy completion uses six minutes, before/after the single catch reduction.
+Type 2 and investigation-tail metrics are nonadditive because the published
+average does not establish disjoint time phases; pharmacy hours concern a
+different workforce. There is no combined operator grand total.
+
+Today zero rule-recorded decisions and experience-only assurance describe the
+comparison assumption, not real operators or immutable historical records.
+The difficult-D 30-second keying and 10-second confirmation assumptions are
+not the public Type 1 average.
+
+The coordinator supplied capture-contract amendments as isolated commits.
+Only explicit Type 1 confirmation on the current revision projects captured
+evidence. Source image, low confidence and disagreeing readings stay unchanged.
+Reconciled compatible declaration fields carry declared-not-read provenance.
+The optional prescriber field must be explicitly entered and confirmed when
+the source says Illegible; missing prescriber never receives a gate waiver.
+This is a proposed evidence path, not validated image recognition.
+
+Receipt and queue compatibility modules select nested slices of the single
+application Zustand store. Queue playback is presentation only. The optional
+test observer exposes a deeply immutable domain snapshot, no actions, and is
+compiled only when VITE_E2E_STATE_OBSERVER=true. Normal builds have no hook.
+Q approved the M-first automatic-row filter and disabled legacy generated
+operator rows; its full staff-lane presentation follows this shared model.

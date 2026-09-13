@@ -1,9 +1,8 @@
-import { create } from "zustand";
 import { clampDay, SWEEP_PHASES, type QueueCohort } from "./domain/queue-model";
 import { useAppStore } from "./store";
 
 export interface SweepItem { key: string; kind: QueueCohort | "recorded" }
-interface QueueState {
+export interface QueueState {
   position: number;
   day: number;
   playing: boolean;
@@ -20,10 +19,11 @@ interface QueueState {
   cancel: () => void;
   reset: () => void;
 }
-const initial = { position: 0, day: 0, playing: false, sweep: [] as readonly SweepItem[], phase: -1, sweeping: false };
 
 /** Bounded presentation memory only. No records, lifecycle calls or browser persistence. */
-export const useQueueStore = create<QueueState>((set) => ({
+export function createQueueState(set: (update: Partial<QueueState> | ((state: QueueState) => Partial<QueueState>)) => void): QueueState {
+const initial = { position: 0, day: 0, playing: false, sweep: [] as readonly SweepItem[], phase: -1, sweeping: false };
+return {
   ...initial, revision: 0,
   jump: (position) => set({ position: Number.isFinite(position) ? Math.max(0, Math.min(1e9 - 1, Math.floor(position))) : 0 }),
   setDay: (minutes) => set({ day: clampDay(minutes), playing: false }),
@@ -33,15 +33,10 @@ export const useQueueStore = create<QueueState>((set) => ({
   stepSweep: () => set((s) => s.sweeping ? { phase: Math.min(SWEEP_PHASES.length - 1, s.phase + 1), sweeping: s.phase + 1 < SWEEP_PHASES.length - 1 } : {}),
   cancel: () => set({ sweep: [], phase: -1, sweeping: false, playing: false }),
   reset: () => set((s) => ({ ...initial, revision: s.revision + 1 })),
-}));
+}; }
 
-// Same three-slice reset adapter as pharmacy. Frozen store/header stay untouched.
-useAppStore.subscribe((state, previous) => {
-  if (state.records !== previous.records && state.caseStates !== previous.caseStates && state.baselineInputs !== previous.baselineInputs) {
-    useQueueStore.getState().reset();
-  } else if (state.baselineInputs !== previous.baselineInputs || state.todayMinutes !== previous.todayMinutes) {
-    useQueueStore.getState().reset();
-  } else if (state.agentEnabled !== previous.agentEnabled) {
-    useQueueStore.getState().cancel();
-  }
-});
+/** Playback is presentation state inside the same application store. */
+export function useQueueStore<T>(selector: (state: QueueState) => T): T {
+  return useAppStore((state) => selector(state.queue));
+}
+useQueueStore.getState = (): QueueState => useAppStore.getState().queue;
