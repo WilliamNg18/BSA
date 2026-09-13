@@ -26,6 +26,7 @@ function QueueWorklist() {
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const { result } = useProcessMonth();
   const [filter, setFilter] = useState<WorkFilter>("all");
+  const [handoff, setHandoff] = useState<string | null>(null);
   const focusedCapture = useRef<string | null>(null);
   const worklistHeading = useRef<HTMLHeadingElement>(null);
   const rows = useMemo(() => Object.values(lifecycles).flatMap((lifecycle) => {
@@ -58,6 +59,8 @@ function QueueWorklist() {
   [lifecycles, revisions, processes, records, agentEnabled]);
   useEffect(() => {
     if (focusedCapture.current && !rows.some((row) => row.id === focusedCapture.current && row.type1)) {
+      setHandoff(focusedCapture.current);
+      setFilter("all");
       focusedCapture.current = null;
       worklistHeading.current?.focus();
     }
@@ -110,6 +113,7 @@ function QueueWorklist() {
         <Button variant="outline" aria-pressed={active === "new"} onClick={() => setFilter("new")}>New submissions ({rows.filter((r) => r.fresh).length})</Button>
       </div>
     </section>
+    {handoff && <p role="status" className="text-sm">{handoff}: capture recorded. Follow the current routing; no Type 2 decision was made.</p>}
     <section aria-label="Type 2 worklist" className="space-y-3">
       <h2 ref={worklistHeading} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">Type 2 worklist</h2>
       <div role="region" aria-label="Type 2 items" tabIndex={0} className="overflow-x-auto rounded-xl border [&_[data-slot=table-container]]:overflow-visible">
