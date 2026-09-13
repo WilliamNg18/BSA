@@ -140,6 +140,12 @@ it("preserves the original three D reasons and all five signals while displaying
 });
 
 it.each([
+  "constructor", "__proto__", "toString", "Unrecognised evidence explanation",
+])("preserves unknown abstention text without resolving inherited keys: %s", (reason) => {
+  expect(abstentionReasonLabel(reason)).toBe(reason);
+});
+
+it.each([
   { id: "EX-24112", enabled: false }, { id: "EX-24112", enabled: true },
   { id: "EX-24119", enabled: false }, { id: "EX-24119", enabled: true },
 ])("keeps every operator choice and optional approval within one concise explanation: $id Agent $enabled", ({ id, enabled }) => {

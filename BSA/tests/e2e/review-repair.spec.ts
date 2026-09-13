@@ -1,5 +1,6 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
+import { startDemonstrationReview } from "./lifecycle-helpers";
 
 test("mobile navigation keeps real active classes and a visible keyboard focus indicator", async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 900 });
@@ -65,3 +66,34 @@ test("confirmed conflicted paper records an attestation without claiming agreeme
   await expect(page.locator('[data-case="C"] [data-outcome]')).toHaveText("Request information from the pharmacy");
   await expect(page.locator('[data-case="C"]')).not.toContainText("REQUEST_INFORMATION");
 });
+
+for (const enabled of [false, true]) {
+  test(`operator errors keep complete guidance under 25 words without losing controls, Agent ${enabled}`, async ({ page }) => {
+    await page.goto("/case/EX-24112");
+    await startDemonstrationReview(page);
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    const referral = page.getByRole("radio", { name: /^Refer back(?: |$)/ });
+    await referral.check();
+    const record = page.getByRole("button", { name: "Record decision", exact: true });
+    const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
+    const panel = page.locator('section[data-prose="panel"]').filter({ has: page.getByRole("heading", { name: "Operator decision", exact: true }) });
+    for (const message of ["A reason of at least eight characters", "Choose an RB code"]) {
+      await record.click();
+      const error = page.getByRole("alert").filter({ hasText: message });
+      await expect(error).toBeFocused();
+      const prose = [...await panel.locator("p").allTextContents(), ...await panel.locator("label span.text-xs").allTextContents(), await error.innerText()].join(" ");
+      expect(prose.trim().split(/\s+/).length, prose).toBeLessThan(25);
+      await expect(panel.getByRole("radio")).toHaveCount(enabled ? 5 : 4);
+      await expect(referral).toBeChecked();
+      await expect(record).toBeEnabled();
+      await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toBeVisible();
+      if (enabled) await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).not.toBeChecked();
+      await reason.fill("Human review needs the dispensing date beside the initials");
+      await expect(reason).toHaveValue("Human review needs the dispensing date beside the initials");
+    }
+    await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("RB2B");
+    await record.press("Enter");
+    await expect(page).toHaveURL(/\/record$/);
+    await expect(page.getByRole("main")).toContainText("Human review needs the dispensing date beside the initials");
+  });
+}

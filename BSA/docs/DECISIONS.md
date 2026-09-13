@@ -1805,3 +1805,15 @@ The repair needs a separate runtime pull request with exact CI and a coherent
 full local inventory, then coordinator merge/deployment. Only a new complete
 hosted run and the same independent reviewer's full-height review can establish
 acceptance. The b05 failures cannot be overwritten or promoted to a pass.
+
+The first repair candidate, `049073c`, passed the complete 30-check local
+rehearsal, not hosted acceptance. After its clean-source capture freeze ended,
+the coordinator's two queued corrections completed the same bounded batch.
+Operator errors retain their full text and focus, every choice and field, and
+optional draft approval. While an error is visible, redundant choice help is
+omitted and the description retains the no-payment boundary. Browser regressions
+first measured 28/34 cumulative words Off/On, then verified fewer than 25 words
+for missing-reason and missing-RB-code errors, preserved values and keyboard
+recovery. Unknown abstention reasons use an own-property check so inherited
+names such as `constructor` and `__proto__` remain unchanged display strings.
+Neither change modifies domain decisions, audit evidence or validation rules.

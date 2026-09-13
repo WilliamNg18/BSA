@@ -9,7 +9,7 @@ export function abstentionReasonLabel(reason: string): string {
     "Missing evidence: Dispensing date present": "Missing dispensing date.",
     "Missing evidence: Prescriber present": "Missing prescriber.",
   };
-  if (labels[reason]) return labels[reason];
+  if (Object.hasOwn(labels, reason)) return labels[reason];
   const quality = /^Image quality ([\d.]+) is below the ([\d.]+) threshold$/.exec(reason);
   if (quality) return `Image quality ${quality[1]}; minimum ${quality[2]}.`;
   const readings = /^Only (\d+) of (\d+) readings agree$/.exec(reason);

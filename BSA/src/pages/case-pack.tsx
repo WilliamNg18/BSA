@@ -345,7 +345,7 @@ function CasePackContent() {
       </>}
 
       {(!agentEnabled || !pack.agentInvoked || clock.revealed >= 6) && <>
-      <PageSection title="Operator decision" description="Human reason required; explain overrides. No payment approval.">
+      <PageSection title="Operator decision" description={error ? "No payment approval." : "Human reason required; explain overrides. No payment approval."}>
         <Card className="border-orange-600">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>
@@ -359,7 +359,7 @@ function CasePackContent() {
                     <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "AMEND" || pack.agentInvoked && d.value === "ACCEPT")} />
                     <Label htmlFor={`d-${d.value}`} className="flex flex-col gap-0.5 font-normal">
                       <span className="font-medium">{!showRecommendation && d.value === "ACCEPT" ? "Sufficient (human choice)" : d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
-                      <span className="text-xs text-muted-foreground">{!showRecommendation && d.value === "ACCEPT" ? "Human judgement." : d.help}</span>
+                      {!error && <span className="text-xs text-muted-foreground">{!showRecommendation && d.value === "ACCEPT" ? "Human judgement." : d.help}</span>}
                     </Label>
                   </div>
                 ))}
