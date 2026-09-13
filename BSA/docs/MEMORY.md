@@ -27,15 +27,13 @@ figure says estimate; old monthly defaults below become historical comparisons.
 EPS has no unreadable image or Type 1 path. Paper declarations are proposed,
 declared-not-read evidence; explicit human confirmation remains necessary.
 
-Tasks 19-24 implement the whole-process model below. All functional streams
-are merged. Initial release `1327e65` passed 20 hosted checks, but its independent
-visual review found false D reconciliation/ready wording and an E automatic
-trace implying human work. Repair #80 is deployed at
-`d5832e0faa44c32242cb75f2970288d4499befae`; all 20 new hosted checks and
-independent review of all 43 images passed. The failed first review is preserved.
-V's final documentation merge and latest-main recheck remain release steps.
-PROGRESS owns the source-pinned evidence and final release boundary.
-Infrastructure remains frozen.
+Tasks 25-30 integrate on the accepted `887d2a4` release. N #81, C #83 and
+U #82 have merged through `837417e`; E #84, Q #85 and V #86 remain in the
+release sequence. PROGRESS owns exact source/CI/hosted evidence. The historical
+`1327e65` visual failure and repaired `d5832e0` 43-image review stay immutable.
+Infrastructure remains frozen. V's six-chapter runtime must deploy before the
+complete new hosted inventory; a final runtime-identical evidence/docs PR and
+latest-main repeat close the release. No final Tasks 25-30 acceptance is implied.
 
 ## Process model
 
@@ -78,9 +76,9 @@ arithmetic, submission, capture confirmation, decisions or history. Identical
 actions in Both and switched perspectives must produce identical domain state.
 Timestamps/IDs are controlled in the equivalence tests, not erased from proof.
 
-The existing pharmacy receipt and queue presentation store modules must become
-adapters over the same store or component-local presentation, not additional
-operational stores. M owns that consolidation; no view may duplicate lifecycle,
+Pharmacy receipt and queue presentation modules are adapters over the same store
+or component-local presentation, not additional operational stores.
+No view may duplicate lifecycle,
 revision or routing state. Local focus/disclosure/playback is not domain state.
 Agent actions never change lifecycle. Code may route/price automatically; humans
 explicitly submit, confirm Type 1 capture, judge Type 2 and approve a referral note.
@@ -121,25 +119,35 @@ NHSBSA evidence assembly after an exception. Neither is a live model service.
 * Monthly model: 100 million is a conservative calculation baseline for the
   supplied "over 100 million" figure. EPS/paper partition the total; Type 1
   and Type 2 can overlap within the approximately 4% staff-touch cohort.
-  Type 2 today defaults to 13 seconds, the investigation tail to 4 minutes,
-  pharmacy completion to 6 minutes, and built-case judgement to 45 seconds.
-  Forty-five seconds exceeds thirteen: assisted Type 2 hours can increase.
-  Catch defaults to an assumed 20% of referrals; abstention to one of six
-  synthetic cases. No additional reduction is invented. Type 2 and referral
-  operator hours are non-additive views; pharmacy time is a separate workforce.
-  `monthModel(ProcessMonthInputs)` and `useProcessMonth` supply every current
-  figure. Render hours with `formatProcessHours` (one decimal maximum) and
-  items with `formatProcessItems` (integers), without rounding model outputs.
-  The prior 12-minute calculator remains only an explicitly legacy comparison.
+  The separate manual loop starts with 85,000 referrals. Sequential assumptions
+  are 80% prevented, 70% code-clearance of the remainder and 5% abstention of
+  the remaining queue: 68,000 prevented, 11,900 cleared, 5,100 queued, 255
+  abstained and 4,845 built. All queued items are assumed still referred back.
+  Today gathering/judging is 10/3 minutes, with a second three-minute judgement
+  on 25% of items: 19,479.166666... operator hours. With total is 297.5 hours,
+  including 255 judging and 42.5 manual gathering on abstentions. Pharmacy MYS
+  completion at six minutes is separately 8,500 versus 510 hours. All rates
+  and handling times are assumptions; 85,000 is public referral context, not
+  all staff work. `monthModel(ManualLoopMonthInputs)` and `useManualLoopMonth`
+  supply current figures from one store. Render hours with `formatProcessHours`
+  and items with `formatProcessItems`; round displayed values, not underlying
+  hours. Earlier process/12-minute models remain historical calculations only.
 * Routing: `auto_priced` means no person was involved in that revision.
   Human-completed Type 1/Type 2 work retains its staff route with
   `requiresHuman: false`; do not misclassify it as an untouched automatic item.
   Generic legacy submissions preserve the recorded channel. Only explicit
   channel-bearing submissions change it. Seed channels derive from the claim
   message rather than contradictory legacy display text.
+  Corrected human referrals require explicit recheck, including after escalation
+  or a further information request. Only a current-revision human-paid outcome
+  clears that authority. Do not recompute a pending recheck as untouched pricing.
+  New EPS draft previews use a prospective submission revision, never old
+  capture, recheck or human-paid evidence.
 * Lifecycle contracts: submitted, in_review, information_requested,
   referred_back, resubmitted, paid, escalated. Distinct from existing case states.
-  Implemented shared lifecycle, immutable revisions and five-pharmacy seeds.
+  Eight Hillcrest seed items cover the requested cycle. Submitted and Escalated
+  remain supported states created through explicit actions, not extra seed rows.
+  F's original decision remains alongside its later human-confirmed correction.
   Paid is synthetic, attributed to existing pricing.
 
 ## Six canonical cases

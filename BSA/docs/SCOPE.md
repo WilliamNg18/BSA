@@ -10,7 +10,9 @@ ms.date: 2026-09-13
 
 Step 0 freezes one operational Hillcrest pharmacy, a visible EPS-message
 contract, a typed paper declaration and labelled manual-loop arithmetic.
-Tasks 25-30 are not yet accepted. The prior Tasks 19-24 final release is
+Tasks 25-30 are not yet accepted as a complete release. N #81, C #83 and
+U #82 have merged through `837417e`; their scoped evidence is in PROGRESS.
+E #84, Q #85 and V #86 still require final integration. The prior release is
 `887d2a4`, recorded on issue #73 comment 5654511835.
 
 | Task | Acceptance required |
@@ -25,6 +27,10 @@ Tasks 25-30 are not yet accepted. The prior Tasks 19-24 final release is
 Every operational view uses the same store, header Agent control and perspective
 switch. Existing history and failures remain immutable; no agent payment or
 decision authority is introduced. Final release is a separate latest-main gate.
+V's six-chapter runtime merges after E/Q, then receives the complete 29-check
+hosted run and independent full-height review. A runtime-identical V evidence/
+documentation PR merges last, followed by fresh latest-main CI/deployment/live
+verification. A passing local rehearsal or scoped subset is not final acceptance.
 
 ## Current new scope: Tasks 19-24
 
