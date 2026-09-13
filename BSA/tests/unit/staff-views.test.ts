@@ -4,6 +4,8 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import { QueuePage } from "../../src/pages/queue";
 import { DecisionRecordPage } from "../../src/pages/decision-record";
+import { CasePackPage } from "../../src/pages/case-pack";
+import { NotificationContext } from "../../src/hooks/use-notification";
 import { useAppStore } from "../../src/lib/store";
 import { formatBaselineNumber, monthModel, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 
@@ -16,6 +18,12 @@ function queue() {
 function record(id: string) {
   return renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [`/case/${id}/record`] },
     createElement(Routes, null, createElement(Route, { path: "/case/:id/record", element: createElement(DecisionRecordPage) }))));
+}
+
+function casePack(id: string) {
+  return renderToStaticMarkup(createElement(NotificationContext.Provider, { value: { show: () => {}, clear: () => {} } },
+    createElement(MemoryRouter, { initialEntries: [`/case/${id}`] },
+      createElement(Routes, null, createElement(Route, { path: "/case/:id", element: createElement(CasePackPage) })))));
 }
 
 describe("Task 22 current-revision staff presentation", () => {
@@ -57,6 +65,21 @@ describe("Task 22 current-revision staff presentation", () => {
       "EX-24112": { ...store.itemProcesses["EX-24112"], revision: -1 } } });
     expect(queue()).toContain("Some items lack current routing metadata");
     expect(queue()).not.toContain('data-case-id="EX-24112"');
+  });
+
+  it("shows manual Tariff lookup and a mandatory human reason for Type 2", () => {
+    const html = casePack("EX-24112");
+    expect(html).toContain("Tariff to look up unaided");
+    expect(html).toContain('id="reason"');
+    expect(html).toContain('aria-required="true"');
+  });
+
+  it("does not fabricate agent assembly controls for automatic items", () => {
+    useAppStore.getState().setAgentEnabled(true);
+    const html = casePack("EX-24107");
+    expect(html).toContain("data-automatic-case");
+    expect(html).not.toContain("Replay step by step");
+    expect(html).not.toContain(">Record decision<");
   });
 
   it.each([false, true])("retains F's original reason and cited history in mode %s", (enabled) => {

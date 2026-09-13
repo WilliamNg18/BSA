@@ -177,7 +177,8 @@ function CasePackContent() {
         {!awaitingCapture && !automatic && <ManualTariffLookup />}
         <MissingAssistedSlots markers />
       </>}
-      {agentEnabled && <>
+      {agentEnabled && !pack.agentInvoked && <RawCaseFields c={c} />}
+      {agentEnabled && pack.agentInvoked && <>
         <CasePlayback clock={clock} total={6} />
         <Button variant="outline" type="button" aria-pressed={compare} onClick={() => setCompare((value) => !value)}>Compare manual view</Button>
         <div className={compare ? "grid gap-6 xl:grid-cols-2" : ""}>
@@ -329,7 +330,7 @@ function CasePackContent() {
         </div>
       </>}
 
-      {(!agentEnabled || clock.revealed >= 6) && <>
+      {(!agentEnabled || !pack.agentInvoked || clock.revealed >= 6) && <>
       <PageSection title="Operator decision" description="Record your human reason for every decision. An override must explain why you depart from the recommendation.">
         <Card className="border-orange-600">
           <CardHeader>

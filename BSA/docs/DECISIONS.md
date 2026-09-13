@@ -1095,6 +1095,11 @@ Confirming capture does not approve a Type 2 decision. Manual Type 2 review
 exposes the synthetic monthly Tariff for unaided lookup and M's RB catalogue;
 assisted referrals require explicit approval of the proposed draft. Reasons,
 RB codes and approved rules are written only through M's decision API.
+Q requires a human reason for every recorded decision, including accepting a
+sufficient recommendation, rather than inventing a reason for an empty field.
+The UI's Accept recommendation resolves to its actual disposition before
+calling the new API; it must not confuse a referral recommendation with ACCEPT
+as the API's sufficient outcome.
 
 Agent Off is an experience-only comparison, not a destructive audit filter.
 Actual human reasons and original rule versions remain available in immutable
