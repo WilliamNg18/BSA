@@ -25,6 +25,7 @@ import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { Type1Capture } from "@/components/demo/type1-capture";
 import { ManualTariffLookup } from "@/components/demo/case-presentation";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
+import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 
 const DECISIONS: { value: HumanDecision; label: string; help: string }[] = [
   { value: "ACCEPT", label: "Accept the recommendation", help: "Proceed as the agent recommends." },
@@ -59,7 +60,8 @@ function CasePackContent() {
   const arrive = useAppStore((s) => s.arriveInQueue);
   const recordDecision = useAppStore((s) => s.recordType2Decision);
   const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
-  const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
+  const currentRevision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1) : undefined);
+  const revision = currentRevision?.number;
   const records = useAppStore((s) => s.records);
   const existing = useMemo(() => records.filter((r) => r.caseId === id), [records, id]);
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
@@ -88,6 +90,7 @@ function CasePackContent() {
   const automatic = currentProcess?.routing.outcome === "auto_priced";
   const decided = !currentProcess || awaitingCapture || captureCompleted || automatic || lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
   const canApprove = agentEnabled && showRecommendation && !!pack.draftToPharmacy && (disposition === "REFER_BACK" || disposition === "REQUEST_INFORMATION");
+  const originalCapture = paperImageEvidence(c, currentRevision?.templateCaseId).extracted;
 
   function submit() {
     if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
@@ -300,14 +303,15 @@ function CasePackContent() {
           <CaseSourceEvidence c={c} />
           <PageSection title="Original machine capture, product and claim">
             <dl className="grid gap-2">
-              <KeyValue k="Product (capture)" v={`${c.extracted.productText} · confidence ${c.extracted.productConfidence.toFixed(2)}`} />
+              <KeyValue k="Product (capture)" v={`${originalCapture.productText} · confidence ${originalCapture.productConfidence.toFixed(2)}`} />
               <KeyValue k="Product (master data)" v={pack.product ? `${pack.product.name}, pack ${pack.product.packSize}, category ${pack.product.category}, basic price £${pack.product.basicPrice.toFixed(2)}` : "Not resolved"} />
-              <KeyValue k="Quantity (capture)" v={c.extracted.quantity ?? "Unreadable"} />
-              <KeyValue k="Endorsement (capture)" v={`"${c.extracted.endorsementText || "none"}" · confidence ${c.extracted.endorsementConfidence.toFixed(2)}`} />
+              <KeyValue k="Quantity (capture)" v={originalCapture.quantity ?? "Unreadable"} />
+              <KeyValue k="Endorsement (capture)" v={`"${originalCapture.endorsementText || "none"}" · confidence ${originalCapture.endorsementConfidence.toFixed(2)}`} />
               <KeyValue k="Claim / ledger" v={`Qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, "${c.claim.endorsementText || "none"}", ${c.claim.submittedVia}`} />
               <KeyValue k="Concession this month" v={pack.concession ? `£${pack.concession.price.toFixed(2)} (${pack.tariffLabel})` : "None listed"} />
               <KeyValue k="Endorsement required?" v={pack.endorsementRequired === null ? "Unknown" : pack.endorsementRequired ? "Yes" : "No"} />
-              <KeyValue k="Dispensing date" v={c.extracted.dispensingDate} />
+              <KeyValue k="Dispensing date (capture)" v={originalCapture.dispensingDate} />
+              {c.paperDeclaration && <KeyValue k="Declared dispensing date for rule lookup" v={<>{c.paperDeclaration.dispensingDate}<span className="block text-xs text-muted-foreground">declared by the pharmacy, not read from the form</span></>} />}
             </dl>
           </PageSection>
           </>}

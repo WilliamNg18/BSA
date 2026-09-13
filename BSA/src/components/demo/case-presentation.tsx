@@ -4,6 +4,7 @@ import { PageSection } from "@/components/page-section";
 import { BoundaryTag, KeyValue } from "./labels";
 import { PainMarker } from "./pain-marker";
 import { PrescriptionForm } from "./prescription-form";
+import { EpsPrescriptionMessage } from "./eps-prescription-message";
 import type { useCasePresentation } from "@/hooks/use-case-presentation";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { formatBaselineNumber, GATHERING_STEPS } from "@/lib/domain/baseline";
@@ -11,6 +12,8 @@ import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { ASSISTED_SLOTS } from "@/lib/case-presentation";
 import type { ExceptionCase } from "@/lib/domain/types";
 import type { Type1Capture as CaptureReceipt } from "@/lib/domain/lifecycle";
+import { paperImageEvidence } from "@/lib/domain/capture-evidence";
+import { useAppStore } from "@/lib/store";
 
 export function CasePlayback({ clock, total }: { clock: ReturnType<typeof useCasePresentation>; total: number }) {
   return <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Presentation controls">
@@ -66,7 +69,9 @@ export function ManualTariffLookup() {
 }
 
 export function CaseSourceEvidence({ c }: { c: ExceptionCase }) {
+  const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
   if (c.claim.submittedVia === "EPS claim message") return <PageSection title="EPS claim message" description="Electronic claim evidence, synthetic. EPS has no image and never needs Type 1 capture.">
+    {c.epsPrescription ? <EpsPrescriptionMessage prescription={c.epsPrescription} /> : <>
     <p className="mb-3 text-sm text-muted-foreground">Original digital prescription not recorded. Only the retained claim fields are shown.</p>
     <dl className="grid gap-2">
       <KeyValue k="Product code in claim" v={c.claim.productCode ?? "Not recorded"} />
@@ -74,11 +79,12 @@ export function CaseSourceEvidence({ c }: { c: ExceptionCase }) {
       <KeyValue k="Claim amount" v={`£${c.claim.amountClaimed.toFixed(2)}`} />
       <KeyValue k="Dispenser endorsement in claim" v={c.claim.endorsementText || "None recorded"} />
     </dl>
+    </>}
   </PageSection>;
   return <PageSection title="Prescription image" description={c.imageStyle === "handwritten_poor"
     ? "Image cannot be read. A declaration is not a reading of this form."
     : "Synthetic form evidence. Original image remains unchanged."}>
-    <PrescriptionForm c={c} highlight={[]} />
+    <PrescriptionForm c={paperImageEvidence(c, templateCaseId)} highlight={[]} />
   </PageSection>;
 }
 
@@ -102,15 +108,18 @@ export function ConfirmedCaptureEvidence({ capture }: { capture: CaptureReceipt 
 }
 
 export function RawCaseFields({ c }: { c: ExceptionCase }) {
+  const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
+  const original = paperImageEvidence(c, templateCaseId).extracted;
   return <div className="grid gap-4 md:grid-cols-2" data-manual-pack>
     <CaseSourceEvidence c={c} />
     <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">
-        <KeyValue k="Product (capture)" v={c.extracted.productText} />
-        <KeyValue k="Quantity (capture)" v={c.extracted.quantity ?? "Unreadable"} />
-        <KeyValue k="Endorsement (capture)" v={c.extracted.endorsementText || "None"} />
-        <KeyValue k="Dispensing date" v={c.extracted.dispensingDate} />
-        <KeyValue k="Prescriber (capture)" v={c.extracted.prescriber} />
+        <KeyValue k="Product (capture)" v={original.productText} />
+        <KeyValue k="Quantity (capture)" v={original.quantity ?? "Unreadable"} />
+        <KeyValue k="Endorsement (capture)" v={original.endorsementText || "None"} />
+        <KeyValue k="Dispensing date (capture)" v={original.dispensingDate} />
+        <KeyValue k="Prescriber (capture)" v={original.prescriber} />
+        {c.paperDeclaration && <KeyValue k="Declared dispensing date" v={<>{c.paperDeclaration.dispensingDate}<span className="block text-xs text-muted-foreground">declared by the pharmacy, not read from the form</span></>} />}
         <KeyValue k="Claim quantity" v={c.claim.quantity} />
         <KeyValue k="Claim amount" v={`£${c.claim.amountClaimed.toFixed(2)}`} />
         <KeyValue k="Claim endorsement" v={c.claim.endorsementText || "None"} />

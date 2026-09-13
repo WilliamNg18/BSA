@@ -96,7 +96,7 @@ function QueueWorklist() {
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
     <section aria-label="Actual session work counts" className="space-y-3">
       <h2 className="font-semibold">Actual synthetic session items</h2>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {tiles.map((tile) => <Button key={tile.key} variant="outline" aria-pressed={active === tile.key}
           className="h-auto justify-between gap-3 whitespace-normal p-4 text-left" onClick={() => setFilter(tile.key)}>
           <span>{tile.label}</span><span className="text-xl tabular-nums">{tile.count}</span>
@@ -108,6 +108,20 @@ function QueueWorklist() {
       </div>
     </section>
     {handoff && <p role="status" className="text-sm">{handoff}: capture recorded. Follow the current routing; no Type 2 decision was made.</p>}
+    <section aria-label="Type 1 capture lane" className="space-y-3">
+      <h2 className="text-lg font-semibold">Type 1 capture lane</h2>
+      <p className="text-sm text-muted-foreground">Separate capture work. A person confirms the fields before code routes the item onward.</p>
+      {type1.map((row) => <details key={row.id} open={row.id === "EX-24123"} className="rounded-xl border p-4" data-type1-case={row.id}
+        onFocusCapture={() => { focusedCapture.current = row.id; }}
+        onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
+        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · {LIFECYCLE_LABELS[row.lifecycle.state].pharmacy}</summary>
+        <div className="mt-3 space-y-3">
+          <Type1Capture caseId={row.id} />
+          <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
+        </div>
+      </details>)}
+      {!type1.length && <p role="status">No items awaiting Type 1 capture in this filter.</p>}
+    </section>
     {(["type2", "referred", "decided"] as const).map((lane) => <section key={lane} aria-label={tiles.find((tile) => tile.key === lane)!.label} className="space-y-3">
       <h2 ref={lane === "type2" ? worklistHeading : undefined} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">{tiles.find((tile) => tile.key === lane)!.label}</h2>
       <div role="region" aria-label={`${tiles.find((tile) => tile.key === lane)!.label} items`} tabIndex={0} className="overflow-x-auto rounded-xl border [&_[data-slot=table-container]]:overflow-visible">
@@ -126,20 +140,6 @@ function QueueWorklist() {
       </div>
       {!visible.some((row) => row.category === lane) && <p role="status">No {tiles.find((tile) => tile.key === lane)!.label.toLowerCase()} items match this filter.</p>}
     </section>)}
-    <section aria-label="Type 1 capture lane" className="space-y-3">
-      <h2 className="text-lg font-semibold">Type 1 capture lane</h2>
-      <p className="text-sm text-muted-foreground">Separate capture work. A person confirms the fields before code routes the item onward.</p>
-      {type1.map((row) => <details key={row.id} open={row.id === "EX-24123"} className="rounded-xl border p-4" data-type1-case={row.id}
-        onFocusCapture={() => { focusedCapture.current = row.id; }}
-        onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
-        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · {LIFECYCLE_LABELS[row.lifecycle.state].pharmacy}</summary>
-        <div className="mt-3 space-y-3">
-          <Type1Capture caseId={row.id} />
-          <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
-        </div>
-      </details>)}
-      {!type1.length && <p role="status">No items awaiting Type 1 capture in this filter.</p>}
-    </section>
     {visible.some((row) => row.captureCompleted) && <section aria-label="Completed Type 1 captures" className="space-y-3">
       <h2 className="text-lg font-semibold">Completed Type 1 captures</h2>
       <p className="text-sm">Human capture is complete. These items are not awaiting Type 2 judgement.</p>
