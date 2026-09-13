@@ -19,7 +19,7 @@ export function routeSubmission(facts: RoutingFacts): RoutingResult {
     outcome, reason, requiresHuman: outcome === "type1_capture" || outcome === "type2_endorsement",
     pricingAuthority: outcome === "auto_priced" ? "existing_rules_engine" : null,
   });
-  if (!facts.captureConfirmed && (!facts.readable || facts.handwritten)) return result("type1_capture", "Human product capture required before routing.");
+  if (facts.channel === "paper" && !facts.captureConfirmed && (!facts.readable || facts.handwritten)) return result("type1_capture", "Human product capture required before routing.");
   if (facts.type2Decision === "insufficient") return result("referred_back", "Human judgement found insufficient information; RB code and reason required.");
   if (!facts.mandatoryFieldsComplete) return result("type2_endorsement", "Mandatory evidence is missing; human review required before pricing.");
   if (facts.type2Decision === "sufficient") return {
@@ -34,7 +34,7 @@ export function routeSubmission(facts: RoutingFacts): RoutingResult {
     outcome: "type1_capture", reason: "Human capture complete; existing rules engine handles normal pricing.",
     requiresHuman: false, pricingAuthority: "existing_rules_engine",
   };
-  return result("auto_priced", "Priced by NHSBSA's existing rules engine; no person involved.");
+  return result("auto_priced", "Priced by NHSBSA's existing rules engine, no person involved.");
 }
 
 export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["channel"], captureConfirmed = false): RoutingFacts {

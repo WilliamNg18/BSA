@@ -9,6 +9,7 @@ export const PRODUCTS: Product[] = [
   { code: "SYN-METF500-56", name: "Metformin 500mg tablets", packSize: 56, category: "M", basicPrice: 1.53 },
   { code: "SYN-COCOD-100", name: "Co-codamol 30/500 tablets", packSize: 100, category: "M", basicPrice: 3.86 },
   { code: "SYN-AMOX500-21", name: "Amoxicillin 500mg capsules", packSize: 21, category: "M", basicPrice: 1.02 },
+  { code: "SYN-AMOX500-GENERIC-21", name: "Amoxicillin 500mg capsules (generic synthetic)", packSize: 21, category: "M", basicPrice: 1.02 },
   { code: "SYN-LEVO100-28", name: "Levothyroxine 100mcg tablets", packSize: 28, category: "M", basicPrice: 1.12 },
 ];
 
