@@ -1766,3 +1766,42 @@ without a declaration, D undeclared On and D declared On. They preserve
 complete store identity and assert fewer than 25 explanatory words in each
 capture panel. This corrects presentation only, not source fields, routing,
 capture confirmation or decision authority.
+
+## 2026-09-13: One bounded repair after the complete b05 visual review
+
+The initial b05 hosted inventory passed all 30 checks, but its independent
+58-image, full-height review failed. The original capture bundle, failed review,
+manual observations and F02 correction remain immutable. F02 is not a defect:
+three abstention reasons and four failed structural signals are distinct.
+No signal, reason, gate, fixture, arithmetic or decision authority changes.
+
+The coordinator authorised one presentation-and-verification repair batch.
+Generated mandatory-field checks say supplied, never implying a poor image was
+read. Capture summaries distinguish a human reconciliation attestation from
+proven source agreement. EPS Off describes hypothetical incompleteness risk
+without running a hidden check. Tour recommendations use the existing readable
+label mapping; original enums and audit records remain untouched.
+
+The ten natural explanatory-panel groups identified by review are condensed
+cumulatively below 25 words. Initial D reasons have concise display aliases;
+the original three domain reasons, five signals and immutable trace remain
+unchanged. Required field provenance, rule quotations and stored audit records
+are not truncated. Tests cover complete, missing, unsupported, conflicted,
+manual and assisted variants, including all operator choices and optional
+human draft approval.
+
+The same batch fixes the observed mobile navigation class serialization:
+resolve its route-dependent class string before SheetClose's slot composition.
+Desktop navigation, route matching intent, aria-current and focus return remain.
+An actual keyboard regression first reproduced the serialized callback, then
+verified the repaired active classes and visible 2px focus indicator.
+
+Before every live audit or image, the harness uses the real Dismiss notification
+control if a decision notice is present. It verifies unchanged main evidence
+and records the dismissed message. It does not hide overlays with CSS, alter
+screenshots or relax any original pass/identity requirement.
+
+The repair needs a separate runtime pull request with exact CI and a coherent
+full local inventory, then coordinator merge/deployment. Only a new complete
+hosted run and the same independent reviewer's full-height review can establish
+acceptance. The b05 failures cannot be overwritten or promoted to a pass.

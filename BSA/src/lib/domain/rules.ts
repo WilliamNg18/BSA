@@ -178,7 +178,7 @@ export function complianceGate(
   const mandatoryOk = mandatory.every((m) => m.pass);
   const checks: GateCheck[] = [
     { name: "Recommendation cites a validated provision", pass: citationValid === true, detail: citationValid ? "Citation resolves to the corpus for the dispensing date" : "Citation missing or not found in the corpus" },
-    { name: "Mandatory fields present", pass: mandatoryOk, detail: mandatoryOk ? "All mandatory fields read" : "One or more mandatory fields missing" },
+    { name: "Mandatory fields present", pass: mandatoryOk, detail: mandatoryOk ? "All mandatory fields supplied" : "One or more mandatory fields missing" },
     { name: "Agent has not priced or disposed", pass: true, detail: "Recommendation only; no payment value written, no case state changed by the agent" },
   ];
   if (recommendation === "SUFFICIENT") {

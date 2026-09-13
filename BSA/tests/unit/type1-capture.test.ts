@@ -31,7 +31,7 @@ describe("Type 1 capture initial presentation", () => {
     expect(html).toContain('aria-label="Assumed manual keying time"');
     expect(html).toContain("Illustration, not elapsed work");
     expect(html).toContain("Confirm capture and continue to Type 2");
-    expect(html).toContain("the agent verifies and advises; a person decides");
+    expect(html).toContain("The agent verifies and advises; a person decides.");
     expect([...html.matchAll(/<input[^>]*value=""/g)]).toHaveLength(3);
     expect(html).toMatch(/<textarea[^>]*><\/textarea>/);
     expect(getDomainSnapshot()).toEqual(before);
@@ -52,7 +52,7 @@ describe("Type 1 capture initial presentation", () => {
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24112" }));
     expect(html).toContain("Original paper image");
     expect(html).toContain("Confirm capture and continue</button>");
-    expect(html).toContain("Complete evidence may continue to existing pricing");
+    expect(html).toContain("Code routes confirmed evidence to existing pricing or Type 2 judgement.");
     expect(html).not.toContain("Original poor paper image");
     expect(html).not.toContain("cannot read this scan");
     expect(html).not.toContain("Confirm capture and continue to Type 2");

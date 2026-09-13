@@ -32,17 +32,32 @@ export const test = existingTest.extend<{ buildIdentity: void }>({
   }, { auto: true }],
 });
 
+async function dismissDecisionNotice(page: Page) {
+  const notices = page.getByRole("complementary", { name: "Decision notifications", exact: true });
+  const dismiss = notices.getByRole("button", { name: "Dismiss notification", exact: true });
+  if (await dismiss.count() === 0) return null;
+  const text = await notices.innerText();
+  const main = page.getByRole("main");
+  const evidence = await main.innerText();
+  await dismiss.click();
+  await expect(dismiss).toHaveCount(0);
+  await expect(main).toHaveText(evidence, { useInnerText: true });
+  return text;
+}
+
 export async function audit(page: Page, info: TestInfo, name: string, enabled: boolean) {
+  const dismissedNotification = await dismissDecisionNotice(page);
   const result = await new AxeBuilder({ page }).analyze();
   await captureJson(info, `axe-${name}-${enabled ? "on" : "off"}`, {
     url: page.url(), auditedAt: new Date().toISOString(), agentEnabled: enabled,
-    violations: result.violations, passes: result.passes.length, incomplete: result.incomplete,
+    violations: result.violations, passes: result.passes.length, incomplete: result.incomplete, dismissedNotification,
   });
   expect(result.violations).toEqual([]);
   await captureView(page, info, `audit-${name}-${enabled ? "on" : "off"}`);
 }
 
 export async function captureView(page: Page, info: TestInfo, name: string) {
+  const dismissedNotification = await dismissDecisionNotice(page);
   const git = (...args: string[]) => execFileSync("git", args, { encoding: "utf8" }).trim();
   const sourceRevision = git("rev-parse", "HEAD");
   if (git("status", "--porcelain")) throw new Error("Source-pinned live captures require a clean checkout.");
@@ -74,7 +89,7 @@ export async function captureView(page: Page, info: TestInfo, name: string) {
     sourceRevision, applicationSourceRevision, sourceDirty: false,
     capturedAt: new Date().toISOString(), url: page.url(), screenshot: name,
     sha256: createHash("sha256").update(await readFile(path)).digest("hex"),
-    viewport, scrollWidth, documentHeight, fullPage: true, perspective,
+    viewport, scrollWidth, documentHeight, fullPage: true, perspective, dismissedNotification,
     agentEnabled: await page.getByRole("banner").getByRole("switch").isChecked(),
     browserVersion: page.context().browser()?.version(),
     reducedMotion: await page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches),

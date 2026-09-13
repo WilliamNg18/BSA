@@ -26,13 +26,14 @@ import { Type1Capture } from "@/components/demo/type1-capture";
 import { ManualTariffLookup } from "@/components/demo/case-presentation";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
+import { abstentionReasonLabel } from "@/lib/abstention-display";
 
 const DECISIONS: { value: HumanDecision; label: string; help: string }[] = [
-  { value: "ACCEPT", label: "Accept the recommendation", help: "Proceed as the agent recommends." },
-  { value: "AMEND", label: "Amend", help: "Release to existing pricing with a human amendment." },
-  { value: "REQUEST_INFORMATION", label: "Request information", help: "Ask the pharmacy to confirm a fact before any outcome." },
-  { value: "REFER_BACK", label: "Refer back", help: "Return the item with the exact fix; payment waits." },
-  { value: "ESCALATE", label: "Escalate", help: "Send to a senior operator, as today." },
+  { value: "ACCEPT", label: "Accept the recommendation", help: "Human acceptance." },
+  { value: "AMEND", label: "Amend", help: "Human amendment." },
+  { value: "REQUEST_INFORMATION", label: "Request information", help: "Await clarification." },
+  { value: "REFER_BACK", label: "Refer back", help: "Request correction." },
+  { value: "ESCALATE", label: "Escalate", help: "Senior review." },
 ];
 
 function suggestedFor(rec: string): HumanDecision {
@@ -163,8 +164,8 @@ function CasePackContent() {
           <AlertTriangle className="text-rose-700" aria-hidden="true" />
           <AlertTitle>The agent abstained</AlertTitle>
           <AlertDescription className="text-foreground">
-            <p>No recommendation is shown because the evidence does not support one. The item follows today's process; nothing about it has been changed.</p>
-            <ul className="mt-1 list-disc pl-5">{pack.abstainReasons.map((r) => <li key={r}>{r}</li>)}</ul>
+            <p>No recommendation.</p>
+            <ul className="mt-1 list-disc pl-5">{pack.abstainReasons.map((r) => <li key={r}>{abstentionReasonLabel(r)}</li>)}</ul>
           </AlertDescription>
         </Alert>
       )}
@@ -344,7 +345,7 @@ function CasePackContent() {
       </>}
 
       {(!agentEnabled || !pack.agentInvoked || clock.revealed >= 6) && <>
-      <PageSection title="Operator decision" description="Human reason required; explain any override.">
+      <PageSection title="Operator decision" description="Human reason required; explain overrides. No payment approval.">
         <Card className="border-orange-600">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>
@@ -358,14 +359,14 @@ function CasePackContent() {
                     <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "AMEND" || pack.agentInvoked && d.value === "ACCEPT")} />
                     <Label htmlFor={`d-${d.value}`} className="flex flex-col gap-0.5 font-normal">
                       <span className="font-medium">{!showRecommendation && d.value === "ACCEPT" ? "Sufficient (human choice)" : d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
-                      <span className="text-xs text-muted-foreground">{!showRecommendation && d.value === "ACCEPT" ? "Your judgement, not an agent recommendation or payment approval." : d.help}</span>
+                      <span className="text-xs text-muted-foreground">{!showRecommendation && d.value === "ACCEPT" ? "Human judgement." : d.help}</span>
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
               {canApprove && <div className="space-y-2">
                 <label className="flex items-start gap-2"><input name="approve-draft" type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
-                <p className="text-sm text-muted-foreground">Optional. Only approved drafts accompany your human reason.</p>
+                <p className="text-sm text-muted-foreground">Draft approval is optional.</p>
               </div>}
               {disposition === "REFER_BACK" && <div className="space-y-1.5">
                 <Label htmlFor="rb-code">RB code (required)</Label>
@@ -382,7 +383,6 @@ function CasePackContent() {
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision
               </Button>
-              <p className="text-xs text-muted-foreground">Session record only. No payment approval.</p>
             </CardContent>
           )}
         </Card>

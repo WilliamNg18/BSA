@@ -13,6 +13,8 @@ test("worked paper declaration reaches Sufficient only after explicit human evid
   await page.locator('[data-case-id="EX-24123"]').getByRole("link", { name: "Open EX-24123", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
   await expect(page.getByText("Gate: PASS", { exact: true })).toBeVisible();
+  await expect(page.getByText("All mandatory fields supplied", { exact: true })).toBeVisible();
+  await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
   await expect(page.getByRole("radio", { name: /^Accept the recommendation \(as recommended\)/ })).toBeChecked();
   await expect(page.getByRole("main")).toContainText("declared by the pharmacy, not read from the form");

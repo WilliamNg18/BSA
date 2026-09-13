@@ -53,7 +53,7 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain("Image agreement remains unknown");
     expect(html).toContain("separately established prescriber evidence");
     expect(html).toContain("Received declaration requirement checks");
-    expect(html).toContain("Declaration requirements complete; not human-confirmed");
+    expect(html).toContain("Declared evidence complete; human confirmation and prescriber evidence remain required. Not read from the form.");
     expect(html).toContain('type="checkbox"');
     expect(html).not.toContain("checked=");
     expect(html).toContain("Confirm, not key");

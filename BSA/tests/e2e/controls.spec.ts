@@ -160,7 +160,7 @@ test("D shows its three abstention reasons; E has no agent trace", async ({ page
   const abstention = page.getByRole("alert");
   await expect(abstention).toContainText("The agent abstained");
   await expect(abstention.locator("li")).toHaveCount(3);
-  await expect(abstention).toContainText("Only 1 of 3 readings agree");
+  await expect(abstention).toContainText("1/3 readings agree.");
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "d-abstention-not-run");
   await page.goto("case/EX-24101/trace");

@@ -1,9 +1,15 @@
 # Task 30 evidence
 
-**Hosted capture and visual acceptance are pending.** No local image in this
-task is represented as an approved hosted capture or a completed visual review.
-The coordinator must approve the final functional deployment before a new
-hosted run. Historical Task 24 evidence is unchanged.
+**Initial hosted functional acceptance passed; visual/prose acceptance failed.**
+The immutable `b05b06a` bundle contains all 30 passing hosted checks, 60 identities,
+58 images and 26 zero-violation axe audits. `review-b05b06a` preserves the complete
+independent 58-image review, its 24/34 image PASS/FAIL verdicts and separate F02
+correction. `manual-b05b06a` preserves actual keyboard/contrast observations and
+limitations. None of these failures is relabelled as final acceptance.
+
+A bounded runtime/capture repair is required before a new coordinator-approved
+deployment, full hosted run and independent full-height review. Historical
+Task 24 evidence and every original b05 artifact remain unchanged.
 
 ## Local rehearsal, not release acceptance
 

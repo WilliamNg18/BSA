@@ -46,7 +46,7 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         <h3 ref={heading} tabIndex={-1} className="font-semibold">Human capture confirmed</h3>
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
-        <p className="text-sm">Capture is recorded. Follow the current routing outcome; no further capture is requested.</p>
+        <p className="text-sm">Capture recorded; follow current routing.</p>
         <dl className="grid gap-3 break-words text-sm sm:grid-cols-2">
           {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => <div key={field}>
             <dt className="font-medium">{{ productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field]}</dt>
@@ -59,7 +59,7 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         </dl>
         <p className="text-xs text-muted-foreground">{capture.provenance === "pharmacy_declaration"
           ? `Fields ${PAPER_DECLARATION_PROVENANCE}; explicitly confirmed by a person.`
-          : capture.declarationReconciled ? "Human-corrected capture; declaration and paper explicitly reconciled."
+          : capture.declarationReconciled ? "Human-corrected capture. The operator attested reconciliation; this does not prove source agreement."
             : "Manually captured by a person; no declaration reconciliation asserted."}</p>
         <CaptureTiming assisted={capture.declarationReconciled} />
       </section>
@@ -172,8 +172,11 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
           </div>}
           {declaredCheck && <div className="space-y-2 rounded-md border p-3 text-sm">
             <BoundaryTag cls="agent" />
-            <p>{declaredCheck.status === "ready" ? "Declaration requirements complete; not human-confirmed" : "Declaration requires review"}</p>
-            <p>{declaredCheck.gap}</p>
+            <p>{declaredCheck.status === "ready"
+              ? "Declared evidence complete; human confirmation and prescriber evidence remain required. Not read from the form."
+              : declaredCheck.status === "missing"
+                ? "Declaration incomplete. Resolve missing requirements; human confirmation and prescriber evidence remain required. Not read from the form."
+                : `${declaredCheck.gap} Human review remains required.`}</p>
             {declaredCheck.clause && <>
               <p>Declared dispensing-month Tariff: {declaredCheck.version}. {declaredCheck.clause.title}</p>
               <blockquote>{declaredCheck.clause.text}</blockquote>
@@ -182,7 +185,6 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
                 {declaredCheck.checks.map((check) => <li key={check.id}>{check.met === true ? "Met" : "Missing"}: {check.label}</li>)}
               </ul>
             </>}
-            <p className="text-xs">These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.</p>
           </div>}
           {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => {
             const label = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field];
@@ -214,7 +216,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
                   className="mt-0.5 size-4 shrink-0 accent-primary focus-visible:outline-2 focus-visible:outline-offset-2" />
                 I have reconciled the declaration with the available evidence, including the dispensing date
               </label>
-              <p className="text-xs text-muted-foreground">This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.</p>
+              <p className="text-xs text-muted-foreground">Attestation, not proven image agreement. If uncertain, key manually.</p>
               <Button type="button" variant="outline" onClick={() => changeMode(false)}>Key fields manually</Button>
             </div>
           )}
@@ -230,9 +232,8 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
       <div className="space-y-2 border-t pt-3">
         <BoundaryTag cls="deterministic" />
         <p className="text-xs text-muted-foreground">{unreadableExample
-          ? "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause."
-          : "Code routes after explicit capture. Complete evidence may continue to existing pricing; unresolved endorsements need Type 2 judgement."}</p>
-        <p className="text-xs text-muted-foreground">the agent verifies and advises; a person decides</p>
+          ? "Code routes confirmed evidence to Type 2 judgement. The agent verifies and advises; a person decides."
+          : "Code routes confirmed evidence to existing pricing or Type 2 judgement. The agent verifies and advises; a person decides."}</p>
       </div>
     </section>
   );

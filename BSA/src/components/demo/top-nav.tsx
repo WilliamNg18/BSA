@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, matchPath, useLocation } from "react-router-dom";
 import { ChevronDown, Menu, RotateCcw, ShieldCheck } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
@@ -86,7 +86,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
               <div className="space-y-5 px-4 pb-6">
                 {groups.map((group) => <section key={group} aria-label={group}>
                   <h2 className="mb-2 text-sm font-semibold">{group}</h2>
-                  <ul className="space-y-1">{navRoutes.filter((route) => route.group === group).map((route) => <li key={route.path}><SheetClose asChild><NavLink to={route.path} onClick={() => chooseRoute(route.path)} end className={({ isActive }) => cn("block rounded-md px-3 py-2 text-sm focus-visible:outline-2", isActive ? "bg-accent text-accent-foreground" : "hover:bg-muted")}>{route.label}</NavLink></SheetClose></li>)}</ul>
+                  <ul className="space-y-1">{navRoutes.filter((route) => route.group === group).map((route) => <li key={route.path}><SheetClose asChild><NavLink to={route.path} onClick={() => chooseRoute(route.path)} end className={cn("block rounded-md px-3 py-2 text-sm focus-visible:outline-2", matchPath({ path: route.path, end: true, caseSensitive: false }, pathname) ? "bg-accent text-accent-foreground" : "hover:bg-muted")}>{route.label}</NavLink></SheetClose></li>)}</ul>
                 </section>)}
               </div>
             </SheetContent>
