@@ -136,9 +136,7 @@ export function HomePage() {
         </section>
         <section aria-label="Proposed outcomes" className="space-y-3 rounded-xl border bg-card p-5">
           <h2 className="font-semibold">Fewer items back. A judgement you can reconstruct.</h2>
-          <p className="text-sm">Rule and reason recorded for built cases. People confirm evidence and decide; existing pricing remains unchanged.</p>
-          <p className="text-sm font-medium">The agent verifies and advises; a person decides.</p>
-          <p className="text-sm text-muted-foreground">No agent payments. Referral reduction is an estimate, not a universal Type 2 speed-up or a measured saving.</p>
+          <p className="text-sm">Rule and reason recorded; the agent verifies and advises; a person decides. Existing pricing stays unchanged. Fewer referrals are estimates, not measured savings.</p>
         </section>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>

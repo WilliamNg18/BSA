@@ -25,7 +25,7 @@ it("chapter six uses the edited prevention assumption and preserves its stop cri
   expect(html).not.toContain("pharmacy checks prevent 80%");
   expect(html).toContain("If measured prevention is substantially lower, the estimate fails.");
   expect(html).toContain('href="/#month"');
-  expect(html).toContain("The agent verifies and advises; a person decides.");
+  expect(html).toContain("the agent verifies and advises; a person decides.");
 });
 
 it("invalid assumptions cannot retain a stale central bet", () => {
