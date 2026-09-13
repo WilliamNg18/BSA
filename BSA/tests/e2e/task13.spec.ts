@@ -9,8 +9,10 @@ const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", 
 const followed = (page: Page) => page.getByRole("region", { name: "Followed item", exact: true });
 async function openReview(page: Page) {
   await history(page).getByRole("link", { name: "Open shared queue", exact: true }).click();
-  await page.locator(`[data-shared-case="${B}"]`).getByRole("button", { name: "Open for review", exact: true }).click();
+  await page.locator(`[data-case-id="${B}"]`).getByRole("link", { name: `Open ${B}`, exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/case/${B}$`));
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Start review", exact: true }).click();
 }
 async function decide(page: Page, reason: string) {
   await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
@@ -33,6 +35,7 @@ for (const enabled of [false, true]) {
     await expect(detail(page)).toContainText(B);
     await openReview(page);
     await page.getByRole("radio", { name: /^Refer back / }).check();
+    await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     if (enabled) {
       const approval = page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true });
       await expect(approval).not.toBeChecked();
