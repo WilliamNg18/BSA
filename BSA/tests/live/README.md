@@ -63,8 +63,15 @@ after every action and every presentation switch; failure attachments retain
 the snapshots collected before the failure. The first M-stage coverage is
 complete EPS automatic pricing using B's explicit typed correction, and
 incomplete EPS draft/submission. B retains its recorded EPS channel; these
-checks do not reinterpret A's paper seed as EPS. This is
-not yet evidence for the later Type 1, Type 2 or full referral-cycle UI.
+checks do not reinterpret A's paper seed as EPS.
+
+The integrated U/Q stage additionally covers D's explicit Type 1 confirmation:
+blank manual capture Off and the prior pharmacy declaration On, including a
+rejected unreconciled confirmation. Stopwatch actions, opening work and reading
+the resulting Type 2 case cannot change domain state. Capture must retain every
+original pharmacy attempt and append capture evidence without a Type 2 decision.
+These cases require the integrated capture/worklist UI; they are not an M-only
+compatibility patch or evidence for the full referral-cycle and capture-edit flows.
 
 To repeat only these checks locally after an ordinary build:
 
