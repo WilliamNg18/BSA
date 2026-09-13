@@ -232,6 +232,8 @@ export interface ExceptionCase {
   readonly capturedEvidence?: CapturedEvidence;
   readonly epsPrescription?: EpsPrescription;
   readonly paperDeclaration?: PaperDeclaration;
+  readonly requiresHumanRecheck?: boolean;
+  readonly humanPricingConfirmed?: boolean;
 }
 
 export interface ToolCall {

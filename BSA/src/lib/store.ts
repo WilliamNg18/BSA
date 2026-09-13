@@ -172,6 +172,15 @@ export const useAppStore = create<AppState>((set, get) => {
     if (!states.includes(row.state)) throw new Error(`Cannot act on ${caseId} while ${row.state}; expected ${states.join(" or ")}.`);
     return row;
   };
+  const legacySubmission = (caseId: string, text: string, precheck?: PharmacyPrecheckSnapshot): ProcessSubmission => {
+    const previous = get().caseRevisions[caseId]?.at(-1);
+    const channel = previous?.channel ?? (currentCase(caseId).scenario === "D" ? "paper" : "eps");
+    return { caseId, channel, endorsementText: text, precheck,
+      ...(channel === "paper" && previous?.paperDeclaration ? { paperDeclaration: { ...previous.paperDeclaration, endorsementText: text } } : {}),
+      ...(channel === "paper" && previous?.declaration ? { declaration: {
+        ...previous.declaration, fields: { ...previous.declaration.fields, endorsementText: text },
+      } } : {}) };
+  };
   const pharmacyAction = (caseId: string, text: string, kind: CaseRevision["kind"], precheck?: Parameters<LifecycleSlice["submitFromPharmacy"]>[2], submission?: ProcessSubmission) => {
     const c = currentCase(caseId);
     if (typeof text !== "string" || !submission && c.scenario !== "E" && !text.trim() || kind === "confirmation" && !text.trim()) throw new Error("Pharmacy text is required.");
@@ -182,7 +191,12 @@ export const useAppStore = create<AppState>((set, get) => {
     if (!["eps", "paper"].includes(channel)) throw new Error("Invalid item channel.");
     const epsPrescription = submission?.epsPrescription ?? (channel === "eps" && previous.epsPrescription
       ? { ...previous.epsPrescription, dispenserEndorsement: kind === "confirmation" ? previous.endorsementText : text, claimMessageState: "submitted" as const } : undefined);
-    const paperDeclaration = submission?.paperDeclaration ?? (kind === "confirmation" ? previous.paperDeclaration : undefined);
+    const paperDeclaration = submission?.paperDeclaration ?? (kind === "confirmation" ? previous.paperDeclaration :
+      channel === "paper" && submission?.declaration && previous.paperDeclaration ? {
+        ...previous.paperDeclaration, typedProduct: submission.declaration.fields.productCode === previous.declaration?.fields.productCode
+          ? previous.paperDeclaration.typedProduct : submission.declaration.fields.productCode ?? "",
+        quantity: submission.declaration.fields.quantity, endorsementText: submission.declaration.fields.endorsementText,
+      } : undefined);
     const at = timestamp(caseId);
     const declaration = submission?.declaration ?? (paperDeclaration ? {
       fields: paperDeclarationFields(paperDeclaration), declaredAt: at, provenance: "pharmacy_declaration" as const,
@@ -279,6 +293,7 @@ export const useAppStore = create<AppState>((set, get) => {
       if (!["human_capture", "pharmacy_declaration"].includes(input.provenance) || typeof input.declarationReconciled !== "boolean") throw new Error("Invalid capture provenance.");
       const fields = input.fields;
       validateDeclaredFields(fields);
+      if (fields.productCode !== null && !fields.productCode.startsWith("SYN-")) throw new Error("Only synthetic product codes may be captured.");
       if (input.provenance === "pharmacy_declaration" && !revision.declaration) throw new Error("No pharmacy declaration on this revision.");
       if (input.provenance === "pharmacy_declaration" && !sameDeclaredFields(fields, revision.declaration!.fields)) throw new Error("Corrected fields require human_capture provenance.");
       const at = timestamp(c.id);
@@ -305,12 +320,8 @@ export const useAppStore = create<AppState>((set, get) => {
         inputs: pack.evidence.map((e) => e.value), sources: [...new Set(pack.evidence.map((e) => e.origin))], checks: pack.gate.checks }, false, approvedDraft, rbCode);
     },
     ...seededLifecycleSession(), followedCaseId: null,
-    submitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "submission", precheck, {
-      caseId: id, endorsementText: text, channel: get().caseRevisions[id]?.at(-1)?.channel ?? (currentCase(id).scenario === "D" ? "paper" : "eps"), precheck,
-    }),
-    resubmitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "resubmission", precheck, {
-      caseId: id, endorsementText: text, channel: get().caseRevisions[id]?.at(-1)?.channel ?? (currentCase(id).scenario === "D" ? "paper" : "eps"), precheck,
-    }),
+    submitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "submission", precheck, legacySubmission(id, text, precheck)),
+    resubmitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "resubmission", precheck, legacySubmission(id, text, precheck)),
     sendConfirmation: (id, text) => pharmacyAction(id, text, "confirmation"),
     arriveInQueue: (id) => {
       if (get().itemProcesses[id]?.routing.outcome === "auto_priced") return;

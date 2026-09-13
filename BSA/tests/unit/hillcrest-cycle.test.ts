@@ -118,6 +118,13 @@ describe("immutable source submission contracts", () => {
     expect(store().caseRevisions[D.id].at(-1)?.declaration?.fields.prescriber).toBe("Dr Demo (synthetic)");
   });
 
+  it("rejects non-synthetic human capture codes without writing history", () => {
+    const before = getDomainSnapshot();
+    expect(() => store().confirmType1({ caseId: D.id, revision: 1, provenance: "human_capture", declarationReconciled: false,
+      fields: { ...paperDeclarationFields(paper), productCode: "123456789" } })).toThrow(/synthetic product codes/);
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
   it("cannot bypass generic supply requirements by omitting the optional evidence, in either decision mode", () => {
     const prescription = { ...store().caseRevisions[generic][0].epsPrescription!, supplyEvidence: undefined };
     for (const enabled of [false, true]) {

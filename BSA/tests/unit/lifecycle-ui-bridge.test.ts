@@ -60,7 +60,7 @@ it("manual referral, approved draft, exact date, human recheck and existing pric
   const records = store().records;
   store().resubmitFromPharmacy(B.id, corrected, pharmacySnapshot(corrected, B.extracted.dispensingDate, "scripted", result, new Date().toISOString()));
   store().arriveInQueue(B.id);
-  expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
+  expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true, state: "agent_review_complete" });
   expect(store().lifecycles[B.id].state).toBe("in_review");
   expect(store().records).toBe(records);
   store().recordType2Decision({ caseId: B.id, decision: "ACCEPT", reason: "Human rechecked the correction and source evidence." });

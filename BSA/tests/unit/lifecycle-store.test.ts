@@ -94,7 +94,7 @@ describe("Task 8 seeds and projections", () => {
     expect(c.claim.endorsementText).toBe(corrected);
     expect(c.regions.find((r) => r.id === "endorsement")?.text).toBe(corrected);
     expect(c.readings.every((r) => r.dated)).toBe(true);
-    expect(runAgent(c)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
+    expect(runAgent(c)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true, state: "agent_review_complete" });
     expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
     expect(row().state).toBe("resubmitted");
     expect(revisions().at(-1)?.channel).toBe("eps");
@@ -151,7 +151,7 @@ describe("immutable pharmacy revisions", () => {
     store().sendConfirmation(C.id, "Quantity 56 confirmed by pharmacy");
     expect(row(C.id).state).toBe("resubmitted");
     expect(revisions(C.id).at(-1)).toMatchObject({ kind: "confirmation", confirmation: "Quantity 56 confirmed by pharmacy" });
-    expect(sessionCase(C.id)).toEqual(before);
+    expect(sessionCase(C.id)).toEqual({ ...before, requiresHumanRecheck: true });
     expect(runAgent(sessionCase(C.id)!).recommendation).toBe("REQUEST_INFORMATION");
     expect(() => store().sendConfirmation(B.id, reason)).toThrow(/information_requested/);
     expect(() => store().resubmitFromPharmacy(C.id, corrected)).toThrow(/referred_back/);
@@ -177,11 +177,11 @@ describe("immutable pharmacy revisions", () => {
     expect(store().records.slice(0, records.length)).toEqual(records);
     expect(store().records).toHaveLength(records.length + 1);
     expect(row().history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
-    expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false });
+    expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true });
     expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow(/while paid/);
     expect(CASES).toEqual(fixtures);
     for (const event of row().history.filter((event) => event.actor === "agent")) expect(event.to).toBe(event.from);
-    expect(row().history.filter((event) => event.actor === "agent")).toHaveLength(on ? 1 : 0);
+    expect(row().history.filter((event) => event.actor === "agent")).toHaveLength(on ? 2 : 0);
   });
 });
 
