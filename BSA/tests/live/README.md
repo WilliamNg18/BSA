@@ -35,6 +35,14 @@ Default-rule axe is actually run for Overview, pharmacy and claims in both
 modes; each audit has its own URL, mode, timestamp and violation report.
 Those checks do not claim universal accessibility conformance.
 
+The base checklist still targets the M-stage overview and legacy queue controls.
+Its canonical A/E traces and complete EPS resubmission assertions require
+automatic pricing without another operator approval. These are not the final
+N/P/Q presentation and worklist contracts. Select only checks compatible with
+the coordinator's exact deployed stage; omitted checks remain NOT_RUN, and a
+partial smoke run is not full live acceptance. The integrated final checklist
+must be updated before it is used to accept the whole-process UI.
+
 Screenshots, traces and JSON live beneath `LIVE_OUTPUT_DIR`; do not commit
 generated evidence. Existing crash/console/network guards and navigation/reset
 helpers are reused without altering the production suite. The deployed

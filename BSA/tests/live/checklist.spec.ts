@@ -84,7 +84,12 @@ test("04 Four case cards open their matching case packs and traces", async ({ pa
     await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Case-building trace", exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${cases[index].id}/trace$`));
-    await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toBeVisible();
+    if (scenario === "A") {
+      await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true }).locator(":scope > li")).toHaveCount(2);
+      await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+    } else {
+      await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toBeVisible();
+    }
   }
 });
 
@@ -162,6 +167,8 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
       await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
       await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
+      const originalEvents = await history(page).locator('ol[aria-label="Lifecycle events"] > li').allTextContents();
+      expect(originalEvents.length).toBeGreaterThan(0);
       if (enabled) {
         await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
         await expect(detail(page)).not.toContainText("Please add the dispensing date beside the initials");
@@ -174,13 +181,11 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
         await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
       }
       await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-      await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+      await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
       await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
-      await page.getByRole("button", { name: "Start review", exact: true }).click();
-      if (!enabled) await page.getByRole("radio", { name: /^Sufficient \(human choice\)/ }).check();
-      else await expect(page.getByRole("radio", { name: /^Accept / })).toBeChecked();
-      await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed the corrected date and complete evidence");
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
       await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.nhsbsa.on);
       await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
       await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
@@ -190,6 +195,9 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
       await expect(attempts.nth(1)).not.toContainText("NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText("NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
+      const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true });
+      expect((await events.locator(":scope > li").allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
+      await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
       await captureJson(info, `roundtrip-${enabled ? "on" : "off"}`, { url: page.url(), history: await history(page).innerText() });
       await confirmReset(page);
       await expect(flag(page)).not.toBeChecked();
@@ -213,8 +221,9 @@ test("09 Case D retains three abstention reasons and gate NOT RUN", async ({ pag
 test("10 Case E remains deterministic without an agent call", async ({ page }) => {
   await page.goto("/case/EX-24101/trace");
   await flag(page).setChecked(true);
-  const trace = page.getByRole("list", { name: "Agent trace", exact: true });
+  const trace = page.getByRole("list", { name: "Deterministic clearance trace", exact: true });
   await expect(trace.locator(":scope > li")).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
   await expect(trace).not.toContainText("run_endorsement_checks");
 });
@@ -263,7 +272,7 @@ test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page 
   await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-  await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+  await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   await confirmReset(page);
   await expect(flag(page)).not.toBeChecked();
   await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
