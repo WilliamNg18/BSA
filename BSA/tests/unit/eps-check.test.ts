@@ -14,7 +14,7 @@ describe("synthetic EPS source evidence", () => {
     const before = structuredClone(c);
     expect(createEpsPrescription(c)).toMatchObject({
       patientLabel: "Patient A (synthetic)",
-      items: [{ product: "Sertraline 50mg tablets", strength: "50mg", form: "tablets", quantity: 28, dose: "Synthetic placeholder only; not clinical advice" }],
+      items: [{ product: "Sertraline", strength: "50mg", form: "tablets", quantity: 28, dose: "Synthetic placeholder only; not clinical advice" }],
       prescriberEndorsement: "", dispenserEndorsement: "NCSO JB 14/08/26", claimMessageState: "draft",
     });
     expect(c).toEqual(before);

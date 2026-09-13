@@ -53,7 +53,7 @@ export function createEpsPrescription(c: ExceptionCase): EpsPrescription {
     prescriptionDate: c.extracted.dispensingDate,
     dispensingDate: c.extracted.dispensingDate,
     items: [{
-      prescribedCode: product.code, product: product.name, strength: match[2], form: match[3],
+      prescribedCode: product.code, product: match[1], strength: match[2], form: match[3],
       quantity: c.extracted.quantity, dose: "Synthetic placeholder only; not clinical advice",
       dispensedCode: product.code, dispensedName: product.name,
     }],
