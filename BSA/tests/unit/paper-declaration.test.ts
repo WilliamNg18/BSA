@@ -3,6 +3,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, preparePaperDeclaration, WORKED_PAPER_DECLARATION } from "../../src/lib/domain/paper-declaration";
 import { prepareCaptureConfirmation, preparePaperCapture } from "../../src/lib/domain/paper-capture";
 import { runAgent } from "../../src/lib/domain/agent";
+import { paperImageEvidence } from "../../src/lib/domain/capture-evidence";
 import { sessionCase, useAppStore } from "../../src/lib/store";
 
 const D = CASES.find((c) => c.scenario === "D")!;
@@ -80,5 +81,16 @@ describe("immutable paper declaration to human-confirmed Type 2", () => {
     expect(store().caseRevisions[D.id].at(-1)).toEqual(revision);
     expect(store().lifecycles[D.id].state).toBe("in_review");
     expect(store().itemProcesses[D.id].routing.outcome).toBe("type2_endorsement");
+  });
+  it("carries the declared date into rule selection and evidence without repainting the retained scan", () => {
+    const paper = preparePaperDeclaration({ ...WORKED_PAPER_DECLARATION, dispensingDate: "2026-07-27" });
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: paper.endorsementText, paperDeclaration: paper });
+    const c = sessionCase(D.id)!;
+    expect(c.extracted.dispensingDate).toBe("2026-07-27");
+    expect(paperImageEvidence(c).extracted).toEqual(D.extracted);
+    expect(paperImageEvidence(c).regions).toEqual(D.regions);
+    expect(runAgent(c).evidence.find((entry) => entry.id === "e-declared-dispensingDate")).toMatchObject({
+      value: "2026-07-27", provenance: "declared by the pharmacy, not read from the form; original declaration retained",
+    });
   });
 });

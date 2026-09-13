@@ -14,6 +14,7 @@ import type { CaseRevision, ConfirmType1Input } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
+import { checkPaperDeclaration } from "@/lib/domain/paper-declaration";
 import {
   PAPER_DECLARATION_PROVENANCE,
   prepareCaptureConfirmation,
@@ -47,10 +48,11 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
         <p className="text-sm">Capture is recorded. Follow the current routing outcome; no further capture is requested.</p>
         <dl className="grid gap-3 break-words text-sm sm:grid-cols-2">
-          <div><dt className="font-medium">Product code</dt><dd>{capture.fields.productCode ?? "Unreadable"}</dd></div>
-          <div><dt className="font-medium">Quantity</dt><dd>{capture.fields.quantity ?? "Unreadable"}</dd></div>
-          <div><dt className="font-medium">Endorsement</dt><dd className="break-words">{capture.fields.endorsementText || "Unreadable or absent"}</dd></div>
-          <div><dt className="font-medium">Prescriber</dt><dd>{capture.fields.prescriber || "Unreadable"}</dd></div>
+          {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => <div key={field}>
+            <dt className="font-medium">{{ productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field]}</dt>
+            <dd>{capture.fields[field] || "Unreadable or absent"}</dd>
+            {capture.provenance === "pharmacy_declaration" && <dd className="text-xs">{PAPER_DECLARATION_PROVENANCE}</dd>}
+          </div>)}
           {revision.paperDeclaration && <div><dt className="font-medium">Declared dispensing date</dt>
             <dd>{revision.paperDeclaration.dispensingDate || "Not declared"}</dd>
             <dd className="text-xs">{PAPER_DECLARATION_PROVENANCE}</dd></div>}
@@ -91,6 +93,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
   const errorRef = useRef<HTMLParagraphElement>(null);
   const productRef = useRef<HTMLInputElement>(null);
   const assisted = prepared.provenance === "pharmacy_declaration";
+  const declaredCheck = assisted && revision.paperDeclaration ? checkPaperDeclaration(c, revision.paperDeclaration) : null;
   const poorScan = c.imageStyle === "handwritten_poor" || c.imageQuality < QUALITY_THRESHOLD;
   const unreadableExample = c.scenario === "D";
   useEffect(() => {
@@ -166,6 +169,20 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
             <p>Declared dispensing date: {revision.paperDeclaration.dispensingDate || "Not declared"}</p>
             <p className="text-xs">{PAPER_DECLARATION_PROVENANCE}</p>
             <p className="text-xs">If the declared date is wrong, request a corrected pharmacy submission. This immutable declaration cannot be silently changed.</p>
+          </div>}
+          {declaredCheck && <div className="space-y-2 rounded-md border p-3 text-sm">
+            <BoundaryTag cls="agent" />
+            <p>{declaredCheck.status === "ready" ? "Declaration requirements complete; not human-confirmed" : "Declaration requires review"}</p>
+            <p>{declaredCheck.gap}</p>
+            {declaredCheck.clause && <>
+              <p>Declared dispensing-month Tariff: {declaredCheck.version}. {declaredCheck.clause.title}</p>
+              <blockquote>{declaredCheck.clause.text}</blockquote>
+              <BoundaryTag cls="deterministic" />
+              <ul aria-label="Received declaration requirement checks">
+                {declaredCheck.checks.map((check) => <li key={check.id}>{check.met === true ? "Met" : "Missing"}: {check.label}</li>)}
+              </ul>
+            </>}
+            <p className="text-xs">These checks use the pharmacy declaration, not the image. Only explicit human confirmation can establish captured evidence.</p>
           </div>}
           {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => {
             const label = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field];
