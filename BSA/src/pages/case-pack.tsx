@@ -289,7 +289,7 @@ function CasePackContent() {
             {pack.conflicts.length === 0 ? (
               <p className="text-sm text-muted-foreground">{pack.signals.reconciliation === "agree"
                 ? "This comparison does not establish agreement for missing or unreadable evidence."
-                : "No detected conflict does not establish agreement. Missing, unreadable or unconfirmed fields still need evidence."}</p>
+                : "Missing, unreadable or unconfirmed fields still need evidence. No detected conflict does not prove agreement."}</p>
             ) : (
               <ul className="space-y-2">
                 {pack.conflicts.map((k) => (
@@ -344,7 +344,7 @@ function CasePackContent() {
       </>}
 
       {(!agentEnabled || !pack.agentInvoked || clock.revealed >= 6) && <>
-      <PageSection title="Operator decision" description="Record your human reason for every decision. An override must explain why you depart from the recommendation.">
+      <PageSection title="Operator decision" description="Human reason required; explain any override.">
         <Card className="border-orange-600">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>
@@ -365,7 +365,7 @@ function CasePackContent() {
               </RadioGroup>
               {canApprove && <div className="space-y-2">
                 <label className="flex items-start gap-2"><input name="approve-draft" type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
-                <p className="text-sm text-muted-foreground">Optional. Without approval, only your human reason is sent; the agent draft is not approved or shared.</p>
+                <p className="text-sm text-muted-foreground">Optional. Only approved drafts accompany your human reason.</p>
               </div>}
               {disposition === "REFER_BACK" && <div className="space-y-1.5">
                 <Label htmlFor="rb-code">RB code (required)</Label>
@@ -382,7 +382,7 @@ function CasePackContent() {
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision
               </Button>
-              <p className="text-xs text-muted-foreground">This prototype writes a session record only. No payments or approvals; existing systems retain pricing and referral responsibility.</p>
+              <p className="text-xs text-muted-foreground">Session record only. No payment approval.</p>
             </CardContent>
           )}
         </Card>
