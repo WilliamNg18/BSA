@@ -18,7 +18,7 @@ describe("paper capture helper with the authoritative store", () => {
     provenance: "pharmacy_declaration", declaredAt: "2026-09-13T10:00:00Z",
     fields: {
       productCode: "SYN-COCOD-100", quantity: 100,
-      endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)",
+      endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)",
     },
   };
   beforeEach(() => store().resetDemo());
@@ -97,7 +97,7 @@ describe("paper capture helper with the authoritative store", () => {
 
   it.each([
     { quantity: "99", prescriber: "Dr Demo (synthetic)", recommendation: "ABSTAIN", gate: "NOT_RUN" },
-    { quantity: "100", prescriber: "", recommendation: "NONE", gate: "FAIL" },
+    { quantity: "100", prescriber: "", recommendation: "ABSTAIN", gate: "NOT_RUN" },
   ])("does not let a checked box bypass $recommendation evidence limits", ({ quantity, prescriber, recommendation, gate }) => {
     const revision = submitDeclaration();
     const prepared = preparePaperCapture(true, revision.declaration);
