@@ -125,7 +125,8 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
         await page.getByRole("button", { name: "Start review", exact: true }).click();
       });
       await action("Judge the corrected endorsement sufficient", "NHSBSA", async () => {
-        await page.getByRole("radio", { name: /^Sufficient / }).check();
+        if (enabled) await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+        await page.getByRole("radio", { name: enabled ? /^Accept the recommendation \(as recommended\)/ : /^Sufficient \(human choice\)/ }).check();
         await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human recheck confirms the date beside the initials");
       });
       const paid = await action("Record the human correction decision before existing pricing", "NHSBSA", async () => {

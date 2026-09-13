@@ -61,7 +61,8 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.on);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await page.getByRole("radio", { name: /^Sufficient / }).check();
+  await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: /^Accept the recommendation \(as recommended\)/ }).check();
   await record(page, "Human recheck confirms the corrected date before existing pricing");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-08");

@@ -114,7 +114,8 @@ for (const enabled of [false, true]) {
     expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
-    await page.getByRole("radio", { name: /^Sufficient / }).check();
+    if (enabled) await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+    await page.getByRole("radio", { name: enabled ? /^Accept the recommendation \(as recommended\)/ : /^Sufficient \(human choice\)/ }).check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human recheck confirms the corrected dispensing date");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();

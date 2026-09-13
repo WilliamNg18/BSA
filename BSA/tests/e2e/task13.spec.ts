@@ -62,7 +62,8 @@ for (const enabled of [false, true]) {
     await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     await page.getByRole("button", { name: "Start review", exact: true }).click();
-    await page.getByRole("radio", { name: /^Sufficient / }).check();
+    if (enabled) await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+    await page.getByRole("radio", { name: enabled ? /^Accept the recommendation \(as recommended\)/ : /^Sufficient \(human choice\)/ }).check();
     await decide(page, "Human reviewed the corrected date before existing pricing");
     await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.nhsbsa.on);
     for (const side of ["Pharmacy", "NHSBSA"] as const) {
