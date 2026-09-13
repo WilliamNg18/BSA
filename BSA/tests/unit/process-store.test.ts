@@ -5,6 +5,7 @@ import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routi
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import { usePharmacyStore } from "../../src/lib/pharmacy-store";
 import { useQueueStore } from "../../src/lib/queue-store";
+import { caseForLifecycle } from "../../src/lib/domain/lifecycle-model";
 import type { DeclaredItemFields, RoutingFacts } from "../../src/lib/domain/types";
 
 const [A, B, C, D, E, F] = CASES;
@@ -84,11 +85,32 @@ describe("explicit captured authority", () => {
   it("new submission clears capture authority and keeps the earlier revision immutable", () => {
     submitD();
     const before = store().caseRevisions[D.id][1];
+    const capture = structuredClone(store().itemProcesses[D.id].capture);
     store().submitItem({ caseId: D.id, channel: "paper", endorsementText: fields.endorsementText });
     expect(store().itemProcesses[D.id].capture).toBeNull();
     expect(sessionCase(D.id)!.capturedEvidence).toBeUndefined();
     expect(store().caseRevisions[D.id][1]).toEqual(before);
     expect(runAgent(sessionCase(D.id)!).recommendation).toBe("ABSTAIN");
+    expect(store().lifecycles[D.id].history.find((event) => event.capture)?.capture).toEqual(capture);
+    const historical = caseForLifecycle(D.id, store().lifecycles, { [D.id]: store().caseRevisions[D.id].slice(0, 2) });
+    expect(runAgent(historical!).recommendation).toBe("SUFFICIENT");
+  });
+
+  it("retains a paper channel across legacy resubmission and requires capture again", () => {
+    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: B.extracted.endorsementText });
+    store().confirmType1({ caseId: B.id, revision: 2, fields: { productCode: B.extracted.productCode, quantity: B.extracted.quantity, endorsementText: B.extracted.endorsementText },
+      provenance: "human_capture", declarationReconciled: true });
+    store().recordType2Decision({ caseId: B.id, decision: "REFER_BACK", reason: "Date missing from the endorsement", rbCode: "SYN-NCSO" });
+    store().resubmitFromPharmacy(B.id, "NCSO RK 21/08/26");
+    expect(store().caseRevisions[B.id].at(-1)?.channel).toBe("paper");
+    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
+    expect(store().lifecycles[B.id].state).toBe("resubmitted");
+  });
+
+  it("seeds automatic items as paid and never leaves them in a staff pending state", () => {
+    for (const [id, process] of Object.entries(store().itemProcesses)) {
+      if (process.routing.outcome === "auto_priced") expect(store().lifecycles[id].state).toBe("paid");
+    }
   });
   it("records a human sufficient D as decided Type 2, never no-person automatic", () => {
     submitD();

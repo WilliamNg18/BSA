@@ -66,7 +66,8 @@ export function caseForLifecycle(
     c.readings = [facts, { ...facts }, { ...facts }];
     c.inCoverage = c.inCoverage && facts.type === "NCSO";
   }
-  const capture = itemProcesses?.[caseId]?.capture;
+  const capture = lifecycles[caseId].history.filter((event) => event.capture?.revision === revision.number).at(-1)?.capture
+    ?? itemProcesses?.[caseId]?.capture;
   if (capture?.revision === revision.number) {
     return immutable({ ...c, capturedEvidence: {
       fields: capture.fields, provenance: capture.provenance === "pharmacy_declaration" ? "pharmacy_declaration" : "human_capture",
