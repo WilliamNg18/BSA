@@ -1010,6 +1010,19 @@ requires it. Keeping the original "Illegible" image evidence visible is not
 permission to waive that requirement. A step-through assumed stopwatch is
 presentation only; it neither measures operator work nor confirms anything.
 
+## 2026-09-13: Task 20 separates a receipt from a process forecast
+
+A local immutable receipt copy can still become a second operational source.
+Selecting a shared revision instead preserves identical receipt evidence across
+perspectives and leaves Reset under the single store. Recorded-event playback
+also prevents an illustrative timeline from implying a human referral or a
+payment has already occurred.
+
+An unreadable paper image cannot supply default values for a pharmacy
+declaration. Empty labelled fields make the human input explicit, including
+the prescriber needed by the existing mandatory-field gate. A typed declaration
+and a Type 1 operator's confirmation remain separate evidence and actions.
+
 ## 2026-09-13: Preserve uncertainty when introducing captured evidence
 
 A declaration cannot inherit image confidence or silently fill other mandatory

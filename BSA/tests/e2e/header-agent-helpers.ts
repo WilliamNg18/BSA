@@ -32,13 +32,15 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
       await expect(page.getByText("This view belongs to the other side; switch perspective to see it", { exact: true })).toBeVisible();
     } else if (route === "/pharmacy") {
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
-      await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(enabled ? 1 : 0);
+      await expect(page.getByRole("button", { name: "Apply fix", exact: true })).toHaveCount(enabled ? 1 : 0);
     } else if (route === "/queue") {
       await expect(page.locator("[data-queue-guide]")).toHaveText(enabled
         ? "Type 2 worklist: the agent verifies the submission and advises; a person decides."
         : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement.");
     } else if (route.startsWith("/pharmacy/claims")) {
-      await expect(page.getByRole("main")).toContainText(enabled ? "With the agent: the item comes back" : "Today: the pharmacy learns weeks later");
+      await expect(page.getByRole("region", { name: "Referral cycle guide", exact: true })).toContainText(enabled
+        ? "Read the operator-approved fix, correct the endorsement, then explicitly resubmit."
+        : "Today: referred-back items appear in MYS Unpaid items with an RB code and the operator's reason.");
     } else if (route === "/#month") {
       const model = monthModel(MONTH_MODEL_DEFAULTS);
       const hours = enabled ? model.withAgent.operatorHours : model.today.operatorHours;
