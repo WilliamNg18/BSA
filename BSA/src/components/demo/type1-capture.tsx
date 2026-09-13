@@ -43,7 +43,7 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         <h3 ref={heading} tabIndex={-1} className="font-semibold">Human capture confirmed</h3>
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
-        <p className="text-sm">Capture is recorded. Type 2 judgement remains a separate human action.</p>
+        <p className="text-sm">Capture is recorded. Follow the current routing outcome; no further capture is requested.</p>
         <dl className="grid gap-3 text-sm sm:grid-cols-2">
           <div><dt className="font-medium">Product code</dt><dd>{capture.fields.productCode ?? "Unreadable"}</dd></div>
           <div><dt className="font-medium">Quantity</dt><dd>{capture.fields.quantity ?? "Unreadable"}</dd></div>
@@ -52,12 +52,13 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         </dl>
         <p className="text-xs text-muted-foreground">{capture.provenance === "pharmacy_declaration"
           ? `Original fields ${PAPER_DECLARATION_PROVENANCE}; human corrections retained in this capture.`
-          : "Manually captured by a person; no declaration reconciliation asserted."}</p>
-        <CaptureTiming assisted={capture.provenance === "pharmacy_declaration"} />
+          : capture.declarationReconciled ? "Human-corrected capture; declaration and paper explicitly reconciled."
+            : "Manually captured by a person; no declaration reconciliation asserted."}</p>
+        <CaptureTiming assisted={capture.declarationReconciled} />
       </section>
     );
   }
-  if (process.routing.outcome !== "type1_capture") {
+  if (process.routing.outcome !== "type1_capture" || !process.routing.requiresHuman) {
     return <p className="text-sm">This item is not awaiting Type 1 capture.</p>;
   }
   return (
@@ -111,7 +112,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const result = prepareCaptureConfirmation({
-      caseId: c.id, revision: revision.number, ...prepared, declarationReconciled: reconciled,
+      caseId: c.id, revision: revision.number, ...prepared, declarationReconciled: reconciled, declaration: revision.declaration,
     });
     if (!result.input) {
       setError(Object.values(result.errors).join(" "));
@@ -166,7 +167,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
                     aria-describedby={`${id}-help ${descriptionId}`} />
                 )}
                 <p id={descriptionId} className="text-xs text-muted-foreground">{assisted
-                  ? PAPER_DECLARATION_PROVENANCE : "Human capture, not agent extraction"}</p>
+                  ? `Original source: ${PAPER_DECLARATION_PROVENANCE}` : "Human capture, not agent extraction"}</p>
                 {assisted && <p className="break-words text-xs">Original declaration: {revision.declaration?.fields[field] || "Not supplied"}</p>}
               </div>
             );

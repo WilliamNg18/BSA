@@ -1117,6 +1117,12 @@ remain local presentation state across perspective switches, not a second
 operational store. Real route navigation discards the draft; Reset clears it
 even when the new seed has the same revision number and timestamp.
 
+When confirmed values differ from the immutable declaration, the submitted
+capture provenance is `human_capture`, not `pharmacy_declaration`. An explicitly
+checked reconciliation remains true for that human correction; compatibility
+and the mandatory evidence gate still decide whether advice can be shown.
+The original declaration stays visible and unchanged.
+
 ## 2026-09-13: Task 19 shared process allocations and capture authority
 
 Before implementing the arithmetic, M notified the coordinator and received
