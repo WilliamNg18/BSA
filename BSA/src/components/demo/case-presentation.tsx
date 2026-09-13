@@ -5,8 +5,9 @@ import { BoundaryTag, KeyValue } from "./labels";
 import { PainMarker } from "./pain-marker";
 import { PrescriptionForm } from "./prescription-form";
 import type { useCasePresentation } from "@/hooks/use-case-presentation";
-import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
-import { formatBaselineNumber, GATHERING_STEPS, manualGatheringMinutes } from "@/lib/domain/baseline";
+import { useProcessMonth } from "@/hooks/use-process-month";
+import { formatBaselineNumber, GATHERING_STEPS } from "@/lib/domain/baseline";
+import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { ASSISTED_SLOTS } from "@/lib/case-presentation";
 import type { ExceptionCase } from "@/lib/domain/types";
 
@@ -33,24 +34,40 @@ export function MissingAssistedSlots({ markers = false }: { markers?: boolean })
 }
 
 export function ManualCaseTrace() {
-  const { input } = useBaselineScenario();
+  const { input } = useProcessMonth();
   return <PageSection title="Manual gathering trace" description="Synthetic manual workflow assumptions, not observed NHSBSA steps or measured timings.">
     <ol aria-label="Manual gathering trace" className="grid gap-3 sm:grid-cols-2">
       {GATHERING_STEPS.map(({ key, label }, index) => <li key={key} className="space-y-2 rounded-xl border p-4" data-manual-step={key}>
         <h3 className="text-sm font-semibold">{index + 1}. {label.replace(" minutes / item", "")}</h3>
         <BoundaryTag cls="human" />
-        <p className="flex items-center gap-2 text-sm"><Timer aria-hidden="true" className="size-4" />{input ? `${formatBaselineNumber(input[key])} min` : "Unavailable"} · Synthetic assumption</p>
+        <p className="flex items-center gap-2 text-sm"><Timer aria-hidden="true" className="size-4" />Part of the referral investigation; not additional time</p>
         <PainMarker resolved={false} pain="Human evidence gathering required" resolution="" />
       </li>)}
     </ol>
-    <p className="mt-3 text-sm" data-manual-total>Gathering total: {input ? `${formatBaselineNumber(manualGatheringMinutes(input))} min / item` : "Unavailable: correct baseline inputs"} · Assumed, not measured</p>
+    <p className="mt-3 text-sm" data-manual-total>Referral investigation: {input ? `${formatBaselineNumber(input.investigationMinutesToday)} min / referred-back item` : "Unavailable: correct process inputs"} · Assumption</p>
+    <p className="mt-2 text-sm">Type 2 stream average: {input ? `${formatBaselineNumber(input.type2SecondsToday)} seconds / item` : "Unavailable"} · Public, separate from the investigation tail.</p>
   </PageSection>;
+}
+
+export function ManualTariffLookup() {
+  return <section className="space-y-2 rounded-xl border p-4" aria-label="Manual Tariff lookup">
+    <h2 className="font-semibold">Tariff to look up unaided</h2>
+    <BoundaryTag cls="human" />
+    <p className="text-sm">Experience only: choose the dispensing-month rule yourself. These synthetic clauses are not an automatically selected recommendation.</p>
+    {TARIFF_VERSIONS.map((version) => <details key={version.version} className="rounded-md border p-3">
+      <summary className="cursor-pointer font-medium">{version.label} ({version.version})</summary>
+      {version.clauses.map((clause) => <section key={clause.id} className="mt-3 space-y-1 text-sm">
+        <h3 className="font-semibold">{clause.part}: {clause.title}</h3>
+        <p>{clause.text}</p>
+      </section>)}
+    </details>)}
+  </section>;
 }
 
 export function RawCaseFields({ c }: { c: ExceptionCase }) {
   return <div className="grid gap-4 md:grid-cols-2" data-manual-pack>
     <PageSection title="Prescription image" description="Synthetic form and existing capture only; no assisted reading."><PrescriptionForm c={c} highlight={[]} /></PageSection>
-    <PageSection title="Raw captured fields">
+    <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">
         <KeyValue k="Product (capture)" v={c.extracted.productText} />
         <KeyValue k="Quantity (capture)" v={c.extracted.quantity ?? "Unreadable"} />

@@ -35,6 +35,14 @@ Default-rule axe is actually run for Overview, pharmacy and claims in both
 modes; each audit has its own URL, mode, timestamp and violation report.
 Those checks do not claim universal accessibility conformance.
 
+The base checklist still targets the M-stage overview and legacy queue controls.
+Its canonical A/E traces and complete EPS resubmission assertions require
+automatic pricing without another operator approval. These are not the final
+N/P/Q presentation and worklist contracts. Select only checks compatible with
+the coordinator's exact deployed stage; omitted checks remain NOT_RUN, and a
+partial smoke run is not full live acceptance. The integrated final checklist
+must be updated before it is used to accept the whole-process UI.
+
 Screenshots, traces and JSON live beneath `LIVE_OUTPUT_DIR`; do not commit
 generated evidence. Existing crash/console/network guards and navigation/reset
 helpers are reused without altering the production suite. The deployed
@@ -63,8 +71,31 @@ after every action and every presentation switch; failure attachments retain
 the snapshots collected before the failure. The first M-stage coverage is
 complete EPS automatic pricing using B's explicit typed correction, and
 incomplete EPS draft/submission. B retains its recorded EPS channel; these
-checks do not reinterpret A's paper seed as EPS. This is
-not yet evidence for the later Type 1, Type 2 or full referral-cycle UI.
+checks do not reinterpret A's paper seed as EPS.
+
+The integrated U/Q stage additionally covers D's explicit Type 1 confirmation:
+blank manual capture Off and the prior pharmacy declaration On, including a
+rejected unreconciled confirmation. Stopwatch actions, opening work and reading
+the resulting Type 2 case cannot change domain state. Capture must retain every
+original pharmacy attempt and append capture evidence without a Type 2 decision.
+These cases require the integrated capture/worklist UI; they are not an M-only
+compatibility patch or evidence for the full referral-cycle and capture-edit flows.
+
+`one-state-capture.spec.ts` expands that integrated contract in both Agent modes:
+new paper with no declaration, corrected fields and renewed reconciliation,
+missing-prescriber withholding, invalid quantities, manual/declaration mode
+changes, and uncommitted draft clearing on Reset. It retains all original
+attempts and capture history, checks unrelated cases exactly, and audits the
+capture surface with default axe rules at desktop/light and phone/dark sizes.
+Missing mandatory evidence must fail the compliance gate even if other fields
+support an interpretation; this is distinct from abstention before interpretation.
+
+A blocking Reset dialog is one explicit confirmation transaction: perspective
+switches happen before opening it, the complete state is checked unchanged while
+it is open, and the confirmed result is compared afterward. The harness never
+forces interaction with the inert header behind the modal.
+All `one-state*.spec.ts` files are excluded from ordinary production discovery
+and included only by the blocking instrumented configuration.
 
 To repeat only these checks locally after an ordinary build:
 

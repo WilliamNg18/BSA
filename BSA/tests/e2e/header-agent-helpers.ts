@@ -34,7 +34,9 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
       await expect(page.getByRole("button", { name: "Apply fix", exact: true })).toHaveCount(enabled ? 1 : 0);
     } else if (route === "/queue") {
-      await expect(page.locator("[data-queue-guide]")).toContainText(enabled ? "With the agent:" : "Today:");
+      await expect(page.locator("[data-queue-guide]")).toHaveText(enabled
+        ? "Type 2 worklist: the agent verifies the submission and advises; a person decides."
+        : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement.");
     } else if (route.startsWith("/pharmacy/claims")) {
       await expect(page.getByRole("region", { name: "Referral cycle guide", exact: true })).toContainText(enabled
         ? "Read the operator-approved fix, correct the endorsement, then explicitly resubmit."

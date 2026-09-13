@@ -65,10 +65,12 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(flag(page)).toBeChecked({ checked: enabled });
     await expect(page).toHaveURL(new RegExp(`caseId=${id}$`));
     await navigatePrimary(page, "NHSBSA queue");
-    const row = page.locator("[data-shared-case]").filter({ hasText: id });
-    await expect(row.getByText("Submitted, awaiting review", { exact: true })).toBeVisible();
-    await row.getByRole("button", { name: "Open for review", exact: true }).click();
+    const row = page.locator(`[data-case-id="${id}"]`);
+    await expect(row).toContainText("New submission");
+    await row.getByRole("link", { name: `Open ${id}`, exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
+    await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.nhsbsa[enabled ? "on" : "off"]);
+    await page.getByRole("button", { name: "Start review", exact: true }).click();
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
     expect(await history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).textContent()).toBe(attempts);
@@ -78,6 +80,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
       ? ["Arrived for review.", "Scripted case built; human decision required."]
       : ["Arrived for review."]);
     await page.getByRole("radio", { name: /^Refer back / }).check();
+    await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
     const reason = `Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`;
     await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);

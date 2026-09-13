@@ -92,6 +92,7 @@ for (const enabled of [false, true]) {
     if (enabled) await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
     const audits = [{ state: "pack-comparison", ...await page.evaluate(auditProse) }];
     await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
+    if (enabled) await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
@@ -159,7 +160,11 @@ for (const enabled of [false, true]) {
       await page.goto(route);
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
-      await expect(page.locator("body")).not.toContainText(/source:|\.pdf\b|\.docx?\b|William Ng|Embrace the Change|complete-pack/i);
+      await expect(page.locator("body")).not.toContainText(/\.pdf\b|\.docx?\b|William Ng|Embrace the Change|complete-pack/i);
+      if (enabled && route === "case/EX-24123") {
+        await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true }))
+          .toContainText("Original source: declared by the pharmacy, not read from the form");
+      }
       const result = await page.evaluate(auditProse);
       results.push({ route, ...result });
     }

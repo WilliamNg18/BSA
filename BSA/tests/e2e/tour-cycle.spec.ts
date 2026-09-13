@@ -84,6 +84,7 @@ for (const enabled of [false, true]) {
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
     await page.getByRole("radio", { name: /^Refer back / }).check();
+    await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Please add the dispensing date beside the initials");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();

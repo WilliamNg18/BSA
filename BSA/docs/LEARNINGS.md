@@ -998,6 +998,18 @@ Pre-submission correction increments the event-based catch counter without
 creating a receipt or attempt; repeated application for that revision remains
 one catch. Navigation remounts the workbench's local example, not session history.
 
+## 2026-09-13: Task 21 U keeps declaration preparation below the authority boundary
+
+Prefilling a form and reconciling evidence are different actions. Draft
+preparation must not return a ready, confident or reconciled flag. Preserve
+the pharmacy's original values beside editable capture fields, clear the human
+reconciliation assertion after edits, and submit only through the shared store.
+
+An optional captured prescriber is still mandatory evidence where the gate
+requires it. Keeping the original "Illegible" image evidence visible is not
+permission to waive that requirement. A step-through assumed stopwatch is
+presentation only; it neither measures operator work nor confirms anything.
+
 ## 2026-09-13: Task 20 separates a receipt from a process forecast
 
 A local immutable receipt copy can still become a second operational source.
@@ -1031,6 +1043,33 @@ field is safer than bypassing the existing compliance check. Keep original
 capture evidence intact and attach revision-linked human authority separately.
 Typed legacy pharmacy submissions use the claim channel, while new submissions
 carry explicit machine channels on immutable revisions.
+
+## 2026-09-13: Task 22 current evidence and truthful record presentation
+
+The new Type 2 API treats ACCEPT as sufficient, unlike the older API's
+"accept recommendation" shortcut. Resolve the displayed recommendation to its
+actual disposition before recording it; otherwise accepting a referral can
+incorrectly release an item. Require an explicit human reason, not a fallback.
+
+Current captured evidence is attached separately from original machine fields.
+Rendering the original fields with declaration attribution is wrong even when
+the current agent pack correctly uses the human-confirmed values. Likewise,
+case headers must derive their status from the current pack and revision-linked
+human record, not a stale seeded `caseStates` value. A dated Tariff context alone
+is not a recorded clause; legacy F's validated citation remains in its sources.
+
+Zustand server rendering uses the initial snapshot. Current-state rendering
+tests must use the existing explicit live-selector mock, and must establish a
+real review lifecycle before looking for decision controls. Initial Q failures
+from those test assumptions were corrected without weakening the assertions.
+The coherent M integration passed check and 846 units before U's final three
+rendered-state tests were added.
+
+The first Q production probe passed 42 of 43 tests: 16 unrestricted axe audits,
+24 responsive staff deep links and two trace-control checks. Its remaining old
+revisit test incorrectly expected A in the operator queue. V owns the staged
+navigation repair and final flow coverage; this partial run is not a green gate.
+Keep its outside-OneDrive artifacts separate from final integrated evidence.
 
 ## 2026-09-13: P replay keeps the chosen evidence source consistent
 

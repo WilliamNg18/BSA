@@ -5,7 +5,7 @@ const baseURL = `http://localhost:${port}/`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  testIgnore: ["**/one-state.spec.ts"],
+  testIgnore: ["**/one-state*.spec.ts"],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,

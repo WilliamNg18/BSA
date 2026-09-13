@@ -57,6 +57,7 @@ for (const id of ["EX-24112", "EX-24119"]) {
       const enabled = mode !== "manual";
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await page.getByRole("radio", { name: id === "EX-24112" ? /^Refer back / : /^Request information / }).check();
+      if (id === "EX-24112") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       let approvedText: string | undefined;
       if (enabled) {
         const approval = page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true });

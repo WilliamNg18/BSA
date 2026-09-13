@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { automaticCaseIds, captureJson, cases, confirmReset, expect, test } from "./fixtures";
-import { GATHERING_STEPS, BASELINE_DEFAULTS } from "../../src/lib/domain/baseline";
+import { GATHERING_STEPS, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
 for (const c of cases) {
@@ -11,11 +11,12 @@ for (const c of cases) {
     for (const { key } of GATHERING_STEPS) {
       const step = trace.locator(`[data-manual-step="${key}"]`);
       await expect(step).toContainText("Human decision");
-      await expect(step).toContainText(`${BASELINE_DEFAULTS[key]} min`);
+      await expect(step).toContainText("Part of the referral investigation; not additional time");
       await expect(step.locator("svg.lucide-timer")).toHaveCount(1);
       await expect(step.locator("[data-pain-marker]")).toHaveAttribute("data-pain-marker", "open");
     }
-    await expect(page.locator("[data-manual-total]")).toContainText("5 min / item");
+    await expect(page.locator("[data-manual-total]")).toContainText(`${PROCESS_MONTH_DEFAULTS.investigationMinutesToday} min / referred-back item`);
+    await expect(page.getByText(`Type 2 stream average: ${PROCESS_MONTH_DEFAULTS.type2SecondsToday} seconds / item · Public, separate from the investigation tail.`, { exact: true })).toBeVisible();
     await expect(page.locator("[data-assisted-slot]")).toHaveCount(4);
     for (const slot of ["Clause", "Requirements", "Alternative", "Confidence"]) await expect(page.locator(`[data-assisted-slot="${slot}"]`)).toContainText("Not recorded");
     await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
@@ -27,11 +28,17 @@ for (const c of cases) {
       await expect(prechecks).not.toContainText("run_endorsement_checks");
     }
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Raw captured fields", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Original machine-captured fields", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Applicable Drug Tariff provision", exact: true })).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Confidence signals", exact: true })).toHaveCount(0);
-    await expect(page.locator("[data-pain-marker]")).toHaveCount(4);
+    await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true }).locator("[data-pain-marker]")).toHaveCount(4);
+    if (c.id === "EX-24123") {
+      const capturePain = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true }).locator("[data-pain-marker]");
+      await expect(capturePain).toHaveCount(1);
+      await expect(capturePain).toContainText("No guidance, experience only");
+      await expect(capturePain).toHaveAttribute("data-pain-marker", "open");
+    }
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     if (c.id !== "EX-24088" && c.id !== "EX-24123" && !automaticCaseIds.includes(c.id)) {
       if (c.id !== "EX-24123") await startDemonstrationReview(page);
@@ -80,6 +87,7 @@ for (const label of ["Sufficient (human choice)", "Refer back", "Request informa
       await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     }
     await reason.fill("Human review of captured evidence");
+    if (label === "Refer back") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     await expect(page.getByText("No. Note: Human review of captured evidence", { exact: true })).toBeVisible();
@@ -89,7 +97,7 @@ for (const label of ["Sufficient (human choice)", "Refer back", "Request informa
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
     await expect(page.getByText("No agent recommendation existed. The stored override flag is retained; correcting this counter requires Stream B integration.", { exact: true })).toHaveCount(0);
-    if (label.startsWith("Sufficient")) await expect(page.getByText("ACCEPT by Demo operator", { exact: false })).toBeVisible();
+    if (label.startsWith("Sufficient")) await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd")).toContainText("ACCEPT by Demo operator");
   });
 }
 

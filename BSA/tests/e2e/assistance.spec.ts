@@ -1,25 +1,33 @@
 import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-test("queue hides all filler recommendations without changing evidence, states or human decisions", async ({ page }) => {
+test("actual worklist hides advice without changing evidence, routing or human decisions", async ({ page }) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-  const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(9);
-  const states = rows.locator("[data-recorded-state]");
-  const originalStates = await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")));
-  await expect(rows.filter({ hasText: "Model example only; no evidence or citation" })).not.toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
+  const rows = page.locator("[data-case-id]");
+  for (const id of ["EX-24112", "EX-24119", "EX-24088"]) await expect(page.locator(`[data-case-id="${id}"]`)).toBeVisible();
+  for (const id of ["EX-24107", "EX-24101", "EX-24123"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+  await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
+  const evidence = () => rows.evaluateAll((items) => items.map((row) => ({
+    id: row.getAttribute("data-case-id"),
+    fields: Array.from(row.querySelectorAll("td")).slice(0, 4).map((cell) => cell.textContent),
+  })));
+  const originalEvidence = await evidence();
+  await expect(page.locator('[data-case-id="EX-24112"]')).toContainText("No approved draft; human reason retained");
+  await expect(rows.filter({ hasText: "Model example only; no evidence or citation" })).toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
-  expect(await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")))).toEqual(originalStates);
+  expect(await evidence()).toEqual(originalEvidence);
   await expect(rows.locator('[aria-label="Agent work phases"]')).toHaveCount(0);
-  await expect(rows.filter({ hasText: "nothing yet, operator to gather" })).not.toHaveCount(0);
+  for (const row of await rows.all()) await expect(row.locator("td").nth(4)).toHaveText("Not invoked; experience only");
   await page.getByRole("switch", { name: "Agent: Off", exact: true }).click();
-  expect(await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")))).toEqual(originalStates);
+  expect(await evidence()).toEqual(originalEvidence);
   await page.locator("a[href='/case/EX-24112']").first().click();
   await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
@@ -87,7 +95,9 @@ for (const scenario of [
 test("pharmacy keeps edits across header assistance changes and navigation", async ({ page }) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(9);
+  await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
+  await expect(page.locator('[data-case-id="EX-24112"]')).toBeVisible();
+  await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
   await expect(page).toHaveURL(/\/pharmacy$/);
