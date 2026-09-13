@@ -3,7 +3,7 @@ import { interpretPharmacyText, PHARMACY_STEPS, type PharmacyCheck } from "./pha
 import { productByCode } from "./reference";
 import { evaluateRequirements, QUALITY_THRESHOLD, validateCitation } from "./rules";
 import { versionForDate } from "./tariff";
-import type { ExceptionCase, PaperDeclaration } from "./types";
+import type { ExceptionCase, PaperDeclaration, TariffClause } from "./types";
 
 export interface PaperDeclarationDraft {
   typedProduct: string;
@@ -21,10 +21,17 @@ export const WORKED_PAPER_DECLARATION: PaperDeclarationDraft = {
   endorsementText: "NCSO JB 27/08/26", dispensingDate: "2026-08-27",
 };
 
+function requiredMarks(clause: TariffClause): string[] {
+  return clause.requirements.flatMap((requirement) => requirement.id === "initialled" ? ["initials"] : requirement.id === "dated" ? ["date"] : []);
+}
+
 export function paperDeclarationAdvice(result: PharmacyCheck | null, validationError: string, submissionError: string): string {
   if (validationError && !submissionError) return validationError;
   if (result?.status === "unable") return result.gap;
-  return `${result?.status === "ready" ? "Declaration complete, not capture confirmed. " : ""}Scripted advice: the form needs initials and date. Human reconciliation and prescriber evidence remain mandatory.`;
+  if (!result?.clause) return "No governing provision established. Human reconciliation and prescriber evidence remain mandatory.";
+  const marks = requiredMarks(result.clause);
+  const guidance = marks.length ? `the form needs ${marks.join(" and ")}.` : "check the retrieved requirements.";
+  return `${result.status === "ready" ? "Declaration complete, not capture confirmed. " : ""}Scripted advice: ${guidance} Human reconciliation and prescriber evidence remain mandatory.`;
 }
 
 export function preparePaperDeclaration(draft: PaperDeclarationDraft): PaperDeclaration {
@@ -69,11 +76,13 @@ export function checkPaperDeclaration(c: ExceptionCase, paper: PaperDeclaration)
     ...requirements.map(({ requirement, met }) => ({ id: requirement.id, label: requirement.label, met })),
   ];
   const complete = checks.every((entry) => entry.met === true);
+  const marks = requiredMarks(clause);
   return {
     status: complete ? "ready" : "missing", facts, version: version.version, clause: structuredClone(clause), checks,
     stages: ["PASS", "PASS", "PASS", "PASS", complete ? "PASS" : "MISSING"],
     gap: complete ? "Declaration complete; human confirmation and prescriber evidence are still required."
-      : "Check the missing declaration fields. Your NCSO endorsement needs initials and date; the form must show both.",
+      : marks.length ? `Check missing declaration fields. Your NCSO endorsement needs ${marks.join(" and ")}; the form must show ${marks.length > 1 ? "both" : "them"}.`
+        : "Check missing declaration fields against the retrieved requirements.",
     agreement,
   };
 }

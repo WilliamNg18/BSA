@@ -41,6 +41,23 @@ describe("proposed paper declaration checks", () => {
     expect(august.gap).toContain("the form must show both");
     expect(checkPaperDeclaration(D, { ...paper, dispensingDate: "2027-01-27" }).status).toBe("unable");
   });
+  it("derives July advice from its retrieved initials-only clause and invents no requirements without a clause", () => {
+    const paper = preparePaperDeclaration({ ...WORKED_PAPER_DECLARATION, endorsementText: "NCSO JB", dispensingDate: "2026-07-27" });
+    for (const quantity of [100, 99]) {
+      const result = checkPaperDeclaration(D, { ...paper, quantity });
+      const advice = paperDeclarationAdvice(result, "", "");
+      expect(advice).toContain("the form needs initials.");
+      expect(advice).not.toContain("date");
+      expect(advice.trim().split(/\s+/).length).toBeLessThan(25);
+      expect(result.gap).not.toContain("needs initials and date");
+    }
+    for (const result of [null, checkPaperDeclaration(D, { ...paper, dispensingDate: "2027-01-27" })]) {
+      const advice = paperDeclarationAdvice(result, "", "");
+      expect(advice).not.toContain("the form needs");
+      expect(advice).not.toContain("initials");
+      expect(advice.trim().split(/\s+/).length).toBeLessThan(25);
+    }
+  });
 
   it.each(["0", "-1", "1.5", "1e2", "0x64", "Infinity", "9007199254740992"])("rejects malformed quantities %s", (quantity) => {
     expect(() => preparePaperDeclaration({ ...WORKED_PAPER_DECLARATION, quantity })).toThrow("positive whole quantity");
