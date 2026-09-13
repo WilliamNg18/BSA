@@ -15,7 +15,8 @@ import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
 import { CASES } from "@/lib/domain/cases";
 import { productionServiceLabel } from "@/lib/service-display";
-import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
+import { MANUAL_LOOP_MONTH_DEFAULTS, PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ManualLoopMonthInputs } from "@/lib/domain/baseline";
+import { MANUAL_LOOP_METRICS } from "@/lib/domain/manual-loop-presentation";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -69,38 +70,38 @@ describe("whole-process presentation", () => {
 
   it.each([false, true])("shows both shared model columns without summing overlapping cohorts, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
-    const expected = monthModel(PROCESS_MONTH_DEFAULTS);
+    const expected = monthModel(MANUAL_LOOP_MONTH_DEFAULTS);
     const markup = render(BaselineCalculator);
     for (const column of ["today", "withAgent"] as const) {
-      for (const key of ["referredBackItems", "referralOperatorHours", "pharmacyCompletionHours", "type2OperatorHours", "caughtBeforeSubmission", "decisionsWithRuleAndReason"] as const) {
-        expect(markup).toMatch(new RegExp(`data-process-metric="${column}-${key}"[^]*?aria-label="${formatBaselineNumber(expected[column][key], 1)}"`));
+      for (const { key, format } of MANUAL_LOOP_METRICS) {
+        expect(markup).toMatch(new RegExp(`data-process-metric="${column}-${key}"[^]*?aria-label="${format(expected[column][key])}"`));
       }
     }
-    expect(markup).toContain("these hours must not be added together");
-    expect(markup).toContain("Synthetic comparison only, not a statement that real staff never record rules or reasons.");
-    expect(markup).toContain("Fewer items come back, and every judgement carries its rule and reason; the agent verifies and advises, it does not pay.");
+    expect(markup).toContain("With total includes manual gathering for abstentions");
+    expect(markup).toContain("This is not a claim about real staff or historical records");
+    expect(markup).toContain("297.5 operator hours gathering and judging");
     expect(markup).not.toContain("Items one operator can complete");
     expect(markup).not.toContain("Time is spent only");
     expect(markup).not.toContain('role="switch"');
   });
 
   it("uses edited process inputs in both calculator and scene without perspective-dependent state", () => {
-    const inputs: ProcessMonthInputs = { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 1_000, monthlyReferrals: 2, investigationMinutesToday: 0.01, pharmacyCompletionMinutes: 0.02 };
-    for (const key of Object.keys(inputs) as (keyof ProcessMonthInputs)[]) useAppStore.getState().setProcessInput(key, String(inputs[key]));
+    const inputs: ManualLoopMonthInputs = { ...MANUAL_LOOP_MONTH_DEFAULTS, monthlyItems: 1_000, manualLoopItems: 2, gatheringMinutesToday: 0.01, mysCompletionMinutes: 0.02 };
+    for (const key of Object.keys(inputs) as (keyof ManualLoopMonthInputs)[]) useAppStore.getState().setManualLoopInput(key, String(inputs[key]));
     const expected = monthModel(inputs);
     for (const perspective of ["both", "pharmacy", "nhsbsa"] as const) {
       useAppStore.getState().setPerspective(perspective);
       const before = useAppStore.getState();
       const calculator = render(BaselineCalculator);
       const scene = render(BaselineScene);
-      expect(calculator).toMatch(new RegExp(`data-process-metric="today-referralOperatorHours"[^]*?aria-label="${formatBaselineNumber(expected.today.referralOperatorHours, 1)}"`));
+      expect(calculator).toMatch(new RegExp(`data-process-metric="today-operatorHours"[^]*?aria-label="${formatBaselineNumber(expected.today.operatorHours, 1)}"`));
       expect(scene).toMatch(new RegExp(`data-scene-metric="autoPricedItems"[^]*?>${formatBaselineNumber(expected.counts.autoPricedItems, 1)}</span>`));
       expect(useAppStore.getState()).toBe(before);
     }
   });
 
   it("invalid shared inputs remove stale metrics and expose the invalid field", () => {
-    useAppStore.getState().setProcessInput("monthlyItems", "invalid");
+    useAppStore.getState().setManualLoopInput("monthlyItems", "invalid");
     const calculator = render(BaselineCalculator);
     expect(calculator).toContain('role="alert"');
     expect(calculator).toContain('aria-invalid="true"');
