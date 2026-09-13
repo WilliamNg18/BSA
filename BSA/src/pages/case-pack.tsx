@@ -100,10 +100,6 @@ function CasePackContent() {
       setError("Choose an RB code for the referral.");
       return;
     }
-    if (canApprove && !approved) {
-      setError("Approve the drafted explanation before sending it to the pharmacy.");
-      return;
-    }
     try {
     recordDecision({
       caseId: c.id,
@@ -350,7 +346,10 @@ function CasePackContent() {
                   </div>
                 ))}
               </RadioGroup>
-              {canApprove && <label className="flex items-start gap-2"><input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>}
+              {canApprove && <div className="space-y-2">
+                <label className="flex items-start gap-2"><input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
+                <p className="text-sm text-muted-foreground">Optional. Without approval, only your human reason is sent; the agent draft is not approved or shared.</p>
+              </div>}
               {disposition === "REFER_BACK" && <div className="space-y-1.5">
                 <Label htmlFor="rb-code">RB code (required)</Label>
                 <select id="rb-code" value={rbCode} onChange={(event) => setRbCode(event.target.value)} required
