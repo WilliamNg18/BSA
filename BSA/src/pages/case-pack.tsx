@@ -20,7 +20,7 @@ import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
-import { manualChoice, permitsProposal } from "@/lib/case-presentation";
+import { caseViewState, manualChoice, permitsProposal } from "@/lib/case-presentation";
 import { CasePlayback, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { Type1Capture } from "@/components/demo/type1-capture";
@@ -56,16 +56,16 @@ function CasePackContent() {
   const c = useLifecycleCase(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
-  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
   const lifecycle = useAppStore((s) => id ? s.lifecycles[id] : undefined);
   const arrive = useAppStore((s) => s.arriveInQueue);
-  const state = storedState ?? c?.initialState;
   const recordDecision = useAppStore((s) => s.recordType2Decision);
   const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
   const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
   const records = useAppStore((s) => s.records);
   const existing = useMemo(() => records.filter((r) => r.caseId === id), [records, id]);
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
+  const state = caseViewState(pack, process?.revision === revision ? process : undefined,
+    existing.some((record) => (record.revision ?? 1) === revision));
   const [decision, setDecision] = useState<HumanDecision | null>(null);
   const [reason, setReason] = useState("");
   const [rbCode, setRbCode] = useState("");

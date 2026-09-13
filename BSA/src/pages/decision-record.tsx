@@ -14,6 +14,7 @@ import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { useAppStore } from "@/lib/store";
 import { agentVersionLabel } from "@/lib/service-display";
 import { MissingAssistedSlots } from "@/components/demo/case-presentation";
+import { caseViewState } from "@/lib/case-presentation";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -29,8 +30,8 @@ export function DecisionRecordPage() {
 function DecisionRecordContent() {
   const { id } = useParams();
   const c = useLifecycleCase(id);
-  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
-  const state = storedState ?? c?.initialState;
+  const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
+  const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
   const allRecords = useAppStore((s) => s.records);
   const records = useMemo(() => allRecords.filter((r) => r.caseId === id), [allRecords, id]);
   const latest = records[records.length - 1];
@@ -38,6 +39,8 @@ function DecisionRecordContent() {
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const [replayVersion, setReplayVersion] = useState<string>("");
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
+  const state = caseViewState(pack, process?.revision === revision ? process : undefined,
+    records.some((record) => (record.revision ?? 1) === revision));
   const replay = useMemo(() => (recordedCase && agentEnabled && replayVersion ? runAgent(recordedCase, { agentEnabled, tariffVersion: replayVersion }) : null), [recordedCase, replayVersion, agentEnabled]);
 
   if (!c || !pack || !state) {

@@ -1,4 +1,11 @@
-import type { CasePack, HumanDecision } from "./domain/types";
+import type { CasePack, CaseState, HumanDecision } from "./domain/types";
+import type { ItemProcess } from "./domain/lifecycle";
+
+export function caseViewState(pack: CasePack | null, process: ItemProcess | undefined, hasCurrentRecord: boolean): CaseState {
+  if (hasCurrentRecord) return "human_decision_recorded";
+  if (process?.routing.outcome === "auto_priced") return "cleared_by_rules";
+  return pack?.agentInvoked ? pack.state : "operator_review_required";
+}
 
 /** Read-only presentation policy. Never modifies engine results or records. */
 export function permitsProposal(pack: CasePack): boolean {

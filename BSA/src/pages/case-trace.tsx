@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
 import { CasePlayback, ManualCaseTrace, MissingAssistedSlots } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
-import { ASSISTED_SLOTS, traceSlotReady } from "@/lib/case-presentation";
+import { ASSISTED_SLOTS, caseViewState, traceSlotReady } from "@/lib/case-presentation";
 import { SignalList } from "@/components/demo/signals";
 import { REC_META } from "@/components/demo/label-meta";
 
@@ -28,9 +28,12 @@ export function CaseTracePage() {
   const { id } = useParams();
   const c = useLifecycleCase(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  const storedState = useAppStore((s) => (id ? s.caseStates[id] : undefined));
-  const state = storedState ?? c?.initialState;
+  const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
+  const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
+  const records = useAppStore((s) => s.records);
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
+  const state = caseViewState(pack, process?.revision === revision ? process : undefined,
+    records.some((record) => record.caseId === id && (record.revision ?? 1) === revision));
   const clock = useCasePresentation(pack?.trace.length ?? 1, false, pack);
   const { revealed } = clock;
 
