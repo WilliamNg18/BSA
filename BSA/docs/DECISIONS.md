@@ -1080,6 +1080,55 @@ Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
 
+## 2026-09-13: Task 21 U proposed paper declaration confirmation
+
+The unreadable-paper design is proposed, not existing NHSBSA functionality.
+One store-connected `Type1Capture({caseId})` surface is shared by the queue and
+case pack. The original synthetic poor image is displayed without changing its
+quality, extracted prescriber or read-confidence evidence. Agent On cannot read
+it. Fields are prefilled only from the immutable submitted pharmacy declaration,
+each labelled "declared by the pharmacy, not read from the form".
+
+Human edits remain a local draft until explicit confirmation through M's
+`confirmType1`. A separate unchecked human-reconciliation checkbox is required
+for declaration provenance and clears after any field edit. A successful typed
+check never checks that box. Irreconcilable evidence has a blank manual-capture
+path; unknown values stay null rather than being guessed. Product, quantity,
+endorsement and the parent's added prescriber field are captured. A missing
+prescriber cannot be waived to produce a built recommendation.
+
+M alone validates authority, compatibility, revision and routing; the new
+paper-capture helper only prepares drafts and confirmation input. Type 1 capture
+never records a Type 2 judgement. A compatible complete confirmed declaration
+may support a built Type 2 case with a retrieved dated clause; other evidence
+remains manual or withheld, and insufficient D may be referred back with RB2B.
+
+The stopwatch is a step-through illustration, not elapsed work or a lifecycle
+clock. Today keying and declaration confirmation consume shared editable
+`type1KeySeconds`/`type1ConfirmSeconds` assumptions, default 30/10 seconds.
+These describe this difficult example, not the public 880-items/hour average.
+Static results and keyboard-operated timing steps need no animation and work
+unchanged under reduced motion. N owns the matching proposed boundary label;
+V owns integrated browser/axe and live evidence.
+
+The parent-owned perspective guard retains an already visited page as hidden
+and inert at the same URL. U's pending fields and explicit checkbox therefore
+remain local presentation state across perspective switches, not a second
+operational store. Real route navigation discards the draft; Reset clears it
+even when the new seed has the same revision number and timestamp.
+
+When confirmed values differ from the immutable declaration, the submitted
+capture provenance is `human_capture`, not `pharmacy_declaration`. An explicitly
+checked reconciliation remains true for that human correction; compatibility
+and the mandatory evidence gate still decide whether advice can be shown.
+The original declaration stays visible and unchanged.
+
+The shared capture surface also accepts readable handwritten paper items.
+Only genuinely poor image style or quality below the existing threshold gets
+the poor-scan/cannot-read wording. D keeps its guaranteed Type 2 continuation;
+other items use a neutral confirmation label because code may route complete
+captured evidence to existing pricing. This changes copy, not routing authority.
+
 ## 2026-09-13: Task 19 shared process allocations and capture authority
 
 Before implementing the arithmetic, M notified the coordinator and received
