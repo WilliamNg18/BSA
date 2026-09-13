@@ -107,7 +107,8 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
   await expect(page.getByText("Replay disabled in this manual comparison. The historical rule version is preserved; enable assistance to inspect it.", { exact: true })).toBeVisible();
-  await expect(page.getByText("REFER BACK by Demo operator", { exact: false })).toBeVisible();
+  await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd"))
+    .toContainText("REFER BACK by Demo operator");
   await captureCheckpoint(page, testInfo, "b-july-assistance-off");
   await confirmReset(page);
   await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
@@ -138,6 +139,7 @@ test("agent flag hides recommendations on every case without changing case state
     await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
     await captureCheckpoint(page, testInfo, `${c.id}-assistance-off`);
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
     expect(await ids()).toEqual(before);
   }
   await confirmReset(page);
