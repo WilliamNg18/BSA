@@ -195,7 +195,7 @@ for (const enabled of [false, true]) {
         if (enabled && missing) {
           await expect(page.getByRole("alert")).toContainText("The agent abstained");
           await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
-          await expect(page.getByText("Missing evidence: Prescriber present", { exact: false })).toBeVisible();
+          await expect(page.getByRole("alert").getByText("Missing evidence: Prescriber present", { exact: true })).toBeVisible();
           await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).toBeDisabled();
           await expect(page.getByRole("radio", { name: /^Amend / })).toBeDisabled();
           await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
