@@ -44,7 +44,7 @@ import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-
 import { routeSubmission, routingFactsForCase, RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { createPharmacyState, type PharmacyState } from "./pharmacy-store";
 import { createQueueState, type QueueState } from "./queue-store";
-import { capturedFields, compatibleCapture, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
+import { capturedFields, capturedFieldsMatchSources, compatibleCapture, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
 import { mandatoryFieldsCheck } from "@/lib/domain/rules";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
@@ -256,7 +256,9 @@ export const useAppStore = create<AppState>((set, get) => {
       const capture = { revision: revision.number, confirmedAt: at, operator: "Demo operator", fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled };
       const confirmedCase = { ...c, capturedEvidence: { fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled, revision: revision.number } };
       const facts = routingFactsForCase({ ...confirmedCase, extracted: capturedFields(confirmedCase) }, process.channel, true);
-      const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !compatibleCapture(confirmedCase) ||
+      const captureCompatible = input.provenance === "human_capture" && c.scenario !== "D"
+        ? capturedFieldsMatchSources(confirmedCase) : compatibleCapture(confirmedCase);
+      const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !captureCompatible ||
         !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) });
       let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
         revision: revision.number, channel: process.channel, processStep: "type1_capture", capture, message: "Human capture confirmed; code routed the captured fields." });

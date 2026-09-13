@@ -1302,3 +1302,19 @@ The shared display helper applies aliases only to presentation strings. Original
 domain mappings, source evidence, versions and stored audit records are not
 rewritten. Required NHSBSA, MYS, NHSmail, EPS, dm+d and Tariff process vocabulary
 remains permitted. No hosting or infrastructure change is made.
+
+## 2026-09-13: Manual Type 1 capture is not declaration reconciliation
+
+A complete, matching non-D human capture now reroutes as read without asserting
+that a pharmacy declaration was reconciled. Factual captured-field agreement is
+a separate pure check from the existing declaration-trust predicate. Both
+paths still require known product, matching source quantities, complete
+mandatory evidence and the existing endorsement rules. Completed Type 1 work
+retains its human-capture origin rather than becoming a no-person item.
+
+Pharmacy-declaration captures still require explicit reconciliation. D's
+proposed path retains that requirement and its unchanged agent trust checks;
+manual D still requires Type 2. Conflicts, unknown fields, original revisions
+and append-only capture history are preserved. The regression uses the real
+manual form-preparation helpers with reconciliation false, not an injected
+checkbox value or an Agent-dependent routing condition.
