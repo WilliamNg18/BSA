@@ -36,18 +36,33 @@ for (const enabled of [false, true]) {
         const initial = await readDomainState(page);
         if (scenario === "fresh unknown") {
           await action("Choose unreadable paper without a declaration", "Pharmacy", async () => {
+            await page.getByRole("radio", { name: "Paper", exact: true }).check();
             await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
           });
           await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
-          for (const name of ["Declared product code", "Declared quantity", "Declared prescriber (synthetic)", "Endorsement entered by the pharmacy"]) {
-            await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
+          if (enabled) {
+            for (const name of ["Declared product", "Declared quantity", "Declared endorsement", "Declared dispensing date"]) {
+              await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
+            }
+            await action("Reject posting a blank proposed declaration", "Pharmacy", async () => {
+              await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
+              await expect(page.getByRole("alert")).toBeVisible();
+            });
+            expect(await readDomainState(page)).toEqual(initial);
+            await action("Choose the ordinary undeclared paper path", "Pharmacy", async () => {
+              await page.getByRole("banner").getByRole("switch").setChecked(false);
+            });
           }
+          await expect(page.getByLabel("Declared product", { exact: true })).toHaveCount(0);
           const submitted = await action("Submit the genuinely undeclared paper revision", "Pharmacy", async () => {
-            await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+            await page.getByRole("button", { name: "Post paper", exact: true }).click();
           });
           expect(submitted.caseRevisions[D].at(-1)?.declaration).toBeUndefined();
           expect(submitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });
           expect(submitted.caseRevisions[D].slice(0, initial.caseRevisions[D].length)).toEqual(initial.caseRevisions[D]);
+          if (enabled) await action("Restore assistance without inventing a declaration", "Pharmacy", async () => {
+            await page.getByRole("banner").getByRole("switch").setChecked(true);
+          });
         }
         await action("Open the actual capture lane", "NHSBSA", async () => {
           await navigatePrimary(page, "NHSBSA queue");

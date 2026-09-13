@@ -31,8 +31,8 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     if (hidden) {
       await expect(page.getByText("This view belongs to the other side; switch perspective to see it", { exact: true })).toBeVisible();
     } else if (route === "/pharmacy") {
-      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
-      await expect(page.getByRole("button", { name: "Apply fix", exact: true })).toHaveCount(enabled ? 1 : 0);
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+      await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(enabled ? 1 : 0);
     } else if (route === "/queue") {
       await expect(page.locator("[data-queue-guide]")).toHaveText(enabled
         ? "Type 2 worklist: the agent verifies the submission and advises; a person decides."

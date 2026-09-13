@@ -36,10 +36,10 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await choosePerspective(page, "Pharmacy");
     await navigatePrimary(page, "Pharmacy check");
     await flag(page).setChecked(enabled);
-    await page.getByRole("radio", { name: "Information missing", exact: true }).check();
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
-    const endorsement = await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).inputValue();
-    await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+    const endorsement = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
     const submitted = page.getByRole("link", { name: "View submitted claim", exact: true });
     const href = await submitted.getAttribute("href");
     const id = new URL(href!, page.url()).searchParams.get("caseId")!;

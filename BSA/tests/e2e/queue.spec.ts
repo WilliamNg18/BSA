@@ -70,7 +70,7 @@ for (const enabled of [false, true]) {
 
 test("Task22 an explicit incomplete submission becomes New and opens the same case before human review", async ({ page }) => {
   await page.goto("pharmacy");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("link", { name: "Open shared queue", exact: true }).click();
   const fresh = counts(page).getByRole("button", { name: "New submissions (3)", exact: true });
   await fresh.click();

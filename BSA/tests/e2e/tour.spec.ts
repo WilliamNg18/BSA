@@ -157,7 +157,7 @@ for (const enabled of [true, false]) {
       } else if (route !== "queue") {
         if (route === "./#month") await page.locator("[data-month-detail] > summary").click();
         const fields = route === "pharmacy"
-          ? [page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" })]
+          ? [page.getByRole("textbox", { name: "Dispenser endorsement" })]
           : await page.getByRole("region", { name: "Monthly workload calculator" }).getByRole("textbox").all();
         expect(fields).toHaveLength(route === "pharmacy" ? 1 : PROCESS_FIELDS.length);
         for (const field of fields) {
@@ -329,14 +329,14 @@ test("case D card follows human-confirmed current capture instead of retaining i
   const d = page.locator('[data-case="D"]');
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await navigatePrimary(page, "Pharmacy check");
+  await page.getByRole("radio", { name: "Paper", exact: true }).check();
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
   const source = CASES.find((item) => item.scenario === "D")!;
-  await page.getByLabel("Declared product code", { exact: true }).fill(source.claim.productCode);
+  await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
   await page.getByLabel("Declared quantity", { exact: true }).fill(String(source.claim.quantity));
-  await page.getByLabel("Declared prescriber (synthetic)", { exact: true }).fill("Dr Demo (synthetic)");
-  await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO RK 27/08/26");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Submitted pharmacy declaration", exact: true })).toBeVisible();
+  await page.getByRole("textbox", { name: "Declared endorsement", exact: true }).fill("NCSO RK 27/08/26");
+  await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("declared by the pharmacy, not read from the form");
   await chooseProcessChapter(page, 4);
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
@@ -347,6 +347,7 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await chooseProcessChapter(page, 4);
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
+  await capture.getByRole("textbox", { name: "Prescriber", exact: true }).fill("Dr Demo (synthetic)");
   await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
   await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
   await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeFocused();
@@ -409,7 +410,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
-  const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
+  const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   const seed = await field.inputValue();
   await field.fill("NCSO RK 21/08/26");
   await page.getByRole("switch", { name: "Agent: On" }).click();
@@ -436,7 +437,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
 test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmation dialogs", async ({ page }) => {
   await page.goto("pharmacy");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
+  const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   await field.focus();
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page).toHaveURL(/\/pharmacy$/);

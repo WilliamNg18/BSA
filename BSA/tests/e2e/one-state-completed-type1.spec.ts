@@ -16,7 +16,7 @@ for (const enabled of [false, true]) {
       expect(confirmed.itemProcesses[PAPER_B]).toMatchObject({
         routing: { outcome: "type1_capture", requiresHuman: false },
         capture: { fields: completePaperFields, operator: "Demo operator",
-          provenance: enabled ? "pharmacy_declaration" : "human_capture", declarationReconciled: enabled },
+          provenance: "human_capture", declarationReconciled: enabled },
       });
       expect(confirmed.lifecycles[PAPER_B].state).toBe("paid");
       expect(confirmed.records).toEqual(initial.records);

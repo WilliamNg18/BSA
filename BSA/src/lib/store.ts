@@ -43,6 +43,7 @@ import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
 import { appendHistory, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
+import { validateEpsCorrection, type EpsCorrectionSources } from "@/lib/domain/eps-correction";
 import { routeSubmission, routingFactsForCase, RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { createPharmacyState, type PharmacyState } from "./pharmacy-store";
 import { createQueueState, type QueueState } from "./queue-store";
@@ -89,6 +90,7 @@ function seededRecords(): LifecycleDecisionRecord[] {
 export type Perspective = "pharmacy" | "nhsbsa" | "both";
 
 export interface PharmacyCorrectionEvent {
+  readonly epsSources?: EpsCorrectionSources;
   readonly caseId: string;
   readonly pharmacyCode: string;
   readonly at: string;
@@ -111,7 +113,7 @@ interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, Manu
   todayMinutes: string;
   setTodayMinutes: (value: string) => void;
   pharmacyCorrections: readonly PharmacyCorrectionEvent[];
-  recordPharmacyCorrection: (caseId: string, before: PharmacyPrecheckSnapshot, after: PharmacyPrecheckSnapshot, revision: number, options?: PharmacyCheckOptions) => void;
+  recordPharmacyCorrection: (caseId: string, before: PharmacyPrecheckSnapshot, after: PharmacyPrecheckSnapshot, revision: number, options?: PharmacyCheckOptions, sources?: EpsCorrectionSources) => void;
   recordDecision: (input: {
     caseId: string;
     tariffVersion: string;
@@ -354,21 +356,27 @@ export const useAppStore = create<AppState>((set, get) => {
     todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes),
     setTodayMinutes: (todayMinutes) => { set({ todayMinutes }); get().queue.reset(); },
     pharmacyCorrections: immutable([]),
-    recordPharmacyCorrection: (caseId, before, after, revision, options) => {
+    recordPharmacyCorrection: (caseId, before, after, revision, options, sources) => {
       const s = get(), c = currentCase(caseId);
-      validatePrecheck(before, before.typedText, c.extracted.dispensingDate);
-      validatePrecheck(after, after.typedText, c.extracted.dispensingDate);
+      if (sources) {
+        if (options?.channel !== "eps") throw new Error("EPS correction requires the EPS channel.");
+        validateEpsCorrection(caseId, sources, before, after, s.lifecycles, s.caseRevisions);
+      } else {
+        validatePrecheck(before, before.typedText, c.extracted.dispensingDate);
+        validatePrecheck(after, after.typedText, c.extracted.dispensingDate);
+      }
       if (!s.agentEnabled || before.status !== "missing" || after.status !== "ready" ||
-        before.typedText === after.typedText || !before.checkedAt || !after.checkedAt ||
+        !sources && before.typedText === after.typedText || !before.checkedAt || !after.checkedAt ||
         Date.parse(after.checkedAt) < Date.parse(before.checkedAt) ||
         revision !== s.caseRevisions[caseId].at(-1)!.number + 1 ||
-        checkPharmacy(c, before.typedText, options).status !== "missing" || checkPharmacy(c, after.typedText, options).status !== "ready") {
+        !sources && (checkPharmacy(c, before.typedText, options).status !== "missing" || checkPharmacy(c, after.typedText, options).status !== "ready")) {
         throw new Error("A current human-applied correction with completed before and after checks is required.");
       }
       // A repeated ready render is the same caught item, not another correction.
       if (s.pharmacyCorrections.some((event) => event.caseId === caseId && event.revision === revision)) return;
       set({ pharmacyCorrections: immutable([...s.pharmacyCorrections, {
         caseId, pharmacyCode: s.lifecycles[caseId].pharmacyCode, at: new Date().toISOString(), revision, before, after,
+        ...(sources ? { epsSources: sources } : {}),
       }]) });
     },
     recordDecision: ({ approvedDraft, ...input }) => decide(input, true, approvedDraft,

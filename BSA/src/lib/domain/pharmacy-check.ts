@@ -121,12 +121,12 @@ export class PharmacyCheckRunner {
   subscribe = (listener: () => void) => { this.listeners.add(listener); return () => { this.listeners.delete(listener); }; };
   private publish(value: CheckRevision) { this.value = value; this.listeners.forEach((listener) => listener()); }
   cancel = () => { this.revision++; this.timers.forEach(clearTimeout); this.timers = []; };
-  start(key: string, c: ExceptionCase, text: string, enabled: boolean, reduced: boolean, options?: PharmacyCheckOptions) {
+  start(key: string, c: ExceptionCase, text: string, enabled: boolean, reduced: boolean, options?: PharmacyCheckOptions, evaluate = checkPharmacy) {
     this.cancel();
     const revision = this.revision;
     this.publish({ key, phase: 0, result: null, checkedAt: null });
     if (!enabled) return;
-    const complete = () => { if (revision === this.revision) this.publish({ key, phase: PHARMACY_STEPS.length, result: checkPharmacy(c, text, options), checkedAt: new Date().toISOString() }); };
+    const complete = () => { if (revision === this.revision) this.publish({ key, phase: PHARMACY_STEPS.length, result: evaluate(c, text, options), checkedAt: new Date().toISOString() }); };
     if (reduced) { complete(); return; }
     for (let phase = 1; phase < PHARMACY_STEPS.length; phase++) this.timers.push(setTimeout(() => {
       if (revision === this.revision) this.publish({ key, phase, result: null, checkedAt: null });

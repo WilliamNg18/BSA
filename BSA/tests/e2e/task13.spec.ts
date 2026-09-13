@@ -24,7 +24,7 @@ for (const enabled of [false, true]) {
   test(`Task13 complete same-case roundtrip Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.submitted.pharmacy);
     await history(page).getByRole("button", { name: "Follow this case", exact: true }).click();
@@ -99,7 +99,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           if (state === "submitted") {
             await page.goto("pharmacy");
             await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-            await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+            await page.getByRole("button", { name: "Send claim", exact: true }).click();
             await navigatePrimary(page, "Pharmacy claims");
           } else if (state === "escalated") {
             await page.goto("case/SYN-FQ123-TYPE2");

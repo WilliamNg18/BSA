@@ -1567,3 +1567,67 @@ separately; medicine fields, exact rule quotations, requirement statuses and
 field-associated provenance labels remain visible structured evidence. Error
 messages replace the main narrative rather than accumulating duplicate prose.
 Focused tests count both Paper variants, both modes and all advice outcomes.
+
+## 2026-09-13: Task 26 visible EPS source and explicit correction
+
+The EPS panel displays a synthetic prescriber message separately from the
+dispenser's claim. Dose is a non-clinical placeholder. It cannot display an
+unreadable image or enter Type 1. The shared read-only message component uses
+recorded source snapshots; it never fills gaps in historical evidence.
+
+The dedicated generic product SYN-AMOX500-GENERIC-21 activates the synthetic
+monthly supply rule even if its optional evidence object is omitted. Source
+manufacturer, pack and form checks are shared with routing and the compliance
+gate. Canonical E keeps its original automatic no-model outcome. The additional
+generic example uses the already seeded SYN-FQ123-TYPE2 item, not a ninth item.
+
+An explicit Apply correction edits the draft only. Initials must be supplied by
+the person dispensing; the date suggestion uses the displayed synthetic
+dispensing day, not the computer's current date. Supply suggestions identify
+their exact synthetic reference value before the person applies them.
+
+Send claim creates a new demonstration attempt on the same item, retaining
+all earlier receipts and history. Correcting an existing referral remains the
+claim-view resubmission action with mandatory human re-check. Agent Off sends
+the literal source fields and an unchecked snapshot without invoking advisory
+interpretation. On only announces automatic completion when the same
+deterministic routing function used by Send returns automatic pricing.
+
+## 2026-09-13: Source-backed human-applied EPS correction evidence
+
+The first E draft CI exposed a genuine missing connection: Apply changed the
+draft but no longer recorded the existing caught-before-submission event.
+Restore that connection rather than replacing its actual count with an estimate.
+
+The existing correction API accepts optional immutable before/after EPS sources.
+Code validates source copies, unchanged prescription identity and current
+revision, then recomputes both checks and their snapshots. Same-text generic
+corrections are valid only when supply fields genuinely move missing to ready.
+Partial multi-gap fixes do not count; final completion counts once per item and
+next revision. No correction event submits, decides or changes lifecycle.
+
+Editing, switching scenario, leaving the page, turning assistance Off or
+submitting before the new check finishes cancels the pending event. Reset
+clears recorded events; perspective changes preserve them. Legacy callers
+retain their original validation. This extension belongs to E, not C's already
+reviewed critical-path source candidate.
+
+## 2026-09-13: Correct generic EPS referrals on the same claim
+
+Review found that the generic workbench could send a deficient supply claim,
+but the claim-detail correction form only edited endorsement text. Retaining
+the missing supply fields made the new generic referral impossible to repair
+through its intended resubmission path.
+
+For the dedicated synthetic generic EPS product, claim details now expose
+manufacturer, pack size and form from the recorded source. Editing any field
+invalidates the displayed check. Explicit resubmission stores an updated EPS
+source with the current revision guard, leaving earlier sources and decisions
+immutable. The existing text and paper correction paths are unchanged.
+
+Field readiness is separate from permission to price. A dedicated prospective
+resubmission projection retains required human recheck; the interface says
+Ready to resubmit, never automatic pricing. The same synthetic requirements
+must resolve before human acceptance. The browser proof uses missing form with
+RB2B and a recorded human reason, then follows that same item to human-accepted
+Paid rather than starting another demonstration attempt.
