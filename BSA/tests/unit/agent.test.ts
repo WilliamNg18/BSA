@@ -7,7 +7,7 @@ beforeEach(() => useAppStore.getState().resetDemo());
 
 describe("six synthetic outcomes", () => {
   it.each([
-    ["A", "SUFFICIENT", "PASS", "high", "agent_review_complete"],
+    ["A", "NONE", "NOT_RUN", "high", "cleared_by_rules"],
     ["B", "REFER_BACK", "PASS", "high", "operator_review_required"],
     ["C", "REQUEST_INFORMATION", "PASS", "medium", "additional_evidence_required"],
     ["D", "ABSTAIN", "NOT_RUN", "abstain", "agent_abstained"],
@@ -59,12 +59,14 @@ describe("six synthetic outcomes", () => {
     expect(pack.trace.some((s) => s.phase === "RECOMMEND")).toBe(false);
   });
 
-  it("E stops at pure pre-checks, without an agent step or model call", () => {
-    const pack = runAgent(CASES[4]);
+  it.each([CASES[0], CASES[4]])("$scenario stops at pure pre-checks, without an agent step or model call", (c) => {
+    const records = useAppStore.getState().records;
+    const pack = runAgent(c);
     expect(pack.agentInvoked).toBe(false);
     expect(pack.trace.map((s) => s.phase)).toEqual(["PLAN", "HAND_OFF"]);
     expect(pack.trace.every((s) => s.cls === "deterministic")).toBe(true);
     expect(pack.trace.flatMap((s) => s.toolCalls).map((t) => t.tool)).toEqual(["lookup_product_pack", "lookup_claim"]);
+    expect(useAppStore.getState().records).toBe(records);
   });
 
   it("F remains decided in session state with its pinned seeded record", () => {
@@ -96,10 +98,10 @@ describe("governance and fail-open paths", () => {
     const store = useAppStore.getState();
     const originalRecords = store.records;
     store.setAgentEnabled(true);
-    store.submitFromPharmacy(CASES[0].id, CASES[0].extracted.endorsementText);
-    store.arriveInQueue(CASES[0].id);
-    const pack = runAgent(CASES[0]);
-    const record = store.recordDecision({ caseId: CASES[0].id, tariffVersion: pack.tariffVersion,
+    store.submitItem({ caseId: CASES[1].id, channel: "eps", endorsementText: CASES[1].extracted.endorsementText });
+    store.arriveInQueue(CASES[1].id);
+    const pack = runAgent(CASES[1]);
+    const record = store.recordDecision({ caseId: CASES[1].id, tariffVersion: pack.tariffVersion,
       agentVersion: pack.agentVersion, inputs: [], sources: [], checks: pack.gate.checks,
       recommendation: pack.recommendation, decision: "ESCALATE", overrideReason: "Senior review required" });
     expect(record).toMatchObject({ isOverride: true, overrideReason: "Senior review required" });
@@ -113,13 +115,13 @@ describe("governance and fail-open paths", () => {
   });
 
   it("keeps the observable sequence and the compliance gate deterministic", () => {
-    const pack = runAgent(CASES[0]);
+    const pack = runAgent(CASES[2]);
     expect(pack.trace.map((s) => s.phase)).toEqual(["PLAN", "PLAN", "GATHER", "RETRIEVE", "RECONCILE", "ASSESS", "RECOMMEND", "CHECK", "HAND_OFF"]);
     expect(pack.trace.find((s) => s.phase === "CHECK")?.cls).toBe("deterministic");
     expect(pack.trace.at(-1)?.cls).toBe("human");
   });
 
-  it.each(CASES.slice(0, 3).flatMap((c) => ["2026-08", "2026-07"].map((tariffVersion) => ({ c, tariffVersion }))))(
+  it.each(CASES.slice(1, 3).flatMap((c) => ["2026-08", "2026-07"].map((tariffVersion) => ({ c, tariffVersion }))))(
     "withholds $c.scenario advice from every consumer under $tariffVersion on gate FAIL",
     ({ c: original, tariffVersion }) => {
     const before = structuredClone(original);
@@ -152,7 +154,7 @@ describe("governance and fail-open paths", () => {
   });
 
   it("cannot retrieve a rule for an unknown replay version", () => {
-    const pack = runAgent(CASES[0], { tariffVersion: "2099-01" });
+    const pack = runAgent(CASES[1], { tariffVersion: "2099-01" });
     expect(pack.clause).toBeNull();
     expect(pack.recommendation).toBe("ABSTAIN");
   });

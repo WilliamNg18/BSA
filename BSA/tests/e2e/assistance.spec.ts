@@ -10,7 +10,7 @@ test("queue hides all filler recommendations without changing evidence, states o
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   const rows = page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr");
-  await expect(rows).toHaveCount(50);
+  await expect(rows).toHaveCount(9);
   const states = rows.locator("[data-recorded-state]");
   const originalStates = await states.evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")));
   await expect(rows.filter({ hasText: "Model example only; no evidence or citation" })).not.toHaveCount(0);
@@ -74,7 +74,7 @@ for (const scenario of [
 test("pharmacy keeps edits across header assistance changes and navigation", async ({ page }) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(50);
+  await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(9);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await navigatePrimary(page, "Pharmacy check");
   await expect(page).toHaveURL(/\/pharmacy$/);

@@ -5,7 +5,7 @@ import { LIFECYCLE_LABELS, type CaseLifecycle, type CaseRevision, type HistoryEv
 import { immutable } from "./lifecycle-model";
 
 const canonicalStates: LifecycleState[] = ["paid", "referred_back", "information_requested", "in_review", "paid", "referred_back"];
-const templates: Record<LifecycleState, number> = { submitted: 0, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3 };
+const templates: Record<LifecycleState, number> = { submitted: 1, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3 };
 
 /** Fresh deeply immutable seeds. Metadata-only rows use explicitly synthetic templates. */
 export function seededLifecycleSession(): {
@@ -21,12 +21,13 @@ export function seededLifecycleSession(): {
       history.push({ at: new Date(Date.UTC(2026, 8, 1, 9, history.length)).toISOString(), actor, from: history.at(-1)?.to ?? null, to, message, revision: 1 });
     };
     event("submitted", "pharmacy", "Synthetic claim submitted.");
-    if (state !== "submitted") event("in_review", "code", "Routed for operator review.");
+    const automatic = state === "paid" && (c.scenario === "A" || c.scenario === "E");
+    if (state !== "submitted" && !automatic) event("in_review", "code", "Routed for operator review.");
     if (state === "resubmitted") {
       event("referred_back", "operator", "Correction required before re-check.");
       event(state, "pharmacy", "Synthetic endorsement resubmitted; re-check pending.");
     } else if (state !== "submitted" && state !== "in_review") {
-      event(state, c.scenario === "E" ? "code" : "operator", state === "paid" ? "Released to existing pricing (synthetic)." : "Synthetic human decision recorded.");
+      event(state, automatic ? "code" : "operator", automatic ? "Priced by NHSBSA's existing rules engine; no person involved." : state === "paid" ? "Released to existing pricing (synthetic)." : "Synthetic human decision recorded.");
     }
     // F retains the historical record identity and timestamp, not a new decision.
     if (c.scenario === "F") Object.assign(history.at(-1)!, { at: "2026-09-03T15:02:11", recordId: "DR-000871" });
@@ -35,7 +36,13 @@ export function seededLifecycleSession(): {
       reason: state === "referred_back" ? "Endorsement initialled but not dated." : "Confirm the conflicting quantities; do not choose one automatically.",
     });
     lifecycles[caseId] = { caseId, pharmacyCode, state, history };
-    caseRevisions[caseId] = [{ number: 1, at: history[0].at, kind: "seed", templateCaseId: c.id, endorsementText: c.extracted.endorsementText, precheck: null, confirmation: null }];
+    caseRevisions[caseId] = [{ number: 1, at: history[0].at, kind: "seed", templateCaseId: c.id, endorsementText: c.extracted.endorsementText, precheck: null, confirmation: null,
+      channel: c.claim.submittedVia === "EPS claim message" ? "eps" : "paper",
+      ...(caseId === CASES[3].id ? { declaration: {
+        fields: { productCode: c.claim.productCode, quantity: c.claim.quantity, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" },
+        declaredAt: history[0].at, provenance: "pharmacy_declaration" as const,
+      } } : {}),
+    }];
   };
   CASES.forEach((c, i) => add(c.id, c.pharmacy.contractorCode, canonicalStates[i], i));
   QUEUE_FILLER.forEach((row) => {

@@ -1,6 +1,7 @@
 /** Pure scenario arithmetic. No case mutations, decisions, pricing or measured savings. */
 import { BASELINE_PROVENANCE as provenance } from "./baseline-defaults";
 import { PUBLIC_FACTS } from "./public-facts";
+import { calculateProcessMonth } from "./process-month-model";
 
 export interface BaselineInputs {
   volume: number;
@@ -48,6 +49,8 @@ export function validPharmacyDays(value: string): number | null {
 const numberFormats: Intl.NumberFormat[] = [];
 export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) =>
   (numberFormats[maximumFractionDigits] ??= new Intl.NumberFormat("en-GB", { maximumFractionDigits })).format(value);
+export const formatProcessHours = (value: number): string => formatBaselineNumber(value, 1);
+export const formatProcessItems = (value: number): string => formatBaselineNumber(value, 0);
 
 // All numeric scenario defaults live here. The companion module derives only
 // fixture provenance; neither module imports the private research register.
@@ -277,7 +280,10 @@ function monthErrors(input: MonthModelInputs): Partial<Record<keyof MonthModelIn
 }
 
 /** One monthly projection. Cohorts are disjoint; abstentions retain full manual effort. */
-export function monthModel(input: MonthModelInputs): MonthModelResult {
+export function monthModel(input: ProcessMonthInputs): ProcessMonthResult;
+export function monthModel(input: MonthModelInputs): MonthModelResult;
+export function monthModel(input: MonthModelInputs | ProcessMonthInputs): MonthModelResult | ProcessMonthResult {
+  if ("monthlyItems" in input) return calculateProcessMonth(input);
   if (Object.keys(monthErrors(input)).length) throw new RangeError("Invalid monthly assumptions");
   const base = calculateBaseline(input);
   const gathering = input.todayMinutes - input.judgingMinutes;

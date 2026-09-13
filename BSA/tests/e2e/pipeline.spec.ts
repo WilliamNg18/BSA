@@ -140,7 +140,7 @@ test("pipeline, scene and calculator share live counts, residuals and invalid/ze
 test("shared two-second clock sequences kernel phases, resolves built pain only, and cancels safely", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("queue");
-  await expect(page.locator("tbody tr")).toHaveCount(50);
+  await expect(page.locator("tbody tr")).toHaveCount(9);
   const states = await page.locator("[data-queue-state]").allTextContents();
   await pipeline(page);
   await page.clock.install({ time: new Date("2026-09-10T12:00:00Z") });

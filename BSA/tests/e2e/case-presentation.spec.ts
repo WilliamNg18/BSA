@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { captureJson, cases, confirmReset, expect, test } from "./fixtures";
+import { automaticCaseIds, captureJson, cases, confirmReset, expect, test } from "./fixtures";
 import { GATHERING_STEPS, BASELINE_DEFAULTS } from "../../src/lib/domain/baseline";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
@@ -20,7 +20,7 @@ for (const c of cases) {
     for (const slot of ["Clause", "Requirements", "Alternative", "Confidence"]) await expect(page.locator(`[data-assisted-slot="${slot}"]`)).toContainText("Not recorded");
     await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Replay unavailable in manual comparison", exact: true })).toBeDisabled();
-    if (c.id === "EX-24101") {
+    if (automaticCaseIds.includes(c.id)) {
       const prechecks = page.getByRole("list", { name: "Deterministic clearance trace" });
       await expect(prechecks.locator(":scope > li")).toHaveCount(2);
       await expect(prechecks).toContainText("Cleared by rules; agent not invoked");
@@ -33,26 +33,50 @@ for (const c of cases) {
     await expect(page.getByRole("list", { name: "Confidence signals", exact: true })).toHaveCount(0);
     await expect(page.locator("[data-pain-marker]")).toHaveCount(4);
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
-    if (c.id !== "EX-24088" && c.id !== "EX-24101") {
+    if (c.id !== "EX-24088" && c.id !== "EX-24123" && !automaticCaseIds.includes(c.id)) {
       if (c.id !== "EX-24123") await startDemonstrationReview(page);
       await expect(page.getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(1);
       await expect(page.getByRole("radio", { name: /^Escalate / })).toBeChecked();
       await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).not.toBeChecked();
       await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveAttribute("aria-required", "true");
     }
+    if (automaticCaseIds.includes(c.id)) {
+      await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toContainText("existing rules engine");
+    }
+  });
+}
+
+for (const id of automaticCaseIds) for (const enabled of [false, true]) {
+  test(`Task19 ${id} automatic pricing has only deterministic trace and no human approval, Agent ${enabled}`, async ({ page }) => {
+    await page.goto(`case/${id}/trace`);
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    const trace = page.getByRole("list", { name: "Deterministic clearance trace", exact: true });
+    await expect(trace.locator(":scope > li")).toHaveCount(2);
+    await expect(trace).toContainText("Cleared by rules; agent not invoked");
+    await expect(trace).not.toContainText("run_endorsement_checks");
+    await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+    for (const name of ["Replay step by step", "Next step", "Show all", "Clear"]) {
+      await expect(page.getByRole("button", { name, exact: true })).toHaveCount(0);
+    }
+    await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
+    await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
+    await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
   });
 }
 
 for (const label of ["Sufficient (human choice)", "Refer back", "Request information", "Escalate"]) {
   test(`Task6 manual ${label} requires reason and records NONE through valid lifecycle review`, async ({ page }) => {
-    await page.goto("case/EX-24107");
+    await page.goto("case/EX-24112");
     await startDemonstrationReview(page);
     await page.getByRole("radio", { name: new RegExp(`^${label.replace(/[()]/g, "\\$&")} `) }).check();
     const reason = page.getByLabel("Reason (required)", { exact: true });
     for (const value of ["", "   1234567   "]) {
       await reason.fill(value);
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
-      await expect(page).toHaveURL(/\/case\/EX-24107$/);
+      await expect(page).toHaveURL(/\/case\/EX-24112$/);
       await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
     }
     await reason.fill("Human review of captured evidence");
@@ -182,9 +206,10 @@ test("Task6 D keeps three reasons and four failed signals; E remains no-call On"
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await page.goto("case/EX-24101/trace");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("list", { name: "Agent trace", exact: true }).locator(":scope > li")).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true }).locator(":scope > li")).toHaveCount(2);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
-  await expect(page.getByRole("list", { name: "Agent trace", exact: true })).not.toContainText("run_endorsement_checks");
+  await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).not.toContainText("run_endorsement_checks");
+  await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
 });
 
 for (const screen of [{ name: "desktop", width: 1440, height: 1000, colorScheme: "light" }, { name: "phone", width: 360, height: 800, colorScheme: "dark" }] as const) {

@@ -1079,3 +1079,85 @@ real medicine/product names, not these mandated channel/process identifiers.
 Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
+
+## 2026-09-13: Task 19 shared process allocations and capture authority
+
+Before implementing the arithmetic, M notified the coordinator and received
+approval for these scenario allocations. Round EPS items, with paper the
+remainder. Round Type 1, Type 2 and staff-touch counts separately; automatic
+items are total minus staff touch. Validate maximum lane count <= staff touch
+<= sum of lanes. The derived lane overlap is a modelling reconciliation of
+approximate public figures, not a published unique-item count.
+
+Round pharmacy catches from the referral cohort only. Assume those caught
+items would have reached Type 2, subtract them once, round abstentions from
+the surviving Type 2 cohort, and assign the remainder to built cases.
+Referrals cannot exceed Type 2 and catches cannot exceed referrals. No further
+referral reduction is invented. Type 2 today uses 13 seconds; assisted built
+cases use 45 seconds and abstentions retain 13 seconds. Assisted Type 2 hours
+can increase. Investigation-tail hours use referrals times four minutes and
+pharmacy completion uses six minutes, before/after the single catch reduction.
+Type 2 and investigation-tail metrics are nonadditive because the published
+average does not establish disjoint time phases; pharmacy hours concern a
+different workforce. There is no combined operator grand total.
+
+Today zero rule-recorded decisions and experience-only assurance describe the
+comparison assumption, not real operators or immutable historical records.
+The difficult-D 30-second keying and 10-second confirmation assumptions are
+not the public Type 1 average.
+
+The coordinator supplied capture-contract amendments as isolated commits.
+Only explicit Type 1 confirmation on the current revision projects captured
+evidence. Source image, low confidence and disagreeing readings stay unchanged.
+Reconciled compatible declaration fields carry declared-not-read provenance.
+The optional prescriber field must be explicitly entered and confirmed when
+the source says Illegible; missing prescriber never receives a gate waiver.
+This is a proposed evidence path, not validated image recognition.
+
+Receipt and queue compatibility modules select nested slices of the single
+application Zustand store. Queue playback is presentation only. The optional
+test observer exposes a deeply immutable domain snapshot, no actions, and is
+compiled only when VITE_E2E_STATE_OBSERVER=true. Normal builds have no hook.
+Q approved the M-first automatic-row filter and disabled legacy generated
+operator rows; its full staff-lane presentation follows this shared model.
+
+The final process API keeps completed human work in its original lane:
+Type 2 sufficient is `type2_endorsement` with `requiresHuman=false`, and
+completed Type 1-only work similarly remains Type 1. Only untouched rules
+pricing is `auto_priced`; human work must never acquire a no-person label.
+New Type 2 decisions always require an actual human reason of eight characters
+or more. Legacy entry points retain their existing reason contract.
+
+Capture proof is appended to the Type 1 history event, linked to its revision.
+The pharmacy submission revision is never enriched or rewritten after capture.
+Historical projection retrieves that event even after resubmission clears the
+current capture cache. Legacy resubmission preserves the current revision's
+channel; only an explicit process submission can change channel.
+
+Automatic eligibility checks every mandatory field independently of Agent
+advice, including a nonblank legible prescriber and a positive whole quantity.
+Empty endorsements are valid missing business information for submission,
+not malformed requests: paper may require capture and EPS may require Type 2.
+Pending synthetic seeds use staff-work templates, never an automatic routing
+result paired with a submitted lifecycle.
+
+For the direct canonical D demonstration only, the immutable seed revision
+includes an explicitly synthetic prior pharmacy declaration: SYN-COCOD-100,
+quantity 100, `NCSO AB 27/08/26`, and `Dr Demo (synthetic)`. It is not a reading
+of the scan and does not confirm, reconcile or decide anything. The On
+presentation may prefill it for explicit human confirmation; Off still keys.
+Fresh paper submissions without declarations do not inherit this seed evidence.
+
+Machine seed channels come from `claim.submittedVia`, not the contradictory
+legacy form-image display label: A/D paper; B/C/E/F EPS. Runtime projections
+display that machine channel while original fixtures and history stay intact.
+Both generic legacy submission APIs and the receipt adapter preserve the
+current revision's channel. Only explicit `ProcessSubmission.channel` changes
+it. No scenario-derived automatic conversion to EPS is permitted.
+
+P's actual submission regression showed that BB/XP could satisfy their broad
+synthetic clause fields without being eligible for automatic routing. The
+automatic endorsement path is limited to complete NCSO evidence in this demo;
+other present endorsement types require Type 2 interpretation. This routing
+classification is identical with the Agent Off or On and does not trust an
+advisory precheck status.

@@ -31,6 +31,8 @@ export function verificationStages(shard) {
     { name: "Blocking production browsers", args: [...browser, "--grep-invert", "@quarantine", "--output", join("test-results", "blocking")], informational: false },
     { name: "Informational quarantined browsers", args: [...browser, "--grep", "@quarantine", "--pass-with-no-tests",
       "--output", join("test-results", "quarantine")], informational: true },
+    { name: "Blocking instrumented one-state equivalence", args: ["run", "test:e2e", "--", "--config", "tests/e2e/one-state.config.ts",
+      "--project=chromium", "--reporter=dot", ...partition, "--output", join("test-results", "one-state")], informational: false },
   ];
 }
 

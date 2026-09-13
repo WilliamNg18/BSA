@@ -21,7 +21,7 @@ const reason = "Human reviewed the synthetic evidence";
 
 function submit(id = B.id, text = B.extracted.endorsementText, on = true) {
   store().setAgentEnabled(on);
-  store().submitFromPharmacy(id, text);
+  store().submitItem({ caseId: id, channel: id === D.id ? "paper" : "eps", endorsementText: text });
   store().arriveInQueue(id);
 }
 
@@ -52,7 +52,7 @@ describe("Task 8 seeds and projections", () => {
     expect(Object.keys(store().lifecycles).length).toBeGreaterThanOrEqual(35);
     for (const [c, state] of [[A, "paid"], [B, "referred_back"], [C, "information_requested"], [D, "in_review"], [E, "paid"], [F, "referred_back"]] as const) {
       expect(row(c.id)).toMatchObject({ caseId: c.id, pharmacyCode: c.pharmacy.contractorCode, state });
-      expect(sessionCase(c.id)).toEqual(c);
+      expect(sessionCase(c.id)).toEqual({ ...c, channel: c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10" });
     }
     expect(store().records).toHaveLength(1);
     expect(store().records[0]).toMatchObject({ id: "DR-000871", caseId: F.id, recommendation: "REFER_BACK", decision: "REFER_BACK" });
@@ -89,7 +89,9 @@ describe("Task 8 seeds and projections", () => {
     expect(c.claim.endorsementText).toBe(corrected);
     expect(c.regions.find((r) => r.id === "endorsement")?.text).toBe(corrected);
     expect(c.readings.every((r) => r.dated)).toBe(true);
-    expect(runAgent(c).recommendation).toBe("SUFFICIENT");
+    expect(runAgent(c)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
+    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
+    expect(revisions().at(-1)?.channel).toBe("eps");
     expect(row().history.slice(0, pending.length)).toEqual(pending);
     expect(CASES).toEqual(original);
     expect(runAgent(B).recommendation).toBe("REFER_BACK");
@@ -99,6 +101,15 @@ describe("Task 8 seeds and projections", () => {
 });
 
 describe("immutable pharmacy revisions", () => {
+  it("routes a blank typed EPS endorsement for review without inventing evidence or a decision", () => {
+    const records = store().records;
+    submit(B.id, "  ");
+    expect(sessionCase(B.id)?.extracted.endorsementText).toBe("  ");
+    expect(store().itemProcesses[B.id]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement" } });
+    expect(row().state).toBe("in_review");
+    expect(store().records).toBe(records);
+  });
+
   it("retains full typed text, nested prechecks and earlier snapshots independently", () => {
     const text = `  ${corrected}  `;
     const snapshot = pharmacySnapshot(text, B.extracted.dispensingDate, "scripted", checkPharmacy(B, text), "2026-09-10T10:00:00Z");
@@ -149,15 +160,18 @@ describe("immutable pharmacy revisions", () => {
     const referral = structuredClone(row().history);
     expect(row().state).toBe("referred_back");
     expect(Boolean(store().records.at(-1)?.approvedDraft)).toBe(on);
+    const records = store().records;
     store().resubmitFromPharmacy(B.id, corrected);
     store().arriveInQueue(B.id);
-    store().recordOperatorDecision(B.id, "ACCEPT", on ? "" : reason);
     expect(row().state).toBe("paid");
     expect(row().history.slice(0, referral.length)).toEqual(referral);
-    expect(store().records.at(-1)).toMatchObject({ isOverride: false, recommendation: on ? "SUFFICIENT" : "NONE", decision: "ACCEPT", revision: 3 });
+    expect(store().records).toBe(records);
+    expect(row().history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
+    expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false });
+    expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow(/while paid/);
     expect(CASES).toEqual(fixtures);
     for (const event of row().history.filter((event) => event.actor === "agent")) expect(event.to).toBe(event.from);
-    expect(row().history.filter((event) => event.actor === "agent")).toHaveLength(on ? 2 : 0);
+    expect(row().history.filter((event) => event.actor === "agent")).toHaveLength(on ? 1 : 0);
   });
 });
 
@@ -198,12 +212,12 @@ describe("atomic human decisions and boundaries", () => {
   });
 
   it("manual NONE ACCEPT is reasoned human judgement, not an override", () => {
-    submit(A.id, A.extracted.endorsementText, false);
+    submit(B.id, B.extracted.endorsementText, false);
     const runs = vi.spyOn(agent, "runAgent");
-    expect(() => store().recordDecision(legacy(A.id, "ACCEPT", null))).toThrow(/reason/i);
-    const record = store().recordDecision(legacy(A.id));
+    expect(() => store().recordDecision(legacy(B.id, "ACCEPT", null))).toThrow(/reason/i);
+    const record = store().recordDecision(legacy(B.id));
     expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, tariffVersion: "n/a", checks: [] });
-    expect(row(A.id).state).toBe("paid");
+    expect(row(B.id).state).toBe("paid");
     expect(runs.mock.calls.every(([, options]) => options?.agentEnabled === false)).toBe(true);
   });
 
@@ -236,28 +250,39 @@ describe("atomic human decisions and boundaries", () => {
     expect(sessionCase(D.id)?.readings).toEqual(D.readings);
     expect(row(D.id).state).toBe("in_review");
     expect(row(D.id).history.at(-1)?.message).toMatch(/abstained/);
+    const beforeCapture = store();
+    expect(() => store().recordOperatorDecision(D.id, "ESCALATE", reason)).toThrow(/completed capture/);
+    expect(store()).toBe(beforeCapture);
+    store().confirmType1({
+      caseId: D.id, revision: revisions(D.id).at(-1)!.number,
+      fields: { productCode: null, quantity: null, endorsementText: corrected },
+      provenance: "human_capture", declarationReconciled: false,
+    });
+    expect(store().itemProcesses[D.id].capture).toMatchObject({ fields: { productCode: null, quantity: null } });
     expect(() => store().recordOperatorDecision(D.id, "REFER_BACK", reason, "Invented draft")).toThrow(/No validated/);
     store().recordOperatorDecision(D.id, "ESCALATE", reason);
     expect(row(D.id).state).toBe("escalated");
   });
 
   it.each([false, true])("E allows an empty endorsement and clears by code only, flag=%s", (on) => {
+    const records = store().records;
     submit(E.id, "", on);
     expect(row(E.id).state).toBe("paid");
-    expect(row(E.id).history.slice(-2).map((event) => event.actor)).toEqual(["code", "code"]);
+    expect(row(E.id).history.slice(-2).map((event) => event.actor)).toEqual(["pharmacy", "code"]);
     expect(runAgent(sessionCase(E.id)!).agentInvoked).toBe(false);
+    expect(store().records).toBe(records);
   });
 
   it("gate FAIL withholds advice and drafts, but permits a reasoned manual decision", () => {
     vi.spyOn(rules, "complianceGate").mockReturnValue({ result: "FAIL", checks: [{ name: "Injected failure", pass: false, detail: "Test gate failure" }] });
-    submit(A.id, A.extracted.endorsementText);
-    const pack = runAgent(sessionCase(A.id)!);
+    submit(B.id, B.extracted.endorsementText);
+    const pack = runAgent(sessionCase(B.id)!);
     expect(pack).toMatchObject({ recommendation: "NONE", draftToPharmacy: null, gate: { result: "FAIL" } });
-    expect(row(A.id).state).toBe("in_review");
-    expect(row(A.id).history.at(-1)?.message).toMatch(/withheld/);
-    expect(() => store().recordDecision({ ...legacy(A.id), recommendation: "SUFFICIENT" })).toThrow(/Recommendation/);
-    expect(() => store().recordOperatorDecision(A.id, "REFER_BACK", reason, "Draft")).toThrow(/No validated/);
-    store().recordOperatorDecision(A.id, "ACCEPT", reason);
+    expect(row(B.id).state).toBe("in_review");
+    expect(row(B.id).history.at(-1)?.message).toMatch(/withheld/);
+    expect(() => store().recordDecision({ ...legacy(B.id), recommendation: "SUFFICIENT" })).toThrow(/Recommendation/);
+    expect(() => store().recordOperatorDecision(B.id, "REFER_BACK", reason, "Draft")).toThrow(/No validated/);
+    store().recordOperatorDecision(B.id, "ACCEPT", reason);
     expect(store().records.at(-1)).toMatchObject({ recommendation: "NONE", isOverride: false });
   });
 
@@ -286,7 +311,7 @@ describe("rejected inputs leave the complete store untouched", () => {
   it.each([
     () => store().followCase("unknown"),
     () => store().submitFromPharmacy("unknown", "text"),
-    () => store().submitFromPharmacy(B.id, "  "),
+    () => store().submitFromPharmacy(B.id, null as unknown as string),
     () => store().arriveInQueue(B.id),
     () => store().resubmitFromPharmacy(A.id, corrected),
     () => store().sendConfirmation(B.id, reason),

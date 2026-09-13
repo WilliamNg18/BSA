@@ -3,7 +3,7 @@ import { caseById } from "./cases";
 import { interpretPharmacyText } from "./pharmacy-check";
 import { PHARMACIES } from "./reference";
 import { versionForDate } from "./tariff";
-import type { CaseLifecycle, CaseRevision, HistoryEvent, PharmacyPrecheckSnapshot } from "./lifecycle";
+import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot } from "./lifecycle";
 import type { ExceptionCase } from "./types";
 
 /** Clone before recursively freezing: caller-owned objects and fixtures stay untouched. */
@@ -43,28 +43,36 @@ export function caseForLifecycle(
   caseId: string,
   lifecycles: Record<string, CaseLifecycle>,
   caseRevisions: Record<string, readonly CaseRevision[]>,
+  itemProcesses?: Record<string, ItemProcess>,
 ): ExceptionCase | null {
   if (!Object.hasOwn(lifecycles, caseId)) return null;
   const revision = caseRevisions[caseId]?.at(-1);
   const original = caseById(caseId) ?? caseById(revision?.templateCaseId);
   if (!original || !revision) return null;
   const c = structuredClone(original);
+  if (revision.channel) c.channel = revision.channel === "eps" ? "Electronic (EPS)" : "Paper FP10";
   if (c.id !== caseId) {
     const pharmacy = PHARMACIES.find((p) => p.contractorCode === lifecycles[caseId].pharmacyCode);
     if (!pharmacy) return null;
     c.id = caseId;
     c.pharmacy = { name: pharmacy.name, contractorCode: pharmacy.contractorCode };
   }
-  if (revision.endorsementText !== original.extracted.endorsementText) {
+  if (c.scenario !== "D" && revision.endorsementText !== original.extracted.endorsementText) {
     const text = revision.endorsementText;
     c.extracted.endorsementText = text;
     c.claim.endorsementText = text;
     c.regions = c.regions.map((r) => r.id === "endorsement" ? { ...r, text } : r);
-    if (c.scenario !== "D") {
-      const facts = interpretPharmacyText(text);
-      c.readings = [facts, { ...facts }, { ...facts }];
-      c.inCoverage = c.inCoverage && facts.type === "NCSO";
-    }
+    const facts = interpretPharmacyText(text);
+    c.readings = [facts, { ...facts }, { ...facts }];
+    c.inCoverage = c.inCoverage && facts.type === "NCSO";
+  }
+  const capture = lifecycles[caseId].history.filter((event) => event.capture?.revision === revision.number).at(-1)?.capture
+    ?? itemProcesses?.[caseId]?.capture;
+  if (capture?.revision === revision.number) {
+    return immutable({ ...c, capturedEvidence: {
+      fields: capture.fields, provenance: capture.provenance === "pharmacy_declaration" ? "pharmacy_declaration" : "human_capture",
+      declarationReconciled: capture.declarationReconciled, revision: capture.revision,
+    } });
   }
   return immutable(c);
 }
@@ -91,7 +99,7 @@ export function validatePrecheck(snapshot: PharmacyPrecheckSnapshot | undefined,
     if (facts !== null || snapshot.checkedAt !== null || snapshot.tariffVersion !== null || snapshot.clauseId !== null || snapshot.checks.length) fail();
   } else {
     if (snapshot.mode !== "scripted" || typeof snapshot.checkedAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(snapshot.checkedAt) || !Number.isFinite(Date.parse(snapshot.checkedAt))) fail();
-    if (snapshot.status !== "unable" && (!facts || !snapshot.tariffVersion || !snapshot.clauseId || !snapshot.checks.length)) fail();
+    if (snapshot.status !== "unable" && (!facts || !snapshot.tariffVersion || (!snapshot.clauseId && facts.type !== "NONE") || !snapshot.checks.length)) fail();
     if (snapshot.status === "ready" && snapshot.checks.some((check) => check.met !== true)) fail();
   }
 }

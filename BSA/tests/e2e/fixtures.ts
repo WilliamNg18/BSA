@@ -62,6 +62,23 @@ export async function confirmReset(page: Page) {
   await expect(dialog).toHaveCount(0);
 }
 
+export const automaticCaseIds = ["EX-24107", "EX-24101"];
+
+export async function openCaseFromQueueOrClaim(page: Page, id: string) {
+  if (!automaticCaseIds.includes(id)) {
+    await page.locator(`a[href='/case/${id}']`).first().click();
+    return;
+  }
+  await navigatePrimary(page, "Pharmacy claims");
+  await page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true })
+    .selectOption(id === "EX-24107" ? "FH774" : "FT561");
+  await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
+  await page.getByRole("table", { name: "Pharmacy claims", exact: true })
+    .getByRole("row").filter({ hasText: id }).getByRole("button").click();
+  await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
+}
+
 export const test = base.extend<{ browserErrors: string[] }>({
   browserErrors: [async ({ page }, use) => {
     const errors: string[] = [];
