@@ -1058,3 +1058,11 @@ The first Q production probe passed 42 of 43 tests: 16 unrestricted axe audits,
 revisit test incorrectly expected A in the operator queue. V owns the staged
 navigation repair and final flow coverage; this partial run is not a green gate.
 Keep its outside-OneDrive artifacts separate from final integrated evidence.
+
+## 2026-09-13: P replay keeps the chosen evidence source consistent
+
+Seed D intentionally retains different scan and declaration endorsement text.
+Replaying its retained declaration must use that declaration's endorsement,
+not combine it with the unreadable scan text. The replay disclosure names the
+source before the human submits. Original attempts, image and readings remain
+unchanged; the new paper revision still awaits human Type 1 confirmation.
