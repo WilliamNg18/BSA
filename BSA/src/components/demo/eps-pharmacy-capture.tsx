@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { PHARMACY_STEPS, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { productByCode } from "@/lib/domain/reference";
 import type { EpsPrescription } from "@/lib/domain/types";
+import type { PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
 
 const SCENARIOS = [
@@ -60,9 +61,11 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
   const lifecycles = useAppStore((state) => state.lifecycles);
   const revisions = useAppStore((state) => state.caseRevisions);
   const processes = useAppStore((state) => state.itemProcesses);
+  const recordCorrection = useAppStore((state) => state.recordPharmacyCorrection);
   const { draft, initialDraft, observedRevision, receiptNumber } = editor;
   const [error, setError] = useState("");
   const [applied, setApplied] = useState("");
+  const pendingCorrection = useRef<{ draft: EpsPrescription; beforeDraft: EpsPrescription; revision: number; before: PharmacyPrecheckSnapshot } | null>(null);
   const projected = useMemo(() => {
     const latest = revisions[caseId].at(-1)!;
     return caseForLifecycle(caseId, lifecycles, {
@@ -80,7 +83,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
   const supply = draft.supplyEvidence;
   const receipt = revisions[caseId].find((revision) => revision.number === receiptNumber);
   const automatic = lifecycles[caseId].history.some((event) => event.revision === receiptNumber && event.processStep === "automatic_pricing");
-  const update = (next: EpsPrescription) => { updateEditor({ draft: next }); setApplied(""); setError(""); };
+  const update = (next: EpsPrescription) => { pendingCorrection.current = null; updateEditor({ draft: next }); setApplied(""); setError(""); };
   const supplyUpdate = (patch: Partial<NonNullable<EpsPrescription["supplyEvidence"]>>) => update({
     ...draft, supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: null, form: "", ...supply, ...patch },
   });
@@ -92,6 +95,23 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
             : missing.has("presentation") ? { label: "State the form dispensed, for example tablets", field: "form", patch: { form: EPS_SUPPLY_RULE.form } } : null;
   const [year, month, day] = draft.dispensingDate.split("-");
   const dateCorrection = `${day}/${month}/${year?.slice(2)}`;
+
+  useEffect(() => {
+    const pending = pendingCorrection.current;
+    if (!pending) return;
+    if (!enabled || pending.draft !== draft || revisions[caseId].at(-1)!.number !== pending.revision) {
+      pendingCorrection.current = null;
+      return;
+    }
+    if (!result || !current.checkedAt) return;
+    pendingCorrection.current = null;
+    if (result.status !== "ready") return;
+    try {
+      recordCorrection(caseId, pending.before,
+        pharmacySnapshot(draft.dispenserEndorsement, draft.dispensingDate, "scripted", result, current.checkedAt),
+        pending.revision + 1, { channel: "eps" }, { before: pending.beforeDraft, after: pending.draft });
+    } catch (err) { setError(err instanceof Error ? err.message : "Correction evidence unavailable."); }
+  }, [caseId, current.checkedAt, draft, enabled, recordCorrection, result, revisions]);
 
   return <div className="space-y-5">
     <div className="grid items-start gap-5 xl:grid-cols-2">
@@ -176,8 +196,14 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
             {suggestion.patch && <dl className="text-sm"><KeyValue k="Suggested field value" v={Object.values(suggestion.patch).join(", ")} /></dl>}
             <Button variant="outline" onClick={() => {
               if (suggestion.field === "endorsement") { document.getElementById("endorsement")?.focus(); return; }
-              if (suggestion.patch) supplyUpdate(suggestion.patch);
-              else update({ ...draft, dispenserEndorsement: `${draft.dispenserEndorsement.trimEnd()} ${dateCorrection}` });
+              const corrected: EpsPrescription = suggestion.patch ? {
+                ...draft, supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: null, form: "", ...supply, ...suggestion.patch },
+              } : { ...draft, dispenserEndorsement: `${draft.dispenserEndorsement.trimEnd()} ${dateCorrection}` };
+              update(corrected);
+              pendingCorrection.current = {
+                draft: corrected, beforeDraft: draft, revision: observedRevision,
+                before: pharmacySnapshot(draft.dispenserEndorsement, draft.dispensingDate, mode, result, current.checkedAt),
+              };
               setApplied("Correction applied to the draft only. Send claim remains a separate action.");
               document.getElementById(suggestion.field === "brand" ? "eps-manufacturer" : suggestion.field === "pack" ? "eps-pack" : suggestion.field === "form" ? "eps-form" : "endorsement")?.focus();
             }}>{suggestion.field === "endorsement" ? "Enter initials" : "Apply correction"}</Button>
@@ -186,6 +212,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
         </>}
         <Button className="bg-teal-700 text-white hover:bg-teal-800" onClick={() => {
           try {
+            pendingCorrection.current = null;
             const store = useAppStore.getState();
             const payload = { caseId, revision: observedRevision, channel: "eps" as const, endorsementText: draft.dispenserEndorsement,
               epsPrescription: { ...draft, claimMessageState: "submitted" as const },
