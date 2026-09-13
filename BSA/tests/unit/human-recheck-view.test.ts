@@ -23,27 +23,31 @@ function casePack(id: string) {
       createElement(Routes, null, createElement(Route, { path: "/case/:id", element: createElement(CasePackPage) })))));
 }
 
-describe("human re-check without an agent recommendation", () => {
-  it("allows an explicit human choice without inventing advice or automatic pricing", () => {
+describe("human re-check respects current recommendation authority", () => {
+  it.each([false, true])("retains explicit human judgement with assistance %s", (enabled) => {
     const store = useAppStore.getState();
-    store.setAgentEnabled(true);
+    store.setAgentEnabled(enabled);
     store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB dated 12/08/2026" });
     store.arriveInQueue("EX-24112");
     expect(useAppStore.getState().itemProcesses["EX-24112"].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
-    expect(runAgent(sessionCase("EX-24112")!)).toMatchObject({ agentInvoked: false, recommendation: "NONE" });
+    expect(runAgent(sessionCase("EX-24112")!, { agentEnabled: enabled })).toMatchObject(enabled
+      ? { agentInvoked: true, recommendation: "SUFFICIENT", gate: { result: "PASS" } }
+      : { agentInvoked: false, recommendation: "NONE" });
     const html = casePack("EX-24112");
-    expect(html).toContain("Rules checks complete; human re-check required");
-    expect(html).toContain("Sufficient (human choice)");
-    expect(html).not.toContain("Accept the recommendation");
+    expect(html).toContain(enabled ? "Accept the recommendation" : "Sufficient (human choice)");
+    expect(html).not.toContain("data-automatic-case");
+    expect(html).not.toContain("Cleared by deterministic rules; the agent was not called");
     const sufficient = html.match(/<input(?=[^>]*id="d-ACCEPT")[^>]*>/)?.[0];
     expect(sufficient).toBeTruthy();
     expect(sufficient).not.toMatch(/\sdisabled(?:=|\s|>)/);
-    expect(sufficient).not.toMatch(/\schecked(?:=|\s|>)/);
-    expect(html).not.toContain("Replay step by step");
+    if (!enabled) {
+      expect(sufficient).not.toMatch(/\schecked(?:=|\s|>)/);
+      expect(html).not.toContain("Replay step by step");
+    }
     expect(() => store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT", reason: "" })).toThrow();
     store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT", reason: "Human checked the corrected endorsement evidence" });
     expect(useAppStore.getState().lifecycles["EX-24112"].state).toBe("paid");
-    expect(useAppStore.getState().records.at(-1)?.recommendation).toBe("NONE");
+    expect(useAppStore.getState().records.at(-1)?.recommendation).toBe(enabled ? "SUFFICIENT" : "NONE");
   });
 
   it("does not enable acceptance of abstained evidence with assistance on", () => {
