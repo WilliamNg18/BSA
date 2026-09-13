@@ -26,18 +26,20 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
       await route.fulfill({ response, body: fault.source });
     });
 
-    await page.goto("queue");
+    await page.goto(`case/${c.id}`);
     await page.getByRole("banner").getByRole("switch").setChecked(true);
-    await expect(page.locator("tbody > tr")).toHaveCount(9);
-    expect(injections).toBe(1);
-    const row = page.getByRole("row").filter({ hasText: c.id });
-    await expect(row).toContainText("No recommendation. Gate failed; open evidence.");
-    await expect(row.locator("[data-queue-state]")).toHaveText("Needs more evidence");
-    await row.getByRole("link", { name: "Open", exact: true }).click();
     await startDemonstrationReview(page);
+    await page.getByRole("link", { name: "Back to queue", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
+    expect(injections).toBe(1);
+    const row = page.locator(`[data-case-id="${c.id}"]`);
+    await expect(row).toContainText("Evidence assembled; unresolved facts remain");
+    await page.getByRole("button", { name: /^Needs more evidence/ }).click();
+    await expect(row).toBeVisible();
+    await row.getByRole("link", { name: `Open ${c.id}`, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");
-    await expect(page.getByText("FAIL", { exact: true })).toBeVisible();
+    await expect(page.getByText("Gate: FAIL", { exact: true })).toBeVisible();
     await expect(page.getByText("No recommendation", { exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Draft explanation to the pharmacy" })).toHaveCount(0);
@@ -82,7 +84,7 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
     await reason.fill("Review prescriber evidence");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
-    await expect(page.getByText("ESCALATE by Demo operator", { exact: false })).toBeVisible();
+    await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd")).toContainText("ESCALATE by Demo operator");
     await expect(page.getByText("No. Note: Review prescriber evidence", { exact: true })).toBeVisible();
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
     for (const month of ["July 2026 (2026-07)", "August 2026 (2026-08)", "September 2026 (2026-09)"]) {
@@ -94,8 +96,9 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
       }
     }
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-    await expect(row).toContainText("Human record unchanged");
-    await expect(row.locator("[data-queue-state]")).toHaveText("Decided");
+    await page.getByRole("button", { name: /^Decided/ }).click();
+    await expect(row).toBeVisible();
+    await expect(row).toContainText("Original rule version retained in the human record");
     expect(injections).toBe(1);
   });
 }
