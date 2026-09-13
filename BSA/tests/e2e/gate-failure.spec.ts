@@ -45,7 +45,7 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
     await expect(page.getByRole("heading", { name: "Draft explanation to the pharmacy" })).toHaveCount(0);
     await expect(page.getByText(/^Alternative considered:/)).toHaveCount(0);
     await expect(page.getByRole("radio", { name: /^Escalate / })).toBeChecked();
-    await expect(page.getByRole("radio", { name: /^Accept the recommendation / })).toBeDisabled();
+    await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).toBeDisabled();
     await expect(page.getByRole("radio", { name: /^Amend / })).toBeDisabled();
     for (const rec of ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"] as const) {
       await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);

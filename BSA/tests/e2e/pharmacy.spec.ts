@@ -367,7 +367,7 @@ for (const enabled of [false, true]) {
     await expect(attempts).toHaveCount(1);
     const seed = await attempts.first().innerText();
     await expect(attempts.first()).toContainText("N?S? ~~ 1?/0?");
-    await expect(attempts.first()).toContainText("NCSO AB 27/08/26");
+    await expect(attempts.first()).toContainText("NCSO JB 27/08/26");
     await detail.getByText("Demonstration replay", { exact: true }).click();
     await expect(detail.getByText("Replay the retained pharmacy declaration, not the scan reading.", { exact: false })).toBeVisible();
     await detail.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
@@ -375,8 +375,8 @@ for (const enabled of [false, true]) {
     await expect(detail.getByRole("status").first()).toHaveText("Submitted, awaiting processing");
     await expect(attempts).toHaveCount(2);
     await expect(attempts.first()).toHaveText(seed, { useInnerText: true });
-    await expect(attempts.nth(1).getByRole("definition").first()).toHaveText("NCSO AB 27/08/26");
-    await expect(detail.getByRole("region", { name: "Declaration for attempt 2", exact: true })).toContainText("Dr Demo (synthetic)");
+    await expect(attempts.nth(1).getByRole("definition").first()).toHaveText("NCSO JB 27/08/26");
+    await expect(detail.getByRole("region", { name: "Declaration for attempt 2", exact: true })).not.toContainText("Dr Demo (synthetic)");
     await expect(detail.getByRole("region", { name: "Type 1 capture for attempt 2", exact: true })).toHaveCount(0);
     const event = detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").last();
     await expect(event).toContainText("pharmacy");
