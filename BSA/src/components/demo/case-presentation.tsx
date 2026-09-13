@@ -10,7 +10,7 @@ import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { formatBaselineNumber, GATHERING_STEPS } from "@/lib/domain/baseline";
 import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { ASSISTED_SLOTS } from "@/lib/case-presentation";
-import type { ExceptionCase } from "@/lib/domain/types";
+import type { ExceptionCase, PaperDeclaration } from "@/lib/domain/types";
 import type { Type1Capture as CaptureReceipt } from "@/lib/domain/lifecycle";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import { useAppStore } from "@/lib/store";
@@ -103,6 +103,19 @@ export function ConfirmedCaptureEvidence({ capture }: { capture: CaptureReceipt 
         ["Prescriber", capture.fields.prescriber || "Not established"],
       ].map(([label, value]) => <KeyValue key={label} k={String(label)} v={<>{value}<span className="block text-xs text-muted-foreground">{provenance}</span></>} />)}
       <KeyValue k="Declaration confirmation" v={capture.declarationReconciled ? "Explicitly confirmed by a person; not proof the image was read" : "Not established"} />
+    </dl>
+  </PageSection>;
+}
+
+export function OriginalPaperDeclaration({ declaration }: { declaration: PaperDeclaration }) {
+  return <PageSection title="Original pharmacy declaration" description="Proposed source evidence. Human corrections and confirmation are recorded separately; this declaration is unchanged.">
+    <dl className="grid gap-2">
+      {[
+        ["Product", declaration.typedProduct || "Not declared"],
+        ["Quantity", declaration.quantity ?? "Not declared"],
+        ["Endorsement", declaration.endorsementText || "Not declared"],
+        ["Dispensing date", declaration.dispensingDate],
+      ].map(([label, value]) => <KeyValue key={label} k={String(label)} v={<>{value}<span className="block text-xs text-muted-foreground">declared by the pharmacy, not read from the form</span></>} />)}
     </dl>
   </PageSection>;
 }

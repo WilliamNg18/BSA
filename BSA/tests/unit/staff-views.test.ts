@@ -12,7 +12,7 @@ import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../.
 import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { CaseSourceEvidence, ConfirmedCaptureEvidence, RawCaseFields } from "../../src/components/demo/case-presentation";
+import { CaseSourceEvidence, ConfirmedCaptureEvidence, OriginalPaperDeclaration, RawCaseFields } from "../../src/components/demo/case-presentation";
 import { CASES } from "../../src/lib/domain/cases";
 import type { EpsPrescription } from "../../src/lib/domain/types";
 
@@ -228,5 +228,9 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(fields).toContain("Declared dispensing date");
     expect(fields).toContain("2026-07-27");
     expect(fields).toContain("declared by the pharmacy, not read from the form");
+    const declared = renderToStaticMarkup(createElement(OriginalPaperDeclaration, { declaration: c.paperDeclaration }));
+    expect(declared.match(/declared by the pharmacy, not read from the form/g)).toHaveLength(4);
+    expect(declared).toContain("Human corrections and confirmation are recorded separately");
+    expect(declared).toContain(c.paperDeclaration.endorsementText);
   });
 });
