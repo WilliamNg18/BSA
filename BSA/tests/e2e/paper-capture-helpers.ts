@@ -11,24 +11,27 @@ export const completePaperFields = {
 type UiAction<T> = (label: string, side: "Pharmacy" | "NHSBSA", perform: () => Promise<void>) => Promise<T>;
 
 export async function submitCompletePaper<T>(page: Page, action: UiAction<T>) {
-  await action("Choose B for a new complete paper submission", "Pharmacy", async () => {
-    await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
-  });
   await action("Explicitly choose Paper rather than EPS", "Pharmacy", async () => {
     await page.getByRole("radio", { name: "Paper", exact: true }).check();
   });
-  for (const [name, value] of [
-    ["Declared product code", completePaperFields.productCode],
-    ["Declared quantity", String(completePaperFields.quantity)],
-    ["Declared prescriber (synthetic)", completePaperFields.prescriber],
-    ["Dispenser endorsement", completePaperFields.endorsementText],
-  ]) {
-    await action(`Declare paper ${name}`, "Pharmacy", async () => {
-      await page.getByRole(name === "Declared quantity" ? "spinbutton" : "textbox", { name, exact: true }).fill(value);
+  await action("Choose B for a new ordinary complete-paper submission", "Pharmacy", async () => {
+    await page.getByRole("radio", { name: "Complete paper", exact: true }).check();
+  });
+  const enabled = await page.getByRole("banner").getByRole("switch").isChecked();
+  if (enabled) {
+    await action("Load the complete ordinary-paper declaration explicitly", "Pharmacy", async () => {
+      await page.getByRole("button", { name: "Load complete paper declaration", exact: true }).click();
     });
+    await action("Declare the known complete endorsement without a prescriber claim", "Pharmacy", async () => {
+      await page.getByRole("textbox", { name: "Declared endorsement", exact: true }).fill(completePaperFields.endorsementText);
+    });
+    await expect(page.getByRole("textbox", { name: "Declared quantity", exact: true })).toHaveValue(String(completePaperFields.quantity));
+    await expect(page.getByLabel("Declared prescriber (synthetic)", { exact: true })).toHaveCount(0);
+  } else {
+    await expect(page.getByRole("textbox", { name: "Declared product", exact: true })).toHaveCount(0);
   }
   return action("Submit complete paper without confirming its capture", "Pharmacy", async () => {
-    await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    await page.getByRole("button", { name: enabled ? "Post paper with declaration" : "Post paper", exact: true }).click();
     await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText(PAPER_B);
   });
 }
@@ -42,11 +45,15 @@ export async function confirmCompletePaper<T>(page: Page, enabled: boolean, acti
   const confirm = capture.getByRole("button", { name: "Confirm capture and continue", exact: true });
   if (enabled) {
     await expect(capture).toContainText("declared by the pharmacy, not read from the form");
+    await expect(capture.getByRole("textbox", { name: "Prescriber", exact: true })).toHaveValue("");
     await action("Reject declaration prefill without reconciliation", "NHSBSA", async () => {
       await confirm.click();
       await expect(capture.getByRole("alert")).toContainText("Reconcile the declaration with the paper");
     });
-    await action("Explicitly reconcile B's complete declaration", "NHSBSA", async () => {
+    await action("Supply separately established synthetic prescriber evidence", "NHSBSA", async () => {
+      await capture.getByRole("textbox", { name: "Prescriber", exact: true }).fill(completePaperFields.prescriber);
+    });
+    await action("Explicitly reconcile B's complete declaration and human evidence", "NHSBSA", async () => {
       await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
     });
   } else {
