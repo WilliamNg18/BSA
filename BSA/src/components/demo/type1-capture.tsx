@@ -78,6 +78,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
   confirmType1: (input: ConfirmType1Input) => void;
 }) {
   const id = useId();
+  const [sourceRevision, setSourceRevision] = useState(revision);
   const [prepared, setPrepared] = useState(() => preparePaperCapture(agentEnabled, revision.declaration));
   const [reconciled, setReconciled] = useState(false);
   const [error, setError] = useState("");
@@ -87,6 +88,14 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
   useEffect(() => {
     if (error) errorRef.current?.focus();
   }, [error]);
+
+  // Reset can replace a seed with the same number and timestamp.
+  if (sourceRevision !== revision) {
+    setSourceRevision(revision);
+    setPrepared(preparePaperCapture(agentEnabled, revision.declaration));
+    setReconciled(false);
+    setError("");
+  }
 
   function changeField(field: keyof PaperCaptureDraft, value: string) {
     setPrepared((current) => ({ ...current, fields: { ...current.fields, [field]: value } }));
@@ -158,7 +167,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
                 )}
                 <p id={descriptionId} className="text-xs text-muted-foreground">{assisted
                   ? PAPER_DECLARATION_PROVENANCE : "Human capture, not agent extraction"}</p>
-                {assisted && <p className="break-words text-xs">Original declaration: {revision.declaration?.fields[field] ?? "Not supplied"}</p>}
+                {assisted && <p className="break-words text-xs">Original declaration: {revision.declaration?.fields[field] || "Not supplied"}</p>}
               </div>
             );
           })}
