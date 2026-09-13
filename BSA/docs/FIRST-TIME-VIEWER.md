@@ -6,6 +6,22 @@ ms.date: 2026-09-13
 
 # First-time viewer review
 
+## Task 30 review pending
+
+The six-chapter stakeholder walkthrough and continuous Hillcrest demo have
+been prepared, with a complete local 29-check functional rehearsal. This is
+not a new novice review or hosted acceptance. No Task 30 image has been
+declared visually accepted.
+
+After the coordinator approves the final functional deployment, review every
+new hosted image at full height, including the original unreadable paper,
+declaration and human-confirmation boundaries, EPS prescription and explicit
+submission, shared numerical estimates, and human re-check after correction.
+Record actual keyboard and contrast observations separately from axe results.
+The [Task 30 evidence index](screens/task30/README.md) owns that pending record.
+
+The following Task 24 results remain historical, source-pinned and unchanged.
+
 ## Repaired Task 24 execution at d5832e0: bounded review PASS
 
 The coordinator explicitly released the repaired deployment gate after PR #80
