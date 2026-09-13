@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { captureJson, confirmReset, expect, test } from "./fixtures";
+import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
 
 const B = "EX-24112";
@@ -58,9 +58,12 @@ for (const enabled of [false, true]) {
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
     await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
     await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await page.getByRole("button", { name: "Start review", exact: true }).click();
+    await page.getByRole("radio", { name: /^Sufficient / }).check();
+    await decide(page, "Human reviewed the corrected date before existing pricing");
     await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.nhsbsa.on);
     for (const side of ["Pharmacy", "NHSBSA"] as const) {
       await followed(page).getByRole("link", { name: `Switch side: ${side}`, exact: true }).click();
@@ -72,8 +75,8 @@ for (const enabled of [false, true]) {
       await expect(attempts.nth(2)).toContainText("NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
       const events = history(page).getByRole("list", { name: "Lifecycle events" });
-      await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
-      await expect(events).toContainText("Priced by NHSBSA's existing rules engine; no person involved.");
+      await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
+      await expect(events).toContainText("Sufficient, released to existing pricing");
     }
     await captureJson(info, "roundtrip-history", await history(page).innerText());
     await confirmReset(page);
@@ -92,8 +95,21 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       test.describe(`Task13 claims ${state} Agent=${enabled} motion=${reducedMotion}`, () => {
         test.use({ reducedMotion, viewport: { width: reducedMotion === "reduce" ? 360 : 1440, height: 900 }, colorScheme: reducedMotion === "reduce" ? "dark" : "light" });
         test("list and expanded detail unrestricted axe", async ({ page }, info) => {
-          await page.goto("pharmacy/claims");
-          await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+          if (state === "submitted") {
+            await page.goto("pharmacy");
+            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+            await page.getByRole("button", { name: "Send claim", exact: true }).click();
+            await navigatePrimary(page, "Pharmacy claims");
+          } else if (state === "escalated") {
+            await page.goto("case/SYN-FQ123-TYPE2");
+            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+            await page.getByRole("radio", { name: /^Escalate / }).check();
+            await decide(page, "Human requests senior review of the synthetic supply evidence");
+            await navigatePrimary(page, "Pharmacy claims");
+          } else {
+            await page.goto("pharmacy/claims");
+            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+          }
           await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
           const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell", { name: LIFECYCLE_LABELS[state].pharmacy, exact: true }) });
           expect(await rows.count()).toBeGreaterThan(0);
