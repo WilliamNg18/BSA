@@ -58,14 +58,24 @@ for (const enabled of [false, true]) {
       await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
       audits.push({ scenario, phase: "check", ...await page.evaluate(auditProse) });
       await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
-      await page.getByRole("button", { name: "Jump to end", exact: true }).click();
+      const timeline = page.getByRole("list", { name: "Submission timeline", exact: true });
+      await expect(timeline.locator(":scope > li")).toHaveCount(scenario === "Complete endorsement" ? 2 : 1);
+      const jump = page.getByRole("button", { name: "Jump to end", exact: true });
+      if (scenario === "Complete endorsement") await jump.click();
+      await expect(jump).toBeDisabled();
       await page.locator("main details").evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
-      await page.getByLabel("Month end days · Assumption", { exact: true }).fill("");
-      audits.push({ scenario, phase: "receipt-invalid-assumption", ...await page.evaluate(auditProse) });
-      await page.getByLabel("Month end days · Assumption", { exact: true }).fill("14");
+      await expect(page.getByLabel("Month end days · Assumption", { exact: true })).toHaveCount(0);
+      audits.push({ scenario, phase: "recorded-receipt", ...await page.evaluate(auditProse) });
+      if (scenario === "Unreadable form") {
+        await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
+        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await expect(page.getByRole("alert")).toContainText("Declared quantity must be a positive whole number or left blank.");
+        audits.push({ scenario, phase: "invalid-declaration", ...await page.evaluate(auditProse) });
+        await page.getByLabel("Declared quantity", { exact: true }).fill("");
+      }
       if (enabled && scenario === "Information missing") {
-        await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready to submit");
+        await page.getByRole("button", { name: "Apply fix", exact: true }).click();
+        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
         audits.push({ scenario, phase: "corrected", ...await page.evaluate(auditProse) });
       }
     }
