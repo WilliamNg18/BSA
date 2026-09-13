@@ -1176,6 +1176,29 @@ not submission. The boundary labels poor-paper declaration pre-fill **proposed**
 fields are declared by the pharmacy, not read from the form. Human confirmation
 is required, and irreconcilable evidence follows today's path.
 
+## 2026-09-13: Task 20 pharmacy process follows recorded authority
+
+P reads receipt contents directly from immutable shared case revisions, retaining
+only the selected case/revision as local presentation state. The pharmacy
+timeline replays recorded events rather than inventing future referrals or Paid
+events. Playback cannot perform a submission, capture confirmation or decision.
+Monthly service projections consume `useProcessMonth`; selected-pharmacy
+recorded counts remain separate, including actual correction evidence.
+
+Channel is local submission input, not another global control. EPS carries
+typed claim text; Paper starts with empty declaration fields alongside the
+synthetic form. Product, quantity, endorsement and optional prescriber are
+explicitly pharmacy-declared, never represented as image reads. D's proposed
+complete declaration still needs human Type 1 confirmation and Type 2 judgement.
+The existing gate is not weakened for an unreadable prescriber.
+
+On correction/resubmission rechecks current declaration/text through the shared
+checker. Applying a fix does not submit. Referral advice is visible only when
+the actual operator-approved note exists; Off preserves the raw human reason.
+Legacy decisions without an RB code say it was not recorded, rather than
+retroactively inventing a code. MYS/NHSmail and payment timing are public process
+context, not services implemented by this static demonstration.
+
 ## 2026-09-13: Task 19 shared process allocations and capture authority
 
 Before implementing the arithmetic, M notified the coordinator and received

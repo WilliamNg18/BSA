@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CompactTooltip, CompactTooltipContent, CompactTooltipTrigger } from "@/components/ui/compact-tooltip";
 import { SyntheticTag } from "@/components/demo/labels";
 import { ClaimDetail } from "@/components/demo/claim-detail";
-import { useMonthModel } from "@/hooks/use-month-model";
+import { useProcessMonth } from "@/hooks/use-process-month";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { PHARMACIES } from "@/lib/domain/reference";
@@ -28,15 +28,17 @@ export function PharmacyClaimsPage() {
   const lifecycles = useAppStore((s) => s.lifecycles);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const revisions = useAppStore((s) => s.caseRevisions);
+  const processes = useAppStore((s) => s.itemProcesses);
   const corrections = useAppStore((s) => s.pharmacyCorrections);
-  const model = useMonthModel();
+  const model = useProcessMonth();
+  const projection = model.result?.[agentEnabled ? "withAgent" : "today"];
   const [selectedPharmacy, setPharmacy] = useState("FQ123");
   const pharmacy = id && lifecycles[id] ? lifecycles[id].pharmacyCode : selectedPharmacy;
   const [filter, setFilter] = useState<ClaimFilter>("Action needed");
   const month = new Date().toISOString().slice(0, 7);
   const rows = useMemo(() => Object.values(lifecycles).filter((row) => row.pharmacyCode === pharmacy).map((row) => ({
-    ...row, c: caseForLifecycle(row.caseId, lifecycles, revisions),
-  })), [lifecycles, revisions, pharmacy]);
+    ...row, c: caseForLifecycle(row.caseId, lifecycles, revisions, processes),
+  })), [lifecycles, revisions, processes, pharmacy]);
   const shown = rows.filter((row) => matchesFilter(row, filter, month));
   const selected = rows.find((row) => row.caseId === id);
   const caught = new Set(corrections.filter((event) => event.pharmacyCode === pharmacy && event.at.startsWith(month))
@@ -51,10 +53,10 @@ export function PharmacyClaimsPage() {
     <header className="space-y-2"><SyntheticTag /><h1 className="text-2xl font-semibold">Pharmacy claims</h1>
       <section aria-label="Referral cycle guide" className="space-y-2">
         <p>{agentEnabled
-          ? "With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click."
-          : "Today: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone."}</p>
+          ? "Read the operator-approved fix, correct the endorsement, then explicitly resubmit. The agent verifies the submission and advises; a person decides."
+          : "Today: referred-back items appear in MYS Unpaid items with an RB code and the operator's reason. The pharmacy corrects and resubmits."}</p>
         <CompactTooltip><CompactTooltipTrigger asChild><Button variant="link" className="h-auto whitespace-normal p-0">What is assumed?</Button></CompactTooltipTrigger>
-          <CompactTooltipContent>Published context: monthly prescription submissions and referred-back items. Weeks of delay, the delivery channel and internal handling steps are illustrative assumptions, not published facts. The assisted example requires an actual operator-approved note. Applying a correction never submits it; the pharmacy explicitly resubmits.</CompactTooltipContent>
+          <CompactTooltipContent>Owner-supplied public context: MYS Unpaid items and NHSmail notification; expiry after 18 months. Weeks of delay are illustrative. No notification is sent here.</CompactTooltipContent>
         </CompactTooltip>
       </section>
       <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy submission</Link></Button>
@@ -66,14 +68,28 @@ export function PharmacyClaimsPage() {
     </label>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
-      <p className="text-sm">Recorded synthetic items this UTC month, counted once per category. Categories can overlap. Paid means released to existing pricing, not a calculated payment.</p>
+      <p className="text-sm">Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment.</p>
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{number(total)}</dd></div>)}
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{number(caught)}</dd></div>}
       </dl>
       {agentEnabled && <p className="text-sm">Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.</p>}
-      {model.result ? <p className="text-sm">Shared monthly scenario: {number(model.result.volume)} items across the modelled service{agentEnabled ? `; ${number(model.result.pharmacyCaught)} projected catches before submission` : ""}. Not this pharmacy&apos;s recorded totals.</p>
+      {model.result && projection ? <section aria-label="Shared monthly process projection" className="space-y-2 border-t pt-3">
+        <h3 className="font-semibold">{agentEnabled ? "With the agent" : "Today"}: whole-service projection</h3>
+        <p className="text-sm">Shared monthly scenario: {number(model.result.counts.monthlyItems)} items. Public baseline with assumptions, not this pharmacy&apos;s recorded totals.</p>
+        <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+          <div><dt>Items referred back</dt><dd>{number(projection.referredBackItems)}</dd></div>
+          <div><dt>Caught before submission</dt><dd>{number(projection.caughtBeforeSubmission)}</dd></div>
+          <div><dt>Referral-loop operator hours</dt><dd>{number(projection.referralOperatorHours)}</dd></div>
+          <div><dt>Pharmacy completion hours</dt><dd>{number(projection.pharmacyCompletionHours)}</dd></div>
+        </dl>
+      </section>
         : <p role="alert">Shared monthly scenario unavailable. Correct the monthly assumptions: {Object.values(model.errors).join(" ")}</p>}
+    </section>
+    <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
+      <h2 className="font-semibold">MYS Unpaid items</h2>
+      <p>NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed.</p>
+      <p>Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.</p>
     </section>
     <div aria-label="Claim filters" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {filters.map((name) => {
