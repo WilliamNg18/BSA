@@ -227,7 +227,7 @@ export interface TraceStep {
 export interface Signals {
   provisionFound: boolean;
   sampleAgreement: { agree: number; total: number };
-  reconciliation: "agree" | "conflict" | "not_applicable";
+  reconciliation: "agree" | "conflict" | "not_established" | "not_applicable";
   imageQuality: number;
   inCoverage: boolean;
 }

@@ -4,6 +4,7 @@ import {
   endorsementRequired,
   evaluateRequirements,
   mandatoryFieldsCheck,
+  QUALITY_THRESHOLD,
   reconcile,
   sampleAgreement,
   validateCitation,
@@ -206,18 +207,30 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
 
   // ---- RECONCILE (agentic; surfaces, never resolves) ----
   const conflicts = reconcile(c.extracted, c.claim.quantity, c.claim.productCode, c.claim.amountClaimed, lookup.product, concession?.price ?? null);
+  const comparableFieldsKnown = Boolean(lookup.product && c.extracted.productCode &&
+    c.extracted.quantity !== null && Number.isSafeInteger(c.extracted.quantity) && c.extracted.quantity > 0 &&
+    (captured ? compatible : c.imageQuality >= QUALITY_THRESHOLD &&
+      c.extracted.productConfidence >= QUALITY_THRESHOLD && c.extracted.quantityConfidence >= QUALITY_THRESHOLD));
+  const reconciliation: Signals["reconciliation"] = conflicts.some((k) => k.material)
+    ? "conflict" : comparableFieldsKnown ? "agree" : "not_established";
   trace.push({
     phase: "RECONCILE",
     title: "Compare what the sources say",
     cls: "agent",
-    summary: conflicts.length === 0
-      ? captured ? "Human-confirmed fields compared with the claim. The poor image remains unreadable; declaration evidence is not an image read." : "Form image, extracted fields, claim and product data agree on product, quantity and amount."
-      : `${conflicts.length} disagreement${conflicts.length === 1 ? "" : "s"} found. The agent flags each with both values and does not choose between them.`,
-    items: conflicts.length === 0
-      ? [`Quantity ${c.extracted.quantity ?? "?"} = claim ${c.claim.quantity}`, `Amount £${c.claim.amountClaimed.toFixed(2)}${concession ? ` = concession £${concession.price.toFixed(2)}` : ""}`]
-      : conflicts.map((k) => `${k.field}: ${k.values.map((v) => `${v.origin} says ${v.value}`).join("; ")}`),
+    summary: reconciliation === "conflict"
+      ? `${conflicts.length} disagreement${conflicts.length === 1 ? "" : "s"} found. The agent flags each with both values and does not choose between them.`
+      : reconciliation === "not_established"
+        ? "Reconciliation not established. Missing, unreadable or unconfirmed fields cannot establish agreement."
+        : "Comparable fields agree. This does not establish agreement for missing or unreadable evidence.",
+    items: reconciliation === "conflict"
+      ? conflicts.map((k) => `${k.field}: ${k.values.map((v) => `${v.origin} says ${v.value}`).join("; ")}`)
+      : reconciliation === "not_established"
+        ? ["Product and quantity comparison requires known fields and trustworthy capture.", "No detected conflict is not evidence of agreement."]
+        : [`Product ${c.extracted.productCode} = claim ${c.claim.productCode}`, `Quantity ${c.extracted.quantity} = claim ${c.claim.quantity}`,
+          ...(concession ? [`Amount £${c.claim.amountClaimed.toFixed(2)} = concession £${concession.price.toFixed(2)}`] : ["No concession amount comparison established."]),
+          ...(captured ? ["Human-confirmed capture is separate from the unchanged original image."] : [])],
     toolCalls: [],
-    status: conflicts.length === 0 ? "ok" : "warn",
+    status: reconciliation === "agree" ? "ok" : "warn",
   });
 
   // ---- ASSESS part 2: requirements against facts (deterministic) ----
@@ -243,12 +256,12 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   const signals: Signals = {
     provisionFound: Boolean(clause),
     sampleAgreement: { agree: agreement.agree, total: agreement.total },
-    reconciliation: conflicts.some((k) => k.material) ? "conflict" : "agree",
+    reconciliation,
     imageQuality: c.imageQuality,
     inCoverage: c.inCoverage,
   };
   const composite = captured
-    ? !compatible || !clause ? { level: "abstain" as const, reasons: ["Human-confirmed fields cannot be reconciled with the claim and source evidence, or no provision was retrieved."] }
+    ? !compatible || !clause || reconciliation === "not_established" ? { level: "abstain" as const, reasons: ["Human-confirmed fields cannot be reconciled with the claim and source evidence, or no provision was retrieved."] }
       : { level: "low" as const, reasons: ["Proposed human-confirmed evidence path, not validated image recognition. Original poor-image confidence and readings are unchanged."] }
     : compositeFrom(signals);
 
@@ -290,7 +303,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     } else {
       recommendation = "SUFFICIENT";
       reasons.push(clause ? "Every retrieved endorsement requirement is met." : "No endorsement was required for this item.");
-      reasons.push("Sources agree on product, quantity and amount.");
+      reasons.push("Comparable fields agree; missing or unreadable evidence is not established by this comparison.");
       alternative = { outcome: "REFER_BACK", note: "Would delay payment by a cycle with no rule requiring it." };
     }
     trace.push({

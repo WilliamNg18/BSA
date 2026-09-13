@@ -17,10 +17,10 @@ export function CompositeBadge({ composite, className }: { composite: Composite;
 }
 
 export function SignalList({ signals, compact = false }: { signals: Signals; compact?: boolean }) {
-  const rows: { label: string; value: string; ok: boolean | null }[] = [
+  const rows: { label: string; value: string; ok: boolean | null; status?: string }[] = [
     { label: "Provision found", value: signals.provisionFound ? "Yes" : "No", ok: signals.provisionFound },
     { label: "Readings agree", value: signals.sampleAgreement.total ? `${signals.sampleAgreement.agree} of ${signals.sampleAgreement.total}` : "n/a", ok: signals.sampleAgreement.total ? signals.sampleAgreement.agree >= 2 : null },
-    { label: "Sources reconcile", value: signals.reconciliation === "agree" ? "Agree" : signals.reconciliation === "conflict" ? "Conflict" : "n/a", ok: signals.reconciliation === "agree" ? true : signals.reconciliation === "conflict" ? false : null },
+    { label: "Sources reconcile", value: signals.reconciliation === "agree" ? "Comparable fields agree" : signals.reconciliation === "conflict" ? "Conflict" : signals.reconciliation === "not_established" ? "Not established" : "n/a", ok: signals.reconciliation === "agree" ? true : signals.reconciliation === "conflict" ? false : null, status: signals.reconciliation === "not_established" ? ", not established" : undefined },
     { label: "Image quality", value: `${signals.imageQuality.toFixed(2)} (threshold ${QUALITY_THRESHOLD.toFixed(2)})`, ok: signals.imageQuality >= QUALITY_THRESHOLD },
     { label: "In validated coverage", value: signals.inCoverage ? "Yes" : "No", ok: signals.inCoverage },
   ];
@@ -37,7 +37,7 @@ export function SignalList({ signals, compact = false }: { signals: Signals; com
           </span>
           <span className="text-right font-medium">
             {r.value}
-            <span className="sr-only">{r.ok === null ? ", not applicable" : r.ok ? ", satisfied" : ", failed"}</span>
+            <span className="sr-only">{r.status ?? (r.ok === null ? ", not applicable" : r.ok ? ", satisfied" : ", failed")}</span>
           </span>
         </li>
       ))}

@@ -43,6 +43,15 @@ export function CaseTracePage() {
 
   const shown = pack.trace.slice(0, revealed);
   const totalCalls = pack.trace.reduce((a, s) => a + s.toolCalls.length, 0);
+  const currentRouting = process?.revision === revision ? process?.routing : undefined;
+  const pricingComplete = currentRouting?.pricingAuthority === "existing_rules_engine" && !currentRouting.requiresHuman;
+  const closingDescription = pricingComplete
+    ? currentRouting.outcome === "auto_priced"
+      ? "Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked."
+      : "Human review is complete. Existing rules-engine pricing follows; no further operator decision is needed."
+    : pack.agentInvoked
+      ? "The agent's part is over. The rest is a person."
+      : "Evidence remains available for manual review. A person decides; the agent was not invoked.";
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -146,9 +155,9 @@ export function CaseTracePage() {
       </ol>}
 
       {(!pack.agentInvoked || revealed >= pack.trace.length) && (
-        <PageSection title="Where it ends" description="The agent's part is over. The rest is a person.">
+        <PageSection title="Where it ends" description={closingDescription}>
           <div className="flex flex-wrap gap-2">
-            <Button asChild className="bg-teal-700 text-white hover:bg-teal-800"><Link to={`/case/${c.id}`}>Open the operator case pack</Link></Button>
+            <Button asChild className="bg-teal-700 text-white hover:bg-teal-800"><Link to={`/case/${c.id}`}>{pricingComplete ? "Open case evidence" : "Open the operator case pack"}</Link></Button>
             <Button asChild variant="outline"><Link to="/boundary">Why each step is classified as it is</Link></Button>
           </div>
         </PageSection>
