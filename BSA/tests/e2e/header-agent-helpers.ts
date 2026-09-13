@@ -44,8 +44,8 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     } else if (route === "/#month") {
       await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
     } else if (route.startsWith("/case/")) {
-      const automaticTrace = ["/case/EX-24107/trace", "/case/EX-24101/trace"].includes(route);
-      await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled || automaticTrace ? 0 : 1);
+      const completedTrace = ["/case/EX-24107/trace", "/case/EX-24101/trace", "/case/EX-24088/trace"].includes(route);
+      await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled || completedTrace ? 0 : 1);
     }
   }
 }
