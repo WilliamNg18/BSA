@@ -41,7 +41,7 @@ test("every shared process input propagates through calculator, scene and regist
   for (const { key, label } of PROCESS_FIELDS) {
     await expandProcessInputs(page);
     edited[key] = targets[key];
-    await page.getByLabel(label, { exact: true }).fill(String(edited[key]));
+    await page.getByRole("textbox", { name: label, exact: true }).fill(String(edited[key]));
     await expectProcessMetrics(page, edited, true);
     await chooseProcessChapter(page, 1);
     await expectSceneMetrics(page, edited);
@@ -51,7 +51,7 @@ test("every shared process input propagates through calculator, scene and regist
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("The assumptions that decide whether an agent is needed");
   await expect(page.locator("[data-legacy-assumptions]")).not.toHaveAttribute("open", "");
   await expandProcessInputs(page);
-  for (const { key, label } of PROCESS_FIELDS) await expect(page.getByLabel(label, { exact: true })).toHaveValue(String(edited[key]));
+  for (const { key, label } of PROCESS_FIELDS) await expect(page.getByRole("textbox", { name: label, exact: true })).toHaveValue(String(edited[key]));
   edited.pharmacyCompletionMinutes = 0.2;
   await page.locator("#process-pharmacyCompletionMinutes").fill("0.2");
   await chooseProcessChapter(page, 2);
@@ -63,7 +63,7 @@ test("every shared process input propagates through calculator, scene and regist
   await confirmReset(page);
   await expectProcessMetrics(page);
   await expandProcessInputs(page);
-  for (const { key, label } of PROCESS_FIELDS) await expect(page.getByLabel(label, { exact: true })).toHaveValue(String(PROCESS_MONTH_DEFAULTS[key]));
+  for (const { key, label } of PROCESS_FIELDS) await expect(page.getByRole("textbox", { name: label, exact: true })).toHaveValue(String(PROCESS_MONTH_DEFAULTS[key]));
 });
 
 test("invalid drafts remove stale estimates across routes and recover using the shared selector", async ({ page }) => {
@@ -71,7 +71,7 @@ test("invalid drafts remove stale estimates across routes and recover using the 
   await expandProcessInputs(page);
   for (const { key, label } of PROCESS_FIELDS) {
     await expandProcessInputs(page);
-    const field = page.getByLabel(label, { exact: true });
+    const field = page.getByRole("textbox", { name: label, exact: true });
     for (const raw of ["", "-1", "NaN", "Infinity", "1e309", "9".repeat(400)]) {
       const draft = Object.fromEntries(Object.entries(PROCESS_MONTH_DEFAULTS).map(([name, value]) => [name, String(value)])) as ProcessMonthDraft;
       draft[key] = raw;
@@ -141,7 +141,7 @@ for (const { key, label, integer } of PROCESS_FIELDS) {
     };
     await fillProcessInputs(page, input);
     const max = integer ? 1_000_000_000 : key.endsWith("Percent") ? 100 : key.endsWith("Minutes") || key === "investigationMinutesToday" ? 1440 : 86400;
-    const field = page.getByLabel(label, { exact: true });
+    const field = page.getByRole("textbox", { name: label, exact: true });
     for (const raw of [`${max}.00000000000000001`, `000${max}.${"0".repeat(400)}1`, `0.${"0".repeat(400)}1`]) {
       await field.fill(raw);
       await expect(field).toHaveValue(raw);
@@ -170,7 +170,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, true);
         for (const invalid of [false, true]) {
           if (invalid) for (const { key, label } of PROCESS_FIELDS) {
-            await page.getByLabel(label, { exact: true }).fill("9".repeat(400));
+            await page.getByRole("textbox", { name: label, exact: true }).fill("9".repeat(400));
             await expect(page.locator(`#process-${key}-error`)).toBeVisible();
           }
           await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
@@ -184,7 +184,7 @@ for (const colorScheme of ["light", "dark"] as const) {
         const audit = await new AxeBuilder({ page }).analyze();
         await captureJson(testInfo, "axe-register-invalid", audit);
         expect(audit.violations).toEqual([]);
-        for (const { label } of PROCESS_FIELDS) await expect(page.getByLabel(label, { exact: true })).toHaveValue("9".repeat(400));
+        for (const { label } of PROCESS_FIELDS) await expect(page.getByRole("textbox", { name: label, exact: true })).toHaveValue("9".repeat(400));
         await captureCheckpoint(page, testInfo, "process-assumptions-invalid");
         await confirmReset(page);
         await chooseProcessChapter(page, 2);
