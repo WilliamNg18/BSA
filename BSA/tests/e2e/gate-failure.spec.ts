@@ -87,18 +87,18 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
     await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd")).toContainText("ESCALATE by Demo operator");
     await expect(page.getByText("No. Note: Review prescriber evidence", { exact: true })).toBeVisible();
     await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(1);
-    for (const month of ["July 2026 (2026-07)", "August 2026 (2026-08)", "September 2026 (2026-09)"]) {
-      await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption({ label: month });
-      await expect(page.getByText("Gate FAIL: recommendation withheld; evidence only.", { exact: true })).toBeVisible();
-      await expect(page.getByText("No recommendation", { exact: true })).toHaveCount(3);
-      for (const rec of ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"] as const) {
-        await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);
-      }
+    await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
+    await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveCount(0);
+    for (const label of ["Rule version used", "Clause recorded"]) {
+      await expect(page.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd")).toHaveText("Not recorded");
+    }
+    for (const rec of ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"] as const) {
+      await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);
     }
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
     await page.getByRole("button", { name: /^Decided/ }).click();
     await expect(row).toBeVisible();
-    await expect(row).toContainText("Original rule version retained in the human record");
+    await expect(row).toContainText("No rule recorded for this decision");
     expect(injections).toBe(1);
   });
 }

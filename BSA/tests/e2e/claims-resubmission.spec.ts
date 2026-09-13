@@ -60,6 +60,7 @@ for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
       await startDemonstrationReview(page);
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
+      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
       await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed and approved the dispensing-date instruction");
       await page.getByRole("button", { name: "Record decision", exact: true }).click();

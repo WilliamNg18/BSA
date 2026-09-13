@@ -104,4 +104,34 @@ describe("Task 22 current-revision staff presentation", () => {
     if (!enabled) expect(html).toContain("experience only, no rule recorded");
     expect(useAppStore.getState()).toBe(before);
   });
+
+  it("does not invent a rule or approved draft when a manual record is viewed with assistance", () => {
+    const store = useAppStore.getState();
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
+    store.arriveInQueue("EX-24112");
+    store.recordType2Decision({ caseId: "EX-24112", decision: "REFER_BACK",
+      reason: "Human found the dispensing date missing", rbCode: "SYN-NCSO" });
+    const original = useAppStore.getState().records.at(-1)!;
+    store.setAgentEnabled(true);
+    const html = record("EX-24112");
+    expect(html).toContain("Human found the dispensing date missing");
+    expect(html).toContain("Not recorded together for this decision");
+    expect(html).not.toContain("Operator-approved explanation");
+    expect(original).toMatchObject({ tariffVersion: "n/a", recommendation: "NONE" });
+    expect(original.approvedDraft).toBeUndefined();
+    expect(useAppStore.getState().records.at(-1)).toBe(original);
+  });
+
+  it("keeps human-completed Type 2 decisions visible without moving them into the automatic aggregate", () => {
+    const store = useAppStore.getState();
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
+    store.arriveInQueue("EX-24112");
+    store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT",
+      reason: "Human completed the independent evidence review" });
+    expect(useAppStore.getState().itemProcesses["EX-24112"].routing).toMatchObject({
+      outcome: "type2_endorsement", requiresHuman: false,
+    });
+    expect(queue()).toContain('data-case-id="EX-24112"');
+    expect(queue()).toContain("Decided");
+  });
 });

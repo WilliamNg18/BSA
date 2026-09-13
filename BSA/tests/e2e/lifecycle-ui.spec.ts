@@ -9,8 +9,9 @@ const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", 
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
 async function queueReview(page: Page, id = B) {
   await page.getByRole("link", { name: "Open shared queue", exact: true }).click();
-  await page.locator(`[data-shared-case="${id}"]`).getByRole("button", { name: "Open for review", exact: true }).click();
+  await page.getByRole("link", { name: `Open ${id}`, exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
+  await page.getByRole("button", { name: "Start review", exact: true }).click();
 }
 async function record(page: Page, reason: string) {
   await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
@@ -32,6 +33,7 @@ test("Task19 Off referral to approved On correction automatically prices the com
   await page.getByRole("button", { name: "Follow this case", exact: true }).click();
   await queueReview(page);
   await page.getByRole("radio", { name: /^Refer back / }).check();
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await record(page, "Please add the dispensing date beside the initials");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
@@ -42,6 +44,7 @@ test("Task19 Off referral to approved On correction automatically prices the com
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await queueReview(page);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).not.toBeChecked();
   await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
   await record(page, "Reviewed missing date and approved the exact pharmacy instruction");
@@ -81,6 +84,7 @@ test("Task19 manual EPS correction retains an unchecked snapshot without inventi
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
   await queueReview(page);
   await page.getByRole("radio", { name: /^Refer back / }).check();
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await record(page, "Human requests the missing date beside initials");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
@@ -140,13 +144,14 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
-  await queueReview(page, "EX-24123");
+  await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
+  await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true })).toBeVisible();
   await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li")).toHaveCount(3);
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
-  await page.getByRole("radio", { name: /^Refer back / }).check();
-  await page.getByRole("textbox", { name: /^Reason/ }).fill("Please supply readable evidence for a human review");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
-  await expect(page.getByRole("alert").filter({ hasText: "Type 2 judgement requires completed capture" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("radio", { name: /^Refer back / })).toHaveCount(0);
   await expect(page).toHaveURL(/\/case\/EX-24123$/);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
