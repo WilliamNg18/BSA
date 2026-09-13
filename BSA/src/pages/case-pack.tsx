@@ -80,7 +80,7 @@ function CasePackContent() {
 
   const showRecommendation = permitsProposal(pack);
   const suggested = showRecommendation ? suggestedFor(pack.recommendation) : "ESCALATE";
-  const chosen = !agentEnabled ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
+  const chosen = !pack.agentInvoked ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
   const isOverride = showRecommendation && (chosen === "AMEND" || chosen !== suggested && chosen !== "ACCEPT");
   const disposition = chosen === "ACCEPT" && showRecommendation ? suggested : chosen;
   const currentProcess = process?.revision === revision ? process : undefined;
@@ -91,7 +91,7 @@ function CasePackContent() {
   const canApprove = agentEnabled && showRecommendation && !!pack.draftToPharmacy && (disposition === "REFER_BACK" || disposition === "REQUEST_INFORMATION");
 
   function submit() {
-    if (!c || !pack || decided || (agentEnabled && clock.revealed < 6)) return;
+    if (!c || !pack || decided || (pack.agentInvoked && clock.revealed < 6)) return;
     if (reason.trim().length < 8) {
       setError("A reason of at least eight characters is required for this decision.");
       return;
@@ -145,8 +145,10 @@ function CasePackContent() {
       {!pack.agentInvoked && (
         <Alert>
           <FileText aria-hidden="true" />
-          <AlertTitle>{pack.state === "cleared_by_rules" ? "Cleared by deterministic rules; the agent was not called" : "Agent recommendations are switched off"}</AlertTitle>
-          <AlertDescription>{pack.state === "cleared_by_rules" ? "Deterministic pre-checks still apply. No model called; manual comparison does not undo clearance." : "Synthetic manual comparison: inspect captured fields and record your own reason. Real NHSBSA workflow requires validation."}</AlertDescription>
+          <AlertTitle>{pack.state === "cleared_by_rules" ? currentProcess?.routing.requiresHuman ? "Rules checks complete; human re-check required" : "Cleared by deterministic rules; the agent was not called" : "Agent recommendations are switched off"}</AlertTitle>
+          <AlertDescription>{pack.state === "cleared_by_rules" ? currentProcess?.routing.requiresHuman
+            ? "Existing rules checks found no gap. A person must still record the re-check before normal pricing."
+            : "Deterministic pre-checks still apply. No model called; manual comparison does not undo clearance." : "Synthetic manual comparison: inspect captured fields and record your own reason. Real NHSBSA workflow requires validation."}</AlertDescription>
         </Alert>
       )}
       {pack.recommendation === "ABSTAIN" && (
@@ -340,10 +342,10 @@ function CasePackContent() {
               <RadioGroup value={chosen} onValueChange={(v) => setDecision(v as HumanDecision)} aria-label="Decision" className="grid gap-2 sm:grid-cols-2">
                 {DECISIONS.filter((d) => agentEnabled || d.value !== "AMEND").map((d) => (
                   <div key={d.value} className="flex items-start gap-2 rounded-md border p-2.5">
-                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={agentEnabled && !showRecommendation && (d.value === "ACCEPT" || d.value === "AMEND")} />
+                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "AMEND" || pack.agentInvoked && d.value === "ACCEPT")} />
                     <Label htmlFor={`d-${d.value}`} className="flex flex-col gap-0.5 font-normal">
-                      <span className="font-medium">{!agentEnabled && d.value === "ACCEPT" ? "Sufficient (human choice)" : d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
-                      <span className="text-xs text-muted-foreground">{!agentEnabled && d.value === "ACCEPT" ? "Your judgement, not an agent recommendation or payment approval." : d.help}</span>
+                      <span className="font-medium">{!showRecommendation && d.value === "ACCEPT" ? "Sufficient (human choice)" : d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
+                      <span className="text-xs text-muted-foreground">{!showRecommendation && d.value === "ACCEPT" ? "Your judgement, not an agent recommendation or payment approval." : d.help}</span>
                     </Label>
                   </div>
                 ))}
