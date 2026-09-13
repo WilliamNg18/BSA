@@ -41,7 +41,7 @@ it("an unchecked draft and an Off approval request cannot create approval metada
   expect(store().lifecycles[B.id].history.at(-1)?.approvedDraft).toBeUndefined();
 });
 
-it("manual referral, approved draft, exact date, recheck and human sufficient retain every prior attempt", () => {
+it("manual referral, approved draft, exact date, recheck and automatic pricing retain every prior attempt", () => {
   const seed = structuredClone(B);
   store().submitFromPharmacy(B.id, B.extracted.endorsementText);
   store().arriveInQueue(B.id);
@@ -57,15 +57,16 @@ it("manual referral, approved draft, exact date, recheck and human sufficient re
   expect(corrected).toBe("NCSO  RK 21/08/26");
   const result = checkPharmacy(sessionCase(B.id)!, corrected);
   expect(result.status).toBe("ready");
+  const records = store().records;
   store().resubmitFromPharmacy(B.id, corrected, pharmacySnapshot(corrected, B.extracted.dispensingDate, "scripted", result, new Date().toISOString()));
   store().arriveInQueue(B.id);
-  expect(runAgent(sessionCase(B.id)!).recommendation).toBe("SUFFICIENT");
-  const sufficient = input();
-  store().recordDecision({ ...sufficient, decision: "ACCEPT" });
+  expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
   expect(store().lifecycles[B.id].state).toBe("paid");
+  expect(store().lifecycles[B.id].history.at(-1)).toMatchObject({ actor: "code", revision: 4 });
+  expect(store().records).toBe(records);
   expect(store().caseRevisions[B.id]).toHaveLength(4);
   expect(store().caseRevisions[B.id].slice(0, 3)).toEqual(prior.caseRevisions[B.id]);
-  expect(store().records.filter((r) => r.caseId === B.id)).toHaveLength(3);
+  expect(store().records.filter((r) => r.caseId === B.id)).toHaveLength(2);
   expect(B).toEqual(seed);
   expect(runAgent(B).recommendation).toBe("REFER_BACK");
   expect(runAgent(B, { tariffVersion: "2026-07" }).recommendation).toBe("SUFFICIENT");
