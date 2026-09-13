@@ -12,6 +12,7 @@ import { useProcessMonth } from "@/hooks/use-process-month";
 import { useAppStore } from "@/lib/store";
 import type { CaseRevision, ConfirmType1Input } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
+import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import {
   PAPER_DECLARATION_PROVENANCE,
   prepareCaptureConfirmation,
@@ -86,6 +87,8 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
   const errorRef = useRef<HTMLParagraphElement>(null);
   const productRef = useRef<HTMLInputElement>(null);
   const assisted = prepared.provenance === "pharmacy_declaration";
+  const poorScan = c.imageStyle === "handwritten_poor" || c.imageQuality < QUALITY_THRESHOLD;
+  const unreadableExample = c.scenario === "D";
   useEffect(() => {
     if (error) errorRef.current?.focus();
   }, [error]);
@@ -135,21 +138,24 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
       {agentEnabled ? (
         <div className="space-y-2">
           <BoundaryTag cls="agent" />
-          <p className="text-sm">The agent cannot read this scan. {assisted ? "Check the pharmacy declaration against the paper; confirm or correct it." : "Unreconciled evidence: the agent abstains. Manual capture remains available."}</p>
+          <p className="text-sm">{poorScan ? "The agent cannot read this scan." : "Human capture or confirmation is required."} {assisted
+            ? "Check the pharmacy declaration against the paper; confirm or correct it."
+            : poorScan ? "Unreconciled evidence: the agent abstains. Manual capture remains available." : "Key the fields before code routes this item."}</p>
         </div>
       ) : <PainMarker resolved={false} pain="No guidance, experience only" resolution="Human confirmation" />}
       <div className="grid min-w-0 gap-4 lg:grid-cols-2">
         <div className="min-w-0 space-y-2">
-          <h4 className="text-sm font-medium">Original poor paper image</h4>
+          <h4 className="text-sm font-medium">{poorScan ? "Original poor paper image" : "Original paper image"}</h4>
           <BoundaryTag cls="existing" />
           <PrescriptionForm c={c} highlight={[]} compact />
-          <p className="text-xs text-muted-foreground">Synthetic poor scan. Declaration support does not improve image quality.</p>
+          <p className="text-xs text-muted-foreground">{poorScan ? "Synthetic poor scan." : "Synthetic paper form."} Declaration support does not improve image quality.</p>
         </div>
         <form onSubmit={submit} noValidate className="min-w-0 space-y-3">
           <h4 className="text-sm font-medium">{assisted ? "Pharmacy declaration received with paper" : "Key what you can establish"}</h4>
           <p id={`${id}-help`} className="text-xs text-muted-foreground">{assisted
             ? "Original declaration stays unchanged. Your corrections are recorded separately."
-            : "Leave unreadable fields blank. Do not guess; Type 2 can refer back with RB2B."}</p>
+            : unreadableExample ? "Leave unreadable fields blank. Do not guess; Type 2 can refer back with RB2B."
+              : "Leave unknown fields blank. Do not guess; code routes from confirmed evidence."}</p>
           {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => {
             const label = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field];
             const fieldId = `${id}-${field}`;
@@ -187,13 +193,16 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
             <Button type="button" variant="outline" onClick={() => changeMode(true)}>Review pharmacy declaration</Button>
           )}
           {error && <p ref={errorRef} tabIndex={-1} role="alert" className="text-sm font-medium text-destructive">{error}</p>}
-          <Button type="submit" className="h-auto min-h-10 whitespace-normal">Confirm capture and continue to Type 2</Button>
+          <Button type="submit" className="h-auto min-h-10 whitespace-normal">{unreadableExample
+            ? "Confirm capture and continue to Type 2" : "Confirm capture and continue"}</Button>
         </form>
       </div>
       <CaptureTiming assisted={assisted} />
       <div className="space-y-2 border-t pt-3">
         <BoundaryTag cls="deterministic" />
-        <p className="text-xs text-muted-foreground">Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause.</p>
+        <p className="text-xs text-muted-foreground">{unreadableExample
+          ? "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause."
+          : "Code routes after explicit capture. Complete evidence may continue to existing pricing; unresolved endorsements need Type 2 judgement."}</p>
         <p className="text-xs text-muted-foreground">the agent verifies the submission and advises; a person decides</p>
       </div>
     </section>

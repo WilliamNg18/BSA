@@ -1148,6 +1148,12 @@ checked reconciliation remains true for that human correction; compatibility
 and the mandatory evidence gate still decide whether advice can be shown.
 The original declaration stays visible and unchanged.
 
+The shared capture surface also accepts readable handwritten paper items.
+Only genuinely poor image style or quality below the existing threshold gets
+the poor-scan/cannot-read wording. D keeps its guaranteed Type 2 continuation;
+other items use a neutral confirmation label because code may route complete
+captured evidence to existing pricing. This changes copy, not routing authority.
+
 ## 2026-09-13: Task 20 pharmacy process follows recorded authority
 
 P reads receipt contents directly from immutable shared case revisions, retaining
