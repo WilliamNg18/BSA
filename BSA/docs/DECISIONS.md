@@ -1554,3 +1554,9 @@ supply clause and fail-closed agent/gate support. The registered generic product
 requires its supply evidence even if the optional payload is omitted. Canonical
 E remains automatic no-model clearance; a generic EPS review does not call an
 image-reading tool. This foundation is isolated for C's earlier integration.
+
+The Paper workbench's Post action always starts an explicit new synthetic
+attempt, like the EPS workbench. It does not silently turn into a correction
+because its selected fixture has a prior referral. Existing referral correction
+and resubmission remain in claim details, with C's required human re-check.
+This preserves ordinary complete paper B's initial capture-to-code-pricing path.

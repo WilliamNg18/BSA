@@ -44,6 +44,21 @@ describe("proposed paper declaration checks", () => {
 });
 
 describe("immutable paper declaration to human-confirmed Type 2", () => {
+  it("treats ordinary workbench posting as a new attempt, distinct from correction of the seeded referral", () => {
+    const B = CASES[1];
+    expect(store().lifecycles[B.id].state).toBe("referred_back");
+    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: "NCSO AB 12/08/26" });
+    const revision = store().caseRevisions[B.id].at(-1)!;
+    expect(revision.kind).toBe("submission");
+    store().confirmType1({
+      caseId: B.id, revision: revision.number, provenance: "human_capture", declarationReconciled: false,
+      fields: { productCode: B.claim.productCode, quantity: B.claim.quantity, endorsementText: "NCSO AB 12/08/26", prescriber: "Dr Demo (synthetic)" },
+    });
+    expect(store().itemProcesses[B.id].routing).toMatchObject({
+      outcome: "type1_capture", requiresHuman: false, pricingAuthority: "existing_rules_engine",
+    });
+    expect(store().lifecycles[B.id].state).toBe("paid");
+  });
   function submit() {
     const paper = preparePaperDeclaration(WORKED_PAPER_DECLARATION);
     store().setAgentEnabled(true);
