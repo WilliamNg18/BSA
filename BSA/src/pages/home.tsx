@@ -25,15 +25,23 @@ function TourProcessCase({ id }: { id: string }) {
   const perspective = useAppStore((s) => s.perspective);
   if (!item || !process) return <li role="alert">Case evidence unavailable for {id}.</li>;
   const automatic = process.routing.outcome === "auto_priced";
-  const capture = process.routing.outcome === "type1_capture";
+  const capture = process.routing.outcome === "type1_capture" && process.routing.requiresHuman;
+  const captureComplete = process.routing.outcome === "type1_capture" && !process.routing.requiresHuman;
   const pack = runAgent(item, { agentEnabled });
-  return <li className="space-y-4 rounded-xl border bg-card p-5" data-case={item.scenario} data-case-routing={process.routing.outcome}>
+  return <li className="space-y-4 rounded-xl border bg-card p-5" data-case={item.scenario} data-case-routing={process.routing.outcome}
+    data-case-capture={captureComplete ? "complete" : capture ? "pending" : undefined}>
     <div><p className="text-xs text-muted-foreground">Case {item.scenario} · {item.id}</p><h2 className="mt-1 font-semibold">{item.title}</h2></div>
     {automatic ? <section className="space-y-3 text-sm" aria-label="Automatically priced case">
       <BoundaryTag cls="existing" />
       <p className="font-medium">Automated pricing</p>
       <p>{process.routing.reason}</p>
       <p>Counted in the monthly automatic total, never an operator queue row. Normal payment schedule, not an agent payment.</p>
+    </section> : captureComplete ? <section className="space-y-3 text-sm" aria-label="Completed Type 1 capture">
+      <BoundaryTag cls="human" />
+      <p className="font-medium">Capture complete · Existing pricing</p>
+      <p>A person confirmed the captured fields. Existing NHSBSA pricing followed; no Type 2 judgement was needed.</p>
+      <BoundaryTag cls="existing" />
+      <p>Human capture remains in the item history. The agent did not approve or pay.</p>
     </section> : capture ? <section className="space-y-3 text-sm" aria-label="Awaiting Type 1 capture">
       <BoundaryTag cls="human" />
       <p className="font-medium">Unreadable paper · Type 1 capture</p>
@@ -50,8 +58,9 @@ function TourProcessCase({ id }: { id: string }) {
         <details className="text-sm"><summary className="cursor-pointer font-medium">Outcome evidence and exact correction</summary><div className="mt-3 space-y-3 text-muted-foreground"><ul aria-label="Requirement checks" className="space-y-2">{pack.requirementResults.map((r) => <li key={r.requirement.id}>{r.requirement.label}: {r.met === true ? "met" : r.met === false ? "not met" : "unknown"}</li>)}</ul>{pack.abstainReasons.length > 0 && <ul aria-label="Abstention reasons" className="list-disc pl-4">{pack.abstainReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>}{perspective !== "pharmacy" && <Link className="underline" to={`/case/${item.id}`}>Review full evidence and human decision</Link>}</div></details>
       </> : <div className="space-y-3 text-sm" data-manual-tasks><BoundaryTag cls="human" /><p className="font-medium">Manual review · No recommendation</p><ul className="list-disc space-y-2 pl-4"><li>Locate image and claim</li><li>Check product and governing rule</li><li>Review evidence and record a decision</li></ul></div>}
     </>}
-    {!automatic && perspective !== "pharmacy" && <Button asChild variant="outline" size="sm"><Link to={`/case/${item.id}`}>Open case {item.scenario}</Link></Button>}
+    {!automatic && !captureComplete && perspective !== "pharmacy" && <Button asChild variant="outline" size="sm"><Link to={`/case/${item.id}`}>Open case {item.scenario}</Link></Button>}
     {automatic && perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to={pharmacyCaseLink(item.id)}>View automatically priced claim</Link>}
+    {captureComplete && perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to={pharmacyCaseLink(item.id)}>View priced claim</Link>}
     <FollowItem id={item.id} />
   </li>;
 }
