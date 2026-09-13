@@ -267,9 +267,11 @@ function CasePackContent() {
           </>}
 
           {clock.revealed >= 4 && <>
-          <PageSection title="Conflicts and missing evidence" description={pack.conflicts.length ? "Each source is shown; the agent does not choose between them." : "The sources agree."}>
+          <PageSection title="Conflicts and missing evidence" description={pack.conflicts.length ? "Each source is shown; the agent does not choose between them." : pack.signals.reconciliation === "agree" ? "Comparable fields agree." : "Reconciliation not established."}>
             {pack.conflicts.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No disagreement between the form, the extracted fields, the claim and the product data.</p>
+              <p className="text-sm text-muted-foreground">{pack.signals.reconciliation === "agree"
+                ? "This comparison does not establish agreement for missing or unreadable evidence."
+                : "No detected conflict does not establish agreement. Missing, unreadable or unconfirmed fields still need evidence."}</p>
             ) : (
               <ul className="space-y-2">
                 {pack.conflicts.map((k) => (

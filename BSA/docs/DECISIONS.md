@@ -1327,3 +1327,20 @@ manual D still requires Type 2. Conflicts, unknown fields, original revisions
 and append-only capture history are preserved. The regression uses the real
 manual form-preparation helpers with reconciliation false, not an injected
 checkbox value or an Agent-dependent routing condition.
+
+## 2026-09-13: Unknown reconciliation is not source agreement
+
+Final visual review found that an empty conflict list incorrectly labelled D's
+unknown product and quantity as agreement. Reconciliation now has an explicit
+`not_established` signal. Material conflicts retain precedence; agreement needs
+known comparable product/quantity fields and trustworthy original capture or
+compatible human-confirmed capture. The trace, confidence list and case pack
+consume that single derived result, never infer agreement from zero conflicts.
+Unknown reconciliation is neutral and not satisfied in the interface and forces
+abstention when earlier structural checks have not already done so. Existing
+stop reasons, captured-evidence trust and the original poor image stay intact.
+
+Established comparisons say "Comparable fields agree" and explicitly exclude
+missing or unreadable evidence. The generic in-review lifecycle label says
+"Awaiting operator" in both modes; it cannot retrospectively claim a case was
+built before capture. Historical records and lifecycle events are not rewritten.
