@@ -288,7 +288,7 @@ test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases foll
   await expect(page.getByRole("heading", { name: "Processing cases · Follow each path", exact: true })).toBeVisible();
   const a = page.locator('[data-case="A"]');
   await expect(a).toHaveAttribute("data-case-routing", "auto_priced");
-  await expect(a).toContainText("never an operator queue row");
+  await expect(a).toContainText("no operator queue row");
   await expect(a.getByRole("link", { name: "View automatically priced claim", exact: true })).toHaveAttribute("href", "/pharmacy/claims?case=EX-24107");
   await expect(a.getByRole("link", { name: "Open case A", exact: true })).toHaveCount(0);
   await expect(a.locator("[data-outcome], [data-pain-marker], [data-manual-tasks]")).toHaveCount(0);
