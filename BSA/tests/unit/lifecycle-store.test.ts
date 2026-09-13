@@ -89,7 +89,9 @@ describe("Task 8 seeds and projections", () => {
     expect(c.claim.endorsementText).toBe(corrected);
     expect(c.regions.find((r) => r.id === "endorsement")?.text).toBe(corrected);
     expect(c.readings.every((r) => r.dated)).toBe(true);
-    expect(runAgent(c)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
+    expect(runAgent(c)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true });
+    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
+    expect(revisions().at(-1)?.channel).toBe("paper");
     expect(row().history.slice(0, pending.length)).toEqual(pending);
     expect(CASES).toEqual(original);
     expect(runAgent(B).recommendation).toBe("REFER_BACK");

@@ -46,6 +46,11 @@ describe("canonical deterministic routing", () => {
     expect(routeSubmission({ ...facts, hasConflict: true }).outcome).toBe("type2_endorsement");
     expect(() => routeSubmission({ ...facts, readable: "yes" } as unknown as RoutingFacts)).toThrow();
   });
+  it.each(["Illegible", "", "   "])("does not automatically price missing mandatory prescriber %j", (prescriber) => {
+    const missing = { ...A, extracted: { ...A.extracted, prescriber } };
+    expect(routeSubmission(routingFactsForCase(missing, "eps"))).toMatchObject({ outcome: "type2_endorsement", pricingAuthority: null, requiresHuman: true });
+    expect(runAgent(missing)).toMatchObject({ agentInvoked: true, gate: { result: "FAIL" } });
+  });
 });
 
 describe("explicit captured authority", () => {
