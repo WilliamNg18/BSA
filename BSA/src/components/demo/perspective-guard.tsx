@@ -10,6 +10,7 @@ export function PerspectiveGuard({ children }: { children: ReactNode }) {
   const setPerspective = useAppStore((s) => s.setPerspective);
   const restoring = useRef(false);
   const content = useRef<HTMLDivElement>(null);
+  const contextualHeading = useRef<HTMLElement | null>(null);
   const side = perspectiveForPath(pathname);
   const allowed = canViewPath(perspective, pathname) || !side;
   const [visitedPath, setVisitedPath] = useState<string | null>(allowed ? pathname : null);
@@ -17,8 +18,14 @@ export function PerspectiveGuard({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
     if (!allowed || !restoring.current) return;
     restoring.current = false;
-    const heading = content.current?.querySelector<HTMLElement>("h1");
-    if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+    const previousHeading = contextualHeading.current;
+    const heading = previousHeading?.isConnected && content.current?.contains(previousHeading)
+      ? previousHeading : content.current?.querySelector<HTMLElement>("h1");
+    if (heading) {
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ block: "start", behavior: "instant" });
+    }
   }, [allowed, pathname]);
 
   return <>
@@ -29,7 +36,11 @@ export function PerspectiveGuard({ children }: { children: ReactNode }) {
       </Button>
     </section>}
     {/* Perspective hides an opened form without discarding its unsaved draft. */}
-    <div ref={content} hidden={!allowed} inert={!allowed}>
+    <div ref={content} hidden={!allowed} inert={!allowed} onFocusCapture={(event) => {
+      if (event.target instanceof HTMLElement && event.target.matches("h1, h2, h3, h4, h5, h6")) {
+        contextualHeading.current = event.target;
+      }
+    }}>
       {(allowed || visitedPath === pathname) && children}
     </div>
   </>;
