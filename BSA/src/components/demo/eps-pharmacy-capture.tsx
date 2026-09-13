@@ -204,7 +204,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
                 draft: corrected, beforeDraft: draft, revision: observedRevision,
                 before: pharmacySnapshot(draft.dispenserEndorsement, draft.dispensingDate, mode, result, current.checkedAt),
               };
-              setApplied("Correction applied to the draft only. Send claim remains a separate action.");
+              setApplied("Draft corrected; not submitted.");
               document.getElementById(suggestion.field === "brand" ? "eps-manufacturer" : suggestion.field === "pack" ? "eps-pack" : suggestion.field === "form" ? "eps-form" : "endorsement")?.focus();
             }}>{suggestion.field === "endorsement" ? "Enter initials" : "Apply correction"}</Button>
           </section>}
@@ -224,7 +224,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
         }}><Send aria-hidden="true" />Send claim</Button>
         <BoundaryTag cls="human" />
         <PainMarker resolved={enabled && result?.status === "ready"} pain="Problems found at NHSBSA weeks later" resolution="Advice checked before sending; no payment guarantee" />
-        <p className="text-xs text-muted-foreground">Send creates a new synthetic attempt. Use the claim view to correct a referral. No real claim or payment changes.</p>
+        <p className="text-xs text-muted-foreground">Send a new synthetic attempt; correct referrals in claim details.</p>
         {error && <p role="alert">{error}</p>}
       </PageSection>
     </div>
