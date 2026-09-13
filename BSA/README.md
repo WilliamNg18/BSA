@@ -9,6 +9,12 @@ with synthetic cases, scripted interpretation and deterministic guardrails.
 **The owner-selected existing Azure App Service F1 delivers the site at `/`.
 Each release must verify its actual build commit and strict headers.**
 
+Live URL: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The accepted Tasks 14-18 release `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`
+is pinned by annotated `lkg-2026-09-13` and `last-known-good`.
+The single Agent On/Off switch is in the header, top right: pharmacy, queue
+and all other pages read that shared state and have no local overrides.
+
 > The agent gathers evidence and recommends. Deterministic code validates and
 > calculates. A human decides. The prototype does not calculate or approve payments.
 
@@ -60,7 +66,8 @@ observe actual work and agree accuracy/stop criteria before assisted use.
 
 Eight tour chapters have nine stops: Pharmacy check is chapter 5's substop;
 Pharmacy claims is chapter 7. Header navigation groups Overview, Operations and
-How it works (the queue menu item is **NHSBSA queue**). Agent defaults **Off**; confirmed Reset restores Off and seeded
+How it works (the queue menu item is **NHSBSA queue**). The header's sole Agent
+switch defaults **Off**; confirmed Reset restores Off and seeded
 session data. Perspective defaults to **Both** and survives Reset; Pharmacy
 and NHSBSA filter navigation and guard opposite-side routes without redirecting
 or changing history. Both retains the tour and Follow/Switch side links.

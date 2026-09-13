@@ -1,12 +1,26 @@
 ---
 title: Final integration and protected branch record
 description: Accepted application revisions, documentation delivery and immutable rollback/checkpoint references.
-ms.date: 2026-09-12
+ms.date: 2026-09-13
 ---
 
 # Current integration
 
-Current base main after recovery #54/live evidence #55 is
+Tasks 14-18 are merged and accepted on main
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`. Final CI 34720652232 passed
+774 unique units and 1,086 blocking browsers. Deployment 34720652234 and
+all 14 final live checks passed, with clean matching build identities.
+The site has eight chapters, shared monthly figures, action-first queue/claims
+and independent Pharmacy/NHSBSA/Both perspectives.
+
+On 13 September the owner explicitly promoted this exact pre-change main to
+`last-known-good` and annotated `lkg-2026-09-13`, with annotation
+**Last known good after Tasks 14 to 18**. Subsequent header-only Agent changes
+do not automatically advance that checkpoint.
+
+## Historical integration evidence
+
+The earlier base main after recovery #54/live evidence #55 was
 `d1f0bddc736ccec6b9ddbf9836c24188e7c954df`. Exact CI head
 `8bee3f205d29178177a6fb1ef5e98394c7655d2c` passed 695 unique units and
 1,055 blocking browsers (34705318318). Actual live acceptance belongs to
@@ -46,7 +60,8 @@ the integration revisions above describe this closeout.
 
 | Reference | Immutable resolved commit |
 | --- | --- |
-| `last-known-good` and annotated `lkg-2026-09-09` | `23ca3312336fe76a349db6b7f29cff0f13c6dd82` |
+| `last-known-good` and annotated `lkg-2026-09-13` | `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3` |
+| Older annotated `lkg-2026-09-09` | `23ca3312336fe76a349db6b7f29cff0f13c6dd82` |
 | `cowork-v1` branch and annotated tag | `a2ab8019ad80796eeeb7b06807d5d0062d98f11f` |
 | Main `checkpoint-2026-09-12` | `b7e63ac6bc1825fe0f92527faf3e9fd647c34126` |
 | Original D checkpoint branch/head | `76b36b72ccd0f45750e46daa26edb5ba2e4956da` |
@@ -54,7 +69,8 @@ the integration revisions above describe this closeout.
 All nine annotated transfer checkpoint tags remain preserved. Full stream
 checkpoint heads and ownership are in HANDOVER's historical record. Transfer
 was cancelled; WilliamNg18 remains owner and the public-reference/security
-decisions remain in force. Do not move archive, rollback or checkpoint refs.
+decisions remain in force. Archive and existing tags remain immutable. The
+rollback branch moves only by explicit owner instruction, as recorded above.
 
 Application/documentation completion does not promote a new rollback point
 or establish future availability. Actual App Service live acceptance is recorded

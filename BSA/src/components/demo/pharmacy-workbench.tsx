@@ -4,7 +4,6 @@ import { Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { NativeSwitch as Switch } from "@/components/ui/native-switch";
 import { NativeChoiceGroup as ToggleGroup, NativeChoiceItem as ToggleGroupItem } from "@/components/ui/native-radio-group";
 import { PageSection } from "@/components/page-section";
 import { BoundaryTag, KeyValue, SyntheticTag } from "@/components/demo/labels";
@@ -23,7 +22,7 @@ import { usePharmacyStore } from "@/lib/pharmacy-store";
 import type { PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
 
 export function PharmacyPage() {
-  const agentEnabled = useAppStore((state) => state.agentEnabled);
+  const enabled = useAppStore((state) => state.agentEnabled);
   const perspective = useAppStore((state) => state.perspective);
   const caseRevisions = useAppStore((state) => state.caseRevisions);
   const recordCorrection = useAppStore((state) => state.recordPharmacyCorrection);
@@ -31,19 +30,16 @@ export function PharmacyPage() {
   const submit = usePharmacyStore((state) => state.submit);
   const receipts = usePharmacyStore((state) => state.receipts);
   const [scenario, setScenario] = useState<PharmacyScenario>("B");
-  const [agentAvailable, setAgentAvailable] = useState(true);
   const [edited, setEdited] = useState<Record<string, string>>({});
   const [receipt, setReceipt] = useState<PharmacyReceipt | null>(null);
   const [error, setError] = useState("");
   const pendingCorrection = useRef<{ caseId: string; text: string; revision: number; before: PharmacyPrecheckSnapshot } | null>(null);
   const c = caseById(scenario === "A" ? "EX-24107" : scenario === "B" ? "EX-24112" : "EX-24123")!;
   const text = edited[c.id] ?? c.extracted.endorsementText;
-  const enabled = agentEnabled && agentAvailable;
   const current = usePharmacyCheck(c, text, enabled);
   const result = current.result;
-  const mode = !agentEnabled ? "off" : !agentAvailable ? "unavailable" : !result ? "pending" : "scripted";
-  const status = !agentEnabled ? "Not checked: manual submission"
-    : !agentAvailable ? "Agent unavailable: manual submission"
+  const mode = !enabled ? "off" : !result ? "pending" : "scripted";
+  const status = !enabled ? "Not checked: manual submission"
     : !result ? "Scripted check in progress" : result.status === "ready" ? "Ready to submit" : result.status === "missing" ? "Information may be missing" : "Agent unable to determine";
   const canApply = enabled && result?.status === "missing" && scenario === "B" && result.facts?.type === "NCSO" && result.facts.initialled && result.checks.some((entry) => entry.id === "dated" && entry.met === false);
   const correction = canApply ? pharmacyDateCorrection(c, text) : text;
@@ -81,7 +77,6 @@ export function PharmacyPage() {
         <ToggleGroupItem value="B">Information missing</ToggleGroupItem>
         <ToggleGroupItem value="D">Unreadable form</ToggleGroupItem>
       </ToggleGroup>
-      <div className="flex items-center gap-2"><Switch id="agent-available" checked={agentAvailable} onCheckedChange={setAgentAvailable} /><Label htmlFor="agent-available">Agent available</Label></div>
     </div>
 
     <div className="grid items-start gap-6 lg:grid-cols-2">
@@ -105,7 +100,7 @@ export function PharmacyPage() {
         <div className={`space-y-4 rounded-xl border p-4 ${result?.status === "ready" ? "border-emerald-600" : result?.status === "missing" ? "border-amber-600" : "border-border"}`}>
           <h3 className="text-lg font-semibold"><span role="status" data-pharmacy-status>{status}</span></h3>
           {!enabled ? <>
-            <p className="text-sm">{!agentEnabled ? "Agent Off · No checks performed in this scenario; real pharmacy checks are unknown." : "Agent unavailable · No checks performed; manual submission remains available."}</p>
+            <p className="text-sm">Agent Off · No checks performed in this scenario; real pharmacy checks are unknown.</p>
             <dl className="space-y-2 text-sm"><KeyValue k="Rule check" v="NOT RUN" /><KeyValue k="Version / clause" v="Not retrieved" /><KeyValue k="Scenario" v="Manual typed submission" /></dl>
           </> : <>
             <ol aria-label="Scripted pharmacy process" className="space-y-2">

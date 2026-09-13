@@ -1,6 +1,8 @@
 # Explicit live acceptance
 
-This opt-in 13-item checklist is outside `tests/e2e`. Default production CI does
+This opt-in checklist is outside `tests/e2e`. It contains the 13 base checks,
+one same-item perspective round trip and three header-only Agent checks (one
+per perspective, each visiting every route). Default production CI does
 not discover it. It starts no server, uses one Chromium worker, and only changes
 synthetic browser-memory state. Do not execute until the coordinator confirms
 the deployed artifact is ready and supplies its full expected commit.
@@ -20,13 +22,15 @@ npx playwright test --config tests/live/playwright.config.ts
 `/build-info.json` before and after its browser work: HTTP 200, JSON, no-store,
 exact expected commit, valid UTC build time and `dirty: false`. A changed,
 malformed or stale identity fails acceptance. `checklist.json` reports all
-13 named items, PASS/FAIL/NOT_RUN, symptoms, timestamps, duration, URL, identity
+executed items, PASS/FAIL/NOT_RUN, symptoms, timestamps, duration, URL, identity
 attachments and evidence paths. Timing is informational, not a performance
 budget. No skipped item counts as a pass.
 
 The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,
 `/case/EX-24112`, `/case/EX-24112/trace` and `/case/EX-24112/record`. Route toggling
 also visits every current static route, tour stop and canonical case view.
+The header-only checks count hidden switches too and verify that the single
+header state controls each permitted page while opposite-side guards remain.
 Default-rule axe is actually run for Overview, pharmacy and claims in both
 modes; each audit has its own URL, mode, timestamp and violation report.
 Those checks do not claim universal accessibility conformance.

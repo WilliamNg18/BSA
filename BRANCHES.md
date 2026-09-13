@@ -5,17 +5,21 @@ description: Active development, the verified rollback point and the immutable o
 
 ## Active development
 
-Use `main` as the integration branch. Create focused PR branches from the latest
-merged main. Phase 1 uses `refactor/remove-presenter-ui`, based on merged commit
-`23ca3312336fe76a349db6b7f29cff0f13c6dd82`. A stale local `main` is not the active
-integration baseline.
+Use `main` as the integration branch. Create focused changes from the latest
+merged main. Tasks 14-18 are accepted at
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`. A stale local `main` is not the
+active integration baseline.
 
 ## Last known good
 
-`last-known-good` is rollback only. Both that branch and the annotated tag
-`lkg-2026-09-09` resolve to `23ca3312336fe76a349db6b7f29cff0f13c6dd82`.
-Do not develop or commit on it. Move the rollback branch or retag only at the
-user's explicit request, after verification of a replacement rollback point.
+`last-known-good` is rollback only. On the owner's explicit 13 September request,
+that branch and the new annotated tag `lkg-2026-09-13` now resolve to
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`, the current main before the
+header-only Agent control change. Annotation: **Last known good after Tasks 14 to 18**.
+The older annotated `lkg-2026-09-09` remains at
+`23ca3312336fe76a349db6b7f29cff0f13c6dd82`.
+Do not develop or commit on the rollback branch. Move it only on another
+explicit owner request; do not move or recreate existing tags.
 
 ## Original archive
 

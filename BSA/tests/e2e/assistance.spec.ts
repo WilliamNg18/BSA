@@ -32,8 +32,7 @@ for (const scenario of [
   { name: "Unreadable form", status: "Agent unable to determine", readable: false },
 ]) {
   for (const globalEnabled of [true, false]) {
-    for (const localAvailable of [true, false]) {
-      test(`pharmacy ${scenario.name}: global=${globalEnabled}, local=${localAvailable} remains advisory`, async ({ page }, testInfo) => {
+      test(`pharmacy ${scenario.name}: header=${globalEnabled} remains advisory`, async ({ page }, testInfo) => {
         await page.goto("pharmacy");
         await page.getByRole("banner").getByRole("switch").setChecked(true);
         await page.getByRole("radio", { name: scenario.name, exact: true }).click();
@@ -45,14 +44,12 @@ for (const scenario of [
         if (scenario.readable) await expect(checks).toBeVisible();
         else await expect(checks).toHaveCount(0);
         if (!globalEnabled) await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
-        if (!localAvailable) await page.getByRole("switch", { name: "Agent available", exact: true }).click();
-        const assistanceEnabled = globalEnabled && localAvailable;
-        await expect(status).toHaveText(!globalEnabled ? "Not checked: manual submission"
-          : !localAvailable ? "Agent unavailable: manual submission" : scenario.status);
+        const assistanceEnabled = globalEnabled;
+        await expect(status).toHaveText(globalEnabled ? scenario.status : "Not checked: manual submission");
         await expect(field).toHaveValue(endorsement);
         if (assistanceEnabled && scenario.readable) await expect(checks).toBeVisible();
         else await expect(checks).toHaveCount(0);
-        await expect(page.getByRole("switch", { name: "Agent available", exact: true })).toBeChecked({ checked: localAvailable });
+        await expect(page.getByRole("switch")).toHaveCount(1);
         const rule = page.getByRole("heading", { name: /^Rule retrieved for/ });
         const reading = page.getByText(/^Reading of the note \(mocked interpretation\):/);
         if (assistanceEnabled && scenario.readable) {
@@ -62,7 +59,6 @@ for (const scenario of [
           await expect(rule).toHaveCount(0);
           await expect(reading).toHaveCount(0);
           if (!globalEnabled) await expect(page.getByText("Agent Off · No checks performed in this scenario; real pharmacy checks are unknown.", { exact: true })).toBeVisible();
-          else if (!localAvailable) await expect(page.getByText("Agent unavailable · No checks performed; manual submission remains available.", { exact: true })).toBeVisible();
           else await expect(page.getByRole("list", { name: "Scripted pharmacy process" })).toContainText("STOPPED");
         }
         const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
@@ -72,11 +68,10 @@ for (const scenario of [
         await expect(page.getByRole("status").filter({ hasText: "Submitted (synthetic)." })).toBeVisible();
         await expect(submit).toBeEnabled();
       });
-    }
   }
 }
 
-test("pharmacy keeps edits and local availability across global assistance changes", async ({ page }) => {
+test("pharmacy keeps edits across header assistance changes and navigation", async ({ page }) => {
   await page.goto("queue");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("region", { name: "Exception queue table", exact: true }).locator("tbody > tr")).toHaveCount(50);
@@ -85,26 +80,14 @@ test("pharmacy keeps edits and local availability across global assistance chang
   await expect(page).toHaveURL(/\/pharmacy$/);
   await expect(page.getByRole("heading", { name: "Pharmacy pre-submission check", exact: true })).toBeVisible();
   const status = page.locator("[data-pharmacy-status]");
-  const local = page.getByRole("switch", { name: "Agent available", exact: true });
   const global = page.getByRole("switch", { name: /^Agent: (On|Off)$/ });
   const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
   await expect(status).toHaveText("Not checked: manual submission");
-  await expect(local).toBeChecked();
+  await expect(page.getByRole("switch")).toHaveCount(1);
   await field.fill("NCSO RK 21/08/26");
-  await local.click();
-  await expect(local).not.toBeChecked();
-  await local.click();
-  await expect(local).toBeChecked();
   await expect(status).toHaveText("Not checked: manual submission");
   await expect(page.getByRole("heading", { name: /^Rule retrieved for/ })).toHaveCount(0);
-  await local.click();
-  await expect(local).not.toBeChecked();
   await global.click();
-  await expect(local).not.toBeChecked();
-  await expect(status).toHaveText("Agent unavailable: manual submission");
-  await expect(page.getByText("Agent unavailable · No checks performed; manual submission remains available.", { exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /^Rule retrieved for/ })).toHaveCount(0);
-  await local.click();
   await expect(status).toHaveText("Ready to submit");
   await global.click();
   await expect(status).toHaveText("Not checked: manual submission");

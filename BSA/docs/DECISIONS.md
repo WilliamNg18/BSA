@@ -1008,3 +1008,30 @@ from screenshots. The independent catch proof must show 0 to 1 while lifecycle
 and attempts remain unchanged, then explicit submission and the same New queue
 item. Reduced-motion capture context and exact visible monthly numbers are
 part of the evidence; incomplete axe results remain manual-review caveats.
+
+## 2026-09-13: One header Agent control and an explicit rollback promotion
+
+The owner's sole Agent On/Off control is the top-right header switch. Remove
+the queue toolbar switch and pharmacy's local Agent available switch, including
+the latter's local state. All pages read `useAppStore.agentEnabled`; only
+`top-nav.tsx` calls its setter. Reset retains its explicit seeded-state contract
+(Agent Off, perspective unchanged), not a page-level override.
+
+The pharmacy's missing/ready/unable results still come from the scripted check,
+which is enabled only by the header. Manual submission remains healthy and
+non-blocking. Historical unavailable snapshots remain valid domain records,
+but there is no second UI control that simulates availability. Compare retains
+its labelled read-only Today/With-agent projection and never changes the mode.
+On-only actions are shown or hidden by the shared state.
+
+Production and live Playwright tests cover every route, canonical case route,
+tour stop and all three perspectives. They assert exactly one switch including
+hidden controls, its location in the header, page response to both states, and
+unchanged mode after navigation and comparison controls. A source regression
+also restricts the setter to the header component.
+
+Before this change, tag the current main
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3` as annotated `lkg-2026-09-13`
+with **Last known good after Tasks 14 to 18**, and move `last-known-good` to it.
+This is explicit owner authorisation, not automatic rollback promotion.
+`cowork-v1`, older tags and nine transfer checkpoint tags remain untouched.

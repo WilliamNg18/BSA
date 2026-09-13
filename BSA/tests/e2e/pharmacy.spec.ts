@@ -64,19 +64,15 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
 }
 
 for (const scenario of scenarios) {
-  test(`Issue20 ${scenario.id}: manual, unavailable and checked statuses remain distinct`, async ({ page }) => {
+  test(`Issue20 ${scenario.id}: header selects manual or checked status without changing receipts`, async ({ page }) => {
     await page.goto("pharmacy");
     await page.getByRole("radio", { name: scenario.label, exact: true }).click();
     const flag = page.getByRole("banner").getByRole("switch");
-    const availability = page.getByRole("switch", { name: "Agent available", exact: true });
     const status = page.locator("[data-pharmacy-status]");
     const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
     await expect(status).toHaveText("Not checked: manual submission");
     await expect(submit).toBeEnabled();
-    await availability.setChecked(false);
-    await expect(status).toHaveText("Not checked: manual submission");
-    await flag.setChecked(true);
-    await expect(status).toHaveText("Agent unavailable: manual submission");
+    await expect(page.getByRole("switch")).toHaveCount(1);
     await expect(page.getByRole("list", { name: "Scripted pharmacy process" })).toHaveCount(0);
     await expect(submit).toBeEnabled();
     await submit.click();
@@ -85,7 +81,7 @@ for (const scenario of scenarios) {
     await expect(receipt).toContainText("Not retrieved / Not retrieved");
     await expect(receipt).toContainText("No checks performed");
     const frozen = await receipt.innerText();
-    await availability.setChecked(true);
+    await flag.setChecked(true);
     await expect(status).toHaveText(scenario.status);
     await expect(submit).toBeEnabled();
     await flag.setChecked(false);
@@ -186,14 +182,13 @@ test("Task4 global Reset clears receipts, all form states and assumptions on thi
   await page.goto("pharmacy");
   const flag = page.getByRole("banner").getByRole("switch");
   const field = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
-  const availability = page.getByRole("switch", { name: "Agent available", exact: true });
   const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
   await flag.setChecked(true);
   await field.fill("NCSO RK 21/08/26");
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await field.fill("NCSO RK 21/08/26");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Agent unable to determine");
-  await availability.setChecked(false);
+  await flag.setChecked(false);
   await submit.click();
   await page.getByText("Timeline assumptions", { exact: true }).click();
   const inputs = page.locator("[data-pharmacy-assumptions] input");
@@ -202,7 +197,7 @@ test("Task4 global Reset clears receipts, all form states and assumptions on thi
   await expect(inputs.first()).toHaveAttribute("aria-invalid", "true");
   await confirmReset(page);
   await expect(flag).not.toBeChecked();
-  await expect(availability).toBeChecked();
+  await expect(page.getByRole("switch")).toHaveCount(1);
   await expect(page.getByRole("radio", { name: "Information missing", exact: true })).toBeChecked();
   await expect(field).toHaveValue("NCSO  RK");
   await expect(page.getByRole("region", { name: "Submission receipt" })).toHaveCount(0);
@@ -250,7 +245,7 @@ test("Task4 rapid revisions, pending submission, cancellation and reduced-motion
   await page.clock.runFor(3000);
   await expect(page.getByRole("list", { name: "Scripted pharmacy process" })).toHaveCount(0);
   await flag.setChecked(true);
-  await page.getByRole("switch", { name: "Agent available", exact: true }).setChecked(false);
+  await flag.setChecked(false);
   await page.clock.runFor(3000);
   await expect(page.getByRole("heading", { name: /^Rule retrieved/ })).toHaveCount(0);
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();

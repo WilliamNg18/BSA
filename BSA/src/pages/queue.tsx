@@ -2,9 +2,8 @@ import { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NativeSwitch as Switch } from "@/components/ui/native-switch";
 import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
-import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
+import { SyntheticTag } from "@/components/demo/labels";
 import { QueueMonth } from "@/components/demo/queue-month";
 import { QueueDay } from "@/components/demo/queue-day";
 import { QueueCompare } from "@/components/demo/queue-compare";
@@ -23,7 +22,6 @@ export function QueuePage() {
   const lifecycles = useAppStore((s) => s.lifecycles);
   const revisions = useAppStore((s) => s.caseRevisions);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  const setAgentEnabled = useAppStore((s) => s.setAgentEnabled);
   const followed = useAppStore((s) => s.followedCaseId);
   const perspective = useAppStore((s) => s.perspective);
   const { result } = useMonthModel();
@@ -81,8 +79,6 @@ export function QueuePage() {
       <p className="text-sm text-muted-foreground">Illustrative flow, not every outcome: abstentions still need manual work; rule-cleared items use no model. Generated rows have no case evidence or citations.</p>
     </header>
     <div className="flex flex-wrap items-center gap-3">
-      <Switch aria-label={`Queue assistance: ${agentEnabled ? "On" : "Off"}`} checked={agentEnabled} onCheckedChange={setAgentEnabled} />
-      <span>Agent {agentEnabled ? "On" : "Off"}</span><BoundaryTag cls="human" />
       {result ? <QueueCompare key={`compare-${revision}`} result={result} /> : <Button variant="outline" disabled>Compare</Button>}
       {followed && perspective !== "nhsbsa" && <Button asChild variant="link"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(followed)}`}>Followed claim: {followed}</Link></Button>}
     </div>

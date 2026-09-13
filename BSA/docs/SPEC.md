@@ -309,10 +309,10 @@ snapshot. Reset/reload restores seeds; this is not durable audit storage.
 
 `/pharmacy` offers Complete endorsement (A), Information missing (B) and
 Unreadable form (D), an editable endorsement and Restore. Off performs no
-advisory check; On runs a cancellable two-second scripted check. Agent available
-models unavailable assistance without blocking **Continue with submission**.
-Intentional Off is labelled **Not checked: manual submission**; On with unavailable
-assistance is **Agent unavailable: manual submission**. Only an actual failed
+advisory check; On runs a cancellable two-second scripted check. The header is
+the sole Agent switch; there is no page-local availability override.
+**Continue with submission** remains non-blocking in both modes.
+Intentional Off is labelled **Not checked: manual submission**. Only an actual failed
 scripted interpretation is **Agent unable to determine**. Manual work is not
 presented as a broken service.
 Edits invalidate old checks. B's date is applied only by explicit action.

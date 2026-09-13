@@ -1,16 +1,22 @@
 ---
 title: Durable project facts
 description: Read first at each task; correct facts in place rather than appending history.
-ms.date: 2026-09-12
+ms.date: 2026-09-13
 ---
 
 ## Purpose and principle
 
 Tasks 14-18 simplify numbers, queue and claims and add independent
-Pharmacy/NHSBSA/Both perspectives. Functional and viewer acceptance is complete
-at clean `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`; the final documentation
-merge and latest-main recheck remain release steps. PROGRESS owns the evidence.
+Pharmacy/NHSBSA/Both perspectives. Their final accepted main is
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`: final CI and deployment succeeded,
+and all 14 latest-main live checks passed. V's viewer evidence stays pinned to
+the earlier identical runtime at `c0203fc`. PROGRESS owns the evidence.
 Infrastructure remains frozen.
+
+On 13 September the owner explicitly created annotated `lkg-2026-09-13`
+(**Last known good after Tasks 14 to 18**) and advanced `last-known-good`
+to that pre-change main `80d955b`. Existing tags and `cowork-v1` remain unchanged.
+Do not advance the rollback branch again without explicit owner instruction.
 
 The Prescription Exception Case Builder is a static, offline React 19 and
 TypeScript demonstration using synthetic prescriptions, pharmacies and tariff
@@ -77,6 +83,11 @@ links offer a perspective switch, not an error. The header stays one row at
 normal 360-1920 widths and wraps at narrower widths or enlarged text, with
 measured focus/scroll clearance. Default and confirmed Reset are Agent Off.
 Reset restores seeded data, assumptions and local controls but retains perspective.
+Agent On/Off is controlled only by the top-right header switch. No page may call
+`setAgentEnabled` or keep its own assistance override. The queue toggle and
+pharmacy's local availability switch are removed; pharmacy checks use the header
+state directly. On-only actions are conditionally shown by that state. The
+read-only Compare projection never toggles assistance or changes lifecycle.
 `pharmacyCorrections` records validated missing-to-ready evidence after a human
 applies a correction; it never submits or changes lifecycle/history. It is
 session-only, cleared by Reset, and distinct from whole-scenario projections.
@@ -107,19 +118,21 @@ protection are enabled, `.env*` is ignored, and no actionable credential was
 found in the recorded local tree/reachable-history scan. Deployment uses the
 existing site-scoped OIDC identity; no SWA token or publish-profile action remains.
 
-Current functional release is `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`,
-after N #64, P #66, Q #67 and X #65. Exact final functional CI at `01d9bf9`
+The accepted Tasks 14-18 release is `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`,
+after N #64, P #66, Q #67, X #65 and V #63. Exact final-main CI 34720652232
 passed check, 774 unique units and 1,086 blocking browsers across four shards
-(272/272/271/271), zero quarantine. Main OIDC 34719477099 succeeded.
+(272/272/271/271), zero quarantine. Main OIDC 34720652234 succeeded.
 The coordinator's actual live run passed 14/14 checks, 28 clean identities
 and seven axe audits (three Off/four On), zero violations. It includes the
 same-item perspective round trip Off then On without Reset. V separately
+at the preceding identical runtime `c0203fc`
 captured/reviewed 18 states (14 content/four guards), with 18 zero-violation axe
 audits; 13 retain incomplete rules requiring judgement. Nine novice clarity
 points and 22 walk checkpoints passed, including the live caught-item counter
 and explicit submission boundary. Its first selector-failed walk is retained.
-Final latest-main verification follows V's documentation merge. No later build
-is silently attributed to these results; no new application issue IDs are deferred.
+Final latest-main verification completed after V's documentation merge.
+The header-only Agent follow-up verifies its own deployment; no later build
+is silently attributed to these results. No application issue IDs were deferred.
 
 ### Historical foundation and provenance
 
@@ -202,12 +215,14 @@ after the route-opacity repair and 32 new frame cases. #35 is closed as not repr
 during timeout teardown after slow navigation, with no actionable axe defect
 established. Historical evidence is retained; the unchanged blocking test passed.
 
-Never alter last-known-good, lkg-2026-09-09 or cowork-v1 refs; see
+Preserve the owner-promoted `last-known-good` at `lkg-2026-09-13`, and never
+move existing tags or `cowork-v1`; see
 [branch policy](../../BRANCHES.md) and [current branch record](BRANCHES.md).
 
 Read AGENTS first, then this file, DECISIONS, LEARNINGS, PROGRESS, SCOPE and
-HANDOVER. N/Q/P/X are merged; V's final documentation goes through a
-coordinator-serialised PR merge, not self-merge. Current acceptance is in PROGRESS; checkpoint sections
+HANDOVER. N/Q/P/X/V are merged. Changes land through coordinator-serialised
+validation; explicit owner requests may authorise direct main commits.
+Current acceptance is in PROGRESS; checkpoint sections
 in HANDOVER remain historical and all checkpoint tags stay immutable.
 Old issue text mentioning size budgets or transfer waiting is superseded by
 the current gates and the owner's public-repository resumption.
@@ -230,7 +245,7 @@ Website Contributor grant and five GitHub variables. Owner actions for setup:
 none. The current strict-header application has actual 14-check live acceptance
 at clean `c0203fc`; earlier `b813c62` evidence remains source-pinned. DEPLOYMENT records
 startup and commit verification; coordinator owns Azure mutations and the
-fresh latest-commit check after this documentation merges.
+fresh latest-commit check after each new deployment.
 
 ## How changes land
 

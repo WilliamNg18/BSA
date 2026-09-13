@@ -1,10 +1,36 @@
 ---
 title: Eighteen-task implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
-ms.date: 2026-09-12
+ms.date: 2026-09-13
 ---
 
-## Current acceptance: Tasks 14-18, clarity and perspectives
+## 13 September: rollback checkpoint and single header Agent control
+
+The owner explicitly promoted pre-change main
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3` to `last-known-good` and created
+annotated `lkg-2026-09-13`: **Last known good after Tasks 14 to 18**.
+Tag object: `b14bce2e6b5a02e5ea6815a9b8bbc88027100bc3`. Older tags,
+`cowork-v1` and all nine transfer checkpoint tags are unchanged.
+
+That completed release passed CI 34720652232 (774 unique units, 1,086 blocking
+browsers), deployment 34720652234 and all 14 latest-main live checks. Its
+14-check acceptance is distinct from the earlier c0203fc screenshots below.
+
+The follow-up removes the queue Agent switch and pharmacy availability switch.
+Only the top-right header changes assistance mode; every page reads its shared
+state. Reset still restores Agent Off and preserves perspective. Compare remains
+a read-only two-column projection, not another mode control. Route/perspective
+Playwright coverage counts hidden controls too, flips the header state on every
+route and verifies state retention through navigation and comparison actions.
+The follow-up's deployment is verified independently of the rollback checkpoint.
+Local verification: check and 775 unit tests passed. The targeted production
+run passed 141 cases covering the initial route matrix plus pharmacy/queue
+regressions; the strengthened final singleton matrix then passed all 100 cases
+(33 routes across three perspectives, plus navigation/Compare state retention).
+These overlapping runs are not 241 unique browser tests. Final main CI and
+live deployment retain their own exact-head run records.
+
+## Tasks 14-18 source-pinned acceptance
 
 Tasks 1-13 remain accepted. Tasks 14-18 have completed their bounded functional
 and viewer acceptance at clean `c0203fc73991c0968329dbc2f4bbfb4aa8c1781f`.
