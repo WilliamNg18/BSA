@@ -1011,6 +1011,18 @@ declaration. Empty labelled fields make the human input explicit, including
 the prescriber needed by the existing mandatory-field gate. A typed declaration
 and a Type 1 operator's confirmation remain separate evidence and actions.
 
+## 2026-09-13: Task 21 U keeps declaration preparation below the authority boundary
+
+Prefilling a form and reconciling evidence are different actions. Draft
+preparation must not return a ready, confident or reconciled flag. Preserve
+the pharmacy's original values beside editable capture fields, clear the human
+reconciliation assertion after edits, and submit only through the shared store.
+
+An optional captured prescriber is still mandatory evidence where the gate
+requires it. Keeping the original "Illegible" image evidence visible is not
+permission to waive that requirement. A step-through assumed stopwatch is
+presentation only; it neither measures operator work nor confirms anything.
+
 ## 2026-09-13: Preserve uncertainty when introducing captured evidence
 
 A declaration cannot inherit image confidence or silently fill other mandatory
