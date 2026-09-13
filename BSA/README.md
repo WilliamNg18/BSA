@@ -18,8 +18,9 @@ records 20 hosted checks against clean `1327e65`, separate from the final
 merged-V-main release gate tracked by the coordinator.
 The [independent 43-image review](docs/FIRST-TIME-VIEWER.md) found D/E content
 failures; functional success alone is not final novice-story acceptance.
-The repaired deployment `d5832e0` passed a separate full 20-check hosted run;
-its new 43-image review is pending, with the original failed review preserved.
+The repaired deployment `d5832e0` passed a separate full 20-check hosted run
+and bounded independent review of all 43 new images. The original failed
+review is preserved; manual accessibility caveats and final release gating remain.
 The single Agent On/Off switch is in the header, top right: pharmacy, queue
 and all other pages read that shared state and have no local overrides.
 

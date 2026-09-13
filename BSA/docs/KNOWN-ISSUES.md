@@ -38,7 +38,10 @@ subsequently passed **20/20 hosted checks** in 4.6 minutes, captured at
 identities and 24 zero-violation axe audits are retained alongside the original.
 The Claim filters `aria-prohibited-attr` incompletes are absent; 16 audits still
 retain color-contrast incompletes. Independent review of the repaired images
-is pending, as is final merged-V-main acceptance. The original failed review
+passed within its captured scope: all 43 images were inspected full-height,
+with no blocking new finding. Minor "1 items" pluralisation remains in the
+Pharmacy claims Paid this month filter. Manual color-contrast clearance and
+final merged-V-main acceptance remain separate. The original failed review
 is not retroactively cleared.
 
 Tasks 14-18's historical live review at clean `c0203fc` is recorded separately in

@@ -29,7 +29,10 @@ The repaired positive contracts cover [Claim filters](d5832e0/check-06),
 [D's initial and fresh capture](d5832e0/check-09), and
 [E's deterministic closing](d5832e0/check-10/04-audit-deterministic-e-trace-on.png).
 Independent actual full-height review of this complete new 43-image set is
-**pending**; functional PASS alone does not clear the original novice findings.
+**PASS within the captured scope: 43/43 inspected, zero remaining**. D and E's
+content findings and the Claim filters captured semantics are resolved.
+No blocking new finding was observed; minor "1 items" filter copy remains.
+Manual color-contrast incompletes are not cleared by this bounded verdict.
 The [review record](../../FIRST-TIME-VIEWER.md) separates the two sources.
 The original source and failed review below remain unchanged evidence.
 

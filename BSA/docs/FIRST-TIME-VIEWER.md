@@ -6,20 +6,46 @@ ms.date: 2026-09-13
 
 # First-time viewer review
 
-## Repaired Task 24 execution at d5832e0: review pending
+## Repaired Task 24 execution at d5832e0: bounded review PASS
 
 The coordinator explicitly released the repaired deployment gate after PR #80
 merged and all four repair CI shards passed. **20/20 hosted checks passed** on
 `d5832e0faa44c32242cb75f2970288d4499befae`; capture source was
 `59bdf65be2601a174f197ddb43f87c507f649451`, with identical runtime and application
 ancestry. The [separate new evidence](screens/task24/README.md) contains 40
-matching clean identities and 43 PNGs. Independent full-height review is
-**pending**: this is not yet a replacement novice-content verdict.
+matching clean identities and 43 PNGs. **Independent novice/visual review:
+PASS within the captured scope.** All **43/43 PNGs were actually inspected
+full-height**, with zero remaining: 19 Off / 24 On, including both supplemental
+perspective images. Review used full-resolution overlapping crops; all 35
+distinct image hashes and duplicate images were covered. This is actual
+image review, not a verdict inferred from functional PASS.
+
+| Repaired finding | Observed result |
+| --- | --- |
+| D initial and fresh unconfirmed capture | Neutral "Not established", no satisfied/green marker, explicit missing-evidence qualification and no false built-case header. Poor scan, abstention, NOT RUN, declaration provenance and explicit human confirmation remain intact. |
+| E closing | Existing-rules pricing, no person involved and agent not invoked. "Open case evidence" targets `/case/EX-24101` without implying approval. |
+| Claim filters | Captured AX exposes named `group "Claim filters"` containing the filter buttons. The former ARIA incomplete is absent in all five relevant audits. |
+
+The complete EPS/referral story, fresh paper capture, completed-only B, C's
+56/84 conflict, F's original record, B's dated replay and shared-model assumptions
+were rechecked against the current demo script. **No blocking new content or
+click-label mismatch was found.** A minor nonblocking "1 items" pluralisation
+remains in the Pharmacy claims Paid this month filter.
 
 All 24 unrestricted axe audits have zero violations. Sixteen retain 121
-color-contrast node occurrences; the former five `aria-prohibited-attr`
-incompletes are absent. No full manual accessibility claim is made. The
-original source-pinned failed review below is retained, not relabelled.
+color-contrast node occurrences: six partial overlaps, 11 partial obscurations,
+92 overlapping-background cases and 12 image-node cases. The former five
+`aria-prohibited-attr` incompletes are absent. Manual contrast clearance remains
+unverified. Some overlay-covered content was corroborated through text/AX,
+not visually recovered.
+
+The 41 enriched views are 40 Both / one Pharmacy, plus two supplemental Pharmacy
+images, not a static three-perspective matrix. This is AI evaluation of captured
+evidence, not human participant research, timed comprehension, actual screen-reader
+use, WCAG certification, mobile/dark-mode or cross-browser testing. No new browser
+execution occurred during review. The original source-pinned failed review below
+is retained, not relabelled. Final V merge/deployment and the full merged-main
+20-check repeat remain the coordinator's release gate.
 
 ## Task 24: integrated process review at 1327e65
 
