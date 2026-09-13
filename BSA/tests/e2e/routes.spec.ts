@@ -46,15 +46,17 @@ for (const suffix of ["", "/trace", "/record"]) {
   }
 }
 
-test("shared filler EX-24104 has real pack, trace, record and pharmacy deep links", async ({ page }) => {
+for (const id of ["SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) {
+test(`shared Hillcrest item ${id} has real pack, trace, record and pharmacy deep links`, async ({ page }) => {
   for (const suffix of ["", "/trace", "/record"]) {
-    await page.goto(`case/EX-24104${suffix}`);
+    await page.goto(`case/${id}${suffix}`);
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByText("Case not found", { exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-    await expect(page.getByRole("heading", { name: "Claim detail: EX-24104", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
   }
 });
+}
 
 for (const path of ["missing-page", "notes"]) {
   test(`${path} is not found and has a working home link`, async ({ page }, testInfo) => {
