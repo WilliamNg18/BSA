@@ -1,0 +1,24 @@
+{
+  "at": "2026-09-13T21:27:20.320Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+  "inputId": "_r_t_-prescriber",
+  "value": "D",
+  "reconciliationChecked": false,
+  "rect": {
+    "x": 33,
+    "y": 118.734375,
+    "width": 279,
+    "height": 36,
+    "top": 118.734375,
+    "right": 312,
+    "bottom": 154.734375,
+    "left": 33
+  },
+  "outline": {
+    "style": "solid",
+    "width": "2px",
+    "color": "oklch(0.556 0 0)"
+  },
+  "capturedHeading": false,
+  "recordDecisionButtons": 0
+}

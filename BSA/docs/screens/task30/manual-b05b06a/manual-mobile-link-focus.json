@@ -1,0 +1,23 @@
+{
+  "dialogNameElement": "<h2 id=\"radix-_r_5_\" data-slot=\"sheet-title\" class=\"font-semibold text-foreground\">Navigation</h2>",
+  "activeText": "Overview",
+  "activeClasses": "({isActive:e})=>md(\"block rounded-md px-3 py-2 text-sm focus-visible:outline-2\",e?\"bg-accent text-accent-foreground\":\"hover:bg-muted\") active",
+  "outline": {
+    "style": "auto",
+    "width": "1px",
+    "color": "oklab(0.556 0 0 / 0.5)"
+  },
+  "padding": "8px 12px",
+  "rect": {
+    "x": 107,
+    "y": 121,
+    "width": 80.984375,
+    "height": 35,
+    "top": 121,
+    "right": 187.984375,
+    "bottom": 156,
+    "left": 107
+  },
+  "cssColor": "oklch(0.985 0 0)",
+  "cssBackground": "rgba(0, 0, 0, 0)"
+}

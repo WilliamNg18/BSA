@@ -1,0 +1,25 @@
+{
+  "at": "2026-09-13T21:25:07.288Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+  "focusedTag": "P",
+  "focusedRole": "alert",
+  "text": "Reconcile the declaration with the paper, or use manual capture.",
+  "rect": {
+    "x": 33,
+    "y": 478.734375,
+    "width": 279,
+    "height": 40,
+    "top": 478.734375,
+    "right": 312,
+    "bottom": 518.734375,
+    "left": 33
+  },
+  "outline": {
+    "style": "none",
+    "width": "3px",
+    "color": "oklab(0.556 0 0 / 0.5)"
+  },
+  "headerBottom": 56,
+  "capturePending": true,
+  "recordButtons": 0
+}
