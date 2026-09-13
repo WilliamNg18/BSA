@@ -12,21 +12,21 @@ test("caught-before-submission records only a completed human-applied correction
   await flag(page).setChecked(true);
   const endorsement = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true });
   const metric = page.getByRole("region", { name: "Selected pharmacy this month", exact: true })
-    .locator("dl > div").filter({ hasText: "Caught before submission" }).getByRole("definition");
+    .locator(":scope > dl > div").filter({ has: page.getByText("Caught before submission", { exact: true }) }).getByRole("definition");
   await endorsement.fill("NCSO RK 21/08/26");
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready to submit");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
   await navigatePrimary(page, "Pharmacy claims");
   await expect(metric).toHaveText("0");
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready to submit");
+  await page.getByRole("button", { name: "Apply fix", exact: true }).click();
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
   await navigatePrimary(page, "Pharmacy claims");
   await expect(metric).toHaveText("1");
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready to submit");
+  await page.getByRole("button", { name: "Apply fix", exact: true }).click();
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
   await navigatePrimary(page, "Pharmacy claims");
   await expect(metric).toHaveText("1");
   await confirmReset(page);
@@ -44,7 +44,7 @@ for (const cancellation of ["edit", "scenario", "Agent Off", "leave page", "Rese
     await flag(page).setChecked(true);
     await page.clock.runFor(3000);
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
-    await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+    await page.getByRole("button", { name: "Apply fix", exact: true }).click();
     if (cancellation === "edit") await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO XY 21/08/26");
     if (cancellation === "scenario") await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
     if (cancellation === "Agent Off") await flag(page).setChecked(false);
@@ -55,7 +55,7 @@ for (const cancellation of ["edit", "scenario", "Agent Off", "leave page", "Rese
     await navigatePrimary(page, "Pharmacy claims");
     await flag(page).setChecked(true);
     const metric = page.getByRole("region", { name: "Selected pharmacy this month", exact: true })
-      .locator("dl > div").filter({ hasText: "Caught before submission" }).getByRole("definition");
+      .locator(":scope > dl > div").filter({ has: page.getByText("Caught before submission", { exact: true }) }).getByRole("definition");
     await expect(metric).toHaveText("0");
   });
 }
