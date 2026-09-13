@@ -28,10 +28,13 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
             <div><dt>Time / actor</dt><dd>{event.at} · {event.actor}</dd></div>
             <div><dt>Transition</dt><dd>{event.from ? pharmacy ? LIFECYCLE_LABELS[event.from].pharmacy : LIFECYCLE_LABELS[event.from].nhsbsa[enabled ? "on" : "off"] : "New"} → {pharmacy ? LIFECYCLE_LABELS[event.to].pharmacy : LIFECYCLE_LABELS[event.to].nhsbsa[enabled ? "on" : "off"]}</dd></div>
             <div><dt>Attempt / record</dt><dd>{event.revision ?? "Historical"} · {event.recordId ?? "No decision record"}</dd></div>
+            {event.channel && <div><dt>Channel</dt><dd>{event.channel === "eps" ? "EPS" : "Paper"}</dd></div>}
+            {event.rbCode && <div><dt>RB code</dt><dd>{event.rbCode}</dd></div>}
             {event.reason && (!pharmacy || !enabled) && <div><dt>Human reason</dt><dd>{event.reason}</dd></div>}
             {event.reason && pharmacy && enabled && !event.approvedDraft && <div><dt>Pharmacy response</dt><dd>No operator-approved note recorded.</dd></div>}
-            {event.tariffVersion && <div><dt>Rule / clause</dt><dd>{event.tariffVersion} · {event.clauseId ?? "Not recorded"}</dd></div>}
+            {event.tariffVersion && (!pharmacy || !enabled || event.approvedDraft) && <div><dt>Rule / clause</dt><dd>{event.approvedDraft && pharmacy && enabled ? event.approvedDraft.tariffVersion : event.tariffVersion} · {event.approvedDraft && pharmacy && enabled ? event.approvedDraft.clauseId : event.clauseId ?? "Not recorded"}</dd></div>}
             {event.approvedDraft && enabled && <div><dt>Operator-approved note</dt><dd>{event.approvedDraft.text}</dd></div>}
+            {event.approvedDraft && enabled && event.exactFix && <div><dt>Exact fix approved by operator</dt><dd>{event.exactFix}</dd></div>}
           </dl>
           <p>{event.message}</p>
         </li>)}
@@ -41,10 +44,22 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
           <h3 className="font-semibold">Attempt {revision.number} · {revision.kind}</h3>
           <dl className="grid gap-1 sm:grid-cols-2">
             <div><dt>Endorsement snapshot</dt><dd className="break-words">{revision.endorsementText || "None"}</dd></div>
+            <div><dt>Channel</dt><dd>{revision.channel === "eps" ? "EPS" : revision.channel === "paper" ? "Paper" : "Not recorded (legacy attempt)"}</dd></div>
             <div><dt>Confirmation</dt><dd>{revision.confirmation ?? "None"}</dd></div>
             <div><dt>Precheck / mode</dt><dd>{revision.precheck?.status ?? "Not checked"} · {revision.precheck?.mode ?? "Seed"}</dd></div>
             <div><dt>Rule / clause / checked at</dt><dd>{revision.precheck?.tariffVersion ?? "None"} · {revision.precheck?.clauseId ?? "None"} · {revision.precheck?.checkedAt ?? "Not checked"}</dd></div>
           </dl>
+          {revision.declaration && <section aria-label={`Declaration for attempt ${revision.number}`} className="mt-2 space-y-1">
+            <h4 className="font-semibold">Immutable pharmacy declaration</h4>
+            <p>Every field: declared by the pharmacy, not read from the form.</p>
+            <dl className="grid gap-1 sm:grid-cols-2">
+              <div><dt>Product code</dt><dd>{revision.declaration.fields.productCode ?? "Not declared"}</dd></div>
+              <div><dt>Quantity</dt><dd>{revision.declaration.fields.quantity ?? "Not declared"}</dd></div>
+              <div><dt>Prescriber</dt><dd>{revision.declaration.fields.prescriber ?? "Not declared"}</dd></div>
+              <div><dt>Endorsement</dt><dd>{revision.declaration.fields.endorsementText || "Not declared"}</dd></div>
+              <div><dt>Declared at</dt><dd>{revision.declaration.declaredAt}</dd></div>
+            </dl>
+          </section>}
           {revision.precheck && <details><summary>Full advisory snapshot</summary><pre className="whitespace-pre-wrap break-all text-xs">{JSON.stringify(revision.precheck, null, 2)}</pre></details>}
         </li>)}
       </ol>

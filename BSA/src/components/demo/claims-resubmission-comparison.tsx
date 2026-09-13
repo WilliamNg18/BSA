@@ -14,8 +14,8 @@ export function ClaimsResubmissionComparison({ enabled, approved, status }: {
 
   return <section aria-label="Resubmission comparison" className="space-y-2">
     <p className="text-sm">{enabled
-      ? "A check supports correction, not payment. Resubmission still requires human re-check."
+      ? "A check supports correction, not payment. Explicit resubmission returns the item to existing routing; any required judgement remains human."
       : "Synthetic assumption: resubmitting without an advisory sufficiency check may mean another correction cycle. Real pharmacy checks are unknown."}</p>
-    <PainMarker resolved={resolved} pain={pain} resolution="Current correction checked · Human re-check required" />
+    <PainMarker resolved={resolved} pain={pain} resolution="Current correction checked · Explicit resubmission required" />
   </section>;
 }
