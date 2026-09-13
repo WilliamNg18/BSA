@@ -46,13 +46,14 @@ import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-
 import { routeSubmission, routingFactsForCase, RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { createPharmacyState, type PharmacyState } from "./pharmacy-store";
 import { createQueueState, type QueueState } from "./queue-store";
-import { capturedFields, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
+import { capturedFields, capturedFieldsMatchSources, compatibleCapture, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
+import { mandatoryFieldsCheck } from "@/lib/domain/rules";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
 // demonstration to its starting point.
 
-function seededRecords(): DecisionRecord[] {
+function seededRecords(): LifecycleDecisionRecord[] {
   return immutable([
     {
       id: "DR-000871",
@@ -74,6 +75,13 @@ function seededRecords(): DecisionRecord[] {
       overrideReason: null,
       operator: "Operator P (synthetic)",
       synthetic: true,
+    },
+    {
+      id: "DR-000872", caseId: "EX-24088", timestamp: "2026-09-04T09:03:00.000Z",
+      tariffVersion: "n/a", agentVersion: "not invoked", inputs: ["Corrected endorsement: NCSO DL 06/08/26"],
+      sources: ["Pharmacy correction revision 2"], checks: [], recommendation: "NONE", decision: "ACCEPT",
+      isOverride: false, overrideReason: "Human checked the corrected initials and date.",
+      reason: "Human checked the corrected initials and date.", revision: 2, operator: "Demo operator", synthetic: true,
     },
   ]);
 }
@@ -120,8 +128,10 @@ interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, Manu
   resetDemo: () => void;
 }
 
-const initialStates = () =>
-  Object.fromEntries(CASES.map((c) => [c.id, c.initialState])) as Record<string, CaseState>;
+const initialStates = (): Record<string, CaseState> => {
+  const { lifecycles } = seededLifecycleSession();
+  return Object.fromEntries(Object.keys(lifecycles).map((id) => [id, CASES.find((c) => c.id === id)?.initialState ?? "operator_review_required"]));
+};
 
 const processDraft = (): ProcessMonthDraft => Object.fromEntries(Object.entries(PROCESS_MONTH_DEFAULTS).map(([key, value]) => [key, String(value)])) as ProcessMonthDraft;
 
@@ -129,11 +139,15 @@ function seededProcesses(): Record<string, ItemProcess> {
   const { lifecycles, caseRevisions } = seededLifecycleSession();
   return immutable(Object.fromEntries(Object.values(lifecycles).map((row) => {
     const c = caseForLifecycle(row.caseId, lifecycles, caseRevisions)!;
-    const channel = caseRevisions[row.caseId][0].channel!;
-    const facts = { ...routingFactsForCase(c, channel, !["submitted", "in_review"].includes(row.state) && !["A", "D", "E"].includes(c.scenario)) };
+    const revision = caseRevisions[row.caseId].at(-1)!;
+    const channel = revision.channel!;
+    const facts = { ...routingFactsForCase(c, channel) };
     if (row.state === "referred_back") facts.type2Decision = "insufficient";
     if (row.state === "information_requested") facts.type2Decision = "request_information";
-    return [row.caseId, { revision: 1, channel, routing: routeSubmission(facts), capture: null, rbCode: null }];
+    if (row.state === "resubmitted") facts.interpretationRequired = true;
+    if (row.state === "paid" && c.scenario === "F") facts.type2Decision = "sufficient";
+    return [row.caseId, { revision: revision.number, channel, routing: routeSubmission(facts), capture: null,
+      rbCode: row.state === "referred_back" ? row.history.at(-1)?.rbCode ?? null : null }];
   })));
 }
 
@@ -228,7 +242,7 @@ export const useAppStore = create<AppState>((set, get) => {
     const s = get(), at = timestamp(c.id), revision = s.caseRevisions[c.id].at(-1)!.number;
     const clauseId = input.tariffVersion === pack.tariffVersion && input.recommendation !== "NONE" ? pack.clause?.id : undefined;
     const approvedDraft = draft === undefined ? undefined : { text: draft, approvedAt: at, approvedBy: "Demo operator", decision: input.decision, tariffVersion: pack.tariffVersion, clauseId: pack.clause!.id };
-    const record = immutable<LifecycleDecisionRecord>({ ...input, id: `DR-${String(s.records.length + 872).padStart(6, "0")}`,
+    const record = immutable<LifecycleDecisionRecord>({ ...input, id: `DR-${String(Math.max(...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
       timestamp: at, operator: "Demo operator", synthetic: true, isOverride, overrideReason: reason.trim() || null,
       reason: reason.trim(), revision, clauseId, ...(rbCode ? { rbCode } : {}), ...(approvedDraft ? { approvedDraft } : {}) });
     const event: HistoryEvent = { at, actor: "operator", from: current.state, to, message: "Human decision recorded (synthetic).",
@@ -271,9 +285,14 @@ export const useAppStore = create<AppState>((set, get) => {
       const capture = { revision: revision.number, confirmedAt: at, operator: "Demo operator", fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled };
       const confirmedCase = { ...c, capturedEvidence: { fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled, revision: revision.number } };
       const facts = routingFactsForCase({ ...confirmedCase, extracted: capturedFields(confirmedCase) }, process.channel, true);
-      const routing = routeSubmission({ ...facts, interpretationRequired: true });
-      const capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
+      const captureCompatible = input.provenance === "human_capture" && c.scenario !== "D"
+        ? capturedFieldsMatchSources(confirmedCase) : compatibleCapture(confirmedCase);
+      const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !captureCompatible ||
+        revision.kind === "resubmission" || !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) });
+      let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
         revision: revision.number, channel: process.channel, processStep: "type1_capture", capture, message: "Human capture confirmed; code routed the captured fields." });
+      if (!routing.requiresHuman && routing.pricingAuthority) capturedRow = appendHistory(capturedRow, { at, actor: "code", from: "in_review", to: "paid",
+        revision: revision.number, channel: process.channel, processStep: "existing_pricing", message: routing.reason });
       set({ itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, capture, routing } }),
         caseStates: { ...s.caseStates, [c.id]: routing.requiresHuman ? "operator_review_required" : "cleared_by_rules" },
         lifecycles: immutable({ ...s.lifecycles, [c.id]: capturedRow }) });

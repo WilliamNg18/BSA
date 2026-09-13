@@ -3,6 +3,7 @@ import { productByCode } from "./reference";
 import { endorsementRequired, evaluateRequirements, mandatoryFieldsCheck, QUALITY_THRESHOLD, reconcile } from "./rules";
 import { interpretPharmacyText } from "./pharmacy-check";
 import { versionForDate } from "./tariff";
+import { createEpsPrescription, evaluateEpsSupply, EPS_SUPPLY_RULE } from "./eps-check";
 
 export const RB_CODE_CATALOG = Object.freeze([
   { code: "RB2B", reason: "Missing product presentation", provenance: "public" },
@@ -49,11 +50,13 @@ export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["cha
     ? Boolean(product && c.extracted.quantity !== null)
     : c.imageQuality >= QUALITY_THRESHOLD && Math.min(c.extracted.productConfidence, c.extracted.quantityConfidence, c.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
   const concession = version?.concessions.find((entry) => entry.productCode === product?.code);
+  const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : c.extracted.productCode === EPS_SUPPLY_RULE.productCode
+    ? evaluateEpsSupply(createEpsPrescription(c)) : null;
   return {
     channel, readable, handwritten: channel === "paper" && c.imageStyle !== "printed", captureConfirmed,
-    mandatoryFieldsComplete: Boolean(product) && mandatoryFieldsCheck(c.extracted).every((check) => check.pass),
-    endorsementRequired: required.required !== false, endorsementPresent: facts.present, endorsementComplete: complete,
-    interpretationRequired: required.required === null || facts.present && (facts.type !== "NCSO" || !complete) || captureConfirmed && c.scenario === "D",
+    mandatoryFieldsComplete: Boolean(product) && mandatoryFieldsCheck(c.extracted).every((check) => check.pass) && (supply?.complete ?? true),
+    endorsementRequired: supply !== null || required.required !== false, endorsementPresent: supply ? supply.complete : facts.present, endorsementComplete: supply?.complete ?? complete,
+    interpretationRequired: supply ? !supply.complete : required.required === null || facts.present && (facts.type !== "NCSO" || !complete) || captureConfirmed && c.scenario === "D",
     hasConflict: reconcile(c.extracted, c.claim.quantity, c.claim.productCode, c.claim.amountClaimed, product, concession?.price ?? null).some((entry) => entry.material),
     type2Decision: "not_decided",
   };
