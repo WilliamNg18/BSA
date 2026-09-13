@@ -1,8 +1,8 @@
 # Explicit live acceptance
 
-This opt-in checklist is outside `tests/e2e`. It contains the 13 base checks,
+This opt-in checklist is outside `tests/e2e`. It contains 15 process checks,
 one same-item perspective round trip and three header-only Agent checks (one
-per perspective, each visiting every route). Default production CI does
+per perspective, each visiting every route): 19 tests in total. Default production CI does
 not discover it. It starts no server, uses one Chromium worker, and only changes
 synthetic browser-memory state. Do not execute until the coordinator confirms
 the deployed artifact is ready and supplies its full expected commit.
@@ -43,6 +43,10 @@ codes. Canonical A/E traces and complete EPS resubmissions require automatic
 pricing without another operator approval. D's Off/On flow retains initial
 uncertainty, explicit human capture, the RB2B referral, original history and
 fresh capture required by a new paper revision.
+C's pharmacy confirmation retains both conflicting quantities for another human
+review. F's original record survives mode changes and rule replay. An edited
+monthly scenario is checked across Chapter 2, the scene, queue and pharmacy
+projection rather than checking unrelated defaults on each page.
 
 Do not run this version against an earlier M-only deployment. Select only
 checks compatible with the coordinator's exact deployed stage; omitted checks

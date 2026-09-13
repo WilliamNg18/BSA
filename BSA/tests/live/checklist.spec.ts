@@ -66,6 +66,28 @@ test("03 Shared monthly inputs update both process columns and Scene figures", a
     await expectSceneMetrics(page, input, enabled);
     await chooseProcessChapter(page, 2);
   }
+  await navigatePrimary(page, "NHSBSA queue");
+  for (const [label, key] of [
+    ["Type 2 operator hours", "type2OperatorHours"], ["Referred-back operator hours", "referralOperatorHours"],
+    ["Pharmacy completion hours", "pharmacyCompletionHours"], ["Items referred back", "referredBackItems"],
+  ] as const) {
+    const format = key === "referredBackItems" ? formatProcessItems : formatProcessHours;
+    await expect(page.locator("[data-queue-month-summary] dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
+      .toHaveText(`${format(expected.today[key])} / ${format(expected.withAgent[key])}`);
+  }
+  await navigatePrimary(page, "Pharmacy claims");
+  const projection = page.getByRole("region", { name: "Shared monthly process projection", exact: true });
+  const number = new Intl.NumberFormat("en-GB");
+  for (const enabled of [false, true]) {
+    await flag(page).setChecked(enabled);
+    for (const [label, key] of [
+      ["Items referred back", "referredBackItems"], ["Caught before submission", "caughtBeforeSubmission"],
+      ["Referral-loop operator hours", "referralOperatorHours"], ["Pharmacy completion hours", "pharmacyCompletionHours"],
+    ] as const) {
+      await expect(projection.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
+        .toHaveText(number.format(expected[enabled ? "withAgent" : "today"][key]));
+    }
+  }
   await captureJson(info, "shared-month-inputs", { input, expected });
 });
 
@@ -350,4 +372,65 @@ test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page 
   await expandProcessInputs(page);
   await expect(page.getByRole("textbox", { name: "Items referred back a month", exact: true })).toHaveValue(String(PROCESS_MONTH_DEFAULTS.monthlyReferrals));
   await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, false);
+});
+
+test("16 C confirmation returns to human review without resolving 56 versus 84", async ({ page }, info) => {
+  for (const enabled of [false, true]) {
+    await page.goto("/case/EX-24119");
+    await flag(page).setChecked(enabled);
+    await startDemonstrationReview(page);
+    await page.getByRole("radio", { name: /^Request information / }).check();
+    await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Please confirm both conflicting quantities against the synthetic form");
+    if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
+    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(page).toHaveURL(/\/case\/EX-24119\/record$/);
+    await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
+    const confirmation = page.getByRole("region", { name: "Requested confirmation", exact: true });
+    for (const [label, value] of [["Captured form quantity", "56"], ["Claim ledger quantity", "84"]]) {
+      await expect(confirmation.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd")).toHaveText(value);
+    }
+    await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "Pharmacy text is required" })).toBeVisible();
+    const text = "The form says 56 while the claim ledger says 84; please review both values";
+    await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill(text);
+    await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
+    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+    await history(page).locator("summary").first().click();
+    await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toContainText(text);
+    await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
+    await expect(history(page)).toContainText(LIFECYCLE_LABELS.resubmitted.nhsbsa[enabled ? "on" : "off"]);
+    await page.getByRole("button", { name: "Start review", exact: true }).click();
+    await expect(page.getByRole("main")).toContainText("56");
+    await expect(page.getByRole("main")).toContainText("84");
+    if (enabled) await expect(page.getByRole("radio", { name: /^Request information \(as recommended\)/ })).toBeChecked();
+    await captureCheckpoint(page, info, `c-confirmation-still-conflicted-${enabled ? "on" : "off"}`);
+  }
+});
+
+test("17 F retains its original human record through mode changes and replay", async ({ page }, info) => {
+  await page.goto("/case/EX-24088/record");
+  await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
+  const records = page.locator("[data-original-records]");
+  await records.locator("summary").click();
+  const original = await records.innerText();
+  expect(original).toContain("DR-000871");
+  expect(original).toContain("2026-08");
+  const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
+  for (const enabled of [true, false, true]) {
+    await flag(page).setChecked(enabled);
+    await expect(records).toHaveText(original, { useInnerText: true });
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    if (enabled) {
+      for (const month of ["2026-07", "2026-08"]) {
+        await replay.selectOption(month);
+        await expect(records).toHaveText(original, { useInnerText: true });
+        await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
+      }
+    } else {
+      await expect(replay).toBeDisabled();
+      await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveCount(0);
+    }
+  }
+  await captureJson(info, "f-original-record-retained", { record: original, url: page.url() });
 });
