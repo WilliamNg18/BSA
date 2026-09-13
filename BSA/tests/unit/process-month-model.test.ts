@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatProcessHours, formatProcessItems, monthModel, MONTH_MODEL_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessMonthDraft } from "../../src/lib/domain/baseline";
+import { formatProcessHours, formatProcessItems, monthModel, MONTH_MODEL_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessMonthDraft, type ProcessMonthInputs } from "../../src/lib/domain/baseline";
 import { calculateProcessMonth, selectProcessMonth } from "../../src/lib/domain/process-month-model";
 
 const draft = (): ProcessMonthDraft => Object.fromEntries(Object.entries(PROCESS_MONTH_DEFAULTS).map(([key, value]) => [key, String(value)])) as ProcessMonthDraft;
@@ -55,6 +55,78 @@ describe("whole-process monthly arithmetic", () => {
   it("does not fall back to defaults for a missing input", () => {
     expect(selectProcessMonth({ ...draft(), monthlyItems: "" }).result).toBeNull();
     expect(selectProcessMonth(draft()).result).toEqual(calculateProcessMonth(PROCESS_MONTH_DEFAULTS));
+  });
+  it("fails closed for every missing, nonfinite or negative field", () => {
+    for (const key of Object.keys(PROCESS_MONTH_DEFAULTS) as (keyof ProcessMonthInputs)[]) {
+      const missing: Partial<ProcessMonthDraft> = draft();
+      delete missing[key];
+      expect(selectProcessMonth(missing as ProcessMonthDraft)).toMatchObject({
+        input: null, result: null, errors: { [key]: expect.any(String) },
+      });
+      for (const value of [NaN, Infinity, -Infinity, -1]) {
+        expect(() => monthModel({ ...PROCESS_MONTH_DEFAULTS, [key]: value })).toThrow(RangeError);
+      }
+    }
+  });
+  it("rounds overlapping lanes independently rather than summing them", () => {
+    const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 7, epsPercent: 50,
+      type1Percent: 50, type2Percent: 50, staffTouchPercent: 50, monthlyReferrals: 3,
+      pharmacyCatchPercent: 50, abstainPercent: 50 };
+    const result = monthModel(input);
+    expect(result.counts).toEqual({ monthlyItems: 7, epsItems: 4, paperItems: 3,
+      type1Items: 4, type2Items: 4, staffTouchedItems: 4, autoPricedItems: 3 });
+    expect(result.withAgent).toMatchObject({ caughtBeforeSubmission: 2, abstainedItems: 1,
+      builtCases: 1, referredBackItems: 1 });
+    expect(monthModel({ ...input, staffTouchPercent: 100 }).counts.staffTouchedItems).toBe(7);
+    expect(() => monthModel({ ...input, staffTouchPercent: 40 })).toThrow(RangeError);
+  });
+  it("reports cross-field draft errors without returning a fallback estimate", () => {
+    for (const patch of [{ staffTouchPercent: "2" }, { staffTouchPercent: "5" },
+      { monthlyReferrals: "2000001" }]) {
+      const selection = selectProcessMonth({ ...draft(), ...patch });
+      expect(selection.input).toBeNull();
+      expect(selection.result).toBeNull();
+      expect(selection.errors[Object.keys(patch)[0] as keyof ProcessMonthInputs]).toBeTruthy();
+    }
+  });
+  it("keeps hard-paper assumptions local and separate effort measures independent", () => {
+    const original = monthModel(PROCESS_MONTH_DEFAULTS);
+    const local = monthModel({ ...PROCESS_MONTH_DEFAULTS, type1KeySeconds: 120, type1ConfirmSeconds: 60 });
+    expect(local).toEqual({ ...original, type1: { keySeconds: 120, confirmSeconds: 60 } });
+    const tail = monthModel({ ...PROCESS_MONTH_DEFAULTS, investigationMinutesToday: 8,
+      pharmacyCompletionMinutes: 12 });
+    for (const column of ["today", "withAgent"] as const) {
+      expect(tail[column].type2OperatorHours).toBe(original[column].type2OperatorHours);
+      expect(tail[column].referralOperatorHours).toBe(original[column].referralOperatorHours * 2);
+      expect(tail[column].pharmacyCompletionHours).toBe(original[column].pharmacyCompletionHours * 2);
+    }
+  });
+  it("retains manual Type 2 effort for all abstentions and removes only caught referrals", () => {
+    const allManual = monthModel({ ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 0, abstainPercent: 100 });
+    expect(allManual.withAgent.type2OperatorHours).toBe(allManual.today.type2OperatorHours);
+    expect(allManual.withAgent.decisionsWithRuleAndReason).toBe(0);
+    const allCaught = monthModel({ ...PROCESS_MONTH_DEFAULTS, monthlyReferrals: 2_000_000,
+      pharmacyCatchPercent: 100 });
+    expect(allCaught.withAgent).toMatchObject({ type2OperatorHours: 0, referralOperatorHours: 0,
+      pharmacyCompletionHours: 0, referredBackItems: 0, builtCases: 0, abstainedItems: 0,
+      decisionsWithRuleAndReason: 0, caughtBeforeSubmission: 2_000_000 });
+  });
+  it("keeps every numeric output finite at large valid inputs without mutating inputs", () => {
+    const input = Object.freeze({ ...PROCESS_MONTH_DEFAULTS, monthlyItems: 1_000_000_000,
+      type1Percent: 100, type2Percent: 100, staffTouchPercent: 100, monthlyReferrals: 1_000_000_000,
+      type2SecondsToday: 3600, builtJudgingSeconds: 3600, investigationMinutesToday: 1440,
+      pharmacyCompletionMinutes: 1440 });
+    const result = monthModel(input);
+    for (const group of Object.values(result)) {
+      for (const value of Object.values(group)) {
+        if (typeof value === "number") {
+          expect(Number.isFinite(value)).toBe(true);
+          expect(value).toBeGreaterThanOrEqual(0);
+          expect(value).toBeLessThanOrEqual(Number.MAX_SAFE_INTEGER);
+        }
+      }
+    }
+    expect(monthModel(input)).toEqual(result);
   });
   it("exports the new process overload without replacing the legacy calculation", () => {
     expect(monthModel(PROCESS_MONTH_DEFAULTS)).toEqual(calculateProcessMonth(PROCESS_MONTH_DEFAULTS));

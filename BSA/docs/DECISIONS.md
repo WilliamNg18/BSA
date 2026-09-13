@@ -1233,3 +1233,10 @@ display that machine channel while original fixtures and history stay intact.
 Both generic legacy submission APIs and the receipt adapter preserve the
 current revision's channel. Only explicit `ProcessSubmission.channel` changes
 it. No scenario-derived automatic conversion to EPS is permitted.
+
+P's actual submission regression showed that BB/XP could satisfy their broad
+synthetic clause fields without being eligible for automatic routing. The
+automatic endorsement path is limited to complete NCSO evidence in this demo;
+other present endorsement types require Type 2 interpretation. This routing
+classification is identical with the Agent Off or On and does not trust an
+advisory precheck status.

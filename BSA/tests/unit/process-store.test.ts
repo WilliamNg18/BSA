@@ -51,6 +51,20 @@ describe("canonical deterministic routing", () => {
     expect(routeSubmission(routingFactsForCase(missing, "eps"))).toMatchObject({ outcome: "type2_endorsement", pricingAuthority: null, requiresHuman: true });
     expect(runAgent(missing)).toMatchObject({ agentInvoked: true, gate: { result: "FAIL" } });
   });
+  it.each(["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"])("routes %s to interpretation rather than automatic pricing", (endorsementText) => {
+    for (const enabled of [false, true]) {
+      store().setAgentEnabled(enabled);
+      store().submitItem({ caseId: B.id, channel: "eps", endorsementText });
+      expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
+      expect(store().lifecycles[B.id].state).toBe("submitted");
+      expect(store().lifecycles[B.id].history.at(-1)?.processStep).toBe("submission");
+    }
+  });
+  it("keeps interpretation work in Type 2 even when the base product needs no endorsement", () => {
+    const facts = routingFactsForCase({ ...E, extracted: { ...E.extracted, endorsementText: "BB RK" } }, "eps");
+    expect(facts).toMatchObject({ endorsementRequired: false, endorsementPresent: true, interpretationRequired: true });
+    expect(routeSubmission(facts)).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
+  });
 });
 
 describe("explicit captured authority", () => {
