@@ -1163,3 +1163,23 @@ test observer exposes a deeply immutable domain snapshot, no actions, and is
 compiled only when VITE_E2E_STATE_OBSERVER=true. Normal builds have no hook.
 Q approved the M-first automatic-row filter and disabled legacy generated
 operator rows; its full staff-lane presentation follows this shared model.
+
+The final process API keeps completed human work in its original lane:
+Type 2 sufficient is `type2_endorsement` with `requiresHuman=false`, and
+completed Type 1-only work similarly remains Type 1. Only untouched rules
+pricing is `auto_priced`; human work must never acquire a no-person label.
+New Type 2 decisions always require an actual human reason of eight characters
+or more. Legacy entry points retain their existing reason contract.
+
+Capture proof is appended to the Type 1 history event, linked to its revision.
+The pharmacy submission revision is never enriched or rewritten after capture.
+Historical projection retrieves that event even after resubmission clears the
+current capture cache. Legacy resubmission preserves the current revision's
+channel; only an explicit process submission can change channel.
+
+Automatic eligibility checks every mandatory field independently of Agent
+advice, including a nonblank legible prescriber and a positive whole quantity.
+Empty endorsements are valid missing business information for submission,
+not malformed requests: paper may require capture and EPS may require Type 2.
+Pending synthetic seeds use staff-work templates, never an automatic routing
+result paired with a submitted lifecycle.
