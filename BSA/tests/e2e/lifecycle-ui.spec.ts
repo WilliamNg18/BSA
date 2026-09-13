@@ -19,7 +19,7 @@ async function record(page: Page, reason: string) {
   await expect(page).toHaveURL(/\/record$/);
 }
 
-test("Task19 Off referral to approved On correction automatically prices the complete EPS resubmission", async ({ page }, info) => {
+test("Task25 Off referral to approved On correction requires a human recheck before pricing", async ({ page }, info) => {
   const started = Date.now();
   await page.goto("pharmacy");
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
@@ -59,9 +59,13 @@ test("Task19 Off referral to approved On correction automatically prices the com
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.on);
+  await page.getByRole("button", { name: "Start review", exact: true }).click();
+  await page.getByRole("radio", { name: /^Sufficient / }).check();
+  await record(page, "Human recheck confirms the corrected date before existing pricing");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-08");
-  await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Refer back with the exact fix");
+  await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Sufficient: release to pricing once confirmed");
   await expect(history(page)).toContainText("Sufficient, released to existing pricing");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
@@ -74,12 +78,12 @@ test("Task19 Off referral to approved On correction automatically prices the com
   await expect(attempts.locator(":scope > li").nth(2)).toContainText("NCSO  RK");
   await expect(attempts.locator(":scope > li").nth(2)).toContainText("not_checked · off");
   await expect(attempts.locator(":scope > li").nth(3)).toContainText("ready · scripted");
-  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(3);
   await captureJson(info, "off-to-on-roundtrip-history", await history(page).innerText());
   await captureJson(info, "roundtrip-elapsed-time", { elapsedMs: Date.now() - started, informational: true });
 });
 
-test("Task19 manual EPS correction retains an unchecked snapshot without inventing another human approval", async ({ page }) => {
+test("Task25 manual EPS correction retains an unchecked snapshot until explicit human recheck", async ({ page }) => {
   await page.goto("pharmacy");
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
   await queueReview(page);
@@ -90,11 +94,15 @@ test("Task19 manual EPS correction retains an unchecked snapshot without inventi
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.off);
+  await page.getByRole("button", { name: "Start review", exact: true }).click();
+  await page.getByRole("radio", { name: /^Sufficient / }).check();
+  await record(page, "Human recheck confirms the manually corrected endorsement");
   await expect(history(page)).toContainText("Sufficient, released to existing pricing");
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   await history(page).getByText("History and attempts (3)", { exact: true }).click();
   await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText("not_checked · off");
-  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
+  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
 });
 
 test("Task9 toggling never approves a draft and arbitrary BB edits never receive the B date correction", async ({ page }) => {

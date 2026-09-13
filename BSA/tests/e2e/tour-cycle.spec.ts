@@ -79,7 +79,7 @@ for (const enabled of [false, true]) {
     await expect(page).toHaveURL(/\/pharmacy\/claims$/);
   });
 
-  test(`cycle guide follows human referral, correction and automatic pricing without a second decision: agent ${enabled}`, async ({ page }) => {
+  test(`cycle guide follows human referral, correction, recheck and existing pricing: agent ${enabled}`, async ({ page }) => {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
@@ -110,13 +110,23 @@ for (const enabled of [false, true]) {
     const priorRecords = (await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text));
     expect(priorRecords.length).toBeGreaterThan(0);
     await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+    expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
+    await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+    await page.getByRole("button", { name: "Start review", exact: true }).click();
+    await page.getByRole("radio", { name: /^Sufficient / }).check();
+    await page.getByRole("textbox", { name: /^Reason/ }).fill("Human recheck confirms the corrected dispensing date");
+    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
     expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
-    expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
+    const acceptedRecords = (await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text));
+    expect(acceptedRecords.slice(0, priorRecords.length)).toEqual(priorRecords);
+    expect(acceptedRecords).toHaveLength(priorRecords.length + 1);
     for (const mode of [!enabled, enabled]) {
       await page.getByRole("banner").getByRole("switch").setChecked(mode);
       await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
-      expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
+      expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(acceptedRecords);
     }
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
@@ -125,7 +135,7 @@ for (const enabled of [false, true]) {
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
     expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
-    expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
+    expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(acceptedRecords);
     await expect(recorded).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
     await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   });

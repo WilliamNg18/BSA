@@ -26,7 +26,7 @@ async function openWork(page: Page, action: DomainAction, id: string) {
 
 for (const approval of ["manual", "unchecked", "approved"] as const) {
   const enabled = approval !== "manual";
-  test(`one state: B referral and corrected EPS pricing with ${approval} draft`, async ({ page }, info) => {
+  test(`one state: B referral, correction and explicit human recheck with ${approval} draft`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
@@ -108,22 +108,40 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
       }
       await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
       expect(await readDomainState(page), "Correcting a draft does not send it").toEqual(referred);
-      const paid = await action("Explicitly resubmit the complete EPS correction", "Pharmacy", async () => {
+      const resubmitted = await action("Explicitly resubmit the complete EPS correction", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-        await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+        await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
       });
-      expect(paid.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "auto_priced", requiresHuman: false } });
-      expect(paid.records).toEqual(referred.records);
-      expect(paid.caseRevisions[B].at(-1)).toMatchObject({
+      expect(resubmitted.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement", requiresHuman: true } });
+      expect(resubmitted.records).toEqual(referred.records);
+      expect(resubmitted.caseRevisions[B].at(-1)).toMatchObject({
         channel: "eps", kind: "resubmission", endorsementText: "NCSO  RK 21/08/26",
         precheck: { status: enabled ? "ready" : "not_checked", mode: enabled ? "scripted" : "off" },
       });
+      expectUnrelatedCases(referred, resubmitted, B);
+      await openWork(page, action, B);
+      expect(await readDomainState(page), "Opening a corrected referral is not a human recheck").toEqual(resubmitted);
+      await action("Explicitly begin the correction recheck", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Start review", exact: true }).click();
+      });
+      await action("Judge the corrected endorsement sufficient", "NHSBSA", async () => {
+        await page.getByRole("radio", { name: /^Sufficient / }).check();
+        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human recheck confirms the date beside the initials");
+      });
+      const paid = await action("Record the human correction decision before existing pricing", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
+      });
+      expect(paid.lifecycles[B].state).toBe("paid");
+      expect(paid.itemProcesses[B].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
+      expect(paid.records).toHaveLength(referred.records.length + 1);
+      expect(paid.records.at(-1)).toMatchObject({ caseId: B, revision: resubmitted.caseRevisions[B].at(-1)!.number, decision: "ACCEPT" });
       expectUnrelatedCases(referred, paid, B);
       expect(paid.lifecycles[B].history.slice(initial.lifecycles[B].history.length)
-        .filter((event) => event.processStep === "type2_judgement" || event.processStep === "referral")).toHaveLength(1);
-      await action("Read the automatically priced B case", "NHSBSA", async () => {
+        .filter((event) => event.processStep === "type2_judgement" || event.processStep === "referral")).toHaveLength(2);
+      await action("Read the human-decided B case without inventing automatic-only work", "NHSBSA", async () => {
         await navigatePrimary(page, "NHSBSA queue");
-        await expect(page.locator(`[data-case-id="${B}"]`)).toHaveCount(0);
+        await expect(page.locator(`[data-case-id="${B}"]`)).toBeVisible();
         for (const id of ["EX-24107", "EX-24101"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
       });
       expect(await readDomainState(page)).toEqual(paid);
