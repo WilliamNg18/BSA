@@ -188,13 +188,9 @@ test(LIVE_CHECKS.queue, async ({ page }, info) => {
     expect(await recorded()).toEqual(before);
     for (const id of ["EX-24107", "EX-24101", "EX-24123"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
     await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
-    for (const [label, key] of [
-      ["Type 2 operator hours", "type2OperatorHours"], ["Referred-back operator hours", "referralOperatorHours"],
-      ["Pharmacy completion hours", "pharmacyCompletionHours"], ["Items referred back", "referredBackItems"],
-    ] as const) {
-      const format = key === "referredBackItems" ? formatProcessItems : formatProcessHours;
+    for (const { label, key, format } of MANUAL_LOOP_METRICS) {
       await expect(summary.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
-        .toHaveText(`${format(model.today[key])} / ${format(model.withAgent[key])}`);
+        .toHaveText(`${format(model.today[key])} / ${format(model.withAgent[key])} (estimate)`);
     }
     await audit(page, info, "actual-worklist", enabled);
   }
