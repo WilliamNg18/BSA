@@ -474,7 +474,7 @@ test(LIVE_CHECKS.completedCapture, async ({ page }, info) => {
     await confirmCompletePaper(page, enabled, action);
     await page.getByRole("button", { name: /^Decided/ }).click();
     await expect(page.getByRole("region", { name: "Completed Type 1 captures", exact: true })).toContainText("Human capture confirmed");
-    await expect(page.getByRole("region", { name: "Type 2 items", exact: true })).not.toContainText(B);
+    await expect(page.getByRole("region", { name: "Type 2 worklist items", exact: true })).not.toContainText(B);
     for (const id of [B, "EX-24107", "EX-24101"]) {
       await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
     }
