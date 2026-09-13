@@ -54,6 +54,7 @@ it.each([
   { status: "FAIL", selection: "partial", runnerStatus: "passed" },
   { status: "PASS", selection: "full", runnerStatus: "passed", expectedBuildCommit: "main", baseURL: "https://example.test/" },
   { status: "PASS", selection: "full", runnerStatus: "passed", expectedBuildCommit: "a".repeat(40), baseURL: "http://localhost:4206/" },
+  { kind: "local rehearsal, not hosted acceptance", status: "PASS", selection: "full", runnerStatus: "passed", expectedBuildCommit: "a".repeat(40), baseURL: "http://127.0.0.1:4193/" },
 ])("rejects partial, unpinned or local evidence: %j", async (report) => {
   const directory = await mkdtemp(join(tmpdir(), "bsa-export-reject-"));
   try {

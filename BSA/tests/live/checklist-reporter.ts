@@ -54,6 +54,7 @@ export default class ChecklistReporter implements Reporter {
     const identities = checklist.flatMap((row) => row.evidence.map((entry) => entry.value)).filter(isBuildInfo);
     await mkdir(dirname(this.options.outputFile), { recursive: true });
     await writeFile(this.options.outputFile, JSON.stringify({
+      kind: new URL(this.options.baseURL).protocol === "https:" ? "hosted functional checklist" : "local rehearsal, not hosted acceptance",
       baseURL: this.options.baseURL,
       expectedBuildCommit: this.options.expectedCommit,
       actualBuildCommits: [...new Set(identities.map((identity) => identity.commit))],

@@ -86,6 +86,25 @@ helpers are reused without altering the production suite. The deployed
 build-info contract comes from the App Service strict static server; the
 harness does not load or change hosting policy files.
 
+## Separate local rehearsal
+
+`local-rehearsal.config.ts` uses the same named checks and strict packaged server
+only at `127.0.0.1`, with a distinct project name, report kind and output variable.
+It cannot accept a hosted target. The normal live entrypoint still requires an
+HTTPS root and has no allow-HTTP flag. Build the clean expected commit first:
+
+```powershell
+$env:EXPECTED_BUILD_COMMIT = git rev-parse HEAD
+$env:REHEARSAL_OUTPUT_DIR = '<new absolute directory outside the repository>'
+$env:PLAYWRIGHT_PORT = '4193'
+npm run build
+npx playwright test --config tests\live\local-rehearsal.config.ts
+```
+
+A complete local PASS is rehearsal only. The evidence exporter rejects its
+HTTP loopback identity, even when every check passes. Do not publish its images
+as hosted acceptance or overwrite the original rehearsal failures.
+
 ## Instrumented one-state checks are not live acceptance
 
 `npm run verify` also runs a blocking, shard-aware `one-state.config.ts` suite
