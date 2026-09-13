@@ -52,11 +52,14 @@ export function evaluateRequirements(
   clause: TariffClause | null,
   facts: EndorsementFacts | null,
   extracted: ExtractedFields,
+  supplyChecks?: readonly { id: string; met: boolean }[],
 ): RequirementResult[] {
   if (!clause) return [];
   return clause.requirements.map((requirement) => {
     let met: boolean | null = null;
-    if (!facts) met = null;
+    if (["brand_manufacturer", "pack_size", "presentation"].includes(requirement.id)) {
+      met = supplyChecks?.find((check) => check.id === requirement.id)?.met ?? false;
+    } else if (!facts) met = null;
     else if (requirement.id === "endorsement_present") met = facts.present;
     else if (requirement.id === "initialled") met = facts.initialled;
     else if (requirement.id === "dated") met = facts.dated;
