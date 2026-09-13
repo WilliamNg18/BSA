@@ -102,7 +102,7 @@ describe("one budget and the same twelve examples", () => {
 });
 
 describe("presentation-only queue memory", () => {
-  it("never writes actual cases, records, lifecycle, receipts or events", () => {
+  it("publishes presentation changes without writing actual cases, records, lifecycle or receipts", () => {
     const store = useAppStore.getState(), fixture = structuredClone(CASES);
     const events = vi.fn(), unsubscribe = useAppStore.subscribe(events);
     const state = useQueueStore.getState();
@@ -114,7 +114,15 @@ describe("presentation-only queue memory", () => {
     expect(useAppStore.getState().records).toBe(store.records);
     expect(useAppStore.getState().caseStates).toBe(store.caseStates);
     expect(useAppStore.getState().lifecycles).toBe(store.lifecycles);
-    expect(events).not.toHaveBeenCalled(); expect(CASES).toEqual(fixture);
+    expect(events).toHaveBeenCalled();
+    for (const [next, previous] of events.mock.calls) {
+      const { queue: nextQueue, ...nextDomain } = next;
+      const { queue: previousQueue, ...previousDomain } = previous;
+      expect(nextQueue).not.toBe(previousQueue);
+      expect(nextDomain).toEqual(previousDomain);
+      for (const field of Object.keys(nextDomain)) expect(nextDomain[field]).toBe(previousDomain[field]);
+    }
+    expect(CASES).toEqual(fixture);
     unsubscribe();
   });
   it("bounds stored sweep rows and stops exactly at hand-off", () => {

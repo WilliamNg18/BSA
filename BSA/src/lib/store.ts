@@ -34,7 +34,7 @@ import { create } from "zustand";
 
 import { CASES } from "@/lib/domain/cases";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
-import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS, PROCESS_MONTH_DEFAULTS, type ProcessModelSlice, type ProcessMonthDraft } from "@/lib/domain/baseline";
+import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS, PHARMACY_ASSUMPTION_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessModelSlice, type ProcessMonthDraft } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
 import type { CaseRevision, HistoryEvent, LifecycleDecisionRecord, LifecycleSlice, LifecycleState, PharmacyPrecheckSnapshot, ProcessSlice, ProcessSubmission, ItemProcess } from "@/lib/domain/lifecycle";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
@@ -44,6 +44,8 @@ import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-
 import { routeSubmission, routingFactsForCase, RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { createPharmacyState, type PharmacyState } from "./pharmacy-store";
 import { createQueueState, type QueueState } from "./queue-store";
+import { capturedFields, compatibleCapture, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
+import { mandatoryFieldsCheck } from "@/lib/domain/rules";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -127,7 +129,7 @@ function seededProcesses(): Record<string, ItemProcess> {
   return immutable(Object.fromEntries(Object.values(lifecycles).map((row) => {
     const c = caseForLifecycle(row.caseId, lifecycles, caseRevisions)!;
     const channel = caseRevisions[row.caseId][0].channel!;
-    const facts = { ...routingFactsForCase(c, channel, !["submitted", "in_review"].includes(row.state) && c.scenario !== "D") };
+    const facts = { ...routingFactsForCase(c, channel, !["submitted", "in_review"].includes(row.state) && !["A", "D", "E"].includes(c.scenario)) };
     if (row.state === "referred_back") facts.type2Decision = "insufficient";
     if (row.state === "information_requested") facts.type2Decision = "request_information";
     return [row.caseId, { revision: 1, channel, routing: routeSubmission(facts), capture: null, rbCode: null }];
@@ -157,7 +159,7 @@ export const useAppStore = create<AppState>((set, get) => {
   };
   const pharmacyAction = (caseId: string, text: string, kind: CaseRevision["kind"], precheck?: Parameters<LifecycleSlice["submitFromPharmacy"]>[2], submission?: ProcessSubmission) => {
     const c = currentCase(caseId);
-    if (typeof text !== "string" || (c.scenario !== "E" && !text.trim()) || kind === "confirmation" && !text.trim()) throw new Error("Pharmacy text is required.");
+    if (typeof text !== "string" || !submission && c.scenario !== "E" && !text.trim() || kind === "confirmation" && !text.trim()) throw new Error("Pharmacy text is required.");
     const s = get();
     const current = kind === "submission" ? s.lifecycles[caseId] : requireState(caseId, [kind === "confirmation" ? "information_requested" : "referred_back"]);
     validatePrecheck(precheck, text, c.extracted.dispensingDate);
@@ -165,6 +167,7 @@ export const useAppStore = create<AppState>((set, get) => {
     const channel = submission?.channel ?? previous.channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper");
     if (!["eps", "paper"].includes(channel)) throw new Error("Invalid item channel.");
     const declaration = submission?.declaration;
+    if (declaration) validateDeclaredFields(declaration.fields);
     if (declaration && (channel !== "paper" || declaration.provenance !== "pharmacy_declaration" || !Number.isFinite(Date.parse(declaration.declaredAt)) ||
       declaration.fields.endorsementText !== text)) throw new Error("Invalid pharmacy declaration.");
     const at = timestamp(caseId);
@@ -182,7 +185,7 @@ export const useAppStore = create<AppState>((set, get) => {
     set({ lifecycles: immutable({ ...s.lifecycles, [caseId]: row }),
       caseRevisions: revisions,
       itemProcesses: immutable({ ...s.itemProcesses, [caseId]: { revision: revision.number, channel, routing, capture: null, rbCode: null } }),
-      caseStates: { ...s.caseStates, [caseId]: c.initialState === "human_decision_recorded" ? "operator_review_required" : c.initialState } });
+      caseStates: { ...s.caseStates, [caseId]: routing.outcome === "auto_priced" ? "cleared_by_rules" : "operator_review_required" } });
   };
 
   /** Both public decision APIs commit exactly one linked operator event atomically. */
@@ -245,17 +248,25 @@ export const useAppStore = create<AppState>((set, get) => {
       if (input.revision !== revision.number || process.routing.outcome !== "type1_capture" || process.capture) throw new Error("Capture requires the current awaiting Type 1 revision.");
       if (!["human_capture", "pharmacy_declaration"].includes(input.provenance) || typeof input.declarationReconciled !== "boolean") throw new Error("Invalid capture provenance.");
       const fields = input.fields;
-      if (!fields || fields.productCode !== null && (typeof fields.productCode !== "string" || !fields.productCode.trim()) ||
-        fields.quantity !== null && (!Number.isSafeInteger(fields.quantity) || fields.quantity <= 0) || typeof fields.endorsementText !== "string") throw new Error("Invalid captured fields.");
+      validateDeclaredFields(fields);
       if (input.provenance === "pharmacy_declaration" && !revision.declaration) throw new Error("No pharmacy declaration on this revision.");
+      if (input.provenance === "pharmacy_declaration" && !sameDeclaredFields(fields, revision.declaration!.fields)) throw new Error("Corrected fields require human_capture provenance.");
       const at = timestamp(c.id);
       const capture = { revision: revision.number, confirmedAt: at, operator: "Demo operator", fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled };
-      const routing = routeSubmission({ ...routingFactsForCase(c, process.channel, true), interpretationRequired: true });
+      const confirmedCase = { ...c, capturedEvidence: { fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled, revision: revision.number } };
+      const facts = routingFactsForCase({ ...confirmedCase, extracted: capturedFields(confirmedCase) }, process.channel, true);
+      const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !compatibleCapture(confirmedCase) ||
+        !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) });
+      let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
+        revision: revision.number, channel: process.channel, processStep: "type1_capture", message: "Human capture confirmed; code routed the captured fields." });
+      if (!routing.requiresHuman && routing.pricingAuthority) capturedRow = appendHistory(capturedRow, { at, actor: "code", from: "in_review", to: "paid",
+        revision: revision.number, channel: process.channel, processStep: "type1_capture", message: routing.reason });
       set({ itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, capture, routing } }),
-        lifecycles: immutable({ ...s.lifecycles, [c.id]: appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
-          revision: revision.number, channel: process.channel, processStep: "type1_capture", message: "Human capture confirmed; code routed to Type 2 judgement." }) }) });
+        caseStates: { ...s.caseStates, [c.id]: routing.requiresHuman ? "operator_review_required" : "cleared_by_rules" },
+        lifecycles: immutable({ ...s.lifecycles, [c.id]: capturedRow }) });
     },
     recordType2Decision: ({ caseId, decision, reason, approvedDraft, rbCode }) => {
+      requireText(reason, "Decision reason", 8);
       const c = currentCase(caseId), pack = runAgent(c, { agentEnabled: get().agentEnabled });
       decide({ caseId, decision, overrideReason: reason, recommendation: pack.recommendation,
         tariffVersion: get().agentEnabled ? pack.tariffVersion : "n/a", agentVersion: get().agentEnabled ? pack.agentVersion : "not invoked",
@@ -263,10 +274,10 @@ export const useAppStore = create<AppState>((set, get) => {
     },
     ...seededLifecycleSession(), followedCaseId: null,
     submitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "submission", precheck, {
-      caseId: id, endorsementText: text, channel: currentCase(id).claim.submittedVia === "EPS claim message" ? "eps" : "paper", precheck,
+      caseId: id, endorsementText: text, channel: currentCase(id).scenario === "D" ? "paper" : "eps", precheck,
     }),
     resubmitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "resubmission", precheck, {
-      caseId: id, endorsementText: text, channel: currentCase(id).claim.submittedVia === "EPS claim message" ? "eps" : "paper", precheck,
+      caseId: id, endorsementText: text, channel: currentCase(id).scenario === "D" ? "paper" : "eps", precheck,
     }),
     sendConfirmation: (id, text) => pharmacyAction(id, text, "confirmation"),
     arriveInQueue: (id) => {
@@ -285,8 +296,11 @@ export const useAppStore = create<AppState>((set, get) => {
       set({ lifecycles: immutable({ ...s.lifecycles, [id]: row }), caseStates: { ...s.caseStates, [id]: pack.state === "human_decision_recorded" ? "operator_review_required" : pack.state } });
     },
     recordOperatorDecision: (id, decision, reason, draft) => {
-      get().recordType2Decision({ caseId: id, decision, reason, approvedDraft: draft,
-        rbCode: decision === "REFER_BACK" ? currentCase(id).scenario === "D" ? "RB2B" : "SYN-NCSO" : undefined });
+      const c = currentCase(id), pack = runAgent(c, { agentEnabled: get().agentEnabled });
+      decide({ caseId: id, decision, overrideReason: reason, recommendation: pack.recommendation,
+        tariffVersion: get().agentEnabled ? pack.tariffVersion : "n/a", agentVersion: get().agentEnabled ? pack.agentVersion : "not invoked",
+        inputs: pack.evidence.map((e) => e.value), sources: [...new Set(pack.evidence.map((e) => e.origin))], checks: pack.gate.checks }, false, draft,
+      decision === "REFER_BACK" ? c.scenario === "D" ? "RB2B" : "SYN-NCSO" : undefined);
     },
     followCase: (id) => { if (id !== null) requireLifecycle(id, get().lifecycles); set({ followedCaseId: id }); },
     caseStates: initialStates(), records: seededRecords(), agentEnabled: false,
@@ -316,11 +330,13 @@ export const useAppStore = create<AppState>((set, get) => {
     },
     recordDecision: ({ approvedDraft, ...input }) => decide(input, true, approvedDraft,
       input.decision === "REFER_BACK" || input.decision === "ACCEPT" && input.recommendation === "REFER_BACK" ? currentCase(input.caseId).scenario === "D" ? "RB2B" : "SYN-NCSO" : undefined),
-    setAgentEnabled: (agentEnabled) => { set({ agentEnabled }); get().queue.cancel(); },
+    setAgentEnabled: (agentEnabled) => set((s) => ({ agentEnabled, queue: { ...s.queue, sweep: [], phase: -1, sweeping: false, playing: false } })),
     // Preserve all three replacement identities used by existing reset subscribers.
     resetDemo: () => {
-      set({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), processInputs: processDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]) });
-      get().pharmacy.reset(); get().queue.reset();
+      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), processInputs: processDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
+        pharmacy: { ...s.pharmacy, assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS }, receipts: [] },
+        queue: { ...s.queue, position: 0, day: 0, playing: false, sweep: [], phase: -1, sweeping: false, revision: s.queue.revision + 1 },
+      }));
     },
   };
 });
