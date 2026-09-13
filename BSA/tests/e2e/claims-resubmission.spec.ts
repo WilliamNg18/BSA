@@ -60,6 +60,7 @@ for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
       await startDemonstrationReview(page);
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
+      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
       await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed and approved the dispensing-date instruction");
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
@@ -86,7 +87,7 @@ for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
       await recheck.focus();
       await page.keyboard.press("Enter");
       await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
-      await expect(marker).toHaveText("Assisted: Current correction checked · Human re-check required");
+      await expect(marker).toHaveText("Assisted: Current correction checked · Explicit resubmission required");
       await expect(comparison).toContainText("not payment");
       await flag.setChecked(false);
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
