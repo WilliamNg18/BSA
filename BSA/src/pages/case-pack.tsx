@@ -20,7 +20,7 @@ import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
 import { caseViewState, manualChoice, permitsProposal } from "@/lib/case-presentation";
-import { CasePlayback, CaseSourceEvidence, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
+import { CasePlayback, CaseSourceEvidence, MissingAssistedSlots, OriginalPaperDeclaration, RawCaseFields } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { Type1Capture } from "@/components/demo/type1-capture";
 import { ManualTariffLookup } from "@/components/demo/case-presentation";
@@ -128,6 +128,7 @@ function CasePackContent() {
         intro="Review the evidence, monthly rule and checks. The agent verifies and advises; a person decides."
       />
       <LifecycleHistory id={c.id} />
+      {c.paperDeclaration && (agentEnabled || currentProcess?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
         Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
       </p>}

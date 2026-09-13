@@ -13,7 +13,7 @@ import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
-import { CasePlayback, ConfirmedCaptureEvidence, ManualCaseTrace, MissingAssistedSlots } from "@/components/demo/case-presentation";
+import { CasePlayback, ConfirmedCaptureEvidence, ManualCaseTrace, MissingAssistedSlots, OriginalPaperDeclaration } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { ASSISTED_SLOTS, caseViewState, traceSlotReady } from "@/lib/case-presentation";
 import { SignalList } from "@/components/demo/signals";
@@ -62,6 +62,7 @@ export function CaseTracePage() {
         intro="Inspect evidence, rule checks and human confirmation. The agent verifies and advises; a person decides."
       />
       <LifecycleHistory id={c.id} />
+      {c.paperDeclaration && (agentEnabled || process?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {process?.capture && process.capture.revision === revision && <ConfirmedCaptureEvidence capture={process.capture} />}
 
       {!agentEnabled && !pricingComplete && <><ManualCaseTrace /><MissingAssistedSlots />
