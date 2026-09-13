@@ -1,5 +1,5 @@
 import { useProcessMonth } from "@/hooks/use-process-month";
-import { formatBaselineNumber, type ProcessMonthColumn } from "@/lib/domain/baseline";
+import { formatProcessHours, formatProcessItems, type ProcessMonthColumn } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 import { MonthlyNumber } from "./monthly-number";
 import { ProcessFigure } from "./process-figure";
@@ -26,7 +26,8 @@ export function BaselineCalculator() {
       <p className={mode.active ? "text-sm font-semibold" : "text-sm text-muted-foreground"}>{mode.label}</p>
       <div className="break-words text-2xl font-semibold sm:text-3xl" data-process-metric={`${mode.key}-${key}`}>
         <ProcessFigure source="Assumption" label={`${mode.label} ${METRICS[key].label}`} explanation={METRICS[key].context}>
-          <MonthlyNumber value={result[mode.key][key]} replayKey={enabled ? "on" : "off"} />
+          <MonthlyNumber value={result[mode.key][key]} replayKey={enabled ? "on" : "off"}
+            format={key === "referralOperatorHours" || key === "pharmacyCompletionHours" || key === "type2OperatorHours" ? formatProcessHours : formatProcessItems} />
         </ProcessFigure>
       </div>
     </div>)}
@@ -72,7 +73,7 @@ export function BaselineCalculator() {
     </> : <p role="alert" className="rounded-lg border p-4 text-sm">Estimates unavailable. Correct the highlighted monthly inputs. No previous result is retained.</p>}
     <p className="font-medium">Fewer items come back, and every judgement carries its rule and reason; the agent verifies and advises, it does not pay.</p>
     <p role="status" aria-live="polite" aria-atomic="true" className="sr-only" data-baseline-summary>
-      {result ? `${enabled ? "With the agent" : "Today"}: ${formatBaselineNumber(result[enabled ? "withAgent" : "today"].referredBackItems)} items referred back. Shared monthly estimates updated.` : "Calculator estimates unavailable: check the highlighted inputs."}
+      {result ? `${enabled ? "With the agent" : "Today"}: ${formatProcessItems(result[enabled ? "withAgent" : "today"].referredBackItems)} items referred back. Shared monthly estimates updated.` : "Calculator estimates unavailable: check the highlighted inputs."}
     </p>
     <ProcessAssumptions />
   </section>;

@@ -2,6 +2,7 @@ import { ArrowDown, CornerDownRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useProcessMonth } from "@/hooks/use-process-month";
 import { useAppStore } from "@/lib/store";
+import { formatProcessItems } from "@/lib/domain/baseline";
 import { BoundaryTag } from "./labels";
 import { MonthlyNumber } from "./monthly-number";
 import { ProcessFigure } from "./process-figure";
@@ -17,7 +18,7 @@ export function ExceptionPipeline() {
       <p className="text-sm">{enabled ? "Check the declaration against the dated rule; show the exact gap. The pharmacist corrects or submits." : "The pharmacist checks the endorsement and submits. Incomplete information can return later as a referral."}</p>
       {enabled && <p className="text-sm font-medium" data-agent-kernel="pharmacy">Agent kernel: verify and advise, never submit or pay.</p>}
       {enabled && column && <p className="text-sm">Items caught before submission: <ProcessFigure source="Assumption" label="Items caught before submission" explanation="Shared model catch assumption, applied only to would-be referrals. Corrected items still enter normal processing.">
-        <span data-pipeline-pharmacy><MonthlyNumber value={column.caughtBeforeSubmission} /></span>
+        <span data-pipeline-pharmacy><MonthlyNumber value={column.caughtBeforeSubmission} format={formatProcessItems} /></span>
       </ProcessFigure></p>}
       {perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to="/pharmacy">Try the pharmacy check</Link>}
     </section>
@@ -68,7 +69,7 @@ export function ExceptionPipeline() {
         <p className="text-sm">An RB code explains the missing endorsement. Only that item&apos;s payment is delayed.</p>
         {enabled && <p className="text-sm">The operator approves the exact-fix note with its clause and version. The agent does not send or approve it.</p>}
         {column && <p className="text-sm">Monthly items: <ProcessFigure source="Assumption" label="Monthly referrals" explanation="Shared process scenario; With the agent reduces referrals only by the assumed pre-submission catch.">
-          <span data-pipeline-referrals><MonthlyNumber value={column.referredBackItems} /></span>
+          <span data-pipeline-referrals><MonthlyNumber value={column.referredBackItems} format={formatProcessItems} /></span>
         </ProcessFigure></p>}
       </li>
       <li className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="mys">

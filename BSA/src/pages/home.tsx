@@ -9,7 +9,7 @@ import { BaselineScene } from "@/components/demo/baseline-scene";
 import { ExceptionPipeline } from "@/components/demo/exception-pipeline";
 import { SceneDiagram, TwoPlacesDiagram } from "@/components/demo/tour-diagrams";
 import { ProcessFigure } from "@/components/demo/process-figure";
-import { PROCESS_PUBLIC_FACTS, formatBaselineNumber } from "@/lib/domain/baseline";
+import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "@/lib/domain/baseline";
 import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { CASES } from "@/lib/domain/cases";
@@ -81,11 +81,11 @@ export function HomePage() {
           <section className="space-y-4 rounded-xl border bg-muted/30 p-5" aria-label="Public process context">
             <h2 className="font-semibold">Whole-process context</h2>
             <dl className="space-y-4 text-sm">{([
-              ["Monthly items", `Over ${formatBaselineNumber(PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound, 0)}`],
+              ["Monthly items", `Over ${formatProcessItems(PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound)}`],
               ["EPS messages", `${PROCESS_PUBLIC_FACTS.epsPercent}%`],
               ["Scanned paper", `${PROCESS_PUBLIC_FACTS.paperPercent}%`],
-              ["Type 1 items a month", formatBaselineNumber(PROCESS_PUBLIC_FACTS.type1MonthlyItems, 0)],
-              ["Type 2 items a month", formatBaselineNumber(PROCESS_PUBLIC_FACTS.type2MonthlyItems, 0)],
+              ["Type 1 items a month", formatProcessItems(PROCESS_PUBLIC_FACTS.type1MonthlyItems)],
+              ["Type 2 items a month", formatProcessItems(PROCESS_PUBLIC_FACTS.type2MonthlyItems)],
             ] as const).map(([label, value]) => <div key={label}><dt>{label}</dt><dd className="font-semibold">
               <ProcessFigure source="Public" label={label} explanation="Approximate owner-supplied process context, not independently verified. Type 1 and Type 2 may overlap.">{value}</ProcessFigure>
             </dd></div>)}</dl>

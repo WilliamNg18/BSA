@@ -5,10 +5,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BaselineCalculator } from "@/components/demo/baseline-calculator";
 import { BaselineScene } from "@/components/demo/baseline-scene";
 import { ExceptionPipeline } from "@/components/demo/exception-pipeline";
+import { MonthlyNumber } from "@/components/demo/monthly-number";
+import { SceneEstimateNumber } from "@/components/demo/scene-estimate-number";
 import { AssumptionsPage } from "@/pages/assumptions";
 import { BoundaryPage } from "@/pages/boundary";
 import { HomePage } from "@/pages/home";
-import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
+import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
 import { ArchitecturePage } from "@/pages/architecture";
 import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
@@ -50,6 +52,18 @@ describe("whole-process presentation", () => {
     expect(JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS })).toBe(source);
     expect(source).toContain("Azure");
     expect(useAppStore.getState()).toBe(state);
+  });
+
+  it.each([0.1, 0.2, 7_222.222222, 96_000_000])("uses the same shared formatter for visible and accessible endpoints: %s", (value) => {
+    for (const format of [formatProcessHours, formatProcessItems]) {
+      const expected = format(value);
+      const monthly = renderToStaticMarkup(createElement(MonthlyNumber, { value, format }));
+      const scene = renderToStaticMarkup(createElement(SceneEstimateNumber, { value, format, enabled: true, scenario: monthModel(PROCESS_MONTH_DEFAULTS) }));
+      for (const markup of [monthly, scene]) {
+        expect(markup).toContain(`aria-label="${expected}"`);
+        expect(markup).toContain(`<span aria-hidden="true">${expected}</span>`);
+      }
+    }
   });
 
   it.each([false, true])("shows both shared model columns without summing overlapping cohorts, agent %s", (enabled) => {
