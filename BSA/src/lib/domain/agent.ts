@@ -21,6 +21,7 @@ import { versionForDate } from "./tariff";
 import { capturedFields, compatibleCapture } from "./capture-evidence";
 import { interpretPharmacyText } from "./pharmacy-check";
 import { routeSubmission, routingFactsForCase } from "./routing";
+import { EPS_SUPPLY_RULE, evaluateEpsSupply } from "./eps-check";
 import type {
   CasePack,
   CaseState,
@@ -61,12 +62,20 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   const evidence: EvidenceItem[] = [];
   const agentEnabled = opts.agentEnabled ?? true;
   const dateVersion = opts.tariffVersion ? null : versionForDate(c.extracted.dispensingDate);
+  const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : null;
+  const supplyRequired = c.extracted.productCode === EPS_SUPPLY_RULE.productCode || supply !== null;
 
   // ---- Tier 0: deterministic pre-checks (no model) ----
   const mandatory = mandatoryFieldsCheck(c.extracted);
+  if (supplyRequired) mandatory.push({
+    name: "Synthetic supply product and month validated",
+    pass: Boolean(supply?.checks.filter((check) => check.id === "supply_product" || check.id === "supply_version").every((check) => check.met)),
+    detail: supply ? supply.gap : "Required EPS supply source is unavailable",
+  });
   const lookup = toolLookupProduct(c);
   const preVersion = opts.tariffVersion ? toolRetrieveTariff("NCSO", c.extracted.dispensingDate, opts.tariffVersion).version : dateVersion;
-  const req = endorsementRequired(lookup.product, preVersion, c.claim.amountClaimed);
+  const req = supplyRequired ? { required: true, reason: "The registered synthetic generic product requires manufacturer, pack size and form evidence." }
+    : endorsementRequired(lookup.product, preVersion, c.claim.amountClaimed);
   const claim = toolLookupClaim(c);
 
   evidence.push(
@@ -102,7 +111,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     status: mandatory.every((m) => m.pass) ? "ok" : "warn",
   });
 
-  const cleared = Boolean(preVersion) && !captured && routeSubmission(routingFactsForCase(c, c.channel === "Electronic (EPS)" ? "eps" : "paper")).outcome === "auto_priced" && mandatory.every((m) => m.pass);
+  const cleared = Boolean(preVersion) && (!supplyRequired || supply?.complete === true) && !captured && routeSubmission(routingFactsForCase(c, c.channel === "Electronic (EPS)" ? "eps" : "paper")).outcome === "auto_priced" && mandatory.every((m) => m.pass);
   if (cleared || !agentEnabled) {
     const state: CaseState = cleared ? "cleared_by_rules" : c.initialState;
     trace.push({
@@ -133,7 +142,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       composite: { level: "high", reasons: [cleared ? "Deterministic clearance; no judgement needed" : "Agent not run"] },
       recommendation: "NONE",
       alternative: null,
-      reasons: [cleared ? "No endorsement required; mandatory fields present." : "Agent disabled."],
+      reasons: [cleared ? supplyRequired ? "Required supply evidence complete; mandatory fields present." : "No endorsement required; mandatory fields present." : "Agent disabled."],
       gate: { result: "NOT_RUN", checks: [] },
       draftToPharmacy: null,
       abstainReasons: [],
@@ -163,33 +172,42 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   });
 
   // ---- GATHER (agentic orchestration over read-only tools) ----
-  const region = toolReadImageRegion(original, "endorsement");
-  const itemRegion = toolReadImageRegion(original, "item");
+  const eps = c.channel === "Electronic (EPS)";
+  const region = eps ? null : toolReadImageRegion(original, "endorsement");
+  const itemRegion = eps ? null : toolReadImageRegion(original, "item");
   const history = toolCheckHistory(c);
-  evidence.push(
+  if (region) evidence.push(
     { id: "e-region", origin: "Form image", field: "Endorsement margin", value: `"${region.text || "unreadable"}"`, provenance: `Region located by layout model; read confidence ${region.confidence.toFixed(2)}`, cls: "existing" },
+  );
+  evidence.push(
     { id: "e-history", origin: "Case history", field: "Contractor history", value: `${history.history.referralsLast90Days} referrals in 90 days`, provenance: history.history.lastReasons.join("; ") || "No recent referrals", cls: "existing" },
   );
   trace.push({
     phase: "GATHER",
     title: "Gather evidence from source systems",
     cls: "agent",
-    summary: c.imageQuality < QUALITY_THRESHOLD
+    summary: eps ? "Read the typed EPS claim and recorded supply fields. There is no image or Type 1 capture."
+      : c.imageQuality < QUALITY_THRESHOLD
       ? "Image cannot be read. Raw uncertain readings remain visible; any human-confirmed declaration is separate evidence, not improved image recognition."
       : "Read-only tool calls, chosen from the plan. Every finding carries its source. A failed or low-confidence read is recorded, not papered over.",
     items: [
-      `Endorsement margin read: "${region.text || "unreadable"}" (confidence ${region.confidence.toFixed(2)})`,
-      `Item line read: "${itemRegion.text}" (confidence ${itemRegion.confidence.toFixed(2)})`,
+      ...(region && itemRegion ? [
+        `Endorsement margin read: "${region.text || "unreadable"}" (confidence ${region.confidence.toFixed(2)})`,
+        `Item line read: "${itemRegion.text}" (confidence ${itemRegion.confidence.toFixed(2)})`,
+      ] : [`EPS endorsement: "${c.extracted.endorsementText}"`, ...(supply?.checks.map((check) => `${check.met ? "Met" : "Missing"}: ${check.label}`) ?? [])]),
       `Contractor history: ${history.call.outputSummary}`,
     ],
-    toolCalls: [region.call, itemRegion.call, history.call],
-    status: region.confidence < 0.6 ? "warn" : "ok",
+    toolCalls: [...(region && itemRegion ? [region.call, itemRegion.call] : []), history.call],
+    status: region && region.confidence < 0.6 ? "warn" : "ok",
   });
 
   // ---- ASSESS part 1: three independent readings of the free text (MOCKED interpretation) ----
   const agreement = sampleAgreement(c.readings);
-  const facts = captured ? interpretPharmacyText(c.extracted.endorsementText) : agreement.agree >= 2 ? agreement.consensus : null;
-  const endorsementType = captured ? facts!.type : requiredTypeFromReadings(c.readings);
+  const facts: EndorsementFacts | null = supplyRequired ? {
+    type: "SUPPLY", present: supply !== null, initialled: null, dated: null,
+    quotedText: c.extracted.endorsementText, note: "Synthetic typed supply fields, not an image reading",
+  } : captured ? interpretPharmacyText(c.extracted.endorsementText) : agreement.agree >= 2 ? agreement.consensus : null;
+  const endorsementType = supplyRequired ? "SUPPLY" : captured ? facts!.type : requiredTypeFromReadings(c.readings);
 
   // ---- RETRIEVE (agentic: which provision, for which date) ----
   const retrieval = toolRetrieveTariff(endorsementType, c.extracted.dispensingDate, opts.tariffVersion);
@@ -246,7 +264,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   });
 
   // ---- ASSESS part 2: requirements against facts (deterministic) ----
-  const requirementResults = evaluateRequirements(clause, facts, c.extracted);
+  const requirementResults = evaluateRequirements(clause, facts, c.extracted, supply?.checks);
   const citationValid = validateCitation(clause, version, clause?.text.slice(0, 40) ?? "");
   trace.push({
     phase: "ASSESS",
@@ -272,7 +290,11 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     imageQuality: c.imageQuality,
     inCoverage: c.inCoverage,
   };
-  const composite = captured
+  const composite = supplyRequired
+    ? !eps || !supply || !clause || reconciliation === "not_established"
+      ? { level: "abstain" as const, reasons: ["Registered generic supply source, dated provision or comparable fields are unavailable."] }
+      : { level: "low" as const, reasons: ["Typed EPS supply fields checked directly. Handwriting readings and image confidence do not apply."] }
+    : captured
     ? !compatible || !clause || reconciliation !== "agree" || !mandatory.every((check) => check.pass) || requirementResults.some((check) => check.met === null)
       ? { level: "abstain" as const, reasons: [
         "Human-confirmed fields remain unknown, conflicting or unreconciled, or no provision was retrieved.",
@@ -318,7 +340,8 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       reasons.push("The endorsement does not meet every retrieved requirement. Review the checks and missing information.");
       reasons.push(`Missing: ${missing.join("; ")}.`);
       alternative = { outcome: "SUFFICIENT", note: "Not permitted: the gate blocks SUFFICIENT while a requirement of the clause is unmet." };
-      draft = "Please add the date beside the initials and resubmit. No other correction is needed for this synthetic endorsement.";
+      draft = supplyRequired ? `Please supply: ${missing.join("; ")}. Resubmit the corrected synthetic claim.`
+        : "Please add the date beside the initials and resubmit. No other correction is needed for this synthetic endorsement.";
     } else {
       recommendation = "SUFFICIENT";
       reasons.push(clause ? "Every retrieved endorsement requirement is met." : "No endorsement was required for this item.");

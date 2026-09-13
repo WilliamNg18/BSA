@@ -75,6 +75,9 @@ describe("six synthetic outcomes", () => {
     expect(useAppStore.getState().records).toEqual([expect.objectContaining({
       id: "DR-000871", caseId: "EX-24088", tariffVersion: "2026-08",
       recommendation: "REFER_BACK", decision: "REFER_BACK", isOverride: false, synthetic: true,
+    }), expect.objectContaining({
+      id: "DR-000872", caseId: "EX-24088", revision: 2, decision: "ACCEPT",
+      recommendation: "NONE", synthetic: true,
     })]);
   });
 });
@@ -97,6 +100,7 @@ describe("governance and fail-open paths", () => {
   it("records a human decision append-only and Reset restores the seed", () => {
     const store = useAppStore.getState();
     const originalRecords = store.records;
+    const originalStates = store.caseStates;
     store.setAgentEnabled(true);
     store.submitItem({ caseId: CASES[1].id, channel: "eps", endorsementText: CASES[1].extracted.endorsementText });
     store.arriveInQueue(CASES[1].id);
@@ -105,13 +109,13 @@ describe("governance and fail-open paths", () => {
       agentVersion: pack.agentVersion, inputs: [], sources: [], checks: pack.gate.checks,
       recommendation: pack.recommendation, decision: "ESCALATE", overrideReason: "Senior review required" });
     expect(record).toMatchObject({ isOverride: true, overrideReason: "Senior review required" });
-    expect(originalRecords).toHaveLength(1);
+    expect(originalRecords).toHaveLength(2);
     expect(useAppStore.getState().records).toEqual([...originalRecords, record]);
     store.setAgentEnabled(false);
     store.resetDemo();
     expect(useAppStore.getState().records).toEqual(originalRecords);
     expect(useAppStore.getState().agentEnabled).toBe(false);
-    expect(useAppStore.getState().caseStates).toEqual(Object.fromEntries(CASES.map((c) => [c.id, c.initialState])));
+    expect(useAppStore.getState().caseStates).toEqual(originalStates);
   });
 
   it("keeps the observable sequence and the compliance gate deterministic", () => {
