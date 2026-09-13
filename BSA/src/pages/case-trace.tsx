@@ -54,7 +54,7 @@ export function CaseTracePage() {
       {!agentEnabled && <><ManualCaseTrace /><MissingAssistedSlots />
         <Button disabled type="button">Replay unavailable in manual comparison</Button>
       </>}
-      {agentEnabled && <>
+      {agentEnabled && pack.agentInvoked && <>
         <CasePlayback clock={clock} total={pack.trace.length} />
         <p className="text-sm text-muted-foreground">
           {pack.trace.length} steps · {totalCalls} scripted tool calls · Tariff {pack.tariffLabel} · {pack.agentInvoked ? "agent invoked" : "agent not invoked"}
@@ -73,8 +73,8 @@ export function CaseTracePage() {
       </>}
       {agentEnabled && <section data-prose="scripted playback boundary"><p className="text-xs text-muted-foreground">Scripted tool results are illustrative. Playback writes no decision; only the operator's Record decision action changes session history.</p></section>}
 
-      {(agentEnabled || pack.state === "cleared_by_rules") && <ol className="space-y-3" aria-label={agentEnabled ? "Agent trace" : "Deterministic clearance trace"} aria-live="polite">
-        {(agentEnabled ? shown : pack.trace).map((step, i) => (
+      {(agentEnabled || pack.state === "cleared_by_rules") && <ol className="space-y-3" aria-label={pack.agentInvoked ? "Agent trace" : "Deterministic clearance trace"} aria-live="polite">
+        {(pack.agentInvoked ? shown : pack.trace).map((step, i) => (
           <li key={`${step.phase}-${i}`}>
             <Card className={cn("border-l-4", step.cls === "agent" ? "border-l-teal-600" : step.cls === "deterministic" ? "border-l-sky-600" : step.cls === "human" ? "border-l-orange-600" : "border-l-slate-500")}>
               <CardHeader className="pb-2">
@@ -142,7 +142,7 @@ export function CaseTracePage() {
         ))}
       </ol>}
 
-      {(!agentEnabled || revealed >= pack.trace.length) && (
+      {(!pack.agentInvoked || revealed >= pack.trace.length) && (
         <PageSection title="Where it ends" description="The agent's part is over. The rest is a person.">
           <div className="flex flex-wrap gap-2">
             <Button asChild className="bg-teal-700 text-white hover:bg-teal-800"><Link to={`/case/${c.id}`}>Open the operator case pack</Link></Button>
