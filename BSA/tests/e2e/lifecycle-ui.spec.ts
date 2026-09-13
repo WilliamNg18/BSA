@@ -137,9 +137,12 @@ test("Task9 C shows both conflict values, approved note and confirmation without
 test("Task19 D blocks Type 2 before capture and E clears by code without entering the queue", async ({ page }) => {
   await page.goto("pharmacy");
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
+  await expect(page.getByLabel("Declared product code", { exact: true })).toHaveValue("");
+  await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("");
   await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO RK 21/08/26");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Agent unable to determine");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
   await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
   await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
