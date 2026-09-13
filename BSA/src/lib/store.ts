@@ -226,8 +226,9 @@ export const useAppStore = create<AppState>((set, get) => {
       decision: input.decision, recommendation: input.recommendation, reason: record.reason, recordId: record.id, revision,
       tariffVersion: input.tariffVersion, clauseId, channel: process.channel, processStep: to === "referred_back" ? "referral" : "type2_judgement",
       ...(rbCode ? { rbCode } : {}), ...(approvedDraft ? { approvedDraft, exactFix: approvedDraft.text } : {}) };
-    const routing = routeSubmission({ ...routingFactsForCase(c, process.channel, true),
+    const routing = routeSubmission({ ...routingFactsForCase({ ...c, extracted: capturedFields(c) }, process.channel, true),
       type2Decision: to === "referred_back" ? "insufficient" : to === "paid" ? "sufficient" : "request_information" });
+    if (to === "paid" && routing.requiresHuman) throw new Error("Mandatory evidence is still missing; pricing cannot proceed.");
     set({ records: immutable([...s.records, record]), caseStates: { ...s.caseStates, [c.id]: "human_decision_recorded" },
       itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, routing, rbCode: rbCode ?? null } }),
       lifecycles: immutable({ ...s.lifecycles, [c.id]: appendHistory(current, event) }) });
