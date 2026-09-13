@@ -28,6 +28,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
   const process = useAppStore((s) => s.itemProcesses[c.id]);
   const channel = revision?.channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper");
   const submittedText = revision?.endorsementText ?? c.extracted.endorsementText;
+  const replayText = revision?.declaration?.fields.endorsementText ?? submittedText;
   const [text, setText] = useState(submittedText);
   const [productCode, setProductCode] = useState(revision?.declaration?.fields.productCode ?? "");
   const [quantity, setQuantity] = useState(revision?.declaration?.fields.quantity?.toString() ?? "");
@@ -124,8 +125,12 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     </section>}
     {!editable && row.state !== "information_requested" && <p>Read-only claim. The agent cannot make an operator decision or change payment.</p>}
     <details><summary className="cursor-pointer">Demonstration replay</summary>
-      <p>Start a new synthetic submission with current evidence. Prior attempts and decisions remain unchanged.</p>
-      <Button variant="outline" onClick={() => act(() => submit({ caseId: c.id, channel, endorsementText: submittedText, declaration: revision?.declaration }), "New demonstration attempt submitted.")}>Submit another demonstration attempt</Button>
+      <p>{revision?.declaration
+        ? "Replay the retained pharmacy declaration, not the scan reading. Prior evidence remains unchanged; human capture confirmation is still required."
+        : "Start a new synthetic submission with current evidence. Prior attempts and decisions remain unchanged."}</p>
+      <dl className="text-sm"><dt>Replay endorsement source</dt><dd>{revision?.declaration ? "Retained pharmacy declaration" : "Current submission"}</dd>
+        <dt>Replay endorsement</dt><dd>{replayText || "None"}</dd></dl>
+      <Button variant="outline" onClick={() => act(() => submit({ caseId: c.id, channel, endorsementText: replayText, declaration: revision?.declaration }), "New demonstration attempt submitted.")}>Submit another demonstration attempt</Button>
     </details>
     {error && <p role="alert">{error}</p>}{message && <p role="status">{message}</p>}
   </>;

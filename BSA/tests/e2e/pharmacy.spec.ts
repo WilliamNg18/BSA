@@ -356,3 +356,31 @@ test("Task20 declaration edits invalidate the check and reject malformed quantit
   await expect(page.getByRole("alert")).toContainText("Declared quantity must be a positive whole number or left blank.");
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
 });
+
+for (const enabled of [false, true]) {
+  test(`Task20 seed D replay uses the retained declaration without confirming capture, Agent ${enabled}`, async ({ page }) => {
+    await page.goto("pharmacy/claims?caseId=EX-24123");
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    const detail = page.getByRole("region", { name: "Claim detail", exact: true });
+    await detail.getByText("History and attempts (1)", { exact: true }).click();
+    const attempts = detail.getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li");
+    await expect(attempts).toHaveCount(1);
+    const seed = await attempts.first().innerText();
+    await expect(attempts.first()).toContainText("N?S? ~~ 1?/0?");
+    await expect(attempts.first()).toContainText("NCSO AB 27/08/26");
+    await detail.getByText("Demonstration replay", { exact: true }).click();
+    await expect(detail.getByText("Replay the retained pharmacy declaration, not the scan reading.", { exact: false })).toBeVisible();
+    await detail.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
+    await expect(detail.getByRole("alert")).toHaveCount(0);
+    await expect(detail.getByRole("status").first()).toHaveText("Submitted, awaiting processing");
+    await expect(attempts).toHaveCount(2);
+    await expect(attempts.first()).toHaveText(seed, { useInnerText: true });
+    await expect(attempts.nth(1).getByRole("definition").first()).toHaveText("NCSO AB 27/08/26");
+    await expect(detail.getByRole("region", { name: "Declaration for attempt 2", exact: true })).toContainText("Dr Demo (synthetic)");
+    await expect(detail.getByRole("region", { name: "Type 1 capture for attempt 2", exact: true })).toHaveCount(0);
+    const event = detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").last();
+    await expect(event).toContainText("pharmacy");
+    await expect(event).not.toContainText("automatic pricing");
+    await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
+  });
+}
