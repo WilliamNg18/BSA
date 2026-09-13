@@ -26,7 +26,7 @@ describe("product-only session state", () => {
   it("toggling assistance preserves cases and human records; Reset restores the seed", () => {
     const seed = useAppStore.getState();
     seed.setAgentEnabled(true);
-    seed.submitFromPharmacy(CASES[1].id, CASES[1].extracted.endorsementText);
+    seed.submitItem({ caseId: CASES[1].id, channel: "eps", endorsementText: CASES[1].extracted.endorsementText });
     seed.arriveInQueue(CASES[1].id);
     const pack = runAgent(CASES[1]);
     const record = seed.recordDecision({
