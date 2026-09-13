@@ -258,7 +258,7 @@ export const useAppStore = create<AppState>((set, get) => {
       const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !compatibleCapture(confirmedCase) ||
         !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) });
       let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
-        revision: revision.number, channel: process.channel, processStep: "type1_capture", message: "Human capture confirmed; code routed the captured fields." });
+        revision: revision.number, channel: process.channel, processStep: "type1_capture", capture, message: "Human capture confirmed; code routed the captured fields." });
       if (!routing.requiresHuman && routing.pricingAuthority) capturedRow = appendHistory(capturedRow, { at, actor: "code", from: "in_review", to: "paid",
         revision: revision.number, channel: process.channel, processStep: "type1_capture", message: routing.reason });
       set({ itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, capture, routing } }),
@@ -277,7 +277,7 @@ export const useAppStore = create<AppState>((set, get) => {
       caseId: id, endorsementText: text, channel: currentCase(id).scenario === "D" ? "paper" : "eps", precheck,
     }),
     resubmitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "resubmission", precheck, {
-      caseId: id, endorsementText: text, channel: currentCase(id).scenario === "D" ? "paper" : "eps", precheck,
+      caseId: id, endorsementText: text, channel: get().caseRevisions[id]?.at(-1)?.channel ?? (currentCase(id).scenario === "D" ? "paper" : "eps"), precheck,
     }),
     sendConfirmation: (id, text) => pharmacyAction(id, text, "confirmation"),
     arriveInQueue: (id) => {
