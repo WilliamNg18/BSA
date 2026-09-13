@@ -8,14 +8,24 @@ ms.date: 2026-09-13
 
 The current work adds one Hillcrest cycle, visible EPS, proposed paper
 declarations, a shared manual-loop estimate and six stakeholder chapters.
-Final hosted acceptance and full-height novice/functional screenshot review
-have not yet been completed. [Task 30 evidence](screens/task30/README.md)
-separates the complete local rehearsal from release proof.
+The original complete hosted run at `b05b06a` passed functionally but failed
+independent full-height review. Its unchanged evidence, review and separate
+F02 correction remain in [Task 30 evidence](screens/task30/README.md).
 
-The local 29/29 run on clean `145d4ca` cannot certify later owner changes.
-The ordinary build must keep its state observer absent; the separate
-instrumented matrix provides exact-state equivalence, not hosted observations.
-Manual keyboard/contrast and all-image review remain explicit final gates.
+The bounded repair in #87 is deployed at
+`34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e`. Its new complete hosted inventory
+passed all 30 checks without retries, with 60 identity checks, 58 images and
+26 zero-violation axe audits. Eighteen audits retain incomplete findings:
+129 contrast node occurrences and four empty-table header occurrences.
+Zero violations do not establish WCAG conformance.
+
+[Direct repaired-source observations](screens/task30/manual-34d7567/README.md)
+verify sampled mobile focus contrast, keyboard recovery and capture guards.
+The same independent reviewer's full-height assessment of all new images
+remains pending, followed by the documentation-only release gates.
+The ordinary build keeps its state observer absent; the separate 34-test
+instrumented matrix supplies exact-state equivalence, not hosted observations.
+Earlier local rehearsals cannot certify later changes.
 
 ## Historical Tasks 19-24 implementation and acceptance
 

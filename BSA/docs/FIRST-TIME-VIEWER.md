@@ -6,19 +6,26 @@ ms.date: 2026-09-13
 
 # First-time viewer review
 
-## Task 30 review pending
+## Task 30 repaired-source review pending
 
-The six-chapter stakeholder walkthrough and continuous Hillcrest demo have
-been prepared, with a complete local 29-check functional rehearsal. This is
-not a new novice review or hosted acceptance. No Task 30 image has been
-declared visually accepted.
+The first Task 30 hosted run at `b05b06a` passed all 30 functional checks.
+Its independent review inspected all 58 images at full height: 24 passed and
+34 failed. The [original review](screens/task30/review-b05b06a/) remains
+unchanged. Its separate F02 correction withdraws the mistaken signal-count
+finding: three abstention reasons and five structural signals are distinct.
 
-After the coordinator approves the final functional deployment, review every
-new hosted image at full height, including the original unreadable paper,
-declaration and human-confirmation boundaries, EPS prescription and explicit
-submission, shared numerical estimates, and human re-check after correction.
-Record actual keyboard and contrast observations separately from axe results.
-The [Task 30 evidence index](screens/task30/README.md) owns that pending record.
+After the bounded runtime repair and coordinator-approved deployment, the new
+complete hosted run at `34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e` passed all
+30 checks. The [new immutable export](screens/task30/34d7567/manifest.json)
+contains 58 new images. The same reviewer is assessing every image at full
+height, including unreadable paper, declaration and human-confirmation
+boundaries, visible EPS submission, estimates and human re-check after
+correction. Functional success is not a substitute for that review.
+
+[New direct keyboard and contrast observations](screens/task30/manual-34d7567/README.md)
+remain separate from axe and image assessment. The
+[Task 30 evidence index](screens/task30/README.md) owns the pending final
+acceptance record. No final visual PASS is claimed before the actual verdict.
 
 The following Task 24 results remain historical, source-pinned and unchanged.
 

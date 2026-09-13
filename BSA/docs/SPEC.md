@@ -359,7 +359,12 @@ NHSBSA, MYS, NHSmail, EPS, dm+d and Drug Tariff remain required process names.
 The synthetic label and governing principle must not disappear with disclosures.
 Keyboard operation, visible focus, semantic labels, non-colour status,
 announcements and reduced motion are required. Axe is necessary, not complete
-manual WCAG 2.2 AA or screen-reader certification. Word count is informational.
+manual WCAG 2.2 AA or screen-reader certification. Each natural explanatory
+panel must contain fewer than 25 cumulative words across its paragraphs and
+help text, including visible errors. Structured prescription fields, exact rule
+quotations, immutable audit records and associated provenance labels are not
+explanatory prose; generated explanatory sentences are. Aggregate page word
+counts remain informational, not a substitute for this panel requirement.
 
 ## 13. Hosting and verification
 
@@ -369,12 +374,13 @@ uses OIDC; there are no PR slots. See [DEPLOYMENT](DEPLOYMENT.md).
 
 Typecheck, lint, build, Vitest, production crash/dead-control checks and
 zero-violation axe are blocking. Four CI shards must pass. There are no size or
-performance budgets; gzip, word counts, Lighthouse and visual differences are
-informational, but concrete functional/accessibility defects remain blocking.
+performance budgets; gzip, aggregate word counts, Lighthouse and visual
+differences are informational. Concrete functional/accessibility defects and
+the required natural-panel prose limit remain blocking.
 
-The [live checklist](../tests/live/README.md) has 20 integrated checks with HTTPS
+The [live checklist](../tests/live/README.md) has 30 named integrated checks with HTTPS
 and exact clean build identity before and after each test. Local HTTP rehearsal
-is separate, never a committed bypass or deployed acceptance. Thirty-two instrumented
+is separate, never a committed bypass or deployed acceptance. Thirty-four instrumented
 tests compare complete read-only state across uninterrupted and perspective-
 switched actions, including atomic Reset. Instrumentation is absent from ordinary
 builds. The launcher canonicalizes the emitted entry's real path; the static

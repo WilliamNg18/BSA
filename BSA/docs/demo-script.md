@@ -204,3 +204,9 @@ source, not a passing subset. Export to a new Task 30 evidence directory.
 Review every screenshot at full height for novice comprehension and functional
 truth. Record actual keyboard and contrast observations separately. Zero axe
 violations do not establish WCAG 2.2 AA or substitute for manual review.
+
+The repaired deployment at `34d7567` passed the complete 30-check hosted
+inventory. Its [new images](screens/task30/34d7567/manifest.json) and
+[direct keyboard/contrast record](screens/task30/manual-34d7567/README.md)
+are source-pinned. Final all-image review and release gates remain separate;
+the original `b05b06a` visual failure is preserved, not relabelled.

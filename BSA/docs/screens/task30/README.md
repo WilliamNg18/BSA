@@ -1,15 +1,36 @@
 # Task 30 evidence
 
-**Initial hosted functional acceptance passed; visual/prose acceptance failed.**
+**Repaired hosted functional acceptance passed; new visual review is pending.**
+
+The coordinator-approved repaired runtime is
+`34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e`. The complete hosted inventory passed
+30/30 without retries from `2026-09-13T22:46:41.922Z` to
+`2026-09-13T22:52:52.227Z`, with 60 clean matching identities, 58 original
+images (25 Off, 33 On) and 26 zero-violation axe audits. Eighteen audits retain
+incomplete findings. See the [immutable manifest](34d7567/manifest.json).
+The export was committed at `f64095a58cb38a8f9d0b4a9719c29cc63143bdd2`
+before the same independent reviewer's new full-height assessment began.
+
+[Direct keyboard and contrast observations](manual-34d7567/README.md) record
+actual mobile focus, error recovery and declaration guards on this source.
+They are bounded observations, not full WCAG certification. Final release
+acceptance still requires the new all-image verdict, documentation-only
+follow-up CI and the coordinator's latest-main repeat.
+
+## Preserved initial visual failure
+
 The immutable `b05b06a` bundle contains all 30 passing hosted checks, 60 identities,
 58 images and 26 zero-violation axe audits. `review-b05b06a` preserves the complete
 independent 58-image review, its 24/34 image PASS/FAIL verdicts and separate F02
 correction. `manual-b05b06a` preserves actual keyboard/contrast observations and
 limitations. None of these failures is relabelled as final acceptance.
 
-A bounded runtime/capture repair is required before a new coordinator-approved
-deployment, full hosted run and independent full-height review. Historical
-Task 24 evidence and every original b05 artifact remain unchanged.
+The bounded runtime/capture repair merged as #87 after all four exact CI
+checks passed on `a6f8e49038be34f1610f5fb0181fef21bfacb200`
+(run `34787130520`): 1,134 unique units in 60 files, 1,202 ordinary browser
+tests and 34 separate instrumented tests. Its coherent final local 30-check
+run also passed before coordinator merge and deployment. Historical Task 24
+evidence and every original b05 artifact remain unchanged.
 
 ## Local rehearsal, not release acceptance
 

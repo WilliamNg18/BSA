@@ -1828,3 +1828,26 @@ to sRGB and alpha-composited against the observed dialog background measure
 17.928:1 light and 18.968:1 dark. Both themes must exceed 3:1 in the regression.
 Global theme and desktop styles are unchanged. This repairs the observed focus
 indicator; it does not establish full WCAG conformance or rewrite old evidence.
+
+### Repaired Task 30 hosted evidence, review still pending
+
+Repair #87 merged only after exact `a6f8e49` passed all four jobs in CI
+`34787130520`, with 1,134 unique units/60 files, 1,202 ordinary browser tests
+and 34 separate instrumented tests. A coherent clean 30-check local rehearsal
+also passed. The coordinator merged actual main
+`34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e`; normal deployment
+`34787652659` and main CI `34787652657` succeeded.
+
+After explicit deployment approval, one complete hosted run passed all
+30 checks without retries from `2026-09-13T22:46:41.922Z` to
+`2026-09-13T22:52:52.227Z`, retaining 60 identities, 58 new images and
+26 zero-violation axe audits. Eighteen audits still contain incomplete items.
+The new immutable `screens/task30/34d7567` export was committed as `f64095a`
+before the same reviewer's full-height re-review. New bounded direct keyboard,
+mobile focus contrast and declaration/error-guard observations are separately
+preserved in `manual-34d7567`, committed as `3a03f26`.
+
+No original failure or pending visual-review field is rewritten. Final
+documentation and task closure require the actual new all-image verdict,
+documentation-only pull-request gates and the coordinator's latest-main
+complete hosted repeat. Functional success alone is not final acceptance.
