@@ -56,7 +56,7 @@ describe("whole-process presentation", () => {
       const calculator = render(BaselineCalculator);
       const scene = render(BaselineScene);
       expect(calculator).toMatch(new RegExp(`data-process-metric="today-referralOperatorHours"[^]*?aria-label="${formatBaselineNumber(expected.today.referralOperatorHours, 1)}"`));
-      expect(scene).toMatch(new RegExp(`data-scene-metric="autoPricedItems"[^]*?aria-label="${formatBaselineNumber(expected.counts.autoPricedItems, 1)}"`));
+      expect(scene).toMatch(new RegExp(`data-scene-metric="autoPricedItems"[^]*?>${formatBaselineNumber(expected.counts.autoPricedItems, 1)}</span>`));
       expect(useAppStore.getState()).toBe(before);
     }
   });
