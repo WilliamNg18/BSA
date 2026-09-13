@@ -6,7 +6,7 @@ import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { checkPharmacy, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
-import { PROCESS_MONTH_DEFAULTS, monthModel } from "@/lib/domain/baseline";
+import { PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, monthModel } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -57,7 +57,9 @@ describe("claims presentation uses recorded events separately from monthly proje
     store.setProcessInput("pharmacyCatchPercent", "30");
     const projection = monthModel({ ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 30 });
     const markup = renderClaims();
-    expect(markup).toContain(`Caught before submission</dt><dd>${new Intl.NumberFormat("en-GB").format(projection.withAgent.caughtBeforeSubmission)}</dd>`);
+    expect(markup).toContain(`Caught before submission</dt><dd>${formatProcessItems(projection.withAgent.caughtBeforeSubmission)}</dd>`);
+    expect(markup).toContain(`Referral-loop operator hours</dt><dd>${formatProcessHours(projection.withAgent.referralOperatorHours)}</dd>`);
+    expect(markup).toContain(`Pharmacy completion hours</dt><dd>${formatProcessHours(projection.withAgent.pharmacyCompletionHours)}</dd>`);
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.setAgentEnabled(false);
     expect(recordedClaims()).not.toContain("Caught before submission");

@@ -5,6 +5,7 @@ import { CompactTooltip, CompactTooltipContent, CompactTooltipTrigger } from "@/
 import { SyntheticTag } from "@/components/demo/labels";
 import { ClaimDetail } from "@/components/demo/claim-detail";
 import { useProcessMonth } from "@/hooks/use-process-month";
+import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { PHARMACIES } from "@/lib/domain/reference";
@@ -13,7 +14,6 @@ import { useAppStore } from "@/lib/store";
 const filters = ["Action needed", "Waiting on NHSBSA", "Paid this month", "All"] as const;
 type ClaimFilter = typeof filters[number];
 const money = (amount: number) => new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(amount);
-const number = (amount: number) => new Intl.NumberFormat("en-GB").format(amount);
 
 function matchesFilter(row: CaseLifecycle, filter: ClaimFilter, month: string) {
   if (filter === "Action needed") return row.state === "referred_back" || row.state === "information_requested";
@@ -70,18 +70,18 @@ export function PharmacyClaimsPage() {
       <h2 className="font-semibold">This pharmacy · {month}</h2>
       <p className="text-sm">Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment.</p>
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-        {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{number(total)}</dd></div>)}
-        {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{number(caught)}</dd></div>}
+        {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{formatProcessItems(total)}</dd></div>)}
+        {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
       </dl>
       {agentEnabled && <p className="text-sm">Caught items have a recorded human-applied correction and completed before/after checks, counted once per submission attempt.</p>}
       {model.result && projection ? <section aria-label="Shared monthly process projection" className="space-y-2 border-t pt-3">
         <h3 className="font-semibold">{agentEnabled ? "With the agent" : "Today"}: whole-service projection</h3>
-        <p className="text-sm">Shared monthly scenario: {number(model.result.counts.monthlyItems)} items. Public baseline with assumptions, not this pharmacy&apos;s recorded totals.</p>
+        <p className="text-sm">Shared monthly scenario: {formatProcessItems(model.result.counts.monthlyItems)} items. Public baseline with assumptions, not this pharmacy&apos;s recorded totals.</p>
         <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-          <div><dt>Items referred back</dt><dd>{number(projection.referredBackItems)}</dd></div>
-          <div><dt>Caught before submission</dt><dd>{number(projection.caughtBeforeSubmission)}</dd></div>
-          <div><dt>Referral-loop operator hours</dt><dd>{number(projection.referralOperatorHours)}</dd></div>
-          <div><dt>Pharmacy completion hours</dt><dd>{number(projection.pharmacyCompletionHours)}</dd></div>
+          <div><dt>Items referred back</dt><dd>{formatProcessItems(projection.referredBackItems)}</dd></div>
+          <div><dt>Caught before submission</dt><dd>{formatProcessItems(projection.caughtBeforeSubmission)}</dd></div>
+          <div><dt>Referral-loop operator hours</dt><dd>{formatProcessHours(projection.referralOperatorHours)}</dd></div>
+          <div><dt>Pharmacy completion hours</dt><dd>{formatProcessHours(projection.pharmacyCompletionHours)}</dd></div>
         </dl>
       </section>
         : <p role="alert">Shared monthly scenario unavailable. Correct the monthly assumptions: {Object.values(model.errors).join(" ")}</p>}
