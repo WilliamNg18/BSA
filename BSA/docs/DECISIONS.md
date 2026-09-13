@@ -1659,3 +1659,37 @@ historical citation plus a non-blank human reason. Agent On does not fabricate
 this proof. The synthetic Today experience-only comparison is qualified and
 does not hide F's original sources or any later correction record. Automatic
 trace views do not show fictitious human gathering, including when Agent is Off.
+
+## 2026-09-13: Task 28 defensible referral-loop implementation
+
+N implements the frozen manual-loop overload without replacing either genuine
+legacy calculation. The same application store holds raw editable drafts;
+invalid drafts remove all current estimates rather than reuse a prior result.
+C supplied the isolated store integration, including snapshot and Reset.
+Current figures use `useManualLoopMonth`. The queue and pharmacy owners import
+shared zero-prop projection components instead of reproducing arithmetic.
+
+Each outgoing percentage cohort rounds once to an integer; subtraction keeps
+the remaining cohort exact. All four shares are independently editable:
+Today double-checks, pharmacy prevention, subsequent code clearance and final
+queue abstention. No additional deficiency fraction is invented. Abstention
+retains manual gathering, and all queued items receive a first judgement.
+With total is 297.5 hours at defaults, not the 255 judging-hours subtotal.
+Pharmacy MYS effort stays separate. Whole-service public context is not this
+referral subset and is not relabelled as all operator work.
+
+Numeric bounds are one billion items, 100 per cent, 1,440 minutes and 86,400
+seconds. Count fields require integers; other fields accept decimal notation,
+including zero. Decimal text is checked before conversion to reject rounded
+out-of-bound values, overflow, underflow and non-decimal input. Impossible lane
+overlap or a referral subset exceeding Type 2 fails explicitly. Zero With
+hours or an unrepresentable ratio produces a labelled unavailable ratio,
+never infinity or claimed infinite savings.
+
+One shared formatter supplies all numeric endpoints. The generated comparison
+is below 25 words, counts total operator hours and retains the permanent
+labelled-assumptions line. Five per cent abstention is explicitly an assumption,
+not a measured six-case rate. Projected full rule-and-reason coverage includes
+documented abstention as a scenario assumption, not invented retrieved clauses
+or evidence about actual historical records. Human confirmation labour is not
+hidden inside code clearance. No payment, lifecycle or decision authority changes.
