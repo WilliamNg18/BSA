@@ -29,6 +29,11 @@ These are local execution records, not portable hosted evidence.
 
 ## Final evidence requirements
 
+V's functional pull request supplies the six-chapter runtime and merges last
+after the other functional streams. Its four exact CI checks and complete
+local rehearsal precede normal main deployment. The final hosted run then
+targets that actual deployed runtime, never the earlier eight-chapter site.
+
 Use a fresh source-named subdirectory for every hosted run. Export the complete
 inventory, exact clean application source, runner source, timestamps, URLs,
 before/after identities, original symptoms and image hashes without modifying
@@ -39,6 +44,9 @@ and functional truth. A review records the specific image hash, source, all
 observed regions, findings and verdict. Capture-time `visualReview: pending`
 remains immutable; a separate review supplies the actual later result.
 
-Do not mark final acceptance until the complete hosted inventory passes on the
-approved source, every image is reviewed, all four final PR checks pass and the
-coordinator completes the latest-main repeat with a URL check within ten minutes.
+Preserve the hosted export, actual review and final tracking in a separate
+documentation/evidence-only follow-up, without application or configuration
+changes. Do not mark final acceptance until the complete hosted inventory
+passes on the approved source, every image is reviewed, the follow-up's four
+exact CI checks pass and the coordinator completes the latest-main repeat with
+a URL check within ten minutes.

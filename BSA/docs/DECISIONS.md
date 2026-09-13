@@ -1649,3 +1649,27 @@ separately; medicine fields, exact rule quotations, requirement statuses and
 field-associated provenance labels remain visible structured evidence. Error
 messages replace the main narrative rather than accumulating duplicate prose.
 Focused tests count both Paper variants, both modes and all advice outcomes.
+
+## 2026-09-13: Task 30 staged runtime and evidence release
+
+The coordinator approved two V deliveries without changing the service,
+deployment workflow, identity or merge order. After C/N/U/E/Q are actually
+merged, V's functional pull request is rebased onto main and supplies the
+six-chapter runtime, complete 29-check inventory and demonstration documents.
+Its exact four CI checks and coherent complete local rehearsal must pass before
+the coordinator merges V last and deploys main through the existing workflow.
+
+Only that deployed six-chapter main can receive the final 29-check hosted run
+and independent full-height image review. The old eight-chapter deployment
+cannot pass the new rail check by substitution. No feature-branch deployment,
+new preview slot, OIDC change or temporary hosted bypass is authorised.
+
+A separate V documentation/evidence follow-up preserves the immutable hosted
+export, every actual full-height review, manual keyboard/contrast observations,
+prose findings and final tracking. It contains no application, runtime or
+hosting configuration changes. Any real visual defect is fixed and recaptured
+before acceptance. That follow-up also requires four exact green CI checks;
+the coordinator then repeats the complete hosted inventory on latest main,
+checks the URL within ten minutes and confirms the protected-reference gates.
+ALL DONE remains withheld until the whole release, not merely functional V,
+has completed those gates.
