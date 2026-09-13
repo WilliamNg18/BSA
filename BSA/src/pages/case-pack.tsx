@@ -129,7 +129,7 @@ function CasePackContent() {
         Captured fields: declared by the pharmacy, not read from the form. Confirmed by a Type 1 operator; proposed path.
       </p>}
       {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
-      {awaitingCapture && <Type1Capture caseId={c.id} />}
+      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} />}
       {automatic && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
         <BoundaryTag cls="deterministic" />
         <p>Priced by NHSBSA's existing rules engine; no person involved in automatic pricing.</p>
