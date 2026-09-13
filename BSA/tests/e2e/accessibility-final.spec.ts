@@ -1,8 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Page, TestInfo } from "@playwright/test";
-import { captureJson, expect, test as base } from "./fixtures";
+import { automaticCaseIds, captureJson, expect, staticRoutes, test as base } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
@@ -90,7 +91,14 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
         test(`axe and reflow ${id}`, async ({ page }, info) => {
           await page.goto(`case/${id}`);
           await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-          if (enabled) await page.getByRole("button", { name: "Show all", exact: true }).press("Enter");
+          const automatic = automaticCaseIds.includes(id);
+          if (enabled && !automatic) await page.getByRole("button", { name: "Show all", exact: true }).press("Enter");
+          if (automatic) {
+            await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
+            await expect(page.getByRole("button", { name: "Show all", exact: true })).toHaveCount(0);
+            await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+            await expect(page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true })).toHaveCount(0);
+          }
           await audit(page, info, "phone-pack-axe");
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
           // System-font metrics differ on Linux; enlarged text also forces the
@@ -98,7 +106,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           await page.evaluate(() => { document.documentElement.style.fontSize = "18px"; });
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
           if (id !== "EX-24123") {
-            const replay = page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true });
+            const replay = page.getByRole("link", { name: automatic ? "View pharmacy claim" : "Open pharmacy claim for another attempt", exact: true });
             const bounds = await replay.boundingBox();
             expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(360);
             await replay.press("Enter");
@@ -112,7 +120,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
 
 test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, info) => {
   await page.goto("./#scene");
-  await expect(page.getByRole("heading", { level: 1, name: "The referred-back subset", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: staticRoutes[0].title, exact: true })).toBeFocused();
   const flag = page.getByRole("banner").getByRole("switch");
   await flag.focus();
   await flag.press("Space");
@@ -193,23 +201,25 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       }
     });
 
-    test("queue comparison has keyboard-controlled motion alternatives", async ({ page }, info) => {
+    test("capture timing has keyboard-controlled steps without confirming an item", async ({ page }, info) => {
       await page.goto("queue");
       await page.getByRole("banner").getByRole("switch").setChecked(true);
-      await page.getByRole("button", { name: "Compare", exact: true }).press("Enter");
-      const clock = page.locator("[data-comparison-clock]");
-      await expect(clock).toHaveText("0 synthetic minutes · Stopped");
-      await page.getByRole("button", { name: "Run one hour", exact: true }).press("Enter");
-      if (reducedMotion === "reduce") {
-        await expect(clock).toHaveText("60 synthetic minutes · Stopped");
-      } else {
-        await expect(clock).toContainText("Running");
-        await page.getByRole("button", { name: "Pause", exact: true }).press("Enter");
-        await expect(clock).toContainText("Stopped");
-      }
-      await page.getByRole("button", { name: "Restart", exact: true }).press("Enter");
-      await expect(clock).toHaveText("0 synthetic minutes · Stopped");
-      await audit(page, info, "simulation-axe");
+      const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
+      const product = capture.getByRole("textbox", { name: "Product code", exact: true });
+      const originalProduct = await product.inputValue();
+      const clock = capture.getByRole("status", { name: "Assumed confirmation time", exact: true });
+      await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds`);
+      await capture.getByRole("button", { name: "Restart timing illustration", exact: true }).press("Enter");
+      await expect(clock).toHaveText("0 seconds");
+      await capture.getByRole("button", { name: "Next timing step", exact: true }).press("Enter");
+      await expect(clock).toHaveText(`${(PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds / 2).toLocaleString("en-GB")} seconds`);
+      await capture.getByRole("button", { name: "Next timing step", exact: true }).press("Enter");
+      await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds`);
+      await expect(product).toHaveValue(originalProduct);
+      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      await expect(capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true })).toBeVisible();
+      await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
+      await audit(page, info, "capture-timing-axe");
     });
 
     test("mobile navigation sheet retains focus and scroll lock", async ({ page }, info) => {
