@@ -167,7 +167,8 @@ for (const enabled of [true, false]) {
           }
         }
       } else {
-        const filter = page.locator('[aria-label="Queue status filters"]').getByRole("button", { name: enabled ? /Abstained worked as today/ : /Awaiting an operator/ });
+        const filter = page.getByRole("region", { name: "Actual session work counts", exact: true })
+          .getByRole("button", { name: enabled ? /^Abstained, worked as today\s+\d+$/ : /^Awaiting Type 2 judgement\s+\d+$/ });
         await filter.focus();
         await filter.press("Space");
         await expect(filter).toHaveAttribute("aria-pressed", "true");
