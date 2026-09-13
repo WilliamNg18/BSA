@@ -1,0 +1,80 @@
+{
+  "id": "EX-24112",
+  "endorsement": "NCSO  RK",
+  "attempts": "Attempt 1 · seedEndorsement snapshotNCSO  RKChannelEPSConfirmationNonePrecheck / modeNot checked · SeedRule / clause / checked atNone · None · Not checkedAttempt 2 · submissionEndorsement snapshotNCSO  RKChannelEPSConfirmationNonePrecheck / modenot_checked · offRule / clause / checked atNone · None · Not checkedFull advisory snapshot{\n  \"typedText\": \"NCSO  RK\",\n  \"dispensingDate\": \"2026-08-21\",\n  \"mode\": \"off\",\n  \"facts\": null,\n  \"tariffVersion\": null,\n  \"clauseId\": null,\n  \"checkedAt\": null,\n  \"status\": \"not_checked\",\n  \"checks\": []\n}Attempt 3 · submissionEndorsement snapshotNCSO  RKChannelEPSConfirmationNonePrecheck / modemissing · scriptedRule / clause / checked at2026-08 · P2-C9 · 2026-09-13T21:07:39.307ZFull advisory snapshot{\n  \"typedText\": \"NCSO  RK\",\n  \"dispensingDate\": \"2026-08-21\",\n  \"mode\": \"scripted\",\n  \"facts\": {\n    \"type\": \"NCSO\",\n    \"present\": true,\n    \"initialled\": true,\n    \"dated\": false,\n    \"quotedText\": \"NCSO  RK\",\n    \"note\": \"Scripted typed-field reading\"\n  },\n  \"tariffVersion\": \"2026-08\",\n  \"clauseId\": \"P2-C9\",\n  \"checkedAt\": \"2026-09-13T21:07:39.307Z\",\n  \"status\": \"missing\",\n  \"checks\": [\n    {\n      \"id\": \"mandatory-0\",\n      \"label\": \"Product identified\",\n      \"met\": true\n    },\n    {\n      \"id\": \"mandatory-1\",\n      \"label\": \"Quantity present\",\n      \"met\": true\n    },\n    {\n      \"id\": \"mandatory-2\",\n      \"label\": \"Dispensing date present\",\n      \"met\": true\n    },\n    {\n      \"id\": \"mandatory-3\",\n      \"label\": \"Prescriber present\",\n      \"met\": true\n    },\n    {\n      \"id\": \"endorsement_present\",\n      \"label\": \"Endorsement present\",\n      \"met\": true\n    },\n    {\n      \"id\": \"initialled\",\n      \"label\": \"Initialled by or on behalf of the contractor\",\n      \"met\": true\n    },\n    {\n      \"id\": \"dated\",\n      \"label\": \"Dated\",\n      \"met\": false\n    }\n  ]\n}",
+  "recordId": "3 · DR-000874",
+  "eventCount": 10,
+  "stableEvents": [
+    {
+      "fields": [
+        "Time / actor2026-09-01T09:00:00.000Z · pharmacy",
+        "Attempt / record1 · No decision record"
+      ],
+      "message": "Synthetic claim submitted."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-01T09:01:00.000Z · code",
+        "Attempt / record1 · No decision record"
+      ],
+      "message": "Routed for operator review."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-01T09:02:00.000Z · operator",
+        "Attempt / record1 · No decision record"
+      ],
+      "message": "Synthetic human decision recorded."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:36.369Z · pharmacy",
+        "Attempt / record2 · No decision record"
+      ],
+      "message": "Explicit demo submission; previous revisions retained."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:37.407Z · code",
+        "Attempt / record2 · No decision record"
+      ],
+      "message": "Arrived for review."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:37.773Z · operator",
+        "Attempt / record2 · DR-000873"
+      ],
+      "message": "Human decision recorded (synthetic)."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:39.424Z · pharmacy",
+        "Attempt / record3 · No decision record"
+      ],
+      "message": "Explicit demo submission; previous revisions retained."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:40.454Z · code",
+        "Attempt / record3 · No decision record"
+      ],
+      "message": "Arrived for review."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:40.454Z · agent",
+        "Attempt / record3 · No decision record"
+      ],
+      "message": "Scripted case built; human decision required."
+    },
+    {
+      "fields": [
+        "Time / actor2026-09-13T21:07:40.824Z · operator",
+        "Attempt / record3 · DR-000874"
+      ],
+      "message": "Human decision recorded (synthetic)."
+    }
+  ],
+  "reason": "Perspective On: add the dispensing date beside the initials"
+}

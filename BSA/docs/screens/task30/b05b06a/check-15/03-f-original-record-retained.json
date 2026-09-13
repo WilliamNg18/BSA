@@ -1,0 +1,4 @@
+{
+  "record": "Original decision history (2)\n\nDR-000871: REFER BACK by Operator P (synthetic)\n\nHuman reason: Not recorded\n\nOriginal rule: 2026-08\n\nExisting capture\nClaim ledger\nProduct master data\nDrug Tariff corpus 2026-08 (Part II, Clause 9)\nCase history FQ123\n\nDR-000872: ACCEPT by Demo operator\n\nHuman reason: Human checked the corrected initials and date.\n\nStored Tariff context, no rule recorded: Not recorded\n\nPharmacy correction revision 2",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24088/record"
+}

@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    "Attempt 1 · seedEndorsement snapshotNCSO  RKChannelEPSConfirmationNonePrecheck / modeNot checked · SeedRule / clause / checked atNone · None · Not checked",
+    "Attempt 2 · submissionEndorsement snapshotNCSO  RKChannelPaperConfirmationNonePrecheck / modenot_checked · offRule / clause / checked atNone · None · Not checkedFull advisory snapshot{\n  \"typedText\": \"NCSO  RK\",\n  \"dispensingDate\": \"2026-08-21\",\n  \"mode\": \"off\",\n  \"facts\": null,\n  \"tariffVersion\": null,\n  \"clauseId\": null,\n  \"checkedAt\": null,\n  \"status\": \"not_checked\",\n  \"checks\": []\n}"
+  ],
+  "events": [
+    "Time / actor2026-09-01T09:00:00.000Z · pharmacyTransitionNew → Submitted, awaiting processingAttempt / record1 · No decision recordSynthetic claim submitted.",
+    "Time / actor2026-09-01T09:01:00.000Z · codeTransitionSubmitted, awaiting processing → Awaiting operatorAttempt / record1 · No decision recordRouted for operator review.",
+    "Time / actor2026-09-01T09:02:00.000Z · operatorTransitionAwaiting operator → Action needed: correction requiredAttempt / record1 · No decision recordRB codeSYN-NCSOHuman reasonEndorsement initialled but not dated.Rule / clause2026-08 · P2-C9Synthetic human decision recorded.",
+    "Time / actor2026-09-13T21:05:01.836Z · pharmacyTransitionAction needed: correction required → Submitted, awaiting processingAttempt / record2 · No decision recordChannelPaperExplicit demo submission; previous revisions retained.",
+    "Time / actor2026-09-13T21:05:02.846Z · operatorTransitionSubmitted, awaiting processing → Awaiting operatorAttempt / record2 · No decision recordChannelPaperHuman capture confirmed; code routed the captured fields.Recorded human Type 1 captureKeyed by a human operator, not read automatically.Product codeSYN-AMLO10-28Quantity28PrescriberDr Demo (synthetic)EndorsementNCSO RK 21/08/26Confirmed byDemo operator · 2026-09-13T21:05:02.846ZDeclaration reconciled by operatorNo",
+    "Time / actor2026-09-13T21:05:02.846Z · codeTransitionAwaiting operator → Paid on the normal schedule (synthetic)Attempt / record2 · No decision recordChannelPaperHuman capture complete; existing rules engine handles normal pricing."
+  ]
+}

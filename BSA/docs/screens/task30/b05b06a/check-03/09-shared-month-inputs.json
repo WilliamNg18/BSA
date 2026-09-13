@@ -1,0 +1,69 @@
+{
+  "input": {
+    "monthlyItems": 100000000,
+    "epsPercent": 91,
+    "type1Percent": 2.2,
+    "type2Percent": 2,
+    "staffTouchPercent": 4,
+    "type1KeySeconds": 30,
+    "type1ConfirmSeconds": 10,
+    "manualLoopItems": 120,
+    "gatheringMinutesToday": 5,
+    "judgingMinutesToday": 3,
+    "doubleCheckPercent": 25,
+    "builtJudgingMinutes": 3,
+    "preventionPercent": 80,
+    "clearancePercent": 70,
+    "abstentionPercent": 5,
+    "mysCompletionMinutes": 7
+  },
+  "expected": {
+    "counts": {
+      "monthlyItems": 100000000,
+      "epsItems": 91000000,
+      "paperItems": 9000000,
+      "type1Items": 2200000,
+      "type2Items": 2000000,
+      "staffTouchedItems": 4000000,
+      "autoPricedItems": 96000000
+    },
+    "cohorts": {
+      "manualLoopItems": 120,
+      "prevented": 96,
+      "afterPrevention": 24,
+      "clearedBeforeQueue": 17,
+      "queued": 7,
+      "abstained": 0,
+      "built": 7
+    },
+    "today": {
+      "itemsGathered": 120,
+      "itemsJudged": 150,
+      "doubleChecks": 30,
+      "referredBackItems": 120,
+      "gatheringHours": 10,
+      "judgingHours": 6,
+      "doubleCheckHours": 1.5,
+      "operatorHours": 17.5,
+      "pharmacyCompletionHours": 14,
+      "decisionsWithRuleAndReason": 0
+    },
+    "withAgent": {
+      "itemsGathered": 0,
+      "itemsJudged": 7,
+      "doubleChecks": 0,
+      "referredBackItems": 7,
+      "gatheringHours": 0,
+      "judgingHours": 0.35,
+      "doubleCheckHours": 0,
+      "operatorHours": 0.35,
+      "pharmacyCompletionHours": 0.8166666666666667,
+      "decisionsWithRuleAndReason": 7
+    },
+    "operatorHoursRatio": 50,
+    "type1": {
+      "keySeconds": 30,
+      "confirmSeconds": 10
+    }
+  }
+}
