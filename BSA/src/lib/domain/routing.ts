@@ -53,7 +53,7 @@ export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["cha
     channel, readable, handwritten: channel === "paper" && c.imageStyle !== "printed", captureConfirmed,
     mandatoryFieldsComplete: Boolean(product) && mandatoryFieldsCheck(c.extracted).every((check) => check.pass),
     endorsementRequired: required.required !== false, endorsementPresent: facts.present, endorsementComplete: complete,
-    interpretationRequired: required.required === null || facts.present && !complete || captureConfirmed && c.scenario === "D",
+    interpretationRequired: required.required === null || facts.present && (facts.type !== "NCSO" || !complete) || captureConfirmed && c.scenario === "D",
     hasConflict: reconcile(c.extracted, c.claim.quantity, c.claim.productCode, c.claim.amountClaimed, product, concession?.price ?? null).some((entry) => entry.material),
     type2Decision: "not_decided",
   };
