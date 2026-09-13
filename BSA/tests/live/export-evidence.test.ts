@@ -4,6 +4,7 @@ import { mkdtemp, readFile, rm, writeFile, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { expect, it } from "vitest";
+import { exportEvidence } from "./export-evidence.mjs";
 
 it("exports validated relative evidence without altering the original run or overwriting a prior export", async () => {
   const directory = await mkdtemp(join(tmpdir(), "bsa-export-"));
@@ -60,9 +61,7 @@ it.each([
   try {
     const source = join(directory, "checklist.json");
     await writeFile(source, JSON.stringify(report));
-    expect(() => execFileSync(process.execPath, [
-      resolve("tests/live/export-evidence.mjs"), source, `${directory}-output`,
-    ], { stdio: "pipe" })).toThrow();
+    await expect(exportEvidence(source, `${directory}-output`)).rejects.toThrow();
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
