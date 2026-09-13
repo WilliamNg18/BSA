@@ -3,8 +3,8 @@ import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixt
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
 const scenarios = [
-  { id: "A", label: "Complete endorsement", status: "Complete: will flow to automated pricing" },
-  { id: "B", label: "Information missing", status: "Information may be missing" },
+  { id: "A", label: "Complete endorsement", status: "Complete: will flow to automated pricing, no person involved" },
+  { id: "B", label: "NCSO missing date", status: "Information missing" },
   { id: "D", label: "Unreadable form", status: "Agent unable to determine" },
 ];
 
@@ -18,7 +18,7 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     await expect(page.getByRole("radio", { name: scenario.id === "D" ? "Paper" : "EPS", exact: true })).toBeChecked();
     await expect(page.locator("[data-pharmacy-status]")).toHaveText(on ? scenario.status : "Not checked: manual submission");
     await expect(page.locator("[data-scripted-badge]")).toHaveText("Scripted signal · Not live");
-    const field = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
+    const field = page.getByLabel("Dispenser endorsement", { exact: true });
     const text = await field.inputValue();
     if (!on) {
       await expect(page.getByRole("heading", { name: /^Rule retrieved/ })).toHaveCount(0);
@@ -32,7 +32,7 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     } else {
       await expect(page.getByRole("checkbox", { name: "Dated", exact: true })).toBeChecked({ checked: scenario.id === "A" });
     }
-    const continueButton = page.getByRole("button", { name: "Continue with submission", exact: true });
+    const continueButton = page.getByRole("button", { name: "Send claim", exact: true });
     await expect(continueButton).toBeEnabled();
     await continueButton.click();
     const receipt = page.getByRole("region", { name: "Submission receipt" });
@@ -76,7 +76,7 @@ for (const scenario of scenarios) {
     await page.getByRole("radio", { name: scenario.label, exact: true }).click();
     const flag = page.getByRole("banner").getByRole("switch");
     const status = page.locator("[data-pharmacy-status]");
-    const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
+    const submit = page.getByRole("button", { name: "Send claim", exact: true });
     await expect(status).toHaveText("Not checked: manual submission");
     await expect(submit).toBeEnabled();
     await expect(page.getByRole("switch")).toHaveCount(1);
@@ -100,23 +100,23 @@ for (const scenario of scenarios) {
 test("Task4 B applies only the suggested dispensing date, retains receipt and never edits canonical B", async ({ page }) => {
   await page.goto("pharmacy");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  const field = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
+  const field = page.getByLabel("Dispenser endorsement", { exact: true });
   await expect(field).toHaveValue("NCSO  RK");
   await expect(page.getByRole("checkbox", { name: "Dated", exact: true })).not.toBeChecked();
-  await page.getByRole("button", { name: "Apply fix", exact: true }).focus();
+  await page.getByRole("button", { name: "Apply correction", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO  RK 21/08/26");
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
   await expect(page.getByRole("checkbox", { name: "Dated", exact: true })).toBeChecked();
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("button", { name: "Step timeline", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("[data-pharmacy-timeline] [role=status]")).toContainText("no person involved");
   await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
   await expect(page.getByRole("list", { name: "Submission timeline" }).locator("li")).toHaveCount(2);
   await page.getByRole("button", { name: "Restore", exact: true }).click();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
   await expect(page.getByRole("region", { name: "Submission receipt" })).toContainText("NCSO  RK 21/08/26");
   await confirmReset(page);
   await expect(page.getByRole("region", { name: "Submission receipt" })).toHaveCount(0);
@@ -133,17 +133,17 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
     // Establish a successful revision first to detect stale rule/ready reuse.
-    await page.getByRole("button", { name: "Apply fix", exact: true }).click();
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
-    await page.getByLabel("Endorsement entered by the pharmacy", { exact: true }).fill(text);
+    await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+    await page.getByLabel("Dispenser endorsement", { exact: true }).fill(text);
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Agent unable to determine");
     await expect(page.getByRole("list", { name: "Scripted pharmacy process" }).locator("li")).toHaveText([
       "CapturedPASS", "Endorsement typeSTOPPED", "Dispensing-date versionNOT RUN", "ClauseNOT RUN", "RequirementsNOT RUN",
     ]);
     await expect(page.getByRole("region", { name: "Validated synthetic rule" })).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Requirement checkboxes" })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Apply fix", exact: true })).toHaveCount(0);
-    const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
+    await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(0);
+    const submit = page.getByRole("button", { name: "Send claim", exact: true });
     await expect(submit).toBeEnabled();
     await submit.click();
     const receipt = page.getByRole("region", { name: "Submission receipt" });
@@ -175,10 +175,10 @@ test("Task4 corrected B stays corrected when submitted Off, without performed ch
   await page.goto("pharmacy");
   const flag = page.getByRole("banner").getByRole("switch");
   await flag.setChecked(true);
-  await page.getByRole("button", { name: "Apply fix", exact: true }).click();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
+  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
   await flag.setChecked(false);
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   const receipt = page.getByRole("region", { name: "Submission receipt" });
   await expect(receipt).toContainText("NCSO  RK 21/08/26");
   await expect(receipt).toContainText("not_checked");
@@ -191,8 +191,8 @@ test("Task4 corrected B stays corrected when submitted Off, without performed ch
 test("Task4 global Reset clears receipts, channel and declaration drafts on this or another route", async ({ page }) => {
   await page.goto("pharmacy");
   const flag = page.getByRole("banner").getByRole("switch");
-  const field = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
-  const submit = page.getByRole("button", { name: "Continue with submission", exact: true });
+  const field = page.getByLabel("Dispenser endorsement", { exact: true });
+  const submit = page.getByRole("button", { name: "Send claim", exact: true });
   await flag.setChecked(true);
   await field.fill("Unknown endorsement");
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
@@ -206,7 +206,7 @@ test("Task4 global Reset clears receipts, channel and declaration drafts on this
   await confirmReset(page);
   await expect(flag).not.toBeChecked();
   await expect(page.getByRole("switch")).toHaveCount(1);
-  await expect(page.getByRole("radio", { name: "Information missing", exact: true })).toBeChecked();
+  await expect(page.getByRole("radio", { name: "NCSO missing date", exact: true })).toBeChecked();
   await expect(field).toHaveValue("NCSO  RK");
   await expect(page.getByRole("region", { name: "Submission receipt" })).toHaveCount(0);
   await expect(page.locator("[data-pharmacy-timeline]")).toHaveCount(0);
@@ -217,7 +217,7 @@ test("Task4 global Reset clears receipts, channel and declaration drafts on this
   await expect(page.getByLabel("Declared product code", { exact: true })).toHaveValue("");
   await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("");
   await expect(page.getByLabel("Declared prescriber (synthetic)", { exact: true })).toHaveValue("");
-  await page.getByRole("radio", { name: "Information missing", exact: true }).click();
+  await page.getByRole("radio", { name: "NCSO missing date", exact: true }).click();
   await submit.click();
   await expect(page.getByRole("region", { name: "Submission receipt" })).toContainText("EX-24112:2");
   await submit.click();
@@ -236,17 +236,17 @@ test("Task4 rapid revisions, pending submission, cancellation and reduced-motion
   await page.clock.install({ time: new Date("2026-09-10T12:00:00Z") });
   await page.clock.pauseAt(new Date("2026-09-10T12:00:10Z"));
   const flag = page.getByRole("banner").getByRole("switch");
-  const field = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
+  const field = page.getByLabel("Dispenser endorsement", { exact: true });
   await flag.setChecked(true);
   await page.clock.runFor(1999);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Scripted check in progress");
   await field.fill("NCSO RK 21/08/26");
   await page.clock.runFor(1);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Scripted check in progress");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await expect(page.getByRole("region", { name: "Submission receipt" })).toContainText("No checks performed");
   await page.clock.runFor(1999);
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await expect(page.getByRole("heading", { name: /^Rule retrieved/ })).toHaveCount(0);
   await page.clock.runFor(2000);
@@ -259,7 +259,7 @@ test("Task4 rapid revisions, pending submission, cancellation and reduced-motion
   await page.clock.runFor(3000);
   await expect(page.getByRole("heading", { name: /^Rule retrieved/ })).toHaveCount(0);
   await page.getByRole("radio", { name: "Complete endorsement", exact: true }).click();
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
   await page.clock.runFor(500);
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
@@ -282,9 +282,9 @@ for (const theme of ["light", "dark"] as const) {
     await page.goto("pharmacy");
     await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
     await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
-    const endorsement = page.getByLabel("Endorsement entered by the pharmacy", { exact: true });
+    const endorsement = page.getByLabel("Dispenser endorsement", { exact: true });
     await expect(endorsement).toHaveValue("");
-    await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
     const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
     const receiptEvidence = receipt.locator(":scope > dl");
     const blind = await receiptEvidence.innerText();
@@ -297,7 +297,7 @@ for (const theme of ["light", "dark"] as const) {
       ["Declared product code", "SYN-COCOD-100"],
       ["Declared quantity", "100"],
       ["Declared prescriber (synthetic)", "Dr Demo (synthetic)"],
-      ["Endorsement entered by the pharmacy", "NCSO AB 27/08/26"],
+      ["Dispenser endorsement", "NCSO AB 27/08/26"],
     ]) {
       const field = page.getByLabel(label, { exact: true });
       await expect(field).toHaveValue("");
@@ -314,7 +314,7 @@ for (const theme of ["light", "dark"] as const) {
     await page.getByRole("radio", { name: "Both", exact: true }).click();
     await expect(receipt.getByRole("link", { name: "Open shared queue", exact: true })).toBeVisible();
     await expect(receiptEvidence).toHaveText(blind, { useInnerText: true });
-    await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
     await expect(receipt).toContainText("EX-24123:3");
     const declaration = page.getByRole("region", { name: "Submitted pharmacy declaration", exact: true });
     await expect(declaration).toContainText("declared by the pharmacy, not read from the form");
@@ -348,11 +348,11 @@ test("Task20 declaration edits invalidate the check and reject malformed quantit
   await page.getByLabel("Declared product code", { exact: true }).fill("SYN-COCOD-100");
   await page.getByLabel("Declared quantity", { exact: true }).fill("100");
   await page.getByLabel("Declared prescriber (synthetic)", { exact: true }).fill("Dr Demo (synthetic)");
-  await page.getByLabel("Endorsement entered by the pharmacy", { exact: true }).fill("NCSO AB 27/08/26");
+  await page.getByLabel("Dispenser endorsement", { exact: true }).fill("NCSO AB 27/08/26");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Declaration complete: human capture confirmation required");
   await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
   await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Declaration complete: human capture confirmation required");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("Declared quantity must be a positive whole number or left blank.");
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
 });

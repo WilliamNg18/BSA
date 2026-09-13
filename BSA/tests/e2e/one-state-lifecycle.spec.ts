@@ -29,9 +29,9 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
   test(`one state: B referral, correction and explicit human recheck with ${approval} draft`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
       const submitted = await action("Submit B with the missing dispensing date", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
       });
       expect(submitted.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement", requiresHuman: true } });
       await openWork(page, action, B);
@@ -160,9 +160,9 @@ for (const enabled of [false, true]) {
       await action("Explicitly select the EPS channel", "Pharmacy", async () => {
         await page.getByRole("radio", { name: "EPS", exact: true }).check();
       });
-      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Complete: will flow to automated pricing" : "Not checked: manual submission");
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Complete: will flow to automated pricing, no person involved" : "Not checked: manual submission");
       const paid = await action("Submit complete A EPS for existing pricing", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
         await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("no person involved");
       });
       expect(paid.itemProcesses["EX-24107"]).toMatchObject({ channel: "eps", capture: null, routing: { outcome: "auto_priced", requiresHuman: false } });
@@ -180,7 +180,7 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Submit unresolved B evidence", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
       });
       await openWork(page, action, B);
       await action("Start the human review", "NHSBSA", async () => { await page.getByRole("button", { name: "Start review", exact: true }).click(); });

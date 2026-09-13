@@ -12,7 +12,7 @@ type UiAction<T> = (label: string, side: "Pharmacy" | "NHSBSA", perform: () => P
 
 export async function submitCompletePaper<T>(page: Page, action: UiAction<T>) {
   await action("Choose B for a new complete paper submission", "Pharmacy", async () => {
-    await page.getByRole("radio", { name: "Information missing", exact: true }).check();
+    await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
   });
   await action("Explicitly choose Paper rather than EPS", "Pharmacy", async () => {
     await page.getByRole("radio", { name: "Paper", exact: true }).check();
@@ -21,14 +21,14 @@ export async function submitCompletePaper<T>(page: Page, action: UiAction<T>) {
     ["Declared product code", completePaperFields.productCode],
     ["Declared quantity", String(completePaperFields.quantity)],
     ["Declared prescriber (synthetic)", completePaperFields.prescriber],
-    ["Endorsement entered by the pharmacy", completePaperFields.endorsementText],
+    ["Dispenser endorsement", completePaperFields.endorsementText],
   ]) {
     await action(`Declare paper ${name}`, "Pharmacy", async () => {
       await page.getByRole(name === "Declared quantity" ? "spinbutton" : "textbox", { name, exact: true }).fill(value);
     });
   }
   return action("Submit complete paper without confirming its capture", "Pharmacy", async () => {
-    await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
     await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText(PAPER_B);
   });
 }

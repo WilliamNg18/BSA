@@ -82,7 +82,7 @@ for (const enabled of [false, true]) {
   test(`cycle guide follows human referral, correction, recheck and existing pricing: agent ${enabled}`, async ({ page }) => {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
     const recorded = page.getByRole("region", { name: "Shared case history", exact: true });
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);

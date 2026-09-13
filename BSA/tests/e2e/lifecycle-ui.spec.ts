@@ -22,7 +22,7 @@ async function record(page: Page, reason: string) {
 test("Task25 Off referral to approved On correction requires a human recheck before pricing", async ({ page }, info) => {
   const started = Date.now();
   await page.goto("pharmacy");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await expect(detail(page)).toContainText("Submitted, awaiting processing");
   await history(page).locator("summary").first().click();
@@ -86,7 +86,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
 
 test("Task25 manual EPS correction retains an unchecked snapshot until explicit human recheck", async ({ page }) => {
   await page.goto("pharmacy");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await queueReview(page);
   await page.getByRole("radio", { name: /^Refer back / }).check();
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
@@ -149,10 +149,10 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
   await expect(page.getByLabel("Declared product code", { exact: true })).toHaveValue("");
   await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("");
-  await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO RK 21/08/26");
+  await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK 21/08/26");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information may be missing");
-  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true })).toBeVisible();

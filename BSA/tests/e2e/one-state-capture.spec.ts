@@ -39,11 +39,11 @@ for (const enabled of [false, true]) {
             await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
           });
           await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
-          for (const name of ["Declared product code", "Declared quantity", "Declared prescriber (synthetic)", "Endorsement entered by the pharmacy"]) {
+          for (const name of ["Declared product code", "Declared quantity", "Declared prescriber (synthetic)", "Dispenser endorsement"]) {
             await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
           }
           const submitted = await action("Submit the genuinely undeclared paper revision", "Pharmacy", async () => {
-            await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+            await page.getByRole("button", { name: "Send claim", exact: true }).click();
           });
           expect(submitted.caseRevisions[D].at(-1)?.declaration).toBeUndefined();
           expect(submitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });
