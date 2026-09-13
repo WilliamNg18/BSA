@@ -43,11 +43,12 @@ function EpsClaimEditor({ caseId }: { caseId: string }) {
   const revisions = useAppStore((state) => state.caseRevisions);
   const processes = useAppStore((state) => state.itemProcesses);
   const [observedRevision, setObservedRevision] = useState(revisions[caseId].at(-1)!.number);
-  const [draft, setDraft] = useState<EpsPrescription>(() => {
+  const [initialDraft] = useState<EpsPrescription>(() => {
     const source = caseForLifecycle(caseId, lifecycles, revisions, processes)!;
     const initial = source.epsPrescription ?? createEpsPrescription(caseById(caseId) ?? source);
     return { ...structuredClone(initial), claimMessageState: "draft" };
   });
+  const [draft, setDraft] = useState<EpsPrescription>(initialDraft);
   const [receiptNumber, setReceiptNumber] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [applied, setApplied] = useState("");
@@ -98,6 +99,10 @@ function EpsClaimEditor({ caseId }: { caseId: string }) {
             <Label htmlFor="endorsement">Dispenser endorsement</Label>
             <Input id="endorsement" value={draft.dispenserEndorsement} onChange={(event) => update({ ...draft, dispenserEndorsement: event.target.value })}
               aria-describedby="eps-endorsement-help" className={enabled && (missing.has("dated") || missing.has("initialled")) ? "border-amber-600 ring-1 ring-amber-600" : ""} />
+            <Button variant="outline" onClick={() => {
+              update(structuredClone(initialDraft));
+              document.getElementById("endorsement")?.focus();
+            }}>Restore draft</Button>
             <p id="eps-endorsement-help" className="text-xs text-muted-foreground">Your actual text is sent unchanged. Prescriber and dispenser endorsements are separate.</p>
             <PainMarker resolved={enabled && result?.status === "ready"} pain="No check against this month's rule" resolution="Dispensing-month requirements checked" />
           </div>
@@ -163,6 +168,7 @@ function EpsClaimEditor({ caseId }: { caseId: string }) {
               if (suggestion.patch) supplyUpdate(suggestion.patch);
               else update({ ...draft, dispenserEndorsement: `${draft.dispenserEndorsement.trimEnd()} ${dateCorrection}` });
               setApplied("Correction applied to the draft only. Send claim remains a separate action.");
+              document.getElementById(suggestion.field === "brand" ? "eps-manufacturer" : suggestion.field === "pack" ? "eps-pack" : suggestion.field === "form" ? "eps-form" : "endorsement")?.focus();
             }}>{suggestion.field === "endorsement" ? "Enter initials" : "Apply correction"}</Button>
           </section>}
           {applied && <p role="status" className="text-sm">{applied}</p>}
@@ -190,7 +196,10 @@ function EpsClaimEditor({ caseId }: { caseId: string }) {
       <p className="text-sm">{automatic ? "Paid on the normal schedule: priced by NHSBSA's existing rules engine, no person involved."
         : receipt.kind === "resubmission" ? "Resubmitted: awaiting human re-check." : "Awaiting Type 2 judgement. No referral or operator decision has been made by the agent."}</p>
       <dl className="grid gap-3 text-sm sm:grid-cols-2"><KeyValue k="Receipt" v={`${caseId}:${receipt.number}`} /><KeyValue k="Submitted at" v={receipt.at} />
-        <KeyValue k="Typed text snapshot" v={receipt.endorsementText || "Empty"} /><KeyValue k="Check result" v={receipt.precheck?.status ?? "not_checked"} /></dl>
+        <KeyValue k="Typed text snapshot" v={receipt.endorsementText || "Empty"} /><KeyValue k="Check result" v={receipt.precheck?.status ?? "not_checked"} />
+        <KeyValue k="Check timestamp" v={receipt.precheck?.checkedAt ?? "No checks performed"} />
+        <KeyValue k="Version / clause" v={`${receipt.precheck?.tariffVersion ?? "Not retrieved"} / ${receipt.precheck?.clauseId ?? "Not retrieved"}`} />
+        <KeyValue k="Storage" v="Shared lifecycle, memory only" /></dl>
       {receipt.epsPrescription && <details><summary className="cursor-pointer font-medium">Recorded claim message</summary><div className="mt-3"><EpsPrescriptionMessage prescription={receipt.epsPrescription} /></div></details>}
       <div className="flex flex-wrap gap-2">
         <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(caseId)}`}>View submitted claim</Link></Button>
