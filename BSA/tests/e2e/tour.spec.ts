@@ -308,7 +308,7 @@ test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases foll
   await expect(c).toContainText("Unresolved");
   const d = page.locator('[data-case="D"]');
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
-  await expect(d).toContainText("Fields are declared by the pharmacy, not read from the form");
+  await expect(d).toContainText("Proposed: declared by the pharmacy, not read from the form.");
   await expect(d).toContainText("Unreconciled evidence still abstains");
   await expect(d.locator("[data-outcome]")).toHaveCount(0);
   await expect(d.getByRole("link", { name: "Open case D", exact: true })).toBeVisible();
