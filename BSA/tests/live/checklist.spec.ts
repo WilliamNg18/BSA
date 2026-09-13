@@ -2,7 +2,8 @@ import type { Page } from "@playwright/test";
 import { audit, captureJson, captureView as captureCheckpoint, expect, test } from "./fixtures";
 import { cases, confirmReset, navigatePrimary, staticRoutes } from "../e2e/fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
-import { PROCESS_MONTH_DEFAULTS, monthModel, formatProcessHours, formatProcessItems } from "../../src/lib/domain/baseline";
+import { MANUAL_LOOP_MONTH_DEFAULTS as PROCESS_MONTH_DEFAULTS, monthModel, formatProcessHours, formatProcessItems } from "../../src/lib/domain/baseline";
+import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
@@ -69,10 +70,10 @@ test(LIVE_CHECKS.routes, async ({ page }, info) => {
 test(LIVE_CHECKS.model, async ({ page }, info) => {
   await page.goto("/#month");
   await expandProcessInputs(page);
-  await page.getByRole("textbox", { name: "Items referred back a month", exact: true }).fill("120");
-  await page.getByRole("textbox", { name: "NHSBSA minutes per referral", exact: true }).fill("5");
-  await page.getByRole("textbox", { name: "Pharmacy minutes per referral", exact: true }).fill("7");
-  const input = { ...PROCESS_MONTH_DEFAULTS, monthlyReferrals: 120, investigationMinutesToday: 5, pharmacyCompletionMinutes: 7 };
+  await page.getByRole("textbox", { name: "Items in the monthly referral loop", exact: true }).fill("120");
+  await page.getByRole("textbox", { name: "Today gathering minutes per item", exact: true }).fill("5");
+  await page.getByRole("textbox", { name: "Pharmacy MYS minutes per referral", exact: true }).fill("7");
+  const input = { ...PROCESS_MONTH_DEFAULTS, manualLoopItems: 120, gatheringMinutesToday: 5, mysCompletionMinutes: 7 };
   const expected = monthModel(input);
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
@@ -83,25 +84,19 @@ test(LIVE_CHECKS.model, async ({ page }, info) => {
     await chooseProcessChapter(page, 2);
   }
   await navigatePrimary(page, "NHSBSA queue");
-  for (const [label, key] of [
-    ["Type 2 operator hours", "type2OperatorHours"], ["Referred-back operator hours", "referralOperatorHours"],
-    ["Pharmacy completion hours", "pharmacyCompletionHours"], ["Items referred back", "referredBackItems"],
-  ] as const) {
-    const format = key === "referredBackItems" ? formatProcessItems : formatProcessHours;
-    await expect(page.locator("[data-queue-month-summary] dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
-      .toHaveText(`${format(expected.today[key])} / ${format(expected.withAgent[key])}`);
+  for (const { key, format } of MANUAL_LOOP_METRICS) {
+    await expect(page.locator(`[data-projection-metric="${key}"]`))
+      .toHaveText(`${format(expected.today[key])} / ${format(expected.withAgent[key])} (estimate)`);
   }
   await navigatePrimary(page, "Pharmacy claims");
   const projection = page.getByRole("region", { name: "Shared monthly process projection", exact: true });
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
-    for (const [label, key] of [
-      ["Items referred back", "referredBackItems"], ["Caught before submission", "caughtBeforeSubmission"],
-      ["Referral-loop operator hours", "referralOperatorHours"], ["Pharmacy completion hours", "pharmacyCompletionHours"],
-    ] as const) {
-      await expect(projection.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
-        .toHaveText((key.endsWith("Hours") ? formatProcessHours : formatProcessItems)(expected[enabled ? "withAgent" : "today"][key]));
+    for (const key of ["referredBackItems", "operatorHours", "pharmacyCompletionHours"] as const) {
+      await expect(projection.locator(`[data-pharmacy-model="${key}"]`))
+        .toHaveText(`${(key.endsWith("Hours") ? formatProcessHours : formatProcessItems)(expected[enabled ? "withAgent" : "today"][key])}${enabled ? " (estimate)" : ""}`);
     }
+    await expect(projection.locator('[data-pharmacy-model="prevented"]')).toHaveText(enabled ? `${formatProcessItems(expected.cohorts.prevented)} (estimate)` : "0");
   }
   await captureJson(info, "shared-month-inputs", { input, expected });
 });
@@ -385,7 +380,7 @@ test(LIVE_CHECKS.deepLinks, async ({ page }, info) => {
 test(LIVE_CHECKS.reset, async ({ page }) => {
   await page.goto("/#month");
   await expandProcessInputs(page);
-  await page.getByRole("textbox", { name: "Items referred back a month", exact: true }).fill("120");
+  await page.getByRole("textbox", { name: "Items in the monthly referral loop", exact: true }).fill("120");
   await flag(page).setChecked(true);
   await navigatePrimary(page, "Pharmacy claims");
   await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
@@ -400,7 +395,7 @@ test(LIVE_CHECKS.reset, async ({ page }) => {
   await navigatePrimary(page, "Overview");
   await chooseProcessChapter(page, 2);
   await expandProcessInputs(page);
-  await expect(page.getByRole("textbox", { name: "Items referred back a month", exact: true })).toHaveValue(String(PROCESS_MONTH_DEFAULTS.monthlyReferrals));
+  await expect(page.getByRole("textbox", { name: "Items in the monthly referral loop", exact: true })).toHaveValue(String(PROCESS_MONTH_DEFAULTS.manualLoopItems));
   await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, false);
 });
 

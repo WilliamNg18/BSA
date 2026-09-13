@@ -94,7 +94,7 @@ test.describe("scene estimate count-in with motion", () => {
     const oldText = await oldNumber!.textContent();
     await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
     await expect(page.locator("[data-scene-estimates]")).toHaveCount(0);
-    const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, monthlyReferrals: 2 };
+    const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, manualLoopItems: 2 };
     await fillProcessInputs(page, input);
     await page.clock.runFor(3000);
     expect(await oldNumber!.textContent()).toBe(oldText);
@@ -132,7 +132,7 @@ test.describe("scene estimate reduced motion", () => {
     await expectFinal(page);
     for (const monthlyItems of [0, 1, 1_000_000_000]) {
       await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
-      const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems, monthlyReferrals: 0 };
+      const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems, manualLoopItems: 0 };
       await fillProcessInputs(page, input);
       // The scene link is the first chapter; avoid introducing navigation ownership.
       await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Back", exact: true }).click();
