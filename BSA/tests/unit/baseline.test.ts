@@ -39,22 +39,22 @@ describe("baseline source and synthetic default provenance", () => {
     const p = BASELINE_PROVENANCE;
     expect(CASES.length + QUEUE_FILLER.length).toBe(12);
     expect(p.pharmacy).toEqual({ ids: ["EX-24112", "EX-24109"], numerator: 2, denominator: 12 });
-    expect(p.cleared).toEqual({ ids: ["EX-24101", "EX-24098"], numerator: 2, denominator: 10 });
-    expect(p.abstain).toEqual({ ids: ["EX-24123", "EX-24120"], numerator: 2, denominator: 8 });
+    expect(p.cleared).toEqual({ ids: ["EX-24107", "EX-24101", "EX-24098"], numerator: 3, denominator: 10 });
+    expect(p.abstain).toEqual({ ids: ["EX-24123", "EX-24120"], numerator: 2, denominator: 7 });
     const rows = [...CASES.map((c) => ({ state: c.initialState })), ...QUEUE_FILLER];
-    expect(rows.filter((r) => r.state === "cleared_by_rules")).toHaveLength(2);
+    expect(rows.filter((r) => r.state === "cleared_by_rules")).toHaveLength(3);
     expect(rows.filter((r) => r.state === "agent_abstained")).toHaveLength(2);
     expect(BASELINE_DEFAULTS.precheckPercent).toBe(2 / 12 * 100);
-    expect(BASELINE_DEFAULTS.clearedPercent).toBe(20);
-    expect(BASELINE_DEFAULTS.abstainPercent).toBe(25);
-    expect(calculateBaseline({ ...BASELINE_DEFAULTS, volume: 12 })).toMatchObject({ pharmacyCaught: 2, cleared: 2, abstained: 2, built: 6 });
+    expect(BASELINE_DEFAULTS.clearedPercent).toBe(30);
+    expect(BASELINE_DEFAULTS.abstainPercent).toBe(2 / 7 * 100);
+    expect(calculateBaseline({ ...BASELINE_DEFAULTS, volume: 12 })).toMatchObject({ pharmacyCaught: 2, cleared: 3, abstained: 2, built: 5 });
   });
 
   it("uses active recommended packs for latency and citation denominator, excluding D/E/F and fillers", () => {
-    const packs = CASES.slice(0, 3).map((c) => runAgent(c));
-    expect(BASELINE_PROVENANCE.assembly.ids).toEqual(CASES.slice(0, 3).map((c) => c.id));
+    const packs = CASES.slice(1, 3).map((c) => runAgent(c));
+    expect(BASELINE_PROVENANCE.assembly.ids).toEqual(CASES.slice(1, 3).map((c) => c.id));
     expect(BASELINE_DEFAULTS.assemblySeconds).toBe(packs.reduce((sum, p) => sum + p.assemblySeconds, 0) / packs.length);
-    expect(BASELINE_PROVENANCE.citations).toEqual({ numerator: 3, denominator: 3 });
+    expect(BASELINE_PROVENANCE.citations).toEqual({ numerator: 2, denominator: 2 });
     expect(runAgent(CASES[3]).clause).toBeNull();
     expect(runAgent(CASES[4]).agentInvoked).toBe(false);
     expect(runAgent(CASES[4]).clause).toBeNull();
@@ -76,10 +76,10 @@ describe("baseline source and synthetic default provenance", () => {
 describe("baseline arithmetic", () => {
   it("conserves default rounded cohorts and separates gathering, judging and machine latency", () => {
     const result = calculateBaseline(BASELINE_DEFAULTS);
-    expect(result).toMatchObject({ volume: 85_000, pharmacyCaught: 14_167, cleared: 14_167, abstained: 14_167, built: 42_499 });
+    expect(result).toMatchObject({ volume: 85_000, pharmacyCaught: 14_167, cleared: 21_250, abstained: 14_167, built: 35_416 });
     expect(result.today).toEqual({ gatheringMinutes: 425_000, judgingMinutes: 170_000, operatorHours: 595_000 / 60 });
     expect(result.manualGatheringMinutes).toBe(5);
-    expect(result.withAgent).toEqual({ gatheringMinutes: 113_334, judgingMinutes: 170_000, operatorHours: 283_334 / 60 });
+    expect(result.withAgent).toEqual({ gatheringMinutes: 106_251, judgingMinutes: 170_000, operatorHours: 276_251 / 60 });
     expect(result.builtBeforeDecisionMinutes).toBe(3 + BASELINE_DEFAULTS.assemblySeconds / 60);
     expect(result.abstainBeforeDecisionMinutes).toBe(7);
     const slow = calculateBaseline({ ...BASELINE_DEFAULTS, assemblySeconds: 3600 });
@@ -144,9 +144,9 @@ describe("baseline arithmetic", () => {
 
   it("generates all cohorts from the result and hides assisted estimates when off", () => {
     const result = calculateBaseline(BASELINE_DEFAULTS);
-    expect(baselineSummary(result, true)).toBe("Synthetic scenario: 14,167 pharmacy-caught, 14,167 cleared, 14,167 abstained, 42,499 built; 17,709 referrals. Judging unchanged. Not measured savings or decisions.");
+    expect(baselineSummary(result, true)).toBe("Synthetic scenario: 14,167 pharmacy-caught, 21,250 cleared, 14,167 abstained, 35,416 built; 15,938 referrals. Judging unchanged. Not measured savings or decisions.");
     const edited = calculateBaseline({ ...BASELINE_DEFAULTS, volume: 12 });
-    expect(baselineSummary(edited, true)).toContain("2 pharmacy-caught, 2 cleared, 2 abstained, 6 built");
+    expect(baselineSummary(edited, true)).toContain("2 pharmacy-caught, 3 cleared, 2 abstained, 5 built");
     expect(baselineSummary(edited, false)).toBe("Synthetic scenario: 12 items; 1.4 reference hours. Assisted estimates hidden. No measured savings.");
     for (const enabled of [true, false]) console.info("Advisory word count / budget 25:", baselineSummary(result, enabled).split(/\s+/).length);
   });
@@ -184,10 +184,10 @@ describe("baseline arithmetic", () => {
   it("referrals round each disjoint deficiency cohort halves up, never all exceptions or actual accuracy", () => {
     const input = { ...BASELINE_DEFAULTS, volume: 12 };
     const result = calculateBaseline(input);
-    expect(result.referrals).toEqual({ today: 12, withAgent: 3, built: 2, abstained: 1 });
-    expect(result.referralRiskResidual).toBe(4);
-    expect(result.referralFreeProxyPercent).toBe(8 / 12 * 100);
-    expect(referralFreeProxyDisplay(result)).toBe("66.6%");
+    expect(result.referrals).toEqual({ today: 12, withAgent: 2, built: 1, abstained: 1 });
+    expect(result.referralRiskResidual).toBe(3);
+    expect(result.referralFreeProxyPercent).toBe(9 / 12 * 100);
+    expect(referralFreeProxyDisplay(result)).toBe("75%");
     for (const deficientBuiltPercent of [0, 0.5, 25, 50, 99.9999, 100]) {
       for (const deficientAbstainPercent of [0, 0.5, 50, 100]) {
         const r = calculateBaseline({ ...input, deficientBuiltPercent, deficientAbstainPercent });
