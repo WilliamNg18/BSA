@@ -39,8 +39,9 @@ URL, timestamp, visible main text and accessibility snapshot. The runner require
 a clean checkout, the expected release as an ancestor, and identical runtime
 source paths. It rejects root overflow. Local HTTP rehearsals remain labelled
 local; these checks do not relax the committed HTTPS/live identity requirements.
-The report links every image and retains `visualReview: pending` until a separate
-source-pinned review actually inspects it. Automated capture is not novice
+The report links every image and retains its capture-time `visualReview: pending`.
+A separate source-pinned review records the subsequent verdict without modifying
+the captured evidence. Automated capture is not novice
 comprehension or complete manual accessibility acceptance.
 
 The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,

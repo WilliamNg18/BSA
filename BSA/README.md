@@ -16,6 +16,8 @@ Those tags are not evidence for the Tasks 19-24 process migration described
 below. [Tasks 19-24 functional deployment evidence](docs/screens/task24/README.md)
 records 20 hosted checks against clean `1327e65`, separate from the final
 merged-V-main release gate tracked by the coordinator.
+The [independent 43-image review](docs/FIRST-TIME-VIEWER.md) found D/E content
+failures; functional success alone is not final novice-story acceptance.
 The single Agent On/Off switch is in the header, top right: pharmacy, queue
 and all other pages read that shared state and have no local overrides.
 
