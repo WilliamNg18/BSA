@@ -8,11 +8,12 @@ import { BoundaryTag } from "@/components/demo/labels";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { PainMarker } from "@/components/demo/pain-marker";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
-import { useProcessMonth } from "@/hooks/use-process-month";
+import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
 import type { CaseRevision, ConfirmType1Input } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
+import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import {
   PAPER_DECLARATION_PROVENANCE,
   prepareCaptureConfirmation,
@@ -50,6 +51,9 @@ export function Type1Capture({ caseId }: { caseId: string }) {
           <div><dt className="font-medium">Quantity</dt><dd>{capture.fields.quantity ?? "Unreadable"}</dd></div>
           <div><dt className="font-medium">Endorsement</dt><dd className="break-words">{capture.fields.endorsementText || "Unreadable or absent"}</dd></div>
           <div><dt className="font-medium">Prescriber</dt><dd>{capture.fields.prescriber || "Unreadable"}</dd></div>
+          {revision.paperDeclaration && <div><dt className="font-medium">Declared dispensing date</dt>
+            <dd>{revision.paperDeclaration.dispensingDate || "Not declared"}</dd>
+            <dd className="text-xs">{PAPER_DECLARATION_PROVENANCE}</dd></div>}
         </dl>
         <p className="text-xs text-muted-foreground">{capture.provenance === "pharmacy_declaration"
           ? `Fields ${PAPER_DECLARATION_PROVENANCE}; explicitly confirmed by a person.`
@@ -138,8 +142,8 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
       {agentEnabled ? (
         <div className="space-y-2">
           <BoundaryTag cls="agent" />
-          <p className="text-sm">{poorScan ? "The agent cannot read this scan." : "Human capture or confirmation is required."} {assisted
-            ? "Check the pharmacy declaration against the paper; confirm or correct it."
+          <p className="text-sm">{poorScan ? "Image cannot be read." : "Human capture or confirmation is required."} {assisted
+            ? "Review the declaration and available evidence; confirm or correct it. Image agreement remains unknown."
             : poorScan ? "Unreconciled evidence: the agent abstains. Manual capture remains available." : "Key the fields before code routes this item."}</p>
         </div>
       ) : <PainMarker resolved={false} pain="No guidance, experience only" resolution="Human confirmation" />}
@@ -147,7 +151,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
         <div className="min-w-0 space-y-2">
           <h4 className="text-sm font-medium">{poorScan ? "Original poor paper image" : "Original paper image"}</h4>
           <BoundaryTag cls="existing" />
-          <PrescriptionForm c={c} highlight={[]} compact />
+          <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} compact />
           <p className="text-xs text-muted-foreground">{poorScan ? "Synthetic poor scan." : "Synthetic paper form."} Declaration support does not improve image quality.</p>
         </div>
         <form onSubmit={submit} noValidate className="min-w-0 space-y-3">
@@ -156,6 +160,13 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
             ? "Original declaration stays unchanged. Your corrections are recorded separately."
             : unreadableExample ? "Leave unreadable fields blank. Do not guess; Type 2 can refer back with RB2B."
               : "Leave unknown fields blank. Do not guess; code routes from confirmed evidence."}</p>
+          {assisted && revision.paperDeclaration && <div className="rounded-md border p-2 text-sm">
+            <p>Declared product: {revision.paperDeclaration.typedProduct || "Not declared"}</p>
+            <p className="text-xs">{PAPER_DECLARATION_PROVENANCE}</p>
+            <p>Declared dispensing date: {revision.paperDeclaration.dispensingDate || "Not declared"}</p>
+            <p className="text-xs">{PAPER_DECLARATION_PROVENANCE}</p>
+            <p className="text-xs">If the declared date is wrong, request a corrected pharmacy submission. This immutable declaration cannot be silently changed.</p>
+          </div>}
           {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => {
             const label = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field];
             const fieldId = `${id}-${field}`;
@@ -175,6 +186,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
                 <p id={descriptionId} className="text-xs text-muted-foreground">{assisted
                   ? `Original source: ${PAPER_DECLARATION_PROVENANCE}` : "Human capture, not agent extraction"}</p>
                 {assisted && <p className="break-words text-xs">Original declaration: {revision.declaration?.fields[field] || "Not supplied"}</p>}
+                {field === "prescriber" && <p className="text-xs text-muted-foreground">Enter separately established prescriber evidence, not a guess from the illegible original. Missing evidence prevents a recommendation.</p>}
               </div>
             );
           })}
@@ -183,9 +195,9 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" checked={reconciled} onChange={(event) => { setReconciled(event.target.checked); setError(""); }}
                   className="mt-0.5 size-4 shrink-0 accent-primary focus-visible:outline-2 focus-visible:outline-offset-2" />
-                I have reconciled the declaration with the paper
+                I have reconciled the declaration with the available evidence, including the dispensing date
               </label>
-              <p className="text-xs text-muted-foreground">A typed-field check is not human reconciliation. If you cannot reconcile the evidence, use manual capture.</p>
+              <p className="text-xs text-muted-foreground">This confirms your evidence review, not image legibility or image agreement. If reconciliation is impossible, use manual capture.</p>
               <Button type="button" variant="outline" onClick={() => changeMode(false)}>Key fields manually</Button>
             </div>
           )}
@@ -203,7 +215,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
         <p className="text-xs text-muted-foreground">{unreadableExample
           ? "Code routes after explicit capture. A compatible confirmed declaration can support a built Type 2 case with a dated clause."
           : "Code routes after explicit capture. Complete evidence may continue to existing pricing; unresolved endorsements need Type 2 judgement."}</p>
-        <p className="text-xs text-muted-foreground">the agent verifies the submission and advises; a person decides</p>
+        <p className="text-xs text-muted-foreground">the agent verifies and advises; a person decides</p>
       </div>
     </section>
   );
@@ -211,9 +223,9 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
 
 function CaptureTiming({ assisted }: { assisted: boolean }) {
   const id = useId();
-  const drafts = useAppStore((s) => s.processInputs);
-  const setProcessInput = useAppStore((s) => s.setProcessInput);
-  const selection = useProcessMonth();
+  const drafts = useAppStore((s) => s.manualLoopInputs);
+  const setProcessInput = useAppStore((s) => s.setManualLoopInput);
+  const selection = useManualLoopMonth();
   const seconds = assisted ? selection.result?.type1.confirmSeconds : selection.result?.type1.keySeconds;
   return (
     <div className="space-y-2 rounded-lg bg-muted/50 p-3">
