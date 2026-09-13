@@ -118,7 +118,7 @@ function DecisionRecordContent() {
             </details>
           </PageSection>
 
-          <PageSection title="Replay under a different rule version" description="Counterfactual replay; original evidence and history remain unchanged.">
+          <PageSection title="Replay under a different rule version" description="Counterfactual only; history stays unchanged.">
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <label htmlFor="replay-version" className="text-sm">Replay with</label>
@@ -131,7 +131,7 @@ function DecisionRecordContent() {
                 {agentEnabled && replayVersion && <Button type="button" variant="ghost" size="sm" onClick={() => setReplayVersion("")}>Clear</Button>}
               </div>
               {!agentEnabled || !hasRecordedRule ? <p className="text-sm text-muted-foreground">{hasRecordedRule
-                ? "Replay disabled in this manual comparison. The historical rule version is preserved; enable assistance to inspect it."
+                ? "Replay disabled in Today comparison. Enable assistance to inspect the preserved rule version."
                 : "No recorded rule version to replay in this manual comparison"}</p> : replay ? (
                 <Card className={replay.recommendation !== latest.recommendation ? "border-amber-600" : "border-emerald-600"}>
                   <CardHeader className="pb-2">
@@ -170,7 +170,7 @@ function DecisionRecordContent() {
                 </Card>
               ) : (
                 <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL"
-                  ? "Recommendation withheld by the compliance gate. Choose a version to review the evidence and checks, not to bypass the gate."
+                  ? "Gate withheld advice. Select a version to inspect evidence, not bypass the gate."
                   : "Choose a version. Synthetic July requires initials; August also requires a date."}</p>
               )}
             </div>
