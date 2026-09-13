@@ -1,5 +1,5 @@
 ---
-title: Twenty-four-task implementation progress
+title: Thirty-task implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
 ms.date: 2026-09-13
 ---
@@ -20,18 +20,57 @@ No final Tasks 25-30 acceptance is implied by Step 0.
 
 | Task | Stream | Ownership | Status |
 | --- | --- | --- | --- |
-| 25 | C | Seed, lifecycle/store, domain adapters, new cycle equivalence tests | Pending Step 0 main |
-| 26 | E | EPS prescription component, pharmacy shell and EPS advice | Pending Step 0 main |
-| 27 | U | Paper component, declaration checks, Type 1 and D | Pending Step 0 main |
-| 28 | N | Frozen monthly model, shared figures, chapter 1/2 | Pending Step 0 main |
-| 29 | Q | Queue, case pack, trace and decision record | Pending Step 0 main |
-| 30 | V | Remaining e2e/live, tour, screenshots and documentation | Pending Step 0 main |
+| 25 | C | Seed, lifecycle/store, domain adapters, new cycle equivalence tests | Merged #83 at `a96a448`; reviewed authority repairs and scoped hosted checks passed |
+| 26 | E | EPS prescription component, pharmacy shell and EPS advice | #84 final rebase/CI; reviewed correction recording and prospective-draft fixes |
+| 27 | U | Paper component, declaration checks, Type 1 and D | Merged #82 at `837417e`; hosted capture guard/Sufficient path passed; new pharmacy mounting follows E |
+| 28 | N | Frozen monthly model, shared figures, chapter 1/2 | Merged #81 at `34349a9`; scoped hosted checks and matching main CI passed |
+| 29 | Q | Queue, case pack, trace and decision record | #85 draft integration CI; final E-main rebase remains |
+| 30 | V | Remaining e2e/live, tour, screenshots and documentation | #86 runtime/verification draft; final hosted evidence and independent visual review remain |
 
-All six run in parallel after Step 0. C and N merge first, then E/U/Q,
-then V. The coordinator serialises shared-file handoffs and local browser
-slots, reviews exact commits and records each main deployment. Final closure
-requires all scope merged, latest-main live inventory fully passing and a
-fresh URL check within ten minutes. No hosting, billing or ref changes.
+Step 0 reached main as `8bc93d7`; CI 34770112795 and deployment 34770112772
+passed. All six streams then ran in parallel. Actual integration order is N,
+C, U, E, Q, V. Shared changes move as isolated commits; only the coordinator
+merges and authorises hosted acceptance. No hosting, billing or ref changes.
+
+N's reviewed `c8709d7` passed CI 34772670382: 983 unique units, 1,189
+ordinary browser checks and 32 instrumented state checks. Main `34349a9`
+passed CI 34773175702, deployment 34773175699 and five scoped hosted checks,
+with ten clean identities and five zero-violation axe audits.
+
+C's reviewed `5fb857c` passed CI 34776413723: 1,039 unique units, 1,190
+ordinary browser checks and 34 instrumented state checks. Independent source
+review found four authority defects; executable regressions reproduced them,
+and a second non-paid-disposition repair completed their bounded re-review.
+Original failures remain evidence. Main `a96a448` passed CI 34776965770 and
+deployment 34776965789. The first scoped hosted run passed four of five:
+its old test incorrectly expected immediate Paid after referral resubmission.
+The correct human-recheck expectation passed all five on repeat, with ten
+clean identities and five zero-violation axe audits. This was a test-contract
+correction, not a change to deployed routing.
+
+U's reviewed `e39bc18` passed CI 34777961780: 1,066 unique units, 1,190
+ordinary browser checks and 34 instrumented state checks. Main `837417e`
+passed deployment 34778444486 and five scoped hosted checks, with ten clean
+identities and five zero-violation axe audits. A separate real-browser probe
+verified rejection before reconciliation, an initially empty prescriber,
+explicit human evidence and confirmation, then Sufficient with Gate PASS.
+No Type 2 decision was recorded by the probe; the production observer was absent.
+
+V's clean `145d4ca` passed a complete **local rehearsal**, 29/29, with 58
+identity checks and 26 zero-violation axe audits. Its 56 local screenshots
+are not hosted or independently reviewed acceptance. Earlier rehearsal
+failures, including a dirty-source guard failure, remain separate records.
+Later runtime fixes require fresh final verification; no prior capture is
+relabelled as a different build.
+
+V owns runtime tour changes, so #86 must merge after E/Q before its complete
+29-check hosted inventory can run against main. After reviewed runtime CI and
+local checks, deploy #86 normally, run full hosted acceptance and independently
+review every final capture. A separate V evidence/documentation PR merges last,
+without runtime changes. Repeat latest-main CI, deployment and the entire live
+inventory after that merge. ALL DONE also requires a fresh URL check within ten
+minutes, protected-reference integrity and explicit accessibility limitations.
+No local or partial reporter verdict substitutes for this final release gate.
 
 ## Current acceptance: Tasks 19-24, process streams and one state
 

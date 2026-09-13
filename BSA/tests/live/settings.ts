@@ -6,18 +6,23 @@ export function liveSettings(env: NodeJS.ProcessEnv, repositoryRoot: string) {
   if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash || url.pathname !== "/") {
     throw new Error("LIVE_BASE_URL must be an HTTPS root URL without credentials, query or fragment.");
   }
+  return { baseURL: url.href, ...evidenceSettings(env, repositoryRoot) };
+}
+
+export function evidenceSettings(env: NodeJS.ProcessEnv, repositoryRoot: string, outputKey: "LIVE_OUTPUT_DIR" | "REHEARSAL_OUTPUT_DIR" = "LIVE_OUTPUT_DIR") {
   if (!/^[a-f0-9]{40}$/i.test(env.EXPECTED_BUILD_COMMIT ?? "")) {
     throw new Error("EXPECTED_BUILD_COMMIT must be the user-provided full 40-character commit.");
   }
-  if (!env.LIVE_OUTPUT_DIR || !isAbsolute(env.LIVE_OUTPUT_DIR)) {
-    throw new Error("LIVE_OUTPUT_DIR must be an absolute external artifact directory.");
+  const requestedOutput = env[outputKey];
+  if (!requestedOutput || !isAbsolute(requestedOutput)) {
+    throw new Error(`${outputKey} must be an absolute external artifact directory.`);
   }
-  const output = resolve(env.LIVE_OUTPUT_DIR);
+  const output = resolve(requestedOutput);
   const fromRepo = relative(resolve(repositoryRoot), output);
   if (!fromRepo || (!fromRepo.startsWith(`..${sep}`) && fromRepo !== ".." && !isAbsolute(fromRepo))) {
-    throw new Error("LIVE_OUTPUT_DIR must be outside the repository.");
+    throw new Error(`${outputKey} must be outside the repository.`);
   }
-  return { baseURL: url.href, expectedCommit: env.EXPECTED_BUILD_COMMIT!.toLowerCase(), output };
+  return { expectedCommit: env.EXPECTED_BUILD_COMMIT!.toLowerCase(), output };
 }
 
 export interface BuildInfo {

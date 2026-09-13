@@ -113,7 +113,8 @@ test("mode changes and reset cancel referral interpolation without inventing ker
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await confirmReset(page);
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
-  await expect(d).toContainText("Key product, quantity and endorsement manually");
+  await expect(d).toContainText("Key product, quantity and endorsement from the image.");
+  await expect(d).toContainText("Type 2 judgement follows only when required.");
 });
 
 test("path links and figure context remain keyboard accessible; reset describes Off", async ({ page }) => {

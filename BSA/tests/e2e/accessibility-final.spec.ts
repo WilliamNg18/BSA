@@ -135,7 +135,7 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await page.keyboard.press("End");
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#close$/);
-  await expect(page.getByRole("heading", { level: 1, name: "Where it ends", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "The central bet", exact: true })).toBeFocused();
   await page.keyboard.press("Alt+ArrowLeft");
   await expect(page).toHaveURL(/\/pharmacy\/claims$/);
   await expect(page.getByRole("heading", { level: 1, name: "Pharmacy claims", exact: true })).toBeFocused();

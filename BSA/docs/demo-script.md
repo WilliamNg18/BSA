@@ -1,237 +1,206 @@
 ---
-title: Pharmacy-first process demonstration
-description: EPS pricing, human endorsement judgement, proposed paper capture and one shared referral history.
+title: One pharmacy, one continuous cycle
+description: Five-minute stakeholder walkthrough followed by a synthetic Hillcrest operational demonstration.
 ms.date: 2026-09-13
 ---
 
-## Prepare and identify the build
+## Preparation and evidence boundary
 
-This script targets the integrated Tasks 19-24 interface. Earlier accepted
-walks in [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md) and
-[live-verification](live-verification/README.md) remain historical evidence,
-not proof that the new process has been accepted live.
+This is the Tasks 25-30 demonstration script, not a record of an executed walk.
+[PROGRESS](PROGRESS.md) owns the exact accepted source and deployment.
+Earlier Tasks 19-24 captures, including the failed `1327e65` review and repaired
+`d5832e0` review, remain unchanged historical evidence.
 
-For a strict-header local rehearsal:
+Use only the coordinator-approved deployment:
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+Check `/build-info.json` against its full expected commit and `dirty: false`.
+Do not present a local instrumented state-observer build as this deployment.
+The final URL check must be within ten minutes of release closeout.
 
-```powershell
-Set-Location BSA
-npm run check
-$env:PLAYWRIGHT_PORT = "4193"
-node scripts\serve-production.mjs
-```
+Choose **Both**, then **Reset demo > Reset demonstration**. Confirm Hillcrest
+Pharmacy (FQ123), no pharmacy selector, and the single header **Agent: Off**.
+Reset retains perspective and route. During a same-item cycle, never Reset or
+reload: use links so the shared browser-memory history survives.
 
-Open `http://localhost:4193/pharmacy`. For a hosted demonstration, use the
-coordinator-approved deployment at
-https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy and verify
-`/build-info.json`: exact expected commit and `dirty: false`.
-Never treat an instrumented test artifact as the deployed application.
+Say: "Everything here is synthetic. The agent verifies and advises; a person
+decides. Existing code prices complete items. This demonstration calculates
+and approves no payment."
 
-Select **Both**, then **Reset demo > Reset demonstration**. Confirm the sole
-header switch says **Agent: Off**. Open **Operations > Pharmacy check**.
-Reset retains perspective and route; it discards session work. Do not reload
-or Reset during a same-item cycle.
+## Part 1: five-minute stakeholder walkthrough
 
-Say: "All prescriptions, people, declarations and rule text here are synthetic.
-Interpretation is scripted. Existing code prices complete items; the agent
-verifies the submission and advises; a person decides when judgement is needed.
-No payment is calculated or approved by this demonstration."
+Visit chapters 1 to 3 before operating the live examples. Flip the header
+toggle once in each chapter; do not add local switches or imply that toggling
+submits, confirms, judges or pays an item.
 
-Perspective only changes what is shown. Selecting **Pharmacy** or **NHSBSA**
-retains the current URL and hides the other side until you navigate or switch
-back. **Both** also exposes the guided tour and Follow/Switch side controls.
-The Agent switch changes assistance, not evidence, approval or history.
+### 0:00-1:30, chapter 1: the real process
 
-## 1. Begin at the pharmacy: a complete EPS item needs no operator
+Start at `/#scene`, Off. Show the supplied public context: over 100 million
+items monthly; most priced with no person; approximately four per cent touched
+by staff; approximately 85,000 referred back. These are attributed figures,
+not independently verified measurements from this prototype.
 
-1. Choose **Complete endorsement**, then explicitly select **EPS**.
-2. Leave Agent Off. Show **Not checked: manual submission** and click
-   **Continue with submission**, then **View submitted claim**.
-3. Show EX-24107 and **Paid on the normal schedule (synthetic)**, attributed
-   to the existing rules engine with no person involved.
-4. Open **Operations > NHSBSA queue**. A and E are not staff worklist items.
-   The automatic monthly total is a projection, separate from actual work.
+Show EPS as a typed claim message, distinct from scanned paper. Type 1 captures
+uncertain paper fields. Type 2 judges endorsements. The two staff cohorts may
+overlap; neither is identical to the 85,000 referral subset.
 
-Say: "EPS is a typed message, not a scanned form. No one needs to capture or
-approve this complete item. Turning the agent on is not what makes it payable."
-To compare On, use a separate explicit submission; do not invent a human
-approval step or relabel an existing automatic event.
+Flip **On** once. Point to separately labelled estimates, not a revision to
+the public facts. Say: "The proposal prevents avoidable referrals at the
+pharmacy and prepares evidence for people judging the remainder."
 
-## 2. An incomplete EPS endorsement needs Type 2 judgement
+### 1:30-3:15, chapter 2: the numbers
 
-1. Open **Pharmacy check**, choose **Information missing**, and keep **EPS**.
-   With Agent Off, the endorsement is `NCSO  RK`; submission remains available.
-2. Click **Continue with submission > View submitted claim**. Keep EX-24112
-   visible and inspect **History and attempts**. This is a new submission,
-   not an edit to B's historical referred-back seed.
-3. Switch to **NHSBSA**, open **NHSBSA queue**, click **Open EX-24112**, then
-   **Start review**. Opening the item alone is not a review or decision.
-4. Show the manual evidence and human choices. Turn Agent On in the header.
-   Show the dated provision, missing dispensing date, evidence and code gate.
-   Gate PASS permits advice; it does not approve a referral or payment.
-5. Select **Refer back**, choose **SYN-NCSO** in **RB code (required)** and
-   enter `Please add the dispensing date beside the initials` as the reason.
-   A reason requires at least eight non-padding characters.
-6. To demonstrate an approved generated note, explicitly tick
-   **Approve this draft for the pharmacy**, then **Record decision**.
-   Alternatively leave it unchecked: your reason and RB code still create a
-   valid human referral, but no operator-approved generated note is invented.
-7. On the record, replay **2026-07** and **2026-08**. July is sufficient;
-   August refers back. The original evidence, recorded August rule and human
-   decision remain unchanged. Replay never creates another decision.
+Continue to `/#month`, still On. Show the editable assumptions and the two
+headline tiles, then flip **Off** once to compare Today. Both model columns
+remain readable. At defaults the unrounded arithmetic is:
 
-Say: "The Type 2 stream averages roughly 12-14 seconds per item in the supplied
-public context. The four-minute investigation assumption applies to the
-referred-back subset, not every Type 2 item. A built case is not necessarily
-faster than a straightforward item."
-
-## 3. Follow that same referral back to the pharmacy
-
-1. Switch to **Pharmacy**, open **Pharmacy claims** and click
-   **Correct and resubmit EX-24112**.
-2. Show the actual RB code and human response. On shows an operator-approved
-   note only if the checkbox was explicitly approved when recording it.
-   Off shows the human reason; switching modes neither approves nor erases it.
-3. With an approved note, click **Re-check endorsement**, then
-   **Apply suggested correction**. Otherwise type
-   `NCSO  RK 21/08/26` into **Corrected endorsement** yourself.
-   Editing or checking alone does not send the claim.
-4. Click **Resubmit claim**. Complete EPS now reaches
-   **Paid on the normal schedule (synthetic)** immediately through existing
-   routing. There is no second operator approval.
-5. Inspect **History and attempts**: seed, initial submission and corrected
-   resubmission remain separate. The referral, its reason and any explicitly
-   approved note remain intact. The now-automatic item is not in the staff queue.
-
-Repeat the cycle entirely Off to show a manual human reason and correction.
-The corrected EPS result is still automatic; do not add an unnecessary
-"Accept" step merely because assistance was off.
-
-Public process context: referrals appear in **MYS Unpaid items**, with an
-**NHSmail** notification; the pharmacy has 18 months to complete and resubmit.
-Only the affected item's payment is delayed. The supplied payment context is
-80% advance and balance when priced. This application sends no notification
-and performs no payment operation; illustrated delays are not measured timings.
-
-### Separate prevention demonstration
-
-In a separate submission, turn On and choose **Information missing**.
-Click **Apply fix**. The typed date and recorded catch evidence change, but
-there is no receipt until **Continue with submission** is clicked.
-**Caught before submission** counts a checked human-applied correction once
-per attempt, not a projected saving or an agent-created submission.
-
-## 4. Unreadable paper requires Type 1 capture before Type 2
-
-1. Open **Pharmacy check**, choose **Unreadable form** and verify **Paper**.
-   With Agent Off, all declaration fields are genuinely blank. Submit without
-   pretending the poor image contains known fields.
-2. Open **NHSBSA queue**. D is in **Type 1 capture lane**, not Type 2.
-   A person keys what can actually be read; leave unknown fields blank.
-   The confirmation is an explicit human action, not a model reading.
-3. Click **Confirm capture and continue to Type 2**. This appends capture
-   evidence, not a Type 2 decision. The original attempt and image remain.
-4. Open EX-24123, choose **Refer back**, explicitly select **RB2B**, and give
-   a human reason requesting the missing product presentation. Record it.
-5. Return to D's pharmacy claim and show the referral. For this synthetic
-   example, fill the paper declaration with product `SYN-COCOD-100`, quantity
-   `100`, prescriber `Dr Demo (synthetic)` and endorsement `NCSO AB 27/08/26`.
-   Click **Resubmit claim**.
-6. The new paper revision requires fresh capture. The old capture and referral
-   remain in history; neither silently confirms the new declaration.
-
-### Proposed confirmation, not invented handwriting recognition
-
-Turn On and open that new Type 1 item. The prior pharmacy declaration may be
-prefilled beside the unchanged poor image, labelled **declared by the pharmacy,
-not read from the form**. Without a declaration, the fields remain blank.
-
-Try confirming without reconciliation: it must be rejected. Inspect and
-explicitly tick **I have reconciled the declaration with the paper**, then
-confirm. Editing a field clears reconciliation and requires it again.
-Compatible human-confirmed fields can support a built Type 2 case; uncertain
-or conflicting fields still withhold advice. A missing prescriber fails the
-mandatory compliance gate, even if other fields support interpretation.
-
-The seed image stays quality 0.31, below 0.60, with only one of three readings
-agreeing. Do not claim the image was repaired or successfully read.
-If a person subsequently accepts sufficient evidence, the resulting item
-remains identifiable as human-decided work under **Decided**, unlike A/E's
-no-human automatic path.
-
-### Complete paper can finish after capture alone
-
-In a separate attempt, choose B (**Information missing**) and **Paper**.
-Declare `SYN-AMLO10-28`, quantity `28`, prescriber `Dr Demo (synthetic)` and
-endorsement `NCSO RK 21/08/26`, then submit explicitly.
-Off, manually key those established fields in Type 1 and confirm. On, inspect
-the same declaration and explicitly reconcile before confirming.
-
-Both reach existing pricing without a Type 2 decision. The queue retains
-**Completed Type 1 captures** under **Decided** and Four cases shows
-**Capture complete · Existing pricing**. The person did capture work: this
-must not say "no person involved" or "Awaiting Type 1 capture".
-Open **View priced claim** to inspect the unchanged submitted attempt and the
-separate human-capture/code-pricing events. This does not relax D's poor-source
-abstention or permit unconfirmed declaration pre-fill.
-
-## 5. Keep conflict, code-only clearance and history visible
-
-| Case | Show | Boundary |
+| Measure | Today | With the agent, estimate |
 | --- | --- | --- |
-| C, EX-24119 | A new demonstration attempt, explicit review, Request information and pharmacy confirmation | Form quantity 56 and ledger quantity 84 both survive; confirmation returns to human review, not automatic resolution |
-| E, EX-24101 | Deterministic clearance trace | Existing code only, no agent call or approval |
-| F, EX-24088 | Record DR-000871, Off/On and rule replay | Historical human record and original rule remain unchanged |
-| B, EX-24112 | July/August replay of the recorded referral | Counterfactual rule comparison, not retrospective mutation |
+| Items referred back | 85,000 | 5,100 |
+| Operator hours, total | 19,479.166666... | 297.5 |
+| Pharmacy completion hours | 8,500 | 510 |
 
-For a disposed seed, use **Open pharmacy claim for another attempt**,
-**Demonstration replay > Submit another demonstration attempt**, then return
-to the case and **Start review** where required. Paper replay explicitly names
-the retained declaration rather than substituting the old scan reading.
-Replay creates a revision, never capture confirmation.
+Explain the With total: **255 judging hours plus 42.5 hours gathering evidence
+on abstentions**. Never headline 255 as total operator work. The central bet
+is 80% prevention; 70% of the remainder clears before the queue. Five per cent
+of the resulting 5,100 cases abstains: 255 items, not five per cent of all
+85,000 and not a measured one-of-six case rate.
 
-## 6. Put the process and proposed benefits in context
+Today includes ten minutes gathering, three minutes judging and a second
+three-minute judgement for 25% of cases. With assumes three-minute judgement
+and no double-check. These are hypotheses, not a guarantee of staffing savings.
+The 85,000 denominator represents the referral subset, not all staff work.
 
-Use **Overview > Choose tour chapter** after the operational story.
-The eight chapters/nine stops are still navigable with Next/Back or
-Alt+ArrowRight/Left outside fields and menus. Pharmacy check is chapter 5's
-additional stop; Pharmacy claims is chapter 7.
+Show the permanent estimate qualification and one input definition. If editing
+an assumption, follow that same edited result into the queue and pharmacy
+strip later. Do not compare edited numbers with unrelated defaults.
 
-Show the supplied context: over 100 million monthly items, approximately
-91% EPS / 9% paper, roughly 2.2 million Type 1 and 2 million Type 2 items,
-and about 85,000 monthly referrals. These are attributed owner-supplied public
-figures, not independently measured operational data.
+### 3:15-5:00, chapter 3: the pipeline
 
-Chapter 2 displays **Today** and **With the agent** together. Change a shared
-input and show the same scenario in the scene, queue and pharmacy projection.
-Distinguish projections from recorded session counts. Type 1 and Type 2 can
-overlap; do not add their populations or labour twice. The 13-second Type 2
-average, four-minute referral investigation and six-minute pharmacy completion
-describe different work. Confirmation/keying and built-case durations are
-editable assumptions, not measured savings or universal speed-ups.
+Continue to `/#pipeline`, Off. Trace complete EPS through existing automatic
+pricing, then paper through capture and uncertain endorsements through human
+judgement. Flip **On** once. Show gathering, dated-rule retrieval, checks and
+advice, while the explicit human confirmation and judgement remain.
 
-Describe the proposed agent in three places: checking typed pharmacy
-submissions before sending; helping a person confirm a supplied paper
-declaration; and assembling Type 2 endorsement evidence for human judgement.
-The session shares one operational state; real organisational integration,
-durable storage and notification services remain proposed.
+Say: "The agent verifies and advises; a person decides. Complete items are
+priced by NHSBSA's existing rules engine, no person involved."
 
-## Close with evidence and stop criteria
+Before the live cycle, visit `/#cases`: A automatic, B missing the NCSO date,
+C unresolved quantities, and D unreadable paper. Keep `/boundary` reachable
+and identify the proposed declaration design. Do not turn four illustrations
+into a claim that the six canonical cases are a measured evaluation sample.
 
-Open **Boundary**, **Evaluation**, **Assumptions** and **Architecture** as
-needed. Architecture uses provider-neutral capability labels and read-only
-tool contracts, not a claim that a production stack is deployed.
+## Part 2: Hillcrest live demonstration
 
-Ask whether referral concentration and actual evidence-gathering effort justify
-this intervention, whether deterministic rules or a pre-fetched screen would
-suffice, and what evidence would make the team proceed, reshape or stop.
-Measure pharmacy rework separately from operator labour; do not count a handling
-reduction again as independent capacity savings. Source documents and caveats
-remain in the [reference register](../data/reference/source-audit.ts), not in
-interface branding or invented citations.
+Use one continuous session. The seeded month includes automatic paid items,
+Type 1 capture, Type 2 judgement, Action needed, Resubmitted, Information
+requested and a paid-after-correction history. Fixed other-pharmacy queue
+background is labelled, unclickable and excluded from operational counts.
 
-If a control fails, retain the route, build identity and error. Do not Reset
-to hide it. If a claims table is empty, select the correct pharmacy and **All**.
-Reload loses the session; restart the story rather than claiming continuity.
-Current screenshots and novice-review evidence must identify the final tested
-build. The older [capture index](screens/integrated/README.md) is historical
-unless explicitly revalidated for this process.
+### Complete EPS: no person at NHSBSA
+
+Open `/pharmacy`, choose EPS and the complete scenario. Show the visible
+synthetic prescription: prescriber and practice, date, synthetic patient,
+prescribed item, prescriber endorsement, and the dispenser's fields.
+
+Turn Off if necessary and explicitly **Send claim**. Follow its receipt and
+case ID to **Paid**. Attribute pricing to NHSBSA's existing rules engine,
+not the agent. The item contributes to the automatic count, not an operator
+queue row. EPS has no image and no Type 1 unreadability step.
+
+### NCSO: Off referral, On prevention
+
+Select the EPS missing-date scenario. Off, show the editable endorsement and
+the unchecked-rule/send pain markers. Send the incomplete claim. Follow its
+ID into Type 2, start review and record a human **Refer back** decision with
+the exact NCSO correction and RB code. A generated note is not approved until
+the person explicitly approves it. Show the pharmacy's **Action needed**.
+
+For the On prevention comparison, select a new missing-date attempt, turn On
+and show recognition, dispensing-date rule selection, clause and requirement
+checks. Apply the suggestion to add the date beside the initials. Applying
+does not submit. Send only after the checks resolve; show automatic pricing.
+
+Also show the third EPS scenario: generic missing the brand or manufacturer.
+The advice must address that missing field, not repeat the NCSO date fix.
+Do not represent the simulated delay as elapsed real weeks.
+
+For a referred generic item, use **Correct the EPS supply evidence** in claim
+details. Confirm the actual brand/manufacturer, pack size and form, re-check,
+then explicitly resubmit. Follow the same ID to human review and Paid.
+Retain the original message and referral; a corrected field is not a decision.
+
+### Unreadable paper: manual capture and RB2B
+
+Choose Paper, Off. Show the synthetic image and the absence of a pharmacy
+declaration form. Submit the paper. In Type 1, show manual keying, the human
+tag and stopwatch. Key only the known synthetic example fields; leave unknown
+fields unknown. Confirm capture explicitly, then follow Type 2 judgement to
+a human RB2B referral for missing presentation. Show the same pharmacy item
+in **Action needed**, with its actual reason and preserved earlier attempt.
+
+### Proposed paper declaration: checked, then human-confirmed
+
+Turn On and load the worked declaration:
+**Co-codamol 30/500 tablets; 100; NCSO JB 27/08/26; 27 August 2026**.
+Show the declaration check against the synthetic August provision requiring
+initials and a date. The advice concerns the declared fields and what the
+paper must show, not successful reading of the image.
+
+Submit explicitly and follow the same revision into Type 1. Show **image
+cannot be read** beside fields labelled **declared by the pharmacy, not read
+from the form**. A complete declaration is not established source agreement.
+Do not call the case built before valid human confirmation.
+
+The frozen declaration does not contain a prescriber. Supply the required
+synthetic prescriber as separate human capture evidence; do not invent it
+from the illegible scan. Explicitly reconcile the known worked example and
+confirm. An edit must clear reconciliation and require confirmation again.
+If the sources cannot be reconciled, abstain and use the manual path.
+
+Only after valid confirmation show Type 2's **Sufficient** recommendation,
+clause, requirement checks and trace of the person's confirmation. A person
+records the decision. The declaration path is **proposed**; shorter confirmation
+time is an assumption, not a measured stopwatch saving or repaired handwriting.
+
+### Action needed, correction, resubmission and Switch side
+
+Open the seeded Action needed item in `/pharmacy/claims`. Read its actual
+RB code and human reason. Correct the endorsement or declaration required by
+that item, then explicitly resubmit. Keep the ID visible.
+
+Use **Switch side** to follow the same item and revision in the staff view.
+Opening or switching is not a new submission, capture or decision. Where
+re-check is required, show **Resubmitted**, perform the human review and follow
+the accepted item back to **Paid**. Where complete EPS clears automatically,
+show existing pricing without inventing a second operator approval.
+
+Inspect the original submission, referral, correction, resubmission and result
+in one history. Today judgements say **experience only**; assisted supported
+records say **rule and reason recorded**. Switching Off does not erase a
+real earlier rule record or an approved human note.
+
+Compare the chapter 2 result, queue summary and pharmacy strip under the same
+inputs. Automatic monthly context and actual seeded work counts are different
+quantities; do not equate them.
+
+### Chapter 6 close: the central bet
+
+Return to `/#close`. Name the current editable prevention assumption, **80%
+at defaults**: pharmacy checks prevent would-be referrals before they enter
+the manual loop. If observed prevention is substantially lower, the estimate
+fails. Show the first test, required history and proceed/reshape/stop criteria.
+
+Say: "Test prevention and evidence quality before promising savings. The
+agent verifies and advises; a person decides. Existing pricing stays unchanged."
+
+## Rehearsal and final acceptance are separate
+
+Repeat the whole cycle in Both and while switching perspective at each step,
+Off and On. Exact-state tests compare every action and Reset against the same
+seed using a separate instrumented artifact; they are not hosted observations.
+
+Final acceptance requires the complete named hosted inventory on the approved
+source, not a passing subset. Export to a new Task 30 evidence directory.
+Review every screenshot at full height for novice comprehension and functional
+truth. Record actual keyboard and contrast observations separately. Zero axe
+violations do not establish WCAG 2.2 AA or substitute for manual review.

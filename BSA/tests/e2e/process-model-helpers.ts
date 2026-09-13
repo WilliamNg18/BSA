@@ -74,8 +74,8 @@ export async function expectSceneMetrics(page: Page, input = PROCESS_MONTH_DEFAU
 
 export async function chooseProcessChapter(page: Page, chapter: 1 | 2 | 3 | 4) {
   const label = {
-    1: "1. The scene", 2: "2. A month in numbers",
-    3: "3. What exists today and what changes", 4: "4. Four cases",
+    1: "1. Real process", 2: "2. A month in numbers",
+    3: "3. Evidence to a decision", 4: "4. Cases and boundaries",
   }[chapter];
   await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
   const item = page.getByRole("menuitem", { name: label, exact: true });

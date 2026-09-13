@@ -4,6 +4,7 @@ import { mkdtemp, readFile, rm, writeFile, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { expect, it } from "vitest";
+import { exportEvidence } from "./export-evidence.mjs";
 
 it("exports validated relative evidence without altering the original run or overwriting a prior export", async () => {
   const directory = await mkdtemp(join(tmpdir(), "bsa-export-"));
@@ -54,14 +55,13 @@ it.each([
   { status: "FAIL", selection: "partial", runnerStatus: "passed" },
   { status: "PASS", selection: "full", runnerStatus: "passed", expectedBuildCommit: "main", baseURL: "https://example.test/" },
   { status: "PASS", selection: "full", runnerStatus: "passed", expectedBuildCommit: "a".repeat(40), baseURL: "http://localhost:4206/" },
+  { kind: "local rehearsal, not hosted acceptance", status: "PASS", selection: "full", runnerStatus: "passed", expectedBuildCommit: "a".repeat(40), baseURL: "http://127.0.0.1:4193/" },
 ])("rejects partial, unpinned or local evidence: %j", async (report) => {
   const directory = await mkdtemp(join(tmpdir(), "bsa-export-reject-"));
   try {
     const source = join(directory, "checklist.json");
     await writeFile(source, JSON.stringify(report));
-    expect(() => execFileSync(process.execPath, [
-      resolve("tests/live/export-evidence.mjs"), source, `${directory}-output`,
-    ], { stdio: "pipe" })).toThrow();
+    await expect(exportEvidence(source, `${directory}-output`)).rejects.toThrow();
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

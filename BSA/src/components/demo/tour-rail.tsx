@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
+import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_CHAPTERS, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { useAppStore } from "@/lib/store";
 
 export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: () => void }) {
@@ -55,7 +55,7 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
             if (chapterSelected.current) event.preventDefault();
             chapterSelected.current = false;
           }}>
-            {TOUR_STOPS.filter((item) => item.to !== "/pharmacy").map((item) => (
+            {TOUR_CHAPTERS.map((item) => (
               <DropdownMenuItem key={item.to} onSelect={() => { chapterSelected.current = true; navigate(item.to); }} aria-current={item.chapter === stop?.chapter ? "step" : undefined}>
                 {item.chapter}. {item.label}
               </DropdownMenuItem>

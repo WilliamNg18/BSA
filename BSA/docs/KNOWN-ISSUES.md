@@ -4,7 +4,20 @@ description: Process-model limitations and verification boundaries, separated fr
 ms.date: 2026-09-13
 ---
 
-## Current implementation and acceptance
+## Tasks 25-30 acceptance is still pending
+
+The current work adds one Hillcrest cycle, visible EPS, proposed paper
+declarations, a shared manual-loop estimate and six stakeholder chapters.
+Final hosted acceptance and full-height novice/functional screenshot review
+have not yet been completed. [Task 30 evidence](screens/task30/README.md)
+separates the complete local rehearsal from release proof.
+
+The local 29/29 run on clean `145d4ca` cannot certify later owner changes.
+The ordinary build must keep its state observer absent; the separate
+instrumented matrix provides exact-state equivalence, not hosted observations.
+Manual keyboard/contrast and all-image review remain explicit final gates.
+
+## Historical Tasks 19-24 implementation and acceptance
 
 Tasks 19-24 replace the referral-only calculator and virtual queue with a shared
 whole-process model, actual staff work and explicit Type 1 capture. Complete

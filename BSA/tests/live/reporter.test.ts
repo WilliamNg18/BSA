@@ -22,11 +22,11 @@ function inventory(): Pick<TestCase, "title" | "results">[] {
   return LIVE_CHECKLIST.map((title) => ({ title, results: [attempt()] }));
 }
 
-async function report(tests: ReturnType<typeof inventory>, status: FullResult["status"] = "passed", error?: string): Promise<unknown> {
+async function report(tests: ReturnType<typeof inventory>, status: FullResult["status"] = "passed", error?: string, baseURL = "https://example.test/"): Promise<unknown> {
   const directory = await mkdtemp(join(tmpdir(), "bsa-live-selection-"));
   try {
     const outputFile = join(directory, "checklist.json");
-    const reporter = new ChecklistReporter({ outputFile, baseURL: "https://example.test/", expectedCommit: "a".repeat(40) });
+    const reporter = new ChecklistReporter({ outputFile, baseURL, expectedCommit: "a".repeat(40) });
     reporter.onBegin({}, { allTests: () => tests });
     if (error) reporter.onError({ message: error });
     await reporter.onEnd({ status, startTime: new Date(), duration: 1 });
@@ -42,6 +42,13 @@ it("accepts every named live check exactly once, not a hardcoded count", async (
     status: "PASS", selection: "full", expectedChecklist: LIVE_CHECKLIST,
     missingChecks: [], unexpectedChecks: [], duplicateChecks: [], actualBuildCommits: ["a".repeat(40)],
     checklist: LIVE_CHECKLIST.map((checklist) => ({ checklist, status: "PASS", attempts: [{ status: "PASS", retry: 0 }] })),
+  });
+
+});
+
+it("labels even a complete passing loopback run as rehearsal, never hosted acceptance", async () => {
+  expect(await report(inventory(), "passed", undefined, "http://127.0.0.1:4193/")).toMatchObject({
+    kind: "local rehearsal, not hosted acceptance", status: "PASS", selection: "full", baseURL: "http://127.0.0.1:4193/",
   });
 });
 

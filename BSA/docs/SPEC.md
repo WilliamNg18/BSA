@@ -6,7 +6,7 @@ ms.date: 2026-09-13
 
 ## 1. Purpose and authority
 
-This describes the Tasks 19-24 integrated process, not a declaration of final
+This specifies the Tasks 25-30 continuous cycle, not a declaration of final
 hosted acceptance. [PROGRESS](PROGRESS.md) owns release status.
 [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md) and the original
 [hosted checklist](live-verification/README.md) retain their historical builds;
@@ -54,21 +54,22 @@ hide tour/Follow controls. Opposite-side routes keep their URL and show a switch
 prompt, not a redirect. Switching preserves evidence, approvals and history.
 Both restores the tour and same-item Follow/Switch side controls.
 
-### Eight chapters, nine stops
+### Six stakeholder chapters, nine stops
 
 | Chapter | Route | Content |
 | --- | --- | --- |
-| 1: The scene | `/#scene` | Most items need no person; attributed public volumes and separate model estimates |
+| 1: Real process | `/#scene` | Most items need no person; attributed public volumes and separate model estimates |
 | 2: A month in numbers | `/#month` | Shared process inputs and simultaneous Today / With the agent columns |
-| 3: What exists today and what changes | `/#pipeline` | EPS and paper branching through automatic pricing, Type 1, Type 2 and referral |
-| 4: Four cases | `/#cases` | A automatic, B referred back, C conflict and D explicit capture |
-| 5: One agent, two places | `/#two-places` | Assistance across pharmacy and NHSBSA, with distinct capture and judgement boundaries |
-| 5: Pharmacy example | `/pharmacy` | EPS/Paper declaration, advisory checks and explicit submission |
-| 6: The queue | `/queue` | Actual Type 2 work and separate Type 1 capture |
-| 7: What the pharmacy sees | `/pharmacy/claims` | Counted claims, selected detail, referral correction and immutable attempts |
-| 8: Where it ends | `/#close` | Evidence for a first test, assumptions and stop criteria |
+| 3: Evidence to a decision | `/#pipeline` | EPS and paper branching through automatic pricing, Type 1, Type 2 and referral |
+| 4: Cases and boundaries | `/#cases` | A automatic, B referred back, C conflict, D explicit capture and the proposed boundary link |
+| 5: One continuous cycle | `/#two-places` | Assistance across pharmacy and NHSBSA, with distinct capture and judgement boundaries |
+| 5: Pharmacy check | `/pharmacy` | Visible EPS, proposed paper declaration, advisory checks and explicit submission |
+| 5: NHSBSA queue | `/queue` | Actual Type 2 work and separate Type 1 capture |
+| 5: Pharmacy claims | `/pharmacy/claims` | Counted claims, selected detail, referral correction and immutable attempts |
+| 6: The central bet | `/#close` | Prevention assumption, evidence for a first test and stop criteria |
 
-The chapter menu has eight entries; Pharmacy example is a substop. One home
+The chapter menu has six entries; chapter 5 includes three operational substops.
+All nine prior routes and hashes remain reachable in their original order. One home
 chapter renders at a time. Bare `/` and unknown fragments show scene.
 Next/Back and Alt+ArrowLeft/Right navigate outside fields, menus and dialogs.
 Dismiss/Restore tour are session choices. Presenter/Discussion UI and `/notes`
@@ -95,14 +96,14 @@ No durable audit service, runtime backend or live model is supplied.
 
 ### Chapter 2 monthly model
 
-`selectProcessMonth` / `calculateProcessMonth` in
-`src/lib/domain/process-month-model.ts`, shared through `useProcessMonth()`,
-replace the referral-only presentation. Legacy baseline contracts remain for
-compatibility; their 12-minute cohort and operator-capacity outputs are not the
-current process tiles.
+`selectManualLoopMonth` / `calculateManualLoopMonth` in
+`src/lib/domain/manual-loop-month-model.ts`, shared through
+`useManualLoopMonth()`, implement the frozen `ManualLoopMonthInputs` and
+`ManualLoopMonthResult` contracts. Older model overloads remain historical
+calculations, not current tiles. Every current number uses this selector.
 
-Let `N` be monthly items, `T` Type 2 items, `R` monthly referrals, `K` pharmacy
-catches, `A` abstained Type 2 items and `B` built Type 2 items.
+Let `N` be whole-service monthly items, `R` the manual referral loop, `P`
+prevented referrals, `C` code clearance, `Q` queued items and `A` abstentions.
 
 | Quantity | Calculation / boundary |
 | --- | --- |
@@ -110,23 +111,33 @@ catches, `A` abstained Type 2 items and `B` built Type 2 items.
 | Type 1 / Type 2 | Each is a rounded percentage of `N`; lanes can overlap |
 | Staff touched | A separate union, at least each lane and at most their sum or `N` |
 | Automatic | `N - staffTouchedItems`, not a session completion count |
-| Pharmacy catches | `K = round(R * pharmacyCatchPercent / 100)` |
-| Remaining Type 2 | `T - K`; split into rounded abstentions `A` and remainder `B` |
-| Today Type 2 hours | `T * type2SecondsToday / 3600` |
-| Assisted Type 2 hours | `(B * builtJudgingSeconds + A * type2SecondsToday) / 3600` |
-| Referral investigation | `R * investigationMinutesToday / 60`; assisted uses `R - K` |
-| Pharmacy completion | `R * pharmacyCompletionMinutes / 60`; assisted uses `R - K` |
-| Type 1 | Separate keying/confirmation seconds, not added to Type 2 labour |
+| Prevention | `P = round(R * preventionPercent / 100)`, central assumption 80% |
+| Code clearance | `C = round((R - P) * clearancePercent / 100)`, assumption 70% |
+| Queue | `Q = R - P - C`; every queued item is assumed still referred back |
+| Abstention | `A = round(Q * abstentionPercent / 100)`, assumption 5%; built is `Q - A` |
+| Today gathering | `R * gatheringMinutesToday / 60`, ten-minute assumption |
+| Today judgement | `R * judgingMinutesToday / 60`, three-minute assumption |
+| Today double-check | `round(R * doubleCheckPercent / 100) * judgingMinutesToday / 60`, 25% assumption |
+| With gathering | `A * gatheringMinutesToday / 60`; abstention labour is not omitted |
+| With judgement | `Q * builtJudgingMinutes / 60`, three-minute assumption; no double-check assumed |
+| Operator total | Sum gathering, first judging and double-check hours within the same column |
+| Pharmacy completion | Today `R`, With `Q`, multiplied by six assumed MYS minutes and divided by 60 |
+| Type 1 | Separate difficult-example keying/confirmation seconds, not a measured saving |
 
 Today and With the agent are always shown together. Built cases, abstentions,
 catches, remaining referrals and rule/reason assurance are scenario outputs,
 not actual decisions, measured accuracy or guaranteed savings.
 
+Defaults give 85,000 versus 5,100 referrals, 19,479.166666... versus **297.5**
+total operator hours, and 8,500 versus 510 pharmacy hours. With includes
+255 judging and 42.5 abstention-gathering hours. Every With figure says
+**estimate**. The 5% assumption is not an observed one-of-six result.
+
 The supplied context is over 100 million monthly items, roughly 91% EPS / 9%
 paper, 2.2 million Type 1, 2 million Type 2 and 85,000 referrals. Figures are
 attributed, not independently verified. The roughly 12-14-second Type 2 average
-(13-second default) is distinct from the four-minute referral-investigation
-and six-minute pharmacy-completion assumptions. Their cohorts and effort must
+(13 seconds) is distinct from the ten-minute referral-gathering, three-minute
+judgement and six-minute pharmacy-completion assumptions. Their cohorts must
 not be added or double-counted. Monthly rule publication is not a change rate.
 
 Invalid or blank drafts show field errors and no stale result. Counts require
@@ -146,16 +157,23 @@ Products use `SYN-` codes. Claim/concession amounts are evidence, not payments.
 | Case | ID | Current route and invariant |
 | --- | --- | --- |
 | A | EX-24107 | Complete existing-rules automatic pricing, no human approval/work row |
-| B | EX-24112 | Seed is referred back; missing date needs Type 2 judgement, corrected complete EPS auto-prices |
+| B | EX-24112 | Seed is Action needed; missing date needs judgement, actual referral correction requires explicit human re-check |
 | C | EX-24119 | Seed is information requested; quantity 56 versus 84 survives confirmation |
 | D | EX-24123 | Initial Type 1 capture abstention; original quality 0.31 below 0.60 and only 1/3 agreement |
 | E | EX-24101 | Code-only automatic clearance, no model call or human approval |
-| F | EX-24088 | Historical human record DR-000871 and its recorded rule remain unchanged |
+| F | EX-24088 | Historical DR-000871 stays unchanged; a later correction, resubmission and human acceptance demonstrate Paid after correction |
 
-A/D seeds are paper; B/C/E/F seeds are EPS. Explicit submitted channel and
+A/E are automatically priced; A/D seeds are paper. The visible A EPS example
+is an explicit new EPS submission. Explicit submitted channel and
 current revision metadata govern routing, not legacy fixture channel labels.
 Unsupported BB/XP supplied endorsements continue to Type 2 judgement.
 D's machine evidence is never silently upgraded by declaration pre-fill.
+
+Exactly eight operational seeds belong to Hillcrest Pharmacy (FQ123).
+`SYN-FQ123-TYPE2` is awaiting judgement and `SYN-FQ123-RECHECK` is resubmitted.
+Other-pharmacy background is fixed, unclickable and excluded from the store
+and actual counts. There is no pharmacy selector. Unseeded submitted/escalated
+states remain reachable through explicit actions and retain test coverage.
 
 <a id="6-the-agent-pipeline-agentts-toolsts-keep-the-sequence-the-classification-and-the-stop-conditions"></a>
 
@@ -218,28 +236,43 @@ resubmission append their own evidence/events. Opening a page does not.
 
 The paid label is **Paid on the normal schedule (synthetic)**, attributed to
 existing pricing rather than an agent. Human sufficient disposition remains
-human-decided staff work, even after pricing. Complete EPS correction does not
-require a second decision; C confirmation does, and new paper requires capture.
+human-decided staff work, even after pricing. An actual referral correction
+requires a human re-check, including complete EPS. Initial complete EPS still
+prices without a person. Ordinary initial complete paper can price after human
+capture without Type 2 judgement; D and referred paper require Type 2 review.
 Agent/perspective changes preserve all attempts, approvals, timestamps and IDs.
 
 ## 9. Pharmacy check and claims
 
-`/pharmacy` offers Complete endorsement, Information missing and Unreadable form,
-explicit EPS/Paper radios, endorsement editing and Restore. Paper declaration
-fields default blank and remain labelled as pharmacy declarations, not image
-readings. On performs a cancellable scripted precheck; Off is **Not checked:
-manual submission**, not an outage. Edits invalidate previous checks.
+`/pharmacy` separates EPS and Paper. EPS scenarios are Complete endorsement,
+NCSO missing date and Generic missing brand. A visible synthetic prescription
+separates prescribed items, prescriber endorsement and dispenser's fields.
+The dispenser edits endorsement, date, exemption and applicable supply fields.
+EPS has no image or Type 1 capture. **Restore** restores the draft without
+rewriting receipts; scenario drafts survive same-page scenario choices.
 
-**Apply fix** applies a human-requested correction, never a submission.
-**Continue with submission** remains available even when advice is incomplete;
-the receipt labels such a checked attempt as submitted anyway. Submission stores an immutable attempt and
+On performs a cancellable scripted check, retrieves the dispensing-month clause
+and shows exact requirements. **Apply correction** changes the draft only.
+**Send claim** sends the actual typed fields, including an unchecked Off
+endorsement. Missing brand/manufacturer, pack size and form have distinct fixes.
+Initial complete EPS routes to existing automatic pricing with no person.
+
+Paper offers Unreadable form and Complete paper. Off has no declaration form.
+On has typed product, quantity, endorsement and dispensing date; prescriber
+evidence is not invented as a declaration field. **Load worked declaration**
+explicitly supplies D's Co-codamol 30/500 tablets, 100, NCSO JB 27/08/26,
+27 August 2026 example. The declaration check is not capture confirmation.
+**Post paper** or **Post paper with declaration** starts a new synthetic
+attempt; actual referral corrections remain in claim details.
+
+Every submission stores an immutable attempt and
 offers **View submitted claim**. Its timeline uses actual events, not assumed
 future payment or a month-end schedule.
 
-Claims have five pharmacy choices, four counted filters (Action needed,
+Claims show Hillcrest, four counted filters (Action needed,
 Waiting on NHSBSA, Paid this month, All) and one five-column table. Row actions
 are Correct and resubmit, Send confirmation or View. Amounts are claimed
-(synthetic). Select the owning pharmacy when revisiting without a case deep link.
+(synthetic). Case deep links retain the same Hillcrest item and revision.
 Recorded monthly counters and the whole-service scenario are explicitly separate.
 Caught-before-submission counts explicit correction evidence once per attempt,
 not projected catches or a hidden automatic submission.
@@ -247,9 +280,17 @@ not projected catches or a hidden automatic submission.
 Referrals require a corrected endorsement and explicit **Resubmit claim**.
 On may **Re-check endorsement**; a suggested date correction requires an
 operator-approved draft. Applying it invalidates prior checking. Off permits
-manual correction. A ready complete EPS item routes automatically in either
-mode; paper resubmission requires fresh capture. On displays only approved
+manual correction. A corrected referral enters **Resubmitted** for explicit
+human re-check in either mode; paper resubmission also requires fresh capture.
+On displays only approved
 generated notes; Off and NHSBSA retain the human reason.
+
+Generic EPS referrals also expose the recorded brand/manufacturer, pack size
+and form in **Correct the EPS supply evidence**. Every edit invalidates the
+previous check; **Re-check endorsement** checks all current claim fields
+without submitting. **Resubmit claim** appends the corrected EPS message as
+a new immutable revision and retains explicit human re-check. No field
+correction silently releases the referral to pricing.
 
 C's **Pharmacy confirmation** rejects blank text, appends the actual response
 and returns to human review with 56/84 unchanged. **Demonstration replay >
@@ -262,7 +303,8 @@ the original scan and never confirms capture.
 Off starts manual fields blank beside the original image. On may prefill a
 prior declaration, labelled **declared by the pharmacy, not read from the form**.
 No declaration means blank fields, not invented values. Proposed confirmation
-requires **I have reconciled the declaration with the paper**; editing clears
+requires **I have reconciled the declaration with the available evidence,
+including the dispensing date**; editing clears
 that checkbox. Explicit confirmation appends capture evidence and routes onward.
 It is not a Type 2 decision or a repair of the machine image.
 
@@ -279,14 +321,16 @@ does not claim a poor image or promise Type 2/RB2B; D retains its dedicated
 
 ## 10. Queue and Today
 
-The six-column Type 2 worklist uses actual current revisions and routing:
-Reference, Pharmacy, Channel, Reason it is here, What the agent did, Open.
-Type 1 capture is a separate lane. No-human automatic items are excluded.
+The seven-column staff lists use actual current revisions and routing:
+Reference, Pharmacy, Channel, State, Reason it is here, Advice and record, Open.
+Type 1 capture, Type 2 worklist, Referred back and Decided are separate lanes
+with stable filtering tiles in both modes. No-human automatic items are excluded.
 Human-decided and capture-completed work retain their provenance; referred-back
 items retain the actual RB code and approved-note status.
 
-Off filters describe Type 1 capture, Type 2 judgement, referrals and Decided.
-On distinguishes built, confirmation, evidence, abstained, referred and Decided.
+Every state label agrees with the pharmacy view. EPS/Paper channel icons have
+text labels. Today shows manual evidence and experience-only judgement, not
+invented agent work. Existing historical rule records remain visible Off.
 All staff items/New submissions use actual counts. Fresh revisions sort first.
 Inconsistent metadata produces a visible error and withholds affected rows.
 

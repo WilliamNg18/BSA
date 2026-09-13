@@ -4,19 +4,19 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { ReferralCycle } from "../../src/components/demo/referral-cycle";
 import { LIFECYCLE_LABELS, type CaseLifecycle, type LifecycleState } from "../../src/lib/domain/lifecycle";
-import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
+import { isTourShortcut, TOUR_CHAPTER_COUNT, TOUR_CHAPTERS, TOUR_STOPS, tourStopIndex } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { pharmacyCaseLink } from "../../src/lib/case-links";
 import { useAppStore } from "../../src/lib/store";
 
 describe("tour navigation contract", () => {
-  it("has eight explicit chapters and retains the precheck before queue, claims and close", () => {
-    expect(TOUR_CHAPTER_COUNT).toBe(8);
-    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 5, 5, 6, 7, 8]);
+  it("has six explicit chapters and retains every operational stop before the close", () => {
+    expect(TOUR_CHAPTER_COUNT).toBe(6);
+    expect(TOUR_STOPS.map((stop) => stop.chapter)).toEqual([1, 2, 3, 4, 5, 5, 5, 5, 6]);
     expect(TOUR_STOPS.map((stop) => stop.to)).toEqual(["/#scene", "/#month", "/#pipeline", "/#cases", "/#two-places", "/pharmacy", "/queue", "/pharmacy/claims", "/#close"]);
-    expect(TOUR_STOPS.filter((stop) => stop.to !== "/pharmacy").map((stop) => stop.label)).toEqual([
-      "The scene", "A month in numbers", "What exists today and what changes", "Four cases",
-      "One agent, two places", "The queue", "What the pharmacy sees", "Where it ends",
+    expect(TOUR_CHAPTERS.map((stop) => stop.label)).toEqual([
+      "Real process", "A month in numbers", "Evidence to a decision", "Cases and boundaries",
+      "One continuous cycle", "The central bet",
     ]);
   });
   it("links to the same claim through the supported case query", () => {
@@ -49,7 +49,7 @@ describe("tour navigation contract", () => {
 
 describe("curated display boundary", () => {
   it("supplies one canonical narrative for every explicit chapter", () => {
-    expect(TOUR_CONTENT.chapters.map((chapter) => chapter.chapter)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+    expect(TOUR_CONTENT.chapters.map((chapter) => chapter.chapter)).toEqual([1, 2, 3, 4, 5, 6]);
   });
   it("retains the single exact sourcing statement", () => {
     expect(SOURCES_FOOTER).toBe("Owner-supplied public process context attributed to NHSBSA and Community Pharmacy England; not independently verified here. All operational data is synthetic.");

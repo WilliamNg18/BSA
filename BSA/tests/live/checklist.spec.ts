@@ -41,8 +41,10 @@ test(LIVE_CHECKS.root, async ({ page }, info) => {
   expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading", { name: "Most items need no person", exact: true })).toBeVisible();
   await expect(flag(page)).not.toBeChecked();
+  expect(await page.evaluate(() => Object.prototype.hasOwnProperty.call(window, "__BSA_READ_DOMAIN_STATE__")),
+    "The hosted application must not expose the instrumented state observer").toBe(false);
   await expect(page.locator("[data-key-figure]")).toHaveCount(3);
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("1/8");
+  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("1/6");
   await expect(page.locator("[data-principle]")).toContainText("A human decides");
   await audit(page, info, "overview", false);
   await captureCheckpoint(page, info, "overview-off");
@@ -139,14 +141,14 @@ test(LIVE_CHECKS.pharmacy, async ({ page }, info) => {
   const scenarios = [
     { label: "Complete endorsement", status: "Complete: will flow to automated pricing, no person involved" },
     { label: "NCSO missing date", status: "Information missing" },
-    { label: "Unreadable form", status: "Agent unable to determine" },
+    { label: "Generic missing brand", status: "Information missing" },
   ];
   await page.goto("/pharmacy");
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
     for (const scenario of scenarios) {
       await page.getByRole("radio", { name: scenario.label, exact: true }).click();
-      await expect(page.getByRole("radio", { name: scenario.label === "Unreadable form" ? "Paper" : "EPS", exact: true })).toBeChecked();
+      await expect(page.getByRole("radio", { name: "EPS", exact: true })).toBeChecked();
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? scenario.status : "Not checked: manual submission");
       await expect(page.getByRole("button", { name: "Send claim", exact: true })).toBeEnabled();
       await captureCheckpoint(page, info, `pharmacy-${scenario.label.replaceAll(" ", "-")}-${enabled ? "on" : "off"}`);
@@ -173,11 +175,11 @@ test(LIVE_CHECKS.claims, async ({ page }, info) => {
 
 test(LIVE_CHECKS.queue, async ({ page }, info) => {
   await page.goto("/queue");
-  const table = page.getByRole("region", { name: "Type 2 items", exact: true });
-  await expect(table.locator("thead th")).toHaveCount(6);
+  const table = page.getByRole("region", { name: "Type 2 worklist items", exact: true });
+  await expect(table.locator("thead th")).toHaveCount(7);
   const rows = page.locator("[data-case-id]");
   const recorded = () => rows.evaluateAll((items) => items.map((row) => ({
-    id: row.getAttribute("data-case-id"), evidence: Array.from(row.querySelectorAll("td")).slice(0, 4).map((cell) => cell.textContent),
+    id: row.getAttribute("data-case-id"), evidence: Array.from(row.querySelectorAll("td")).slice(0, 5).map((cell) => cell.textContent),
   })));
   const before = await recorded();
   expect(before.length).toBeGreaterThan(0);
@@ -232,11 +234,14 @@ test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
         await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
       }
       await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-      await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+      await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
       await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
-      await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-      await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+      await page.getByRole("button", { name: "Start review", exact: true }).click();
+      if (enabled) await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+      await page.getByRole("radio", { name: enabled ? /^Accept the recommendation/ : /^Sufficient \(human choice\)/ }).check();
+      await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human recheck confirms the corrected dispensing date");
+      await page.getByRole("button", { name: "Record decision", exact: true }).click();
       await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.nhsbsa.on);
       await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
       await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
@@ -248,7 +253,7 @@ test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
       const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true });
       expect((await events.locator(":scope > li").allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
-      await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
+      await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
       await audit(page, info, "corrected-eps-paid-history", enabled);
       await captureJson(info, `roundtrip-${enabled ? "on" : "off"}`, { url: page.url(), history: await history(page).innerText() });
       await confirmReset(page);
@@ -327,7 +332,7 @@ test(LIVE_CHECKS.deterministic, async ({ page }, info) => {
   await expect(trace.locator(":scope > li")).toHaveCount(2);
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
-  await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+  await expect(page.getByText("priced by NHSBSA's existing rules engine, no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open case evidence", exact: true })).toHaveAttribute("href", "/case/EX-24101");
   await expect(page.getByText("The agent's part is over. The rest is a person.", { exact: true })).toHaveCount(0);
   await expect(trace).not.toContainText("run_endorsement_checks");
@@ -431,7 +436,7 @@ test(LIVE_CHECKS.conflict, async ({ page }, info) => {
 
 test(LIVE_CHECKS.historical, async ({ page }, info) => {
   await page.goto("/case/EX-24088/record");
-  await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Record DR-000872", exact: true })).toBeVisible();
   const records = page.locator("[data-original-records]");
   await records.locator("summary").click();
   const original = await records.innerText();
@@ -442,16 +447,11 @@ test(LIVE_CHECKS.historical, async ({ page }, info) => {
     await flag(page).setChecked(enabled);
     await expect(records).toHaveText(original, { useInnerText: true });
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-    if (enabled) {
-      for (const month of ["2026-07", "2026-08"]) {
-        await replay.selectOption(month);
-        await expect(records).toHaveText(original, { useInnerText: true });
-        await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
-      }
-    } else {
-      await expect(replay).toBeDisabled();
-      await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveCount(0);
-    }
+    await expect(replay).toBeDisabled();
+    await expect(records).toContainText("Original rule: 2026-08");
+    await expect(records).toContainText("DR-000871");
+    await expect(records).toContainText("DR-000872");
+    await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveCount(0);
   }
   await captureJson(info, "f-original-record-retained", { record: original, url: page.url() });
   await audit(page, info, "historical-f-record", true);
@@ -474,8 +474,9 @@ test(LIVE_CHECKS.completedCapture, async ({ page }, info) => {
     await confirmCompletePaper(page, enabled, action);
     await page.getByRole("button", { name: /^Decided/ }).click();
     await expect(page.getByRole("region", { name: "Completed Type 1 captures", exact: true })).toContainText("Human capture confirmed");
-    await expect(page.getByRole("region", { name: "Type 2 items", exact: true })).not.toContainText(B);
-    for (const id of [B, "EX-24107", "EX-24101"]) {
+    await expect(page.getByRole("region", { name: "Type 2 worklist items", exact: true })).not.toContainText(B);
+    await expect(page.getByRole("region", { name: "Decided", exact: true }).locator(`[data-case-id="${B}"]`)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    for (const id of ["EX-24107", "EX-24101"]) {
       await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
     }
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);

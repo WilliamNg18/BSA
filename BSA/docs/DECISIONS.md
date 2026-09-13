@@ -1659,3 +1659,110 @@ historical citation plus a non-blank human reason. Agent On does not fabricate
 this proof. The synthetic Today experience-only comparison is qualified and
 does not hide F's original sources or any later correction record. Automatic
 trace views do not show fictitious human gathering, including when Agent is Off.
+
+## 2026-09-13: Task 30 six-chapter stakeholder rail
+
+The owner explicitly requested the closing chapter as chapter 6. The
+coordinator approved six chapters with all nine existing stops retained:
+Real process, A month in numbers, Evidence to a decision, Cases and boundaries,
+One continuous cycle, and The central bet. Chapter 5 includes the original
+two-places overview, pharmacy check, NHSBSA queue and pharmacy claims in order.
+No route or hash is removed; every old operational deep link remains valid.
+The menu selects six chapter starts while Next/Back and Alt-arrow shortcuts
+continue through all nine stops. Cases retain their four examples and gain
+an explicit link to the proposed evidence boundary.
+
+The two-part demo script starts with five minutes in chapters 1-3, one toggle
+flip per chapter, before Hillcrest's live examples and chapter 6 close. Its
+paper example separates the frozen declaration from mandatory human prescriber
+evidence. A complete declaration never establishes image agreement or confirms
+capture by itself. The closing prevention rate must use the shared editable
+model once N supplies it; all With numbers remain estimates and the selected
+297.5-hour total includes abstention gathering.
+
+This is preparation, not final acceptance. New Task 30 live exports and
+full-height reviews must use a new evidence directory after coordinator
+deployment approval. Old Task 24 failures and repaired captures remain
+immutable. The parent retains final MEMORY/PROGRESS/SCOPE ownership until
+functional integration; V does not claim ALL DONE before final gates.
+
+## 2026-09-13: Task 30 evidence preparation, not release acceptance
+
+The extended live inventory names 29 checks: the existing 20, five explicit
+Hillcrest/EPS/declaration/boundary/rail checks and four same-D cycle checks
+for Both/switched perspectives with Agent Off/On. Discovery is not execution.
+The reporter still rejects partial selections, missing or duplicate names,
+retries and unexpected checks as full acceptance. Production checks never use
+the domain observer; the root check explicitly requires its absence.
+
+New full-page captures scroll to the top before taking a screenshot and record
+document height alongside viewport, source hashes and capture-time pending
+review. This does not mark any image reviewed. Final exports must use a fresh
+Task 30 directory after coordinator deployment approval; manual full-height
+review and keyboard/contrast observations remain separate pending gates.
+
+The chapter 6 central bet reads the shared editable prevention rate, not a
+hardcoded 80%. Invalid input replaces it with an explicit unavailable message.
+The six-chapter/nine-stop keyboard route sequence is preserved. The model's
+297.5 total With hours includes abstention gathering.
+
+Compatibility commits remain phase-specific: N numerical contracts, C seed and
+human recheck, E/U visible claims and paper forms, Q staff lanes and record
+proof. Old ordinary complete-paper coverage is retained through its real
+form and human capture, not replaced with an observer mutation or deleted.
+No final live, complete visual review or ALL DONE claim is made here.
+
+## 2026-09-13: Task 30 staged runtime and evidence release
+
+The coordinator approved two V deliveries without changing the service,
+deployment workflow, identity or merge order. After C/N/U/E/Q are actually
+merged, V's functional pull request is rebased onto main and supplies the
+six-chapter runtime, complete 29-check inventory and demonstration documents.
+Its exact four CI checks and coherent complete local rehearsal must pass before
+the coordinator merges V last and deploys main through the existing workflow.
+
+Only that deployed six-chapter main can receive the final 29-check hosted run
+and independent full-height image review. The old eight-chapter deployment
+cannot pass the new rail check by substitution. No feature-branch deployment,
+new preview slot, OIDC change or temporary hosted bypass is authorised.
+
+A separate V documentation/evidence follow-up preserves the immutable hosted
+export, every actual full-height review, manual keyboard/contrast observations,
+prose findings and final tracking. It contains no application, runtime or
+hosting configuration changes. Any real visual defect is fixed and recaptured
+before acceptance. That follow-up also requires four exact green CI checks;
+the coordinator then repeats the complete hosted inventory on latest main,
+checks the URL within ten minutes and confirms the protected-reference gates.
+ALL DONE remains withheld until the whole release, not merely functional V,
+has completed those gates.
+
+## 2026-09-13: Generic correction expands final acceptance to 30 checks
+
+The coordinator required an additional named check after the generic EPS
+referral path lacked editable supplier fields in claim details. E restores
+brand/manufacturer, pack size and form correction using the existing
+resubmission and human re-check APIs. V adds a full same-item hosted check:
+unchecked submission, human referral, structured correction, explicit
+resubmission, human acceptance and Paid with unchanged earlier attempts.
+
+The final named inventory is now **30**, not the earlier 29-check rehearsal.
+The original 29/29 local result remains valid only for its historical source
+and inventory; it cannot substitute for the expanded final local or hosted
+run. The generic check deliberately includes a missing presentation so its
+human-selected RB2B code matches the recorded correction request. It does
+not claim RB2B is a public brand-only referral code.
+
+## 2026-09-13: Tour cards must describe the current evidence
+
+The case-card capture guidance now reads the current immutable revision's
+declaration presence, actual paper quality/style and current process channel.
+Agent On alone does not establish a pharmacy declaration. Undeclared paper
+keeps explicit manual capture guidance; readable paper is not labelled
+unreadable. Code routes confirmed evidence, with Type 2 only when required.
+Manual EPS tasks name the claim message, not a nonexistent image.
+
+Five rendered regression cases cover B EPS Off, B readable paper Off/On
+without a declaration, D undeclared On and D declared On. They preserve
+complete store identity and assert fewer than 25 explanatory words in each
+capture panel. This corrects presentation only, not source fields, routing,
+capture confirmation or decision authority.
