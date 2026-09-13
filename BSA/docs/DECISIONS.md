@@ -1567,3 +1567,28 @@ separately; medicine fields, exact rule quotations, requirement statuses and
 field-associated provenance labels remain visible structured evidence. Error
 messages replace the main narrative rather than accumulating duplicate prose.
 Focused tests count both Paper variants, both modes and all advice outcomes.
+
+## 2026-09-13: Task 26 visible EPS source and explicit correction
+
+The EPS panel displays a synthetic prescriber message separately from the
+dispenser's claim. Dose is a non-clinical placeholder. It cannot display an
+unreadable image or enter Type 1. The shared read-only message component uses
+recorded source snapshots; it never fills gaps in historical evidence.
+
+The dedicated generic product SYN-AMOX500-GENERIC-21 activates the synthetic
+monthly supply rule even if its optional evidence object is omitted. Source
+manufacturer, pack and form checks are shared with routing and the compliance
+gate. Canonical E keeps its original automatic no-model outcome. The additional
+generic example uses the already seeded SYN-FQ123-TYPE2 item, not a ninth item.
+
+An explicit Apply correction edits the draft only. Initials must be supplied by
+the person dispensing; the date suggestion uses the displayed synthetic
+dispensing day, not the computer's current date. Supply suggestions identify
+their exact synthetic reference value before the person applies them.
+
+Send claim creates a new demonstration attempt on the same item, retaining
+all earlier receipts and history. Correcting an existing referral remains the
+claim-view resubmission action with mandatory human re-check. Agent Off sends
+the literal source fields and an unchecked snapshot without invoking advisory
+interpretation. On only announces automatic completion when the same
+deterministic routing function used by Send returns automatic pricing.
