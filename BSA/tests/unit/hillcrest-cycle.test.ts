@@ -5,6 +5,7 @@ import { runAgent } from "../../src/lib/domain/agent";
 import { immutable, paperDeclarationFields } from "../../src/lib/domain/lifecycle-model";
 import { seededLifecycleSession } from "../../src/lib/domain/lifecycle-seed";
 import { LIFECYCLE_LABELS, type ProcessSubmission } from "../../src/lib/domain/lifecycle";
+import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routing";
 import { pharmacySnapshot, checkPharmacy } from "../../src/lib/domain/pharmacy-check";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import type { EpsPrescription, PaperDeclaration } from "../../src/lib/domain/types";
@@ -137,6 +138,35 @@ describe("immutable source submission contracts", () => {
     expect(store().lifecycles[generic].state).toBe("paid");
     expect(store().itemProcesses[generic].routing.outcome).toBe("auto_priced");
     expect(store().records).toBe(records);
+  });
+
+  it("missing generic quantity remains a review gap, never an EPS image-capture failure", () => {
+    const c = sessionCase(generic)!;
+    const missing = { ...c, epsPrescription: undefined, extracted: { ...c.extracted, quantity: null } };
+    expect(routeSubmission(routingFactsForCase(missing, "eps"))).toMatchObject({
+      outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null,
+    });
+  });
+
+  it("legacy correction retains EPS source and supply evidence instead of dropping the generic obligation", () => {
+    const before = store().caseRevisions[generic][0];
+    store().recordType2Decision({ caseId: generic, decision: "REFER_BACK", reason: "Human requires the missing manufacturer.", rbCode: "RB2B" });
+    store().resubmitFromPharmacy(generic, "Pharmacy correction, manufacturer still missing");
+    const latest = store().caseRevisions[generic].at(-1)!;
+    expect(latest.epsPrescription).toEqual({ ...before.epsPrescription, dispenserEndorsement: latest.endorsementText });
+    expect(latest.epsPrescription?.supplyEvidence).toEqual(before.epsPrescription?.supplyEvidence);
+    expect(store().itemProcesses[generic].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
+    expect(store().caseRevisions[generic][0]).toEqual(before);
+  });
+
+  it("paper dispensing date travels with the declaration but never claims the original scan was read", () => {
+    const declaration = { ...paper, dispensingDate: "2026-07-27" };
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: declaration.endorsementText, paperDeclaration: declaration });
+    expect(sessionCase(D.id)?.extracted.dispensingDate).toBe("2026-07-27");
+    expect(sessionCase(D.id)?.paperDeclaration).toEqual(declaration);
+    expect(sessionCase(D.id)?.extracted.prescriber).toBe("Illegible");
+    expect(sessionCase(D.id)?.imageQuality).toBe(D.imageQuality);
+    expect(D.extracted.dispensingDate).toBe("2026-08-27");
   });
 });
 

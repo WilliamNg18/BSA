@@ -50,7 +50,7 @@ export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["cha
     ? Boolean(product && c.extracted.quantity !== null)
     : c.imageQuality >= QUALITY_THRESHOLD && Math.min(c.extracted.productConfidence, c.extracted.quantityConfidence, c.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
   const concession = version?.concessions.find((entry) => entry.productCode === product?.code);
-  const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : c.extracted.productCode === EPS_SUPPLY_RULE.productCode
+  const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : c.extracted.productCode === EPS_SUPPLY_RULE.productCode && c.extracted.quantity !== null
     ? evaluateEpsSupply(createEpsPrescription(c)) : null;
   return {
     channel, readable, handwritten: channel === "paper" && c.imageStyle !== "printed", captureConfirmed,
