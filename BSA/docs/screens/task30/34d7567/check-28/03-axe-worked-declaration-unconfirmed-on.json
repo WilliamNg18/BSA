@@ -1,0 +1,376 @@
+{
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+  "auditedAt": "2026-09-13T22:52:34.473Z",
+  "agentEnabled": true,
+  "violations": [],
+  "passes": 52,
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    ".min-h-14"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Type 1 capture for EX-24123\" class=\"space-y-4 rounded-xl border bg-card p-4 sm:p-5\">",
+                  "target": [
+                    ".space-y-4"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"hidden whitespace-nowrap text-sm font-semibold min-[900px]:inline lg:hidden xl:inline 2xl:hidden\" aria-hidden=\"true\">NHSBSA Case Builder</span>",
+          "target": [
+            ".min-\\[900px\\]\\:inline"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.7pt (2.2px)",
+                "fontWeight": "bold",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"6\" y=\"6.5\" font-size=\"2.2\" class=\"fill-emerald-900\" font-weight=\"700\">SYNTHETIC PRESCRIPTION FORM</text>",
+          "target": [
+            "text[font-size=\"2.2\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"6\" y=\"10\" font-size=\"1.8\" class=\"fill-slate-700\">Patient: Patient D (synthetic)   Age: --   NHS No: 000 000 0000</text>",
+          "target": [
+            ".fill-slate-700[y=\"10\"][x=\"6\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"72\" y=\"6.5\" font-size=\"1.8\" class=\"fill-slate-700\">Form ref: EX-24123</text>",
+          "target": [
+            ".fill-slate-700[x=\"72\"][y=\"6.5\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"72\" y=\"10\" font-size=\"1.8\" class=\"fill-slate-700\">Demo only: not a real form</text>",
+          "target": [
+            ".fill-slate-700[x=\"72\"][y=\"10\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "bold",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"6\" y=\"18.5\" font-size=\"1.8\" class=\"fill-emerald-900\" font-weight=\"700\">Prescribed items</text>",
+          "target": [
+            ".fill-emerald-900[y=\"18.5\"][font-weight=\"700\"]:nth-child(10)"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "bold",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"69\" y=\"18.5\" font-size=\"1.8\" class=\"fill-emerald-900\" font-weight=\"700\">Pharmacy endorsement</text>",
+          "target": [
+            ".fill-emerald-900[y=\"18.5\"][x=\"69\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.1pt (1.4px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"69\" y=\"21\" font-size=\"1.4\" class=\"fill-slate-500\">(for dispenser use)</text>",
+          "target": [
+            "text[y=\"21\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "2.0pt (2.6px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"7\" y=\"40\" font-size=\"2.6\" class=\"fill-slate-500\" style=\"font-family: &quot;Segoe Script&quot;, &quot;Bradley Hand&quot;, &quot;Comic Sans MS&quot;, cursive;\">Co-cod?mol 30/5?0 t?bs  1??</text>",
+          "target": [
+            "text[font-size=\"2.6\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.2pt (1.6px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"7\" y=\"46\" font-size=\"1.6\" class=\"fill-slate-500\">Dispensed: 2026-08-27   Pharmacy: Hillcrest Pharmacy (FQ123)</text>",
+          "target": [
+            "text[y=\"46\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "2.1pt (2.8px)",
+                "fontWeight": "normal",
+                "messageKey": "imgNode",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<svg viewBox=\"0 0 100 62\" role=\"img\" aria-label=\"Synthetic scanned pr...\" class=\"block w-full opacity...\" style=\"filter: blur(0.35px)...\">",
+                  "target": [
+                    ".opacity-80"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because element contains an image node"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"69\" y=\"40\" font-size=\"2.8\" class=\"fill-slate-500\" style=\"font-family: &quot;Segoe Script&quot;, &quot;Bradley Hand&quot;, &quot;Comic Sans MS&quot;, cursive; transform: rotate(-3deg); transform-origin: 69px 40px;\">N?S? ~~ 1?/0?</text>",
+          "target": [
+            "text[font-size=\"2.8\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because element contains an image node"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"6\" y=\"55.5\" font-size=\"1.8\" class=\"fill-slate-700\">Prescriber: Illegible</text>",
+          "target": [
+            ".fill-slate-700[y=\"55.5\"][x=\"6\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "1.3pt (1.8px)",
+                "fontWeight": "normal",
+                "messageKey": "bgOverlap",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it is overlapped by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<text x=\"60\" y=\"55.5\" font-size=\"1.8\" class=\"fill-slate-700\">Signature: ~~~~~~~~   Date: 2026-08-27</text>",
+          "target": [
+            "text[x=\"60\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it is overlapped by another element"
+        }
+      ]
+    }
+  ],
+  "dismissedNotification": null
+}

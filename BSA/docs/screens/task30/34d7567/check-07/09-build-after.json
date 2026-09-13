@@ -1,0 +1,7 @@
+{
+  "checkedAt": "2026-09-13T22:48:19.789Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/build-info.json",
+  "status": 200,
+  "expectedCommit": "34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e",
+  "body": "{\n  \"commit\": \"34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e\",\n  \"builtAt\": \"2026-09-13T22:44:23.705Z\",\n  \"dirty\": false\n}"
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "live view",
+  "sourceRevision": "34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e",
+  "applicationSourceRevision": "34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e",
+  "sourceDirty": false,
+  "capturedAt": "2026-09-13T22:52:51.218Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#close",
+  "screenshot": "central-bet-follows-edited-assumption",
+  "sha256": "c461aacf7fff30742be17a339ff3b30374795139a4294bfe37fcce017392d8e3",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "scrollWidth": 1440,
+  "documentHeight": 1002,
+  "fullPage": true,
+  "perspective": "Both",
+  "dismissedNotification": null,
+  "agentEnabled": false,
+  "browserVersion": "153.0.8010.12",
+  "reducedMotion": true,
+  "mainText": "Assistance Off · Simulated presentation, not a model call\nThe central bet\n\nTest prevention at the pharmacy before promising fewer referrals. Estimates depend on assumptions; the agent never calculates or approves payments.\n\nWhat would kill this estimate?\n\nCentral bet: pharmacy checks prevent 40% of would-be referrals (assumption). If measured prevention is substantially lower, the estimate fails.\n\nInspect the editable prevention assumption\nFewer items back. A judgement you can reconstruct.\n\nRule and reason recorded; the agent verifies and advises; a person decides. Existing pricing stays unchanged. Fewer referrals are estimates, not measured savings.\n\nFirst test\nConcentration of referral reasons\nRequested history\nTwo years · Item-level reasons\nDecision\nProceed, reshape or stop\nFive assumptions to validate\nSeven discovery questions",
+  "accessibilitySnapshot": "- banner:\n  - link \"Skip to main content\":\n    - /url: \"#main-content\"\n  - link \"Prescription Exception Case Builder\":\n    - /url: /#scene\n  - navigation \"Primary\":\n    - link \"Overview\":\n      - /url: /\n    - button \"Operations\"\n    - button \"How it works\"\n  - group \"Perspective\":\n    - radio \"Pharmacy\"\n    - text: Pharmacy\n    - radio \"NHSBSA\"\n    - text: NHSBSA\n    - radio \"Both\" [checked]\n    - text: Both\n  - 'switch \"Agent: Off\"'\n  - text: \"On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change. Agent : Off\"\n  - button \"Reset demo\"\n- navigation \"Guided tour\":\n  - button \"Back\"\n  - button \"Choose tour chapter\": 6/6 · The central bet\n  - button \"Done\" [disabled]\n  - button \"Dismiss tour\"\n- region \"Demonstration scope and governing principle\":\n  - button \"Synthetic demonstration data throughout. Hide details\" [expanded]\n  - paragraph: No payments calculated or approved. Not measured NHSBSA performance.\n  - paragraph: The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.\n- main:\n  - status: Assistance Off · Simulated presentation, not a model call\n  - heading \"The central bet\" [level=1]\n  - paragraph: Test prevention at the pharmacy before promising fewer referrals. Estimates depend on assumptions; the agent never calculates or approves payments.\n  - region \"Central prevention assumption\":\n    - heading \"What would kill this estimate?\" [level=2]\n    - paragraph: \"Central bet: pharmacy checks prevent 40% of would-be referrals (assumption). If measured prevention is substantially lower, the estimate fails.\"\n    - link \"Inspect the editable prevention assumption\":\n      - /url: /#month\n  - region \"Proposed outcomes\":\n    - heading \"Fewer items back. A judgement you can reconstruct.\" [level=2]\n    - paragraph: Rule and reason recorded; the agent verifies and advises; a person decides. Existing pricing stays unchanged. Fewer referrals are estimates, not measured savings.\n  - term: First test\n  - definition: Concentration of referral reasons\n  - term: Requested history\n  - definition: Two years · Item-level reasons\n  - term: Decision\n  - definition: Proceed, reshape or stop\n  - group: Five assumptions to validate\n  - group: Seven discovery questions\n- contentinfo: \"Session only · Synthetic cases · No payments calculated or approved Tour shortcuts: Alt + ← / → outside fields and menus\"\n- complementary \"Decision notifications\":\n  - status",
+  "visualReview": "pending"
+}
