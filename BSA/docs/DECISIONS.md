@@ -1409,3 +1409,29 @@ e2e/live tests, tour and docs. Model-store shared edits require an isolated
 commit handed to C; no simultaneous hidden copies. Append decisions per stream.
 The coordinator serialises integration, browser slots and final release gates.
 Existing App Service, strict CSP, protected refs and old evidence are unchanged.
+
+## 2026-09-13: Task 30 six-chapter stakeholder rail
+
+The owner explicitly requested the closing chapter as chapter 6. The
+coordinator approved six chapters with all nine existing stops retained:
+Real process, A month in numbers, Evidence to a decision, Cases and boundaries,
+One continuous cycle, and The central bet. Chapter 5 includes the original
+two-places overview, pharmacy check, NHSBSA queue and pharmacy claims in order.
+No route or hash is removed; every old operational deep link remains valid.
+The menu selects six chapter starts while Next/Back and Alt-arrow shortcuts
+continue through all nine stops. Cases retain their four examples and gain
+an explicit link to the proposed evidence boundary.
+
+The two-part demo script starts with five minutes in chapters 1-3, one toggle
+flip per chapter, before Hillcrest's live examples and chapter 6 close. Its
+paper example separates the frozen declaration from mandatory human prescriber
+evidence. A complete declaration never establishes image agreement or confirms
+capture by itself. The closing prevention rate must use the shared editable
+model once N supplies it; all With numbers remain estimates and the selected
+297.5-hour total includes abstention gathering.
+
+This is preparation, not final acceptance. New Task 30 live exports and
+full-height reviews must use a new evidence directory after coordinator
+deployment approval. Old Task 24 failures and repaired captures remain
+immutable. The parent retains final MEMORY/PROGRESS/SCOPE ownership until
+functional integration; V does not claim ALL DONE before final gates.

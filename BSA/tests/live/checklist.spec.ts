@@ -41,7 +41,7 @@ test(LIVE_CHECKS.root, async ({ page }, info) => {
   await expect(page.getByRole("heading", { name: "Most items need no person", exact: true })).toBeVisible();
   await expect(flag(page)).not.toBeChecked();
   await expect(page.locator("[data-key-figure]")).toHaveCount(3);
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("1/8");
+  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("1/6");
   await expect(page.locator("[data-principle]")).toContainText("A human decides");
   await audit(page, info, "overview", false);
   await captureCheckpoint(page, info, "overview-off");

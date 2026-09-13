@@ -109,6 +109,7 @@ export function HomePage() {
         <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-4">
           {CASES.filter((item) => ["A", "B", "C", "D"].includes(item.scenario)).map((item) => <TourProcessCase key={item.id} id={item.id} />)}
         </ul>
+        <Button asChild variant="outline"><Link to="/boundary">Inspect the proposed evidence boundary</Link></Button>
       </>}
       {chapterNumber === 5 && <>
         <TwoPlacesDiagram enabled={agentEnabled} />
@@ -124,7 +125,7 @@ export function HomePage() {
         </section>
         {perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>}
       </>}
-      {chapterNumber === 8 && <>
+      {chapterNumber === 6 && <>
         <section aria-label="Proposed outcomes" className="space-y-3 rounded-xl border bg-card p-5">
           <h2 className="font-semibold">Fewer items back. A judgement you can reconstruct.</h2>
           <p className="text-sm">Rule and reason recorded for built cases. People confirm evidence and decide; existing pricing remains unchanged.</p>

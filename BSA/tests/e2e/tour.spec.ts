@@ -79,7 +79,7 @@ for (const enabled of [true, false]) {
     for (const [index, stop] of TOUR_STOPS.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).click();
       await expect(page).toHaveURL(new URL(stop.to, page.url()).href);
-      await expect(rail).toContainText(`${stop.chapter}/8 · ${stop.label}`);
+      await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
       // Toggling the flag intentionally leaves focus on that switch at entry.
       if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       else await expect(page.getByRole("banner").getByRole("switch")).toBeFocused();
@@ -92,12 +92,12 @@ for (const enabled of [true, false]) {
         await expect(page.locator("[data-case]")).toHaveCount(4);
         await expect(page.locator("[data-pipeline]")).toHaveCount(0);
       }
-      if (stop.chapter === 6) {
+      if (stop.to === "/queue") {
         await expect(page.getByRole("heading", { level: 1, name: "NHSBSA exception queue", exact: true })).toBeFocused();
         await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
         await expect(page.getByRole("region", { name: "Type 1 capture lane", exact: true })).toBeVisible();
       }
-      if (stop.chapter === 7) await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
+      if (stop.to === "/pharmacy/claims") await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
     for (let index = TOUR_STOPS.length - 2; index >= 0; index--) {
@@ -119,11 +119,11 @@ for (const enabled of [true, false]) {
     await page.keyboard.press("Alt+ArrowRight");
     await expect(page).toHaveURL(/#month$/);
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await expect(page.getByRole("menuitem")).toHaveCount(8);
-    await page.getByRole("menuitem", { name: "7. What the pharmacy sees", exact: true }).press("Enter");
-    await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
+    await expect(page.getByRole("menuitem")).toHaveCount(6);
+    await page.getByRole("menuitem", { name: "6. The central bet", exact: true }).press("Enter");
+    await expect(page.getByRole("heading", { level: 1, name: "The central bet", exact: true })).toBeFocused();
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await page.getByRole("menuitem", { name: "5. One agent, two places", exact: true }).click();
+    await page.getByRole("menuitem", { name: "5. One continuous cycle", exact: true }).click();
     await expect(page).toHaveURL(/#two-places$/);
     await expect(page.locator("[data-two-places]")).toContainText(`Agent ${enabled ? "On" : "Off"}`);
     await expect(page.getByRole("list", { name: "Pharmacy · Before submission flow" })).toBeVisible();
@@ -394,7 +394,7 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page).toHaveURL(/#cases$/);
   await page.getByRole("button", { name: "Restore tour", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("4/8");
+  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("4/6");
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
   await expect(page.locator("[data-principle]")).toBeVisible();
@@ -457,9 +457,9 @@ test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmati
   await expect(page.getByRole("tooltip")).toContainText("Off withholds recommendations");
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("data-state", "checked");
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "3. What exists today and what changes", exact: true }).click();
+  await page.getByRole("menuitem", { name: "3. Evidence to a decision", exact: true }).click();
   await expect(page).toHaveURL(/#pipeline$/);
-  await expect(page.getByRole("heading", { level: 1, name: "What exists today and what changes", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "Evidence to a decision", exact: true })).toBeFocused();
   await page.getByRole("link", { name: "Skip to main content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();

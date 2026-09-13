@@ -19,7 +19,7 @@ test(`${caseId} trace replay announces one step at a time, Show all and Clear wo
     await expect(steps).toHaveCount(step);
     if (step === 1) await captureCheckpoint(page, testInfo, `${caseId}-replay-first-step`);
   }
-  await expect(page.getByRole("heading", { name: "Where it ends" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "The central bet" })).toBeVisible();
   await page.getByRole("button", { name: "Clear", exact: true }).click();
   await page.getByRole("button", { name: "Show all", exact: true }).click();
   await expect(steps).toHaveCount(9);

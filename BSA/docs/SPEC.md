@@ -54,21 +54,22 @@ hide tour/Follow controls. Opposite-side routes keep their URL and show a switch
 prompt, not a redirect. Switching preserves evidence, approvals and history.
 Both restores the tour and same-item Follow/Switch side controls.
 
-### Eight chapters, nine stops
+### Six stakeholder chapters, nine stops
 
 | Chapter | Route | Content |
 | --- | --- | --- |
-| 1: The scene | `/#scene` | Most items need no person; attributed public volumes and separate model estimates |
+| 1: Real process | `/#scene` | Most items need no person; attributed public volumes and separate model estimates |
 | 2: A month in numbers | `/#month` | Shared process inputs and simultaneous Today / With the agent columns |
-| 3: What exists today and what changes | `/#pipeline` | EPS and paper branching through automatic pricing, Type 1, Type 2 and referral |
-| 4: Four cases | `/#cases` | A automatic, B referred back, C conflict and D explicit capture |
-| 5: One agent, two places | `/#two-places` | Assistance across pharmacy and NHSBSA, with distinct capture and judgement boundaries |
-| 5: Pharmacy example | `/pharmacy` | EPS/Paper declaration, advisory checks and explicit submission |
-| 6: The queue | `/queue` | Actual Type 2 work and separate Type 1 capture |
-| 7: What the pharmacy sees | `/pharmacy/claims` | Counted claims, selected detail, referral correction and immutable attempts |
-| 8: Where it ends | `/#close` | Evidence for a first test, assumptions and stop criteria |
+| 3: Evidence to a decision | `/#pipeline` | EPS and paper branching through automatic pricing, Type 1, Type 2 and referral |
+| 4: Cases and boundaries | `/#cases` | A automatic, B referred back, C conflict, D explicit capture and the proposed boundary link |
+| 5: One continuous cycle | `/#two-places` | Assistance across pharmacy and NHSBSA, with distinct capture and judgement boundaries |
+| 5: Pharmacy check | `/pharmacy` | Visible EPS, proposed paper declaration, advisory checks and explicit submission |
+| 5: NHSBSA queue | `/queue` | Actual Type 2 work and separate Type 1 capture |
+| 5: Pharmacy claims | `/pharmacy/claims` | Counted claims, selected detail, referral correction and immutable attempts |
+| 6: The central bet | `/#close` | Prevention assumption, evidence for a first test and stop criteria |
 
-The chapter menu has eight entries; Pharmacy example is a substop. One home
+The chapter menu has six entries; chapter 5 includes three operational substops.
+All nine prior routes and hashes remain reachable in their original order. One home
 chapter renders at a time. Bare `/` and unknown fragments show scene.
 Next/Back and Alt+ArrowLeft/Right navigate outside fields, menus and dialogs.
 Dismiss/Restore tour are session choices. Presenter/Discussion UI and `/notes`

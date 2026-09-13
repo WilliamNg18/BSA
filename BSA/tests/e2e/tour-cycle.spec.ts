@@ -3,32 +3,33 @@ import { expect, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 const stops = [
-  { chapter: 1, label: "The scene", path: "/#scene" },
+  { chapter: 1, label: "Real process", path: "/#scene" },
   { chapter: 2, label: "A month in numbers", path: "/#month" },
-  { chapter: 3, label: "What exists today and what changes", path: "/#pipeline" },
-  { chapter: 4, label: "Four cases", path: "/#cases" },
-  { chapter: 5, label: "One agent, two places", path: "/#two-places" },
-  { chapter: 5, label: "Pharmacy example", path: "/pharmacy" },
-  { chapter: 6, label: "The queue", path: "/queue" },
-  { chapter: 7, label: "What the pharmacy sees", path: "/pharmacy/claims" },
-  { chapter: 8, label: "Where it ends", path: "/#close" },
+  { chapter: 3, label: "Evidence to a decision", path: "/#pipeline" },
+  { chapter: 4, label: "Cases and boundaries", path: "/#cases" },
+  { chapter: 5, label: "One continuous cycle", path: "/#two-places" },
+  { chapter: 5, label: "Pharmacy check", path: "/pharmacy" },
+  { chapter: 5, label: "NHSBSA queue", path: "/queue" },
+  { chapter: 5, label: "Pharmacy claims", path: "/pharmacy/claims" },
+  { chapter: 6, label: "The central bet", path: "/#close" },
 ];
 
 for (const enabled of [false, true]) {
-  test(`eight chapters remain independently reachable in both directions: agent ${enabled}`, async ({ page }) => {
+  test(`six chapters retain all nine stops in both directions: agent ${enabled}`, async ({ page }) => {
     await page.goto("./#scene");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const rail = page.getByRole("navigation", { name: "Guided tour" });
     for (const [index, stop] of stops.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).press("Enter");
       await expect(page).toHaveURL((url) => `${url.pathname}${url.hash}` === stop.path);
-      await expect(rail).toContainText(`${stop.chapter}/8 · ${stop.label}`);
+      await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
       if (index) await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
       if (stop.chapter === 3) {
         await expect(page.getByRole("region", { name: "Prescription processing paths" })).toBeVisible();
         await expect(page.getByRole("list", { name: "Four canonical synthetic cases" })).toHaveCount(0);
       }
       if (stop.chapter === 4) {
+        await expect(page.getByRole("link", { name: "Inspect the proposed evidence boundary", exact: true })).toHaveAttribute("href", "/boundary");
         await expect(page.getByRole("region", { name: "Prescription processing paths" })).toHaveCount(0);
         const cards = page.getByRole("list", { name: "Four canonical synthetic cases" }).locator(":scope > li");
         await expect(cards).toHaveCount(4);
@@ -64,8 +65,16 @@ for (const enabled of [false, true]) {
       await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
     }
     await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await expect(page.getByRole("menuitem")).toHaveText(stops.filter((stop) => stop.path !== "/pharmacy").map((stop) => `${stop.chapter}. ${stop.label}`));
-    await page.getByRole("menuitem", { name: "7. What the pharmacy sees", exact: true }).press("Enter");
+    await expect(page.getByRole("menuitem")).toHaveText(stops.filter((stop, index) => index === 0 || stop.chapter !== stops[index - 1].chapter).map((stop) => `${stop.chapter}. ${stop.label}`));
+    await page.getByRole("menuitem", { name: "5. One continuous cycle", exact: true }).press("Enter");
+    await expect(page).toHaveURL(/#two-places$/);
+    await expect(page.getByRole("menu")).toHaveCount(0);
+    await expect(page.getByRole("heading", { level: 1, name: "One continuous cycle", exact: true })).toBeFocused();
+    for (const path of ["/pharmacy", "/queue", "/pharmacy/claims"]) {
+      await rail.getByRole("button", { name: "Next", exact: true }).press("Enter");
+      await expect(page).toHaveURL((url) => url.pathname === path);
+      await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
+    }
     await expect(page).toHaveURL(/\/pharmacy\/claims$/);
     await expect(page.getByRole("menu")).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
@@ -75,7 +84,7 @@ for (const enabled of [false, true]) {
     await dismiss.press("Enter");
     await expect(rail).toHaveCount(0);
     await page.getByRole("button", { name: "Restore tour", exact: true }).press("Enter");
-    await expect(rail).toContainText("7/8 · What the pharmacy sees");
+    await expect(rail).toContainText("5/6 · Pharmacy claims");
     await expect(page).toHaveURL(/\/pharmacy\/claims$/);
   });
 
