@@ -10,6 +10,7 @@ import { formatBaselineNumber, GATHERING_STEPS } from "@/lib/domain/baseline";
 import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { ASSISTED_SLOTS } from "@/lib/case-presentation";
 import type { ExceptionCase } from "@/lib/domain/types";
+import type { Type1Capture as CaptureReceipt } from "@/lib/domain/lifecycle";
 
 export function CasePlayback({ clock, total }: { clock: ReturnType<typeof useCasePresentation>; total: number }) {
   return <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Presentation controls">
@@ -64,9 +65,45 @@ export function ManualTariffLookup() {
   </section>;
 }
 
+export function CaseSourceEvidence({ c }: { c: ExceptionCase }) {
+  if (c.claim.submittedVia === "EPS claim message") return <PageSection title="EPS claim message" description="Electronic claim evidence, synthetic. EPS has no image and never needs Type 1 capture.">
+    <p className="mb-3 text-sm text-muted-foreground">Original digital prescription not recorded. Only the retained claim fields are shown.</p>
+    <dl className="grid gap-2">
+      <KeyValue k="Product code in claim" v={c.claim.productCode ?? "Not recorded"} />
+      <KeyValue k="Claim quantity" v={c.claim.quantity} />
+      <KeyValue k="Claim amount" v={`£${c.claim.amountClaimed.toFixed(2)}`} />
+      <KeyValue k="Dispenser endorsement in claim" v={c.claim.endorsementText || "None recorded"} />
+    </dl>
+  </PageSection>;
+  return <PageSection title="Prescription image" description={c.imageStyle === "handwritten_poor"
+    ? "Image cannot be read. A declaration is not a reading of this form."
+    : "Synthetic form evidence. Original image remains unchanged."}>
+    <PrescriptionForm c={c} highlight={[]} />
+  </PageSection>;
+}
+
+export function ConfirmedCaptureEvidence({ capture }: { capture: CaptureReceipt }) {
+  const provenance = capture.provenance === "pharmacy_declaration"
+    ? "declared by the pharmacy, not read from the form"
+    : "captured by a person";
+  return <PageSection title="Type 1 human confirmation" description="Recorded capture evidence, not a new agent reading or Type 2 decision.">
+    <BoundaryTag cls="human" />
+    <p className="my-2 text-sm">Revision {capture.revision}: {capture.operator}, <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
+    <dl className="grid gap-2">
+      {[
+        ["Product code", capture.fields.productCode ?? "Not established"],
+        ["Quantity", capture.fields.quantity ?? "Not established"],
+        ["Endorsement", capture.fields.endorsementText || "Not established"],
+        ["Prescriber", capture.fields.prescriber || "Not established"],
+      ].map(([label, value]) => <KeyValue key={label} k={String(label)} v={<>{value}<span className="block text-xs text-muted-foreground">{provenance}</span></>} />)}
+      <KeyValue k="Declaration confirmation" v={capture.declarationReconciled ? "Explicitly confirmed by a person; not proof the image was read" : "Not established"} />
+    </dl>
+  </PageSection>;
+}
+
 export function RawCaseFields({ c }: { c: ExceptionCase }) {
   return <div className="grid gap-4 md:grid-cols-2" data-manual-pack>
-    <PageSection title="Prescription image" description="Synthetic form and existing capture only; no assisted reading."><PrescriptionForm c={c} highlight={[]} /></PageSection>
+    <CaseSourceEvidence c={c} />
     <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">
         <KeyValue k="Product (capture)" v={c.extracted.productText} />

@@ -13,7 +13,7 @@ import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { agentVersionLabel, productionServiceLabel } from "@/lib/service-display";
-import { CasePlayback, ManualCaseTrace, MissingAssistedSlots } from "@/components/demo/case-presentation";
+import { CasePlayback, ConfirmedCaptureEvidence, ManualCaseTrace, MissingAssistedSlots } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { ASSISTED_SLOTS, caseViewState, traceSlotReady } from "@/lib/case-presentation";
 import { SignalList } from "@/components/demo/signals";
@@ -47,7 +47,7 @@ export function CaseTracePage() {
   const pricingComplete = currentRouting?.pricingAuthority === "existing_rules_engine" && !currentRouting.requiresHuman;
   const closingDescription = pricingComplete
     ? currentRouting.outcome === "auto_priced"
-      ? "Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked."
+      ? "priced by NHSBSA's existing rules engine, no person involved. The agent was not invoked."
       : "Human review is complete. Existing rules-engine pricing follows; no further operator decision is needed."
     : pack.agentInvoked
       ? "The agent's part is over. The rest is a person."
@@ -59,11 +59,12 @@ export function CaseTracePage() {
         c={c}
         state={state}
         title={`How the case was built: ${c.title}`}
-        intro="Inspect planned actions, evidence, tool results, deterministic checks and stop conditions. Interpretation is scripted; this trace exposes no private model reasoning."
+        intro="Inspect evidence, rule checks and human confirmation. The agent verifies and advises; a person decides."
       />
       <LifecycleHistory id={c.id} />
+      {process?.capture && process.capture.revision === revision && <ConfirmedCaptureEvidence capture={process.capture} />}
 
-      {!agentEnabled && <><ManualCaseTrace /><MissingAssistedSlots />
+      {!agentEnabled && !pricingComplete && <><ManualCaseTrace /><MissingAssistedSlots />
         <Button disabled type="button">Replay unavailable in manual comparison</Button>
       </>}
       {agentEnabled && pack.agentInvoked && <>

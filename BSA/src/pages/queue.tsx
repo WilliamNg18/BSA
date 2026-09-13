@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { FileText, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
@@ -8,11 +9,12 @@ import { useProcessMonth } from "@/hooks/use-process-month";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { BACKGROUND_PHARMACIES } from "@/lib/domain/reference";
-import { permitsProposal, recordHasRule } from "@/lib/case-presentation";
+import { permitsProposal, recordHasRuleAndReason, staffLane, type StaffLane } from "@/lib/case-presentation";
+import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
 import { formatProcessHours as hours, formatProcessItems as n } from "@/lib/domain/baseline";
 
-type WorkFilter = "all" | "type1" | "type2" | "built" | "evidence" | "abstained" | "referred" | "decided" | "new";
+type WorkFilter = "all" | StaffLane | "new";
 
 export function QueuePage() {
   const resetRevision = useAppStore((s) => s.queue.revision);
@@ -36,26 +38,25 @@ function QueueWorklist() {
     const process = processes[id];
     if (!revision || !process || process.revision !== revision.number) return [];
     const record = records.filter((entry) => entry.caseId === id && (entry.revision ?? 1) === revision.number).at(-1);
-    if (process.routing.outcome === "auto_priced") return [];
+    const category = staffLane(lifecycle, process);
+    if (!category) return [];
     const c = caseForLifecycle(id, lifecycles, revisions, processes);
     if (!c) return [];
     const pack = agentEnabled ? runAgent(c, { agentEnabled: true }) : null;
-    const type1 = process.routing.outcome === "type1_capture" && process.routing.requiresHuman;
+    const type1 = category === "type1";
     const captureCompleted = process.routing.outcome === "type1_capture" && !process.routing.requiresHuman && Boolean(process.capture);
-    const referred = process.routing.outcome === "referred_back" && !(revision.kind === "seed" && c.scenario === "F");
-    const decided = !referred && (Boolean(record) || captureCompleted);
-    const category: WorkFilter = type1 ? "type1" : referred ? "referred" : decided ? "decided"
-      : pack?.recommendation === "ABSTAIN" ? "abstained"
-      : pack && (!permitsProposal(pack) || pack.recommendation === "REQUEST_INFORMATION") ? "evidence" : "built";
-    const agentWork = !agentEnabled ? "Not invoked; experience only"
+    const referred = category === "referred";
+    const decided = category === "decided";
+    const agentWork = record ? recordHasRuleAndReason(record) ? "rule and reason recorded" : "Human reason retained; no rule and reason recorded together"
+      : !agentEnabled ? "Today comparison: experience only; no new agent advice"
       : type1 ? "Declaration pre-fill where available; human confirmation required"
-      : referred ? record?.approvedDraft ? "Operator-approved exact fix recorded" : "No approved draft; human reason retained"
+      : referred ? "No decision record available; inspect the retained history"
       : captureCompleted ? "Human capture complete; existing pricing follows"
-      : decided ? recordHasRule(record) ? "Original rule version retained in the human record" : "No rule recorded for this decision"
-      : category === "abstained" ? "Abstained; worked as today"
-      : category === "evidence" ? "Evidence assembled; unresolved facts remain"
+      : decided ? "Human work complete; existing pricing follows"
+      : pack?.recommendation === "ABSTAIN" ? "Abstained; worked as today"
+      : pack && (!permitsProposal(pack) || pack.recommendation === "REQUEST_INFORMATION") ? "Evidence assembled; unresolved facts remain"
       : "Case built; dated clause and requirements checked";
-    return [{ id, c, process, category, type1, captureCompleted, agentWork, fresh: revision.kind !== "seed", at: revision.at }];
+    return [{ id, c, process, lifecycle, category, type1, captureCompleted, agentWork, fresh: revision.kind !== "seed", at: revision.at }];
   }).sort((a, b) => Number(b.fresh) - Number(a.fresh) || b.at.localeCompare(a.at)),
   [lifecycles, revisions, processes, records, agentEnabled]);
   useEffect(() => {
@@ -67,23 +68,15 @@ function QueueWorklist() {
     }
   }, [rows]);
   const invalid = Object.values(lifecycles).some(({ caseId }) => !processes[caseId] || processes[caseId].revision !== revisions[caseId]?.at(-1)?.number);
-  const tiles: { key: WorkFilter; label: string; count: number }[] = agentEnabled ? [
-    { key: "built", label: "Case built, ready to judge", count: rows.filter((r) => r.category === "built").length },
-    { key: "type1", label: "Awaiting confirmation (Type 1)", count: rows.filter((r) => r.type1).length },
-    { key: "evidence", label: "Needs more evidence", count: rows.filter((r) => r.category === "evidence").length },
-    { key: "abstained", label: "Abstained, worked as today", count: rows.filter((r) => r.category === "abstained").length },
-    { key: "referred", label: "Referred back with the exact fix", count: rows.filter((r) => r.category === "referred").length },
-    { key: "decided", label: "Decided", count: rows.filter((r) => r.category === "decided").length },
-  ] : [
-    { key: "type1", label: "Awaiting Type 1 capture", count: rows.filter((r) => r.type1).length },
-    { key: "type2", label: "Awaiting Type 2 judgement", count: rows.filter((r) => !["type1", "referred", "decided"].includes(r.category)).length },
+  const tiles: { key: WorkFilter; label: string; count: number }[] = [
+    { key: "type1", label: "Type 1 capture lane", count: rows.filter((r) => r.type1).length },
+    { key: "type2", label: "Type 2 worklist", count: rows.filter((r) => r.category === "type2").length },
     { key: "referred", label: "Referred back", count: rows.filter((r) => r.category === "referred").length },
     { key: "decided", label: "Decided", count: rows.filter((r) => r.category === "decided").length },
   ];
   const active = tiles.some((tile) => tile.key === filter) || filter === "new" ? filter : "all";
   const visible = rows.filter((row) => active === "all" || active === "new" && row.fresh
-    || active === "type2" && !["type1", "referred", "decided"].includes(row.category) || row.category === active);
-  const type2 = visible.filter((row) => !row.type1 && !row.captureCompleted);
+    || row.category === active);
   const type1 = visible.filter((row) => row.type1);
 
   return <div className="mx-auto max-w-7xl space-y-5">
@@ -91,11 +84,11 @@ function QueueWorklist() {
       <SyntheticTag />
       <h1 tabIndex={-1} data-tour-heading className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2">NHSBSA exception queue</h1>
       <p className="text-lg" data-queue-guide>{agentEnabled
-        ? "Type 2 worklist: the agent verifies the submission and advises; a person decides."
+        ? "Type 2 worklist: the agent verifies and advises; a person decides."
         : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement."}</p>
       <section aria-label="Automatic pricing monthly aggregate" className="rounded-xl border bg-muted/30 p-4">
         <BoundaryTag cls="deterministic" />
-        <p className="mt-2 font-semibold" data-auto-priced-count>{result ? n(result.counts.autoPricedItems) : "Unavailable"} priced automatically this month, no person involved</p>
+        <p className="mt-2 font-semibold" data-auto-priced-count>Priced automatically this month, no person involved: {result ? n(result.counts.autoPricedItems) : "Unavailable"}</p>
         <p className="text-sm text-muted-foreground">Shared monthly model, not session completions. Items are priced by NHSBSA's existing rules engine.</p>
       </section>
     </header>
@@ -122,30 +115,31 @@ function QueueWorklist() {
       </div>
     </section>
     {handoff && <p role="status" className="text-sm">{handoff}: capture recorded. Follow the current routing; no Type 2 decision was made.</p>}
-    <section aria-label="Type 2 worklist" className="space-y-3">
-      <h2 ref={worklistHeading} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">Type 2 worklist</h2>
-      <div role="region" aria-label="Type 2 items" tabIndex={0} className="overflow-x-auto rounded-xl border [&_[data-slot=table-container]]:overflow-visible">
-        <Table data-type2-worklist>
-          <TableHeader><TableRow>{["Reference", "Pharmacy", "Channel", "Reason it is here", "What the agent did", "Open"].map((label) => <TableHead key={label}>{label}</TableHead>)}</TableRow></TableHeader>
-          <TableBody>{type2.map((row) => <TableRow key={row.id} data-case-id={row.id}>
+    {(["type2", "referred", "decided"] as const).map((lane) => <section key={lane} aria-label={tiles.find((tile) => tile.key === lane)!.label} className="space-y-3">
+      <h2 ref={lane === "type2" ? worklistHeading : undefined} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">{tiles.find((tile) => tile.key === lane)!.label}</h2>
+      <div role="region" aria-label={`${tiles.find((tile) => tile.key === lane)!.label} items`} tabIndex={0} className="overflow-x-auto rounded-xl border [&_[data-slot=table-container]]:overflow-visible">
+        <Table data-type2-worklist={lane === "type2" ? "" : undefined} data-staff-lane={lane}>
+          <TableHeader><TableRow>{["Reference", "Pharmacy", "Channel", "State", "Reason it is here", "Advice and record", "Open"].map((label) => <TableHead key={label}>{label}</TableHead>)}</TableRow></TableHeader>
+          <TableBody>{visible.filter((row) => row.category === lane).map((row) => <TableRow key={row.id} data-case-id={row.id}>
             <TableCell className="font-mono">{row.id}{row.fresh && <span className="block text-xs">New submission</span>}</TableCell>
             <TableCell className="whitespace-normal">{row.c.pharmacy.name}</TableCell>
-            <TableCell>{row.process.channel === "eps" ? "EPS" : "Paper"}</TableCell>
+            <TableCell><span className="inline-flex items-center gap-1">{row.process.channel === "eps" ? <Monitor aria-hidden="true" className="size-4" /> : <FileText aria-hidden="true" className="size-4" />}{row.process.channel === "eps" ? "EPS" : "Paper"}</span></TableCell>
+            <TableCell className="whitespace-normal" data-item-state>{LIFECYCLE_LABELS[row.lifecycle.state].pharmacy}</TableCell>
             <TableCell className="max-w-72 whitespace-normal">{row.process.routing.reason}{row.process.rbCode && <span className="block font-semibold">{row.process.rbCode}</span>}</TableCell>
             <TableCell className="max-w-64 whitespace-normal">{row.agentWork}</TableCell>
             <TableCell><Button asChild variant="outline" size="sm"><Link to={`/case/${encodeURIComponent(row.id)}`} aria-label={`Open ${row.id}`}>Open</Link></Button></TableCell>
           </TableRow>)}</TableBody>
         </Table>
       </div>
-      {!type2.length && <p role="status">No Type 2 items match this filter.</p>}
-    </section>
+      {!visible.some((row) => row.category === lane) && <p role="status">No {tiles.find((tile) => tile.key === lane)!.label.toLowerCase()} items match this filter.</p>}
+    </section>)}
     <section aria-label="Type 1 capture lane" className="space-y-3">
       <h2 className="text-lg font-semibold">Type 1 capture lane</h2>
       <p className="text-sm text-muted-foreground">Separate capture work. A person confirms the fields before code routes the item onward.</p>
       {type1.map((row) => <details key={row.id} open={row.id === "EX-24123"} className="rounded-xl border p-4" data-type1-case={row.id}
         onFocusCapture={() => { focusedCapture.current = row.id; }}
         onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
-        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · {row.process.channel === "eps" ? "EPS" : "Paper"}</summary>
+        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · {LIFECYCLE_LABELS[row.lifecycle.state].pharmacy}</summary>
         <div className="mt-3 space-y-3">
           <Type1Capture caseId={row.id} />
           <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
