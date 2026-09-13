@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-09-13T22:56:52.616Z",
+  "error": "Reconcile the declaration with the paper, or use manual capture.",
+  "focusRole": "alert",
+  "builtRows": 0,
+  "rect": {
+    "x": 720.5,
+    "y": 536,
+    "width": 594,
+    "height": 20,
+    "top": 536,
+    "right": 1314.5,
+    "bottom": 556,
+    "left": 720.5
+  },
+  "headerBottom": 56
+}

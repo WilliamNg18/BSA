@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-09-13T22:56:14.002Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112",
+  "error": "Choose an RB code for the referral.",
+  "focusRole": "alert",
+  "reason": "Human review needs the dispensing date beside the initials",
+  "rbCode": "",
+  "approved": false
+}

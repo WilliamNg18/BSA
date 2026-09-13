@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-09-13T22:55:09.113Z",
+  "theme": "dark",
+  "text": "Pharmacy claims",
+  "current": "page",
+  "classes": "block rounded-md px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-current bg-accent text-accent-foreground active",
+  "outlineWidth": "2px",
+  "outlineStyle": "solid",
+  "outlineColor": "oklch(0.985 0 0)",
+  "backgroundColor": "oklch(0.145 0 0)",
+  "outlineRGBA": [
+    250,
+    250,
+    250,
+    255
+  ],
+  "backgroundRGBA": [
+    10,
+    10,
+    10,
+    255
+  ],
+  "contrast": 18.96800669384249,
+  "rect": {
+    "x": 107,
+    "y": 250,
+    "width": 237,
+    "height": 36,
+    "top": 250,
+    "right": 344,
+    "bottom": 286,
+    "left": 107
+  },
+  "viewport": {
+    "width": 360,
+    "height": 900
+  },
+  "reducedMotion": true
+}

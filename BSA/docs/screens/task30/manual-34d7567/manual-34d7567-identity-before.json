@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-09-13T22:54:31.447Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+  "identity": {
+    "commit": "34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e",
+    "builtAt": "2026-09-13T22:44:23.705Z",
+    "dirty": false
+  },
+  "observerProperties": [
+    "WebKitMutationObserver",
+    "ResizeObserverSize",
+    "ResizeObserverEntry",
+    "ResizeObserver",
+    "ReportingObserver",
+    "PerformanceObserverEntryList",
+    "PerformanceObserver",
+    "MutationObserver",
+    "IntersectionObserverEntry",
+    "IntersectionObserver",
+    "FileSystemObserver",
+    "PressureObserver"
+  ]
+}

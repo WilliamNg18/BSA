@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-09-13T22:55:47.696Z",
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112",
+  "error": "A reason of at least eight characters is required for this decision.",
+  "errorFocused": true,
+  "errorRect": {
+    "x": 72.5,
+    "y": 539,
+    "width": 1280,
+    "height": 50,
+    "top": 539,
+    "right": 1352.5,
+    "bottom": 589,
+    "left": 72.5
+  },
+  "headerBottom": 56,
+  "prose": [
+    "No payment approval.",
+    "Draft approval is optional.",
+    "A reason of at least eight characters is required for this decision."
+  ],
+  "words": 19,
+  "radioCount": 0,
+  "reason": "",
+  "rbCode": "",
+  "approved": false,
+  "panelText": "Operator decisionNo payment approval.Human decision Record the decisionAccept the recommendationAmendRequest informationRefer back (as recommended)EscalateApprove this draft for the pharmacyDraft approval is optional.RB code (required)Choose an RB codeRB2B: Missing product presentationSYN-NCSO: Incomplete NCSO endorsement (synthetic code)Reason (required) Record decision"
+}

@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-09-13T22:59:28.825Z",
+  "identity": {
+    "commit": "34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e",
+    "builtAt": "2026-09-13T22:44:23.705Z",
+    "dirty": false
+  },
+  "errorFocused": true,
+  "explicitRoleCount": 0,
+  "nativeRadioCount": 5,
+  "controls": [
+    {
+      "tag": "INPUT",
+      "type": "radio",
+      "role": null,
+      "value": "ACCEPT",
+      "checked": false,
+      "disabled": false
+    },
+    {
+      "tag": "INPUT",
+      "type": "radio",
+      "role": null,
+      "value": "AMEND",
+      "checked": false,
+      "disabled": false
+    },
+    {
+      "tag": "INPUT",
+      "type": "radio",
+      "role": null,
+      "value": "REQUEST_INFORMATION",
+      "checked": false,
+      "disabled": false
+    },
+    {
+      "tag": "INPUT",
+      "type": "radio",
+      "role": null,
+      "value": "REFER_BACK",
+      "checked": true,
+      "disabled": false
+    },
+    {
+      "tag": "INPUT",
+      "type": "radio",
+      "role": null,
+      "value": "ESCALATE",
+      "checked": false,
+      "disabled": false
+    }
+  ],
+  "approved": false
+}
