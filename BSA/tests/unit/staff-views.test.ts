@@ -1,13 +1,21 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { QueuePage } from "../../src/pages/queue";
 import { DecisionRecordPage } from "../../src/pages/decision-record";
 import { CasePackPage } from "../../src/pages/case-pack";
 import { NotificationContext } from "../../src/hooks/use-notification";
 import { useAppStore } from "../../src/lib/store";
 import { formatBaselineNumber, monthModel, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
+
+vi.mock("@/lib/store", async (importOriginal) => {
+  const original = await importOriginal<typeof import("@/lib/store")>();
+  return { ...original, useAppStore: Object.assign(
+    (select: (state: ReturnType<typeof original.useAppStore.getState>) => unknown) => select(original.useAppStore.getState()),
+    original.useAppStore,
+  ) };
+});
 
 afterEach(() => useAppStore.getState().resetDemo());
 
@@ -68,6 +76,8 @@ describe("Task 22 current-revision staff presentation", () => {
   });
 
   it("shows manual Tariff lookup and a mandatory human reason for Type 2", () => {
+    useAppStore.getState().submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
+    useAppStore.getState().arriveInQueue("EX-24112");
     const html = casePack("EX-24112");
     expect(html).toContain("Tariff to look up unaided");
     expect(html).toContain('id="reason"');
