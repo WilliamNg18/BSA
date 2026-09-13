@@ -257,6 +257,7 @@ test("09 D abstains until human capture and retains history through paper referr
     await expect(page).toHaveURL(/\/case\/EX-24123\/record$/);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(detail(page)).toContainText("RB2B");
+    await history(page).locator("summary").first().click();
     const attempts = history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li");
     const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
     const originalAttempts = await attempts.allTextContents();
@@ -269,6 +270,7 @@ test("09 D abstains until human capture and retains history through paper referr
       await page.getByRole(name === "Declared quantity" ? "spinbutton" : "textbox", { name, exact: true }).fill(value);
     }
     await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+    await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
     await expect(attempts).toHaveCount(2);
     expect((await attempts.allTextContents()).slice(0, originalAttempts.length)).toEqual(originalAttempts);
     expect((await events.allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
