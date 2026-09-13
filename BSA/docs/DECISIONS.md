@@ -1611,3 +1611,23 @@ submitting before the new check finishes cancels the pending event. Reset
 clears recorded events; perspective changes preserve them. Legacy callers
 retain their original validation. This extension belongs to E, not C's already
 reviewed critical-path source candidate.
+
+## 2026-09-13: Correct generic EPS referrals on the same claim
+
+Review found that the generic workbench could send a deficient supply claim,
+but the claim-detail correction form only edited endorsement text. Retaining
+the missing supply fields made the new generic referral impossible to repair
+through its intended resubmission path.
+
+For the dedicated synthetic generic EPS product, claim details now expose
+manufacturer, pack size and form from the recorded source. Editing any field
+invalidates the displayed check. Explicit resubmission stores an updated EPS
+source with the current revision guard, leaving earlier sources and decisions
+immutable. The existing text and paper correction paths are unchanged.
+
+Field readiness is separate from permission to price. A dedicated prospective
+resubmission projection retains required human recheck; the interface says
+Ready to resubmit, never automatic pricing. The same synthetic requirements
+must resolve before human acceptance. The browser proof uses missing form with
+RB2B and a recorded human reason, then follows that same item to human-accepted
+Paid rather than starting another demonstration attempt.
