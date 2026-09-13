@@ -9,7 +9,7 @@ import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { permitsProposal, recordHasRule } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
-import { formatBaselineNumber as n } from "@/lib/domain/baseline";
+import { formatProcessHours as hours, formatProcessItems as n } from "@/lib/domain/baseline";
 
 type WorkFilter = "all" | "type1" | "type2" | "built" | "evidence" | "abstained" | "referred" | "decided" | "new";
 
@@ -130,13 +130,15 @@ function QueueWorklist() {
     <section aria-label="Type 1 capture lane" className="space-y-3">
       <h2 className="text-lg font-semibold">Type 1 capture lane</h2>
       <p className="text-sm text-muted-foreground">Separate capture work. A person confirms the fields before code routes the item onward.</p>
-      {type1.map((row) => <article key={row.id} className="space-y-3 rounded-xl border p-4" data-type1-case={row.id}
+      {type1.map((row) => <details key={row.id} open={row.id === "EX-24123"} className="rounded-xl border p-4" data-type1-case={row.id}
         onFocusCapture={() => { focusedCapture.current = row.id; }}
         onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
-        <h3 className="font-semibold">{row.id} · {row.c.pharmacy.name} · {row.process.channel === "eps" ? "EPS" : "Paper"}</h3>
-        <Type1Capture caseId={row.id} />
-        <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
-      </article>)}
+        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · {row.process.channel === "eps" ? "EPS" : "Paper"}</summary>
+        <div className="mt-3 space-y-3">
+          <Type1Capture caseId={row.id} />
+          <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
+        </div>
+      </details>)}
       {!type1.length && <p role="status">No items awaiting Type 1 capture in this filter.</p>}
     </section>
     {visible.some((row) => row.captureCompleted) && <section aria-label="Completed Type 1 captures" className="space-y-3">
@@ -148,9 +150,9 @@ function QueueWorklist() {
       <h2 className="font-semibold">Shared monthly model: Today / With the agent</h2>
       <p className="text-sm text-muted-foreground">Public stream volumes with assumed handling effort; these projections are not actual session decisions.</p>
       <dl className="grid gap-3 text-sm sm:grid-cols-2">
-        <div><dt>Type 2 operator hours</dt><dd>{n(result.today.type2OperatorHours)} / {n(result.withAgent.type2OperatorHours)}</dd></div>
-        <div><dt>Referred-back operator hours</dt><dd>{n(result.today.referralOperatorHours)} / {n(result.withAgent.referralOperatorHours)}</dd></div>
-        <div><dt>Pharmacy completion hours</dt><dd>{n(result.today.pharmacyCompletionHours)} / {n(result.withAgent.pharmacyCompletionHours)}</dd></div>
+        <div><dt>Type 2 operator hours</dt><dd>{hours(result.today.type2OperatorHours)} / {hours(result.withAgent.type2OperatorHours)}</dd></div>
+        <div><dt>Referred-back operator hours</dt><dd>{hours(result.today.referralOperatorHours)} / {hours(result.withAgent.referralOperatorHours)}</dd></div>
+        <div><dt>Pharmacy completion hours</dt><dd>{hours(result.today.pharmacyCompletionHours)} / {hours(result.withAgent.pharmacyCompletionHours)}</dd></div>
         <div><dt>Items referred back</dt><dd>{n(result.today.referredBackItems)} / {n(result.withAgent.referredBackItems)}</dd></div>
       </dl>
     </section>}
