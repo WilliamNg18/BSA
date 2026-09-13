@@ -5,7 +5,7 @@ import { REC_META } from "../../src/components/demo/label-meta";
 import { injectPrescriberFault } from "../support/prescriber-fault";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-for (const c of cases.slice(0, 3)) {
+for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id))) {
   test(`gate FAIL withholds ${c.id} advice in queue, pack, trace, human record and replay`, async ({ page }) => {
     const original = CASES.find((item) => item.id === c.id)!;
     const baseline = runAgent(original);
@@ -28,7 +28,7 @@ for (const c of cases.slice(0, 3)) {
 
     await page.goto("queue");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
-    await expect(page.locator("tbody > tr")).toHaveCount(50);
+    await expect(page.locator("tbody > tr")).toHaveCount(9);
     expect(injections).toBe(1);
     const row = page.getByRole("row").filter({ hasText: c.id });
     await expect(row).toContainText("No recommendation. Gate failed; open evidence.");

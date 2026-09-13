@@ -37,7 +37,12 @@ export function seededLifecycleSession(): {
     });
     lifecycles[caseId] = { caseId, pharmacyCode, state, history };
     caseRevisions[caseId] = [{ number: 1, at: history[0].at, kind: "seed", templateCaseId: c.id, endorsementText: c.extracted.endorsementText, precheck: null, confirmation: null,
-      channel: c.channel === "Electronic (EPS)" ? "eps" : "paper" }];
+      channel: c.claim.submittedVia === "EPS claim message" ? "eps" : "paper",
+      ...(caseId === CASES[3].id ? { declaration: {
+        fields: { productCode: c.claim.productCode, quantity: c.claim.quantity, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" },
+        declaredAt: history[0].at, provenance: "pharmacy_declaration" as const,
+      } } : {}),
+    }];
   };
   CASES.forEach((c, i) => add(c.id, c.pharmacy.contractorCode, canonicalStates[i], i));
   QUEUE_FILLER.forEach((row) => {

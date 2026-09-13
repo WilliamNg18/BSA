@@ -54,6 +54,14 @@ describe("canonical deterministic routing", () => {
 });
 
 describe("explicit captured authority", () => {
+  it("seeds D with a proposed declaration but never preconfirms or repairs the scan", () => {
+    expect(store().caseRevisions[D.id][0].declaration?.fields).toEqual(fields);
+    expect(store().itemProcesses[D.id].capture).toBeNull();
+    expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
+    store().setAgentEnabled(true);
+    expect(runAgent(sessionCase(D.id)!)).toMatchObject({ recommendation: "ABSTAIN", gate: { result: "NOT_RUN" } });
+    expect(store().lifecycles[D.id].history.some((event) => event.capture)).toBe(false);
+  });
   it("builds D from reconciled human-confirmed declaration without repairing image evidence", () => {
     const original = structuredClone(D);
     expect(runAgent(D).recommendation).toBe("ABSTAIN");
@@ -101,20 +109,27 @@ describe("explicit captured authority", () => {
     expect(runAgent(historical!).recommendation).toBe("SUFFICIENT");
   });
 
-  it("retains a paper channel across legacy resubmission and requires capture again", () => {
+  it.each(["submitFromPharmacy", "resubmitFromPharmacy"] as const)("retains a paper channel across %s and requires capture again", (action) => {
     store().submitItem({ caseId: B.id, channel: "paper", endorsementText: B.extracted.endorsementText });
     store().confirmType1({ caseId: B.id, revision: 2, fields: { productCode: B.extracted.productCode, quantity: B.extracted.quantity, endorsementText: B.extracted.endorsementText },
       provenance: "human_capture", declarationReconciled: true });
     store().recordType2Decision({ caseId: B.id, decision: "REFER_BACK", reason: "Date missing from the endorsement", rbCode: "SYN-NCSO" });
-    store().resubmitFromPharmacy(B.id, "NCSO RK 21/08/26");
+    store()[action](B.id, "NCSO RK 21/08/26");
     expect(store().caseRevisions[B.id].at(-1)?.channel).toBe("paper");
     expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
-    expect(store().lifecycles[B.id].state).toBe("resubmitted");
+    expect(store().lifecycles[B.id].state).toBe(action === "submitFromPharmacy" ? "submitted" : "resubmitted");
   });
 
   it("seeds automatic items as paid and never leaves them in a staff pending state", () => {
     for (const [id, process] of Object.entries(store().itemProcesses)) {
       if (process.routing.outcome === "auto_priced") expect(store().lifecycles[id].state).toBe("paid");
+    }
+  });
+
+  it("takes machine channels from actual claim metadata, not legacy image labels", () => {
+    expect(CASES.map((c) => store().caseRevisions[c.id][0].channel)).toEqual(["paper", "eps", "eps", "paper", "eps", "eps"]);
+    for (const c of CASES) {
+      expect(sessionCase(c.id)?.channel).toBe(c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10");
     }
   });
   it("records a human sufficient D as decided Type 2, never no-person automatic", () => {

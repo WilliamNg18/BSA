@@ -55,12 +55,9 @@ for (const enabled of [false, true]) {
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
     await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
-    await openReview(page);
-    await expect(history(page)).toContainText(LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]);
-    if (!enabled) await page.getByRole("radio", { name: /^Sufficient \(human choice\)/ }).check();
-    else await expect(page.getByRole("radio", { name: /^Accept / })).toBeChecked();
-    await decide(page, "Human reviewed the corrected date and complete evidence");
+    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.nhsbsa.on);
     for (const side of ["Pharmacy", "NHSBSA"] as const) {
       await followed(page).getByRole("link", { name: `Switch side: ${side}`, exact: true }).click();
@@ -72,8 +69,8 @@ for (const enabled of [false, true]) {
       await expect(attempts.nth(2)).toContainText("NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
       const events = history(page).getByRole("list", { name: "Lifecycle events" });
-      if (enabled && side === "Pharmacy") await expect(events).not.toContainText("Human reviewed the corrected date and complete evidence");
-      else await expect(events).toContainText("Human reviewed the corrected date and complete evidence");
+      await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
+      await expect(events).toContainText("Priced by NHSBSA's existing rules engine; no person involved.");
     }
     await captureJson(info, "roundtrip-history", await history(page).innerText());
     await confirmReset(page);
