@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { monthModel, MONTH_MODEL_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessMonthDraft } from "../../src/lib/domain/baseline";
+import { formatProcessHours, formatProcessItems, monthModel, MONTH_MODEL_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessMonthDraft } from "../../src/lib/domain/baseline";
 import { calculateProcessMonth, selectProcessMonth } from "../../src/lib/domain/process-month-model";
 
 const draft = (): ProcessMonthDraft => Object.fromEntries(Object.entries(PROCESS_MONTH_DEFAULTS).map(([key, value]) => [key, String(value)])) as ProcessMonthDraft;
@@ -59,5 +59,12 @@ describe("whole-process monthly arithmetic", () => {
   it("exports the new process overload without replacing the legacy calculation", () => {
     expect(monthModel(PROCESS_MONTH_DEFAULTS)).toEqual(calculateProcessMonth(PROCESS_MONTH_DEFAULTS));
     expect(monthModel(MONTH_MODEL_DEFAULTS).volume).toBe(85000);
+  });
+  it("uses identical display precision without rounding the shared model", () => {
+    const model = monthModel(PROCESS_MONTH_DEFAULTS);
+    expect(formatProcessHours(model.today.referralOperatorHours)).toBe("5,666.7");
+    expect(formatProcessHours(model.withAgent.referralOperatorHours)).toBe("4,533.3");
+    expect(formatProcessItems(model.withAgent.builtCases)).toBe("1,652,500");
+    expect(model.today.referralOperatorHours).toBe(340000 / 60);
   });
 });
