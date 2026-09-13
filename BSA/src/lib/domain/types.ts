@@ -11,6 +11,8 @@ export interface DeclaredItemFields {
   readonly productCode: string | null;
   readonly quantity: number | null;
   readonly endorsementText: string;
+  /** Required for a complete confirmed capture when the original prescriber is unreadable. */
+  readonly prescriber?: string | null;
 }
 
 export interface PharmacyDeclaration {
