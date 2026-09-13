@@ -1,16 +1,12 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
-import { MONTH_FIELDS, MONTH_MODEL_DEFAULTS, monthModel, formatBaselineNumber, type MonthModelResult } from "../../src/lib/domain/baseline";
+import {
+  PROCESS_MONTH_DEFAULTS, calculateProcessMonth, expectSceneMetrics,
+  fillProcessInputs, formatProcessMetric, sceneMetrics,
+} from "./process-model-helpers";
 
-const defaults = monthModel(MONTH_MODEL_DEFAULTS);
-function estimates(result: MonthModelResult, enabled = true) {
-  return [
-    ["volume", result.volume, 0],
-    ["hours", enabled ? result.withAgent.operatorHours : result.today.operatorHours, 1],
-    ["capacity", enabled ? result.capacity.withAgent : result.capacity.today, 1],
-  ] as const;
-}
+const defaults = calculateProcessMonth(PROCESS_MONTH_DEFAULTS);
 
 async function freezeScene(page: Page) {
   await page.clock.install({ time: new Date("2026-09-11T12:00:00Z") });
@@ -25,35 +21,29 @@ async function toggle(page: Page) {
   await control.press("Space");
 }
 
-async function expectFinal(page: Page, result = defaults, enabled = true) {
-  for (const [key, value, digits] of estimates(result, enabled)) {
-    const number = page.locator(`[data-scene-${key}]`);
-    const text = formatBaselineNumber(value, digits);
-    await expect(number).toHaveText(text);
-    if (enabled) await expect(number.getByRole("img", { name: text, exact: true })).toBeVisible();
-  }
-}
+const expectFinal = expectSceneMetrics;
 
 test.describe("scene estimate count-in with motion", () => {
   test.use({ reducedMotion: "no-preference" });
 
   test("Agent On visibly interpolates all derived estimates then reaches exact final UK values", async ({ page }, testInfo) => {
     await freezeScene(page);
-    await expectFinal(page, defaults, false);
+    await expectFinal(page, PROCESS_MONTH_DEFAULTS, false);
     const facts = page.getByRole("list", { name: "Public context figures" });
     const beforeFacts = await facts.textContent();
     const sources = page.locator('footer[aria-label="Sources"]');
     const beforeSources = await sources.textContent();
     await toggle(page);
     await page.clock.runFor(1000);
-    for (const [key, value, digits] of estimates(defaults)) {
-      const number = page.locator(`[data-scene-${key}]`);
+    await expect(page.locator("[data-scene-metric]")).toHaveCount(6);
+    for (const [key, value] of sceneMetrics(defaults)) {
+      const number = page.locator(`[data-scene-metric="${key}"]`);
       const intermediate = Number((await number.innerText()).replaceAll(",", ""));
       expect(intermediate, key).toBeGreaterThan(0);
       expect(intermediate, key).toBeLessThan(value);
-      const finalText = formatBaselineNumber(value, digits);
+      const finalText = formatProcessMetric(key, value);
       await expect(number.getByRole("img", { name: finalText, exact: true })).toBeVisible();
-      expect(await number.ariaSnapshot()).toBe(`- definition:\n  - img "${finalText}"`);
+      expect(await number.getByRole("img").ariaSnapshot()).toBe(`- img "${finalText}"`);
       expect(await number.evaluate((element) => element.closest("[aria-live], [role=status], [role=alert]"))).toBeNull();
     }
     await expect(facts).toHaveText(beforeFacts!);
@@ -72,16 +62,16 @@ test.describe("scene estimate count-in with motion", () => {
     await toggle(page);
     await page.clock.runFor(500);
     await toggle(page);
-    await expectFinal(page, defaults, false);
+    await expectFinal(page, PROCESS_MONTH_DEFAULTS, false);
     await toggle(page);
     await page.clock.runFor(500);
-    const value = Number((await page.locator("[data-scene-volume]").innerText()).replaceAll(",", ""));
+    const value = Number((await page.locator('[data-scene-metric="monthlyItems"]').innerText()).replaceAll(",", ""));
     expect(value).toBeGreaterThan(0);
-    expect(value).toBeLessThan(defaults.volume / 2);
+    expect(value).toBeLessThan(defaults.counts.monthlyItems / 2);
     await toggle(page);
-    await expectFinal(page, defaults, false);
+    await expectFinal(page, PROCESS_MONTH_DEFAULTS, false);
     await page.clock.runFor(3000);
-    await expectFinal(page, defaults, false);
+    await expectFinal(page, PROCESS_MONTH_DEFAULTS, false);
   });
 
   test("Reset during count-in cancels animation and restores healthy immediate Off", async ({ page }) => {
@@ -90,30 +80,31 @@ test.describe("scene estimate count-in with motion", () => {
     await page.clock.runFor(500);
     await confirmReset(page);
     await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
-    await expectFinal(page, defaults, false);
+    await expectFinal(page, PROCESS_MONTH_DEFAULTS, false);
     await page.clock.runFor(3000);
-    await expectFinal(page, defaults, false);
+    await expectFinal(page, PROCESS_MONTH_DEFAULTS, false);
   });
 
   test("navigation cancels detached frames and edited shared inputs replace the old target", async ({ page }) => {
     await freezeScene(page);
     await toggle(page);
     await page.clock.runFor(500);
-    const oldNumber = await page.locator("[data-scene-volume] > span > span").elementHandle();
+    const oldNumber = await page.locator('[data-scene-metric="monthlyItems"] [aria-hidden="true"]').elementHandle();
     expect(oldNumber).not.toBeNull();
     const oldText = await oldNumber!.textContent();
     await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
     await expect(page.locator("[data-scene-estimates]")).toHaveCount(0);
-    await page.getByLabel(MONTH_FIELDS[0].label, { exact: true }).fill("120");
+    const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, monthlyReferrals: 2 };
+    await fillProcessInputs(page, input);
     await page.clock.runFor(3000);
     expect(await oldNumber!.textContent()).toBe(oldText);
     await navigatePrimary(page, "Overview");
     await page.clock.runFor(1000);
-    const intermediate = Number(await page.locator("[data-scene-volume]").innerText());
+    const intermediate = Number(await page.locator('[data-scene-metric="monthlyItems"]').innerText());
     expect(intermediate).toBeGreaterThan(0);
     expect(intermediate).toBeLessThan(120);
     await page.clock.runFor(1016);
-    await expectFinal(page, monthModel({ ...MONTH_MODEL_DEFAULTS, volume: 120 }));
+    await expectFinal(page, input);
     expect(await oldNumber!.textContent()).toBe(oldText);
     await oldNumber!.dispose();
   });
@@ -139,12 +130,13 @@ test.describe("scene estimate reduced motion", () => {
     await freezeScene(page);
     await toggle(page);
     await expectFinal(page);
-    for (const volume of [0, 1, 1_000_000_000]) {
+    for (const monthlyItems of [0, 1, 1_000_000_000]) {
       await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
-      await page.getByLabel(MONTH_FIELDS[0].label, { exact: true }).fill(String(volume));
+      const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems, monthlyReferrals: 0 };
+      await fillProcessInputs(page, input);
       // The scene link is the first chapter; avoid introducing navigation ownership.
       await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Back", exact: true }).click();
-      await expectFinal(page, monthModel({ ...MONTH_MODEL_DEFAULTS, volume }));
+      await expectFinal(page, input);
     }
     await page.clock.resume();
     const audit = await new AxeBuilder({ page }).analyze();

@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { expect, cases, staticRoutes } from "./fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import type { Perspective } from "../../src/lib/store";
-import { MONTH_MODEL_DEFAULTS, formatBaselineNumber, monthModel } from "../../src/lib/domain/baseline";
+import { expectProcessMetrics, PROCESS_MONTH_DEFAULTS } from "./process-model-helpers";
 
 export const agentRoutes = [...new Set([
   ...staticRoutes.map(({ path }) => `/${path}`),
@@ -40,9 +40,7 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     } else if (route.startsWith("/pharmacy/claims")) {
       await expect(page.getByRole("main")).toContainText(enabled ? "With the agent: the item comes back" : "Today: the pharmacy learns weeks later");
     } else if (route === "/#month") {
-      const model = monthModel(MONTH_MODEL_DEFAULTS);
-      const hours = enabled ? model.withAgent.operatorHours : model.today.operatorHours;
-      await expect(page.locator("[data-month-hours]")).toHaveText(formatBaselineNumber(hours, 1));
+      await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
     } else if (route.startsWith("/case/")) {
       await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled ? 0 : 1);
     }
