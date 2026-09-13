@@ -109,6 +109,15 @@ export function PharmacyPage() {
         {channel === "paper" ? <>
           <PrescriptionForm c={c} highlight={["item", "endorsement"]} />
           <p className="text-sm">Proposed declaration support. Type the fields alongside the form. The agent cannot read an unreadable scan.</p>
+          <details className="rounded-md border p-3 text-sm">
+            <summary className="cursor-pointer font-semibold">Synthetic claim record</summary>
+            <p>Separate claim evidence, not a reading of the form. Nothing is copied into the declaration automatically.</p>
+            <dl className="mt-2 grid gap-2 sm:grid-cols-2">
+              <KeyValue k="Claim product code" v={c.claim.productCode} />
+              <KeyValue k="Claim quantity" v={c.claim.quantity} />
+              <KeyValue k="Claim endorsement" v={c.claim.endorsementText || "Not recorded"} />
+            </dl>
+          </details>
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="space-y-1"><Label htmlFor="declared-product">Declared product code</Label>
               <Input id="declared-product" value={fields.productCode} aria-describedby="declaration-provenance" onChange={(event) => {

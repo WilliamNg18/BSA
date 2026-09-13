@@ -195,4 +195,28 @@ describe("process claim evidence", () => {
     expect(markup).not.toContain("no person involved");
     expect(useAppStore.getState().itemProcesses[caseId].capture).toBeNull();
   });
+
+  it("does not describe human-reviewed Paid items as no-person pricing", () => {
+    const store = useAppStore.getState();
+    const caseId = "EX-24112";
+    store.submitItem({ caseId, channel: "eps", endorsementText: "NCSO RK" });
+    store.arriveInQueue(caseId);
+    store.recordType2Decision({ caseId, decision: "ACCEPT", reason: "Human reviewed the supplied synthetic evidence." });
+    const markup = renderClaims(caseId);
+    expect(markup).toContain("Paid on the normal schedule");
+    expect(markup).toContain("priced by NHSBSA&#x27;s existing rules engine");
+    expect(markup).not.toContain("no person involved");
+  });
+
+  it("shows a blind paper submission without inventing a pharmacy declaration", () => {
+    const store = useAppStore.getState();
+    const caseId = "EX-24123";
+    store.submitItem({ caseId, channel: "paper", endorsementText: "" });
+    const markup = renderClaims(caseId);
+    expect(markup).toContain("Paper");
+    expect(markup).not.toContain("Immutable pharmacy declaration");
+    expect(markup).not.toContain("no person involved");
+    expect(useAppStore.getState().itemProcesses[caseId].routing.outcome).toBe("type1_capture");
+    expect(useAppStore.getState().caseRevisions[caseId].at(-1)?.endorsementText).toBe("");
+  });
 });
