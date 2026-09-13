@@ -332,7 +332,7 @@ test(LIVE_CHECKS.deterministic, async ({ page }, info) => {
   await expect(trace.locator(":scope > li")).toHaveCount(2);
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
-  await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+  await expect(page.getByText("priced by NHSBSA's existing rules engine, no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open case evidence", exact: true })).toHaveAttribute("href", "/case/EX-24101");
   await expect(page.getByText("The agent's part is over. The rest is a person.", { exact: true })).toHaveCount(0);
   await expect(trace).not.toContainText("run_endorsement_checks");

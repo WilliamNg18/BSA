@@ -9,6 +9,7 @@ test(LIVE_CHECKS.hillcrest, async ({ page }, info) => {
   await expect(page.getByRole("main")).toContainText("Hillcrest Pharmacy (FQ123)");
   await expect(page.getByRole("combobox", { name: "Pharmacy", exact: true })).toHaveCount(0);
   await navigatePrimary(page, "Pharmacy claims");
+  await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^All / }).click();
   const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("tbody tr");
   await expect(rows).toHaveCount(8);
   for (const id of ["EX-24107", "EX-24101", "EX-24112", "EX-24119", "EX-24123", "EX-24088", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) {
