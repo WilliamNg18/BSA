@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
 
 test("one state: observer is read-only and retains every authoritative collection", async ({ page }) => {
@@ -18,6 +18,65 @@ test("one state: observer is read-only and retains every authoritative collectio
     expect(await readDomainState(page), "The header Agent control alone cannot mutate operational state").toEqual(snapshot);
   }
 });
+
+  for (const enabled of [false, true]) {
+    test(`one state: explicit Type 1 capture preserves the pharmacy declaration, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
+      await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
+        const initial = await readDomainState(page);
+        await action("Open actual NHSBSA work", "NHSBSA", async () => {
+          await navigatePrimary(page, "NHSBSA queue");
+        });
+        const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
+        await expect(capture).toBeVisible();
+        const product = capture.getByRole("textbox", { name: "Product code", exact: true });
+        await expect(product).toHaveValue(enabled ? "SYN-COCOD-100" : "");
+        expect(await readDomainState(page), "Opening a capture form must not confirm the prior declaration").toEqual(initial);
+        await action("Restart the assumed capture stopwatch", "NHSBSA", async () => {
+          await capture.getByRole("button", { name: "Restart timing illustration", exact: true }).click();
+        });
+        await action("Advance the assumed capture stopwatch", "NHSBSA", async () => {
+          await capture.getByRole("button", { name: "Next timing step", exact: true }).click();
+        });
+        expect(await readDomainState(page), "Timing illustration must not write a lifecycle event or change assumptions").toEqual(initial);
+        if (enabled) {
+          await action("Reject capture without explicit reconciliation", "NHSBSA", async () => {
+            await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+            await expect(capture.getByRole("alert")).toBeVisible();
+            await expect(capture.getByRole("alert")).toBeFocused();
+          });
+          expect(await readDomainState(page), "Failed reconciliation cannot create capture evidence").toEqual(initial);
+          await action("Explicitly reconcile the declaration with the paper", "NHSBSA", async () => {
+            await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+          });
+        }
+        const confirmed = await action("Confirm the current capture without making a Type 2 decision", "NHSBSA", async () => {
+          await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+          await expect(page.locator('[data-case-id="EX-24123"]')).toBeVisible();
+        });
+        expect(confirmed).toMatchObject({
+          itemProcesses: { "EX-24123": {
+            channel: "paper", revision: 1,
+            routing: { outcome: "type2_endorsement", requiresHuman: true },
+            capture: { revision: 1, operator: "Demo operator", provenance: enabled ? "pharmacy_declaration" : "human_capture", declarationReconciled: enabled },
+          } },
+          lifecycles: { "EX-24123": { state: "in_review", history: expect.arrayContaining([
+            expect.objectContaining({ actor: "operator", processStep: "type1_capture", revision: 1, capture: expect.objectContaining({ declarationReconciled: enabled }) }),
+          ]) } },
+        });
+        expect(confirmed.caseRevisions, "Human capture must leave every original pharmacy attempt byte-identical").toEqual(initial.caseRevisions);
+        expect(confirmed.records, "Capture confirmation is not an endorsement decision or approval").toEqual(initial.records);
+        await action("Read the captured item in the Type 2 worklist", "NHSBSA", async () => {
+          await page.locator('[data-case-id="EX-24123"]').getByRole("link", { name: "Open EX-24123", exact: true }).click();
+          await expect(page.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
+        });
+        expect(await readDomainState(page)).toEqual(confirmed);
+        if (enabled) {
+          await expect(page.getByText("Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.", { exact: true })).toBeVisible();
+          await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toHaveCount(0);
+        }
+      });
+    });
+  }
 
 for (const enabled of [false, true]) {
   test(`one state: complete EPS automatically prices without operator approval, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {

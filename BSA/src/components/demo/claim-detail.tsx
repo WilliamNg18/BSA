@@ -126,7 +126,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     {!editable && row.state !== "information_requested" && <p>Read-only claim. The agent cannot make an operator decision or change payment.</p>}
     <details><summary className="cursor-pointer">Demonstration replay</summary>
       <p>{revision?.declaration
-        ? "Replay the retained pharmacy declaration, not the scan reading. Prior evidence remains unchanged; human capture confirmation is still required."
+        ? "Replay the retained pharmacy declaration, not the scan reading. Prior evidence remains unchanged; replay does not confirm capture."
         : "Start a new synthetic submission with current evidence. Prior attempts and decisions remain unchanged."}</p>
       <dl className="text-sm"><dt>Replay endorsement source</dt><dd>{revision?.declaration ? "Retained pharmacy declaration" : "Current submission"}</dd>
         <dt>Replay endorsement</dt><dd>{replayText || "None"}</dd></dl>

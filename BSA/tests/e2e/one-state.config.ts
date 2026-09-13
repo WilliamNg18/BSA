@@ -8,7 +8,7 @@ const baseURL = `http://localhost:${port}/`;
 export default defineConfig({
   ...production,
   testDir: fileURLToPath(new URL(".", import.meta.url)),
-  testMatch: "one-state.spec.ts",
+  testMatch: "one-state*.spec.ts",
   testIgnore: [],
   timeout: 120_000,
   retries: 0,

@@ -12,12 +12,27 @@ acceptance, not evidence that this new scope is done.
 
 | Task | Stream | Exclusive ownership | Status |
 | --- | --- | --- | --- |
-| 19 Shared process model | M | Domain routing/baseline/lifecycle/agent/fixtures and unit tests; store.ts, pharmacy-store/queue-store consolidation; shared model hooks | Pending Step 0 |
-| 20 Pharmacy process | P | Pharmacy check/claims/detail/history/timeline components; pharmacy process UI | Pending Step 0 |
-| 21 Unreadable paper | U | New Type 1 capture component, proposed-D presentation and isolated paper-capture helper; D fixture changes requested through M | Pending Step 0 |
-| 22 NHSBSA work streams | Q | Queue, case pack, trace, decision-record pages/components; Type 1 lane embedding U's component | Pending Step 0 |
-| 23 Numbers and tour | N | Chapters 1/2/3/close, home and baseline/pipeline presentation; public-facts display copy | Pending Step 0 |
-| 24 Verification and docs | V | All e2e/live tests, screenshots, demo-script/SPEC/KNOWN/README; one-state equivalence and final live proof | Pending Step 0 |
+| 19 Shared process model | M, #69 | Domain routing/baseline/lifecycle/agent/fixtures and unit tests; store.ts, pharmacy-store/queue-store consolidation; shared model hooks | Implementation merged, PR #76; final programme integration pending |
+| 20 Pharmacy process | P, #68 | Pharmacy check/claims/detail/history/timeline components; pharmacy process UI | In progress, PR #78 |
+| 21 Unreadable paper | U, #70 | New Type 1 capture component, proposed-D presentation and isolated paper-capture helper; D fixture changes requested through M | Component merged, PR #74; deployed queue embedding follows Q |
+| 22 NHSBSA work streams | Q, #72 | Queue, case pack, trace, decision-record pages/components; Type 1 lane embedding U's component | In progress, PR #75 |
+| 23 Numbers and tour | N, #71 | Chapters 1/2/3/close, home and baseline/pipeline presentation; public-facts display copy | In progress, PR #77 |
+| 24 Verification and docs | V, #73 | All e2e/live tests, screenshots, demo-script/SPEC/KNOWN/README; one-state equivalence and final live proof | In progress |
+
+Step 0 reached main at `c45111e1fe0fe38dceda3674845b0b089a8e78b2`.
+M merged at `19ed7c317b102891cf3d0a36109fdbab17eac899`: CI 34758110076
+passed 837 unique units, 1,184 ordinary browsers and five separately instrumented
+state-equivalence cases. Deployment 34758503166 passed; the coordinator verified
+five live root/deep-link/header checks plus a real complete-EPS submission
+excluded from operator rows in both modes. The ordinary build has no observer.
+
+U merged at `85541757c0340d771a6ca0c5a0cb24933f98beb0`: exact candidate
+`7325c01` passed four-shard CI and 865 units. V's 19-case expanded capture
+matrix passed against that component in the Q integration build, including
+whole-state comparisons, explicit human confirmation, invalid fields and axe.
+Deployment 34759907944 and two root/deep-link smoke checks passed. This does
+not claim that M's legacy queue already embeds the new component: Q supplies
+that presentation. Final all-flow latest-main acceptance remains outstanding.
 
 Step 0 freezes `ItemChannel`, `RoutingOutcome`, `RoutingFacts`/`RoutingResult`
 and `RouteSubmission` in types.ts; submission/capture/decision inputs,
