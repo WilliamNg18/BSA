@@ -17,7 +17,7 @@ test("actual worklist hides advice without changing evidence, routing or human d
   await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
   const evidence = () => rows.evaluateAll((items) => items.map((row) => ({
     id: row.getAttribute("data-case-id"),
-    fields: Array.from(row.querySelectorAll("td")).slice(0, 4).map((cell) => cell.textContent),
+    fields: Array.from(row.querySelectorAll("td")).slice(0, 5).map((cell) => cell.textContent),
   })));
   const originalEvidence = await evidence();
   await expect(page.locator('[data-case-id="EX-24112"]')).toContainText("rule and reason recorded");
