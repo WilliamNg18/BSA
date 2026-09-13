@@ -15,7 +15,7 @@ function input() {
 }
 
 it("recordDecision accepts only explicit human draft approval and links it exactly once", () => {
-  store().submitFromPharmacy(B.id, B.extracted.endorsementText);
+  store().submitItem({ caseId: B.id, channel: "eps", endorsementText: B.extracted.endorsementText });
   store().arriveInQueue(B.id);
   store().setAgentEnabled(true);
   const pack = runAgent(sessionCase(B.id)!);
@@ -32,7 +32,7 @@ it("recordDecision accepts only explicit human draft approval and links it exact
 });
 
 it("an unchecked draft and an Off approval request cannot create approval metadata", () => {
-  store().submitFromPharmacy(B.id, B.extracted.endorsementText);
+  store().submitItem({ caseId: B.id, channel: "eps", endorsementText: B.extracted.endorsementText });
   store().arriveInQueue(B.id);
   expect(() => store().recordDecision({ ...input(), approvedDraft: "Claimed approval without opt-in" })).toThrow(/draft/);
   store().setAgentEnabled(true);
@@ -43,7 +43,7 @@ it("an unchecked draft and an Off approval request cannot create approval metada
 
 it("manual referral, approved draft, exact date, recheck and automatic pricing retain every prior attempt", () => {
   const seed = structuredClone(B);
-  store().submitFromPharmacy(B.id, B.extracted.endorsementText);
+  store().submitItem({ caseId: B.id, channel: "eps", endorsementText: B.extracted.endorsementText });
   store().arriveInQueue(B.id);
   store().recordOperatorDecision(B.id, "REFER_BACK", "Please date the pharmacy endorsement");
   store().resubmitFromPharmacy(B.id, B.extracted.endorsementText);

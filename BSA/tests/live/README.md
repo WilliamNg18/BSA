@@ -41,6 +41,36 @@ helpers are reused without altering the production suite. The deployed
 build-info contract comes from the App Service strict static server; the
 harness does not load or change hosting policy files.
 
+## Instrumented one-state checks are not live acceptance
+
+`npm run verify` also runs a blocking, shard-aware `one-state.config.ts` suite
+after the ordinary production browser checks. It builds a separate
+`test-results/one-state-site` artifact with `VITE_E2E_STATE_OBSERVER=true` and
+serves it with the packaged strict-policy server. The builder fingerprints
+every ordinary `dist` file before and after and fails if any file changes.
+The ordinary artifact test separately requires the observer to be absent.
+Never deploy or label the instrumented artifact as the live release.
+
+The observer returns complete domain snapshots, never actions. Tests use only
+UI actions to submit or edit, fix the clock rather than erase timestamps, and
+retain deterministic IDs, actors, revisions, approvals and entire histories.
+Each flow runs in Both and again with opposite-side/back perspective switches
+before every action, separately with Agent Off and On. Snapshots are compared
+after every action and every presentation switch; failure attachments retain
+the snapshots collected before the failure. The first M-stage coverage is
+complete EPS automatic pricing using B's explicit typed correction, and
+incomplete EPS draft/submission. B retains its recorded EPS channel; these
+checks do not reinterpret A's paper seed as EPS. This is
+not yet evidence for the later Type 1, Type 2 or full referral-cycle UI.
+
+To repeat only these checks locally after an ordinary build:
+
+```powershell
+npm run build
+$env:PLAYWRIGHT_PORT = '4206'
+npm run test:e2e -- --config tests/e2e/one-state.config.ts --workers=1
+```
+
 Offline readiness checks, with no browsers or live requests:
 
 The standard `npm test` also discovers the offline `*.test.ts` contracts here,

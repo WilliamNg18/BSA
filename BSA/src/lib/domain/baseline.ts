@@ -49,6 +49,8 @@ export function validPharmacyDays(value: string): number | null {
 const numberFormats: Intl.NumberFormat[] = [];
 export const formatBaselineNumber = (value: number, maximumFractionDigits = 4) =>
   (numberFormats[maximumFractionDigits] ??= new Intl.NumberFormat("en-GB", { maximumFractionDigits })).format(value);
+export const formatProcessHours = (value: number): string => formatBaselineNumber(value, 1);
+export const formatProcessItems = (value: number): string => formatBaselineNumber(value, 0);
 
 // All numeric scenario defaults live here. The companion module derives only
 // fixture provenance; neither module imports the private research register.

@@ -1183,3 +1183,17 @@ Empty endorsements are valid missing business information for submission,
 not malformed requests: paper may require capture and EPS may require Type 2.
 Pending synthetic seeds use staff-work templates, never an automatic routing
 result paired with a submitted lifecycle.
+
+For the direct canonical D demonstration only, the immutable seed revision
+includes an explicitly synthetic prior pharmacy declaration: SYN-COCOD-100,
+quantity 100, `NCSO AB 27/08/26`, and `Dr Demo (synthetic)`. It is not a reading
+of the scan and does not confirm, reconcile or decide anything. The On
+presentation may prefill it for explicit human confirmation; Off still keys.
+Fresh paper submissions without declarations do not inherit this seed evidence.
+
+Machine seed channels come from `claim.submittedVia`, not the contradictory
+legacy form-image display label: A/D paper; B/C/E/F EPS. Runtime projections
+display that machine channel while original fixtures and history stay intact.
+Both generic legacy submission APIs and the receipt adapter preserve the
+current revision's channel. Only explicit `ProcessSubmission.channel` changes
+it. No scenario-derived automatic conversion to EPS is permitted.

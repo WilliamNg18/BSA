@@ -98,7 +98,7 @@ describe("governance and fail-open paths", () => {
     const store = useAppStore.getState();
     const originalRecords = store.records;
     store.setAgentEnabled(true);
-    store.submitFromPharmacy(CASES[1].id, CASES[1].extracted.endorsementText);
+    store.submitItem({ caseId: CASES[1].id, channel: "eps", endorsementText: CASES[1].extracted.endorsementText });
     store.arriveInQueue(CASES[1].id);
     const pack = runAgent(CASES[1]);
     const record = store.recordDecision({ caseId: CASES[1].id, tariffVersion: pack.tariffVersion,
