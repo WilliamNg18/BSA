@@ -1,9 +1,8 @@
-import { create } from "zustand";
 import { PHARMACY_ASSUMPTION_DEFAULTS, validPharmacyDays, type PharmacyAssumptions } from "./domain/baseline";
 import { immutableReceipt, type PharmacyReceipt } from "./domain/pharmacy-timeline";
 import { useAppStore } from "./store";
 
-interface PharmacyState {
+export interface PharmacyState {
   assumptions: PharmacyAssumptions;
   receipts: readonly PharmacyReceipt[];
   setAssumption: (key: keyof PharmacyAssumptions, raw: string) => boolean;
@@ -12,7 +11,7 @@ interface PharmacyState {
 }
 
 /** Receipt/timeline compatibility adapter. Lifecycle revisions are authoritative. */
-export const usePharmacyStore = create<PharmacyState>((set, get) => ({
+export function createPharmacyState(set: (update: Partial<PharmacyState> | ((state: PharmacyState) => Partial<PharmacyState>)) => void, get: () => PharmacyState): PharmacyState { return {
   assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS },
   receipts: [],
   setAssumption: (key, raw) => {
@@ -28,10 +27,10 @@ export const usePharmacyStore = create<PharmacyState>((set, get) => ({
     return receipt;
   },
   reset: () => set({ assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS }, receipts: [] }),
-}));
+}; }
 
-// Existing reset replaces these three slices atomically; edits/decisions do not.
-// This adapter avoids modifying Stream B's frozen store or Stream D's header.
-useAppStore.subscribe((state, previous) => {
-  if (state.records !== previous.records && state.caseStates !== previous.caseStates && state.baselineInputs !== previous.baselineInputs) usePharmacyStore.getState().reset();
-});
+/** Legacy selector API over the one application store, not another Zustand store. */
+export function usePharmacyStore<T>(selector: (state: PharmacyState) => T): T {
+  return useAppStore((state) => selector(state.pharmacy));
+}
+usePharmacyStore.getState = (): PharmacyState => useAppStore.getState().pharmacy;

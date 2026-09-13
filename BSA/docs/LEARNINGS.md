@@ -997,3 +997,12 @@ submission from display toggles, text application and advisory ready status.
 Pre-submission correction increments the event-based catch counter without
 creating a receipt or attempt; repeated application for that revision remains
 one catch. Navigation remounts the workbench's local example, not session history.
+
+## 2026-09-13: Preserve uncertainty when introducing captured evidence
+
+A declaration cannot inherit image confidence or silently fill other mandatory
+fields. D's unreadable prescriber exposed this boundary: a new explicit human
+field is safer than bypassing the existing compliance check. Keep original
+capture evidence intact and attach revision-linked human authority separately.
+Typed legacy pharmacy submissions use the claim channel, while new submissions
+carry explicit machine channels on immutable revisions.

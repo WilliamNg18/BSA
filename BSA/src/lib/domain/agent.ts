@@ -17,6 +17,9 @@ import {
   toolRetrieveTariff,
 } from "./tools";
 import { versionForDate } from "./tariff";
+import { capturedFields, compatibleCapture } from "./capture-evidence";
+import { interpretPharmacyText } from "./pharmacy-check";
+import { routeSubmission, routingFactsForCase } from "./routing";
 import type {
   CasePack,
   CaseState,
@@ -49,7 +52,10 @@ function requiredTypeFromReadings(readings: EndorsementFacts[]): EndorsementType
   return agree >= 2 && consensus ? consensus.type : "UNKNOWN";
 }
 
-export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
+export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePack {
+  const captured = Boolean(original.capturedEvidence);
+  const compatible = compatibleCapture(original);
+  const c = captured ? { ...original, extracted: capturedFields(original) } : original;
   const trace: TraceStep[] = [];
   const evidence: EvidenceItem[] = [];
   const agentEnabled = opts.agentEnabled ?? true;
@@ -66,6 +72,14 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     { id: "e-claim", origin: "Claim ledger", field: "Claimed", value: `qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, "${c.claim.endorsementText || "no endorsement"}"`, provenance: `${c.claim.submittedVia}, case ${c.id}`, cls: "existing" },
     { id: "e-fields", origin: "Existing capture", field: "Extracted", value: `${c.extracted.productText}, qty ${c.extracted.quantity ?? "?"}, endorsement "${c.extracted.endorsementText || "none"}"`, provenance: `Field confidence: product ${c.extracted.productConfidence.toFixed(2)}, quantity ${c.extracted.quantityConfidence.toFixed(2)}, endorsement ${c.extracted.endorsementConfidence.toFixed(2)}`, cls: "existing" },
   );
+  if (captured) {
+    evidence[1] = { ...evidence[1], value: `${original.extracted.productText}, qty ${original.extracted.quantity ?? "?"}, endorsement "${original.extracted.endorsementText}"` };
+    const origin = original.capturedEvidence!.provenance === "pharmacy_declaration" ? "Declared by the pharmacy, not read from the form" : "Human capture";
+    for (const [field, value] of Object.entries(original.capturedEvidence!.fields)) evidence.push({
+      id: `e-captured-${field}`, origin, field, value: String(value ?? "Not supplied"),
+      provenance: `Human confirmation, revision ${original.capturedEvidence!.revision}; original image unchanged`, cls: "human",
+    });
+  }
   if (lookup.product) {
     evidence.push({ id: "e-product", origin: "Product master data", field: "Product", value: `${lookup.product.name}, pack ${lookup.product.packSize}, basic price £${lookup.product.basicPrice.toFixed(2)}`, provenance: `code ${lookup.product.code}`, cls: "deterministic" });
   }
@@ -80,7 +94,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     status: mandatory.every((m) => m.pass) ? "ok" : "warn",
   });
 
-  const cleared = req.required === false && !c.extracted.endorsementText && mandatory.every((m) => m.pass);
+  const cleared = !captured && routeSubmission(routingFactsForCase(c, c.channel === "Electronic (EPS)" ? "eps" : "paper")).outcome === "auto_priced" && mandatory.every((m) => m.pass);
   if (cleared || !agentEnabled) {
     const state: CaseState = cleared ? "cleared_by_rules" : c.initialState;
     trace.push({
@@ -88,7 +102,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
       title: cleared ? "Cleared by rules; agent not invoked" : "Agent recommendations switched off; evidence only",
       cls: cleared ? "deterministic" : "human",
       summary: cleared
-        ? "No endorsement is required and every mandatory field is present. The item proceeds to existing deterministic pricing. No model was called."
+        ? "Priced by NHSBSA's existing rules engine; no person involved. Complete fields follow normal pricing. No model was called."
         : "The feature flag is off. The operator works the item exactly as today, with the gathered evidence attached.",
       items: [],
       toolCalls: [],
@@ -164,8 +178,8 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
 
   // ---- ASSESS part 1: three independent readings of the free text (MOCKED interpretation) ----
   const agreement = sampleAgreement(c.readings);
-  const facts = agreement.agree >= 2 ? agreement.consensus : null;
-  const endorsementType = requiredTypeFromReadings(c.readings);
+  const facts = captured ? interpretPharmacyText(c.extracted.endorsementText) : agreement.agree >= 2 ? agreement.consensus : null;
+  const endorsementType = captured ? facts!.type : requiredTypeFromReadings(c.readings);
 
   // ---- RETRIEVE (agentic: which provision, for which date) ----
   const retrieval = toolRetrieveTariff(endorsementType, c.extracted.dispensingDate, opts.tariffVersion);
@@ -197,7 +211,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     title: "Compare what the sources say",
     cls: "agent",
     summary: conflicts.length === 0
-      ? "Form image, extracted fields, claim and product data agree on product, quantity and amount."
+      ? captured ? "Human-confirmed fields compared with the claim. The poor image remains unreadable; declaration evidence is not an image read." : "Form image, extracted fields, claim and product data agree on product, quantity and amount."
       : `${conflicts.length} disagreement${conflicts.length === 1 ? "" : "s"} found. The agent flags each with both values and does not choose between them.`,
     items: conflicts.length === 0
       ? [`Quantity ${c.extracted.quantity ?? "?"} = claim ${c.claim.quantity}`, `Amount £${c.claim.amountClaimed.toFixed(2)}${concession ? ` = concession £${concession.price.toFixed(2)}` : ""}`]
@@ -213,7 +227,7 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     phase: "ASSESS",
     title: "Interpret the note and test it against the rule",
     cls: "agent",
-    summary: `Three scripted readings: ${agreement.agree} of ${agreement.total} agree. Requirement checks use code, not model judgement.`,
+    summary: captured ? "Requirements checked against human-confirmed fields. Original image readings remain uncertain; the proposed declaration path does not improve image confidence." : `Three scripted readings: ${agreement.agree} of ${agreement.total} agree. Requirement checks use code, not model judgement.`,
     items: [
       ...c.readings.map((r, i) => `Reading ${i + 1}: ${r.note} [${r.type}${r.initialled === null ? "" : r.initialled ? ", initialled" : ", not initialled"}${r.dated === null ? "" : r.dated ? ", dated" : ", not dated"}]`),
       ...requirementResults.map((r) => `${r.met === true ? "Met" : r.met === false ? "Not met" : "Unknown"}: ${r.requirement.label}`),
@@ -233,7 +247,10 @@ export function runAgent(c: ExceptionCase, opts: RunOptions = {}): CasePack {
     imageQuality: c.imageQuality,
     inCoverage: c.inCoverage,
   };
-  const composite = compositeFrom(signals);
+  const composite = captured
+    ? !compatible || !clause ? { level: "abstain" as const, reasons: ["Human-confirmed fields cannot be reconciled with the claim and source evidence, or no provision was retrieved."] }
+      : { level: "low" as const, reasons: ["Proposed human-confirmed evidence path, not validated image recognition. Original poor-image confidence and readings are unchanged."] }
+    : compositeFrom(signals);
 
   // ---- Recommend or abstain ----
   let recommendation: Recommendation;
