@@ -323,9 +323,9 @@ zero-violation axe are blocking. Four CI shards must pass. There are no size or
 performance budgets; gzip, word counts, Lighthouse and visual differences are
 informational, but concrete functional/accessibility defects remain blocking.
 
-The [live checklist](../tests/live/README.md) has 19 integrated checks with HTTPS
+The [live checklist](../tests/live/README.md) has 20 integrated checks with HTTPS
 and exact clean build identity before and after each test. Local HTTP rehearsal
-is separate, never a committed bypass or deployed acceptance. Thirty instrumented
+is separate, never a committed bypass or deployed acceptance. Thirty-two instrumented
 tests compare complete read-only state across uninterrupted and perspective-
 switched actions, including atomic Reset. Instrumentation is absent from ordinary
 builds. The launcher canonicalizes the emitted entry's real path; the static

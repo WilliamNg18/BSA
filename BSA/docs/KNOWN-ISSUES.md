@@ -12,8 +12,11 @@ EPS resubmissions route automatically; there is no second human approval.
 Generated drafts are optional: an explicit human reason and RB code can record
 a referral without draft approval. Turning Agent On never supplies that approval.
 
-The 30-test instrumented exact-state matrix passed on clean `5ec44c7`.
-The current 19 live checks have compatible local rehearsal evidence, including
+The earlier 30-test instrumented exact-state matrix passed on clean `5ec44c7`.
+It now includes two additional completed-Type-1-only cases (32 total); the
+earlier run does not prove these additions. N's completed-capture card repair
+also has a new paired-mode live check, bringing that checklist to 20.
+The preceding 19 live checks have compatible local rehearsal evidence, including
 03/C/F on `f20cfaa`; these are not final hosted acceptance. Final clean deployed
 identity, screenshots and novice review remain separate coordinator gates.
 See the [live checklist](../tests/live/README.md).

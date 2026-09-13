@@ -1,8 +1,8 @@
 # Explicit live acceptance
 
-This opt-in checklist is outside `tests/e2e`. It contains 15 process checks,
+This opt-in checklist is outside `tests/e2e`. It contains 16 process checks,
 one same-item perspective round trip and three header-only Agent checks (one
-per perspective, each visiting every route): 19 tests in total. Default production CI does
+per perspective, each visiting every route): 20 tests in total. Default production CI does
 not discover it. It starts no server, uses one Chromium worker, and only changes
 synthetic browser-memory state. Do not execute until the coordinator confirms
 the deployed artifact is ready and supplies its full expected commit.
@@ -118,6 +118,12 @@ confirmation without resolving its 56/84 conflict, plus D capture followed by
 an RB2B referral and a new paper revision. The new revision requires fresh
 capture; the old capture, declaration, human record and history remain intact.
 Each case is exercised in both Agent modes and both perspective sequences.
+`one-state-completed-type1.spec.ts` adds complete paper B through manual or
+declaration-confirmed capture to existing pricing without Type 2 judgement.
+The card and queue must retain completed human-capture provenance, never an
+awaiting-capture or no-person label; reading and switching leave state unchanged.
+The full instrumented family contains 32 tests. Live check 18 covers the same
+completed-only path in both Agent modes without using a domain observer.
 All `one-state*.spec.ts` files are excluded from ordinary production discovery
 and included only by the blocking instrumented configuration.
 

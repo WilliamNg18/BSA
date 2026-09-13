@@ -134,9 +134,9 @@ violations) and a separate same-history mixed-mode round trip. See the
 deployment must still verify its own commit, deep links and strict headers.
 Main/manual OIDC are verified; no owner token setup or live PR slots are needed.
 
-The current [live checklist](tests/live/README.md) contains 19 checks for the
+The current [live checklist](tests/live/README.md) contains 20 checks for the
 integrated process and enforces HTTPS and the exact clean deployment identity
-before and after every test. A separate 30-test instrumented matrix compares
+before and after every test. A separate 32-test instrumented matrix compares
 complete shared state across uninterrupted and perspective-switched flows.
 Local rehearsals and prior stream-specific smoke checks are not final hosted
 acceptance; test instrumentation is not shipped in the ordinary build.
