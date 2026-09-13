@@ -43,21 +43,25 @@ beforeEach(() => store().resetDemo());
 afterEach(() => { vi.restoreAllMocks(); store().resetDemo(); });
 
 describe("Task 8 seeds and projections", () => {
-  it.each(PHARMACIES)("all seven lifecycle states at $name", (pharmacy) => {
+  it.each(PHARMACIES)("requested first-load cycle at $name", (pharmacy) => {
     const rows = Object.values(store().lifecycles).filter((r) => r.pharmacyCode === pharmacy.contractorCode);
-    expect(new Set(rows.map((r) => r.state))).toEqual(new Set(Object.keys(LIFECYCLE_LABELS)));
+    expect(rows).toHaveLength(8);
+    expect(new Set(rows.map((r) => r.state))).toEqual(new Set(["paid", "in_review", "referred_back", "information_requested", "resubmitted"]));
+    for (const labels of Object.values(LIFECYCLE_LABELS)) expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
   });
 
   it("retains all canonical mappings, original fixtures and historical F record", () => {
     expect(Object.keys(store().lifecycles).length).toBeGreaterThanOrEqual(7);
     expect(new Set(Object.values(store().lifecycles).map((item) => item.pharmacyCode))).toEqual(new Set(["FQ123"]));
-    for (const [c, state] of [[A, "paid"], [B, "referred_back"], [C, "information_requested"], [D, "in_review"], [E, "paid"], [F, "referred_back"]] as const) {
+    for (const [c, state] of [[A, "paid"], [B, "referred_back"], [C, "information_requested"], [D, "in_review"], [E, "paid"], [F, "paid"]] as const) {
       expect(row(c.id)).toMatchObject({ caseId: c.id, pharmacyCode: c.pharmacy.contractorCode, state });
-      expect(sessionCase(c.id)).toEqual({ ...c, channel: c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10" });
+      if (c !== F && c !== D) expect(sessionCase(c.id)).toEqual({ ...c, channel: c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10" });
+      if (c === D) expect(sessionCase(c.id)?.extracted).toEqual(c.extracted);
     }
-    expect(store().records).toHaveLength(1);
+    expect(store().records).toHaveLength(2);
     expect(store().records[0]).toMatchObject({ id: "DR-000871", caseId: F.id, recommendation: "REFER_BACK", decision: "REFER_BACK" });
-    expect(row(F.id).history.at(-1)?.recordId).toBe("DR-000871");
+    expect(row(F.id).history[2].recordId).toBe("DR-000871");
+    expect(store().records[1]).toMatchObject({ id: "DR-000872", caseId: F.id, decision: "ACCEPT", revision: 2 });
   });
 
   it("all seeded rows have usable synthetic evidence and consistent immutable histories", () => {
@@ -91,7 +95,8 @@ describe("Task 8 seeds and projections", () => {
     expect(c.regions.find((r) => r.id === "endorsement")?.text).toBe(corrected);
     expect(c.readings.every((r) => r.dated)).toBe(true);
     expect(runAgent(c)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
-    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
+    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
+    expect(row().state).toBe("resubmitted");
     expect(revisions().at(-1)?.channel).toBe("eps");
     expect(row().history.slice(0, pending.length)).toEqual(pending);
     expect(CASES).toEqual(original);
@@ -164,9 +169,13 @@ describe("immutable pharmacy revisions", () => {
     const records = store().records;
     store().resubmitFromPharmacy(B.id, corrected);
     store().arriveInQueue(B.id);
+    expect(row().state).toBe("in_review");
+    expect(store().records).toBe(records);
+    store().recordOperatorDecision(B.id, "ACCEPT", reason);
     expect(row().state).toBe("paid");
     expect(row().history.slice(0, referral.length)).toEqual(referral);
-    expect(store().records).toBe(records);
+    expect(store().records.slice(0, records.length)).toEqual(records);
+    expect(store().records).toHaveLength(records.length + 1);
     expect(row().history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
     expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false });
     expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow(/while paid/);

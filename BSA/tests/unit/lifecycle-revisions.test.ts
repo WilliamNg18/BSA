@@ -9,11 +9,11 @@ const F = CASES[5], B = CASES[1];
 beforeEach(() => store().resetDemo());
 afterEach(() => store().resetDemo());
 
-it.each([false, true])("F's historical decision never blocks automatic pricing of a corrected EPS revision, flag=%s", (on) => {
+it.each([false, true])("F's history never blocks a new complete EPS demonstration submission, flag=%s", (on) => {
   const original = structuredClone(store().records[0]);
   const records = store().records;
   store().setAgentEnabled(on);
-  store().resubmitItem({ caseId: F.id, channel: "eps", endorsementText: "NCSO DL 06/08/26" });
+  store().submitItem({ caseId: F.id, channel: "eps", endorsementText: "NCSO DL 06/08/26" });
   expect(store().itemProcesses[F.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
   store().arriveInQueue(F.id);
   expect(store().caseStates[F.id]).not.toBe("human_decision_recorded");
@@ -21,7 +21,7 @@ it.each([false, true])("F's historical decision never blocks automatic pricing o
   expect(store().lifecycles[F.id].state).toBe("paid");
   expect(store().records).toBe(records);
   expect(store().records[0]).toEqual(original);
-  expect(store().lifecycles[F.id].history.at(-1)).toMatchObject({ actor: "code", revision: 2 });
+  expect(store().lifecycles[F.id].history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
   expect(() => store().recordOperatorDecision(F.id, "ACCEPT", "Human checked corrected evidence")).toThrow(/while paid/);
 });
 
@@ -44,5 +44,5 @@ it("a claimed ready snapshot cannot change a recommendation or pay a claim", () 
   store().arriveInQueue(B.id);
   expect(store().lifecycles[B.id].state).toBe("in_review");
   expect(runAgent(sessionCase(B.id)!).recommendation).toBe("REFER_BACK");
-  expect(store().records).toHaveLength(1);
+  expect(store().records).toHaveLength(2);
 });
