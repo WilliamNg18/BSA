@@ -1291,3 +1291,17 @@ automatic endorsement path is limited to complete NCSO evidence in this demo;
 other present endorsement types require Type 2 interpretation. This routing
 classification is identical with the Agent Off or On and does not trust an
 advisory precheck status.
+
+## 2026-09-13: Task 23 applies provider-neutral copy to Architecture
+
+The latest owner brief bans implementation vendor and product names across the
+interface, superseding the earlier Architecture-only exception. At the
+coordinator's explicit direction, N changes the architecture diagram and
+proposed-service presentation to capability roles: event messaging, deterministic
+functions, governed orchestration, versioned search, records, identity and
+observability. NHSBSA ownership, proposed status and exact tool contracts remain.
+
+The shared display helper applies aliases only to presentation strings. Original
+domain mappings, source evidence, versions and stored audit records are not
+rewritten. Required NHSBSA, MYS, NHSmail, EPS, dm+d and Tariff process vocabulary
+remains permitted. No hosting or infrastructure change is made.
