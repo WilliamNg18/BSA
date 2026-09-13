@@ -1079,3 +1079,23 @@ real medicine/product names, not these mandated channel/process identifiers.
 Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
+
+## 2026-09-13: Task 22 staff views follow the current submitted revision
+
+Q replaces the mounted virtual referral projection with an actual-session
+Type 2 worklist and a separate shared Type 1 capture lane. Monthly automatic
+pricing and workload figures come from `useProcessMonth`; they are explicitly
+not session completions. Automatic no-human items have no work rows. A later
+human Type 2 decision remains inspectable, and F's original record is retained.
+Current routing metadata must match the latest revision; inconsistent metadata
+withholds actions and reports an error rather than guessing from seed case state.
+
+The Type 1 lane and case pack embed U's single store-connected component.
+Confirming capture does not approve a Type 2 decision. Manual Type 2 review
+exposes the synthetic monthly Tariff for unaided lookup and M's RB catalogue;
+assisted referrals require explicit approval of the proposed draft. Reasons,
+RB codes and approved rules are written only through M's decision API.
+
+Agent Off is an experience-only comparison, not a destructive audit filter.
+Actual human reasons and original rule versions remain available in immutable
+record history in both modes. Agent On never manufactures a rule retrospectively.

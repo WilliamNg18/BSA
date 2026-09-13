@@ -57,7 +57,7 @@ export function CaseTracePage() {
       {agentEnabled && <>
         <CasePlayback clock={clock} total={pack.trace.length} />
         <p className="text-sm text-muted-foreground">
-          {pack.trace.length} steps · {totalCalls} scripted tool calls · Tariff {pack.tariffLabel} · {pack.agentInvoked ? "agent invoked" : "agent not invoked"}
+          {pack.trace.length} steps · {totalCalls} scripted tool calls · Tariff {pack.tariffLabel} · {pack.agentInvoked ? "agent invoked" : "agent not invoked"} · Current submission evidence
         </p>
         <section aria-label="Case assembly slots" className="grid gap-3 sm:grid-cols-2" aria-live="polite">
           {ASSISTED_SLOTS.map((slot) => <div key={slot} className="rounded-xl border p-4" data-assisted-slot={slot} data-prose={`assembly ${slot}`}>

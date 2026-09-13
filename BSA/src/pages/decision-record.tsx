@@ -55,7 +55,10 @@ function DecisionRecordContent() {
       />
       <LifecycleHistory id={c.id} />
 
-      {!agentEnabled && <><MissingAssistedSlots />{!latest && <section className="space-y-2 rounded-xl border p-4">
+      {!agentEnabled && <><section className="rounded-xl border p-4" data-manual-record-comparison>
+        <h2 className="font-semibold">Today comparison: experience only, no rule recorded</h2>
+        <p className="text-sm text-muted-foreground">This comparison never removes actual human reasons, history or previously cited rules.</p>
+      </section><MissingAssistedSlots />{!latest && <section className="space-y-2 rounded-xl border p-4">
         <Button type="button" disabled>Replay unavailable</Button>
         <p className="text-sm text-muted-foreground">No recorded rule version to replay in this manual comparison</p>
       </section>}</>}
@@ -74,6 +77,8 @@ function DecisionRecordContent() {
               <KeyValue k="Inputs considered" v={<ul className="list-disc pl-4">{latest.inputs.map((i) => <li key={i}>{i}</li>)}</ul>} />
               <KeyValue k="Evidence accessed" v={<ul>{latest.sources.map((origin) => <li key={origin}>{origin}</li>)}</ul>} />
               <KeyValue k="Rule version used" v={hasRecordedRule ? `Drug Tariff ${latest.tariffVersion}` : "Not recorded"} />
+              <KeyValue k="Clause recorded" v={latest.clauseId ?? "Not recorded"} />
+              <KeyValue k="Rule and reason recorded" v={hasRecordedRule && Boolean(latest.reason || latest.overrideReason) ? "Yes, from the actual decision" : "Not recorded together for this decision"} />
               <KeyValue k="Agent version" v={agentVersionLabel(latest.agentVersion)} />
               <KeyValue
                 k="Deterministic checks completed"
@@ -88,13 +93,23 @@ function DecisionRecordContent() {
               <KeyValue k="Agent recommendation" v={<RecommendationBadge rec={latest.recommendation} className="text-xs" />} />
               </>}
               <KeyValue k="Human decision" v={<span className="inline-flex items-center gap-2"><BoundaryTag cls="human" short /> {latest.decision.replace("_", " ")} by {latest.operator}</span>} />
-              <KeyValue k="Reason" v={latest.overrideReason || "Not recorded"} />
+              <KeyValue k="Reason" v={latest.reason || latest.overrideReason || "Not recorded"} />
+              <KeyValue k="RB code" v={latest.rbCode ?? "Not recorded"} />
+              {latest.approvedDraft && <KeyValue k="Operator-approved explanation" v={latest.approvedDraft.text} />}
               <KeyValue k="Override" v={latest.isOverride ? `Yes. Reason: ${latest.overrideReason ?? "none given"}` : latest.overrideReason ? `No. Note: ${latest.overrideReason}` : "No"} />
               <KeyValue k="Timestamp" v={latest.timestamp.replace("T", " ")} />
             </dl>
             {latest.recommendation === "NONE" && latest.isOverride && <section data-prose="stored override caveat"><p className="mt-3 text-xs text-muted-foreground">No agent recommendation existed. The stored override flag is retained; correcting this counter requires Stream B integration.</p></section>}
             {!agentEnabled && hasRecordedRule && <section data-prose="historical comparison caveat"><p className="mt-3 text-xs text-muted-foreground">This historical record retains rule {latest.tariffVersion} and assisted fields. Only the manual comparison omits them; history is unchanged.</p></section>}
-            {records.length > 1 && <p className="text-xs text-muted-foreground">{records.length} records exist for this case; the latest is shown. Earlier records are never altered.</p>}
+            <details className="mt-3 rounded-md border p-3" data-original-records>
+              <summary className="cursor-pointer text-sm font-medium">Original decision history ({records.length})</summary>
+              <ol className="mt-2 space-y-3 text-sm">{records.map((record) => <li key={record.id}>
+                <p className="font-medium">{record.id}: {record.decision.replaceAll("_", " ")} by {record.operator}</p>
+                <p>Human reason: {record.reason || record.overrideReason || "Not recorded"}</p>
+                <p>Original rule: {record.tariffVersion === "n/a" ? "Not recorded" : record.tariffVersion}{record.clauseId ? `, ${record.clauseId}` : ""}</p>
+                {record.rbCode && <p>RB code: {record.rbCode}</p>}
+              </li>)}</ol>
+            </details>
           </PageSection>
 
           <PageSection title="Replay under a different rule version" description="Counterfactual replay; original evidence and history remain unchanged.">
