@@ -210,16 +210,17 @@ test("pain markers provide keyboard text and do not resolve abstention", async (
 });
 
 for (const enabled of [false, true]) {
-  test(`Task15 expanded queue and Today dialog copy report On=${enabled}`, async ({ page }, info) => {
+  test(`Task19 expanded queue and actual historical staff case copy report On=${enabled}`, async ({ page }, info) => {
     await page.goto("queue"); await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
-    await page.getByRole("button", { name: "Jump to 17:00", exact: true }).click();
-    const audits = [{ state: "expanded-day", ...await page.evaluate(auditProse) }];
-    await page.locator('[data-queue-seed="EX-24104"]').getByRole("button", { name: "Open", exact: true }).click();
-    audits.push({ state: "today-dialog", ...await page.evaluate(auditProse) });
+    const audits = [{ state: "expanded-queue", ...await page.evaluate(auditProse) }];
+    await page.locator('a[href="/case/EX-24088"]').first().click();
+    await expect(page).toHaveURL(/\/case\/EX-24088$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Human decision recorded");
+    audits.push({ state: "actual-staff-case", ...await page.evaluate(auditProse) });
     await captureJson(info, "task5-copy", audits);
     console.info("Advisory queue word counts", audits.flatMap((audit) => audit.failures));
-    await expect(page.getByRole("dialog").locator("[data-pain-marker]")).toHaveCount(7);
-    await expect(page.getByRole("dialog")).toContainText("No retrieved rule, citation or agent result");
+    await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   });
 }

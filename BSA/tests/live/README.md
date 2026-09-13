@@ -48,6 +48,9 @@ after the ordinary production browser checks. It builds a separate
 `test-results/one-state-site` artifact with `VITE_E2E_STATE_OBSERVER=true` and
 serves it with the packaged strict-policy server. The builder fingerprints
 every ordinary `dist` file before and after and fails if any file changes.
+After building, the launcher resolves the packaged server's real filesystem
+path before starting Node. Output-directory junctions therefore retain the
+server's strict entry-point identity check rather than bypassing it.
 The ordinary artifact test separately requires the observer to be absent.
 Never deploy or label the instrumented artifact as the live release.
 

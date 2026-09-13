@@ -1,4 +1,4 @@
-import { cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
+import { automaticCaseIds, cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 
 for (const enabled of [true, false]) {
@@ -92,7 +92,13 @@ for (const enabled of [true, false]) {
       if (route.startsWith("case/UNKNOWN")) await expect(page.getByText("Case not found", { exact: true })).toBeVisible();
       else await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       if (route.endsWith("/trace") && !route.includes("UNKNOWN")) {
-        if (enabled) await page.getByRole("button", { name: "Show all", exact: true }).click();
+        if (enabled && !automaticCaseIds.some((id) => route === `case/${id}/trace`)) {
+          await page.getByRole("button", { name: "Show all", exact: true }).click();
+        } else if (enabled) {
+          await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).toContainText("Cleared by rules; agent not invoked");
+          await expect(page.getByRole("button", { name: "Show all", exact: true })).toHaveCount(0);
+          await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+        }
         else {
           await expect(page.getByRole("list", { name: "Manual gathering trace", exact: true }).locator(":scope > li")).toHaveCount(7);
           await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);

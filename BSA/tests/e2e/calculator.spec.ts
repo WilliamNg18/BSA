@@ -183,8 +183,8 @@ for (const colorScheme of ["light", "dark"] as const) {
         await expect(image.locator("path").first()).toHaveAttribute("data-thickness", "240");
         await page.getByText("Calculator assumptions and formula", { exact: true }).click();
         await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/12");
-        await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/10");
-        await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/8");
+        await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("3/10");
+        await expect(page.getByRole("list", { name: "Synthetic default denominators" })).toContainText("2/7");
         await expect(page.locator("[data-baseline-assumptions]")).toContainText("83,333.33");
         for (const invalid of [false, true]) {
           if (invalid) for (const { key, label } of fields) {
@@ -223,9 +223,10 @@ test.describe("monthly count between modes", () => {
     await page.getByRole("banner").getByRole("switch").setChecked(true);
     await page.clock.runFor(1000);
     const hours = page.locator("[data-month-hours]");
-    expect(Number((await hours.innerText()).replaceAll(",", ""))).toBeGreaterThan(255002 / 60);
-    expect(Number((await hours.innerText()).replaceAll(",", ""))).toBeLessThan(17000);
-    await expect(hours.getByRole("img", { name: n(255002 / 60, 1), exact: true })).toBeVisible();
+    const result = monthModel(MONTH_MODEL_DEFAULTS);
+    expect(Number((await hours.innerText()).replaceAll(",", ""))).toBeGreaterThan(result.withAgent.operatorHours);
+    expect(Number((await hours.innerText()).replaceAll(",", ""))).toBeLessThan(result.today.operatorHours);
+    await expect(hours.getByRole("img", { name: n(result.withAgent.operatorHours, 1), exact: true })).toBeVisible();
     await page.emulateMedia({ reducedMotion: "reduce" });
     await expectHeadlines(page);
     await page.getByRole("banner").getByRole("switch").setChecked(false);
