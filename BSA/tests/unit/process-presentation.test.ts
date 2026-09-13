@@ -9,6 +9,10 @@ import { AssumptionsPage } from "@/pages/assumptions";
 import { BoundaryPage } from "@/pages/boundary";
 import { HomePage } from "@/pages/home";
 import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
+import { ArchitecturePage } from "@/pages/architecture";
+import { ARCHITECTURE } from "@/lib/domain/content";
+import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
+import { productionServiceLabel } from "@/lib/service-display";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -29,6 +33,25 @@ beforeEach(() => {
 });
 
 describe("whole-process presentation", () => {
+  it("renders provider-neutral architecture without rewriting tool contracts or stored source mappings", () => {
+    const source = JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS });
+    const state = useAppStore.getState();
+    const markup = render(ArchitecturePage);
+    expect(markup).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
+    expect(markup).toContain("Production mappings are proposals");
+    expect(markup).toContain("NHSBSA");
+    expect(markup).toContain("dm+d");
+    expect(markup).toContain("Tariff");
+    for (const tool of TOOL_DEFINITIONS) {
+      expect(markup).toContain(tool.name);
+      const label = renderToStaticMarkup(createElement("span", null, productionServiceLabel(tool.production))).slice(6, -7);
+      expect(markup).toContain(label);
+    }
+    expect(JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS })).toBe(source);
+    expect(source).toContain("Azure");
+    expect(useAppStore.getState()).toBe(state);
+  });
+
   it.each([false, true])("shows both shared model columns without summing overlapping cohorts, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     const expected = monthModel(PROCESS_MONTH_DEFAULTS);
