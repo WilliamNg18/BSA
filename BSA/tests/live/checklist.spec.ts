@@ -475,7 +475,8 @@ test(LIVE_CHECKS.completedCapture, async ({ page }, info) => {
     await page.getByRole("button", { name: /^Decided/ }).click();
     await expect(page.getByRole("region", { name: "Completed Type 1 captures", exact: true })).toContainText("Human capture confirmed");
     await expect(page.getByRole("region", { name: "Type 2 worklist items", exact: true })).not.toContainText(B);
-    for (const id of [B, "EX-24107", "EX-24101"]) {
+    await expect(page.getByRole("region", { name: "Decided", exact: true }).locator(`[data-case-id="${B}"]`)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    for (const id of ["EX-24107", "EX-24101"]) {
       await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
     }
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
