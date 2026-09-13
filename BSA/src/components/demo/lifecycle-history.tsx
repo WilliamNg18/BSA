@@ -12,11 +12,12 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
   const followed = useAppStore((s) => s.followedCaseId);
   const follow = useAppStore((s) => s.followCase);
   if (!row) return null;
+  const actor = row.history.at(-1)?.actor;
   return <section aria-label="Shared case history" className={pharmacy ? "space-y-3 border-t pt-4" : "space-y-3 rounded-xl border bg-card p-4"}>
     <h2 className="font-semibold">Shared case history</h2>
     <p role="status">{pharmacy ? LIFECYCLE_LABELS[row.state].pharmacy : LIFECYCLE_LABELS[row.state].nhsbsa[enabled ? "on" : "off"]}</p>
     <div className="flex flex-wrap items-center gap-2">
-      <BoundaryTag cls="human" />
+      <BoundaryTag cls={actor === "code" ? "deterministic" : actor === "agent" ? "agent" : "human"} />
       {perspective === "both" && <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>}
       {(pharmacy ? perspective !== "pharmacy" : perspective !== "nhsbsa") && <Button asChild variant="outline"><Link to={pharmacy ? `/case/${id}` : `/pharmacy/claims?caseId=${encodeURIComponent(id)}`}>{pharmacy ? "View NHSBSA case" : "View pharmacy claim"}</Link></Button>}
       {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}

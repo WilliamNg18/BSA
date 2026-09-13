@@ -57,7 +57,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
   return <>
     <h2 ref={heading} tabIndex={-1} className="scroll-mt-32 break-all rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {c.id}</h2>
     <p role="status">{LIFECYCLE_LABELS[row.state].pharmacy}</p>
-    <BoundaryTag cls="human" />
+    <BoundaryTag cls={event?.actor === "code" ? "deterministic" : event?.actor === "agent" ? "agent" : "human"} />
     <dl className="grid gap-2 text-sm sm:grid-cols-2">
       <div><dt>Pharmacy</dt><dd>{c.pharmacy.name} (synthetic)</dd></div>
       <div><dt>Dispensing date</dt><dd>{c.extracted.dispensingDate}</dd></div>
@@ -122,7 +122,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
       </label>
       <Button onClick={() => act(() => confirm(c.id, confirmation), "Confirmation sent; human re-check required.")}>Send confirmation</Button>
     </section>}
-    {!editable && row.state !== "information_requested" && <p>Read-only claim. Further decisions belong to NHSBSA operators.</p>}
+    {!editable && row.state !== "information_requested" && <p>Read-only claim. The agent cannot make an operator decision or change payment.</p>}
     <details><summary className="cursor-pointer">Demonstration replay</summary>
       <p>Start a new synthetic submission with current evidence. Prior attempts and decisions remain unchanged.</p>
       <Button variant="outline" onClick={() => act(() => submit({ caseId: c.id, channel, endorsementText: submittedText, declaration: revision?.declaration }), "New demonstration attempt submitted.")}>Submit another demonstration attempt</Button>
