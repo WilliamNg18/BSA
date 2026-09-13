@@ -63,6 +63,9 @@ export async function captureView(page: Page, info: TestInfo, name: string) {
     if (await perspectiveGroup.getByRole("radio", { name: label, exact: true }).isChecked()) perspective = label;
   }
   if (!perspective) throw new Error("Capture requires an explicit selected perspective.");
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(page.getByRole("banner")).toBeInViewport();
+  const documentHeight = await page.evaluate(() => document.documentElement.scrollHeight);
   const path = info.outputPath(`${name}.png`);
   await page.screenshot({ path, fullPage: true });
   await info.attach(name, { path, contentType: "image/png" });
@@ -71,7 +74,7 @@ export async function captureView(page: Page, info: TestInfo, name: string) {
     sourceRevision, applicationSourceRevision, sourceDirty: false,
     capturedAt: new Date().toISOString(), url: page.url(), screenshot: name,
     sha256: createHash("sha256").update(await readFile(path)).digest("hex"),
-    viewport, scrollWidth, perspective,
+    viewport, scrollWidth, documentHeight, fullPage: true, perspective,
     agentEnabled: await page.getByRole("banner").getByRole("switch").isChecked(),
     browserVersion: page.context().browser()?.version(),
     reducedMotion: await page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches),

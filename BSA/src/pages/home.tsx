@@ -17,6 +17,7 @@ import { SOURCES_FOOTER, TOUR_CONTENT } from "@/lib/domain/public-facts";
 import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { useAppStore } from "@/lib/store";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
+import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 
 function TourProcessCase({ id }: { id: string }) {
   const item = useLifecycleCase(id);
@@ -70,6 +71,7 @@ export function HomePage() {
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
   const chapterNumber = TOUR_STOPS[tourStopIndex(pathname, hash)].chapter;
+  const { input } = useManualLoopMonth();
   const chapter = TOUR_CONTENT.chapters.find((item) => item.chapter === chapterNumber);
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6" data-tour-chapter={chapterNumber}>
@@ -126,11 +128,17 @@ export function HomePage() {
         {perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy precheck example</Link></Button>}
       </>}
       {chapterNumber === 6 && <>
+        <section aria-label="Central prevention assumption" className="space-y-3 rounded-xl border bg-card p-5">
+          <h2 className="font-semibold">What would kill this estimate?</h2>
+          {input ? <p className="text-sm" data-central-bet>Central bet: pharmacy checks prevent {input.preventionPercent}% of would-be referrals (assumption). If measured prevention is substantially lower, the estimate fails.</p>
+            : <p role="alert">Central bet unavailable. Correct the monthly assumptions before presenting an estimate.</p>}
+          <Link className="inline-block text-sm underline" to="/#month">Inspect the editable prevention assumption</Link>
+        </section>
         <section aria-label="Proposed outcomes" className="space-y-3 rounded-xl border bg-card p-5">
           <h2 className="font-semibold">Fewer items back. A judgement you can reconstruct.</h2>
           <p className="text-sm">Rule and reason recorded for built cases. People confirm evidence and decide; existing pricing remains unchanged.</p>
-          <p className="text-sm font-medium">The agent verifies the submission and advises; a person decides.</p>
-          <p className="text-sm text-muted-foreground">No agent payments. Referral reduction depends on the assumed pharmacy catch, not a universal Type 2 speed-up.</p>
+          <p className="text-sm font-medium">The agent verifies and advises; a person decides.</p>
+          <p className="text-sm text-muted-foreground">No agent payments. Referral reduction is an estimate, not a universal Type 2 speed-up or a measured saving.</p>
         </section>
         <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>

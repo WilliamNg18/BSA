@@ -1520,6 +1520,32 @@ endpoint, final value, live reduced-motion cancellation and Reset assertion.
 Fast-forward only settles the opposite-mode setup, never an observed animation.
 Application motion and verification thresholds remain unchanged.
 
+## 2026-09-13: Task 30 evidence preparation, not release acceptance
+
+The extended live inventory names 29 checks: the existing 20, five explicit
+Hillcrest/EPS/declaration/boundary/rail checks and four same-D cycle checks
+for Both/switched perspectives with Agent Off/On. Discovery is not execution.
+The reporter still rejects partial selections, missing or duplicate names,
+retries and unexpected checks as full acceptance. Production checks never use
+the domain observer; the root check explicitly requires its absence.
+
+New full-page captures scroll to the top before taking a screenshot and record
+document height alongside viewport, source hashes and capture-time pending
+review. This does not mark any image reviewed. Final exports must use a fresh
+Task 30 directory after coordinator deployment approval; manual full-height
+review and keyboard/contrast observations remain separate pending gates.
+
+The chapter 6 central bet reads the shared editable prevention rate, not a
+hardcoded 80%. Invalid input replaces it with an explicit unavailable message.
+The six-chapter/nine-stop keyboard route sequence is preserved. The model's
+297.5 total With hours includes abstention gathering.
+
+Compatibility commits remain phase-specific: N numerical contracts, C seed and
+human recheck, E/U visible claims and paper forms, Q staff lanes and record
+proof. Old ordinary complete-paper coverage is retained through its real
+form and human capture, not replaced with an observer mutation or deleted.
+No final live, complete visual review or ALL DONE claim is made here.
+
 ## 2026-09-13: Task 25 continuous Hillcrest state and source contracts
 
 The operational seed contains exactly eight Hillcrest items: A and E are

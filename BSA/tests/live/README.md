@@ -1,8 +1,10 @@
 # Explicit live acceptance
 
-This opt-in checklist is outside `tests/e2e`. It contains 16 process checks,
-one same-item perspective round trip and three header-only Agent checks (one
-per perspective, each visiting every route): 20 tests in total. Default production CI does
+This opt-in checklist is outside `tests/e2e`. Its named inventory currently
+contains 29 checks, including the historical process coverage, Hillcrest-only
+work, visible EPS scenarios, worked paper declaration, contradictory evidence
+six-chapter navigation, and the same-D cycle in Both/switched views, Off/On.
+Default production CI does
 not discover it. It starts no server, uses one Chromium worker, and only changes
 synthetic browser-memory state. Do not execute until the coordinator confirms
 the deployed artifact is ready and supplies its full expected commit.
@@ -54,11 +56,12 @@ unconfirmed Type 1 capture in both modes; each audit has its own URL, mode,
 timestamp and violation report.
 Those checks do not claim universal accessibility conformance.
 
-The checklist targets the integrated N/P/Q/U interface: shared whole-process
-monthly inputs and both outcome columns, truthful case-card routing, actual
+The checklist targets the integrated Tasks 25-30 C/N/E/U/Q/V interface: shared
+manual-loop inputs and both outcome columns, truthful case-card routing, actual
 Type 1 and Type 2 work rather than a virtual queue, and explicit referral RB
-codes. Canonical A/E traces and complete EPS resubmissions require automatic
-pricing without another operator approval. D's Off/On flow retains initial
+codes. Canonical A/E traces and initial complete EPS require automatic pricing without
+operator approval. Actual referral corrections require an explicit human recheck.
+D's Off/On flow retains initial
 uncertainty, explicit human capture, the RB2B referral, original history and
 fresh capture required by a new paper revision.
 C's pharmacy confirmation retains both conflicting quantities for another human
@@ -66,7 +69,7 @@ review. F's original record survives mode changes and rule replay. An edited
 monthly scenario is checked across Chapter 2, the scene, queue and pharmacy
 projection rather than checking unrelated defaults on each page.
 
-Do not run this version against an earlier M-only deployment. Select only
+Do not run this version against an earlier incomplete deployment. Select only
 checks compatible with the coordinator's exact deployed stage; omitted checks
 remain NOT_RUN, and a partial smoke run is not full live acceptance. Local
 rehearsal verifies test compatibility only, never deployed acceptance; the
@@ -144,7 +147,11 @@ Each case is exercised in both Agent modes and both perspective sequences.
 declaration-confirmed capture to existing pricing without Type 2 judgement.
 The card and queue must retain completed human-capture provenance, never an
 awaiting-capture or no-person label; reading and switching leave state unchanged.
-The full instrumented family contains 32 tests. Live check 18 covers the same
+The historical instrumented family contained 32 tests. C adds a same-D continuous
+cycle pair: replay, capture, human RB2B referral, correction, resubmission,
+fresh capture, human acceptance, existing pricing and Reset. All snapshots
+remain complete and separate from this uninstrumented hosted inventory.
+Live check 18 covers the same
 completed-only path in both Agent modes without using a domain observer.
 All `one-state*.spec.ts` files are excluded from ordinary production discovery
 and included only by the blocking instrumented configuration.

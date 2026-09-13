@@ -16,9 +16,18 @@ export const LIVE_CHECKS = {
   conflict: "16 C confirmation returns to human review without resolving 56 versus 84",
   historical: "17 F retains its original human record through mode changes and replay",
   completedCapture: "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+  hillcrest: "19 Hillcrest is the only operational pharmacy and background entries are unclickable",
+  visibleEps: "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+  declaredPaper: "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+  paperConflict: "22 Contradictory capture of a complete declaration still abstains without invented agreement",
+  sixChapters: "23 Six stakeholder chapters retain all nine stops and the editable central bet",
 } as const;
 
+export const LIVE_CYCLE_MODES = ["both", "switched"] as const;
+export const wholeCycleTitle = (enabled: boolean, mode: typeof LIVE_CYCLE_MODES[number]) =>
+  `24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent ${enabled ? "On" : "Off"}, ${mode}`;
 export const LIVE_PERSPECTIVES = ["pharmacy", "nhsbsa", "both"] as const;
 export const headerCheckTitle = (perspective: typeof LIVE_PERSPECTIVES[number]) =>
   `15 Single header Agent toggle on every route in ${perspective}`;
-export const LIVE_CHECKLIST = [...Object.values(LIVE_CHECKS), ...LIVE_PERSPECTIVES.map(headerCheckTitle)];
+export const LIVE_CHECKLIST = [...Object.values(LIVE_CHECKS), ...LIVE_PERSPECTIVES.map(headerCheckTitle),
+  ...[false, true].flatMap((enabled) => LIVE_CYCLE_MODES.map((mode) => wholeCycleTitle(enabled, mode)))];

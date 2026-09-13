@@ -7,7 +7,7 @@ const settings = liveSettings(process.env, fileURLToPath(new URL("../../../", im
 
 export default defineConfig({
   testDir: ".",
-  testMatch: ["checklist.spec.ts", "perspective.spec.ts", "header-agent.spec.ts"],
+  testMatch: ["checklist.spec.ts", "perspective.spec.ts", "header-agent.spec.ts", "task30.spec.ts", "continuous-cycle.spec.ts"],
   fullyParallel: false,
   workers: 1,
   retries: 0,
