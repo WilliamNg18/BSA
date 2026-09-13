@@ -24,6 +24,8 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain("RB2B");
     expect(html).toContain("labels show read confidence");
     expect(html).toContain("Deliberately poor scan");
+    expect(html).toContain("read 0.");
+    expect(html).toContain('stroke-dasharray="1.2 0.6"');
     expect(html).toContain("not this demo");
     expect(html).not.toContain("Load worked declaration");
     expect(html).not.toContain("<input");
