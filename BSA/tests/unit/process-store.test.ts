@@ -90,6 +90,24 @@ describe("explicit captured authority", () => {
     expect(store().caseRevisions[D.id][1]).toEqual(before);
     expect(runAgent(sessionCase(D.id)!).recommendation).toBe("ABSTAIN");
   });
+  it("records a human sufficient D as decided Type 2, never no-person automatic", () => {
+    submitD();
+    store().setAgentEnabled(true);
+    expect(() => store().recordType2Decision({ caseId: D.id, decision: "ACCEPT", reason: "" })).toThrow(/reason/i);
+    store().recordType2Decision({ caseId: D.id, decision: "ACCEPT", reason: "Human checked the declared fields against the clause." });
+    expect(store().lifecycles[D.id].state).toBe("paid");
+    expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
+    expect(store().records.at(-1)).toMatchObject({ caseId: D.id, decision: "ACCEPT" });
+  });
+  it("accepts a blind paper submission, rejecting malformed declaration shapes atomically", () => {
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: "" });
+    expect(store().itemProcesses[D.id].routing.outcome).toBe("type1_capture");
+    const snapshot = getDomainSnapshot();
+    expect(() => store().submitItem({ caseId: D.id, channel: "paper", endorsementText: "", declaration: {
+      fields: { ...fields, quantity: -1, endorsementText: "" }, declaredAt: "2026-09-13T10:00:00Z", provenance: "pharmacy_declaration",
+    } })).toThrow(/fields/);
+    expect(getDomainSnapshot()).toEqual(snapshot);
+  });
 });
 
 it("uses one operational store and presentation never changes the domain snapshot", () => {

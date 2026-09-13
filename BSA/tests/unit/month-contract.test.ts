@@ -10,14 +10,14 @@ afterEach(() => {
 describe("shared monthly projection contract", () => {
   it("pins both default headline tiles without double-counting judgement", () => {
     const result = monthModel(MONTH_MODEL_DEFAULTS);
-    expect(result).toMatchObject({ volume: 85000, pharmacyCaught: 14167, cleared: 14167, abstained: 14167, built: 42499 });
+    expect(result).toMatchObject({ volume: 85000, pharmacyCaught: 14167, cleared: 21250, abstained: 14167, built: 35416 });
     expect(result.today.operatorHours).toBe(17000);
-    expect(result.withAgent.operatorHours).toBe(255002 / 60);
+    expect(result.withAgent.operatorHours).toBe(240836 / 60);
     expect(result.capacity).toEqual({ workingMinutes: 7560, today: 630, withAgent: 3780 });
     expect(result.perItem.today).toEqual({ gatheringMinutes: 10, judgingMinutes: 2 });
     expect(result.perItem.withAgent).toEqual({ gatheringMinutes: 0, judgingMinutes: 2 });
     expect(result.gatheringSteps.reduce((sum, step) => sum + step.minutes, 0)).toBe(10);
-    expect(result.withAgent.gatheringMinutes + result.withAgent.judgingMinutes).toBe(255002);
+    expect(result.withAgent.gatheringMinutes + result.withAgent.judgingMinutes).toBe(240836);
   });
 
   it("charges abstentions as today and avoids operator effort for caught/cleared cohorts", () => {

@@ -94,7 +94,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     status: mandatory.every((m) => m.pass) ? "ok" : "warn",
   });
 
-  const cleared = !captured && routeSubmission(routingFactsForCase(c, c.channel === "Electronic (EPS)" ? "eps" : "paper")).outcome === "auto_priced" && mandatory.every((m) => m.pass);
+  const cleared = Boolean(preVersion) && !captured && routeSubmission(routingFactsForCase(c, c.channel === "Electronic (EPS)" ? "eps" : "paper")).outcome === "auto_priced" && mandatory.every((m) => m.pass);
   if (cleared || !agentEnabled) {
     const state: CaseState = cleared ? "cleared_by_rules" : c.initialState;
     trace.push({

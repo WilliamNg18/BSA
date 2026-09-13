@@ -21,11 +21,18 @@ export function routeSubmission(facts: RoutingFacts): RoutingResult {
   });
   if (!facts.captureConfirmed && (!facts.readable || facts.handwritten)) return result("type1_capture", "Human product capture required before routing.");
   if (facts.type2Decision === "insufficient") return result("referred_back", "Human judgement found insufficient information; RB code and reason required.");
+  if (facts.type2Decision === "sufficient") return {
+    outcome: "type2_endorsement", reason: "Human judgement complete; existing rules engine handles normal pricing.",
+    requiresHuman: false, pricingAuthority: "existing_rules_engine",
+  };
   if (facts.hasConflict || facts.type2Decision === "request_information") return result("type2_endorsement", "Conflicting evidence requires human judgement.");
-  if (facts.type2Decision === "sufficient") return result("auto_priced", "Human judgement complete; existing rules engine handles normal pricing.");
   if (facts.interpretationRequired || facts.endorsementRequired && (!facts.endorsementPresent || !facts.endorsementComplete)) {
     return result("type2_endorsement", "Endorsement requires human interpretation.");
   }
+  if (facts.captureConfirmed) return {
+    outcome: "type1_capture", reason: "Human capture complete; existing rules engine handles normal pricing.",
+    requiresHuman: false, pricingAuthority: "existing_rules_engine",
+  };
   return result("auto_priced", "Priced by NHSBSA's existing rules engine; no person involved.");
 }
 
