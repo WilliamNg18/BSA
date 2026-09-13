@@ -32,12 +32,13 @@ for (const enabled of [false, true]) {
           if (id !== PAPER_B) expect(confirmed[key][id], `${key}: unrelated ${id} stays exact`).toEqual(initial[key][id]);
         }
       }
-      await expect(page.locator(`[data-type1-case="${PAPER_B}"], [data-case-id="${PAPER_B}"]`)).toHaveCount(0);
+      await expect(page.locator(`[data-type1-case="${PAPER_B}"]`)).toHaveCount(0);
+      await expect(page.getByRole("region", { name: "Decided", exact: true }).locator(`[data-case-id="${PAPER_B}"]`)).toBeVisible();
       await action("Inspect completed capture under Decided", "NHSBSA", async () => {
         await page.getByRole("button", { name: /^Decided/ }).click();
       });
       await expect(page.getByRole("region", { name: "Completed Type 1 captures", exact: true })).toContainText("Human capture confirmed");
-      await expect(page.getByRole("region", { name: "Type 2 items", exact: true })).not.toContainText(PAPER_B);
+      await expect(page.getByRole("region", { name: "Type 2 worklist items", exact: true })).not.toContainText(PAPER_B);
       await action("Read the completed paper case in Four cases", "NHSBSA", async () => { await openFourCases(page); });
       const card = page.locator('[data-case="B"]');
       await expect(card).toHaveAttribute("data-case-routing", "type1_capture");
