@@ -23,27 +23,33 @@ for (const enabled of [false, true]) {
   test(`one state: complete EPS automatically prices without operator approval, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      await action("Select complete EPS example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+      await action("Select the EPS missing-information example", "Pharmacy", async () => {
+        await page.getByRole("radio", { name: "Information missing", exact: true }).check();
+      });
+      await action("Enter a complete endorsement for the EPS item", "Pharmacy", async () => {
+        await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO AB 27/08/26");
       });
       const submitted = await action("Explicitly submit complete EPS item", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
         await expect(page.getByRole("link", { name: "View submitted claim", exact: true })).toBeVisible();
       });
       expect(submitted).toMatchObject({
-        itemProcesses: { "EX-24107": { channel: "eps", routing: {
+        itemProcesses: { "EX-24112": { channel: "eps", routing: {
           outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine",
         } } },
-        lifecycles: { "EX-24107": { state: "paid", history: expect.arrayContaining([
+        lifecycles: { "EX-24112": { state: "paid", history: expect.arrayContaining([
           expect.objectContaining({ actor: "code", processStep: "automatic_pricing" }),
         ]) } },
-        caseStates: { "EX-24107": "cleared_by_rules" },
+        caseStates: { "EX-24112": "cleared_by_rules" },
+        caseRevisions: { "EX-24112": expect.arrayContaining([expect.objectContaining({
+          kind: "submission", channel: "eps", endorsementText: "NCSO AB 27/08/26",
+        })]) },
       });
       expect(initial.records).toEqual(expect.any(Array));
       expect(submitted.records, "Automatic pricing must not append a human approval").toEqual(initial.records);
       await action("Read the automatic item receipt", "Pharmacy", async () => {
         await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
-        await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("EX-24107");
+        await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("EX-24112");
       });
       expect(await readDomainState(page), "Reading the receipt cannot create an operator decision").toEqual(submitted);
       await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
