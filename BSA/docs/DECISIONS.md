@@ -1110,3 +1110,9 @@ These describe this difficult example, not the public 880-items/hour average.
 Static results and keyboard-operated timing steps need no animation and work
 unchanged under reduced motion. N owns the matching proposed boundary label;
 V owns integrated browser/axe and live evidence.
+
+The parent-owned perspective guard retains an already visited page as hidden
+and inert at the same URL. U's pending fields and explicit checkbox therefore
+remain local presentation state across perspective switches, not a second
+operational store. Real route navigation discards the draft; Reset clears it
+even when the new seed has the same revision number and timestamp.
