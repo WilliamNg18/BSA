@@ -94,6 +94,18 @@ A blocking Reset dialog is one explicit confirmation transaction: perspective
 switches happen before opening it, the complete state is checked unchanged while
 it is open, and the confirmed result is compared afterward. The harness never
 forces interaction with the inert header behind the modal.
+
+`one-state-lifecycle.spec.ts` covers explicit B referral reasons and RB codes,
+manual/unchecked/approved draft authority, immutable July/August record replay,
+and corrected EPS pricing without a second human decision. It also checks an
+explicit A EPS channel choice and keeps human-released items in decided staff
+work rather than misclassifying them as no-human automatic items.
+
+`one-state-handoff.spec.ts` covers C's human information request and pharmacy
+confirmation without resolving its 56/84 conflict, plus D capture followed by
+an RB2B referral and a new paper revision. The new revision requires fresh
+capture; the old capture, declaration, human record and history remain intact.
+Each case is exercised in both Agent modes and both perspective sequences.
 All `one-state*.spec.ts` files are excluded from ordinary production discovery
 and included only by the blocking instrumented configuration.
 
