@@ -37,7 +37,7 @@ describe("process claim evidence", () => {
       expect(before[0].endorsementText).not.toBe(before[0].declaration?.fields.endorsementText);
       expect(markup).toContain("Replay the retained pharmacy declaration, not the scan reading.");
       expect(markup).toContain("Replay endorsement source</dt><dd>Retained pharmacy declaration</dd>");
-      expect(markup).toContain("Replay endorsement</dt><dd>NCSO AB 27/08/26</dd>");
+      expect(markup).toContain("Replay endorsement</dt><dd>NCSO JB 27/08/26</dd>");
       expect(useAppStore.getState().caseRevisions["EX-24123"]).toEqual(before);
       expect(useAppStore.getState().itemProcesses["EX-24123"].capture).toBeNull();
       store.submitItem({ caseId: "EX-24123", channel: "paper",
@@ -46,7 +46,7 @@ describe("process claim evidence", () => {
       expect(after.caseRevisions["EX-24123"]).toHaveLength(2);
       expect(after.caseRevisions["EX-24123"][0]).toEqual(before[0]);
       expect(after.caseRevisions["EX-24123"][1]).toMatchObject({
-        number: 2, endorsementText: "NCSO AB 27/08/26", declaration: before[0].declaration,
+        number: 2, endorsementText: "NCSO JB 27/08/26", declaration: before[0].declaration,
       });
       expect(after.itemProcesses["EX-24123"]).toMatchObject({ revision: 2, capture: null, routing: { outcome: "type1_capture" } });
       expect(caseById("EX-24123")).toEqual(originalCase);
