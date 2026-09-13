@@ -82,6 +82,13 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     { id: "e-claim", origin: "Claim ledger", field: "Claimed", value: `qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, "${c.claim.endorsementText || "no endorsement"}"`, provenance: `${c.claim.submittedVia}, case ${c.id}`, cls: "existing" },
     { id: "e-fields", origin: "Existing capture", field: "Extracted", value: `${c.extracted.productText}, qty ${c.extracted.quantity ?? "?"}, endorsement "${c.extracted.endorsementText || "none"}"`, provenance: `Field confidence: product ${c.extracted.productConfidence.toFixed(2)}, quantity ${c.extracted.quantityConfidence.toFixed(2)}, endorsement ${c.extracted.endorsementConfidence.toFixed(2)}`, cls: "existing" },
   );
+  if (original.paperDeclaration) {
+    for (const field of ["typedProduct", "quantity", "endorsementText", "dispensingDate"] as const) evidence.push({
+      id: `e-declared-${field}`, origin: "Pharmacy declaration", field,
+      value: String(original.paperDeclaration[field] ?? "Not supplied") || "Not supplied",
+      provenance: "declared by the pharmacy, not read from the form; original declaration retained", cls: "human",
+    });
+  }
   if (captured) {
     evidence[1] = { ...evidence[1], value: `${original.extracted.productText}, qty ${original.extracted.quantity ?? "?"}, endorsement "${original.extracted.endorsementText}"` };
     const origin = original.capturedEvidence!.provenance === "pharmacy_declaration" ? "Declared by the pharmacy, not read from the form" : "Human capture";

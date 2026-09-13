@@ -31,7 +31,7 @@ describe("Type 1 capture initial presentation", () => {
     expect(html).toContain('aria-label="Assumed manual keying time"');
     expect(html).toContain("Illustration, not elapsed work");
     expect(html).toContain("Confirm capture and continue to Type 2");
-    expect(html).toContain("the agent verifies the submission and advises; a person decides");
+    expect(html).toContain("the agent verifies and advises; a person decides");
     expect([...html.matchAll(/<input[^>]*value=""/g)]).toHaveLength(3);
     expect(html).toMatch(/<textarea[^>]*><\/textarea>/);
     expect(getDomainSnapshot()).toEqual(before);

@@ -217,7 +217,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       await capture.getByRole("button", { name: "Next timing step", exact: true }).press("Enter");
       await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds`);
       await expect(product).toHaveValue(originalProduct);
-      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true })).not.toBeChecked();
       await expect(capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true })).toBeVisible();
       await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
       await audit(page, info, "capture-timing-axe");

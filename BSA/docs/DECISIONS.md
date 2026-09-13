@@ -1522,3 +1522,48 @@ agree: an assisted corrected referral builds a sufficient recommendation for
 human review rather than claiming untouched automatic pricing. Completed human
 work cannot later acquire a no-person pricing explanation. New complete EPS
 submissions still use automatic pricing when their own evidence permits it.
+
+## 2026-09-13: Task 27 proposed declaration and human evidence boundary
+
+U exports a self-contained `PaperPharmacyCapture` with optional `caseId`, default
+canonical D. E owns mounting it; Type1 retains its shared `caseId` API for Q.
+Off has no declaration entry or precheck: the human posts paper and staff
+capture manually, then make a separate Type 2 judgement. Weeks of delay and
+30/10-second key/confirm illustrations are narrative assumptions, not measured
+service timings. Timing uses N's shared manual-loop hook and editable inputs.
+
+On checks typed product, quantity, endorsement and dispensing date against the
+dated synthetic Tariff, never against a pretend successful image read. The
+explicit worked-example action enters Co-codamol 30/500 tablets, 100, NCSO JB
+27/08/26. It does not provide a prescriber or confirm capture. C freezes the
+paper declaration, maps the legacy code/quantity/text and projects its date
+for rule selection. The original scan is rendered from the retained template,
+so a declared date cannot silently rewrite the image.
+
+Type1 prefill and checkbox start without reconciliation authority. A person
+must review the declaration including its date, explicitly confirm or correct
+fields, and supply separately established prescriber evidence when missing.
+Date correction requires a new pharmacy submission, not mutation of the old
+declaration. Missing, conflicting or unreconciled captured evidence abstains.
+Only complete compatible human-confirmed evidence can yield a proposed Type 2
+Sufficient recommendation. It never decides or prices. Original D image quality,
+raw readings and canonical abstention reasons remain unchanged.
+
+By coordinated C/E handoff, U also adds the retrieved monthly synthetic generic
+supply clause and fail-closed agent/gate support. The registered generic product
+requires its supply evidence even if the optional payload is omitted. Canonical
+E remains automatic no-model clearance; a generic EPS review does not call an
+image-reading tool. This foundation is isolated for C's earlier integration.
+
+The Paper workbench's Post action always starts an explicit new synthetic
+attempt, like the EPS workbench. It does not silently turn into a correction
+because its selected fixture has a prior referral. Existing referral correction
+and resubmission remain in claim details, with C's required human re-check.
+This preserves ordinary complete paper B's initial capture-to-code-pricing path.
+
+Paper explanatory copy stays below 25 words per existing functional panel.
+The main submission narrative and nested declaration-check panel are counted
+separately; medicine fields, exact rule quotations, requirement statuses and
+field-associated provenance labels remain visible structured evidence. Error
+messages replace the main narrative rather than accumulating duplicate prose.
+Focused tests count both Paper variants, both modes and all advice outcomes.

@@ -55,7 +55,7 @@ for (const enabled of [false, true]) {
         const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
         await expect(capture).toBeVisible();
         const before = await readDomainState(page);
-        const reconciled = capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true });
+        const reconciled = capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true });
         const confirm = capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true });
         const assisted = enabled && scenario !== "fresh unknown";
         for (const [field, label] of Object.entries(labels)) {

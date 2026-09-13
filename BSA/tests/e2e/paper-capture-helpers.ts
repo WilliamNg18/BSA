@@ -47,7 +47,7 @@ export async function confirmCompletePaper<T>(page: Page, enabled: boolean, acti
       await expect(capture.getByRole("alert")).toContainText("Reconcile the declaration with the paper");
     });
     await action("Explicitly reconcile B's complete declaration", "NHSBSA", async () => {
-      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
     });
   } else {
     for (const [name, value] of [
