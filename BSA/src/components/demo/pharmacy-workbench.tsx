@@ -52,7 +52,7 @@ export function PharmacyPage() {
   const mode = !enabled ? "off" : !result ? "pending" : "scripted";
   const status = !enabled ? "Not checked: manual submission"
     : !result ? "Scripted check in progress" : result.status === "ready"
-      ? channel === "eps" ? "Complete: will flow to automated pricing" : "Declaration complete: human capture confirmation required"
+      ? channel === "eps" ? "Complete: will flow to automated pricing" : scenario === "D" ? "Declaration complete: human capture confirmation required" : "Declaration complete: existing routing follows submission"
       : result.status === "missing" ? "Information may be missing" : "Agent unable to determine";
   const canApply = enabled && result?.status === "missing" && scenario === "B" && result.facts?.type === "NCSO" && result.facts.initialled && result.checks.some((entry) => entry.id === "dated" && entry.met === false);
   const correction = canApply ? pharmacyDateCorrection(c, text) : text;
@@ -81,9 +81,9 @@ export function PharmacyPage() {
     pendingCorrection.current = null;
     if (result.status !== "ready") return;
     try {
-      recordCorrection(c.id, pending.before, pharmacySnapshot(text, c.extracted.dispensingDate, mode, result, current.checkedAt), pending.revision);
+      recordCorrection(c.id, pending.before, pharmacySnapshot(text, c.extracted.dispensingDate, mode, result, current.checkedAt), pending.revision, checkOptions);
     } catch (err) { setError(err instanceof Error ? err.message : "Correction evidence unavailable."); }
-  }, [enabled, c, text, caseRevisions, result, current.checkedAt, mode, recordCorrection]);
+  }, [enabled, c, text, caseRevisions, result, current.checkedAt, mode, recordCorrection, checkOptions]);
 
   return <div className="mx-auto max-w-7xl space-y-6">
     <div className="space-y-2">
@@ -210,7 +210,7 @@ export function PharmacyPage() {
         <h2 className="font-semibold">Submission receipt</h2>
         <p role="status">Submitted (synthetic). No claim sent; no payment changed.</p>
         {automaticallyPriced ? <p>Paid on the normal schedule (synthetic): priced by NHSBSA&apos;s existing rules engine; no person involved.</p>
-          : <p>{receipt.channel === "paper" ? "Paper submitted for capture and routing. Type 1 confirmation and any Type 2 judgement remain human actions." : "Submitted for Type 2 judgement. No referral or operator decision has been made by the agent."}</p>}
+          : <p>{receipt.channel === "paper" ? "Paper submitted to existing routing. Required capture and Type 2 judgement remain human actions." : "Submitted for Type 2 judgement. No referral or operator decision has been made by the agent."}</p>}
         {receipt.precheck?.mode === "scripted" && !automaticallyPriced && <section aria-label="Pre-built advisory case" className="space-y-1">
           <h3 className="font-semibold">Advisory case for NHSBSA</h3>
           <p>Submitted anyway: this check snapshot travels with the item. It is not an operator decision or an approved referral note.</p>
