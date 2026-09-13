@@ -1,0 +1,135 @@
+import type { Page } from "@playwright/test";
+import { expect, navigatePrimary, test } from "./fixtures";
+import { readDomainState, verifyPerspectiveEquivalence, type DomainAction } from "./one-state-helpers";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+
+const D = "EX-24123";
+const claim = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
+
+async function capturePaper(page: Page, action: DomainAction, enabled: boolean, label: string) {
+  await action(`${label}: read the shared capture lane`, "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+  const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
+  await expect(capture).toBeVisible();
+  await action(`${label}: explicitly capture synthetic source fields`, "NHSBSA", async () => {
+    await capture.getByRole("textbox", { name: "Product code", exact: true }).fill("SYN-COCOD-100");
+    await capture.getByRole("textbox", { name: "Quantity", exact: true }).fill("100");
+    await capture.getByRole("textbox", { name: "Endorsement", exact: true }).fill("NCSO JB 27/08/26");
+    await capture.getByRole("textbox", { name: "Prescriber", exact: true }).fill("Dr Demo (synthetic)");
+  });
+  if (enabled) await action(`${label}: human reconciles paper evidence`, "NHSBSA", async () => {
+    await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+  });
+  return action(`${label}: confirm capture without deciding Type 2`, "NHSBSA", async () => {
+    await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+    await expect(page.locator(`[data-case-id="${D}"]`)).toBeVisible();
+  });
+}
+
+for (const enabled of [false, true]) {
+  test(`one state: same paper item through the whole Hillcrest cycle and Reset, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
+    await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
+      const seed = await readDomainState(page);
+      expect(Object.keys(seed.lifecycles).sort()).toEqual([
+        "EX-24088", "EX-24101", "EX-24107", "EX-24112", "EX-24119", "EX-24123", "SYN-FQ123-RECHECK", "SYN-FQ123-TYPE2",
+      ]);
+      expect(Object.entries(seed.itemProcesses).filter(([, process]) => process.routing.outcome === "auto_priced").map(([id]) => id))
+        .toEqual(["EX-24107", "EX-24101"]);
+      await action("Read Hillcrest pharmacy claims", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
+      await action("Show the waiting paper item", "Pharmacy", async () => {
+        await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^Waiting on NHSBSA/ }).click();
+      });
+      await action("Open D without changing its evidence", "Pharmacy", async () => {
+        await page.getByRole("button", { name: `View ${D}`, exact: true }).click();
+        await claim(page).getByText("Demonstration replay", { exact: true }).click();
+      });
+      const submitted = await action("Explicitly submit D as a new paper demonstration attempt", "Pharmacy", async () => {
+        await claim(page).getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
+        await expect(claim(page).getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
+      });
+      expect(submitted.caseRevisions[D].at(-1)).toMatchObject({ kind: "submission", channel: "paper", number: 2 });
+      expect(submitted.itemProcesses[D].routing.outcome).toBe("type1_capture");
+      const captured = await capturePaper(page, action, enabled, "First paper attempt");
+      expect(captured.records).toEqual(seed.records);
+      expect(captured.caseRevisions).toEqual(submitted.caseRevisions);
+      expect(captured.itemProcesses[D].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
+      await action("Open the same captured D in Type 2", "NHSBSA", async () => {
+        await page.getByRole("link", { name: `Open ${D}`, exact: true }).click();
+      });
+      await action("Choose a human referral rather than inferred acceptance", "NHSBSA", async () => {
+        await page.getByRole("radio", { name: /^Refer back / }).check();
+      });
+      await action("Write the human presentation concern and RB2B", "NHSBSA", async () => {
+        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human requests explicit pharmacy presentation and prescriber evidence before release.");
+        await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("RB2B");
+      });
+      const referred = await action("Commit D's human referral once", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page).toHaveURL(/\/EX-24123\/record$/);
+      });
+      expect(referred.records).toHaveLength(seed.records.length + 1);
+      expect(referred.itemProcesses[D].rbCode).toBe("RB2B");
+      await action("Dismiss the referral notification without changing D", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      });
+      expect(await readDomainState(page)).toEqual(referred);
+      await action("Return to the pharmacy's same D record", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
+      await action("Show Action needed items", "Pharmacy", async () => {
+        await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^Action needed/ }).click();
+      });
+      await action("Open D with its recorded RB2B", "Pharmacy", async () => {
+        await page.getByRole("button", { name: `Correct and resubmit ${D}`, exact: true }).click();
+        await expect(claim(page)).toContainText("RB2B");
+      });
+      await action("Pharmacy explicitly corrects and confirms the declared fields", "Pharmacy", async () => {
+        await page.getByRole("textbox", { name: "Declared product code", exact: true }).fill("SYN-COCOD-100");
+        await page.getByRole("spinbutton", { name: "Declared quantity", exact: true }).fill("100");
+        await page.getByRole("textbox", { name: "Declared prescriber (synthetic)", exact: true }).fill("Dr Demo (synthetic)");
+        await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO JB 27/08/26");
+      });
+      expect(await readDomainState(page)).toEqual(referred);
+      const resubmitted = await action("Explicitly resubmit the corrected D paper", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+        await expect(claim(page).getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+      });
+      expect(resubmitted.records).toEqual(referred.records);
+      expect(resubmitted.itemProcesses[D].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
+      const rechecked = await capturePaper(page, action, enabled, "Resubmitted paper recheck");
+      expect(rechecked.records).toEqual(referred.records);
+      expect(rechecked.caseRevisions[D]).toEqual(resubmitted.caseRevisions[D]);
+      await action("Open D after the new revision's human recheck", "NHSBSA", async () => {
+        await page.getByRole("link", { name: `Open ${D}`, exact: true }).click();
+      });
+      await action("Choose human Sufficient after correction", "NHSBSA", async () => {
+        await page.getByRole("radio", { name: enabled ? /^Accept the recommendation/ : /^Sufficient \(human choice\)/ }).check();
+      });
+      await action("Write the recheck reason", "NHSBSA", async () => {
+        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human rechecked the corrected presentation, prescriber and endorsement evidence.");
+      });
+      const paid = await action("Human accepts D and existing pricing follows", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page).toHaveURL(/\/EX-24123\/record$/);
+      });
+      expect(paid.lifecycles[D].state).toBe("paid");
+      expect(paid.itemProcesses[D].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
+      expect(paid.records).toHaveLength(seed.records.length + 2);
+      expect(paid.lifecycles[D].history.at(-1)).toMatchObject({ actor: "code", processStep: "existing_pricing" });
+      expect(paid.lifecycles[D].history.slice(0, referred.lifecycles[D].history.length)).toEqual(referred.lifecycles[D].history);
+      expect(paid.records.slice(0, seed.records.length)).toEqual(seed.records);
+      await action("Dismiss the acceptance notification without changing D", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      });
+      expect(await readDomainState(page)).toEqual(paid);
+      for (const id of Object.keys(seed.lifecycles).filter((id) => id !== D)) {
+        expect(paid.lifecycles[id]).toEqual(seed.lifecycles[id]);
+        expect(paid.caseRevisions[id]).toEqual(seed.caseRevisions[id]);
+        expect(paid.itemProcesses[id]).toEqual(seed.itemProcesses[id]);
+      }
+      await action("Reset the demonstration through its confirmation", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Reset demo", exact: true }).click();
+        await page.getByRole("alertdialog").getByRole("button", { name: "Reset demonstration", exact: true }).click();
+      });
+      expect(await readDomainState(page)).toEqual(seed);
+      await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
+    });
+  });
+}
