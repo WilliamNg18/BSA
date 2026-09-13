@@ -15,6 +15,7 @@ import { caseById } from "@/lib/domain/cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "@/lib/domain/eps-check";
 import { checkEpsPharmacy } from "@/lib/domain/eps-pharmacy-check";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { projectEpsSubmissionDraft } from "@/lib/domain/eps-submission-draft";
 import { PHARMACY_STEPS, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { productByCode } from "@/lib/domain/reference";
 import type { EpsPrescription } from "@/lib/domain/types";
@@ -60,19 +61,12 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
   const perspective = useAppStore((state) => state.perspective);
   const lifecycles = useAppStore((state) => state.lifecycles);
   const revisions = useAppStore((state) => state.caseRevisions);
-  const processes = useAppStore((state) => state.itemProcesses);
   const recordCorrection = useAppStore((state) => state.recordPharmacyCorrection);
   const { draft, initialDraft, observedRevision, receiptNumber } = editor;
   const [error, setError] = useState("");
   const [applied, setApplied] = useState("");
   const pendingCorrection = useRef<{ draft: EpsPrescription; beforeDraft: EpsPrescription; revision: number; before: PharmacyPrecheckSnapshot } | null>(null);
-  const projected = useMemo(() => {
-    const latest = revisions[caseId].at(-1)!;
-    return caseForLifecycle(caseId, lifecycles, {
-      ...revisions,
-      [caseId]: [...revisions[caseId].slice(0, -1), { ...latest, channel: "eps", endorsementText: draft.dispenserEndorsement, epsPrescription: draft }],
-    }, processes)!;
-  }, [caseId, draft, lifecycles, revisions, processes]);
+  const projected = useMemo(() => projectEpsSubmissionDraft(caseId, draft, lifecycles, revisions), [caseId, draft, lifecycles, revisions]);
   const current = usePharmacyCheck(projected, draft.dispenserEndorsement, enabled, undefined, checkEpsPharmacy);
   const result = current.result;
   const status = !enabled ? "Not checked: manual submission" : !result ? "Scripted check in progress"
