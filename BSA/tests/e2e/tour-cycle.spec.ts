@@ -138,8 +138,8 @@ for (const width of [360, 1440]) {
     for (const enabled of [false, true]) {
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await expect(guide).toContainText(enabled
-        ? "With the agent: the item comes back with the exact fix, approved by an operator, and can be corrected and resubmitted with one click."
-        : "Today: the pharmacy learns weeks later that an item failed, with a reason code, and works out the fix alone.");
+        ? "Read the operator-approved fix, correct the endorsement, then explicitly resubmit. The agent verifies the submission and advises; a person decides."
+        : "Today: referred-back items appear in MYS Unpaid items with an RB code and the operator's reason. The pharmacy corrects and resubmits.");
       await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
       expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
