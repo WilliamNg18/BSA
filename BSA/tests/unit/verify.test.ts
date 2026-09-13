@@ -1,11 +1,11 @@
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { executeStage, parseShard, runVerification, verificationStages, type Stage } from "../../scripts/verify.mjs";
-import { artifactDigest, buildOneStateArtifact } from "../e2e/one-state-artifact.mjs";
+import { artifactDigest, buildOneStateArtifact, runOneStateServer } from "../e2e/one-state-artifact.mjs";
 
 vi.mock("node:child_process", async (original) => ({
   ...await original<typeof import("node:child_process")>(),
@@ -139,10 +139,50 @@ describe("shared verification stages", () => {
     });
     it("retains the exact production server and hosting policy, not a permissive test server", () => {
       const config = readFileSync(new URL("../e2e/one-state.config.ts", import.meta.url), "utf8");
-      expect(config).toContain('join(instrumentedDirectory, "server.mjs")');
+      expect(config).toContain('command: "node tests/e2e/one-state-server.mjs"');
+      const launcher = readFileSync(new URL("../e2e/one-state-server.mjs", import.meta.url), "utf8");
+      expect(launcher).toContain("buildOneStateArtifact();");
+      expect(launcher).toContain("process.exitCode = runOneStateServer();");
       expect(config).not.toContain("npm run dev");
       expect(config).toContain("reuseExistingServer: false");
       expect(config).toContain("retries: 0");
+    });
+    it.each([false, true])("launches the canonical packaged entry with an unchanged strict entry guard, linked output=%s", async (linked) => {
+      const directory = workspace();
+      const output = join(directory, "external site");
+      mkdirSync(output);
+      const entry = join(output, "server.mjs");
+      writeFileSync(entry, [
+        'import { resolve } from "node:path";',
+        'import { fileURLToPath } from "node:url";',
+        'process.exitCode = resolve(process.argv[1]) === fileURLToPath(import.meta.url) ? 0 : 7;',
+      ].join("\n"));
+      const selected = linked ? join(directory, "linked site") : output;
+      if (linked) symlinkSync(output, selected, process.platform === "win32" ? "junction" : "dir");
+      const actual = await vi.importActual<typeof import("node:child_process")>("node:child_process");
+      vi.mocked(spawnSync).mockImplementation(actual.spawnSync);
+      expect(runOneStateServer(spawnSync, selected)).toBe(0);
+      expect(spawnSync).toHaveBeenCalledWith(process.execPath, [realpathSync(entry)], { stdio: "inherit", shell: false });
+    });
+    it("fails before launch when the packaged server is missing", () => {
+      expect(() => runOneStateServer(spawnSync, workspace())).toThrow(/ENOENT/);
+      expect(spawnSync).not.toHaveBeenCalled();
+    });
+    it("propagates the canonical server's nonzero exit", () => {
+      const directory = workspace();
+      writeFileSync(join(directory, "server.mjs"), "");
+      vi.mocked(spawnSync).mockReturnValue(childResult({ status: 7 }));
+      expect(runOneStateServer(spawnSync, directory)).toBe(7);
+    });
+    it.each([
+      { error: new Error("Server spawn failed"), message: "Server spawn failed" },
+      { signal: "SIGTERM" as const, message: "terminated by SIGTERM" },
+      { status: null, message: "did not return an exit status" },
+    ])("retains canonical server failures: $message", ({ message, ...result }) => {
+      const directory = workspace();
+      writeFileSync(join(directory, "server.mjs"), "");
+      vi.mocked(spawnSync).mockReturnValue(childResult(result));
+      expect(() => runOneStateServer(spawnSync, directory)).toThrow(message);
     });
   });
   it("rejects an invalid blocking exit status rather than claiming success", async () => {

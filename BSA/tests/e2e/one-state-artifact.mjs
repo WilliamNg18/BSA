@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, realpathSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -39,6 +39,15 @@ export function buildOneStateArtifact(run = spawnSync, directory = app) {
   if (result.error) throw result.error;
   if (result.signal) throw new Error(`One-state build terminated by ${result.signal}.`);
   if (result.status !== 0) throw new Error(`One-state build failed with exit status ${result.status}.`);
+}
+
+export function runOneStateServer(run = spawnSync, directory = instrumentedDirectory) {
+  const entry = realpathSync(join(directory, "server.mjs"));
+  const result = run(process.execPath, [entry], { stdio: "inherit", shell: false });
+  if (result.error) throw result.error;
+  if (result.signal) throw new Error(`One-state server terminated by ${result.signal}.`);
+  if (result.status === null) throw new Error("One-state server did not return an exit status.");
+  return result.status;
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
