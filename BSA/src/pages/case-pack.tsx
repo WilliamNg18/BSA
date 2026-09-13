@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { AlertTriangle, Check, FileText, Scale } from "lucide-react";
 import { useNotification } from "@/hooks/use-notification";
@@ -73,7 +73,11 @@ function CasePackContent() {
   const [compare, setCompare] = useState(false);
   const [approved, setApproved] = useState(false);
   const [error, setError] = useState("");
+  const errorRef = useRef<HTMLParagraphElement>(null);
   const clock = useCasePresentation(6, agentEnabled, pack);
+  useEffect(() => {
+    if (error) errorRef.current?.focus();
+  }, [error]);
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
@@ -142,7 +146,7 @@ function CasePackContent() {
         <p>Historical case view. Submit another demonstration attempt at the pharmacy before starting a new review.</p>
         {perspective !== "nhsbsa" && <Button asChild variant="outline" className="h-auto max-w-full whitespace-normal"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>}
       </section>}
-      {error && <p role="alert">{error}</p>}
+      {error && <p ref={errorRef} tabIndex={-1} role="alert" className="rounded-md border border-destructive p-3 focus-visible:outline-2 focus-visible:outline-ring">{error}</p>}
 
       {!pack.agentInvoked && (
         <Alert>
@@ -359,20 +363,20 @@ function CasePackContent() {
                 ))}
               </RadioGroup>
               {canApprove && <div className="space-y-2">
-                <label className="flex items-start gap-2"><input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
+                <label className="flex items-start gap-2"><input name="approve-draft" type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
                 <p className="text-sm text-muted-foreground">Optional. Without approval, only your human reason is sent; the agent draft is not approved or shared.</p>
               </div>}
               {disposition === "REFER_BACK" && <div className="space-y-1.5">
                 <Label htmlFor="rb-code">RB code (required)</Label>
-                <select id="rb-code" value={rbCode} onChange={(event) => setRbCode(event.target.value)} required
-                  className="h-10 w-full rounded-md border bg-background px-3 text-sm">
+                <select id="rb-code" name="rb-code" value={rbCode} onChange={(event) => setRbCode(event.target.value)} required
+                  className="h-10 w-full rounded-md border bg-background px-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2">
                   <option value="">Choose an RB code</option>
                   {RB_CODE_CATALOG.map((entry) => <option key={entry.code} value={entry.code}>{entry.code}: {entry.reason}</option>)}
                 </select>
               </div>}
               <div className="space-y-1.5">
                 <Label htmlFor="reason">Reason (required)</Label>
-                <Textarea id="reason" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Explain why you are departing from the recommendation." : "Explain your decision based on the evidence."} aria-required="true" />
+                <Textarea id="reason" name="reason" autoComplete="off" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Explain why you are departing from the recommendation." : "Explain your decision based on the evidence."} aria-required="true" minLength={8} />
               </div>
               <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
                 <Check aria-hidden="true" /> Record decision
