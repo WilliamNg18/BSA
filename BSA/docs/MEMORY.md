@@ -143,8 +143,12 @@ applies a correction; it never submits or changes lifecycle/history. It is
 session-only, cleared by Reset, and distinct from whole-scenario projections.
 Use stable Zustand slices; derive arrays with useMemo or useShallow.
 
-Copy uses UK English, no em dashes, no vendor/product/document names outside
-the permitted Architecture mapping. Narrative panels are under 25 words;
+Copy uses UK English, no em dashes, and no implementation vendor/product or
+document names in the interface, including Architecture. The owner's latest
+Part D instruction supersedes the former Architecture exception. Use
+presentation-only capability aliases; retain original source mappings, tool
+contracts, payloads and decision history. NHSBSA, MYS, NHSmail, EPS, dm+d and
+Drug Tariff remain valid process names. Narrative panels are under 25 words;
 structured labels are not a hiding place for prose. One Sources line in chapter
 one; documentary audit stays outside the client. Synthetic operational citations
 remain visible. Keyboard, focus, contrast, reduced motion and non-colour status

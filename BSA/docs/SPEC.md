@@ -411,8 +411,9 @@ not measured operational performance.
 Evaluation exposes illustrative synthetic metrics, risks and guardrails, not
 an accuracy claim. Boundary separates existing capability, code, agent and
 human authority. Assumptions states how claims could be validated or disproved.
-Architecture describes read-only tool contracts and a proposed production
-mapping; it does not assert those services are deployed.
+Architecture describes read-only tool contracts and a provider-neutral proposed
+production mapping; it does not assert those capabilities are deployed. Display
+aliases do not rewrite the original source mappings or tool contracts.
 
 The first-test chapter requests referral-reason evidence before proceeding.
 The [demo script](demo-script.md) supplies the exact-click story and discussion
@@ -426,11 +427,14 @@ Reset demonstration restores seeds (including DR-000871), calculator defaults,
 Agent Off, tour/disclaimer visibility and local route controls without changing
 the current URL or selected perspective.
 
-UK English, no em dashes, no vendor/product/document names in interface copy
-outside the permitted Architecture mapping, a concise under-25-word prose
+UK English, no em dashes, no implementation vendor/product or document names
+in interface copy (including Architecture), a concise under-25-word prose
 aspiration (with the exact queue-guide exception above), and qualified source
 context are content requirements. Word count is informational. The synthetic label
 and governing principle cannot disappear with optional disclosure content.
+NHSBSA, MYS, NHSmail, EPS, dm+d and Drug Tariff are required process names, not
+implementation branding. Preserve immutable source evidence, tool payloads and
+decision history; the naming policy changes presentation, not provenance.
 Keyboard operation, focus visibility, semantic labels, non-colour status,
 live announcements and reduced motion are required by WCAG 2.2 AA intent.
 Automated axe is necessary, not proof of full manual conformance.
