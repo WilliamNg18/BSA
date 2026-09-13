@@ -1009,3 +1009,12 @@ An optional captured prescriber is still mandatory evidence where the gate
 requires it. Keeping the original "Illegible" image evidence visible is not
 permission to waive that requirement. A step-through assumed stopwatch is
 presentation only; it neither measures operator work nor confirms anything.
+
+## 2026-09-13: Preserve uncertainty when introducing captured evidence
+
+A declaration cannot inherit image confidence or silently fill other mandatory
+fields. D's unreadable prescriber exposed this boundary: a new explicit human
+field is safer than bypassing the existing compliance check. Keep original
+capture evidence intact and attach revision-linked human authority separately.
+Typed legacy pharmacy submissions use the claim channel, while new submissions
+carry explicit machine channels on immutable revisions.
