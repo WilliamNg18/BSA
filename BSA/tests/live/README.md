@@ -89,7 +89,8 @@ harness does not load or change hosting policy files.
 ## Separate local rehearsal
 
 `local-rehearsal.config.ts` uses the same named checks and strict packaged server
-only at `127.0.0.1`, with a distinct project name, report kind and output variable.
+only at `localhost`, matching the packaged server's loopback binding, with a
+distinct project name, report kind and output variable.
 It cannot accept a hosted target. The normal live entrypoint still requires an
 HTTPS root and has no allow-HTTP flag. Build the clean expected commit first:
 

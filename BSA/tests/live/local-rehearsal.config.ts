@@ -5,7 +5,7 @@ import { evidenceSettings } from "./settings";
 
 const port = Number(process.env.PLAYWRIGHT_PORT ?? 4193);
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error("A valid local rehearsal port is required.");
-const baseURL = `http://127.0.0.1:${port}/`;
+const baseURL = `http://localhost:${port}/`;
 const settings = evidenceSettings(process.env, fileURLToPath(new URL("../../../", import.meta.url)), "REHEARSAL_OUTPUT_DIR");
 const checklist = checklistConfig({ ...settings, baseURL });
 
