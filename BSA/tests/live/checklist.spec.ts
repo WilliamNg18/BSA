@@ -22,6 +22,19 @@ const routes = [...new Set([
   ...cases.flatMap((c) => [`/case/${c.id}`, `/case/${c.id}/trace`, `/case/${c.id}/record`]),
 ])];
 
+async function expectUnconfirmedPaperEvidence(page: Page) {
+  const reconciliation = page.getByRole("list", { name: "Confidence signals", exact: true })
+    .getByRole("listitem").filter({ hasText: "Sources reconcile" });
+  await expect(reconciliation).toBeVisible();
+  await expect(reconciliation).toContainText("Not established");
+  await expect(reconciliation).not.toContainText("Agree");
+  await expect(reconciliation).not.toContainText(", satisfied");
+  await expect(page.getByText("Reconciliation not established.", { exact: true })).toBeVisible();
+  await expect(page.getByText("No detected conflict does not establish agreement. Missing, unreadable or unconfirmed fields still need evidence.", { exact: true })).toBeVisible();
+  await expect(page.getByText("The sources agree.", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Case built, awaiting operator", { exact: true })).toHaveCount(0);
+}
+
 test(LIVE_CHECKS.root, async ({ page }, info) => {
   const response = await page.goto("/");
   expect(response?.status()).toBe(200);
@@ -157,6 +170,7 @@ test(LIVE_CHECKS.claims, async ({ page }, info) => {
   await expect(history(page)).toBeVisible();
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
+    await expect(page.getByRole("group", { name: "Claim filters", exact: true })).toBeVisible();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
     await audit(page, info, "claims", enabled);
   }
@@ -274,6 +288,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
         await expect(capture.getByRole("textbox", { name, exact: true })).toHaveValue("");
       }
     }
+    if (enabled) await expectUnconfirmedPaperEvidence(page);
     await audit(page, info, "unconfirmed-capture", enabled);
     await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
     await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
@@ -306,7 +321,10 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
     await expect(capture).toBeVisible();
     await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-    if (enabled) await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+    if (enabled) {
+      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      await expectUnconfirmedPaperEvidence(page);
+    }
     await captureCheckpoint(page, info, `d-fresh-capture-after-referral-${enabled ? "on" : "off"}`);
   }
 });
@@ -318,6 +336,9 @@ test(LIVE_CHECKS.deterministic, async ({ page }, info) => {
   await expect(trace.locator(":scope > li")).toHaveCount(2);
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
+  await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open case evidence", exact: true })).toHaveAttribute("href", "/case/EX-24101");
+  await expect(page.getByText("The agent's part is over. The rest is a person.", { exact: true })).toHaveCount(0);
   await expect(trace).not.toContainText("run_endorsement_checks");
   await audit(page, info, "deterministic-e-trace", true);
 });
