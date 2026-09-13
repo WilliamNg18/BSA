@@ -6,7 +6,8 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
   prescription: EpsPrescription;
   dispenser?: boolean;
 }) {
-  return <section aria-label="Electronic prescription, synthetic" className="space-y-4 rounded-xl border bg-card p-4">
+  const sourceLabel = prescription.claimMessageState === "submitted" ? "Submitted electronic prescription, synthetic" : "Draft electronic prescription, synthetic";
+  return <section aria-label={sourceLabel} className="space-y-4 rounded-xl border bg-card p-4">
     <header className="space-y-2">
       <h3 className="font-semibold">Electronic prescription, synthetic</h3>
       <p className="text-sm text-muted-foreground">The prescriber sends this digital prescription to the pharmacy.</p>
@@ -17,7 +18,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
         <KeyValue k="Patient" v={prescription.patientLabel} />
       </dl>
     </header>
-    {prescription.items.map((item, index) => <section key={`${item.prescribedCode}:${index}`} aria-label={`Prescribed item ${index + 1}`} className="space-y-2 rounded-lg bg-muted/40 p-3 [&_dt]:text-foreground">
+    {prescription.items.map((item, index) => <section key={`${item.prescribedCode}:${index}`} aria-label={`${sourceLabel}: prescribed item ${index + 1}`} className="space-y-2 rounded-lg bg-muted/40 p-3 [&_dt]:text-foreground">
       <h4 className="font-semibold">Prescribed item</h4>
       <dl className="grid gap-3 text-sm sm:grid-cols-2">
         <KeyValue k="Product" v={item.product} />
