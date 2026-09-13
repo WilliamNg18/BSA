@@ -1453,3 +1453,72 @@ unchanged 30-second deadline. Both retain every metric's midpoint, accessible
 endpoint, final value, live reduced-motion cancellation and Reset assertion.
 Fast-forward only settles the opposite-mode setup, never an observed animation.
 Application motion and verification thresholds remain unchanged.
+
+## 2026-09-13: Task 25 continuous Hillcrest state and source contracts
+
+The operational seed contains exactly eight Hillcrest items: A and E are
+automatically priced, D awaits paper capture, B needs pharmacy action, C needs
+information, SYN-FQ123-TYPE2 awaits generic-supply judgement,
+SYN-FQ123-RECHECK awaits re-check, and F is paid after correction.
+F's original DR-000871, first revision and historical events remain unchanged.
+Its later correction, human DR-000872 and existing-engine pricing are separate
+append-only events. There are no operational filler or other-pharmacy rows.
+
+EPS submissions retain one immutable prescription item; additional items are
+explicitly rejected rather than silently discarded. Source endorsement copies,
+known synthetic product codes and names, channel, valid dates and submitted
+claim state are validated atomically. An optional observed revision rejects
+stale drafts. The source dispensing date selects the actual rule version.
+Typed paper declarations map exact catalogue names or synthetic codes to legacy
+capture fields without inventing a prescriber or making the image legible.
+Separate prescriber evidence requires explicit pharmacy or human capture input.
+Supplying both declaration contracts requires matching product, quantity and text.
+
+Generic supply requirements belong to the dedicated synthetic product and dated
+rule, not the presence of optional supply evidence. Omitting that payload cannot
+clear or approve the item. Legacy same-channel EPS correction adapters retain
+the full source and its supply obligations while appending the new endorsement.
+The source extension and deterministic helper/gate were coordinated with E and U.
+
+An actual referred item's resubmission remains pending human re-check, including
+complete EPS corrections. A new complete EPS demonstration submission still
+prices automatically. D and interpretation-required paper capture route to
+Type 2; ordinary complete initial Type 1-only capture retains existing code
+pricing. Human-completed work never becomes a no-person automatic count.
+Every lifecycle label uses the same words across perspectives.
+
+The new continuous-cycle browser proof follows D alone through submission,
+capture, RB2B referral, pharmacy correction, a new paper revision and capture,
+human acceptance, existing pricing and Reset. The read-only gated observer
+compares complete snapshots after each action in Both and switched views,
+separately with Agent Off and On. Timestamps and IDs are controlled, not removed.
+The ordinary production build never gains a writable observer or test API.
+
+## 2026-09-13: Task 25 independent source-authority review repairs
+
+Independent review identified four source/provenance defects. Five focused tests
+reproduced all four before repair, including both recheck modes. The original
+failed reproduction is retained; passing amended assertions are not substituted
+for that evidence.
+
+The generic supplemental item now has its own prescribed identity rather than
+falling back to the ordinary E product when source payloads are omitted. A typed
+paper declaration requires explicit capture before it can support pricing;
+neither its fields nor its product are silently treated as a template image read.
+Missing generic supply evidence still blocks acceptance after that capture.
+Ordinary initial readable paper without a declaration retains its existing
+automatic route. Prescribed/dispensed EPS product substitutions are rejected:
+this demonstration has no approved substitution workflow.
+
+Legacy pharmacy helpers and explicit retained-declaration replay preserve the
+paper source and dispensing date in the next immutable revision. A new explicit
+paper submission with neither declaration payload does not inherit declaration
+or capture authority. Unknown human capture remains possible, but product codes
+must be explicitly synthetic.
+
+Current revision history projects pending human recheck and completed human
+pricing separately into the common case input. Routing and the agent pack now
+agree: an assisted corrected referral builds a sufficient recommendation for
+human review rather than claiming untouched automatic pricing. Completed human
+work cannot later acquire a no-person pricing explanation. New complete EPS
+submissions still use automatic pricing when their own evidence permits it.

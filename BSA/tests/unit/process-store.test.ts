@@ -69,7 +69,10 @@ describe("canonical deterministic routing", () => {
 
 describe("explicit captured authority", () => {
   it("seeds D with a proposed declaration but never preconfirms or repairs the scan", () => {
-    expect(store().caseRevisions[D.id][0].declaration?.fields).toEqual(fields);
+    expect(store().caseRevisions[D.id][0].declaration?.fields).toEqual({
+      productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26",
+    });
+    expect(store().caseRevisions[D.id][0].declaration?.fields.prescriber).toBeUndefined();
     expect(store().itemProcesses[D.id].capture).toBeNull();
     expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
     store().setAgentEnabled(true);
@@ -98,7 +101,7 @@ describe("explicit captured authority", () => {
   });
   it("missing mandatory prescriber withholds advice, never supplies a guessed value", () => {
     submitD({ ...fields, prescriber: null });
-    expect(runAgent(sessionCase(D.id)!)).toMatchObject({ recommendation: "NONE", gate: { result: "FAIL" } });
+    expect(runAgent(sessionCase(D.id)!)).toMatchObject({ recommendation: "ABSTAIN", gate: { result: "NOT_RUN" } });
     expect(sessionCase(D.id)!.extracted.prescriber).toBe("Illegible");
   });
   it("rejects stale captures and requires a human RB code/reason", () => {

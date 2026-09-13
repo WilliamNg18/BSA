@@ -11,6 +11,9 @@ const R: Record<string, Requirement> = {
   dated: { id: "dated", label: "Dated" },
   quantity: { id: "quantity_stated", label: "Quantity supplied stated" },
   invoice: { id: "invoice_price", label: "Invoice price stated" },
+  manufacturer: { id: "brand_manufacturer", label: "Brand or manufacturer dispensed" },
+  pack: { id: "pack_size", label: "Pack size dispensed" },
+  presentation: { id: "presentation", label: "Form dispensed" },
 };
 
 function clauseSet(withDate: boolean): TariffClause[] {
@@ -50,6 +53,14 @@ function clauseSet(withDate: boolean): TariffClause[] {
       endorsementType: "SP",
       text: "An unlicensed special shall be endorsed with the invoice price, the manufacturer's licence number and the quantity supplied.",
       requirements: [R.present, R.invoice, R.quantity],
+    },
+    {
+      id: "SYN-EPS-SUPPLY",
+      part: "Synthetic supply rules",
+      title: "Generic supply evidence",
+      endorsementType: "SUPPLY",
+      text: "Synthetic generic supply: state the brand or manufacturer dispensed, pack size and form. These demonstration requirements are not clinical guidance.",
+      requirements: [R.manufacturer, R.pack, R.presentation],
     },
   ];
 }

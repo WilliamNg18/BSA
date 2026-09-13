@@ -4,7 +4,7 @@ import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
 
 const D = "EX-24123";
-const declaration = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" };
+const declaration = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)" };
 const labels = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" } as const;
 
 function expectOtherCasesUnchanged(before: DomainSnapshot, after: DomainSnapshot) {
@@ -13,7 +13,7 @@ function expectOtherCasesUnchanged(before: DomainSnapshot, after: DomainSnapshot
       if (id !== D) expect(after[key][id], `${key}: unrelated ${id} remains exact`).toEqual(before[key][id]);
     }
   }
-  for (const key of ["baselineInputs", "processInputs", "pharmacyCorrections", "todayMinutes"] as const) {
+  for (const key of ["baselineInputs", "processInputs", "manualLoopInputs", "pharmacyCorrections", "todayMinutes"] as const) {
     expect(after[key], `Capture cannot alter ${key}`).toEqual(before[key]);
   }
 }
@@ -60,7 +60,7 @@ for (const enabled of [false, true]) {
         const assisted = enabled && scenario !== "fresh unknown";
         for (const [field, label] of Object.entries(labels)) {
           await expect(capture.getByRole("textbox", { name: label, exact: true })).toHaveValue(
-            assisted ? String(declaration[field as keyof typeof declaration]) : "");
+            assisted && field !== "prescriber" ? String(declaration[field as keyof typeof declaration]) : "");
         }
         await expect(reconciled).toHaveCount(assisted ? 1 : 0);
         if (assisted) await expect(reconciled).not.toBeChecked();
@@ -128,8 +128,9 @@ for (const enabled of [false, true]) {
         const missing = scenario === "missing prescriber";
         if (corrected || missing) {
           if (assisted) await action("Reconcile before editing a capture field", "NHSBSA", async () => { await reconciled.check(); });
+          if (assisted && missing) await fillCapture(action, capture, { prescriber: declaration.prescriber });
           await fillCapture(action, capture, enabled
-            ? corrected ? { quantity: "99" } : { prescriber: "" }
+            ? corrected ? { quantity: "99", prescriber: declaration.prescriber } : { prescriber: "" }
             : { productCode: declaration.productCode, quantity: corrected ? "99" : "100", endorsementText: declaration.endorsementText, prescriber: corrected ? declaration.prescriber : "" });
           if (assisted) {
             await expect(reconciled).not.toBeChecked();
@@ -154,7 +155,7 @@ for (const enabled of [false, true]) {
         expect(confirmed.itemProcesses[D]).toMatchObject({
           capture: {
             revision: before.itemProcesses[D].revision, operator: "Demo operator",
-            provenance: assisted && !corrected && !missing ? "pharmacy_declaration" : "human_capture",
+            provenance: assisted && !corrected ? "pharmacy_declaration" : "human_capture",
             declarationReconciled: assisted,
           },
           routing: { outcome: "type2_endorsement", requiresHuman: true },
@@ -177,10 +178,10 @@ for (const enabled of [false, true]) {
         });
         expect(await readDomainState(page)).toEqual(confirmed);
         if (enabled && missing) {
-          await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");
-          await expect(page.getByText("Gate: FAIL", { exact: true })).toBeVisible();
-          await expect(page.getByText("One or more mandatory fields missing", { exact: false })).toBeVisible();
-          await expect(page.getByRole("radio", { name: /^Accept the recommendation/ })).toBeDisabled();
+          await expect(page.getByRole("alert")).toContainText("The agent abstained");
+          await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
+          await expect(page.getByRole("alert").getByText("Missing evidence: Prescriber present", { exact: true })).toBeVisible();
+          await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).toBeDisabled();
           await expect(page.getByRole("radio", { name: /^Amend / })).toBeDisabled();
           await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
         } else if (enabled && (corrected || scenario === "fresh unknown")) {

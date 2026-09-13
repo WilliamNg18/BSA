@@ -238,8 +238,20 @@ export const CASES: ExceptionCase[] = [
   },
 ];
 
+const GENERIC_SUPPLY_CASE: ExceptionCase = {
+  ...CASES[4],
+  id: "SYN-FQ123-TYPE2",
+  title: "Generic supply evidence required",
+  purpose: "Retain the prescribed synthetic generic product through every submission channel and revision.",
+  routingReason: "Generic manufacturer, pack size and form require evidence",
+  extracted: { ...CASES[4].extracted, productCode: "SYN-AMOX500-GENERIC-21", productText: "Amoxicillin 500mg capsules (generic synthetic)" },
+  claim: { ...CASES[4].claim, productCode: "SYN-AMOX500-GENERIC-21" },
+  initialState: "operator_review_required",
+};
+
 export function caseById(id: string | undefined): ExceptionCase | null {
   if (!id) return null;
+  if (id === GENERIC_SUPPLY_CASE.id) return GENERIC_SUPPLY_CASE;
   return CASES.find((c) => c.id === id) ?? null;
 }
 

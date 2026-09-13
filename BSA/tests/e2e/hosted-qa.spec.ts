@@ -118,13 +118,11 @@ for (const enabled of [true, false]) {
         }
       }
       if (route === "case/EX-24088/record") {
-        if (enabled) await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toBeVisible();
-        else {
-          await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toHaveCount(0);
-          await expect(page.getByText("This historical record retains rule 2026-08 and assisted fields. Only the manual comparison omits them; history is unchanged.", { exact: true })).toBeVisible();
-          await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
-        }
-        await expect(page.getByRole("main")).toContainText("DR-000871");
+        await expect(page.getByRole("heading", { name: "Record DR-000872", exact: true })).toBeVisible();
+        await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
+        await expect(page.locator("[data-original-records]")).toContainText("DR-000871");
+        await expect(page.locator("[data-original-records]")).toContainText("Original rule: 2026-08");
+        await expect(page.locator("[data-original-records]")).toContainText("Human reason:");
       }
     }
   });

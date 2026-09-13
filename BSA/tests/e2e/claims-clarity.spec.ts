@@ -75,6 +75,6 @@ test("Task16 monthly actual counts and action filters update on explicit resubmi
   await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
   await expect(corrected).toHaveText(String(before + 1), { timeout: 1000 });
   await expect(actionTile).toContainText(`${beforeActions - 1} items`, { timeout: 1000 });
-  await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy, { timeout: 1000 });
+  await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy, { timeout: 1000 });
   await expect(monthly).toContainText("Referral subset across the service, not this pharmacy's recorded items or all NHSBSA staff work.");
 });

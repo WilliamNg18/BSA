@@ -70,7 +70,9 @@ describe("reconciliation distinguishes unknown evidence from agreement", () => {
     expect(pack.signals.reconciliation).toBe("agree");
     const trace = pack.trace.find((step) => step.phase === "RECONCILE")!;
     expect(trace.status).toBe("ok");
-    expect(trace.summary).toBe("Comparable fields agree. This does not establish agreement for missing or unreadable evidence.");
+    expect(trace.summary).toBe(c.capturedEvidence
+      ? "Human-confirmed fields match the claim. Image agreement remains unknown; the declaration was not read from the form."
+      : "Comparable fields agree. This does not establish agreement for missing or unreadable evidence.");
     expect(pack.recommendation).toBe(c.scenario === "D" ? "SUFFICIENT" : "REFER_BACK");
     if (c.scenario === "D") {
       expect(pack.signals.imageQuality).toBe(0.31);

@@ -302,6 +302,6 @@ describe("calculator session slice", () => {
     store.resetDemo();
     expect(useAppStore.getState().baselineInputs).toEqual(baselineDraft(BASELINE_DEFAULTS));
     expect(useAppStore.getState().agentEnabled).toBe(false);
-    expect(useAppStore.getState().records.map((r) => r.id)).toEqual(["DR-000871"]);
+    expect(useAppStore.getState().records).toEqual(store.records);
   });
 });

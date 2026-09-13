@@ -22,7 +22,7 @@ export interface HistoryEvent {
   approvedDraft?: ApprovedDraft;
   channel?: ItemChannel;
   rbCode?: string;
-  processStep?: "submission" | "automatic_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission";
+  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission";
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
 }
@@ -81,6 +81,8 @@ export interface ItemProcess {
 }
 
 export interface ProcessSubmission {
+  /** Current revision observed by the submitting form; rejects stale drafts when supplied. */
+  revision?: number;
   caseId: string;
   channel: ItemChannel;
   endorsementText: string;
@@ -148,12 +150,13 @@ export interface LifecycleSlice {
   followCase: (caseId: string | null) => void;
 }
 
+const sharedLabel = (label: string) => ({ pharmacy: label, nhsbsa: { on: label, off: label } });
 export const LIFECYCLE_LABELS = {
-  submitted: { pharmacy: "Submitted, awaiting processing", nhsbsa: { on: "In queue", off: "In queue" } },
-  in_review: { pharmacy: "In review at NHSBSA", nhsbsa: { on: "Awaiting operator", off: "Awaiting operator" } },
-  information_requested: { pharmacy: "Information requested: NHSBSA needs you to confirm something", nhsbsa: { on: "Request information sent", off: "Request information sent" } },
-  referred_back: { pharmacy: "Referred back: correction needed before payment", nhsbsa: { on: "Referred back", off: "Referred back" } },
-  resubmitted: { pharmacy: "Resubmitted, awaiting re-check", nhsbsa: { on: "Resubmitted: re-check", off: "Resubmitted: re-check" } },
-  paid: { pharmacy: "Paid on the normal schedule (synthetic)", nhsbsa: { on: "Sufficient, released to existing pricing", off: "Sufficient, released to existing pricing" } },
-  escalated: { pharmacy: "In review at NHSBSA (senior review)", nhsbsa: { on: "Escalated", off: "Escalated" } },
+  submitted: sharedLabel("Submitted, awaiting processing"),
+  in_review: sharedLabel("Awaiting operator"),
+  information_requested: sharedLabel("Information requested"),
+  referred_back: sharedLabel("Action needed: correction required"),
+  resubmitted: sharedLabel("Resubmitted, awaiting re-check"),
+  paid: sharedLabel("Paid on the normal schedule (synthetic)"),
+  escalated: sharedLabel("Awaiting senior review"),
 } as const satisfies Record<LifecycleState, { pharmacy: string; nhsbsa: { on: string; off: string } }>;

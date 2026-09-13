@@ -27,6 +27,12 @@ export interface EpsPrescription {
   readonly dispenserEndorsement: string;
   readonly exemptionStatus: "exempt" | "chargeable" | "not_recorded";
   readonly claimMessageState: "draft" | "submitted";
+  readonly supplyEvidence?: {
+    readonly ruleId: "SYN-EPS-SUPPLY";
+    readonly brandManufacturer: string;
+    readonly packSize: number | null;
+    readonly form: string;
+  };
 }
 
 /** Pharmacy-entered content. It cannot establish legibility or human reconciliation. */
@@ -111,14 +117,17 @@ export type RequirementId =
   | "initialled"
   | "dated"
   | "quantity_stated"
-  | "invoice_price";
+  | "invoice_price"
+  | "brand_manufacturer"
+  | "pack_size"
+  | "presentation";
 
 export interface Requirement {
   id: RequirementId;
   label: string;
 }
 
-export type EndorsementType = "NCSO" | "BB" | "XP" | "SP" | "NONE" | "UNKNOWN";
+export type EndorsementType = "NCSO" | "BB" | "XP" | "SP" | "SUPPLY" | "NONE" | "UNKNOWN";
 
 export interface TariffClause {
   id: string;
@@ -221,6 +230,10 @@ export interface ExceptionCase {
   inCoverage: boolean;
   initialState: CaseState;
   readonly capturedEvidence?: CapturedEvidence;
+  readonly epsPrescription?: EpsPrescription;
+  readonly paperDeclaration?: PaperDeclaration;
+  readonly requiresHumanRecheck?: boolean;
+  readonly humanPricingConfirmed?: boolean;
 }
 
 export interface ToolCall {
