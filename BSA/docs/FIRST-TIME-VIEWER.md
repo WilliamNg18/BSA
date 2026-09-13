@@ -70,6 +70,24 @@ does not establish screen-reader announcements. No full manual WCAG,
 keyboard, mobile, dark-mode, cross-browser or measured human-comprehension
 claim is made. New fixes, CI, deployment and reviewed captures remain gates.
 
+### Repair rehearsal (local only; not a replacement verdict)
+
+U's unknown-reconciliation repair, N's deterministic-closing repair and the
+Claim filters group role were combined at clean `4ff99a6`. Eight ordinary CI
+browser regressions passed in 32.1 seconds, including A/E Off/On, D's retained
+three stop reasons/four failed signals, and the named filter group. Three local
+live-check rehearsals passed in 23.2 seconds: claims, D's initial and fresh
+unconfirmed capture, and E's deterministic trace. Positive assertions cover
+the new truthful wording; the old misleading wording is also explicitly absent.
+This did not revisit the deployed site or clear the failed review above.
+
+The complete local check passed. A default-parallel unit run timed out in the
+existing CLI-usage test; its unchanged 52-test file then passed in isolation
+and all 955 units in 45 files passed with one worker. No assertion or timeout
+was relaxed. Two earlier browser invocations selected zero tests because of
+command-line filter syntax; their artifacts are retained separately and are
+not application regressions or passing checks.
+
 ## Historical Task 18 review (not current interface acceptance)
 
 The following record is preserved unchanged as historical evidence. Its
