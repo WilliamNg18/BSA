@@ -1501,3 +1501,21 @@ attempt, like the EPS workbench. It does not silently turn into a correction
 because its selected fixture has a prior referral. Existing referral correction
 and resubmission remain in claim details, with C's required human re-check.
 This preserves ordinary complete paper B's initial capture-to-code-pricing path.
+
+One shared formatter supplies all numeric endpoints. The generated comparison
+is below 25 words, counts total operator hours and retains the permanent
+labelled-assumptions line. Five per cent abstention is explicitly an assumption,
+not a measured six-case rate. Projected full rule-and-reason coverage includes
+documented abstention as a scenario assumption, not invented retrieved clauses
+or evidence about actual historical records. Human confirmation labour is not
+hidden inside code clearance. No payment, lifecycle or decision authority changes.
+
+The first exact-head CI passed all 983 units but exposed stale browser copy and
+snapshot expectations, plus a clock-instrumentation deadline in the combined
+monthly replay test. Its trace shows each one-second virtual advance taking
+about 6.2 wall-clock seconds across the expanded animated figures, not a failed
+midpoint or endpoint. Test On and Off transitions independently within the same
+unchanged 30-second deadline. Both retain every metric's midpoint, accessible
+endpoint, final value, live reduced-motion cancellation and Reset assertion.
+Fast-forward only settles the opposite-mode setup, never an observed animation.
+Application motion and verification thresholds remain unchanged.

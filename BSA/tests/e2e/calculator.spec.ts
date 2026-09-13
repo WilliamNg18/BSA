@@ -197,32 +197,32 @@ for (const colorScheme of ["light", "dark"] as const) {
 
 test.describe("monthly comparison replay", () => {
   test.use({ reducedMotion: "no-preference" });
-  test("mode flips replay both columns from zero with stable accessible endpoints and live reduced motion", async ({ page }) => {
+  for (const enabled of [true, false]) test(`mode ${enabled ? "On" : "Off"} replays both columns from zero with stable accessible endpoints and live reduced motion`, async ({ page }) => {
     await page.clock.install({ time: new Date("2026-09-12T12:00:00Z") });
     await page.goto("./#month");
     await page.clock.pauseAt(new Date("2026-09-12T12:00:10Z"));
+    await page.getByRole("banner").getByRole("switch").setChecked(!enabled);
+    await page.clock.fastForward(2016);
     const result = calculateProcessMonth(PROCESS_MONTH_DEFAULTS);
-    for (const enabled of [true, false]) {
-      await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-      await page.clock.runFor(1000);
-      for (const mode of ["today", "withAgent"] as const) for (const key of processMetrics) {
-        const metric = page.locator(`[data-process-metric="${mode}-${key}"]`);
-        const value = result[mode][key];
-        const visual = Number((await metric.getByRole("img").innerText()).replaceAll(",", ""));
-        if (value === 0) expect(visual).toBe(0);
-        else {
-          expect(visual).toBeGreaterThan(0);
-          expect(visual).toBeLessThan(value);
-        }
-        await expect(metric.getByRole("img", { name: formatProcessMetric(key, value), exact: true })).toBeVisible();
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    await page.clock.runFor(1000);
+    for (const mode of ["today", "withAgent"] as const) for (const key of processMetrics) {
+      const metric = page.locator(`[data-process-metric="${mode}-${key}"]`);
+      const value = result[mode][key];
+      const visual = Number((await metric.getByRole("img").innerText()).replaceAll(",", ""));
+      if (value === 0) expect(visual).toBe(0);
+      else {
+        expect(visual).toBeGreaterThan(0);
+        expect(visual).toBeLessThan(value);
       }
-      await page.clock.runFor(1016);
-      await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
+      await expect(metric.getByRole("img", { name: formatProcessMetric(key, value), exact: true })).toBeVisible();
     }
-    await page.getByRole("banner").getByRole("switch").setChecked(true);
+    await page.clock.runFor(1016);
+    await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
+    await page.getByRole("banner").getByRole("switch").setChecked(!enabled);
     await page.clock.runFor(500);
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, true);
+    await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, !enabled);
     await confirmReset(page);
     await expectProcessMetrics(page);
   });
