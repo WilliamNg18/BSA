@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { captureJson, expect, test } from "./fixtures";
+import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { DECLARATION_RECONCILIATION, postWorkedPaperDeclaration } from "./paper-declaration-helpers";
 import { confirmCompletePaper, PAPER_B, submitCompletePaper } from "./paper-capture-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
@@ -48,8 +48,11 @@ for (const enabled of [false, true]) {
     };
     await submitCompletePaper(page, action);
     await confirmCompletePaper(page, enabled, action);
-    await expect(page.locator(`[data-case-id="${PAPER_B}"]`)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
     await expect(page.getByRole("region", { name: `Type 1 capture for ${PAPER_B}`, exact: true })).toContainText("Human capture confirmed");
     await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true }).locator(`[data-case-id="${PAPER_B}"]`)).toHaveCount(0);
+    await navigatePrimary(page, "Pharmacy claims");
+    await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^Paid this month/ }).click();
+    await page.getByRole("button", { name: `View ${PAPER_B}`, exact: true }).click();
+    await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   });
 }
