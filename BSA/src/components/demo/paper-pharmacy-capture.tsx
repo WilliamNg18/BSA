@@ -71,7 +71,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
     <div className="grid items-start gap-5 lg:grid-cols-2">
       <div className="min-w-0 space-y-2">
         <BoundaryTag cls="existing" />
-        <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} compact />
+        <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} />
         <p className="text-sm">{poorScan ? "Synthetic poor image. NHSBSA: image cannot be read." : "Synthetic paper image. A person confirms captured fields before code routes the item."}</p>
       </div>
       <form onSubmit={submit} noValidate className="min-w-0 space-y-4">
