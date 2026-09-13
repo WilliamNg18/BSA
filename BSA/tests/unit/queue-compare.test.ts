@@ -26,7 +26,9 @@ describe("current queue comparison", () => {
       useAppStore.getState().setAgentEnabled(enabled);
       const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(QueuePage)));
       expect(html).toContain("NHSBSA exception queue");
-      expect(html).toContain("showing 1 to 50");
+      expect(html).toContain("Actual synthetic session items");
+      expect(html).toContain("data-type2-worklist");
+      expect(html).not.toContain("showing 1 to 50");
     }
   });
   it("uses the new total Today12 and judging2, not legacy7", () => {

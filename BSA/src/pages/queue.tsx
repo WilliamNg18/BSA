@@ -29,7 +29,7 @@ export function QueuePage() {
     const process = processes[id];
     if (!revision || !process || process.revision !== revision.number) return [];
     const record = records.filter((entry) => entry.caseId === id && (entry.revision ?? 1) === revision.number).at(-1);
-    if (process.routing.outcome === "auto_priced" && !record) return [];
+    if (process.routing.outcome === "auto_priced") return [];
     const c = caseForLifecycle(id, lifecycles, revisions, processes);
     if (!c) return [];
     const pack = agentEnabled ? runAgent(c, { agentEnabled: true }) : null;
