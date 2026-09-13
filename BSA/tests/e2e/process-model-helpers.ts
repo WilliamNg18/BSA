@@ -1,0 +1,82 @@
+import type { Page } from "@playwright/test";
+import { expect } from "./fixtures";
+import { PROCESS_FIELDS } from "../../src/components/demo/process-fields";
+import { PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, type ProcessMonthInputs, type ProcessMonthResult } from "../../src/lib/domain/baseline";
+import { calculateProcessMonth } from "../../src/lib/domain/process-month-model";
+
+export { PROCESS_FIELDS, PROCESS_MONTH_DEFAULTS, calculateProcessMonth };
+export type { ProcessMonthInputs };
+
+export const processMetrics = [
+  "referredBackItems", "referralOperatorHours", "pharmacyCompletionHours",
+  "type2OperatorHours", "caughtBeforeSubmission", "decisionsWithRuleAndReason",
+] as const;
+
+export function formatProcessMetric(key: string, value: number) {
+  return key.endsWith("Hours") ? formatProcessHours(value) : formatProcessItems(value);
+}
+
+export async function expandProcessInputs(page: Page) {
+  const detail = page.locator("[data-month-detail]");
+  if (await detail.getAttribute("open") === null) await detail.locator(":scope > summary").click();
+  await expect(detail.getByRole("group", { name: "Shared process inputs", exact: true })).toBeVisible();
+}
+
+export async function fillProcessInputs(page: Page, input: ProcessMonthInputs) {
+  for (const { key } of PROCESS_FIELDS) {
+    await expandProcessInputs(page);
+    await page.locator(`#process-${key}`).fill(String(input[key]));
+  }
+  await expandProcessInputs(page);
+}
+
+export async function expectProcessMetrics(page: Page, input = PROCESS_MONTH_DEFAULTS, enabled = false) {
+  const result = calculateProcessMonth(input);
+  await expect(page.locator("[data-month-headlines] > section")).toHaveCount(2);
+  for (const mode of ["today", "withAgent"] as const) {
+    for (const key of processMetrics) {
+      const metric = page.locator(`[data-process-metric="${mode}-${key}"]`);
+      const text = formatProcessMetric(key, result[mode][key]);
+      await expect(metric).toBeVisible();
+      await expect(metric).toHaveText(text);
+      await expect(metric.getByRole("img", { name: text, exact: true })).toBeVisible();
+    }
+    await expect(page.locator(`[data-process-column="${mode}"]`)).toHaveCount(6);
+    await expect(page.locator(`[data-process-column="${mode}"][data-active="${mode === (enabled ? "withAgent" : "today")}"]`)).toHaveCount(6);
+  }
+  await expect(page.locator("[data-baseline-summary]")).toHaveText(
+    `${enabled ? "With the agent" : "Today"}: ${formatProcessItems(result[enabled ? "withAgent" : "today"].referredBackItems)} items referred back. Shared monthly estimates updated.`,
+  );
+}
+
+export function sceneMetrics(result: ProcessMonthResult, enabled = true) {
+  const column = enabled ? result.withAgent : result.today;
+  return [
+    ["monthlyItems", result.counts.monthlyItems],
+    ["autoPricedItems", result.counts.autoPricedItems],
+    ["type1Items", result.counts.type1Items],
+    ["type2Items", result.counts.type2Items],
+    ["referredBackItems", column.referredBackItems],
+    ["referralOperatorHours", column.referralOperatorHours],
+  ] as const;
+}
+
+export async function expectSceneMetrics(page: Page, input = PROCESS_MONTH_DEFAULTS, enabled = true) {
+  await expect(page.locator("[data-scene-metric]")).toHaveCount(6);
+  for (const [key, value] of sceneMetrics(calculateProcessMonth(input), enabled)) {
+    const metric = page.locator(`[data-scene-metric="${key}"]`);
+    const text = formatProcessMetric(key, value);
+    await expect(metric).toHaveText(text);
+    if (enabled) await expect(metric.getByRole("img", { name: text, exact: true })).toBeVisible();
+  }
+}
+
+export async function chooseProcessChapter(page: Page, chapter: 1 | 2 | 3 | 4) {
+  const label = {
+    1: "1. The scene", 2: "2. A month in numbers",
+    3: "3. What exists today and what changes", 4: "4. Four cases",
+  }[chapter];
+  await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
+  await page.getByRole("menuitem", { name: label, exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`#${{ 1: "scene", 2: "month", 3: "pipeline", 4: "cases" }[chapter]}$`));
+}

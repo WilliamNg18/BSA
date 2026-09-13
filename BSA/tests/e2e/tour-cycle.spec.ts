@@ -25,15 +25,20 @@ for (const enabled of [false, true]) {
       await expect(rail).toContainText(`${stop.chapter}/8 · ${stop.label}`);
       if (index) await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
       if (stop.chapter === 3) {
-        await expect(page.getByRole("region", { name: "Six-stage exception pipeline" })).toBeVisible();
+        await expect(page.getByRole("region", { name: "Prescription processing paths" })).toBeVisible();
         await expect(page.getByRole("list", { name: "Four canonical synthetic cases" })).toHaveCount(0);
       }
       if (stop.chapter === 4) {
-        await expect(page.getByRole("region", { name: "Six-stage exception pipeline" })).toHaveCount(0);
+        await expect(page.getByRole("region", { name: "Prescription processing paths" })).toHaveCount(0);
         const cards = page.getByRole("list", { name: "Four canonical synthetic cases" }).locator(":scope > li");
         await expect(cards).toHaveCount(4);
         for (const [caseIndex, scenario] of ["A", "B", "C", "D"].entries()) {
-          await expect(cards.nth(caseIndex).getByRole("link", { name: `Open case ${scenario}`, exact: true })).toBeVisible();
+          await expect(cards.nth(caseIndex).getByRole("link", { name: scenario === "A" ? "View automatically priced claim" : `Open case ${scenario}`, exact: true })).toBeVisible();
+          if (scenario === "A") {
+            await expect(cards.nth(caseIndex)).toHaveAttribute("data-case-routing", "auto_priced");
+            await expect(cards.nth(caseIndex).getByRole("link", { name: "Open case A", exact: true })).toHaveCount(0);
+            await expect(cards.nth(caseIndex).locator("[data-pain-marker], [data-outcome]")).toHaveCount(0);
+          }
           await expect(cards.nth(caseIndex).getByRole("button", { name: "Follow this item", exact: true })).toBeVisible();
         }
       }
@@ -74,7 +79,7 @@ for (const enabled of [false, true]) {
     await expect(page).toHaveURL(/\/pharmacy\/claims$/);
   });
 
-  test(`cycle guide follows real human referral, correction, re-check and synthetic pricing: agent ${enabled}`, async ({ page }) => {
+  test(`cycle guide follows human referral, correction and automatic pricing without a second decision: agent ${enabled}`, async ({ page }) => {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
@@ -98,20 +103,28 @@ for (const enabled of [false, true]) {
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
+    const priorHistory = await recorded.getByRole("listitem").allTextContents();
+    const recordFields = recorded.locator("dl > div")
+      .filter({ has: page.getByText("Attempt / record", { exact: true }) }).locator("dd");
+    const priorRecords = (await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text));
+    expect(priorRecords.length).toBeGreaterThan(0);
     await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
-    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+    expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
+    expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
     for (const mode of [!enabled, enabled]) {
       await page.getByRole("banner").getByRole("switch").setChecked(mode);
-      await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+      await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+      expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
     }
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
-    await page.getByRole("button", { name: "Start review", exact: true }).click();
-    if (!enabled) await page.getByRole("radio", { name: /^Sufficient \(human choice\)/ }).check();
-    else await expect(page.getByRole("radio", { name: /^Accept / })).toBeChecked();
-    await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed the corrected date and complete evidence");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+    expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
+    expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
     await expect(recorded).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
     await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   });
