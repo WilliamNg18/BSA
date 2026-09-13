@@ -38,6 +38,18 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
             {event.approvedDraft && enabled && event.exactFix && <div><dt>Exact fix approved by operator</dt><dd>{event.exactFix}</dd></div>}
           </dl>
           <p>{event.message}</p>
+          {event.capture && <section aria-label={`Type 1 capture for attempt ${event.capture.revision}`} className="mt-2 space-y-1 border-t pt-2">
+            <h3 className="font-semibold">Recorded human Type 1 capture</h3>
+            <p>{event.capture.provenance === "pharmacy_declaration" ? "declared by the pharmacy, not read from the form" : "Keyed by a human operator, not read automatically."}</p>
+            <dl className="grid gap-1 sm:grid-cols-2">
+              <div><dt>Product code</dt><dd>{event.capture.fields.productCode ?? "Unresolved"}</dd></div>
+              <div><dt>Quantity</dt><dd>{event.capture.fields.quantity ?? "Unresolved"}</dd></div>
+              <div><dt>Prescriber</dt><dd>{event.capture.fields.prescriber ?? "Not captured"}</dd></div>
+              <div><dt>Endorsement</dt><dd>{event.capture.fields.endorsementText || "None"}</dd></div>
+              <div><dt>Confirmed by</dt><dd>{event.capture.operator} · {event.capture.confirmedAt}</dd></div>
+              <div><dt>Declaration reconciled by operator</dt><dd>{event.capture.declarationReconciled ? "Yes" : "No"}</dd></div>
+            </dl>
+          </section>}
         </li>)}
       </ol>
       <ol aria-label="Immutable pharmacy attempts" className="mt-3 space-y-3">
