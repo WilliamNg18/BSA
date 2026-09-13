@@ -33,6 +33,7 @@ export interface CapturedEvidence {
 export interface RoutingFacts {
   readonly channel: ItemChannel;
   readonly readable: boolean;
+  readonly mandatoryFieldsComplete: boolean;
   readonly handwritten: boolean;
   readonly captureConfirmed: boolean;
   readonly endorsementRequired: boolean;

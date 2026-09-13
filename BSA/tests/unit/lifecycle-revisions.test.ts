@@ -13,7 +13,7 @@ it.each([false, true])("F's historical decision never blocks automatic pricing o
   const original = structuredClone(store().records[0]);
   const records = store().records;
   store().setAgentEnabled(on);
-  store().resubmitFromPharmacy(F.id, "NCSO DL 06/08/26");
+  store().resubmitItem({ caseId: F.id, channel: "eps", endorsementText: "NCSO DL 06/08/26" });
   expect(store().itemProcesses[F.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
   store().arriveInQueue(F.id);
   expect(store().caseStates[F.id]).not.toBe("human_decision_recorded");
