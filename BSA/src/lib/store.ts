@@ -275,7 +275,7 @@ export const useAppStore = create<AppState>((set, get) => {
     },
     ...seededLifecycleSession(), followedCaseId: null,
     submitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "submission", precheck, {
-      caseId: id, endorsementText: text, channel: currentCase(id).scenario === "D" ? "paper" : "eps", precheck,
+      caseId: id, endorsementText: text, channel: get().caseRevisions[id]?.at(-1)?.channel ?? (currentCase(id).scenario === "D" ? "paper" : "eps"), precheck,
     }),
     resubmitFromPharmacy: (id, text, precheck) => pharmacyAction(id, text, "resubmission", precheck, {
       caseId: id, endorsementText: text, channel: get().caseRevisions[id]?.at(-1)?.channel ?? (currentCase(id).scenario === "D" ? "paper" : "eps"), precheck,

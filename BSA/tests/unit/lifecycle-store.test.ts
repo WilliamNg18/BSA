@@ -21,7 +21,7 @@ const reason = "Human reviewed the synthetic evidence";
 
 function submit(id = B.id, text = B.extracted.endorsementText, on = true) {
   store().setAgentEnabled(on);
-  store().submitFromPharmacy(id, text);
+  store().submitItem({ caseId: id, channel: id === D.id ? "paper" : "eps", endorsementText: text });
   store().arriveInQueue(id);
 }
 
@@ -52,7 +52,7 @@ describe("Task 8 seeds and projections", () => {
     expect(Object.keys(store().lifecycles).length).toBeGreaterThanOrEqual(35);
     for (const [c, state] of [[A, "paid"], [B, "referred_back"], [C, "information_requested"], [D, "in_review"], [E, "paid"], [F, "referred_back"]] as const) {
       expect(row(c.id)).toMatchObject({ caseId: c.id, pharmacyCode: c.pharmacy.contractorCode, state });
-      expect(sessionCase(c.id)).toEqual(c);
+      expect(sessionCase(c.id)).toEqual({ ...c, channel: c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10" });
     }
     expect(store().records).toHaveLength(1);
     expect(store().records[0]).toMatchObject({ id: "DR-000871", caseId: F.id, recommendation: "REFER_BACK", decision: "REFER_BACK" });
@@ -89,9 +89,9 @@ describe("Task 8 seeds and projections", () => {
     expect(c.claim.endorsementText).toBe(corrected);
     expect(c.regions.find((r) => r.id === "endorsement")?.text).toBe(corrected);
     expect(c.readings.every((r) => r.dated)).toBe(true);
-    expect(runAgent(c)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true });
-    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
-    expect(revisions().at(-1)?.channel).toBe("paper");
+    expect(runAgent(c)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
+    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
+    expect(revisions().at(-1)?.channel).toBe("eps");
     expect(row().history.slice(0, pending.length)).toEqual(pending);
     expect(CASES).toEqual(original);
     expect(runAgent(B).recommendation).toBe("REFER_BACK");

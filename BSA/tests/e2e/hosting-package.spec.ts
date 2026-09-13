@@ -6,6 +6,12 @@ const policy = JSON.parse(readFileSync(new URL("../../../hosting.config.json", i
   globalHeaders: Record<string, string>;
 };
 
+test("ordinary production artifact has no domain-state observer", async ({ page }) => {
+  await page.goto("./");
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
+  expect(await page.evaluate(() => Object.hasOwn(window, "__BSA_READ_DOMAIN_STATE__"))).toBe(false);
+});
+
 test("portable build serves its Git provenance, deep links and immutable assets", async ({ request }) => {
   expect(readFileSync(new URL("../../dist/server.mjs", import.meta.url), "utf8"))
     .toBe(readFileSync(new URL("../../scripts/static-server.mjs", import.meta.url), "utf8"));

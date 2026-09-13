@@ -1,4 +1,4 @@
-import { cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
+import { automaticCaseIds, cases, expect, navigatePrimary, openCaseFromQueueOrClaim, staticRoutes, test } from "./fixtures";
 
 for (const reducedMotion of ["reduce", "no-preference"] as const) for (const enabled of [false, true]) {
 test(`fresh Overview supports first visits to every route after immediate disconnection ${reducedMotion} agent=${enabled}`, async ({ page, context }) => {
@@ -22,7 +22,7 @@ test(`fresh Overview supports first visits to every route after immediate discon
     }
     await navigatePrimary(page, "Exception queue");
     for (const c of cases) {
-      await page.locator(`a[href='/case/${c.id}']`).first().click();
+      await openCaseFromQueueOrClaim(page, c.id);
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
       const caseNav = page.getByRole("navigation", { name: "Case views" });
       await caseNav.getByRole("link", { name: "Case-building trace", exact: true }).click();
@@ -30,10 +30,14 @@ test(`fresh Overview supports first visits to every route after immediate discon
       if (!enabled) {
         await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(7);
         await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
-        if (c.id === "EX-24101") await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
+        if (automaticCaseIds.includes(c.id)) await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
+      } else if (automaticCaseIds.includes(c.id)) {
+        await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
+        await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+        await expect(page.getByRole("button", { name: "Show all", exact: true })).toHaveCount(0);
       } else {
         await page.getByRole("button", { name: "Show all", exact: true }).click();
-        await expect(page.getByRole("list", { name: "Agent trace", exact: true }).locator(":scope > li")).toHaveCount(c.id === "EX-24101" ? 2 : 9);
+        await expect(page.getByRole("list", { name: "Agent trace", exact: true }).locator(":scope > li")).toHaveCount(9);
       }
       await caseNav.getByRole("link", { name: "Decision and audit record", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Decision and audit record: ${c.title}`);
