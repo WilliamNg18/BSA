@@ -70,9 +70,9 @@ export function ManualTariffLookup() {
 
 export function CaseSourceEvidence({ c }: { c: ExceptionCase }) {
   const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
-  if (c.claim.submittedVia === "EPS claim message") return <PageSection title="EPS claim message" description="Electronic claim evidence, synthetic. EPS has no image and never needs Type 1 capture.">
+  if (c.claim.submittedVia === "EPS claim message") return <PageSection title="EPS claim message" description="Synthetic claim evidence. EPS has no image and no Type 1 capture.">
     {c.epsPrescription ? <EpsPrescriptionMessage prescription={c.epsPrescription} /> : <>
-    <p className="mb-3 text-sm text-muted-foreground">Original digital prescription not recorded. Only the retained claim fields are shown.</p>
+    <p className="mb-3 text-sm text-muted-foreground">Original digital prescription not recorded. Retained claim fields only.</p>
     <dl className="grid gap-2">
       <KeyValue k="Product code in claim" v={c.claim.productCode ?? "Not recorded"} />
       <KeyValue k="Claim quantity" v={c.claim.quantity} />
