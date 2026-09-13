@@ -5,6 +5,7 @@ import { automaticCaseIds, captureJson, expect, staticRoutes, test as base } fro
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
+import { ALL_LIFECYCLE_STATES, prepareUnseededState } from "./lifecycle-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -273,10 +274,12 @@ for (const colorScheme of ["light", "dark"] as const) {
     for (const enabled of [false, true]) {
       test.describe(`mobile claims ${colorScheme} motion=${reducedMotion} agent=${enabled}`, () => {
         test.use({ colorScheme, reducedMotion, viewport: { width: 360, height: 900 } });
-        for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
+        for (const state of ALL_LIFECYCLE_STATES) {
+          const labels = LIFECYCLE_LABELS[state];
           test(`axe list and action panel ${state}`, async ({ page }, info) => {
             await page.goto("pharmacy/claims");
             await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+            await prepareUnseededState(page, state);
             const filter = page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / });
             await filter.focus();
             await filter.press("Enter");
