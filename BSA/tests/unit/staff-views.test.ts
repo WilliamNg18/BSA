@@ -12,7 +12,9 @@ import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../.
 import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { ConfirmedCaptureEvidence } from "../../src/components/demo/case-presentation";
+import { CaseSourceEvidence, ConfirmedCaptureEvidence, RawCaseFields } from "../../src/components/demo/case-presentation";
+import { CASES } from "../../src/lib/domain/cases";
+import type { EpsPrescription } from "../../src/lib/domain/types";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -191,5 +193,40 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(html).toContain("not proof the image was read");
     expect(html).toContain(capture.confirmedAt);
     expect(JSON.stringify(capture)).toBe(original);
+  });
+
+  it("shows the recorded EPS prescription without inventing or editing evidence", () => {
+    const prescription: EpsPrescription = {
+      prescriber: { name: "Prescriber (synthetic)", practice: "Practice (synthetic)" },
+      patientLabel: "Patient (synthetic)", prescriptionDate: "2026-08-26", dispensingDate: "2026-08-27",
+      items: [{ prescribedCode: "SYN-001", product: "Synthetic medicine", strength: "500 mg", form: "Tablets",
+        quantity: 100, dose: "Synthetic directions", dispensedCode: "SYN-001", dispensedName: "Synthetic dispensed medicine" }],
+      prescriberEndorsement: "Prescriber text", dispenserEndorsement: "NCSO JB 27/08/26",
+      exemptionStatus: "not_recorded", claimMessageState: "submitted",
+    };
+    const c = { ...CASES[1], epsPrescription: prescription };
+    const original = JSON.stringify(c);
+    const html = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
+    expect(html).toContain("Electronic prescription, synthetic");
+    expect(html).toContain(prescription.patientLabel);
+    expect(html).toContain(prescription.prescriber.practice);
+    expect(html).toContain(prescription.dispenserEndorsement);
+    expect(html).not.toContain("Original digital prescription not recorded");
+    expect(html).not.toContain("<svg");
+    expect(JSON.stringify(c)).toBe(original);
+  });
+
+  it("never paints a declaration date onto the original paper image or machine capture", () => {
+    const original = CASES[3];
+    const c = { ...original, extracted: { ...original.extracted, dispensingDate: "2026-07-27" },
+      paperDeclaration: { typedProduct: "Co-codamol 30/500 tablets", quantity: 100,
+        endorsementText: "NCSO JB 27/07/26", dispensingDate: "2026-07-27", declaredByPharmacy: true as const } };
+    const image = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
+    expect(image).not.toContain("2026-07-27");
+    expect(image).toContain(original.extracted.dispensingDate);
+    const fields = renderToStaticMarkup(createElement(RawCaseFields, { c }));
+    expect(fields).toContain("Declared dispensing date");
+    expect(fields).toContain("2026-07-27");
+    expect(fields).toContain("declared by the pharmacy, not read from the form");
   });
 });
