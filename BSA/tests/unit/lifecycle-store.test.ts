@@ -49,7 +49,8 @@ describe("Task 8 seeds and projections", () => {
   });
 
   it("retains all canonical mappings, original fixtures and historical F record", () => {
-    expect(Object.keys(store().lifecycles).length).toBeGreaterThanOrEqual(35);
+    expect(Object.keys(store().lifecycles).length).toBeGreaterThanOrEqual(7);
+    expect(new Set(Object.values(store().lifecycles).map((item) => item.pharmacyCode))).toEqual(new Set(["FQ123"]));
     for (const [c, state] of [[A, "paid"], [B, "referred_back"], [C, "information_requested"], [D, "in_review"], [E, "paid"], [F, "referred_back"]] as const) {
       expect(row(c.id)).toMatchObject({ caseId: c.id, pharmacyCode: c.pharmacy.contractorCode, state });
       expect(sessionCase(c.id)).toEqual({ ...c, channel: c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10" });

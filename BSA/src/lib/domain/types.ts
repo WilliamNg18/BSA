@@ -7,6 +7,37 @@ export type ItemChannel = "eps" | "paper";
 export type RoutingOutcome = "auto_priced" | "type1_capture" | "type2_endorsement" | "referred_back";
 export type FieldProvenance = "machine_read" | "pharmacy_declaration" | "human_capture";
 
+/** Synthetic message content, never an image read or a payment instruction. */
+export interface EpsPrescription {
+  readonly prescriber: { readonly name: string; readonly practice: string };
+  readonly patientLabel: string;
+  readonly prescriptionDate: string;
+  readonly dispensingDate: string;
+  readonly items: readonly {
+    readonly prescribedCode: string;
+    readonly product: string;
+    readonly strength: string;
+    readonly form: string;
+    readonly quantity: number;
+    readonly dose: string;
+    readonly dispensedCode: string;
+    readonly dispensedName: string;
+  }[];
+  readonly prescriberEndorsement: string;
+  readonly dispenserEndorsement: string;
+  readonly exemptionStatus: "exempt" | "chargeable" | "not_recorded";
+  readonly claimMessageState: "draft" | "submitted";
+}
+
+/** Pharmacy-entered content. It cannot establish legibility or human reconciliation. */
+export interface PaperDeclaration {
+  readonly typedProduct: string;
+  readonly quantity: number | null;
+  readonly endorsementText: string;
+  readonly dispensingDate: string;
+  readonly declaredByPharmacy: true;
+}
+
 export interface DeclaredItemFields {
   readonly productCode: string | null;
   readonly quantity: number | null;

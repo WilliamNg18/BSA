@@ -6,6 +6,26 @@ ms.date: 2026-09-13
 
 # Scope register
 
+## Active scope: Tasks 25-30
+
+Step 0 freezes one operational Hillcrest pharmacy, a visible EPS-message
+contract, a typed paper declaration and labelled manual-loop arithmetic.
+Tasks 25-30 are not yet accepted. The prior Tasks 19-24 final release is
+`887d2a4`, recorded on issue #73 comment 5654511835.
+
+| Task | Acceptance required |
+| --- | --- |
+| 25 C | Seeded cycle states and identical action-by-action Both/switched state, Off/On and Reset |
+| 26 E | Visible digital prescription; complete, missing-date and generic-brand scenarios; exact advice and submission |
+| 27 U | Paper image/manual path and proposed declared-not-read confirmation, explicit reconciliation and abstention |
+| 28 N | Shared labelled inputs and exact model figures, 297.5 total With hours including abstention gathering |
+| 29 Q | Hillcrest lanes/filters, fixed background, truthful manual/assisted case and record views |
+| 30 V | Stakeholder walkthrough, continuous live demo, final full live inventory and source-pinned reviewed evidence |
+
+Every operational view uses the same store, header Agent control and perspective
+switch. Existing history and failures remain immutable; no agent payment or
+decision authority is introduced. Final release is a separate latest-main gate.
+
 ## Current new scope: Tasks 19-24
 
 All six tasks have bounded functional and repaired hosted/visual acceptance at

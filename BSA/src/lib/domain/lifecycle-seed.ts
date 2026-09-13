@@ -1,6 +1,6 @@
-/** Synthetic month, all seven states at each of the five existing pharmacies. */
+/** Synthetic month for the single operational pharmacy. */
 import { CASES, QUEUE_FILLER } from "./cases";
-import { PHARMACIES } from "./reference";
+import { HILLCREST_PHARMACY, PHARMACIES } from "./reference";
 import { LIFECYCLE_LABELS, type CaseLifecycle, type CaseRevision, type HistoryEvent, type LifecycleState } from "./lifecycle";
 import { immutable } from "./lifecycle-model";
 
@@ -46,9 +46,8 @@ export function seededLifecycleSession(): {
   };
   CASES.forEach((c, i) => add(c.id, c.pharmacy.contractorCode, canonicalStates[i], i));
   QUEUE_FILLER.forEach((row) => {
-    const pharmacy = PHARMACIES.find((p) => p.name === row.pharmacy)!;
     const state = row.state === "cleared_by_rules" ? "paid" : row.state === "human_decision_recorded" ? "referred_back" : row.state === "additional_evidence_required" ? "information_requested" : "in_review";
-    add(row.id, pharmacy.contractorCode, state);
+    add(row.id, HILLCREST_PHARMACY.contractorCode, state);
   });
   PHARMACIES.forEach((pharmacy) => {
     (Object.keys(LIFECYCLE_LABELS) as LifecycleState[]).forEach((state, index) => {

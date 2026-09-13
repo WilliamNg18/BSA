@@ -9,8 +9,8 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Navigate to the pharmacy C seed", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
-      await action("Choose the pharmacy that owns C", "Pharmacy", async () => {
-        await page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true }).selectOption(initial.lifecycles[C].pharmacyCode);
+      await action("Verify Hillcrest owns C without a selector", "Pharmacy", async () => {
+        await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[C].pharmacyCode})`);
       });
       await action("Open the historically requested C item", "Pharmacy", async () => {
         await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
@@ -48,8 +48,8 @@ for (const enabled of [false, true]) {
       if (enabled) expect(requested.records.at(-1)?.approvedDraft).toMatchObject({ decision: "REQUEST_INFORMATION", approvedBy: "Demo operator" });
       else expect(requested.records.at(-1)?.approvedDraft).toBeUndefined();
       await action("Navigate to pharmacy claims", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
-      await action("Select C's pharmacy for the new request", "Pharmacy", async () => {
-        await page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true }).selectOption(initial.lifecycles[C].pharmacyCode);
+      await action("Verify C's pharmacy for the new request", "Pharmacy", async () => {
+        await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[C].pharmacyCode})`);
       });
       await action("Open the pharmacy C confirmation", "Pharmacy", async () => {
         await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
@@ -132,8 +132,8 @@ for (const enabled of [false, true]) {
       expect(referred.records.at(-1)?.approvedDraft).toBeUndefined();
       expect(referred.itemProcesses[D].capture).toEqual(captured.itemProcesses[D].capture);
       await action("Navigate to the pharmacy D referral", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
-      await action("Choose the pharmacy that owns D", "Pharmacy", async () => {
-        await page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true }).selectOption(initial.lifecycles[D].pharmacyCode);
+      await action("Verify Hillcrest owns D without a selector", "Pharmacy", async () => {
+        await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[D].pharmacyCode})`);
       });
       await action("Open D correction and resubmission", "Pharmacy", async () => {
         await page.getByRole("button", { name: `Correct and resubmit ${D}`, exact: true }).click();

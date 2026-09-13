@@ -6,6 +6,27 @@ ms.date: 2026-09-13
 
 ## Purpose and principle
 
+Current scope is Tasks 25-30, the single Hillcrest continuous cycle. Tasks 19-24
+completed on main `887d2a4f76d49f1793665aa5068a45abd99ba6aa`: 955 unique
+units, 1,186 ordinary plus 32 state checks, and 20/20 final hosted checks.
+Final release proof is issue #73 comment 5654511835. Its original failed and
+repaired evidence remains immutable. The earlier release-step wording below
+is historical, not unfinished work to restart.
+
+Only Hillcrest Pharmacy (FQ123) owns operational items. Other pharmacies are
+unclickable, labelled queue background, outside the store and item counts.
+Tasks 25-30 use the frozen `EpsPrescription`, `PaperDeclaration` and
+`ManualLoopMonthInputs`/`ManualLoopMonthResult` contracts. Current DECISIONS
+records the approved cohort denominators and explicit authority boundaries.
+The user selected 297.5 total With operator hours at defaults: 255 judging
+plus 42.5 manual gathering on abstentions. Do not headline 255 as the total.
+The 85,000 manual loop is a referral subset, not all NHSBSA staff work.
+The 80% prevention and 70% clearance rates are assumptions, not measured results.
+Five per cent abstention applies after prevention and clearance. Every With
+figure says estimate; old monthly defaults below become historical comparisons.
+EPS has no unreadable image or Type 1 path. Paper declarations are proposed,
+declared-not-read evidence; explicit human confirmation remains necessary.
+
 Tasks 19-24 implement the whole-process model below. All functional streams
 are merged. Initial release `1327e65` passed 20 hosted checks, but its independent
 visual review found false D reconciliation/ready wording and an E automatic

@@ -7,6 +7,7 @@ import { Type1Capture } from "@/components/demo/type1-capture";
 import { useProcessMonth } from "@/hooks/use-process-month";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
+import { BACKGROUND_PHARMACIES } from "@/lib/domain/reference";
 import { permitsProposal, recordHasRule } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
 import { formatProcessHours as hours, formatProcessItems as n } from "@/lib/domain/baseline";
@@ -98,6 +99,13 @@ function QueueWorklist() {
         <p className="text-sm text-muted-foreground">Shared monthly model, not session completions. Items are priced by NHSBSA's existing rules engine.</p>
       </section>
     </header>
+    <section aria-label="Other pharmacies, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
+      <h2 className="font-semibold">Other pharmacies, background</h2>
+      <p>Fixed synthetic context only. These entries cannot be opened and are excluded from Hillcrest&apos;s items and counts.</p>
+      <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+        {BACKGROUND_PHARMACIES.map((pharmacy) => <li key={pharmacy.contractorCode}>{pharmacy.name} · Background only</li>)}
+      </ul>
+    </section>
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
     {!result && <p role="alert">Invalid process assumptions. Monthly figures are unavailable; actual session work remains visible.</p>}
     <section aria-label="Actual session work counts" className="space-y-3">

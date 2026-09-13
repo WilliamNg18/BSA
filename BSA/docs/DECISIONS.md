@@ -1344,3 +1344,68 @@ Established comparisons say "Comparable fields agree" and explicitly exclude
 missing or unreadable evidence. The generic in-review lifecycle label says
 "Awaiting operator" in both modes; it cannot retrospectively claim a case was
 built before capture. Historical records and lifecycle events are not rewritten.
+
+## 2026-09-13: Tasks 25-30 contracts and single-pharmacy boundary
+
+The new owner brief supersedes the five-pharmacy demonstration and the previous
+monthly headline model, not the authority or immutable-history boundaries.
+Hillcrest Pharmacy (FQ123) is the only operational pharmacy. All actionable
+synthetic cases and revisions belong to it. Other synthetic pharmacy names are
+fixed, unclickable queue background outside lifecycle/revision data and counts.
+Remove the pharmacy selector immediately; C replaces the transitional month
+with the requested continuous-cycle seed. Do not rewrite F's original decision
+to make a new paid-after-correction story: preserve history and append or seed
+explicit subsequent correction/pricing events.
+
+Freeze `EpsPrescription` and `PaperDeclaration` in domain/types.ts, and optional
+immutable copies on `CaseRevision`/`ProcessSubmission`. Existing declarations
+retain their original schema; the new typed paper form is additional source
+content, not a claim that the image was read. C implements validation, storage
+and projection of these fields before E/U submit them. No dummy implementation
+or automatic capture/decision is supplied in Step 0.
+
+Freeze `ManualLoopMonthInputs`, defaults, provenance/definitions,
+`ManualLoopMonthColumn`, `ManualLoopMonthResult` and the selection/store shapes
+in baseline.ts. N implements the typed `monthModel` overload and shared
+`useManualLoopMonth` selector, then migrates all current figures. Existing
+overloads remain genuine historical calculations until their callers migrate.
+Every current consumer uses the same new result, never independent arithmetic.
+
+The 85,000 public referral figure is the chosen manual-loop denominator, not
+all NHSBSA items reaching a person. Chapter 1 retains over 100 million, about
+four per cent staff touch, and the distinct Type 1/2 public context.
+At defaults: 68,000 prevented, 17,000 remain, 11,900 clear before the queue,
+5,100 enter judgement, 255 abstain and 4,845 are built. Shares are sequential:
+prevention from the manual loop; clearance from its remainder; abstention from
+the remaining queue. All post-clearance cases are assumed still deficient and
+referred back; do not invent a further unprovided efficacy share to improve
+the headline. The 70% clearance assumption models code clearance for workload
+accounting. Any claimed human-confirmed clearance must also count that person's
+judgement, never hide human work as zero-time code.
+
+The owner explicitly selected **297.5 total With operator hours**: 255 judging
+hours plus 42.5 manual gathering hours for abstentions. Do not show 255 as the
+total or omit abstention labour. Today is 19,479.166666... hours: 85,000 ten-minute
+gathers, 85,000 three-minute first judgements and 21,250 second judgements.
+Pharmacy completion is separately 8,500 versus 510 hours at six minutes.
+No double-check With is an assumption. Five per cent abstention is an assumed
+synthetic scenario rate, not an observed proportion of six canonical fixtures.
+Zero Today rule records is a labelled synthetic comparison, not a factual
+claim about real NHSBSA staff; actual historical records remain visible.
+
+The requested example sentence is longer than its own under-25-word limit.
+Use equivalent generated copy below 25 words, with totals labelled correctly
+and "estimate" on every With figure. Required clinical example text is allowed
+as synthetic prescription content; the no-product rule prohibits implementation
+branding, not the explicitly requested medicine name. No real patient details,
+clinical dose advice or real tariff text are introduced.
+
+Merge order is Step 0, C and N, then E/U/Q, then V. C owns lifecycle/store/domain
+seeds and new cycle-equivalence tests; N owns baseline/model/figure components.
+E owns the EPS component and pharmacy shell; U owns a separate Paper component,
+Type1 and D support, never E's shell. Q owns queue/pack/trace/record. N extracts
+shared projection components for Q/E rather than competing edits. V owns other
+e2e/live tests, tour and docs. Model-store shared edits require an isolated
+commit handed to C; no simultaneous hidden copies. Append decisions per stream.
+The coordinator serialises integration, browser slots and final release gates.
+Existing App Service, strict CSP, protected refs and old evidence are unchanged.

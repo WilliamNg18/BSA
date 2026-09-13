@@ -4,6 +4,35 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-13
 ---
 
+## Active scope: Tasks 25-30, one pharmacy and one continuous cycle
+
+Prior Tasks 19-24 are fully released at `887d2a4`, including the final #79
+merge, CI 34767984032, deployment 34767984284 and latest-main 20/20 hosted
+acceptance. See issue #73 comment 5654511835; do not restart those streams.
+
+Step 0 removes the pharmacy selector, pins all operational items to Hillcrest
+and separates fixed background pharmacies from domain state. It freezes the
+EPS, typed-paper and manual-loop contracts in DECISIONS. Check passes,
+954 units in 46 files pass, and 19 affected production browser checks pass.
+The unit count is 955 plus three new contracts minus four obsolete repeated
+pharmacy parameterisations; functional coverage is retained for Hillcrest.
+No final Tasks 25-30 acceptance is implied by Step 0.
+
+| Task | Stream | Ownership | Status |
+| --- | --- | --- | --- |
+| 25 | C | Seed, lifecycle/store, domain adapters, new cycle equivalence tests | Pending Step 0 main |
+| 26 | E | EPS prescription component, pharmacy shell and EPS advice | Pending Step 0 main |
+| 27 | U | Paper component, declaration checks, Type 1 and D | Pending Step 0 main |
+| 28 | N | Frozen monthly model, shared figures, chapter 1/2 | Pending Step 0 main |
+| 29 | Q | Queue, case pack, trace and decision record | Pending Step 0 main |
+| 30 | V | Remaining e2e/live, tour, screenshots and documentation | Pending Step 0 main |
+
+All six run in parallel after Step 0. C and N merge first, then E/U/Q,
+then V. The coordinator serialises shared-file handoffs and local browser
+slots, reviews exact commits and records each main deployment. Final closure
+requires all scope merged, latest-main live inventory fully passing and a
+fresh URL check within ten minutes. No hosting, billing or ref changes.
+
 ## Current acceptance: Tasks 19-24, process streams and one state
 
 The owner now requires the whole-item process, not a referral-only queue model.

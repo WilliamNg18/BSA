@@ -45,8 +45,14 @@ export function historyFor(code: string): HistoryRecord {
   );
 }
 
-export const PHARMACIES = [
-  { name: "Hillcrest Pharmacy", contractorCode: "FQ123", town: "Synthetic town" },
+export const HILLCREST_PHARMACY = Object.freeze({
+  name: "Hillcrest Pharmacy", contractorCode: "FQ123", town: "Synthetic town",
+});
+
+export const PHARMACIES = [HILLCREST_PHARMACY];
+
+/** Display-only queue context, never selectable or part of the operational store. */
+export const BACKGROUND_PHARMACIES = [
   { name: "Riverside Chemist", contractorCode: "FH774", town: "Synthetic town" },
   { name: "Oakfield Pharmacy", contractorCode: "FM208", town: "Synthetic town" },
   { name: "Station Road Pharmacy", contractorCode: "FT561", town: "Synthetic town" },

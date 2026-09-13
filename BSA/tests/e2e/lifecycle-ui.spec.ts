@@ -164,12 +164,12 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await expect(page.getByRole("alert")).toContainText("Cleared by deterministic rules; the agent was not called");
 });
 
-test("Task9 all pharmacies have seven states, real totals, read-only dispositions and shared ID deep links", async ({ page }) => {
+test("Hillcrest has seven states, real totals, read-only dispositions and shared ID deep links without a pharmacy selector", async ({ page }) => {
   await page.goto("pharmacy/claims");
   const pharmacy = page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true });
-  await expect(pharmacy).toHaveValue("FQ123");
-  for (const code of ["FQ123", "FH774", "FM208", "FT561", "FK390"]) {
-    await pharmacy.selectOption(code);
+  await expect(pharmacy).toHaveCount(0);
+  await expect(page.locator("[data-pharmacy-identity]")).toContainText("Hillcrest Pharmacy (FQ123)");
+  {
     await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
     const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
     const allRows = table.locator("tbody tr");
@@ -182,7 +182,7 @@ test("Task9 all pharmacies have seven states, real totals, read-only disposition
       expect(await rows.count()).toBeGreaterThan(0);
       await rows.first().getByRole("button").click();
       if (!["referred_back", "information_requested"].includes(state)) await expect(detail(page).getByRole("textbox")).toHaveCount(0);
-      if (code === "FQ123" && state === "submitted") {
+      if (state === "submitted") {
         await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
         await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
         await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();

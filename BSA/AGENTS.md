@@ -4,7 +4,11 @@ This repository holds the **Prescription Exception Case Builder**, a proof of co
 
 ## The one rule that governs everything
 
-Current work is Tasks 19-24 under MEMORY's **Process model** and **One state**.
+Current work is Tasks 25-30: one Hillcrest pharmacy, one continuous cycle,
+visible EPS prescriptions, proposed paper declarations and a labelled manual-loop
+estimate. Read the latest DECISIONS contract freeze and PROGRESS ownership.
+Tasks 19-24 released successfully at `887d2a4`; their evidence stays historical.
+MEMORY's **Process model** and **One state** continue to govern authority.
 The owner's 13 September process brief explicitly supersedes the older D-only
 abstention and referral-only monthly presentation below. D must still abstain
 on unreconciled evidence, but the proposed human-confirmed declaration path can

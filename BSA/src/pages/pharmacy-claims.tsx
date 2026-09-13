@@ -8,7 +8,7 @@ import { useProcessMonth } from "@/hooks/use-process-month";
 import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
 import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
-import { PHARMACIES } from "@/lib/domain/reference";
+import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { useAppStore } from "@/lib/store";
 
 const filters = ["Action needed", "Waiting on NHSBSA", "Paid this month", "All"] as const;
@@ -32,8 +32,7 @@ export function PharmacyClaimsPage() {
   const corrections = useAppStore((s) => s.pharmacyCorrections);
   const model = useProcessMonth();
   const projection = model.result?.[agentEnabled ? "withAgent" : "today"];
-  const [selectedPharmacy, setPharmacy] = useState("FQ123");
-  const pharmacy = id && lifecycles[id] ? lifecycles[id].pharmacyCode : selectedPharmacy;
+  const pharmacy = HILLCREST_PHARMACY.contractorCode;
   const [filter, setFilter] = useState<ClaimFilter>("Action needed");
   const month = new Date().toISOString().slice(0, 7);
   const rows = useMemo(() => Object.values(lifecycles).filter((row) => row.pharmacyCode === pharmacy).map((row) => ({
@@ -61,11 +60,7 @@ export function PharmacyClaimsPage() {
       </section>
       <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy submission</Link></Button>
     </header>
-    <label className="grid max-w-sm gap-1">Pharmacy (synthetic)
-      <select className="min-w-0 rounded-md border bg-background p-2" value={pharmacy} onChange={(e) => { setPharmacy(e.target.value); setParams({}); }}>
-        {PHARMACIES.map((p) => <option key={p.contractorCode} value={p.contractorCode}>{p.name}</option>)}
-      </select>
-    </label>
+    <p data-pharmacy-identity>{HILLCREST_PHARMACY.name} ({pharmacy}) · Synthetic pharmacy</p>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
       <p className="text-sm">Recorded synthetic items this UTC month. Categories overlap. Paid requires a recorded pricing event, not a projection or calculated payment.</p>
@@ -111,7 +106,7 @@ export function PharmacyClaimsPage() {
           <td className="p-3">{row.c?.extracted.dispensingDate ?? "Not recorded"}</td>
           <td className="p-3">{row.c ? money(row.c.claim.amountClaimed) : "Not recorded"}</td>
           <td className="p-3">{LIFECYCLE_LABELS[row.state].pharmacy}</td>
-          <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setPharmacy(pharmacy); setParams({ caseId: row.caseId }); }}>
+          <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setParams({ caseId: row.caseId }); }}>
             {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
             <span className="sr-only"> {row.caseId}</span>
           </Button></td>

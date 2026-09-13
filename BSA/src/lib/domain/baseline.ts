@@ -447,3 +447,101 @@ export interface ProcessModelSlice {
   processInputs: ProcessMonthDraft;
   setProcessInput: (field: keyof ProcessMonthInputs, value: string) => void;
 }
+
+/** Tasks 25-30: the referral-loop estimate is separate from whole-service context. */
+export interface ManualLoopMonthInputs extends Pick<ProcessMonthInputs,
+  "monthlyItems" | "epsPercent" | "type1Percent" | "type2Percent" | "staffTouchPercent" | "type1KeySeconds" | "type1ConfirmSeconds"> {
+  manualLoopItems: number;
+  gatheringMinutesToday: number;
+  judgingMinutesToday: number;
+  doubleCheckPercent: number;
+  builtJudgingMinutes: number;
+  preventionPercent: number;
+  clearancePercent: number;
+  abstentionPercent: number;
+  mysCompletionMinutes: number;
+}
+
+export const MANUAL_LOOP_MONTH_DEFAULTS: Readonly<ManualLoopMonthInputs> = Object.freeze({
+  monthlyItems: PROCESS_MONTH_DEFAULTS.monthlyItems,
+  epsPercent: PROCESS_MONTH_DEFAULTS.epsPercent,
+  type1Percent: PROCESS_MONTH_DEFAULTS.type1Percent,
+  type2Percent: PROCESS_MONTH_DEFAULTS.type2Percent,
+  staffTouchPercent: PROCESS_MONTH_DEFAULTS.staffTouchPercent,
+  type1KeySeconds: PROCESS_MONTH_DEFAULTS.type1KeySeconds,
+  type1ConfirmSeconds: PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds,
+  manualLoopItems: PROCESS_PUBLIC_FACTS.monthlyReferrals,
+  gatheringMinutesToday: 10,
+  judgingMinutesToday: 3,
+  doubleCheckPercent: 25,
+  builtJudgingMinutes: 3,
+  preventionPercent: 80,
+  clearancePercent: 70,
+  abstentionPercent: 5,
+  mysCompletionMinutes: 6,
+});
+
+export const MANUAL_LOOP_INPUT_METADATA: Readonly<Record<keyof ManualLoopMonthInputs, {
+  provenance: "public" | "public-derived" | "assumption";
+  definition: string;
+}>> = Object.freeze({
+  monthlyItems: { provenance: "public-derived", definition: "Conservative calculation baseline for over 100 million monthly items." },
+  epsPercent: { provenance: "public", definition: "Share of all items sent electronically; paper is the remainder." },
+  type1Percent: { provenance: "public-derived", definition: "Whole-service share reaching capture; it can overlap Type 2." },
+  type2Percent: { provenance: "public-derived", definition: "Whole-service share reaching judgement; it can overlap Type 1." },
+  staffTouchPercent: { provenance: "public", definition: "Whole-service share touched by staff, not the referral-loop denominator." },
+  type1KeySeconds: { provenance: "assumption", definition: "Illustrative manual keying time for the difficult paper example." },
+  type1ConfirmSeconds: { provenance: "assumption", definition: "Illustrative human confirmation time, not measured recognition speed." },
+  manualLoopItems: { provenance: "public", definition: "Monthly referred-back items used as the manual-loop denominator, not all staff work." },
+  gatheringMinutesToday: { provenance: "assumption", definition: "Minutes finding the form, claim, product and applicable rule and comparing evidence." },
+  judgingMinutesToday: { provenance: "assumption", definition: "Minutes spent on each first human judgement today." },
+  doubleCheckPercent: { provenance: "assumption", definition: "Share of today's items receiving one additional judgement of the same duration." },
+  builtJudgingMinutes: { provenance: "assumption", definition: "Minutes per remaining human judgement; abstained items also retain manual gathering." },
+  preventionPercent: { provenance: "assumption", definition: "Would-be referrals prevented by pharmacy checks; the demo's central bet." },
+  clearancePercent: { provenance: "assumption", definition: "Post-prevention items cleared before the queue; the workload estimate assumes code clearance." },
+  abstentionPercent: { provenance: "assumption", definition: "Share of the post-clearance queue needing manual evidence gathering; not an observed rate." },
+  mysCompletionMinutes: { provenance: "assumption", definition: "Pharmacy minutes completing each referred-back item in MYS." },
+});
+
+export interface ManualLoopMonthColumn {
+  itemsGathered: number;
+  itemsJudged: number;
+  doubleChecks: number;
+  referredBackItems: number;
+  gatheringHours: number;
+  judgingHours: number;
+  doubleCheckHours: number;
+  operatorHours: number;
+  pharmacyCompletionHours: number;
+  decisionsWithRuleAndReason: number;
+}
+
+/** Frozen monthModel overload result, implemented by Stream N without a placeholder. */
+export interface ManualLoopMonthResult {
+  counts: ProcessMonthResult["counts"];
+  cohorts: {
+    manualLoopItems: number;
+    prevented: number;
+    afterPrevention: number;
+    clearedBeforeQueue: number;
+    queued: number;
+    abstained: number;
+    built: number;
+  };
+  today: ManualLoopMonthColumn;
+  withAgent: ManualLoopMonthColumn;
+  operatorHoursRatio: number | null;
+  type1: ProcessMonthResult["type1"];
+}
+
+export type ManualLoopMonthModel = (input: ManualLoopMonthInputs) => ManualLoopMonthResult;
+export type ManualLoopMonthDraft = Record<keyof ManualLoopMonthInputs, string>;
+export interface ManualLoopMonthSelection {
+  input: ManualLoopMonthInputs | null;
+  result: ManualLoopMonthResult | null;
+  errors: Partial<Record<keyof ManualLoopMonthInputs, string>>;
+}
+export interface ManualLoopModelSlice {
+  manualLoopInputs: ManualLoopMonthDraft;
+  setManualLoopInput: (field: keyof ManualLoopMonthInputs, value: string) => void;
+}

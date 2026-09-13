@@ -1,5 +1,5 @@
 /** Frozen cross-stream contracts. Synthetic session data, not payment authority. */
-import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, FieldProvenance, HumanDecision, ItemChannel, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
+import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, EpsPrescription, FieldProvenance, HumanDecision, ItemChannel, PaperDeclaration, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
 
 export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated";
 export type Actor = "pharmacy" | "agent" | "code" | "operator";
@@ -58,6 +58,8 @@ export interface CaseRevision {
   /** Present on process-model submissions; legacy revisions remain immutable. */
   readonly channel?: ItemChannel;
   readonly declaration?: PharmacyDeclaration;
+  readonly epsPrescription?: EpsPrescription;
+  readonly paperDeclaration?: PaperDeclaration;
 }
 
 export interface Type1Capture {
@@ -83,6 +85,8 @@ export interface ProcessSubmission {
   channel: ItemChannel;
   endorsementText: string;
   declaration?: PharmacyDeclaration;
+  epsPrescription?: EpsPrescription;
+  paperDeclaration?: PaperDeclaration;
   precheck?: PharmacyPrecheckSnapshot;
 }
 

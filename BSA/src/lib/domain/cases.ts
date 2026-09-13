@@ -1,4 +1,5 @@
 import type { EndorsementFacts, ExceptionCase } from "./types";
+import { HILLCREST_PHARMACY } from "./reference";
 
 // SYNTHETIC demonstration cases. No real prescriptions, patients, pharmacies or
 // contractor codes. Patient labels are placeholders; endorsement text is invented.
@@ -23,7 +24,7 @@ export const CASES: ExceptionCase[] = [
     scenario: "A",
     title: "Valid and complete",
     purpose: "Complete readable endorsement: priced by NHSBSA's existing rules engine, no person involved.",
-    pharmacy: { name: "Riverside Chemist", contractorCode: "FH774" },
+    pharmacy: HILLCREST_PHARMACY,
     routingReason: "Complete endorsement: existing rules engine pricing, no person involved",
     channel: "Paper FP10",
     receivedAt: "2026-09-04T08:12:00",
@@ -60,7 +61,7 @@ export const CASES: ExceptionCase[] = [
     scenario: "B",
     title: "Missing or insufficient information",
     purpose: "Show clearer communication and less evidence-gathering: the note is initialled but not dated, the agent finds the exact gap, cites the rule and drafts the fix.",
-    pharmacy: { name: "Hillcrest Pharmacy", contractorCode: "FQ123" },
+    pharmacy: HILLCREST_PHARMACY,
     routingReason: "Handwritten endorsement: NCSO claim requires operator check",
     channel: "Paper FP10",
     receivedAt: "2026-09-04T09:47:00",
@@ -97,7 +98,7 @@ export const CASES: ExceptionCase[] = [
     scenario: "C",
     title: "Evidence conflict",
     purpose: "Show orchestration and reconciliation: the form, the extracted field and the claim message do not agree on quantity. The agent surfaces the disagreement rather than choosing.",
-    pharmacy: { name: "Oakfield Pharmacy", contractorCode: "FM208" },
+    pharmacy: HILLCREST_PHARMACY,
     routingReason: "Claim message quantity differs from captured form",
     channel: "Paper FP10",
     receivedAt: "2026-09-04T10:05:00",
@@ -134,7 +135,7 @@ export const CASES: ExceptionCase[] = [
     scenario: "D",
     title: "Deliberate failure and abstention",
     purpose: "Show production judgement: a poor handwritten scan, no reliable rule match and disagreeing readings. The agent does not guess; it abstains and the item follows today's process.",
-    pharmacy: { name: "Meadow Lane Dispensary", contractorCode: "FK390" },
+    pharmacy: HILLCREST_PHARMACY,
     routingReason: "Handwritten form: low-confidence read of endorsement",
     channel: "Paper FP10",
     receivedAt: "2026-09-04T10:31:00",
@@ -171,7 +172,7 @@ export const CASES: ExceptionCase[] = [
     scenario: "E",
     title: "Cleared by rules (no model call)",
     purpose: "Show cost discipline: a straightforward item that deterministic pre-checks clear without invoking the agent at all.",
-    pharmacy: { name: "Station Road Pharmacy", contractorCode: "FT561" },
+    pharmacy: HILLCREST_PHARMACY,
     routingReason: "Referred-back item resubmitted: re-check required",
     channel: "Electronic (EPS)",
     receivedAt: "2026-09-04T07:40:00",
@@ -203,7 +204,7 @@ export const CASES: ExceptionCase[] = [
     scenario: "F",
     title: "Human decision recorded",
     purpose: "Show the end state: a case already decided by an operator, with its record available for reconstruction.",
-    pharmacy: { name: "Hillcrest Pharmacy", contractorCode: "FQ123" },
+    pharmacy: HILLCREST_PHARMACY,
     routingReason: "Handwritten endorsement: NCSO claim requires operator check",
     channel: "Paper FP10",
     receivedAt: "2026-09-03T14:20:00",
@@ -251,10 +252,10 @@ export const QUEUE_FILLER: {
   minutesInQueue: number;
   pharmacy: string;
 }[] = [
-  { id: "EX-24104", routingReason: "Broken bulk endorsement: quantity check", state: "agent_review_complete", recommendation: "Sufficient", minutesInQueue: 231, pharmacy: "Riverside Chemist" },
-  { id: "EX-24109", routingReason: "Specials: invoice price not stated", state: "operator_review_required", recommendation: "Refer back", minutesInQueue: 160, pharmacy: "Oakfield Pharmacy" },
-  { id: "EX-24115", routingReason: "Out-of-pocket expenses claim above threshold", state: "additional_evidence_required", recommendation: "Request information", minutesInQueue: 108, pharmacy: "Meadow Lane Dispensary" },
-  { id: "EX-24120", routingReason: "Handwritten form: low-confidence read", state: "agent_abstained", recommendation: "Abstained", minutesInQueue: 91, pharmacy: "Station Road Pharmacy" },
-  { id: "EX-24098", routingReason: "NCSO endorsement present: concession claim", state: "cleared_by_rules", recommendation: "Cleared by rules", minutesInQueue: 0, pharmacy: "Riverside Chemist" },
-  { id: "EX-24093", routingReason: "Handwritten endorsement: NCSO claim", state: "human_decision_recorded", recommendation: "Refer back (accepted)", minutesInQueue: 0, pharmacy: "Hillcrest Pharmacy" },
+  { id: "EX-24104", routingReason: "Broken bulk endorsement: quantity check", state: "agent_review_complete", recommendation: "Sufficient", minutesInQueue: 231, pharmacy: HILLCREST_PHARMACY.name },
+  { id: "EX-24109", routingReason: "Specials: invoice price not stated", state: "operator_review_required", recommendation: "Refer back", minutesInQueue: 160, pharmacy: HILLCREST_PHARMACY.name },
+  { id: "EX-24115", routingReason: "Out-of-pocket expenses claim above threshold", state: "additional_evidence_required", recommendation: "Request information", minutesInQueue: 108, pharmacy: HILLCREST_PHARMACY.name },
+  { id: "EX-24120", routingReason: "Handwritten form: low-confidence read", state: "agent_abstained", recommendation: "Abstained", minutesInQueue: 91, pharmacy: HILLCREST_PHARMACY.name },
+  { id: "EX-24098", routingReason: "NCSO endorsement present: concession claim", state: "cleared_by_rules", recommendation: "Cleared by rules", minutesInQueue: 0, pharmacy: HILLCREST_PHARMACY.name },
+  { id: "EX-24093", routingReason: "Handwritten endorsement: NCSO claim", state: "human_decision_recorded", recommendation: "Refer back (accepted)", minutesInQueue: 0, pharmacy: HILLCREST_PHARMACY.name },
 ];
