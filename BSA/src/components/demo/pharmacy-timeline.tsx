@@ -29,7 +29,7 @@ export function PharmacyTimeline({ caseId, revision }: { caseId: string; revisio
       <h2 id="pharmacy-timeline-title" className="font-semibold">After submission</h2>
       <BoundaryTag cls="existing" />
     </div>
-    <p className="text-sm text-muted-foreground">Recorded synthetic process events only. Playback never advances the claim, creates a referral or calculates a payment.</p>
+    <p className="text-sm text-muted-foreground">Recorded events only; playback changes nothing and calculates no payment. Humans decide referrals. MYS Unpaid items and NHSmail are unconnected public context.</p>
     <div role="status" aria-live="polite" className="rounded-lg bg-muted p-3 font-medium">{current.at} · {current.message}</div>
     <div className="flex flex-wrap gap-2">
       <Button variant="outline" onClick={() => { setPlaying(false); setIndex((current) => Math.min(stages.length - 1, current + 1)); }} disabled={index === stages.length - 1}>Step timeline</Button>
@@ -43,6 +43,5 @@ export function PharmacyTimeline({ caseId, revision }: { caseId: string; revisio
         <dl className="mt-2 space-y-1 text-sm"><KeyValue k="Recorded at" v={stage.at} /><KeyValue k="Actor" v={stage.actor} /><KeyValue k="Outcome" v={stage.message} /><KeyValue k="Playback" v={position <= index ? "Shown" : "Pending"} /></dl>
       </li>)}
     </ol>
-    <p className="text-sm">Referrals require a human Type 2 decision. MYS Unpaid items and NHSmail are public process context, not connected services here.</p>
   </section>;
 }

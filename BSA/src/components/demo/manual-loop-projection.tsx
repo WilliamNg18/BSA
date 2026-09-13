@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
 import { formatProcessItems } from "@/lib/domain/baseline";
-import { MANUAL_LOOP_METRICS, manualLoopRatio, manualLoopSummary } from "@/lib/domain/manual-loop-presentation";
+import { MANUAL_LOOP_METRICS, manualLoopRatio } from "@/lib/domain/manual-loop-presentation";
 import { MonthlyNumber } from "./monthly-number";
 
 export function AutomaticPricingCount() {
@@ -25,7 +25,7 @@ export function ManualLoopProjection() {
         </div>)}
       </dl>
       <p className="text-sm">{manualLoopRatio(result)}</p>
-      <p className="text-sm">Rule-record coverage is a synthetic comparison assumption, not evidence of real staff records or a retrieved clause on every case.</p>
+      <p className="text-sm">Rule-record coverage is a synthetic assumption, not evidence of staff records or a retrieved clause.</p>
     </> : <p role="alert">Estimates unavailable. Correct the monthly inputs.</p>}
     <p className="text-sm text-muted-foreground">Estimates from labelled assumptions. <Link to="/#month" className="underline underline-offset-4">Edit monthly assumptions</Link>.</p>
   </section>;
@@ -44,7 +44,6 @@ export function PharmacyModelStrip() {
           <div key={key}><dt>{label}</dt><dd data-pharmacy-model={key}><MonthlyNumber value={column[key]} format={format} />{enabled ? " (estimate)" : ""}</dd></div>)}
         <div><dt>Prevented before submission</dt><dd data-pharmacy-model="prevented">{enabled ? `${formatProcessItems(result.cohorts.prevented)} (estimate)` : "0"}</dd></div>
       </dl>
-      <p className="text-sm">{manualLoopSummary(result)}</p>
     </> : <p role="alert">Shared monthly scenario unavailable. Correct the monthly assumptions.</p>}
     <p className="text-sm text-muted-foreground">Estimates from labelled assumptions. <Link to="/#month" className="underline underline-offset-4">Edit monthly assumptions</Link>.</p>
   </section>;
