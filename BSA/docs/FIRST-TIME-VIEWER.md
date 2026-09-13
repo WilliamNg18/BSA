@@ -1,10 +1,81 @@
 ---
 title: First-time viewer clarity review
-description: Chapter 2, 6 and 7 understanding criteria, observed baseline and source-pinned final acceptance.
-ms.date: 2026-09-12
+description: Source-pinned integrated process review, outstanding content findings and historical acceptance.
+ms.date: 2026-09-13
 ---
 
 # First-time viewer review
+
+## Task 24: integrated process review at 1327e65
+
+**Novice-content verdict: FAIL. Functional hosted execution: 20/20 PASS.**
+These are separate results. An independent QA agent actually inspected all
+**43/43 full-height PNGs (19 Off / 24 On), zero uninspected**, including the
+two supplementary perspective-helper captures. All 198 exported artifact
+hashes verified. This is an AI evaluator's review of executed evidence, not
+human participant research, timed comprehension or another browser execution.
+
+Application: `1327e65fffeafebf43df1b1b566c6e4152452b46`.
+Capture source: `510d767b938241d5fee7d40ade9607461113728f`.
+The hosted run occurred on 2026-09-13, 14:44:43-14:48:58 UTC.
+The [immutable evidence index](screens/task24/README.md) records exact build
+identities, original attachments and hashes. Its capture-time
+`visualReview: pending` is not rewritten to backdate this subsequent review.
+
+### Content findings requiring repair and new evidence
+
+| Finding | Observed evidence | Verdict |
+| --- | --- | --- |
+| D: unknown evidence presented as agreement | [Unconfirmed capture On](screens/task24/1327e65/check-09/09-audit-unconfirmed-capture-on.png) and [fresh capture On](screens/task24/1327e65/check-09/11-d-fresh-capture-after-referral-on.png) say "Sources reconcile: Agree, satisfied" and "The sources agree" despite unreadable quantity and unresolved product. The unconfirmed view also says "Case built, awaiting operator" above a capture-required abstention. No detected conflict does not establish agreement. | **FAIL:** use unknown/unconfirmed evidence and pending-capture language. This is not a demonstrated capture-guard bypass. |
+| E: unnecessary human handoff asserted after deterministic clearance | [Deterministic trace](screens/task24/1327e65/check-10/04-audit-deterministic-e-trace-on.png) correctly says no agent invocation/no person involved, but its "Where it ends" section says "The agent's part is over. The rest is a person." | **FAIL:** the closing must reflect existing-rules completion, not an agent/human handoff. No extra decision was demonstrated. |
+
+### Understanding supported by the reviewed views
+
+The pharmacy-first EPS story distinguishes explicit submission from human
+Type 2 judgement: a reason/RB code and any operator-approved note retain their
+provenance, while corrected complete EPS reaches existing pricing without a
+second approval. Off remains a deliberate unchecked manual path.
+
+Paper capture distinguishes manual keying from proposed pharmacy-declared
+fields. D's poor scan remains poor and a later paper revision needs fresh
+capture, subject to the misleading confidence copy above. Completed paper B
+correctly retains human capture before existing pricing without a Type 2
+judgement, in both its queue and Four cases card.
+
+C still presents 56 versus 84 after confirmation. B's recorded July evidence
+is sufficient while August refers back. F retains DR-000871 and its recorded
+2026-08 label; an initial possible label concern was not confirmed on closer
+inspection. The shared model distinguishes supplied public context,
+assumptions and session counts, and warns against adding overlapping effort.
+
+The two supplementary perspective screenshots show retained manual and
+assisted attempts, reason/RB code and approved-note provenance. They are
+sequential scenarios, not independent static proof of state equality.
+
+### Accessibility and observation limits
+
+**Automated axe: 24 audits, zero violations. Manual clearance: NOT VERIFIED.**
+Nineteen audits retain incomplete checks: 121 color-contrast node occurrences
+involving SVG/image backgrounds or overlays, and five `aria-prohibited-attr`
+occurrences on `div[aria-label="Claim filters"]` without a valid role. The
+filter-group naming concern requires a markup repair, not a waiver based on
+the zero-violation count.
+
+The 41 enriched views are 40 Both / one Pharmacy; the two supplemental views
+also use Pharmacy. This is not an all-three-perspectives static matrix.
+Review was bounded to captured 1440-wide, light, reduced-motion Chromium.
+Sticky-header/tooltip overlays sometimes cover content; text/AX evidence
+corroborates that content but does not make it visually recovered. AX data
+does not establish screen-reader announcements. No full manual WCAG,
+keyboard, mobile, dark-mode, cross-browser or measured human-comprehension
+claim is made. New fixes, CI, deployment and reviewed captures remain gates.
+
+## Historical Task 18 review (not current interface acceptance)
+
+The following record is preserved unchanged as historical evidence. Its
+referral-only arithmetic, virtual queue and second-review description are
+not the current Task 24 process. Use the current [SPEC](SPEC.md) and
+[demo script](demo-script.md), subject to the Task 24 findings above.
 
 Task 18, issue #60. This is an **agent novice-perspective review**, not human
 user testing. Ten seconds is a first-glance review target, not a measured human

@@ -15,18 +15,30 @@ source/configuration. Its identity is deliberately distinct from the deployed
 application. Later documentation/export commits do not relabel either identity.
 All **40 before/after build identities** matched the expected clean deployment.
 
-There are **41 full-page PNGs: 18 Off / 23 On**, with hashes rechecked after
-export. **24 unrestricted axe audits: 10 Off / 14 On** reported **zero violations**.
+There are **43 full-page PNGs: 19 Off / 24 On**. Forty-one enriched view entries
+(18 Off / 23 On) have per-view hashes, text and accessibility snapshots; this
+is the manifest's `counts.images` value. Two additional images from the existing
+perspective helper retain per-check build identity and artifact hashes:
+[Off](1327e65/check-20/04-perspective-decision-off.png) and
+[On](1327e65/check-20/06-perspective-decision-on.png).
+All 198 exported artifact hashes were checked.
+**24 unrestricted axe audits: 10 Off / 14 On** reported **zero violations**.
 Nineteen audits retain incomplete results: 16 color-contrast and five
 aria-prohibited-attr occurrences, overlapping. These remain manual-review
 candidates. All browser error guards and root-overflow checks passed.
 The manifest initially records `visualReview: pending`; an actual subsequent
 review is recorded separately, not backdated into the capture.
+The [subsequent independent review](../../FIRST-TIME-VIEWER.md)
+inspected **43/43 full-height PNGs** and returned **novice-content FAIL**:
+D asserts source agreement before readable/confirmed evidence, and E's
+closing invents an unnecessary human handoff. Functional PASS is unchanged;
+this capture set is not clean final novice acceptance.
 
 Chromium, 1440 x 1000, reduced motion, full-page screenshots. The exact browser
 version, per-view URL, perspective, Agent mode, visible text and accessibility
-snapshot are in each view entry. Forty images use Both and one uses Pharmacy;
-this is not an all-three-perspectives static matrix. The separate header checks
+snapshot are in each enriched view entry. Of those 41 entries, forty use Both
+and one uses Pharmacy; the two supplemental decisions also use Pharmacy.
+This is not an all-three-perspectives static matrix. The separate header checks
 visit all three perspectives and the 32-case state proof exercises side changes.
 This is not mobile/dark/cross-browser or full
 manual accessibility certification. Repeated captures are counted as actual

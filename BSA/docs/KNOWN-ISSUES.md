@@ -21,10 +21,15 @@ The original failure and subsequent source-pinned evidence are retained.
 
 After all functional streams merged, **20/20 hosted checks passed** against
 clean `1327e65fffeafebf43df1b1b566c6e4152452b46`, with 40 matching identities,
-41 images and 24 unrestricted axe audits (zero violations). This is distinct
+43 images (41 enriched views plus two perspective-helper images) and 24
+unrestricted axe audits (zero violations). This is distinct
 from the earlier local rehearsals. The [Task 24 evidence](screens/task24/README.md)
-records exact sources and incomplete-audit caveats. Visual/novice review and
-the final merged-V-main coordinator recheck are separate gates.
+records exact sources and incomplete-audit caveats. The subsequent
+[43-image novice review](FIRST-TIME-VIEWER.md) **failed two content points**:
+D asserts source agreement before readable/confirmed evidence, and E's closing
+invents an unnecessary human handoff. Five incomplete axe occurrences also
+identify Claim filters naming without a valid role. Repairs, new reviewed
+evidence and the final merged-V-main coordinator recheck remain gates.
 See the [live checklist](../tests/live/README.md).
 
 Tasks 14-18's historical live review at clean `c0203fc` is recorded separately in
