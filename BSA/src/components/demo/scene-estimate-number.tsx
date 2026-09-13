@@ -1,12 +1,12 @@
 import { useLayoutEffect, useRef } from "react";
-import { formatBaselineNumber, type BaselineResult, type ProcessMonthResult } from "@/lib/domain/baseline";
+import { formatBaselineNumber, type BaselineResult, type ProcessMonthResult, type ManualLoopMonthResult } from "@/lib/domain/baseline";
 import { startSceneCountIn } from "./scene-count-in";
 
 export function SceneEstimateNumber({ value, digits = 1, enabled, scenario, format }: {
   value: number;
   digits?: number;
   enabled: boolean;
-  scenario: BaselineResult | ProcessMonthResult;
+  scenario: BaselineResult | ProcessMonthResult | ManualLoopMonthResult;
   format?: (value: number) => string;
 }) {
   const visual = useRef<HTMLSpanElement>(null);

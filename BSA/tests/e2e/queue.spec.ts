@@ -30,8 +30,8 @@ for (const enabled of [false, true]) {
       await expect(page.getByRole("button", { name, exact: true })).toHaveCount(0);
     }
     await expect(page.getByRole("region", { name: "Automatic pricing monthly aggregate", exact: true }))
-      .toContainText("Shared monthly model, not session completions");
-    await expect(page.locator("[data-queue-month-summary]")).toContainText("these projections are not actual session decisions");
+      .toContainText("Whole-service context, not session completions or a projection of this pharmacy's activity.");
+    await expect(page.locator("[data-queue-month-summary]")).toContainText("Rule-record coverage is a synthetic comparison assumption, not evidence of real staff records or a retrieved clause on every case.");
     const ids = await rowIds(page);
     expect(ids.length).toBeGreaterThan(0);
     expect(new Set(ids).size).toBe(ids.length);

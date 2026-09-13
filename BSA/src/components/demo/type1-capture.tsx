@@ -8,7 +8,7 @@ import { BoundaryTag } from "@/components/demo/labels";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { PainMarker } from "@/components/demo/pain-marker";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
-import { useProcessMonth } from "@/hooks/use-process-month";
+import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
 import type { CaseRevision, ConfirmType1Input } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
@@ -211,9 +211,9 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
 
 function CaptureTiming({ assisted }: { assisted: boolean }) {
   const id = useId();
-  const drafts = useAppStore((s) => s.processInputs);
-  const setProcessInput = useAppStore((s) => s.setProcessInput);
-  const selection = useProcessMonth();
+  const drafts = useAppStore((s) => s.manualLoopInputs);
+  const setManualLoopInput = useAppStore((s) => s.setManualLoopInput);
+  const selection = useManualLoopMonth();
   const seconds = assisted ? selection.result?.type1.confirmSeconds : selection.result?.type1.keySeconds;
   return (
     <div className="space-y-2 rounded-lg bg-muted/50 p-3">
@@ -227,7 +227,7 @@ function CaptureTiming({ assisted }: { assisted: boolean }) {
             <div key={field} className="space-y-1.5">
               <Label htmlFor={`${id}-${field}`}>{field === "type1KeySeconds" ? "Today keying seconds" : "With declaration confirmation seconds"} (assumption)</Label>
               <Input id={`${id}-${field}`} inputMode="decimal" value={drafts[field]}
-                onChange={(event) => setProcessInput(field, event.target.value)}
+                onChange={(event) => setManualLoopInput(field, event.target.value)}
                 aria-invalid={Boolean(selection.errors[field])} aria-describedby={selection.errors[field] ? `${id}-${field}-error` : undefined} />
               {selection.errors[field] && <p id={`${id}-${field}-error`} role="alert" className="text-sm text-destructive">{selection.errors[field]}</p>}
             </div>

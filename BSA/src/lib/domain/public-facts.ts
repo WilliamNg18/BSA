@@ -6,7 +6,7 @@ export const SOURCES_FOOTER = "Owner-supplied public process context attributed 
 export const TOUR_CONTENT = {
   chapters: [
     { chapter: 1, title: "Most items need no person", prose: "Straightforward items flow to automated pricing. Staff capture uncertain reads and judge endorsements; unresolved items return to the pharmacy." },
-    { chapter: 2, title: "A month in numbers", prose: "Compare referrals and repeat work using shared assumptions. Keep Type 2 judgement, referral investigation and pharmacy completion separate." },
+    { chapter: 2, title: "A month in numbers", prose: "Estimate a smaller referral loop. Count gathering, judgement and double-checks; keep pharmacy labour separate from operator hours." },
     { chapter: 3, title: "What exists today and what changes", prose: "Follow automated pricing, conditional staff paths and resubmission. Assistance checks pharmacy declarations, pre-fills capture and builds evidence; humans confirm and decide." },
     { chapter: 4, title: "Four cases", prose: "Compare automatic pricing, endorsement judgement and uncertain paper capture. Follow the shared item history; conflicts remain unresolved and humans retain authority." },
     { chapter: 5, title: "One agent, two places", prose: "Follow referral, pharmacy correction and resubmission through one synthetic history. Humans decide; assistance does not guarantee acceptance, payment or shorter delays." },

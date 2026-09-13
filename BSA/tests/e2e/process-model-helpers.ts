@@ -1,15 +1,16 @@
 import type { Page } from "@playwright/test";
 import { expect } from "./fixtures";
 import { PROCESS_FIELDS } from "../../src/components/demo/process-fields";
-import { PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, type ProcessMonthInputs, type ProcessMonthResult } from "../../src/lib/domain/baseline";
-import { calculateProcessMonth } from "../../src/lib/domain/process-month-model";
+import { MANUAL_LOOP_MONTH_DEFAULTS as PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, type ManualLoopMonthInputs as ProcessMonthInputs, type ManualLoopMonthResult as ProcessMonthResult } from "../../src/lib/domain/baseline";
+import { calculateManualLoopMonth as calculateProcessMonth } from "../../src/lib/domain/manual-loop-month-model";
+import { manualLoopSummary } from "../../src/lib/domain/manual-loop-presentation";
 
 export { PROCESS_FIELDS, PROCESS_MONTH_DEFAULTS, calculateProcessMonth };
 export type { ProcessMonthInputs };
 
 export const processMetrics = [
-  "referredBackItems", "referralOperatorHours", "pharmacyCompletionHours",
-  "type2OperatorHours", "caughtBeforeSubmission", "decisionsWithRuleAndReason",
+  "referredBackItems", "operatorHours", "gatheringHours", "judgingHours", "doubleCheckHours",
+  "itemsGathered", "itemsJudged", "doubleChecks", "pharmacyCompletionHours", "decisionsWithRuleAndReason",
 ] as const;
 
 export function formatProcessMetric(key: string, value: number) {
@@ -19,7 +20,7 @@ export function formatProcessMetric(key: string, value: number) {
 export async function expandProcessInputs(page: Page) {
   const detail = page.locator("[data-month-detail]");
   if (await detail.getAttribute("open") === null) await detail.locator(":scope > summary").click();
-  await expect(detail.getByRole("group", { name: "Shared process inputs", exact: true })).toBeVisible();
+  await expect(detail.getByRole("group", { name: "Shared referral-loop and process inputs", exact: true })).toBeVisible();
 }
 
 export async function fillProcessInputs(page: Page, input: ProcessMonthInputs) {
@@ -38,14 +39,14 @@ export async function expectProcessMetrics(page: Page, input = PROCESS_MONTH_DEF
       const metric = page.locator(`[data-process-metric="${mode}-${key}"]`);
       const text = formatProcessMetric(key, result[mode][key]);
       await expect(metric).toBeVisible();
-      await expect(metric).toHaveText(text);
+      await expect(metric).toHaveText(`${text}${mode === "withAgent" ? "estimate" : ""}`);
       await expect(metric.getByRole("img", { name: text, exact: true })).toBeVisible();
     }
-    await expect(page.locator(`[data-process-column="${mode}"]`)).toHaveCount(6);
-    await expect(page.locator(`[data-process-column="${mode}"][data-active="${mode === (enabled ? "withAgent" : "today")}"]`)).toHaveCount(6);
+    await expect(page.locator(`[data-process-column="${mode}"]`)).toHaveCount(10);
+    await expect(page.locator(`[data-process-column="${mode}"][data-active="${mode === (enabled ? "withAgent" : "today")}"]`)).toHaveCount(10);
   }
   await expect(page.locator("[data-baseline-summary]")).toHaveText(
-    `${enabled ? "With the agent" : "Today"}: ${formatProcessItems(result[enabled ? "withAgent" : "today"].referredBackItems)} items referred back. Shared monthly estimates updated.`,
+    manualLoopSummary(result),
   );
 }
 
@@ -57,7 +58,7 @@ export function sceneMetrics(result: ProcessMonthResult, enabled = true) {
     ["type1Items", result.counts.type1Items],
     ["type2Items", result.counts.type2Items],
     ["referredBackItems", column.referredBackItems],
-    ["referralOperatorHours", column.referralOperatorHours],
+    ["operatorHours", column.operatorHours],
   ] as const;
 }
 

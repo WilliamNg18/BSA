@@ -44,11 +44,11 @@ test("conditional processing paths retain automatic bypass and human capture, ju
 
 const processScenarios: { name: string; input: ProcessMonthInputs }[] = [
   { name: "defaults", input: { ...PROCESS_MONTH_DEFAULTS } },
-  { name: "small monthly volume", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, monthlyReferrals: 2 } },
-  { name: "all would-be referrals caught", input: { ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 100 } },
-  { name: "all remaining items abstained", input: { ...PROCESS_MONTH_DEFAULTS, pharmacyCatchPercent: 0, abstainPercent: 100 } },
-  { name: "zero items", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 0, monthlyReferrals: 0 } },
-  { name: "billion items and small referral effort", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 1_000_000_000, monthlyReferrals: 1, investigationMinutesToday: 0.1 } },
+  { name: "small monthly volume", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 120, manualLoopItems: 2 } },
+  { name: "all would-be referrals caught", input: { ...PROCESS_MONTH_DEFAULTS, preventionPercent: 100 } },
+  { name: "all remaining items abstained", input: { ...PROCESS_MONTH_DEFAULTS, preventionPercent: 0, abstentionPercent: 100 } },
+  { name: "zero items", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 0, manualLoopItems: 0 } },
+  { name: "billion items and small referral effort", input: { ...PROCESS_MONTH_DEFAULTS, monthlyItems: 1_000_000_000, manualLoopItems: 1, gatheringMinutesToday: 0.1 } },
 ];
 
 for (const { name, input } of processScenarios) {
@@ -67,7 +67,7 @@ test(`pipeline, scene and calculator share counts and recover invalid inputs: ${
       const column = enabled ? result.withAgent : result.today;
       await expect(page.locator("[data-pipeline-referrals]")).toHaveText(formatProcessItems(column.referredBackItems));
       await expect(page.locator("[data-pipeline-pharmacy]")).toHaveCount(enabled ? 1 : 0);
-      if (enabled) await expect(page.locator("[data-pipeline-pharmacy]")).toHaveText(formatProcessItems(column.caughtBeforeSubmission));
+      if (enabled) await expect(page.locator("[data-pipeline-pharmacy]")).toHaveText(formatProcessItems(result.cohorts.prevented));
       await expect(page.locator("[data-auto-bypass]")).toBeVisible();
       await chooseProcessChapter(page, 2);
   }
@@ -122,7 +122,7 @@ test("path links and figure context remain keyboard accessible; reset describes 
   const figure = page.locator('[data-pipeline-stage="referred-back"]').getByRole("button", { name: "Monthly referrals: figure context", exact: true });
   await figure.focus();
   await expect(figure).toBeFocused();
-  await expect(page.getByRole("tooltip")).toContainText("reduces referrals only by the assumed pre-submission catch");
+  await expect(page.getByRole("tooltip")).toContainText("after sequential pharmacy prevention and code clearance; all remaining queued items are assumed referred back");
   await page.keyboard.press("Escape");
   for (const [name, url] of [
     ["Try the pharmacy check", /\/pharmacy$/], ["Read the proposed paper boundary", /\/boundary$/],
