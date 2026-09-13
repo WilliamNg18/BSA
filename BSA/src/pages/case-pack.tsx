@@ -13,7 +13,6 @@ import { ErrorState } from "@/components/states";
 import { CaseHeader } from "@/components/demo/case-header";
 import { BoundaryTag, KeyValue, RecommendationBadge, StatusDot } from "@/components/demo/labels";
 import { REC_META } from "@/components/demo/label-meta";
-import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { CompositeBadge, SignalList } from "@/components/demo/signals";
 import { runAgent } from "@/lib/domain/agent";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
@@ -21,7 +20,7 @@ import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
 import { caseViewState, manualChoice, permitsProposal } from "@/lib/case-presentation";
-import { CasePlayback, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
+import { CasePlayback, CaseSourceEvidence, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { Type1Capture } from "@/components/demo/type1-capture";
 import { ManualTariffLookup } from "@/components/demo/case-presentation";
@@ -119,7 +118,7 @@ function CasePackContent() {
         c={c}
         state={state}
         title={`Operator case pack: ${c.title}`}
-        intro="Review the form, evidence, applicable rule, conflicts and gate checks. Assistance recommends only; the operator decides."
+        intro="Review the evidence, monthly rule and checks. The agent verifies and advises; a person decides."
       />
       <LifecycleHistory id={c.id} />
       {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
@@ -129,7 +128,7 @@ function CasePackContent() {
       {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} />}
       {automatic && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
         <BoundaryTag cls="deterministic" />
-        <p>Priced by NHSBSA's existing rules engine; no person involved in automatic pricing.</p>
+        <p>priced by NHSBSA's existing rules engine, no person involved</p>
         <p className="text-sm text-muted-foreground">No operator action is needed. Any earlier human decisions remain in the history.</p>
       </section>}
       {!awaitingCapture && !captureCompleted && !automatic && currentProcess && (lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
@@ -172,7 +171,14 @@ function CasePackContent() {
       {!agentEnabled && <>
         <div className="flex flex-wrap items-center gap-2"><RecommendationBadge rec="NONE" /><StatusDot status="skipped" label="NOT RUN" /><BoundaryTag cls="human" /></div>
         <RawCaseFields c={c} />
-        {!awaitingCapture && !automatic && <ManualTariffLookup />}
+        {!awaitingCapture && !automatic && <>
+          <ManualTariffLookup />
+          <section aria-label="RB code list" className="space-y-2 rounded-xl border p-4">
+            <h2 className="font-semibold">RB code list</h2>
+            <p className="text-sm text-muted-foreground">Choose a code only when your human judgement requires referral.</p>
+            <dl className="grid gap-2 text-sm">{RB_CODE_CATALOG.map((entry) => <KeyValue key={entry.code} k={entry.code} v={entry.reason} />)}</dl>
+          </section>
+        </>}
         <MissingAssistedSlots markers />
       </>}
       {agentEnabled && !pack.agentInvoked && <RawCaseFields c={c} />}
@@ -269,7 +275,9 @@ function CasePackContent() {
           </>}
 
           {clock.revealed >= 4 && <>
-          <PageSection title="Conflicts and missing evidence" description={pack.conflicts.length ? "Each source is shown; the agent does not choose between them." : pack.signals.reconciliation === "agree" ? "Comparable fields agree." : "Reconciliation not established."}>
+          <PageSection title="Conflicts and missing evidence" description={pack.conflicts.length ? "Each source is shown; the agent does not choose between them." : pack.signals.reconciliation === "agree"
+            ? currentProcess?.capture?.provenance === "pharmacy_declaration" ? "Human-confirmed declaration matches the claim. Image agreement remains unknown." : "Comparable fields agree."
+            : "Reconciliation not established."}>
             {pack.conflicts.length === 0 ? (
               <p className="text-sm text-muted-foreground">{pack.signals.reconciliation === "agree"
                 ? "This comparison does not establish agreement for missing or unreadable evidence."
@@ -291,11 +299,7 @@ function CasePackContent() {
 
         <div className="space-y-6 xl:col-span-2">
           {clock.revealed >= 1 && <>
-          <PageSection title="Prescription image" description={currentProcess?.capture?.provenance === "pharmacy_declaration"
-            ? "Declared by the pharmacy, not read from the form. Human confirmation is recorded."
-            : c.imageStyle === "handwritten_poor" ? "The scan remains unreadable. Do not treat declared fields as image readings." : "Synthetic form evidence; highlighted regions identify the fields considered."}>
-            <PrescriptionForm c={c} highlight={c.imageStyle === "handwritten_poor" ? [] : ["item", "endorsement"]} />
-          </PageSection>
+          <CaseSourceEvidence c={c} />
           <PageSection title="Original machine capture, product and claim">
             <dl className="grid gap-2">
               <KeyValue k="Product (capture)" v={`${c.extracted.productText} · confidence ${c.extracted.productConfidence.toFixed(2)}`} />

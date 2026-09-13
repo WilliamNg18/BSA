@@ -1,5 +1,5 @@
 import type { CasePack, CaseState, HumanDecision } from "./domain/types";
-import type { ItemProcess, LifecycleDecisionRecord } from "./domain/lifecycle";
+import type { CaseLifecycle, ItemProcess, LifecycleDecisionRecord } from "./domain/lifecycle";
 import { TARIFF_VERSIONS } from "./domain/tariff";
 
 export function recordHasRule(record: LifecycleDecisionRecord | undefined): boolean {
@@ -8,6 +8,21 @@ export function recordHasRule(record: LifecycleDecisionRecord | undefined): bool
   if (!version) return false;
   return Boolean(version.clauses.some((clause) => clause.id === record.clauseId)
     || record.revision === undefined && record.checks.some((check) => check.name === "Recommendation cites a validated provision" && check.pass));
+}
+
+export function recordHasRuleAndReason(record: LifecycleDecisionRecord | undefined): boolean {
+  return recordHasRule(record) && Boolean(record?.reason?.trim() || record?.overrideReason?.trim());
+}
+
+export type StaffLane = "type1" | "type2" | "referred" | "decided";
+
+export function staffLane(lifecycle: CaseLifecycle, process: ItemProcess): StaffLane | null {
+  if (process.routing.outcome === "auto_priced") return null;
+  if (lifecycle.state === "referred_back") return "referred";
+  if (lifecycle.state === "paid" || !process.routing.requiresHuman
+    && process.routing.pricingAuthority === "existing_rules_engine") return "decided";
+  if (process.routing.outcome === "type1_capture" && process.routing.requiresHuman) return "type1";
+  return "type2";
 }
 
 export function caseViewState(pack: CasePack | null, process: ItemProcess | undefined, hasCurrentRecord: boolean): CaseState {
