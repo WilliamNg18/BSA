@@ -341,7 +341,7 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
   const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
-  await expect(capture).toContainText("The agent cannot read this scan");
+  await expect(capture).toContainText("Image cannot be read");
   await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
   await expect(capture.getByRole("alert")).toBeVisible();
   await chooseProcessChapter(page, 4);
