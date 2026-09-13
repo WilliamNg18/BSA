@@ -23,6 +23,8 @@ export interface HistoryEvent {
   channel?: ItemChannel;
   rbCode?: string;
   processStep?: "submission" | "automatic_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission";
+  /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
+  readonly capture?: Type1Capture;
 }
 
 /** Created only by an explicit human approval argument, never by the flag. */
