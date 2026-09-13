@@ -9,6 +9,21 @@ const D = CASES[3], E = CASES[4];
 beforeEach(() => store().resetDemo());
 
 describe("reviewed source authority boundaries", () => {
+  it.each(["ESCALATE", "REQUEST_INFORMATION", "REFER_BACK"] as const)("retains review authority after a human %s disposition", (decision) => {
+    for (const enabled of [false, true]) {
+      store().resetDemo();
+      const id = "SYN-FQ123-RECHECK";
+      store().setAgentEnabled(enabled);
+      store().arriveInQueue(id);
+      store().recordType2Decision({ caseId: id, decision, reason: "Further human review of corrected evidence is required.", rbCode: "SYN-NCSO" });
+      const pack = runAgent(sessionCase(id)!, { agentEnabled: enabled });
+      expect(sessionCase(id)?.requiresHumanRecheck).toBe(true);
+      expect(pack.state).not.toBe("cleared_by_rules");
+      expect(pack.trace.map((step) => step.summary).join(" ")).not.toContain("no person involved");
+      expect(store().lifecycles[id].state).not.toBe("paid");
+      expect(store().itemProcesses[id].routing.pricingAuthority).toBeNull();
+    }
+  });
   it("a newly declared generic paper product cannot price as its nongeneric template", () => {
     const id = "SYN-FQ123-TYPE2";
     store().submitItem({ caseId: id, channel: "paper", endorsementText: "", paperDeclaration: {

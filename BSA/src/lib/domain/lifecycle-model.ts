@@ -137,7 +137,7 @@ export function caseForLifecycle(
   }
   const humanDecision = lifecycles[caseId].history.filter((event) => event.revision === revision.number && event.actor === "operator" && event.decision).at(-1);
   if (humanDecision?.to === "paid") c = { ...c, humanPricingConfirmed: true, initialState: "human_decision_recorded" };
-  if (["resubmission", "confirmation"].includes(revision.kind) && !humanDecision) {
+  if ((["resubmission", "confirmation"].includes(revision.kind) || revision.kind !== "seed" && humanDecision) && humanDecision?.to !== "paid") {
     c = { ...c, requiresHumanRecheck: true, initialState: "operator_review_required" };
   }
   if (c.scenario !== "D" && revision.endorsementText !== original.extracted.endorsementText) {
