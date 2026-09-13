@@ -82,11 +82,12 @@ function CasePackContent() {
   const chosen = !agentEnabled ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
   const isOverride = showRecommendation && (chosen === "AMEND" || chosen !== suggested && chosen !== "ACCEPT");
   const disposition = chosen === "ACCEPT" && showRecommendation ? suggested : chosen;
-  const needsReason = isOverride || !showRecommendation || (disposition !== "ACCEPT" && disposition !== "AMEND");
+  const needsReason = true;
   const currentProcess = process?.revision === revision ? process : undefined;
-  const awaitingCapture = currentProcess?.routing.outcome === "type1_capture";
+  const awaitingCapture = currentProcess?.routing.outcome === "type1_capture" && currentProcess.routing.requiresHuman;
+  const captureCompleted = currentProcess?.routing.outcome === "type1_capture" && !currentProcess.routing.requiresHuman;
   const automatic = currentProcess?.routing.outcome === "auto_priced";
-  const decided = !currentProcess || awaitingCapture || automatic || lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
+  const decided = !currentProcess || awaitingCapture || captureCompleted || automatic || lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
   const canApprove = agentEnabled && showRecommendation && !!pack.draftToPharmacy && (disposition === "REFER_BACK" || disposition === "REQUEST_INFORMATION");
 
   function submit() {
@@ -106,7 +107,7 @@ function CasePackContent() {
     try {
     recordDecision({
       caseId: c.id,
-      decision: chosen,
+      decision: disposition,
       reason: reason.trim(),
       rbCode: disposition === "REFER_BACK" ? rbCode : undefined,
       approvedDraft: canApprove && approved ? pack.draftToPharmacy! : undefined,
@@ -126,7 +127,7 @@ function CasePackContent() {
       />
       <LifecycleHistory id={c.id} />
       {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
-        Captured fields: declared by the pharmacy, not read from the form. Confirmed by a Type 1 operator; proposed path.
+        Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
       </p>}
       {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
       {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} />}
@@ -135,7 +136,7 @@ function CasePackContent() {
         <p>Priced by NHSBSA's existing rules engine; no person involved in automatic pricing.</p>
         <p className="text-sm text-muted-foreground">No operator action is needed. Any earlier human decisions remain in the history.</p>
       </section>}
-      {!awaitingCapture && !automatic && currentProcess && (lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
+      {!awaitingCapture && !captureCompleted && !automatic && currentProcess && (lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
         <BoundaryTag cls="human" /><p>Start review explicitly before recording a decision.</p>
         <Button onClick={() => { try { arrive(c.id); setError(""); } catch (err) { setError(err instanceof Error ? err.message : "Review unavailable."); } }}>Start review</Button>
       </section>}
@@ -294,17 +295,12 @@ function CasePackContent() {
             : c.imageStyle === "handwritten_poor" ? "The scan remains unreadable. Do not treat declared fields as image readings." : "Synthetic form evidence; highlighted regions identify the fields considered."}>
             <PrescriptionForm c={c} highlight={c.imageStyle === "handwritten_poor" ? [] : ["item", "endorsement"]} />
           </PageSection>
-          <PageSection title="Extracted fields, product and claim">
+          <PageSection title="Original machine capture, product and claim">
             <dl className="grid gap-2">
-              <KeyValue k="Product (capture)" v={currentProcess?.capture?.provenance === "pharmacy_declaration"
-                ? `${c.extracted.productText} · declared by the pharmacy, not read from the form`
-                : `${c.extracted.productText} · confidence ${c.extracted.productConfidence.toFixed(2)}`} />
+              <KeyValue k="Product (capture)" v={`${c.extracted.productText} · confidence ${c.extracted.productConfidence.toFixed(2)}`} />
               <KeyValue k="Product (master data)" v={pack.product ? `${pack.product.name}, pack ${pack.product.packSize}, category ${pack.product.category}, basic price £${pack.product.basicPrice.toFixed(2)}` : "Not resolved"} />
-              <KeyValue k="Quantity (capture)" v={currentProcess?.capture?.provenance === "pharmacy_declaration"
-                ? `${c.extracted.quantity ?? "Unreadable"} · declared by the pharmacy, not read from the form` : c.extracted.quantity ?? "Unreadable"} />
-              <KeyValue k="Endorsement (capture)" v={currentProcess?.capture?.provenance === "pharmacy_declaration"
-                ? `"${c.extracted.endorsementText || "none"}" · declared by the pharmacy, not read from the form`
-                : `"${c.extracted.endorsementText || "none"}" · confidence ${c.extracted.endorsementConfidence.toFixed(2)}`} />
+              <KeyValue k="Quantity (capture)" v={c.extracted.quantity ?? "Unreadable"} />
+              <KeyValue k="Endorsement (capture)" v={`"${c.extracted.endorsementText || "none"}" · confidence ${c.extracted.endorsementConfidence.toFixed(2)}`} />
               <KeyValue k="Claim / ledger" v={`Qty ${c.claim.quantity}, £${c.claim.amountClaimed.toFixed(2)}, "${c.claim.endorsementText || "none"}", ${c.claim.submittedVia}`} />
               <KeyValue k="Concession this month" v={pack.concession ? `£${pack.concession.price.toFixed(2)} (${pack.tariffLabel})` : "None listed"} />
               <KeyValue k="Endorsement required?" v={pack.endorsementRequired === null ? "Unknown" : pack.endorsementRequired ? "Yes" : "No"} />
@@ -334,7 +330,7 @@ function CasePackContent() {
       </>}
 
       {(!agentEnabled || clock.revealed >= 6) && <>
-      <PageSection title="Operator decision" description="The consequential decision is a person's. A reason is mandatory for any override, and whenever there is no recommendation to accept.">
+      <PageSection title="Operator decision" description="Record your human reason for every decision. An override must explain why you depart from the recommendation.">
         <Card className="border-orange-600">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>

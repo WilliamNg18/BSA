@@ -33,9 +33,10 @@ export function QueuePage() {
     const c = caseForLifecycle(id, lifecycles, revisions, processes);
     if (!c) return [];
     const pack = agentEnabled ? runAgent(c, { agentEnabled: true }) : null;
-    const type1 = process.routing.outcome === "type1_capture";
+    const type1 = process.routing.outcome === "type1_capture" && process.routing.requiresHuman;
+    const captureCompleted = process.routing.outcome === "type1_capture" && !process.routing.requiresHuman && Boolean(process.capture);
     const referred = process.routing.outcome === "referred_back" && !(revision.kind === "seed" && c.scenario === "F");
-    const decided = !referred && Boolean(record);
+    const decided = !referred && (Boolean(record) || captureCompleted);
     const category: WorkFilter = type1 ? "type1" : referred ? "referred" : decided ? "decided"
       : pack?.recommendation === "ABSTAIN" ? "abstained"
       : pack && (!permitsProposal(pack) || pack.recommendation === "REQUEST_INFORMATION") ? "evidence" : "built";
@@ -46,7 +47,7 @@ export function QueuePage() {
       : category === "abstained" ? "Abstained; worked as today"
       : category === "evidence" ? "Evidence assembled; unresolved facts remain"
       : "Case built; dated clause and requirements checked";
-    return [{ id, c, process, category, type1, agentWork, fresh: revision.kind !== "seed", at: revision.at }];
+    return [{ id, c, process, category, type1, captureCompleted, agentWork, fresh: revision.kind !== "seed", at: revision.at }];
   }).sort((a, b) => Number(b.fresh) - Number(a.fresh) || b.at.localeCompare(a.at)),
   [lifecycles, revisions, processes, records, agentEnabled]);
   useEffect(() => {
@@ -72,7 +73,7 @@ export function QueuePage() {
   const active = tiles.some((tile) => tile.key === filter) || filter === "new" ? filter : "all";
   const visible = rows.filter((row) => active === "all" || active === "new" && row.fresh
     || active === "type2" && !["type1", "referred", "decided"].includes(row.category) || row.category === active);
-  const type2 = visible.filter((row) => !row.type1);
+  const type2 = visible.filter((row) => !row.type1 && !row.captureCompleted);
   const type1 = visible.filter((row) => row.type1);
 
   return <div className="mx-auto max-w-7xl space-y-5">
@@ -132,6 +133,11 @@ export function QueuePage() {
       </article>)}
       {!type1.length && <p role="status">No items awaiting Type 1 capture in this filter.</p>}
     </section>
+    {visible.some((row) => row.captureCompleted) && <section aria-label="Completed Type 1 captures" className="space-y-3">
+      <h2 className="text-lg font-semibold">Completed Type 1 captures</h2>
+      <p className="text-sm">Human capture is complete. These items are not awaiting Type 2 judgement.</p>
+      {visible.filter((row) => row.captureCompleted).map((row) => <Type1Capture key={row.id} caseId={row.id} />)}
+    </section>}
     {result && <section className="space-y-3 rounded-xl border p-4" data-queue-month-summary>
       <h2 className="font-semibold">Shared monthly model: Today / With the agent</h2>
       <p className="text-sm text-muted-foreground">Public stream volumes with assumed handling effort; these projections are not actual session decisions.</p>

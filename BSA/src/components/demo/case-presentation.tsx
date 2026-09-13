@@ -67,7 +67,7 @@ export function ManualTariffLookup() {
 export function RawCaseFields({ c }: { c: ExceptionCase }) {
   return <div className="grid gap-4 md:grid-cols-2" data-manual-pack>
     <PageSection title="Prescription image" description="Synthetic form and existing capture only; no assisted reading."><PrescriptionForm c={c} highlight={[]} /></PageSection>
-    <PageSection title="Raw captured fields">
+    <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">
         <KeyValue k="Product (capture)" v={c.extracted.productText} />
         <KeyValue k="Quantity (capture)" v={c.extracted.quantity ?? "Unreadable"} />
