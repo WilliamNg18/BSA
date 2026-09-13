@@ -17,10 +17,10 @@ async function chooseScenario(page: Page, scenario: typeof scenarios[number], en
 
 async function expectScenarioStatus(page: Page, scenario: typeof scenarios[number], enabled: boolean) {
   if (scenario.id !== "D") await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? scenario.status : "Not checked: manual submission");
-  else if (enabled) await expect(page.getByText(scenario.status, { exact: true })).toBeVisible();
+  else if (enabled) await expect(page.locator("[data-declaration-advice]")).toContainText(scenario.status);
   else {
     await expect(page.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveCount(0);
-    await expect(page.getByText("No typed declaration. The paper is posted; NHSBSA staff key the unreadable scan without guidance.", { exact: true })).toBeVisible();
+    await expect(page.locator("[data-paper-narrative]")).toHaveText("Image cannot be read. No declaration; Type 1 keys, Type 2 judges. RB2B delays are illustrative; posting never confirms.");
   }
 }
 
@@ -108,7 +108,7 @@ for (const scenario of scenarios) {
     const frozen = await receipt.innerText();
     await flag.setChecked(true);
     if (scenario.id === "D") {
-      await expect(page.getByText("Declaration needs review", { exact: true })).toBeVisible();
+      await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
       await expect(page.getByRole("button", { name: "Post paper with declaration", exact: true })).toBeEnabled();
     } else {
       await expect(status).toHaveText(scenario.status);
@@ -222,7 +222,7 @@ test("Task4 global Reset clears receipts, channel and declaration drafts on this
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await page.getByRole("textbox", { name: "Declared endorsement", exact: true }).fill("Unknown endorsement");
-  await expect(page.getByText("Declaration needs review", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
   await flag.setChecked(false);
   await page.getByRole("button", { name: "Post paper", exact: true }).click();
   await flag.setChecked(true);
@@ -339,7 +339,7 @@ for (const theme of ["light", "dark"] as const) {
       await page.getByRole("radio", { name: "Pharmacy", exact: true }).click();
       await expect(field).toHaveValue(value);
     }
-    await expect(page.getByText("Declaration complete, not capture confirmed", { exact: true })).toBeVisible();
+    await expect(page.locator("[data-declaration-advice]")).toContainText("Declaration complete, not capture confirmed.");
     await expect(page.getByRole("list", { name: "Declaration requirement checks" })).toContainText("Met: Dated");
     await expect(receiptEvidence).toHaveText(blind, { useInnerText: true });
     await expect(receipt.getByRole("link", { name: "Open shared queue", exact: true })).toHaveCount(0);
@@ -358,7 +358,7 @@ for (const theme of ["light", "dark"] as const) {
     await expect(receipt).not.toContainText("no person involved");
     const frozen = await receipt.innerText();
     await endorsement.fill("Changed unsent declaration");
-    await expect(page.getByText("Declaration needs review", { exact: true })).toBeVisible();
+    await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
     await expect(receipt).toHaveText(frozen, { useInnerText: true });
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
     const detail = page.getByRole("region", { name: "Claim detail", exact: true });
@@ -381,9 +381,9 @@ test("Task20 declaration edits invalidate the check and reject malformed quantit
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
-  await expect(page.getByText("Declaration complete, not capture confirmed", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-declaration-advice]")).toContainText("Declaration complete, not capture confirmed.");
   await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
-  await expect(page.getByText("Declaration complete, not capture confirmed", { exact: true })).toHaveCount(0);
+  await expect(page.locator("[data-declaration-advice]")).not.toContainText("Declaration complete, not capture confirmed.");
   await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("quantity");
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
