@@ -33,6 +33,7 @@ beforeEach(() => {
 describe("claims presentation uses recorded events separately from monthly projections", () => {
   it("renders exact mode guides, four filters and five columns", () => {
     const markup = renderClaims();
+    expect(markup).toContain('role="group" aria-label="Claim filters"');
     expect(markup).toContain("Today: referred-back items appear in MYS Unpaid items with an RB code");
     expect(markup.match(/aria-pressed=/g)).toHaveLength(4);
     expect(markup.match(/scope="col"/g)).toHaveLength(5);

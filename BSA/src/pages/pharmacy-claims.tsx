@@ -91,7 +91,7 @@ export function PharmacyClaimsPage() {
       <p>NHSmail notifies the pharmacy. Complete and resubmit within 18 months. Only the affected item is delayed.</p>
       <p>Payment context: 80% advance, balance when priced. This synthetic demo sends no messages and calculates no payments.</p>
     </section>
-    <div aria-label="Claim filters" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    <div role="group" aria-label="Claim filters" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {filters.map((name) => {
         const matching = rows.filter((row) => matchesFilter(row, name, month));
         return <button key={name} type="button" aria-pressed={filter === name} onClick={() => setFilter(name)}
