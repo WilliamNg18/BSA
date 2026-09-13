@@ -13,6 +13,7 @@ import { HomePage } from "@/pages/home";
 import { ArchitecturePage } from "@/pages/architecture";
 import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
+import { CASES } from "@/lib/domain/cases";
 import { productionServiceLabel } from "@/lib/service-display";
 import { PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ProcessMonthInputs } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
@@ -179,5 +180,35 @@ describe("whole-process presentation", () => {
     const resubmitted = render(HomePage, "/#cases");
     expect(resubmitted).toContain('data-case="A" data-case-routing="type2_endorsement"');
     expect(resubmitted).toContain("Open case A");
+  });
+
+  it.each([false, true])("retains human attribution after capture-only pricing without another action, Agent %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(enabled);
+    store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: "NCSO RK 21/08/26" });
+    const revision = useAppStore.getState().caseRevisions["EX-24112"].at(-1)!;
+    const item = CASES.find((candidate) => candidate.id === "EX-24112")!;
+    store.confirmType1({
+      caseId: "EX-24112", revision: revision.number,
+      fields: { productCode: item.extracted.productCode, quantity: item.extracted.quantity, endorsementText: "NCSO RK 21/08/26" },
+      provenance: "human_capture", declarationReconciled: true,
+    });
+    const state = useAppStore.getState();
+    expect(state.itemProcesses["EX-24112"].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: false });
+    expect(state.lifecycles["EX-24112"].state).toBe("paid");
+    for (const perspective of ["both", "pharmacy", "nhsbsa"] as const) {
+      store.setPerspective(perspective);
+      const before = useAppStore.getState();
+      const markup = render(HomePage, "/#cases");
+      const card = markup.split('data-case="B"')[1].split('data-case="C"')[0];
+      expect(card).toContain('data-case-capture="complete"');
+      expect(card).toContain("Completed Type 1 capture");
+      expect(card).toContain("A person confirmed the captured fields");
+      expect(card).not.toContain("Awaiting Type 1 capture");
+      expect(card).not.toContain("no person involved");
+      expect(card).not.toContain("Open case B");
+      expect(card).not.toContain("data-outcome");
+      expect(useAppStore.getState()).toBe(before);
+    }
   });
 });
