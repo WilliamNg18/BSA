@@ -1560,3 +1560,10 @@ attempt, like the EPS workbench. It does not silently turn into a correction
 because its selected fixture has a prior referral. Existing referral correction
 and resubmission remain in claim details, with C's required human re-check.
 This preserves ordinary complete paper B's initial capture-to-code-pricing path.
+
+Paper explanatory copy stays below 25 words per existing functional panel.
+The main submission narrative and nested declaration-check panel are counted
+separately; medicine fields, exact rule quotations, requirement statuses and
+field-associated provenance labels remain visible structured evidence. Error
+messages replace the main narrative rather than accumulating duplicate prose.
+Focused tests count both Paper variants, both modes and all advice outcomes.

@@ -10,7 +10,7 @@ import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useAppStore } from "@/lib/store";
 import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
 import { PAPER_DECLARATION_PROVENANCE } from "@/lib/domain/paper-capture";
-import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, preparePaperDeclaration, WORKED_PAPER_DECLARATION, type PaperDeclarationDraft } from "@/lib/domain/paper-declaration";
+import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, paperDeclarationAdvice, preparePaperDeclaration, WORKED_PAPER_DECLARATION, type PaperDeclarationDraft } from "@/lib/domain/paper-declaration";
 import { pharmacyDateCorrection, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { CASES } from "@/lib/domain/cases";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
@@ -50,6 +50,12 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
   try { paper = enabled ? preparePaperDeclaration(draft) : undefined; }
   catch (cause) { validationError = cause instanceof Error ? cause.message : "Declaration cannot be checked."; }
   const result = paper ? checkPaperDeclaration(c, paper) : null;
+  const narrative = enabled
+    ? `${poorScan ? "NHSBSA: image cannot be read." : "Synthetic paper."} Declare contents; humans reconcile before judgement. Post new attempts; correct referrals in claim details.`
+    : poorScan
+      ? "Image cannot be read. No declaration; Type 1 keys, Type 2 judges. RB2B delays are illustrative; posting never confirms."
+      : "Paper without declaration. Type 1 keys; complete capture reaches existing pricing. Unresolved endorsements need Type 2 judgement. Posting never confirms.";
+  const advice = paperDeclarationAdvice(result, validationError, error);
   const labels: Record<keyof PaperDeclarationDraft, string> = {
     typedProduct: "Declared product", quantity: "Declared quantity", endorsementText: "Declared endorsement", dispensingDate: "Declared dispensing date",
   };
@@ -72,12 +78,11 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
       <div className="min-w-0 space-y-2">
         <BoundaryTag cls="existing" />
         <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} />
-        <p className="text-sm">{poorScan ? "Synthetic poor image. NHSBSA: image cannot be read." : "Synthetic paper image. A person confirms captured fields before code routes the item."}</p>
       </div>
       <form onSubmit={submit} noValidate className="min-w-0 space-y-4">
         <BoundaryTag cls="human" />
+        <p data-paper-narrative role={error ? "alert" : undefined} className={error ? "text-sm text-destructive" : "text-sm"}>{error || narrative}</p>
         {enabled ? <>
-          <p className="text-sm">Type what is written on the paper. This proposed declaration travels with it, not as an image reading.</p>
           <Button type="button" variant="outline" onClick={() => { setDraft({ ...workedDeclaration }); setError(""); }}>
             {c.scenario === "D" ? "Load worked declaration" : "Load complete paper declaration"}
           </Button>
@@ -91,9 +96,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
           </div>)}
           <div aria-live="polite" className="space-y-2 rounded-lg border p-3">
             <BoundaryTag cls="agent" />
-            <p className="text-xs">Scripted declaration check, not live. The agent verifies and advises; a person decides.</p>
-            <p className="text-sm">{result?.status === "ready" ? "Declaration complete, not capture confirmed" : "Declaration needs review"}</p>
-            <p className="text-sm">{validationError || result?.gap}</p>
+            <p data-declaration-advice className="text-sm">{advice}</p>
             {result?.clause && <>
               <p className="text-sm">Dispensing-month Tariff: {result.version}. {result.clause.title}</p>
               <blockquote className="text-sm">{result.clause.text}</blockquote>
@@ -102,19 +105,11 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
                 {result.checks.map((check) => <li key={check.id}>{check.met === true ? "Met" : check.met === false ? "Missing" : "Unknown"}: {check.label}</li>)}
               </ul>
             </>}
-            <p className="text-xs">The form must show initials and date. Prescriber evidence and explicit human reconciliation remain necessary at NHSBSA.</p>
           </div>
-        </> : <>
-          <p className="text-sm">No typed declaration. The paper is posted; NHSBSA staff key {poorScan ? "the unreadable scan" : "the paper image"} without guidance.</p>
+        </> : !error && <>
           <PainMarker resolved={false} pain="Problems discovered weeks later" resolution="Declaration checked before posting" />
-          <p className="text-sm">{poorScan ? "Type 1 keys by eye. Type 2 judges from experience and can refer back RB2B."
-            : "Type 1 keys by eye. Code routes complete evidence to existing pricing; unresolved endorsements require Type 2 judgement."}</p>
-          <p className="text-xs">Weeks of delay illustrate today's journey, not this demo's elapsed time or a service promise.</p>
         </>}
-        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         <Button type="submit">{enabled ? "Post paper with declaration" : "Post paper"}</Button>
-        <p className="text-xs">Post a new synthetic attempt. To correct an existing referral, use its claim details and resubmit there.</p>
-        <p className="text-xs">Posting never confirms capture or makes a Type 2 decision.</p>
       </form>
     </div>
     <section aria-label={submitted ? "Submission receipt" : "Current paper submission"} className="space-y-2 rounded-lg border p-4">

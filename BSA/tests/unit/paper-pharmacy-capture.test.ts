@@ -20,13 +20,13 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     const before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(PaperPharmacyCapture));
     expect(html).toContain("Post paper");
-    expect(html).toContain("Type 1 keys by eye");
+    expect(html).toContain("Type 1 keys");
     expect(html).toContain("RB2B");
     expect(html).toContain("labels show read confidence");
     expect(html).toContain("Deliberately poor scan");
     expect(html).toContain("read 0.");
     expect(html).toContain('stroke-dasharray="1.2 0.6"');
-    expect(html).toContain("not this demo");
+    expect(html).toContain("delays are illustrative");
     expect(html).not.toContain("Load worked declaration");
     expect(html).not.toContain("<input");
     expect(html).not.toContain("Declared product");
@@ -60,13 +60,12 @@ describe("paper pharmacy and Type 1 surfaces", () => {
   });
   it("preserves the ordinary paper variant without describing a readable image as unreadable", () => {
     const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
-    expect(html).toContain("Code routes complete evidence to existing pricing");
-    expect(html).toContain("Post a new synthetic attempt");
-    expect(html).toContain("use its claim details and resubmit there");
+    expect(html).toContain("complete capture reaches existing pricing");
     expect(html).not.toContain("image cannot be read");
     useAppStore.getState().setAgentEnabled(true);
     const assisted = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
     expect(assisted).toContain("Load complete paper declaration");
+    expect(assisted).toContain("Post new attempts; correct referrals in claim details");
     expect(assisted).not.toContain("Load worked declaration");
   });
   it("retains an immutable receipt, claim link and recorded timeline after actual posting", () => {
@@ -79,5 +78,16 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain("Submission timeline");
     expect(html).toContain("Playback never advances the claim");
     expect(getDomainSnapshot()).toEqual(before);
+  });
+  it.each([false, true])("keeps explanatory submission and declaration-check panels below 25 words, agent=%s", (enabled) => {
+    useAppStore.getState().setAgentEnabled(enabled);
+    for (const caseId of ["EX-24123", "EX-24112"]) {
+      const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId }));
+      const paragraphs = [...html.matchAll(/<p[^>]*data-(?:paper-narrative|declaration-advice)[^>]*>(.*?)<\/p>/g)];
+      expect(paragraphs).toHaveLength(enabled ? 2 : 1);
+      for (const paragraph of paragraphs) expect(paragraph[1].trim().split(/\s+/).length).toBeLessThan(25);
+      const narrative = paragraphs[0][1].trim().split(/\s+/).length;
+      if (!enabled) expect(narrative + "Problems discovered weeks later".split(/\s+/).length).toBeLessThan(25);
+    }
   });
 });

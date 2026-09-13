@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { CASES } from "../../src/lib/domain/cases";
-import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, preparePaperDeclaration, WORKED_PAPER_DECLARATION } from "../../src/lib/domain/paper-declaration";
+import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, paperDeclarationAdvice, preparePaperDeclaration, WORKED_PAPER_DECLARATION } from "../../src/lib/domain/paper-declaration";
 import { prepareCaptureConfirmation, preparePaperCapture } from "../../src/lib/domain/paper-capture";
 import { runAgent } from "../../src/lib/domain/agent";
 import { paperImageEvidence } from "../../src/lib/domain/capture-evidence";
@@ -11,6 +11,18 @@ const store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
 
 describe("proposed paper declaration checks", () => {
+  it("keeps complete, missing and unavailable advice below 25 explanatory words", () => {
+    for (const draft of [WORKED_PAPER_DECLARATION, { ...WORKED_PAPER_DECLARATION, endorsementText: "NCSO JB" }, EMPTY_PAPER_DECLARATION]) {
+      const result = checkPaperDeclaration(D, preparePaperDeclaration(draft));
+      const advice = paperDeclarationAdvice(result, "", "");
+      expect(advice.trim().split(/\s+/).length).toBeLessThan(25);
+      if (result.status !== "unable") {
+        expect(advice).toContain("prescriber evidence");
+        expect(advice).toContain("initials and date");
+        expect(advice).toContain("Human reconciliation");
+      }
+    }
+  });
   it("checks the exact JB example against August without reading the image or needing invented prescriber data", () => {
     const before = structuredClone(D);
     const result = checkPaperDeclaration(D, preparePaperDeclaration(WORKED_PAPER_DECLARATION));
