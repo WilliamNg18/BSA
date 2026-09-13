@@ -1,5 +1,14 @@
 import type { DeclaredItemFields, ExceptionCase, ExtractedFields } from "./types";
 import { productByCode } from "./reference";
+import { caseById } from "./cases";
+
+/** Declaration dates select rules, but must not be painted onto the retained scan. */
+export function paperImageEvidence(c: ExceptionCase, templateCaseId = c.id): ExceptionCase {
+  if (!c.paperDeclaration) return c;
+  const source = caseById(templateCaseId);
+  if (!source) throw new Error("Original paper image evidence is unavailable.");
+  return { ...c, extracted: { ...source.extracted }, regions: source.regions, imageQuality: source.imageQuality, imageStyle: source.imageStyle };
+}
 
 /** An explicit human capture is distinct from, and never repairs, source imagery. */
 export function capturedFields(c: ExceptionCase): ExtractedFields {
