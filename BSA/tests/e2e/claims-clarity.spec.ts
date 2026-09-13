@@ -7,7 +7,7 @@ const onGuide = "Read the operator-approved fix, correct the endorsement, then e
 
 test("Task16 four counted synthetic amount tiles filter one five-column table", async ({ page }) => {
   await page.goto("pharmacy/claims");
-  const tiles = page.locator('[aria-label="Claim filters"]').getByRole("button");
+  const tiles = page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button");
   const names = ["Action needed", "Waiting on NHSBSA", "Paid this month", "All"];
   const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
   await expect(tiles).toHaveCount(4);
@@ -36,6 +36,7 @@ for (const enabled of [false, true]) {
   test(`Task16 guide and delivery provenance are keyboard accessible On=${enabled}`, async ({ page }, info) => {
     await page.goto("pharmacy/claims?caseId=EX-24112");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    await expect(page.getByRole("group", { name: "Claim filters", exact: true })).toBeVisible();
     const guide = page.getByRole("region", { name: "Referral cycle guide", exact: true });
     await expect(guide.locator("p")).toHaveText(enabled ? onGuide : offGuide);
     await page.mouse.move(0, 0);

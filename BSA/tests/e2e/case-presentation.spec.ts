@@ -63,6 +63,9 @@ for (const id of automaticCaseIds) for (const enabled of [false, true]) {
     await expect(trace).toContainText("Cleared by rules; agent not invoked");
     await expect(trace).not.toContainText("run_endorsement_checks");
     await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
+    await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+    await expect(page.getByText("The agent's part is over. The rest is a person.", { exact: true })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Open case evidence", exact: true })).toHaveAttribute("href", `/case/${id}`);
     for (const name of ["Replay step by step", "Next step", "Show all", "Clear"]) {
       await expect(page.getByRole("button", { name, exact: true })).toHaveCount(0);
     }
@@ -204,18 +207,26 @@ test("Task6 decision draft survives toggle and comparison; route exit and Reset 
   await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveValue("");
 });
 
-test("Task6 D keeps three reasons and four failed signals; E remains no-call On", async ({ page }) => {
+test("Task6 D keeps three reasons, four failed signals and unestablished reconciliation; E remains no-call On", async ({ page }) => {
   await page.goto("case/EX-24123");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("alert").locator("li")).toHaveCount(3);
   const signals = page.getByRole("list", { name: "Confidence signals", exact: true });
   await expect(signals.locator(":scope > li")).toHaveCount(5);
   await expect(signals.locator(".sr-only").filter({ hasText: ", failed" })).toHaveCount(4);
+  const reconciliation = signals.getByRole("listitem").filter({ hasText: "Sources reconcile" });
+  await expect(reconciliation).toContainText("Not established");
+  await expect(reconciliation).not.toContainText(", satisfied");
+  await expect(page.getByText("Reconciliation not established.", { exact: true })).toBeVisible();
+  await expect(page.getByText("No detected conflict does not establish agreement. Missing, unreadable or unconfirmed fields still need evidence.", { exact: true })).toBeVisible();
+  await expect(page.getByText("The sources agree.", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Case built, awaiting operator", { exact: true })).toHaveCount(0);
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await page.goto("case/EX-24101/trace");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true }).locator(":scope > li")).toHaveCount(2);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
+  await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
   await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).not.toContainText("run_endorsement_checks");
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
 });
