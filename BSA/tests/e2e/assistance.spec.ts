@@ -50,7 +50,7 @@ for (const scenario of [
         const status = page.locator("[data-pharmacy-status]");
         if (!scenario.readable) await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
         if (scenario.readable) await expect(status).toHaveText(scenario.status);
-        else await expect(page.getByText(scenario.status, { exact: true })).toBeVisible();
+        else await expect(page.locator("[data-declaration-advice]")).toContainText(scenario.status);
         const field = page.getByRole("textbox", { name: scenario.readable ? "Dispenser endorsement" : "Declared endorsement", exact: true });
         const endorsement = await field.inputValue();
         if (!scenario.readable) await expect(field).toHaveValue("NCSO JB 27/08/26");
@@ -74,7 +74,7 @@ for (const scenario of [
           await expect(rule).toHaveCount(0);
           await expect(reading).toHaveCount(0);
           if (!globalEnabled && scenario.readable) await expect(page.getByText("Not retrieved", { exact: true })).toBeVisible();
-          else if (!globalEnabled) await expect(page.getByText("No typed declaration. The paper is posted; NHSBSA staff key the unreadable scan without guidance.", { exact: true })).toBeVisible();
+          else if (!globalEnabled) await expect(page.locator("[data-paper-narrative]")).toHaveText("Image cannot be read. No declaration; Type 1 keys, Type 2 judges. RB2B delays are illustrative; posting never confirms.");
           else await expect(page.getByRole("list", { name: "Declaration requirement checks" })).toContainText("Met: Dated");
         }
         const submit = page.getByRole("button", { name: scenario.readable ? "Send claim" : globalEnabled ? "Post paper with declaration" : "Post paper", exact: true });

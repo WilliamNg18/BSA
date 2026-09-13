@@ -18,7 +18,7 @@ export async function postWorkedPaperDeclaration(page: Page) {
   await expect(page.getByLabel("Declared dispensing date", { exact: true })).toHaveValue("2026-08-27");
   await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toContainText("Dispensing-month Tariff: 2026-08");
   await expect(page.getByRole("list", { name: "Declaration requirement checks", exact: true })).toContainText("Met: Dated");
-  await expect(page.getByText("Declaration complete, not capture confirmed", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-declaration-advice]")).toContainText("Declaration complete, not capture confirmed.");
   await expect(page.getByText("Case built, awaiting operator", { exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
   const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });

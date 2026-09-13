@@ -50,7 +50,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
   await expect(page.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("");
-  await expect(page.getByText("Declaration needs review", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
   const submit = page.getByRole("button", { name: "Send claim" });
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await page.getByRole("button", { name: "Post paper", exact: true }).click();
