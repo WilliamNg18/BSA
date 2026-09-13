@@ -17,21 +17,26 @@ test("actual worklist hides advice without changing evidence, routing or human d
   await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
   const evidence = () => rows.evaluateAll((items) => items.map((row) => ({
     id: row.getAttribute("data-case-id"),
-    fields: Array.from(row.querySelectorAll("td")).slice(0, 4).map((cell) => cell.textContent),
+    fields: Array.from(row.querySelectorAll("td")).slice(0, 5).map((cell) => cell.textContent),
   })));
   const originalEvidence = await evidence();
-  await expect(page.locator('[data-case-id="EX-24112"]')).toContainText("No approved draft; human reason retained");
+  await expect(page.locator('[data-case-id="EX-24112"]')).toContainText("rule and reason recorded");
   await expect(rows.filter({ hasText: "Model example only; no evidence or citation" })).toHaveCount(0);
   await page.getByRole("switch", { name: "Agent: On", exact: true }).click();
   expect(await evidence()).toEqual(originalEvidence);
   await expect(rows.locator('[aria-label="Agent work phases"]')).toHaveCount(0);
-  for (const row of await rows.all()) await expect(row.locator("td").nth(4)).toHaveText("Not invoked; experience only");
+  for (const row of await rows.all()) {
+    const advice = row.locator("td").nth(5);
+    await expect(advice).toContainText(/experience only|rule and reason recorded|Human reason retained/);
+  }
   await page.getByRole("switch", { name: "Agent: Off", exact: true }).click();
   expect(await evidence()).toEqual(originalEvidence);
   await page.locator("a[href='/case/EX-24112']").first().click();
   await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Operator-approved pharmacy note", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("main")).toContainText("Reviewed the missing dispensing date");
 });
 
 for (const scenario of [

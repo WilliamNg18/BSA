@@ -28,7 +28,7 @@ test(`fresh Overview supports first visits to every route after immediate discon
       await caseNav.getByRole("link", { name: "Case-building trace", exact: true }).click();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(`How the case was built: ${c.title}`);
       if (!enabled) {
-        await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(7);
+        await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(automaticCaseIds.includes(c.id) || c.id === "EX-24088" ? 0 : 7);
         await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
         if (automaticCaseIds.includes(c.id)) await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
       } else if (automaticCaseIds.includes(c.id)) {

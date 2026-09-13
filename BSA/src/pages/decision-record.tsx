@@ -14,7 +14,7 @@ import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { useAppStore } from "@/lib/store";
 import { agentVersionLabel } from "@/lib/service-display";
 import { MissingAssistedSlots } from "@/components/demo/case-presentation";
-import { caseViewState, recordHasRule } from "@/lib/case-presentation";
+import { caseViewState, recordHasRule, recordHasRuleAndReason } from "@/lib/case-presentation";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -60,8 +60,8 @@ function DecisionRecordContent() {
       <LifecycleHistory id={c.id} />
 
       {!agentEnabled && <><section className="rounded-xl border p-4" data-manual-record-comparison>
-        <h2 className="font-semibold">Today comparison: experience only, no rule recorded</h2>
-        <p className="text-sm text-muted-foreground">This comparison never removes actual human reasons, history or previously cited rules.</p>
+        <h2 className="font-semibold">Synthetic Today comparison: experience only, no rule recorded</h2>
+        <p className="text-sm text-muted-foreground">A proposed comparison, not a claim about NHSBSA staff. Actual evidence, reasons and cited rules remain visible below.</p>
       </section><MissingAssistedSlots />{!latest && <section className="space-y-2 rounded-xl border p-4">
         <Button type="button" disabled>Replay unavailable</Button>
         <p className="text-sm text-muted-foreground">No recorded rule version to replay in this manual comparison</p>
@@ -76,13 +76,15 @@ function DecisionRecordContent() {
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
           <PageSection title={`Record ${latest.id}`} description={`Written ${latest.timestamp.replace("T", " ")} · append-only · ${latest.synthetic ? "synthetic" : ""}`}>
+            <p className="mb-3 font-semibold" data-record-proof>{recordHasRuleAndReason(latest)
+              ? "rule and reason recorded"
+              : "Rule and reason not recorded together for this decision"}</p>
             <dl className="grid gap-2">
-              {agentEnabled && <>
               <KeyValue k="Inputs considered" v={<ul className="list-disc pl-4">{latest.inputs.map((i) => <li key={i}>{i}</li>)}</ul>} />
               <KeyValue k="Evidence accessed" v={<ul>{latest.sources.map((origin) => <li key={origin}>{origin}</li>)}</ul>} />
               <KeyValue k="Rule version used" v={hasRecordedRule ? `Drug Tariff ${latest.tariffVersion}` : "Not recorded"} />
               <KeyValue k="Clause recorded" v={latest.clauseId ?? (hasRecordedRule ? "Legacy citation retained in recorded sources" : "Not recorded")} />
-              <KeyValue k="Rule and reason recorded" v={hasRecordedRule && Boolean(latest.reason || latest.overrideReason) ? "Yes, from the actual decision" : "Not recorded together for this decision"} />
+              <KeyValue k="Rule and reason recorded" v={recordHasRuleAndReason(latest) ? "Yes, from the actual decision" : "Not recorded together for this decision"} />
               <KeyValue k="Agent version" v={agentVersionLabel(latest.agentVersion)} />
               <KeyValue
                 k="Deterministic checks completed"
@@ -95,7 +97,6 @@ function DecisionRecordContent() {
                 }
               />
               <KeyValue k="Agent recommendation" v={<RecommendationBadge rec={latest.recommendation} className="text-xs" />} />
-              </>}
               <KeyValue k="Human decision" v={<span className="inline-flex items-center gap-2"><BoundaryTag cls="human" short /> {latest.decision.replace("_", " ")} by {latest.operator}</span>} />
               <KeyValue k="Reason" v={latest.reason || latest.overrideReason || "Not recorded"} />
               <KeyValue k="RB code" v={latest.rbCode ?? "Not recorded"} />
@@ -103,20 +104,21 @@ function DecisionRecordContent() {
               <KeyValue k="Override" v={latest.isOverride ? `Yes. Reason: ${latest.overrideReason ?? "none given"}` : latest.overrideReason ? `No. Note: ${latest.overrideReason}` : "No"} />
               <KeyValue k="Timestamp" v={latest.timestamp.replace("T", " ")} />
             </dl>
-            {latest.recommendation === "NONE" && latest.isOverride && <section data-prose="stored override caveat"><p className="mt-3 text-xs text-muted-foreground">No agent recommendation existed. The stored override flag is retained; correcting this counter requires Stream B integration.</p></section>}
-            {!agentEnabled && hasRecordedRule && <section data-prose="historical comparison caveat"><p className="mt-3 text-xs text-muted-foreground">This historical record retains rule {latest.tariffVersion} and assisted fields. Only the manual comparison omits them; history is unchanged.</p></section>}
+            {latest.recommendation === "NONE" && latest.isOverride && <section data-prose="stored override caveat"><p className="mt-3 text-xs text-muted-foreground">No agent recommendation existed. The original override flag is retained as recorded, not reinterpreted by this comparison.</p></section>}
+            {!agentEnabled && hasRecordedRule && <section data-prose="historical comparison caveat"><p className="mt-3 text-xs text-muted-foreground">This historical record retains rule {latest.tariffVersion} and assisted evidence. The Today comparison does not rewrite the original decision.</p></section>}
             <details className="mt-3 rounded-md border p-3" data-original-records>
               <summary className="cursor-pointer text-sm font-medium">Original decision history ({records.length})</summary>
               <ol className="mt-2 space-y-3 text-sm">{records.map((record) => <li key={record.id}>
                 <p className="font-medium">{record.id}: {record.decision.replaceAll("_", " ")} by {record.operator}</p>
                 <p>Human reason: {record.reason || record.overrideReason || "Not recorded"}</p>
                 <p>{recordHasRule(record) ? "Original rule" : "Stored Tariff context, no rule recorded"}: {record.tariffVersion === "n/a" ? "Not recorded" : record.tariffVersion}{record.clauseId ? `, ${record.clauseId}` : ""}</p>
+                <ul aria-label={`Original sources for ${record.id}`}>{record.sources.map((source) => <li key={source}>{source}</li>)}</ul>
                 {record.rbCode && <p>RB code: {record.rbCode}</p>}
               </li>)}</ol>
             </details>
           </PageSection>
 
-          <PageSection title="Replay under a different rule version" description="Counterfactual replay; original evidence and history remain unchanged.">
+          <PageSection title="Replay under a different rule version" description="Counterfactual only; history stays unchanged.">
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 <label htmlFor="replay-version" className="text-sm">Replay with</label>
@@ -129,7 +131,7 @@ function DecisionRecordContent() {
                 {agentEnabled && replayVersion && <Button type="button" variant="ghost" size="sm" onClick={() => setReplayVersion("")}>Clear</Button>}
               </div>
               {!agentEnabled || !hasRecordedRule ? <p className="text-sm text-muted-foreground">{hasRecordedRule
-                ? "Replay disabled in this manual comparison. The historical rule version is preserved; enable assistance to inspect it."
+                ? "Replay disabled in Today comparison. Enable assistance to inspect the preserved rule version."
                 : "No recorded rule version to replay in this manual comparison"}</p> : replay ? (
                 <Card className={replay.recommendation !== latest.recommendation ? "border-amber-600" : "border-emerald-600"}>
                   <CardHeader className="pb-2">
@@ -168,7 +170,7 @@ function DecisionRecordContent() {
                 </Card>
               ) : (
                 <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL"
-                  ? "Recommendation withheld by the compliance gate. Choose a version to review the evidence and checks, not to bypass the gate."
+                  ? "Gate withheld advice. Select a version to inspect evidence, not bypass the gate."
                   : "Choose a version. Synthetic July requires initials; August also requires a date."}</p>
               )}
             </div>

@@ -54,14 +54,14 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   const notices = page.getByRole("complementary", { name: "Decision notifications" });
   const dismiss = notices.getByRole("button", { name: "Dismiss notification" });
   await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
-  await expect(record).toBeFocused();
+  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
   let axe = await new AxeBuilder({ page }).analyze();
   await captureJson(testInfo, "axe-notice-error", axe);
   expect(axe.violations).toEqual([]);
   await expect(dismiss).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "notification-error-keyboard");
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
-  await expect(record).toBeFocused();
+  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
   await captureCheckpoint(page, testInfo, "notification-restored-record-focus");
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Operator reviewed the evidence");
   await record.press("Enter");
@@ -87,7 +87,7 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
 });
 
-test("Task7 inline decision errors leave publishing fields and button focus unchanged", async ({ page }, testInfo) => {
+test("Task7 inline decision errors focus the error and preserve publishing fields for keyboard recovery", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
@@ -98,7 +98,8 @@ test("Task7 inline decision errors leave publishing fields and button focus unch
   await record.evaluate((button: HTMLButtonElement) => button.click());
   await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
   await expect(dismiss).toHaveCount(0);
-  await expect(reason).toBeFocused();
+  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  await expect(reason).toHaveValue("");
   await captureCheckpoint(page, testInfo, "notification-restored-field-focus");
   await record.press("Enter");
   await expect(record).toBeFocused();

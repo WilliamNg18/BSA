@@ -173,7 +173,7 @@ for (const enabled of [true, false]) {
         }
       } else {
         const filter = page.getByRole("region", { name: "Actual session work counts", exact: true })
-          .getByRole("button", { name: enabled ? /^Abstained, worked as today\s+\d+$/ : /^Awaiting Type 2 judgement\s+\d+$/ });
+          .getByRole("button", { name: /^Type 2 worklist\s+\d+$/ });
         await filter.focus();
         await filter.press("Space");
         await expect(filter).toHaveAttribute("aria-pressed", "true");

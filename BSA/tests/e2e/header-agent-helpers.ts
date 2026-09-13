@@ -35,7 +35,7 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
       await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(enabled ? 1 : 0);
     } else if (route === "/queue") {
       await expect(page.locator("[data-queue-guide]")).toHaveText(enabled
-        ? "Type 2 worklist: the agent verifies the submission and advises; a person decides."
+        ? "Type 2 worklist: the agent verifies and advises; a person decides."
         : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement.");
     } else if (route.startsWith("/pharmacy/claims")) {
       await expect(page.getByRole("region", { name: "Referral cycle guide", exact: true })).toContainText(enabled
@@ -44,7 +44,8 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     } else if (route === "/#month") {
       await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
     } else if (route.startsWith("/case/")) {
-      await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled ? 0 : 1);
+      const completedTrace = ["/case/EX-24107/trace", "/case/EX-24101/trace", "/case/EX-24088/trace"].includes(route);
+      await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled || completedTrace ? 0 : 1);
     }
   }
 }

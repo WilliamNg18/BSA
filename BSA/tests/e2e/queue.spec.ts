@@ -6,8 +6,8 @@ const worklist = (page: Page) => page.getByRole("region", { name: "Type 2 workli
 const captureLane = (page: Page) => page.getByRole("region", { name: "Type 1 capture lane", exact: true });
 const counts = (page: Page) => page.getByRole("region", { name: "Actual session work counts", exact: true });
 const modeLabels = {
-  off: ["Awaiting Type 1 capture", "Awaiting Type 2 judgement", "Referred back", "Decided"],
-  on: ["Case built, ready to judge", "Awaiting confirmation (Type 1)", "Needs more evidence", "Abstained, worked as today", "Referred back with the exact fix", "Decided"],
+  off: ["Type 1 capture lane", "Type 2 worklist", "Referred back", "Decided"],
+  on: ["Type 1 capture lane", "Type 2 worklist", "Referred back", "Decided"],
 };
 const rowIds = async (page: Page) => page.locator("[data-case-id], [data-type1-case]").evaluateAll((rows) =>
   rows.map((row) => row.getAttribute("data-case-id") ?? row.getAttribute("data-type1-case")).sort());
@@ -17,12 +17,14 @@ for (const enabled of [false, true]) {
     await page.goto("queue");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await expect(worklist(page).locator("thead th")).toHaveText([
-      "Reference", "Pharmacy", "Channel", "Reason it is here", "What the agent did", "Open",
+      "Reference", "Pharmacy", "Channel", "State", "Reason it is here", "Advice and record", "Open",
     ]);
     for (const id of [...automaticCaseIds, "EX-24098"]) {
       await expect(page.locator(`[data-case-id="${id}"], [data-type1-case="${id}"]`)).toHaveCount(0);
     }
-    for (const id of ["EX-24112", "EX-24119", "EX-24088"]) await expect(worklist(page).locator(`[data-case-id="${id}"]`)).toBeVisible();
+    for (const id of ["EX-24119", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) await expect(worklist(page).locator(`[data-case-id="${id}"]`)).toBeVisible();
+    await expect(page.getByRole("region", { name: "Referred back", exact: true }).locator('[data-case-id="EX-24112"]')).toBeVisible();
+    await expect(page.getByRole("region", { name: "Decided", exact: true }).locator('[data-case-id="EX-24088"]')).toBeVisible();
     await expect(captureLane(page).locator('[data-type1-case="EX-24123"]')).toBeVisible();
     await expect(worklist(page).locator('[data-case-id="EX-24123"]')).toHaveCount(0);
     await expect(page.locator("[data-month-row], [data-queue-seed], [data-compare-seed]")).toHaveCount(0);
@@ -31,7 +33,7 @@ for (const enabled of [false, true]) {
     }
     await expect(page.getByRole("region", { name: "Automatic pricing monthly aggregate", exact: true }))
       .toContainText("Whole-service context, not session completions or a projection of this pharmacy's activity.");
-    await expect(page.locator("[data-queue-month-summary]")).toContainText("Rule-record coverage is a synthetic comparison assumption, not evidence of real staff records or a retrieved clause on every case.");
+    await expect(page.locator("[data-queue-month-summary]")).toContainText("Rule-record coverage is a synthetic assumption, not evidence of staff records or a retrieved clause.");
     const ids = await rowIds(page);
     expect(ids.length).toBeGreaterThan(0);
     expect(new Set(ids).size).toBe(ids.length);
@@ -53,7 +55,7 @@ for (const enabled of [false, true]) {
       await tile.click();
       await expect(tile).toHaveAttribute("aria-pressed", "true");
       expect((await rowIds(page)).length, label).toBe(count);
-      if (!count) await expect(worklist(page).getByRole("status")).toHaveText("No Type 2 items match this filter.");
+      if (!count) await expect(page.getByRole("region", { name: label, exact: true }).getByRole("status")).toBeVisible();
     }
     expect(total).toBe(initial.length);
     await counts(page).getByRole("button", { name: /^All staff items/ }).click();

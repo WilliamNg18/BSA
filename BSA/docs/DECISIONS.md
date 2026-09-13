@@ -1631,3 +1631,31 @@ Ready to resubmit, never automatic pricing. The same synthetic requirements
 must resolve before human acceptance. The browser proof uses missing form with
 RB2B and a recorded human reason, then follows that same item to human-accepted
 Paid rather than starting another demonstration attempt.
+
+## 2026-09-13: Task 29 staff views preserve operational and recorded truth
+
+The four queue filters are stable across assistance modes: Type 1 capture,
+Type 2 worklist, referred back and Decided. Shared lifecycle labels name the
+same item identically in pharmacy and staff views. Advice remains a separate
+column, never an alternative operational state. Automatic revisions have no
+operator row; completed human work retains its human route in Decided.
+Other pharmacies remain fixed, unclickable background outside item counts.
+
+EPS evidence is the retained electronic prescription or actual claim fields,
+never a reconstructed paper image. Historical claims without a prescription
+snapshot explicitly disclose that absence rather than invent patient or
+prescriber evidence. Paper keeps its original image. Confirmed declaration
+fields retain declared-not-read provenance, operator, timestamp and revision;
+agreement with a claim never asserts that an unreadable image was read.
+
+Today offers unaided monthly Tariff lookup, the RB catalogue and a human reason.
+Assistance provides a gated recommendation and optional draft. Sending a draft
+requires explicit human approval; a person may use their own reason instead.
+Every decision and override still requires a reason. Viewing or replaying a
+case never writes operational history.
+
+The rule-and-reason label requires an actual recorded clause or validated
+historical citation plus a non-blank human reason. Agent On does not fabricate
+this proof. The synthetic Today experience-only comparison is qualified and
+does not hide F's original sources or any later correction record. Automatic
+trace views do not show fictitious human gathering, including when Agent is Off.

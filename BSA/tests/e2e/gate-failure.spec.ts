@@ -34,7 +34,7 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
     expect(injections).toBe(1);
     const row = page.locator(`[data-case-id="${c.id}"]`);
     await expect(row).toContainText("Evidence assembled; unresolved facts remain");
-    await page.getByRole("button", { name: /^Needs more evidence/ }).click();
+    await page.getByRole("button", { name: /^Type 2 worklist\s+\d+$/ }).click();
     await expect(row).toBeVisible();
     await row.getByRole("link", { name: `Open ${c.id}`, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
@@ -96,9 +96,10 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
       await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);
     }
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-    await page.getByRole("button", { name: /^Decided/ }).click();
+    await page.getByRole("button", { name: /^Type 2 worklist\s+\d+$/ }).click();
     await expect(row).toBeVisible();
-    await expect(row).toContainText("No rule recorded for this decision");
+    await expect(row).toContainText("Awaiting senior review");
+    await expect(row).toContainText("Human reason retained; no rule and reason recorded together");
     expect(injections).toBe(1);
   });
 }
