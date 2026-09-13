@@ -31,7 +31,7 @@ test(`fresh Overview supports first visits to every route after immediate discon
         await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(7);
         await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
         if (automaticCaseIds.includes(c.id)) await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
-      } else if (automaticCaseIds.includes(c.id)) {
+      } else if ([...automaticCaseIds, "EX-24088"].includes(c.id)) {
         await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
         await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
         await expect(page.getByRole("button", { name: "Show all", exact: true })).toHaveCount(0);

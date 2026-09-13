@@ -93,7 +93,7 @@ for (const enabled of [true, false]) {
       if (route.startsWith("case/UNKNOWN")) await expect(page.getByText("Case not found", { exact: true })).toBeVisible();
       else await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       if (route.endsWith("/trace") && !route.includes("UNKNOWN")) {
-        if (enabled && !automaticCaseIds.some((id) => route === `case/${id}/trace`)) {
+        if (enabled && ![...automaticCaseIds, "EX-24088"].some((id) => route === `case/${id}/trace`)) {
           await page.getByRole("button", { name: "Show all", exact: true }).click();
         } else if (enabled) {
           await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).toContainText("Cleared by rules; agent not invoked");
@@ -118,13 +118,11 @@ for (const enabled of [true, false]) {
         }
       }
       if (route === "case/EX-24088/record") {
-        if (enabled) await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toBeVisible();
-        else {
-          await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toHaveCount(0);
-          await expect(page.getByText("This historical record retains rule 2026-08 and assisted fields. Only the manual comparison omits them; history is unchanged.", { exact: true })).toBeVisible();
-          await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
-        }
-        await expect(page.getByRole("main")).toContainText("DR-000871");
+        await expect(page.getByRole("heading", { name: "Record DR-000872", exact: true })).toBeVisible();
+        await expect(page.getByRole("combobox", { name: "Replay with", exact: true })).toBeDisabled();
+        await expect(page.locator("[data-original-records]")).toContainText("DR-000871");
+        await expect(page.locator("[data-original-records]")).toContainText("Original rule: 2026-08");
+        await expect(page.locator("[data-original-records]")).toContainText("Human reason:");
       }
     }
   });

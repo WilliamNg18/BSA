@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
-import { startDemonstrationReview } from "./lifecycle-helpers";
+import { ALL_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 const B = "EX-24112";
@@ -168,7 +168,7 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await detail(page).getByText("Demonstration replay", { exact: true }).click();
   await page.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
-  await expect(history(page)).toContainText("Sufficient, released to existing pricing");
+  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   await expect(page.getByRole("alert")).toContainText("Cleared by deterministic rules; the agent was not called");
 });
@@ -186,7 +186,10 @@ test("Hillcrest has seven states, real totals, read-only dispositions and shared
     const total = amounts.reduce((sum, text) => sum + Number(text.replace(/[£,]/g, "")), 0);
     await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText(
       new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(total));
-    for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
+    for (const state of ALL_LIFECYCLE_STATES) {
+      await prepareUnseededState(page, state);
+      await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
+      const labels = LIFECYCLE_LABELS[state];
       const rows = table.getByRole("row").filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) });
       expect(await rows.count()).toBeGreaterThan(0);
       await rows.first().getByRole("button").click();

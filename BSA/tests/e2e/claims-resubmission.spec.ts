@@ -69,7 +69,7 @@ for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
       const history = page.getByRole("region", { name: "Shared case history", exact: true });
       const comparison = page.getByRole("region", { name: "Resubmission comparison", exact: true });
       const marker = comparison.getByRole("button");
-      const state = "Referred back: correction needed before payment";
+      const state = "Action needed: correction required";
       await expect(history.getByRole("status")).toHaveText(state);
       await history.locator("summary").first().click();
       const originalHistory = await history.innerText();

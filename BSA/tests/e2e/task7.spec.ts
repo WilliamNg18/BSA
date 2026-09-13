@@ -27,6 +27,10 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
               await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
               await expect(page.locator("[data-pack-assembly]")).toHaveCount(0);
               await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+            } else if (surface.name === "EX-24088-pack") {
+              await expect(page.locator("[data-pack-assembly]")).toHaveCount(0);
+              await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+              await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toContainText("Paid on the normal schedule (synthetic)");
             } else {
               await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "6");
             }

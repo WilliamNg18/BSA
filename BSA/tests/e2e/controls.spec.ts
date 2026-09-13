@@ -122,7 +122,10 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   await page.locator("a[href='/case/EX-24088']").first().click();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Record DR-000872", exact: true })).toBeVisible();
+  await page.locator("[data-original-records] > summary").click();
+  await expect(page.locator("[data-original-records]")).toContainText("DR-000871");
+  await expect(page.locator("[data-original-records]")).toContainText("Original rule: 2026-08");
 });
 
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {

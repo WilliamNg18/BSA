@@ -58,10 +58,10 @@ for (const enabled of [false, true]) {
     expect(total).toBe(initial.length);
     await counts(page).getByRole("button", { name: /^All staff items/ }).click();
     expect(await rowIds(page)).toEqual(initial);
-    const fresh = counts(page).getByRole("button", { name: "New submissions (0)", exact: true });
+    const fresh = counts(page).getByRole("button", { name: "New submissions (2)", exact: true });
     await fresh.click();
     await expect(fresh).toHaveAttribute("aria-pressed", "true");
-    expect(await rowIds(page)).toEqual([]);
+    expect(await rowIds(page)).toEqual(["EX-24088", "SYN-FQ123-RECHECK"]);
     await confirmReset(page);
     await expect(counts(page).getByRole("button", { name: /^All staff items/ })).toHaveAttribute("aria-pressed", "true");
     expect(await rowIds(page)).toEqual(initial);
@@ -72,13 +72,13 @@ test("Task22 an explicit incomplete submission becomes New and opens the same ca
   await page.goto("pharmacy");
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("link", { name: "Open shared queue", exact: true }).click();
-  const fresh = counts(page).getByRole("button", { name: "New submissions (1)", exact: true });
+  const fresh = counts(page).getByRole("button", { name: "New submissions (3)", exact: true });
   await fresh.click();
   const row = worklist(page).locator('[data-case-id="EX-24112"]');
   await expect(row).toBeVisible();
   await expect(row).toContainText("New submission");
   await expect(row).toContainText("EPS");
-  await expect(worklist(page).locator("tbody tr")).toHaveCount(1);
+  expect(await rowIds(page)).toEqual(["EX-24088", "EX-24112", "SYN-FQ123-RECHECK"]);
   await row.getByRole("link", { name: "Open EX-24112", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
