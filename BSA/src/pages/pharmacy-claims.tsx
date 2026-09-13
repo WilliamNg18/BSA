@@ -28,6 +28,7 @@ export function PharmacyClaimsPage() {
   const lifecycles = useAppStore((s) => s.lifecycles);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const revisions = useAppStore((s) => s.caseRevisions);
+  const processes = useAppStore((s) => s.itemProcesses);
   const corrections = useAppStore((s) => s.pharmacyCorrections);
   const model = useProcessMonth();
   const projection = model.result?.[agentEnabled ? "withAgent" : "today"];
@@ -36,8 +37,8 @@ export function PharmacyClaimsPage() {
   const [filter, setFilter] = useState<ClaimFilter>("Action needed");
   const month = new Date().toISOString().slice(0, 7);
   const rows = useMemo(() => Object.values(lifecycles).filter((row) => row.pharmacyCode === pharmacy).map((row) => ({
-    ...row, c: caseForLifecycle(row.caseId, lifecycles, revisions),
-  })), [lifecycles, revisions, pharmacy]);
+    ...row, c: caseForLifecycle(row.caseId, lifecycles, revisions, processes),
+  })), [lifecycles, revisions, processes, pharmacy]);
   const shown = rows.filter((row) => matchesFilter(row, filter, month));
   const selected = rows.find((row) => row.caseId === id);
   const caught = new Set(corrections.filter((event) => event.pharmacyCode === pharmacy && event.at.startsWith(month))

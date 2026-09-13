@@ -27,7 +27,8 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
   const revision = useAppStore((s) => s.caseRevisions[c.id]?.at(-1));
   const process = useAppStore((s) => s.itemProcesses[c.id]);
   const channel = revision?.channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper");
-  const [text, setText] = useState(c.extracted.endorsementText);
+  const submittedText = revision?.endorsementText ?? c.extracted.endorsementText;
+  const [text, setText] = useState(submittedText);
   const [productCode, setProductCode] = useState(revision?.declaration?.fields.productCode ?? "");
   const [quantity, setQuantity] = useState(revision?.declaration?.fields.quantity?.toString() ?? "");
   const [prescriber, setPrescriber] = useState(revision?.declaration?.fields.prescriber ?? "");
@@ -61,7 +62,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
       <div><dt>Pharmacy</dt><dd>{c.pharmacy.name} (synthetic)</dd></div>
       <div><dt>Dispensing date</dt><dd>{c.extracted.dispensingDate}</dd></div>
       <div><dt>Claimed amount, not payment</dt><dd>£{c.claim.amountClaimed.toFixed(2)} (synthetic)</dd></div>
-      <div><dt>Current endorsement</dt><dd>{c.extracted.endorsementText || "None"}</dd></div>
+      <div><dt>Current endorsement</dt><dd>{submittedText || "None"}</dd></div>
       <div><dt>Channel</dt><dd>{channel === "eps" ? "EPS typed message" : "Paper"}</dd></div>
     </dl>
     {row.state === "paid" && <section aria-label="Existing pricing outcome" className="space-y-1">
@@ -124,7 +125,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     {!editable && row.state !== "information_requested" && <p>Read-only claim. Further decisions belong to NHSBSA operators.</p>}
     <details><summary className="cursor-pointer">Demonstration replay</summary>
       <p>Start a new synthetic submission with current evidence. Prior attempts and decisions remain unchanged.</p>
-      <Button variant="outline" onClick={() => act(() => submit({ caseId: c.id, channel, endorsementText: c.extracted.endorsementText, declaration: revision?.declaration }), "New demonstration attempt submitted.")}>Submit another demonstration attempt</Button>
+      <Button variant="outline" onClick={() => act(() => submit({ caseId: c.id, channel, endorsementText: submittedText, declaration: revision?.declaration }), "New demonstration attempt submitted.")}>Submit another demonstration attempt</Button>
     </details>
     {error && <p role="alert">{error}</p>}{message && <p role="status">{message}</p>}
   </>;
