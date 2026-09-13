@@ -1,6 +1,6 @@
 import type { ExceptionCase, RoutingFacts, RoutingResult } from "./types";
 import { productByCode } from "./reference";
-import { endorsementRequired, evaluateRequirements, QUALITY_THRESHOLD, reconcile } from "./rules";
+import { endorsementRequired, evaluateRequirements, mandatoryFieldsCheck, QUALITY_THRESHOLD, reconcile } from "./rules";
 import { interpretPharmacyText } from "./pharmacy-check";
 import { versionForDate } from "./tariff";
 
@@ -11,9 +11,9 @@ export const RB_CODE_CATALOG = Object.freeze([
 
 /** Code routes facts, never an Agent flag, perspective or recommendation. */
 export function routeSubmission(facts: RoutingFacts): RoutingResult {
-  if (!["eps", "paper"].includes(facts.channel) ||
+  if (!facts || !["eps", "paper"].includes(facts.channel) ||
     !["not_decided", "sufficient", "insufficient", "request_information"].includes(facts.type2Decision) ||
-    ["readable", "handwritten", "captureConfirmed", "endorsementRequired", "endorsementPresent", "endorsementComplete", "interpretationRequired", "hasConflict"]
+    ["readable", "handwritten", "captureConfirmed", "mandatoryFieldsComplete", "endorsementRequired", "endorsementPresent", "endorsementComplete", "interpretationRequired", "hasConflict"]
       .some((key) => typeof facts[key as keyof RoutingFacts] !== "boolean")) throw new Error("Invalid routing facts.");
   const result = (outcome: RoutingResult["outcome"], reason: string): RoutingResult => ({
     outcome, reason, requiresHuman: outcome === "type1_capture" || outcome === "type2_endorsement",
@@ -21,6 +21,7 @@ export function routeSubmission(facts: RoutingFacts): RoutingResult {
   });
   if (!facts.captureConfirmed && (!facts.readable || facts.handwritten)) return result("type1_capture", "Human product capture required before routing.");
   if (facts.type2Decision === "insufficient") return result("referred_back", "Human judgement found insufficient information; RB code and reason required.");
+  if (!facts.mandatoryFieldsComplete) return result("type2_endorsement", "Mandatory evidence is missing; human review required before pricing.");
   if (facts.type2Decision === "sufficient") return {
     outcome: "type2_endorsement", reason: "Human judgement complete; existing rules engine handles normal pricing.",
     requiresHuman: false, pricingAuthority: "existing_rules_engine",
@@ -50,6 +51,7 @@ export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["cha
   const concession = version?.concessions.find((entry) => entry.productCode === product?.code);
   return {
     channel, readable, handwritten: channel === "paper" && c.imageStyle !== "printed", captureConfirmed,
+    mandatoryFieldsComplete: Boolean(product) && mandatoryFieldsCheck(c.extracted).every((check) => check.pass),
     endorsementRequired: required.required !== false, endorsementPresent: facts.present, endorsementComplete: complete,
     interpretationRequired: required.required === null || facts.present && !complete || captureConfirmed && c.scenario === "D",
     hasConflict: reconcile(c.extracted, c.claim.quantity, c.claim.productCode, c.claim.amountClaimed, product, concession?.price ?? null).some((entry) => entry.material),
