@@ -46,7 +46,7 @@ test("one state: observer is read-only and retains every authoritative collectio
           });
           expect(await readDomainState(page), "Failed reconciliation cannot create capture evidence").toEqual(initial);
           await action("Explicitly reconcile the declaration with the paper", "NHSBSA", async () => {
-            await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+            await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
           });
         }
         const confirmed = await action("Confirm the current capture without making a Type 2 decision", "NHSBSA", async () => {
@@ -83,13 +83,13 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Select the EPS missing-information example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "Information missing", exact: true }).check();
+        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
       });
       await action("Enter a complete endorsement for the EPS item", "Pharmacy", async () => {
-        await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO AB 27/08/26");
+        await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO AB 27/08/26");
       });
       const submitted = await action("Explicitly submit complete EPS item", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
         await expect(page.getByRole("link", { name: "View submitted claim", exact: true })).toBeVisible();
       });
       expect(submitted).toMatchObject({
@@ -118,9 +118,9 @@ for (const enabled of [false, true]) {
   test(`one state: incomplete EPS draft survives every perspective switch, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true });
+      const field = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
       await action("Select incomplete EPS example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "Information missing", exact: true }).check();
+        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
       });
       await action("Enter an incomplete endorsement", "Pharmacy", async () => {
         await field.fill("NCSO XY");
@@ -132,7 +132,7 @@ for (const enabled of [false, true]) {
       expect(await readDomainState(page), "Unsubmitted edits are not lifecycle or correction events").toEqual(initial);
       const submitted = await action("Explicitly submit the retained incomplete draft", "Pharmacy", async () => {
         await expect(field).toHaveValue("NCSO RK");
-        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
         await expect(page.getByRole("link", { name: "View submitted claim", exact: true })).toBeVisible();
       });
       expect(submitted).toMatchObject({

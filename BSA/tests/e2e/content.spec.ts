@@ -53,11 +53,11 @@ for (const enabled of [false, true]) {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const audits = [];
-    for (const scenario of ["Complete endorsement", "Information missing", "Unreadable form"]) {
+    for (const scenario of ["Complete endorsement", "NCSO missing date", "Unreadable form"]) {
       await page.getByRole("radio", { name: scenario, exact: true }).click();
       await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
       audits.push({ scenario, phase: "check", ...await page.evaluate(auditProse) });
-      await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+      await page.getByRole("button", { name: "Send claim", exact: true }).click();
       const timeline = page.getByRole("list", { name: "Submission timeline", exact: true });
       await expect(timeline.locator(":scope > li")).toHaveCount(scenario === "Complete endorsement" ? 2 : 1);
       const jump = page.getByRole("button", { name: "Jump to end", exact: true });
@@ -68,14 +68,14 @@ for (const enabled of [false, true]) {
       audits.push({ scenario, phase: "recorded-receipt", ...await page.evaluate(auditProse) });
       if (scenario === "Unreadable form") {
         await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
-        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
         await expect(page.getByRole("alert")).toContainText("Declared quantity must be a positive whole number or left blank.");
         audits.push({ scenario, phase: "invalid-declaration", ...await page.evaluate(auditProse) });
         await page.getByLabel("Declared quantity", { exact: true }).fill("");
       }
-      if (enabled && scenario === "Information missing") {
-        await page.getByRole("button", { name: "Apply fix", exact: true }).click();
-        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing");
+      if (enabled && scenario === "NCSO missing date") {
+        await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
         audits.push({ scenario, phase: "corrected", ...await page.evaluate(auditProse) });
       }
     }

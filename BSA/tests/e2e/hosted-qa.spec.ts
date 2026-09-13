@@ -10,7 +10,7 @@ for (const enabled of [true, false]) {
         await page.setViewportSize({ width, height: 900 });
         await page.goto("pharmacy");
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-        const field = page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" });
+        const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
         const seed = await field.inputValue();
         await field.fill("NCSO RK 21/08/26");
         const trigger = page.getByRole("button", { name: "Reset demo", exact: true });

@@ -39,11 +39,11 @@ for (const enabled of [false, true]) {
             await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
           });
           await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
-          for (const name of ["Declared product code", "Declared quantity", "Declared prescriber (synthetic)", "Endorsement entered by the pharmacy"]) {
+          for (const name of ["Declared product code", "Declared quantity", "Declared prescriber (synthetic)", "Dispenser endorsement"]) {
             await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
           }
           const submitted = await action("Submit the genuinely undeclared paper revision", "Pharmacy", async () => {
-            await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+            await page.getByRole("button", { name: "Send claim", exact: true }).click();
           });
           expect(submitted.caseRevisions[D].at(-1)?.declaration).toBeUndefined();
           expect(submitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });
@@ -55,7 +55,7 @@ for (const enabled of [false, true]) {
         const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
         await expect(capture).toBeVisible();
         const before = await readDomainState(page);
-        const reconciled = capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true });
+        const reconciled = capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true });
         const confirm = capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true });
         const assisted = enabled && scenario !== "fresh unknown";
         for (const [field, label] of Object.entries(labels)) {

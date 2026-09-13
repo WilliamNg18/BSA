@@ -137,8 +137,8 @@ test(LIVE_CHECKS.cards, async ({ page }, info) => {
 
 test(LIVE_CHECKS.pharmacy, async ({ page }, info) => {
   const scenarios = [
-    { label: "Complete endorsement", status: "Complete: will flow to automated pricing" },
-    { label: "Information missing", status: "Information may be missing" },
+    { label: "Complete endorsement", status: "Complete: will flow to automated pricing, no person involved" },
+    { label: "NCSO missing date", status: "Information missing" },
     { label: "Unreadable form", status: "Agent unable to determine" },
   ];
   await page.goto("/pharmacy");
@@ -148,7 +148,7 @@ test(LIVE_CHECKS.pharmacy, async ({ page }, info) => {
       await page.getByRole("radio", { name: scenario.label, exact: true }).click();
       await expect(page.getByRole("radio", { name: scenario.label === "Unreadable form" ? "Paper" : "EPS", exact: true })).toBeChecked();
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? scenario.status : "Not checked: manual submission");
-      await expect(page.getByRole("button", { name: "Continue with submission", exact: true })).toBeEnabled();
+      await expect(page.getByRole("button", { name: "Send claim", exact: true })).toBeEnabled();
       await captureCheckpoint(page, info, `pharmacy-${scenario.label.replaceAll(" ", "-")}-${enabled ? "on" : "off"}`);
     }
     await audit(page, info, "pharmacy", enabled);
@@ -207,7 +207,7 @@ test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
     await test.step(`Agent ${enabled ? "On" : "Off"}`, async () => {
       await page.goto("/pharmacy");
       await flag(page).setChecked(enabled);
-      await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+      await page.getByRole("button", { name: "Send claim", exact: true }).click();
       await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
       await expect(detail(page)).toContainText(LIFECYCLE_LABELS.submitted.pharmacy);
       await history(page).getByRole("button", { name: "Follow this case", exact: true }).click();
@@ -277,7 +277,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
       await expect(capture).toContainText("declared by the pharmacy, not read from the form");
       await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
       await expect(capture.getByRole("alert")).toContainText("Reconcile the declaration with the paper");
-      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
     } else {
       for (const name of ["Product code", "Quantity", "Endorsement", "Prescriber"]) {
         await expect(capture.getByRole("textbox", { name, exact: true })).toHaveValue("");
@@ -317,7 +317,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
     await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     if (enabled) {
-      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true })).not.toBeChecked();
       await expectUnconfirmedPaperEvidence(page);
     }
     await captureCheckpoint(page, info, `d-fresh-capture-after-referral-${enabled ? "on" : "off"}`);

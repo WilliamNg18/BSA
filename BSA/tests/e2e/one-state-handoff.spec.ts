@@ -98,7 +98,7 @@ for (const enabled of [false, true]) {
       await action("Navigate to D Type 1 capture", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
       const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
       if (enabled) await action("Explicitly reconcile the prior D declaration", "NHSBSA", async () => {
-        await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+        await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
       });
       const captured = await action("Confirm D capture without a Type 2 decision", "NHSBSA", async () => {
         await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
@@ -164,7 +164,7 @@ for (const enabled of [false, true]) {
       await expect(capture).toBeVisible();
       await expect(page.locator(`[data-case-id="${D}"]`)).toHaveCount(0);
       await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
-      if (enabled) await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      if (enabled) await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true })).not.toBeChecked();
       expect(await readDomainState(page)).toEqual(resubmitted);
     });
   });
