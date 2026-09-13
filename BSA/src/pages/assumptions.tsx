@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { PageSection } from "@/components/page-section";
 import { EvidenceClassTag } from "@/components/demo/labels";
 import { BaselineAssumptions } from "@/components/demo/baseline-assumptions";
+import { ProcessAssumptions } from "@/components/demo/process-assumptions";
 import { ASSUMPTIONS } from "@/lib/domain/content";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +30,14 @@ export function AssumptionsPage() {
         </div>
       </div>
 
-      <BaselineAssumptions register />
+      <PageSection title="Shared process assumptions" description="These are the same editable inputs used by the month, process summary and operational views.">
+        <ProcessAssumptions />
+      </PageSection>
+      <details className="space-y-4 rounded-xl border p-5" data-legacy-assumptions>
+        <summary className="cursor-pointer font-semibold">Historical referral-only comparison</summary>
+        <p className="text-sm text-muted-foreground">Legacy assumptions are retained for the historical comparison only. They do not supply the current whole-process figures.</p>
+        <BaselineAssumptions register />
+      </details>
 
       <PageSection title="Register" description="The first four decide whether an agent is genuinely required. The rest decide how it would be built.">
         <ol className="grid gap-4 lg:grid-cols-2">

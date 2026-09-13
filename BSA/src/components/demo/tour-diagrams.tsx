@@ -18,11 +18,11 @@ function Flow({ title, steps }: { title: string; steps: readonly { label: string
 export function SceneDiagram() {
   return <section className="rounded-xl border bg-card p-5" aria-label="Existing process context">
     <h2 className="mb-4 font-semibold">Existing process context</h2>
-    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3 text-sm"><span>Capture and field extraction</span><BoundaryTag cls="existing" /></div>
+    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3 text-sm"><span>EPS claim message or scanned paper</span><BoundaryTag cls="existing" /></div>
     <ArrowDown className="mx-auto my-3 size-4 text-muted-foreground" aria-hidden="true" />
     <ul aria-label="Alternative processing paths" className="grid gap-3 sm:grid-cols-2">
-      <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Straightforward items</p><p>Automatic pricing</p><BoundaryTag cls="existing" /></li>
-      <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Uncertain items</p><p>Operator routing</p><BoundaryTag cls="existing" /><ArrowDown className="size-4" aria-hidden="true" /><p>Unresolved: refer back before payment</p><BoundaryTag cls="human" /></li>
+      <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Straightforward items</p><p>Priced by NHSBSA&apos;s existing rules engine; no person involved.</p><BoundaryTag cls="existing" /></li>
+      <li className="space-y-3 rounded-lg border bg-muted/30 p-3 text-sm"><p className="font-medium">Uncertain items</p><p>Type 1 captures uncertain reads. Type 2 judges endorsements. Items can need either or both.</p><BoundaryTag cls="human" /><ArrowDown className="size-4" aria-hidden="true" /><p>Still insufficient: referred back to MYS Unpaid items for correction and resubmission.</p></li>
     </ul>
   </section>;
 }
