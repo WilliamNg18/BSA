@@ -6,6 +6,21 @@ ms.date: 2026-09-13
 
 # First-time viewer review
 
+## Repaired Task 24 execution at d5832e0: review pending
+
+The coordinator explicitly released the repaired deployment gate after PR #80
+merged and all four repair CI shards passed. **20/20 hosted checks passed** on
+`d5832e0faa44c32242cb75f2970288d4499befae`; capture source was
+`59bdf65be2601a174f197ddb43f87c507f649451`, with identical runtime and application
+ancestry. The [separate new evidence](screens/task24/README.md) contains 40
+matching clean identities and 43 PNGs. Independent full-height review is
+**pending**: this is not yet a replacement novice-content verdict.
+
+All 24 unrestricted axe audits have zero violations. Sixteen retain 121
+color-contrast node occurrences; the former five `aria-prohibited-attr`
+incompletes are absent. No full manual accessibility claim is made. The
+original source-pinned failed review below is retained, not relabelled.
+
 ## Task 24: integrated process review at 1327e65
 
 **Novice-content verdict: FAIL. Functional hosted execution: 20/20 PASS.**

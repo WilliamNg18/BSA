@@ -1,0 +1,320 @@
+{
+  "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+  "auditedAt": "2026-09-13T15:33:53.567Z",
+  "agentEnabled": false,
+  "violations": [],
+  "passes": 45,
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "tags": [
+        "cat.color",
+        "wcag2aa",
+        "wcag143",
+        "TTv5",
+        "TT13.c",
+        "EN-301-549",
+        "EN-9.1.4.3",
+        "ACT",
+        "RGAAv4",
+        "RGAA-3.2.1"
+      ],
+      "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.13/color-contrast?application=playwright",
+      "nodes": [
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Items referred back a month\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    "section[aria-label=\"Items referred back a month\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"hidden whitespace-nowrap text-sm font-semibold min-[900px]:inline lg:hidden xl:inline 2xl:hidden\" aria-hidden=\"true\">NHSBSA Case Builder</span>",
+          "target": [
+            ".min-\\[900px\\]\\:inline"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Items referred back a month\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    "section[aria-label=\"Items referred back a month\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button data-slot=\"dropdown-menu-trigge...\" data-variant=\"ghost\" data-size=\"default\" class=\"inline-flex shrink-0...\" type=\"button\" id=\"radix-_r_0_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\">",
+          "target": [
+            "#radix-_r_0_"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "10.5pt (14px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Items referred back a month\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    "section[aria-label=\"Items referred back a month\"]"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<button data-slot=\"dropdown-menu-trigge...\" data-variant=\"ghost\" data-size=\"default\" class=\"inline-flex shrink-0...\" type=\"button\" id=\"radix-_r_2_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"closed\">",
+          "target": [
+            "#radix-_r_2_"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<fieldset aria-label=\"Perspective\" class=\"flex shrink-0 rounded-md border bg-muted/50 p-0.5\">",
+                  "target": [
+                    ".p-0\\.5"
+                  ]
+                },
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Hours on the referred-back loop\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    ".bg-card.space-y-4.rounded-xl:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"pointer-events-none block rounded-sm px-1 py-2 text-[10px] font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring sm:px-2 sm:text-xs text-foreground hover:bg-muted\">Pharmacy</span>",
+          "target": [
+            ".relative.cursor-pointer:nth-child(1) > .text-foreground.hover\\:bg-muted.block"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<fieldset aria-label=\"Perspective\" class=\"flex shrink-0 rounded-md border bg-muted/50 p-0.5\">",
+                  "target": [
+                    ".p-0\\.5"
+                  ]
+                },
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Hours on the referred-back loop\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    ".bg-card.space-y-4.rounded-xl:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"pointer-events-none block rounded-sm px-1 py-2 text-[10px] font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring sm:px-2 sm:text-xs text-foreground hover:bg-muted\">NHSBSA</span>",
+          "target": [
+            ".relative.cursor-pointer:nth-child(2) > .text-foreground.hover\\:bg-muted.block"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"flex items-center gap-0.5 rounded-md border bg-muted/50 px-0.5 py-1.5 sm:gap-2 sm:px-2\">",
+                  "target": [
+                    ".px-0\\.5"
+                  ]
+                },
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Hours on the referred-back loop\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    ".bg-card.space-y-4.rounded-xl:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<label data-slot=\"label\" class=\"flex items-center gap-2 select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 whitespace-nowrap text-xs font-semibold\" for=\"agent-flag\">",
+          "target": [
+            "label[for=\"agent-flag\"]"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        },
+        {
+          "any": [
+            {
+              "id": "color-contrast",
+              "data": {
+                "contrastRatio": 0,
+                "fontSize": "9.0pt (12px)",
+                "fontWeight": "normal",
+                "messageKey": "elmPartiallyObscured",
+                "expectedContrastRatio": "4.5:1"
+              },
+              "relatedNodes": [
+                {
+                  "html": "<div class=\"flex items-center gap-0.5 rounded-md border bg-muted/50 px-0.5 py-1.5 sm:gap-2 sm:px-2\">",
+                  "target": [
+                    ".px-0\\.5"
+                  ]
+                },
+                {
+                  "html": "<header class=\"min-h-14 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80\">",
+                  "target": [
+                    "header"
+                  ]
+                },
+                {
+                  "html": "<section aria-label=\"Hours on the referred-back loop\" class=\"min-w-0 space-y-4 rounded-xl border bg-card p-5\">",
+                  "target": [
+                    ".bg-card.space-y-4.rounded-xl:nth-child(2)"
+                  ]
+                }
+              ],
+              "impact": "serious",
+              "message": "Element's background color could not be determined because it's partially obscured by another element"
+            }
+          ],
+          "all": [],
+          "none": [],
+          "impact": "serious",
+          "html": "<span class=\"sr-only sm:not-sr-only\">: Off</span>",
+          "target": [
+            ".sm\\:not-sr-only"
+          ],
+          "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,40 @@
 # Tasks 19-24 integrated live evidence
 
+## Repaired hosted run at d5832e0
+
+The [new manifest](d5832e0/manifest.json) and unchanged
+[new original checklist](d5832e0/original-checklist.json) record a separate
+**20/20 hosted PASS**, with one attempt per check, after the coordinator opened
+the repaired deployment gate. Application:
+`d5832e0faa44c32242cb75f2970288d4499befae`, built
+`2026-09-13T15:31:01.43Z`, clean. Capture/test source:
+`59bdf65be2601a174f197ddb43f87c507f649451`, with application ancestry and
+identical runtime/configuration. Execution:
+`2026-09-13T15:33:04.170Z` to `2026-09-13T15:37:41.131Z` (4.6 minutes).
+
+All **40 clean build identities** matched. All **198 artifact hashes** verified.
+There are **43 PNGs: 19 Off / 24 On**, comprising 41 enriched view entries
+(18 Off / 23 On) and two supplemental perspective-helper images. The manifest's
+`counts.images` counts enriched views, not the two supplemental PNGs.
+The enriched views are 40 Both / one Pharmacy, and the two supplemental views
+also use Pharmacy: this is not an all-three-perspectives static matrix.
+
+All **24 unrestricted axe audits (10 Off / 14 On) reported zero violations**.
+Sixteen audits retain 121 color-contrast node occurrences for manual review.
+The former five `aria-prohibited-attr` incompletes are absent after the Claim
+filters group repair. No browser-error or root-overflow guard failed.
+This is not full manual WCAG or screen-reader certification.
+
+The repaired positive contracts cover [Claim filters](d5832e0/check-06),
+[D's initial and fresh capture](d5832e0/check-09), and
+[E's deterministic closing](d5832e0/check-10/04-audit-deterministic-e-trace-on.png).
+Independent actual full-height review of this complete new 43-image set is
+**pending**; functional PASS alone does not clear the original novice findings.
+The [review record](../../FIRST-TIME-VIEWER.md) separates the two sources.
+The original source and failed review below remain unchanged evidence.
+
+## Original hosted run at 1327e65: functional PASS, novice-content FAIL
+
 The [manifest](1327e65/manifest.json) and unchanged
 [original checklist](1327e65/original-checklist.json) record **20/20 hosted
 checks passing** on application

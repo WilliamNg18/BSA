@@ -32,6 +32,15 @@ identify Claim filters naming without a valid role. Repairs, new reviewed
 evidence and the final merged-V-main coordinator recheck remain gates.
 See the [live checklist](../tests/live/README.md).
 
+The repaired deployment at `d5832e0faa44c32242cb75f2970288d4499befae`
+subsequently passed **20/20 hosted checks** in 4.6 minutes, captured at
+`59bdf65be2601a174f197ddb43f87c507f649451`. Its separate 43-image set, 40 clean
+identities and 24 zero-violation axe audits are retained alongside the original.
+The Claim filters `aria-prohibited-attr` incompletes are absent; 16 audits still
+retain color-contrast incompletes. Independent review of the repaired images
+is pending, as is final merged-V-main acceptance. The original failed review
+is not retroactively cleared.
+
 Tasks 14-18's historical live review at clean `c0203fc` is recorded separately in
 [FIRST-TIME-VIEWER](FIRST-TIME-VIEWER.md): nine observed clarity points,
 18 reviewed views / unrestricted axe audits with zero violations, and an

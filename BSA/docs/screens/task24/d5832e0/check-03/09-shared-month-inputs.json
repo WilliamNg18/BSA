@@ -1,0 +1,55 @@
+{
+  "input": {
+    "monthlyItems": 100000000,
+    "epsPercent": 91,
+    "type1Percent": 2.2,
+    "type2Percent": 2,
+    "staffTouchPercent": 4,
+    "type2SecondsToday": 13,
+    "investigationMinutesToday": 5,
+    "pharmacyCompletionMinutes": 7,
+    "monthlyReferrals": 120,
+    "pharmacyCatchPercent": 20,
+    "abstainPercent": 16.666666666666668,
+    "builtJudgingSeconds": 45,
+    "type1KeySeconds": 30,
+    "type1ConfirmSeconds": 10
+  },
+  "expected": {
+    "counts": {
+      "monthlyItems": 100000000,
+      "epsItems": 91000000,
+      "paperItems": 9000000,
+      "type1Items": 2200000,
+      "type2Items": 2000000,
+      "staffTouchedItems": 4000000,
+      "autoPricedItems": 96000000
+    },
+    "today": {
+      "type2OperatorHours": 7222.222222222223,
+      "referralOperatorHours": 10,
+      "pharmacyCompletionHours": 14,
+      "referredBackItems": 120,
+      "caughtBeforeSubmission": 0,
+      "builtCases": 0,
+      "abstainedItems": 0,
+      "decisionsWithRuleAndReason": 0,
+      "monthlyRuleAssurance": "experience_only"
+    },
+    "withAgent": {
+      "type2OperatorHours": 22036.775555555556,
+      "referralOperatorHours": 8,
+      "pharmacyCompletionHours": 11.2,
+      "referredBackItems": 96,
+      "caughtBeforeSubmission": 24,
+      "builtCases": 1666647,
+      "abstainedItems": 333329,
+      "decisionsWithRuleAndReason": 1666647,
+      "monthlyRuleAssurance": "clause_and_version_cited"
+    },
+    "type1": {
+      "keySeconds": 30,
+      "confirmSeconds": 10
+    }
+  }
+}
