@@ -289,6 +289,7 @@ for (const theme of ["light", "dark"] as const) {
     const receiptEvidence = receipt.locator(":scope > dl");
     const blind = await receiptEvidence.innerText();
     await expect(receipt).toContainText("EX-24123:2");
+    await expect(receipt.getByRole("link", { name: "Open shared queue", exact: true })).toBeVisible();
     await expect(page.getByRole("region", { name: "Submitted pharmacy declaration", exact: true })).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Submission timeline" }).locator("li")).toHaveCount(1);
     await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -308,6 +309,10 @@ for (const theme of ["light", "dark"] as const) {
     }
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Declaration complete: human capture confirmation required");
     await expect(page.getByRole("list", { name: "Scripted pharmacy process" }).locator("li").first()).toHaveText("Declared fieldsPASS");
+    await expect(receiptEvidence).toHaveText(blind, { useInnerText: true });
+    await expect(receipt.getByRole("link", { name: "Open shared queue", exact: true })).toHaveCount(0);
+    await page.getByRole("radio", { name: "Both", exact: true }).click();
+    await expect(receipt.getByRole("link", { name: "Open shared queue", exact: true })).toBeVisible();
     await expect(receiptEvidence).toHaveText(blind, { useInnerText: true });
     await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
     await expect(receipt).toContainText("EX-24123:3");
