@@ -30,6 +30,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
             <div><dt>Attempt / record</dt><dd>{event.revision ?? "Historical"} · {event.recordId ?? "No decision record"}</dd></div>
             {event.channel && <div><dt>Channel</dt><dd>{event.channel === "eps" ? "EPS" : "Paper"}</dd></div>}
             {event.rbCode && <div><dt>RB code</dt><dd>{event.rbCode}</dd></div>}
+            {event.actor === "operator" && event.recommendation === "NONE" && !event.clauseId && (!pharmacy || !enabled) && <div><dt>Rule record</dt><dd>experience only, no rule recorded in this synthetic judgement.</dd></div>}
             {event.reason && (!pharmacy || !enabled) && <div><dt>Human reason</dt><dd>{event.reason}</dd></div>}
             {event.reason && pharmacy && enabled && !event.approvedDraft && <div><dt>Pharmacy response</dt><dd>No operator-approved note recorded.</dd></div>}
             {event.tariffVersion && (!pharmacy || !enabled || event.approvedDraft) && <div><dt>Rule / clause</dt><dd>{event.approvedDraft && pharmacy && enabled ? event.approvedDraft.tariffVersion : event.tariffVersion} · {event.approvedDraft && pharmacy && enabled ? event.approvedDraft.clauseId : event.clauseId ?? "Not recorded"}</dd></div>}

@@ -42,7 +42,7 @@ export function PharmacyPage() {
   const automaticallyPriced = receiptEvents?.some((event) => event.processStep === "automatic_pricing");
   const checkOptions = useMemo(() => ({
     channel,
-    declaration: channel === "paper" ? {
+    declaration: channel === "paper" && [fields.productCode, fields.quantity, fields.prescriber, text].some((value) => value.trim()) ? {
       fields: { productCode: fields.productCode.trim() || null, quantity: fields.quantity.trim() ? Number(fields.quantity) : null, endorsementText: text, prescriber: fields.prescriber.trim() || null },
       declaredAt: new Date().toISOString(), provenance: "pharmacy_declaration" as const,
     } : undefined,
@@ -63,11 +63,10 @@ export function PharmacyPage() {
     setEdited((old) => ({ ...old, [editKey]: value }));
   };
   function declaration(): PharmacyDeclaration | undefined {
-    if (channel !== "paper") return undefined;
-    const quantity = fields.quantity.trim() ? Number(fields.quantity) : null;
-    if (quantity !== null && (!Number.isFinite(quantity) || quantity <= 0)) throw new Error("Declared quantity must be a positive number or left blank.");
-    return { fields: { productCode: fields.productCode.trim() || null, quantity, endorsementText: text, prescriber: fields.prescriber.trim() || null },
-      declaredAt: new Date().toISOString(), provenance: "pharmacy_declaration" };
+    if (!checkOptions.declaration) return undefined;
+    const quantity = checkOptions.declaration.fields.quantity;
+    if (quantity !== null && (!Number.isSafeInteger(quantity) || quantity <= 0)) throw new Error("Declared quantity must be a positive whole number or left blank.");
+    return { ...checkOptions.declaration, declaredAt: new Date().toISOString() };
   }
   useEffect(() => {
     const pending = pendingCorrection.current;
@@ -118,7 +117,7 @@ export function PharmacyPage() {
               }} />
             </div>
             <div className="space-y-1"><Label htmlFor="declared-quantity">Declared quantity</Label>
-              <Input id="declared-quantity" type="number" min="0" step="any" value={fields.quantity} aria-describedby="declaration-provenance" onChange={(event) => {
+              <Input id="declared-quantity" type="number" min="1" step="1" value={fields.quantity} aria-describedby="declaration-provenance" onChange={(event) => {
                 pendingCorrection.current = null;
                 setDeclaredFields((old) => ({ ...old, [c.id]: { ...fields, quantity: event.target.value } }));
               }} />
@@ -156,7 +155,7 @@ export function PharmacyPage() {
             <ol aria-label="Scripted pharmacy process" className="space-y-2">
               {PHARMACY_STEPS.map((label, index) => {
                 const value = result ? result.stages[index] : stoppedAtCapture && index > 0 ? "NOT RUN" : index < current.phase ? "Staged" : index === current.phase ? "Checking" : "Pending";
-                return <li key={label} className="flex justify-between gap-3 rounded-md border p-2 text-sm"><span>{label}</span><span className={value === "PASS" ? "font-semibold text-emerald-700 dark:text-emerald-300" : value === "MISSING" ? "font-semibold text-amber-800 dark:text-amber-200" : "font-medium"}>{value}</span></li>;
+                return <li key={label} className="flex justify-between gap-3 rounded-md border p-2 text-sm"><span>{index === 0 && checkOptions.declaration ? "Declared fields" : label}</span><span className={value === "PASS" ? "font-semibold text-emerald-700 dark:text-emerald-300" : value === "MISSING" ? "font-semibold text-amber-800 dark:text-amber-200" : "font-medium"}>{value}</span></li>;
               })}
             </ol>
             <dl className="grid gap-2 text-sm sm:grid-cols-2">

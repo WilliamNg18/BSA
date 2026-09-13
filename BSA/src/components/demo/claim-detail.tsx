@@ -76,7 +76,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
         {event?.exactFix && <p>Exact fix: {event.exactFix}</p>}
       </section> : <p>No operator-approved draft. Enabling assistance does not approve a note.</p>) : <>
         <h3 className="font-semibold">Human decision reason</h3><p>{event?.reason ?? "No reason recorded."}</p>
-        <div className="text-sm">{event?.tariffVersion ? `Rule: ${event.tariffVersion} · Clause: ${event.clauseId ?? "Not recorded"}` : "Experience only, no rule recorded in this synthetic judgement."}</div>
+        <div className="text-sm">{event?.tariffVersion && event.tariffVersion !== "n/a" ? `Rule: ${event.tariffVersion} · Clause: ${event.clauseId ?? "Not recorded"}` : "experience only, no rule recorded in this synthetic judgement."}</div>
         <CompactTooltip><CompactTooltipTrigger asChild><Button variant="link" className="h-auto p-0">How was this sent?</Button></CompactTooltipTrigger>
           <CompactTooltipContent>MYS Unpaid items and NHSmail notification are owner-supplied public context. The operator text and code are recorded synthetic evidence. Weeks of delay are illustrative.</CompactTooltipContent>
         </CompactTooltip>
@@ -87,7 +87,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
         <legend className="font-semibold">Correct the paper declaration</legend>
         <p id="claim-declaration-provenance" className="text-sm sm:col-span-2">Every field: declared by the pharmacy, not read from the form.</p>
         <label className="grid gap-1">Declared product code<input className="rounded-md border bg-background p-2" value={productCode} aria-describedby="claim-declaration-provenance" onChange={(e) => { setProductCode(e.target.value); setChecked(null); }} /></label>
-        <label className="grid gap-1">Declared quantity<input type="number" min="0" step="any" className="rounded-md border bg-background p-2" value={quantity} aria-describedby="claim-declaration-provenance" onChange={(e) => { setQuantity(e.target.value); setChecked(null); }} /></label>
+        <label className="grid gap-1">Declared quantity<input type="number" min="1" step="1" className="rounded-md border bg-background p-2" value={quantity} aria-describedby="claim-declaration-provenance" onChange={(e) => { setQuantity(e.target.value); setChecked(null); }} /></label>
         <label className="grid gap-1 sm:col-span-2">Declared prescriber (synthetic)<input className="rounded-md border bg-background p-2" value={prescriber} aria-describedby="claim-declaration-provenance" onChange={(e) => { setPrescriber(e.target.value); setChecked(null); }} /></label>
       </fieldset>}
       <label className="grid gap-2" htmlFor="claim-endorsement">Corrected endorsement
@@ -101,7 +101,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
           <div>Rule: {result.version ?? "Not retrieved"} · Clause: {result.clause?.id ?? "Not retrieved"}</div>
           <p className={result.status === "missing" ? "rounded-md border-l-4 border-primary bg-muted p-3 font-semibold" : ""}>Endorsement gap: {result.gap}</p>
           <details><summary className="cursor-pointer">Precheck evidence</summary>
-            <ul aria-label="Claims precheck stages">{result.stages.map((stage, i) => <li key={i}>{["Captured", "Endorsement type", "Dispensing-date version", "Clause", "Requirements"][i]}: {stage}</li>)}</ul>
+            <ul aria-label="Claims precheck stages">{result.stages.map((stage, i) => <li key={i}>{[declaration ? "Declared fields" : "Captured", "Endorsement type", "Dispensing-date version", "Clause", "Requirements"][i]}: {stage}</li>)}</ul>
             <ul>{result.checks.map((check) => <li key={check.id}>{check.label}: {check.met === true ? "met" : check.met === false ? "not met" : "unknown"}</li>)}</ul>
           </details>
         </>}
