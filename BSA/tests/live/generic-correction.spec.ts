@@ -26,6 +26,7 @@ test(LIVE_CHECKS.genericCorrection, async ({ page }, info) => {
     .fill("Please confirm the missing presentation and brand or manufacturer dispensed.");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
+  await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail).toContainText("RB2B");
   await expect(detail).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
@@ -64,6 +65,7 @@ test(LIVE_CHECKS.genericCorrection, async ({ page }, info) => {
     .fill("Human recheck confirms the corrected brand, pack size and form.");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
+  await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
   await navigatePrimary(page, "Pharmacy claims");
   await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^Paid this month/ }).click();
   await page.getByRole("button", { name: `View ${id}`, exact: true }).click();
