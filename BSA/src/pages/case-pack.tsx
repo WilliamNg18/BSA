@@ -282,7 +282,7 @@ function CasePackContent() {
 
           {clock.revealed >= 4 && <>
           <PageSection title="Conflicts and missing evidence" description={pack.conflicts.length ? "Each source is shown; the agent does not choose between them." : pack.signals.reconciliation === "agree"
-            ? currentProcess?.capture?.provenance === "pharmacy_declaration" ? "Human-confirmed declaration matches the claim. Image agreement remains unknown." : "Comparable fields agree."
+            ? currentProcess?.capture?.declarationReconciled ? "Human-confirmed declaration matches the claim. Image agreement remains unknown." : "Comparable fields agree."
             : "Reconciliation not established."}>
             {pack.conflicts.length === 0 ? (
               <p className="text-sm text-muted-foreground">{pack.signals.reconciliation === "agree"
