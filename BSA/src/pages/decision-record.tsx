@@ -81,7 +81,7 @@ function DecisionRecordContent() {
               <KeyValue k="Inputs considered" v={<ul className="list-disc pl-4">{latest.inputs.map((i) => <li key={i}>{i}</li>)}</ul>} />
               <KeyValue k="Evidence accessed" v={<ul>{latest.sources.map((origin) => <li key={origin}>{origin}</li>)}</ul>} />
               <KeyValue k="Rule version used" v={hasRecordedRule ? `Drug Tariff ${latest.tariffVersion}` : "Not recorded"} />
-              <KeyValue k="Clause recorded" v={latest.clauseId ?? "Not recorded"} />
+              <KeyValue k="Clause recorded" v={latest.clauseId ?? (hasRecordedRule ? "Legacy citation retained in recorded sources" : "Not recorded")} />
               <KeyValue k="Rule and reason recorded" v={hasRecordedRule && Boolean(latest.reason || latest.overrideReason) ? "Yes, from the actual decision" : "Not recorded together for this decision"} />
               <KeyValue k="Agent version" v={agentVersionLabel(latest.agentVersion)} />
               <KeyValue
