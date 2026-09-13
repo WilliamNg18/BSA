@@ -1,5 +1,6 @@
 import { automaticCaseIds, cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
+import { TOOL_DEFINITIONS } from "../../src/lib/domain/tools";
 
 for (const enabled of [true, false]) {
   const stateTag = enabled ? "@agent-on" : "@agent-off";
@@ -78,10 +79,10 @@ for (const enabled of [true, false]) {
     await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
   });
 
-  test(`generic production labels outside Architecture agent=${enabled}`, { tag: ["@hosted-qa", "@vendor-copy", stateTag] }, async ({ page }) => {
+  test(`generic production labels including Architecture agent=${enabled}`, { tag: ["@hosted-qa", "@vendor-copy", stateTag] }, async ({ page }) => {
     test.setTimeout(90_000);
     const routes = [
-      ...staticRoutes.filter((route) => route.path !== "architecture").map((route) => route.path || "./"),
+      ...staticRoutes.map((route) => route.path || "./"),
       ...["month", "pipeline", "cases", "two-places", "close"].map((chapter) => `./#${chapter}`),
       ...cases.flatMap(({ id }) => [`case/${id}`, `case/${id}/trace`, `case/${id}/record`]),
       "unknown-page", "notes", "case/UNKNOWN", "case/UNKNOWN/trace", "case/UNKNOWN/record",
@@ -106,8 +107,16 @@ for (const enabled of [true, false]) {
       }
       // Include expanded disclosures and audit metadata, not just default copy.
       await page.locator("main details").evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
-      await expect(page.locator("body"), route).not.toContainText(/\b(?:Azure|OpenAI|Cosmos DB|Copilot|Microsoft)\b/i);
+      await expect(page.locator("body"), route).not.toContainText(/\b(?:Azure|OpenAI|Cosmos DB|Copilot|Microsoft|Foundry|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript)\b/i);
       await expect(page.locator('a[href$=".pdf"], a[href$=".docx"]')).toHaveCount(0);
+      if (route === "architecture") {
+        await expect(page.getByRole("main")).toContainText("Production mappings are proposals");
+        await expect(page.getByRole("main")).toContainText("NHSBSA");
+        await expect(page.getByRole("main")).toContainText("dm+d");
+        for (const tool of TOOL_DEFINITIONS) {
+          await expect(page.getByRole("cell", { name: tool.name, exact: true })).toBeVisible();
+        }
+      }
       if (route === "case/EX-24088/record") {
         if (enabled) await expect(page.getByText("prototype-0.5 (interpretation step mocked; production: constrained model call)", { exact: true })).toBeVisible();
         else {
@@ -118,7 +127,5 @@ for (const enabled of [true, false]) {
         await expect(page.getByRole("main")).toContainText("DR-000871");
       }
     }
-    await page.goto("architecture");
-    await expect(page.getByRole("main")).toContainText("Azure");
   });
 }
