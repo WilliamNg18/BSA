@@ -221,7 +221,12 @@ test("pain markers provide keyboard text and do not resolve abstention", async (
   await expect(tooltip).toHaveText("Evidence needs review");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
-  await expect(page.locator('[data-case="D"] [data-pain-marker]')).toHaveAttribute("data-pain-marker", "open");
+  const d = page.locator('[data-case="D"]');
+  await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
+  await expect(d.locator("[data-outcome], [data-pain-marker]")).toHaveCount(0);
+  const capture = d.getByRole("region", { name: "Awaiting Type 1 capture", exact: true });
+  await expect(capture).toContainText("Proposed: confirm a pharmacy declaration beside the unreadable image.");
+  await expect(capture).toContainText("Unreconciled evidence still abstains. Human-confirmed compatible declarations can support a built case, never invented image certainty.");
 });
 
 for (const enabled of [false, true]) {
