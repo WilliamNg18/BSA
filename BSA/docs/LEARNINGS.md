@@ -1010,3 +1010,12 @@ An unreadable paper image cannot supply default values for a pharmacy
 declaration. Empty labelled fields make the human input explicit, including
 the prescriber needed by the existing mandatory-field gate. A typed declaration
 and a Type 1 operator's confirmation remain separate evidence and actions.
+
+## 2026-09-13: Preserve uncertainty when introducing captured evidence
+
+A declaration cannot inherit image confidence or silently fill other mandatory
+fields. D's unreadable prescriber exposed this boundary: a new explicit human
+field is safer than bypassing the existing compliance check. Keep original
+capture evidence intact and attach revision-linked human authority separately.
+Typed legacy pharmacy submissions use the claim channel, while new submissions
+carry explicit machine channels on immutable revisions.

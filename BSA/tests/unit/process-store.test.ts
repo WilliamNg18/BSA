@@ -1,0 +1,104 @@
+import { beforeEach, describe, expect, it } from "vitest";
+import { CASES } from "../../src/lib/domain/cases";
+import { runAgent } from "../../src/lib/domain/agent";
+import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routing";
+import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
+import { usePharmacyStore } from "../../src/lib/pharmacy-store";
+import { useQueueStore } from "../../src/lib/queue-store";
+import type { DeclaredItemFields, RoutingFacts } from "../../src/lib/domain/types";
+
+const [A, B, C, D, E, F] = CASES;
+const store = () => useAppStore.getState();
+const fields: DeclaredItemFields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" };
+beforeEach(() => store().resetDemo());
+
+function submitD(captured = fields, reconciled = true) {
+  store().submitItem({ caseId: D.id, channel: "paper", endorsementText: captured.endorsementText,
+    declaration: { fields: captured, declaredAt: "2026-09-13T10:00:00Z", provenance: "pharmacy_declaration" } });
+  store().confirmType1({ caseId: D.id, revision: store().itemProcesses[D.id].revision, fields: captured,
+    provenance: "pharmacy_declaration", declarationReconciled: reconciled });
+}
+
+describe("canonical deterministic routing", () => {
+  it.each([A, E])("$scenario automatically prices without any human or model", (c) => {
+    for (const enabled of [false, true]) {
+      store().setAgentEnabled(enabled);
+      store().submitItem({ caseId: c.id, channel: "eps", endorsementText: c.extracted.endorsementText });
+      expect(store().itemProcesses[c.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
+      expect(store().lifecycles[c.id].state).toBe("paid");
+      expect(store().lifecycles[c.id].history.some((event) => event.actor === "operator")).toBe(false);
+      expect(runAgent(sessionCase(c.id)!).agentInvoked).toBe(false);
+      expect(() => store().recordType2Decision({ caseId: c.id, decision: "ACCEPT", reason: "Not an operator item" })).toThrow();
+    }
+  });
+  it("B August refers, July is sufficient; C conflict and F historical decision survive", () => {
+    expect(runAgent(B).recommendation).toBe("REFER_BACK");
+    expect(runAgent(B, { tariffVersion: "2026-07" }).recommendation).toBe("SUFFICIENT");
+    expect(runAgent(C).recommendation).toBe("REQUEST_INFORMATION");
+    expect(store().records[0]).toMatchObject({ caseId: F.id, id: "DR-000871" });
+    expect(routeSubmission(routingFactsForCase(B, "eps")).outcome).toBe("type2_endorsement");
+    expect(routeSubmission(routingFactsForCase(B, "paper")).outcome).toBe("type1_capture");
+  });
+  it("does not use perspective or agent in the pure function", () => {
+    const facts = routingFactsForCase(A, "eps");
+    expect(routeSubmission({ ...facts, type2Decision: "insufficient" }).outcome).toBe("referred_back");
+    expect(routeSubmission({ ...facts, hasConflict: true }).outcome).toBe("type2_endorsement");
+    expect(() => routeSubmission({ ...facts, readable: "yes" } as unknown as RoutingFacts)).toThrow();
+  });
+});
+
+describe("explicit captured authority", () => {
+  it("builds D from reconciled human-confirmed declaration without repairing image evidence", () => {
+    const original = structuredClone(D);
+    expect(runAgent(D).recommendation).toBe("ABSTAIN");
+    submitD();
+    const c = sessionCase(D.id)!;
+    const pack = runAgent(c);
+    expect(c.imageQuality).toBe(0.31);
+    expect(c.extracted).toEqual(original.extracted);
+    expect(c.regions).toEqual(original.regions);
+    expect(c.readings).toEqual(original.readings);
+    expect(pack).toMatchObject({ recommendation: "SUFFICIENT", gate: { result: "PASS" }, signals: { imageQuality: 0.31 } });
+    expect(pack.evidence.filter((e) => e.id.startsWith("e-captured-")).every((e) => e.origin === "Declared by the pharmacy, not read from the form")).toBe(true);
+    expect(store().itemProcesses[D.id].routing.outcome).toBe("type2_endorsement");
+    expect(store().lifecycles[D.id].state).toBe("in_review");
+    expect(D).toEqual(original);
+  });
+  it.each([false, true])("unreconciled or conflicting capture abstains, conflict=%s", (conflict) => {
+    submitD(conflict ? { ...fields, quantity: 99 } : fields, conflict);
+    expect(runAgent(sessionCase(D.id)!)).toMatchObject({ recommendation: "ABSTAIN", gate: { result: "NOT_RUN" } });
+  });
+  it("missing mandatory prescriber withholds advice, never supplies a guessed value", () => {
+    submitD({ ...fields, prescriber: null });
+    expect(runAgent(sessionCase(D.id)!)).toMatchObject({ recommendation: "NONE", gate: { result: "FAIL" } });
+    expect(sessionCase(D.id)!.extracted.prescriber).toBe("Illegible");
+  });
+  it("rejects stale captures and requires a human RB code/reason", () => {
+    submitD();
+    expect(() => store().confirmType1({ caseId: D.id, revision: 1, fields, provenance: "human_capture", declarationReconciled: true })).toThrow();
+    expect(() => store().recordType2Decision({ caseId: D.id, decision: "REFER_BACK", reason: "Missing presentation" })).toThrow(/RB code/);
+    store().recordType2Decision({ caseId: D.id, decision: "REFER_BACK", reason: "Missing presentation", rbCode: "RB2B" });
+    expect(store().itemProcesses[D.id]).toMatchObject({ rbCode: "RB2B", routing: { outcome: "referred_back" } });
+    expect(store().records.at(-1)).toMatchObject({ rbCode: "RB2B", revision: 2 });
+  });
+  it("new submission clears capture authority and keeps the earlier revision immutable", () => {
+    submitD();
+    const before = store().caseRevisions[D.id][1];
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: fields.endorsementText });
+    expect(store().itemProcesses[D.id].capture).toBeNull();
+    expect(sessionCase(D.id)!.capturedEvidence).toBeUndefined();
+    expect(store().caseRevisions[D.id][1]).toEqual(before);
+    expect(runAgent(sessionCase(D.id)!).recommendation).toBe("ABSTAIN");
+  });
+});
+
+it("uses one operational store and presentation never changes the domain snapshot", () => {
+  const snapshot = getDomainSnapshot();
+  expect(usePharmacyStore.getState()).toBe(store().pharmacy);
+  expect(useQueueStore.getState()).toBe(store().queue);
+  store().setPerspective("pharmacy");
+  store().setAgentEnabled(true);
+  store().queue.jump(20);
+  expect(getDomainSnapshot()).toEqual(snapshot);
+  expect(Object.isFrozen(getDomainSnapshot().itemProcesses)).toBe(true);
+});

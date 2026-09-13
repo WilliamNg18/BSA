@@ -21,6 +21,7 @@ export function QueuePage() {
   const caseStates = useAppStore((s) => s.caseStates);
   const lifecycles = useAppStore((s) => s.lifecycles);
   const revisions = useAppStore((s) => s.caseRevisions);
+  const processes = useAppStore((s) => s.itemProcesses);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const followed = useAppStore((s) => s.followedCaseId);
   const perspective = useAppStore((s) => s.perspective);
@@ -62,9 +63,9 @@ export function QueuePage() {
         status, blocked, fresh: true, submittedAt: revisions[item.id]?.at(-1)?.at, canonical: false, reviewable: true,
         pending: lifecycle.state === "submitted" || lifecycle.state === "resubmitted", projected: false });
     }
-    return seeds.sort((a, b) => Number(b.fresh) - Number(a.fresh) || (a.fresh && b.fresh
+    return seeds.filter((row) => processes[row.id]?.routing.outcome !== "auto_priced").sort((a, b) => Number(b.fresh) - Number(a.fresh) || (a.fresh && b.fresh
       ? (revisions[b.id]?.at(-1)?.at ?? "").localeCompare(revisions[a.id]?.at(-1)?.at ?? "") : 0));
-  }, [caseStates, lifecycles, revisions, agentEnabled]);
+  }, [caseStates, lifecycles, revisions, agentEnabled, processes]);
   return <div className="mx-auto max-w-7xl space-y-5">
     <header className="space-y-2">
       <SyntheticTag />
@@ -83,7 +84,8 @@ export function QueuePage() {
       {followed && perspective !== "nhsbsa" && <Button asChild variant="link"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(followed)}`}>Followed claim: {followed}</Link></Button>}
     </div>
     {!result && <p role="alert">Invalid calculator assumptions. Monthly projections and comparison are unavailable; the twelve examples remain readable.</p>}
-    <QueueMonth key={`table-${revision}-${agentEnabled}`} result={result} seeds={rows} openExample={openExample} />
+    <p className="text-sm text-muted-foreground">Actual synthetic staff items only. Monthly projections are not operator rows.</p>
+    <QueueMonth key={`table-${revision}-${agentEnabled}`} result={null} seeds={rows} openExample={openExample} />
     {result && <>
       <details className="rounded-lg border p-3" data-queue-month-summary>
         <summary className="cursor-pointer font-medium">Shared monthly assumptions</summary>

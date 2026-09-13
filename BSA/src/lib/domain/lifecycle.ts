@@ -148,6 +148,6 @@ export const LIFECYCLE_LABELS = {
   information_requested: { pharmacy: "Information requested: NHSBSA needs you to confirm something", nhsbsa: { on: "Request information sent", off: "Request information sent" } },
   referred_back: { pharmacy: "Referred back: correction needed before payment", nhsbsa: { on: "Referred back", off: "Referred back" } },
   resubmitted: { pharmacy: "Resubmitted, awaiting re-check", nhsbsa: { on: "Resubmitted: re-check", off: "Resubmitted: re-check" } },
-  paid: { pharmacy: "Payment approved (synthetic)", nhsbsa: { on: "Sufficient, released to existing pricing", off: "Sufficient, released to existing pricing" } },
+  paid: { pharmacy: "Paid on the normal schedule (synthetic)", nhsbsa: { on: "Sufficient, released to existing pricing", off: "Sufficient, released to existing pricing" } },
   escalated: { pharmacy: "In review at NHSBSA (senior review)", nhsbsa: { on: "Escalated", off: "Escalated" } },
 } as const satisfies Record<LifecycleState, { pharmacy: string; nhsbsa: { on: string; off: string } }>;
