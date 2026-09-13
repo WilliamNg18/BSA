@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { BaselineCalculator } from "../../src/components/demo/baseline-calculator";
 import { BaselineAssumptions } from "../../src/components/demo/baseline-assumptions";
 import { ProcessAssumptions } from "../../src/components/demo/process-assumptions";
-import { MONTH_MODEL_DEFAULTS, PROCESS_MONTH_DEFAULTS, baselineDefaultCopy, formatBaselineNumber } from "../../src/lib/domain/baseline";
+import { MONTH_MODEL_DEFAULTS, MANUAL_LOOP_MONTH_DEFAULTS, baselineDefaultCopy, formatBaselineNumber } from "../../src/lib/domain/baseline";
 
 // Change only the test's editable defaults. Documentary reference facts stay
 // unchanged, so hard-coded synthetic prose cannot accidentally pass this test.
@@ -14,7 +14,7 @@ vi.mock("../../src/lib/domain/baseline", async (importOriginal) => {
   return {
     ...original,
     MONTH_MODEL_DEFAULTS: { ...original.MONTH_MODEL_DEFAULTS, volume: 12_345, todayMinutes: 14, judgingMinutes: 3.25 },
-    PROCESS_MONTH_DEFAULTS: { ...original.PROCESS_MONTH_DEFAULTS, monthlyItems: 123_450_000, monthlyReferrals: 12_345, builtJudgingSeconds: 37 },
+    MANUAL_LOOP_MONTH_DEFAULTS: { ...original.MANUAL_LOOP_MONTH_DEFAULTS, monthlyItems: 123_450_000, manualLoopItems: 12_345, builtJudgingMinutes: 3.7 },
   };
 });
 
@@ -32,9 +32,9 @@ describe("calculator UI consumes canonical defaults", () => {
 
   it.each([BaselineCalculator, ProcessAssumptions])("uses shared process defaults on %s", (Component) => {
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(Component)));
-    expect(html).toContain(`Default: ${formatBaselineNumber(PROCESS_MONTH_DEFAULTS.monthlyItems, 2)}`);
-    expect(html).toContain(`Default: ${formatBaselineNumber(PROCESS_MONTH_DEFAULTS.monthlyReferrals, 2)}`);
-    expect(html).toContain(`Default: ${formatBaselineNumber(PROCESS_MONTH_DEFAULTS.builtJudgingSeconds, 2)}`);
+    expect(html).toContain(`Public default: ${formatBaselineNumber(MANUAL_LOOP_MONTH_DEFAULTS.monthlyItems, 2)}`);
+    expect(html).toContain(`Public default: ${formatBaselineNumber(MANUAL_LOOP_MONTH_DEFAULTS.manualLoopItems, 2)}`);
+    expect(html).toContain(`Assumption default: ${formatBaselineNumber(MANUAL_LOOP_MONTH_DEFAULTS.builtJudgingMinutes, 2)}`);
     expect(html).toContain('id="process-monthlyItems"');
     expect(html).not.toContain("minutes including gathering and judging");
     expect(html).not.toContain("Seven-step gathering");
