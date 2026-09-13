@@ -268,6 +268,11 @@ It is not a Type 2 decision or a repair of the machine image.
 
 Compatible confirmed evidence can support subsequent Type 2 advice; mismatches
 and uncertainty withhold it. Missing prescriber remains a mandatory gate failure.
+A complete, source-compatible non-D manual capture can continue to existing
+pricing without declaration reconciliation or Agent On. D's poor-source manual
+path still requires Type 2; proposed declaration assistance still requires the
+explicit reconciliation checkbox. Completed Type 1 is labelled as human capture,
+not awaiting capture or a no-person automatic item.
 A fresh paper revision cannot reuse an old confirmation. Generic readable paper
 does not claim a poor image or promise Type 2/RB2B; D retains its dedicated
 **Confirm capture and continue to Type 2** path.

@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
-import { audit, captureJson, expect, test } from "./fixtures";
-import { cases, captureCheckpoint, confirmReset, navigatePrimary, staticRoutes } from "../e2e/fixtures";
+import { audit, captureJson, captureView as captureCheckpoint, expect, test } from "./fixtures";
+import { cases, confirmReset, navigatePrimary, staticRoutes } from "../e2e/fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { PROCESS_MONTH_DEFAULTS, monthModel, formatProcessHours, formatProcessItems } from "../../src/lib/domain/baseline";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
@@ -64,6 +64,7 @@ test(LIVE_CHECKS.model, async ({ page }, info) => {
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
     await expectProcessMetrics(page, input, enabled);
+    await audit(page, info, "edited-process-model", enabled);
     await chooseProcessChapter(page, 1);
     await expectSceneMetrics(page, input, enabled);
     await chooseProcessChapter(page, 2);
@@ -93,7 +94,7 @@ test(LIVE_CHECKS.model, async ({ page }, info) => {
   await captureJson(info, "shared-month-inputs", { input, expected });
 });
 
-test(LIVE_CHECKS.cards, async ({ page }) => {
+test(LIVE_CHECKS.cards, async ({ page }, info) => {
   for (const [index, scenario] of ["A", "B", "C", "D"].entries()) {
     await page.goto("/#cases");
     await flag(page).setChecked(true);
@@ -102,6 +103,7 @@ test(LIVE_CHECKS.cards, async ({ page }) => {
     const card = cards.locator(`[data-case="${scenario}"]`);
     await expect(card).toHaveAttribute("data-case-routing",
       scenario === "A" ? "auto_priced" : scenario === "B" ? "referred_back" : scenario === "C" ? "type2_endorsement" : "type1_capture");
+    if (scenario === "A") await audit(page, info, "canonical-case-cards", true);
     if (scenario === "A") {
       await expect(card.locator("[data-outcome], [data-manual-tasks]")).toHaveCount(0);
       await card.getByRole("link", { name: "View automatically priced claim", exact: true }).click();
@@ -140,6 +142,7 @@ test(LIVE_CHECKS.pharmacy, async ({ page }, info) => {
       await expect(page.getByRole("radio", { name: scenario.label === "Unreadable form" ? "Paper" : "EPS", exact: true })).toBeChecked();
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? scenario.status : "Not checked: manual submission");
       await expect(page.getByRole("button", { name: "Continue with submission", exact: true })).toBeEnabled();
+      await captureCheckpoint(page, info, `pharmacy-${scenario.label.replaceAll(" ", "-")}-${enabled ? "on" : "off"}`);
     }
     await audit(page, info, "pharmacy", enabled);
   }
@@ -207,6 +210,7 @@ test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
       if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
       await page.getByRole("textbox", { name: /^Reason/ }).fill("Please add the dispensing date beside the initials");
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await audit(page, info, "human-referral-record", enabled);
       await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
       await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
       const originalEvents = await history(page).locator('ol[aria-label="Lifecycle events"] > li').allTextContents();
@@ -241,6 +245,7 @@ test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
       const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true });
       expect((await events.locator(":scope > li").allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
       await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
+      await audit(page, info, "corrected-eps-paid-history", enabled);
       await captureJson(info, `roundtrip-${enabled ? "on" : "off"}`, { url: page.url(), history: await history(page).innerText() });
       await confirmReset(page);
       await expect(flag(page)).not.toBeChecked();
@@ -307,7 +312,7 @@ test(LIVE_CHECKS.paper, async ({ page }, info) => {
   }
 });
 
-test(LIVE_CHECKS.deterministic, async ({ page }) => {
+test(LIVE_CHECKS.deterministic, async ({ page }, info) => {
   await page.goto("/case/EX-24101/trace");
   await flag(page).setChecked(true);
   const trace = page.getByRole("list", { name: "Deterministic clearance trace", exact: true });
@@ -315,9 +320,10 @@ test(LIVE_CHECKS.deterministic, async ({ page }) => {
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
   await expect(trace).not.toContainText("run_endorsement_checks");
+  await audit(page, info, "deterministic-e-trace", true);
 });
 
-test(LIVE_CHECKS.replay, async ({ page }) => {
+test(LIVE_CHECKS.replay, async ({ page }, info) => {
   await page.goto("/case/EX-24112");
   await startDemonstrationReview(page);
   await flag(page).setChecked(true);
@@ -329,8 +335,10 @@ test(LIVE_CHECKS.replay, async ({ page }) => {
   const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
   await replay.selectOption("2026-07");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Sufficient: release to pricing once confirmed");
+  await captureCheckpoint(page, info, "b-july-replay");
   await replay.selectOption("2026-08");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Refer back with the exact fix");
+  await captureCheckpoint(page, info, "b-august-replay");
 });
 
 test(LIVE_CHECKS.deepLinks, async ({ page }, info) => {
@@ -435,6 +443,7 @@ test(LIVE_CHECKS.historical, async ({ page }, info) => {
     }
   }
   await captureJson(info, "f-original-record-retained", { record: original, url: page.url() });
+  await audit(page, info, "historical-f-record", true);
 });
 
 test(LIVE_CHECKS.completedCapture, async ({ page }, info) => {

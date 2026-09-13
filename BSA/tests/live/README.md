@@ -33,6 +33,16 @@ full `PASS`. A passing `--grep` selection retains its passing rows but reports
 Skipped, unrun, duplicate, unexpected and retried checks cannot imply clean full
 acceptance. All retry attempts and their original symptoms remain in the report.
 
+Audited views also produce full-page PNGs and `view-*` evidence with PNG SHA-256,
+runner and application source revisions, viewport, selected perspective/Agent,
+URL, timestamp, visible main text and accessibility snapshot. The runner requires
+a clean checkout, the expected release as an ancestor, and identical runtime
+source paths. It rejects root overflow. Local HTTP rehearsals remain labelled
+local; these checks do not relax the committed HTTPS/live identity requirements.
+The report links every image and retains `visualReview: pending` until a separate
+source-pinned review actually inspects it. Automated capture is not novice
+comprehension or complete manual accessibility acceptance.
+
 The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,
 `/case/EX-24112`, `/case/EX-24112/trace` and `/case/EX-24112/record`. Route toggling
 also visits every current static route, tour stop and canonical case view.

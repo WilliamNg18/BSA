@@ -158,6 +158,22 @@ If a person subsequently accepts sufficient evidence, the resulting item
 remains identifiable as human-decided work under **Decided**, unlike A/E's
 no-human automatic path.
 
+### Complete paper can finish after capture alone
+
+In a separate attempt, choose B (**Information missing**) and **Paper**.
+Declare `SYN-AMLO10-28`, quantity `28`, prescriber `Dr Demo (synthetic)` and
+endorsement `NCSO RK 21/08/26`, then submit explicitly.
+Off, manually key those established fields in Type 1 and confirm. On, inspect
+the same declaration and explicitly reconcile before confirming.
+
+Both reach existing pricing without a Type 2 decision. The queue retains
+**Completed Type 1 captures** under **Decided** and Four cases shows
+**Capture complete · Existing pricing**. The person did capture work: this
+must not say "no person involved" or "Awaiting Type 1 capture".
+Open **View priced claim** to inspect the unchanged submitted attempt and the
+separate human-capture/code-pricing events. This does not relax D's poor-source
+abstention or permit unconfirmed declaration pre-fill.
+
 ## 5. Keep conflict, code-only clearance and history visible
 
 | Case | Show | Boundary |
