@@ -122,7 +122,7 @@ test("path links and figure context remain keyboard accessible; reset describes 
   const figure = page.locator('[data-pipeline-stage="referred-back"]').getByRole("button", { name: "Monthly referrals: figure context", exact: true });
   await figure.focus();
   await expect(figure).toBeFocused();
-  await expect(page.getByRole("tooltip")).toContainText("reduces referrals only by the assumed pre-submission catch");
+  await expect(page.getByRole("tooltip")).toContainText("after sequential pharmacy prevention and code clearance; all remaining queued items are assumed referred back");
   await page.keyboard.press("Escape");
   for (const [name, url] of [
     ["Try the pharmacy check", /\/pharmacy$/], ["Read the proposed paper boundary", /\/boundary$/],

@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { automaticCaseIds, captureJson, cases, confirmReset, expect, test } from "./fixtures";
-import { GATHERING_STEPS, PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
+import { GATHERING_STEPS, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
 for (const c of cases) {
@@ -15,8 +15,8 @@ for (const c of cases) {
       await expect(step.locator("svg.lucide-timer")).toHaveCount(1);
       await expect(step.locator("[data-pain-marker]")).toHaveAttribute("data-pain-marker", "open");
     }
-    await expect(page.locator("[data-manual-total]")).toContainText(`${PROCESS_MONTH_DEFAULTS.investigationMinutesToday} min / referred-back item`);
-    await expect(page.getByText(`Type 2 stream average: ${PROCESS_MONTH_DEFAULTS.type2SecondsToday} seconds / item · Public, separate from the investigation tail.`, { exact: true })).toBeVisible();
+    await expect(page.locator("[data-manual-total]")).toContainText(`${MANUAL_LOOP_MONTH_DEFAULTS.gatheringMinutesToday} min / referred-back item`);
+    await expect(page.getByText(`First judgement: ${MANUAL_LOOP_MONTH_DEFAULTS.judgingMinutesToday} minutes / referral-loop item · Assumption, not the whole-service Type 2 average.`, { exact: true })).toBeVisible();
     await expect(page.locator("[data-assisted-slot]")).toHaveCount(4);
     for (const slot of ["Clause", "Requirements", "Alternative", "Confidence"]) await expect(page.locator(`[data-assisted-slot="${slot}"]`)).toContainText("Not recorded");
     await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
