@@ -13,12 +13,16 @@ export function capturedFields(c: ExceptionCase): ExtractedFields {
   };
 }
 
-export function compatibleCapture(c: ExceptionCase): boolean {
+export function capturedFieldsMatchSources(c: ExceptionCase): boolean {
   const capture = c.capturedEvidence;
-  return Boolean(capture?.declarationReconciled && productByCode(capture.fields.productCode) &&
+  return Boolean(capture && productByCode(capture.fields.productCode) &&
     capture.fields.productCode === c.claim.productCode && capture.fields.quantity === c.claim.quantity &&
     (c.extracted.productCode === null || c.extracted.productCode === capture.fields.productCode) &&
     (c.extracted.quantity === null || c.extracted.quantity === capture.fields.quantity));
+}
+
+export function compatibleCapture(c: ExceptionCase): boolean {
+  return Boolean(c.capturedEvidence?.declarationReconciled && capturedFieldsMatchSources(c));
 }
 
 export function validateDeclaredFields(fields: DeclaredItemFields): void {
