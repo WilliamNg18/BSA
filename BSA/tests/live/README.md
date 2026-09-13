@@ -1,8 +1,8 @@
 # Explicit live acceptance
 
-This opt-in checklist is outside `tests/e2e`. It contains the 13 base checks,
+This opt-in checklist is outside `tests/e2e`. It contains 16 process checks,
 one same-item perspective round trip and three header-only Agent checks (one
-per perspective, each visiting every route). Default production CI does
+per perspective, each visiting every route): 20 tests in total. Default production CI does
 not discover it. It starts no server, uses one Chromium worker, and only changes
 synthetic browser-memory state. Do not execute until the coordinator confirms
 the deployed artifact is ready and supplies its full expected commit.
@@ -26,25 +26,59 @@ executed items, PASS/FAIL/NOT_RUN, symptoms, timestamps, duration, URL, identity
 attachments and evidence paths. Timing is informational, not a performance
 budget. No skipped item counts as a pass.
 
+The test declarations and reporter share the named inventory in `inventory.ts`.
+Only a complete, unique inventory with one passing attempt per check can report
+full `PASS`. A passing `--grep` selection retains its passing rows but reports
+`selection: partial` and overall `FAIL`, with the missing checks listed.
+Skipped, unrun, duplicate, unexpected and retried checks cannot imply clean full
+acceptance. All retry attempts and their original symptoms remain in the report.
+
+Audited views also produce full-page PNGs and `view-*` evidence with PNG SHA-256,
+runner and application source revisions, viewport, selected perspective/Agent,
+URL, timestamp, visible main text and accessibility snapshot. The runner requires
+a clean checkout, the expected release as an ancestor, and identical runtime
+source paths. It rejects root overflow. Local HTTP rehearsals remain labelled
+local; these checks do not relax the committed HTTPS/live identity requirements.
+The report links every image and retains its capture-time `visualReview: pending`.
+A separate source-pinned review records the subsequent verdict without modifying
+the captured evidence. Automated capture is not novice
+comprehension or complete manual accessibility acceptance.
+
 The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,
 `/case/EX-24112`, `/case/EX-24112/trace` and `/case/EX-24112/record`. Route toggling
 also visits every current static route, tour stop and canonical case view.
 The header-only checks count hidden switches too and verify that the single
 header state controls each permitted page while opposite-side guards remain.
-Default-rule axe is actually run for Overview, pharmacy and claims in both
-modes; each audit has its own URL, mode, timestamp and violation report.
+Default-rule axe is run for Overview, pharmacy, claims, actual staff work and
+unconfirmed Type 1 capture in both modes; each audit has its own URL, mode,
+timestamp and violation report.
 Those checks do not claim universal accessibility conformance.
 
-The base checklist still targets the M-stage overview and legacy queue controls.
-Its canonical A/E traces and complete EPS resubmission assertions require
-automatic pricing without another operator approval. These are not the final
-N/P/Q presentation and worklist contracts. Select only checks compatible with
-the coordinator's exact deployed stage; omitted checks remain NOT_RUN, and a
-partial smoke run is not full live acceptance. The integrated final checklist
-must be updated before it is used to accept the whole-process UI.
+The checklist targets the integrated N/P/Q/U interface: shared whole-process
+monthly inputs and both outcome columns, truthful case-card routing, actual
+Type 1 and Type 2 work rather than a virtual queue, and explicit referral RB
+codes. Canonical A/E traces and complete EPS resubmissions require automatic
+pricing without another operator approval. D's Off/On flow retains initial
+uncertainty, explicit human capture, the RB2B referral, original history and
+fresh capture required by a new paper revision.
+C's pharmacy confirmation retains both conflicting quantities for another human
+review. F's original record survives mode changes and rule replay. An edited
+monthly scenario is checked across Chapter 2, the scene, queue and pharmacy
+projection rather than checking unrelated defaults on each page.
 
-Screenshots, traces and JSON live beneath `LIVE_OUTPUT_DIR`; do not commit
-generated evidence. Existing crash/console/network guards and navigation/reset
+Do not run this version against an earlier M-only deployment. Select only
+checks compatible with the coordinator's exact deployed stage; omitted checks
+remain NOT_RUN, and a partial smoke run is not full live acceptance. Local
+rehearsal verifies test compatibility only, never deployed acceptance; the
+committed live configuration continues to require HTTPS and a clean exact
+coordinator-provided build identity.
+
+Screenshots, traces and JSON first live beneath `LIVE_OUTPUT_DIR`; do not
+overwrite those runs. For the requested durable release record,
+`node tests\live\export-evidence.mjs <checklist.json> <new-directory>` copies
+validated hosted evidence with portable paths and hashes, preserving the original
+report and pending visual-review status. Keep failed evidence separately labelled.
+Existing crash/console/network guards and navigation/reset
 helpers are reused without altering the production suite. The deployed
 build-info contract comes from the App Service strict static server; the
 harness does not load or change hosting policy files.
@@ -94,6 +128,24 @@ A blocking Reset dialog is one explicit confirmation transaction: perspective
 switches happen before opening it, the complete state is checked unchanged while
 it is open, and the confirmed result is compared afterward. The harness never
 forces interaction with the inert header behind the modal.
+
+`one-state-lifecycle.spec.ts` covers explicit B referral reasons and RB codes,
+manual/unchecked/approved draft authority, immutable July/August record replay,
+and corrected EPS pricing without a second human decision. It also checks an
+explicit A EPS channel choice and keeps human-released items in decided staff
+work rather than misclassifying them as no-human automatic items.
+
+`one-state-handoff.spec.ts` covers C's human information request and pharmacy
+confirmation without resolving its 56/84 conflict, plus D capture followed by
+an RB2B referral and a new paper revision. The new revision requires fresh
+capture; the old capture, declaration, human record and history remain intact.
+Each case is exercised in both Agent modes and both perspective sequences.
+`one-state-completed-type1.spec.ts` adds complete paper B through manual or
+declaration-confirmed capture to existing pricing without Type 2 judgement.
+The card and queue must retain completed human-capture provenance, never an
+awaiting-capture or no-person label; reading and switching leave state unchanged.
+The full instrumented family contains 32 tests. Live check 18 covers the same
+completed-only path in both Agent modes without using a domain observer.
 All `one-state*.spec.ts` files are excluded from ordinary production discovery
 and included only by the blocking instrumented configuration.
 

@@ -1,21 +1,38 @@
 ---
 title: Integrated scope acceptance
 description: Original eighteen rows plus five clarity tasks, with source-pinned acceptance and release boundaries.
-ms.date: 2026-09-12
+ms.date: 2026-09-13
 ---
 
 # Scope register
 
 ## Current new scope: Tasks 19-24
 
-Six new tasks are pending; earlier acceptance below does not cover the revised
-process. M owns shared routing/time/state, P pharmacy flows, U unreadable paper,
-Q Type 1/Type 2 operational views, N numbers/tour, and V equivalence/live/docs.
-PROGRESS records the frozen signatures, ownership and serial merge order.
-The new acceptance must prove auto-priced items never enter the operator list,
-human Type 1 capture and proposed declaration confirmation, Type 2/RB codes,
-truthful separate time cohorts, and identical domain state across perspectives.
-No new-scope row is Done until the shared process and its actual live flow pass.
+All six tasks have bounded functional and repaired hosted/visual acceptance at
+`d5832e0`. V's final documentation merge and latest-main release check remain
+coordinator steps, not unfinished feature scope. Earlier evidence below is not
+substituted for the revised process. PROGRESS records exact commits and runs.
+
+| Task | Implemented scope | Release boundary |
+| --- | --- | --- |
+| 19 M | Deterministic EPS/paper routing, mandatory fields, one authoritative store, separate truthful monthly cohorts | Merged #76 with reviewed manual-capture follow-up in #77 |
+| 20 P | Explicit channel/declaration submission, automatic pricing attribution, Unpaid/RB/approved-note flows | Merged #78; real EPS and D replay live probes passed |
+| 21 U | Human keying and proposed declaration confirmation, unchanged poor-image evidence | Merged #74; 19-case integration proof and actual live Q capture |
+| 22 Q | Type 1 lane/Type 2 list, no automatic rows, explicit human decisions and immutable records | Merged #75; live capture-to-Decided proof passed |
+| 23 N | Whole-process figures, separate hours, truthful branching tour and provider-neutral architecture | Merged #77; exact functional CI and deployment passed |
+| 24 V | Every-flow state equality, final 20-check hosted suite, reviewed screenshots and process-first documentation | Done against repaired evidence; final #79 merge/redeployment follows |
+
+**Tasks 19-24: six Done, zero unfinished implementation rows.** The coherent
+32-case exact-state matrix passed. Repaired hosted acceptance passed 20/20,
+with 40 clean identities and 43 independently reviewed images. Twenty-four axe
+audits have zero violations; 16 retain contrast incomplete results, not a
+claim of full manual accessibility certification. Final latest-main acceptance
+is repeated after #79 merges. No blocking application issue is deferred.
+
+Initial hosted 20/20 at `1327e65` did not establish visual acceptance:
+independent review found false D/E content claims. Repair #80 is deployed at
+`d5832e0`; its CI and new hosted/visual review passed. The original failed
+review and unchanged screenshots are retained beside the repaired evidence.
 
 ## Clarity and perspective scope: Tasks 14-18
 

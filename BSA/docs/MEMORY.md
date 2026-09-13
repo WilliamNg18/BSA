@@ -6,11 +6,14 @@ ms.date: 2026-09-13
 
 ## Purpose and principle
 
-Tasks 14-18 simplify numbers, queue and claims and add independent
-Pharmacy/NHSBSA/Both perspectives. Their final accepted main is
-`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`: final CI and deployment succeeded,
-and all 14 latest-main live checks passed. V's viewer evidence stays pinned to
-the earlier identical runtime at `c0203fc`. PROGRESS owns the evidence.
+Tasks 19-24 implement the whole-process model below. All functional streams
+are merged. Initial release `1327e65` passed 20 hosted checks, but its independent
+visual review found false D reconciliation/ready wording and an E automatic
+trace implying human work. Repair #80 is deployed at
+`d5832e0faa44c32242cb75f2970288d4499befae`; all 20 new hosted checks and
+independent review of all 43 images passed. The failed first review is preserved.
+V's final documentation merge and latest-main recheck remain release steps.
+PROGRESS owns the source-pinned evidence and final release boundary.
 Infrastructure remains frozen.
 
 ## Process model
@@ -94,16 +97,25 @@ NHSBSA evidence assembly after an exception. Neither is a live model service.
 * Gate: PASS, FAIL, NOT_RUN; pure code validates citation, mandatory fields,
   recommendation requirements and conflicts. No recommendation means NOT_RUN.
   FAIL withholds recommendation and draft. Image threshold 0.60; agreement 2/3.
-* Monthly model: volume V is a qualified referral-subset scale proxy. Today
-  total T defaults to 12 minutes (10-15); judging j defaults to 2; gathering
-  is T-j, distributed over seven proportional detail weights. Assisted built
-  items cost j, abstentions T, caught/cleared cohorts no operator time.
-  Sequential rounded cohorts remain disjoint. Capacity uses 7,560 working
-  minutes; assisted capacity means built cases, not mixed-cohort throughput.
-  Deficiency shares determine assumed referrals; risk includes all abstentions.
-  Zero residual means Not established, not 100% accuracy. `monthModel` and
-  `useMonthModel` supply the displayed figures; old pure baseline arithmetic
-  survives only for explicitly legacy comparisons.
+* Monthly model: 100 million is a conservative calculation baseline for the
+  supplied "over 100 million" figure. EPS/paper partition the total; Type 1
+  and Type 2 can overlap within the approximately 4% staff-touch cohort.
+  Type 2 today defaults to 13 seconds, the investigation tail to 4 minutes,
+  pharmacy completion to 6 minutes, and built-case judgement to 45 seconds.
+  Forty-five seconds exceeds thirteen: assisted Type 2 hours can increase.
+  Catch defaults to an assumed 20% of referrals; abstention to one of six
+  synthetic cases. No additional reduction is invented. Type 2 and referral
+  operator hours are non-additive views; pharmacy time is a separate workforce.
+  `monthModel(ProcessMonthInputs)` and `useProcessMonth` supply every current
+  figure. Render hours with `formatProcessHours` (one decimal maximum) and
+  items with `formatProcessItems` (integers), without rounding model outputs.
+  The prior 12-minute calculator remains only an explicitly legacy comparison.
+* Routing: `auto_priced` means no person was involved in that revision.
+  Human-completed Type 1/Type 2 work retains its staff route with
+  `requiresHuman: false`; do not misclassify it as an untouched automatic item.
+  Generic legacy submissions preserve the recorded channel. Only explicit
+  channel-bearing submissions change it. Seed channels derive from the claim
+  message rather than contradictory legacy display text.
 * Lifecycle contracts: submitted, in_review, information_requested,
   referred_back, resubmitted, paid, escalated. Distinct from existing case states.
   Implemented shared lifecycle, immutable revisions and five-pharmacy seeds.
@@ -113,16 +125,22 @@ NHSBSA evidence assembly after an exception. Neither is a live model service.
 
 | Case | ID | Fixed behaviour |
 | --- | --- | --- |
-| A | EX-24107 | Sufficient, complete endorsement |
+| A | EX-24107 | Complete endorsement; existing rules-engine pricing without operator involvement |
 | B | EX-24112 | Initialled, not dated; August refer back; July sufficient |
 | C | EX-24119 | Quantity conflict surfaced, request information |
-| D | EX-24123 | Abstain: poor capture, disagreement, no provision; gate NOT_RUN |
+| D | EX-24123 | Poor paper image remains unreadable. Manual capture continues to Type 2; a compatible, explicitly reconciled declaration can build a proposed case. Unreconciled evidence abstains; missing mandatory evidence withholds the recommendation |
 | E | EX-24101 | Cleared by deterministic rules without a model call |
 | F | EX-24088 | Already decided; historical record preserved |
 
 Scenario edits must clone data, never change these fixtures or gate semantics.
 The agent never changes a lifecycle state. Human-approved drafts are labelled
-as such; no automatic approval, referral, correction or payment.
+as such and optional: a human may record their own reason without using a draft.
+Code performs ordinary automatic routing/pricing attribution; humans explicitly
+confirm capture and record decisions. No agent approval, referral or payment.
+Complete non-D manual capture can route on matching confirmed facts without
+claiming a pharmacy declaration was reconciled. D and declaration-based trust
+keep their stricter reconciliation checks. Original pharmacy attempts are never
+enriched after submission; capture evidence is appended to revision-linked history.
 
 ## Presentation and storage
 
@@ -138,19 +156,64 @@ Agent On/Off is controlled only by the top-right header switch. No page may call
 pharmacy's local availability switch are removed; pharmacy checks use the header
 state directly. On-only actions are conditionally shown by that state. The
 read-only Compare projection never toggles assistance or changes lifecycle.
+The current staff worklist excludes automatic rows, separates Type 1 capture
+from Type 2 judgement and retains completed human work under Decided.
+Perspective hides an already-open form using `hidden` and `inert`, preserving
+unsaved fields without a second operational store. Explicit guard restoration
+returns focus to the selected view's contextual heading.
 `pharmacyCorrections` records validated missing-to-ready evidence after a human
 applies a correction; it never submits or changes lifecycle/history. It is
 session-only, cleared by Reset, and distinct from whole-scenario projections.
 Use stable Zustand slices; derive arrays with useMemo or useShallow.
 
-Copy uses UK English, no em dashes, no vendor/product/document names outside
-the permitted Architecture mapping. Narrative panels are under 25 words;
+Copy uses UK English, no em dashes, and no implementation vendor/product or
+document names in the interface, including Architecture. The owner's latest
+Part D instruction supersedes the former Architecture exception. Use
+presentation-only capability aliases; retain original source mappings, tool
+contracts, payloads and decision history. NHSBSA, MYS, NHSmail, EPS, dm+d and
+Drug Tariff remain valid process names. Narrative panels are under 25 words;
 structured labels are not a hiding place for prose. One Sources line in chapter
 one; documentary audit stays outside the client. Synthetic operational citations
 remain visible. Keyboard, focus, contrast, reduced motion and non-colour status
 are requirements. Shared two-second animation is presentation, not processing.
 
 ## Public repository and current state
+
+Initial functional release: `1327e65fffeafebf43df1b1b566c6e4152452b46`.
+Exact N candidate `f7d9039` passed check, 923 unique units, 1,186 ordinary
+browser tests and 21 instrumented state-equivalence tests in four CI shards.
+V then ran the complete 32-case exact-state suite locally and 20 real hosted
+checks against clean `1327e65`, without an observer in the deployed build.
+Hosted evidence includes 41 metadata-paired screenshots (18 Off/23 On) plus
+two separately identified perspective-helper screenshots (one Off/one On),
+43 images in total (19 Off/24 On), and 24 axe audits
+(10 Off/14 On), zero violations and 19 incomplete audits requiring judgement.
+These captures are primarily Both perspective; they are not a static matrix
+of every route in all perspectives. Header route checks and per-action state
+equivalence cover those requirements separately.
+
+The first 43-image review failed D/E content truthfulness despite zero axe
+violations. Repair #80 at `d5832e0` passed 943 units, 1,186 ordinary browser
+tests and 21 instrumented cases, then deployment 34765809076. Missing or
+unconfirmed comparison evidence is Not established, never green agreement
+inferred from no conflicts. In-review history is labelled Awaiting operator,
+not automatically Case built. Automatic trace closing says no agent/person is
+involved; human paths remain distinct. Claim filters use an accessible group.
+New repaired captures and review are separate evidence; never erase the failure.
+The repaired run has 40 clean before/after identities, 43 reviewed images
+(19 Off/24 On) and 24 axe audits (10 Off/14 On), zero violations. Sixteen
+contrast incomplete audits covering 121 nodes remain manual-review caveats;
+there are no remaining prohibited-ARIA incomplete results. The novice/content
+review passed with no blocker, not as a participant study or WCAG certification.
+Thirty-two exact-state scenarios passed coherently with no production observer.
+The minor "1 items" wording is retained as a non-blocking KNOWN-ISSUES entry.
+No blocking application issue is deferred; final release evidence follows #79.
+
+Each final documentation merge changes the build identity. Its latest-main
+deployment and full hosted checklist must pass again before ALL DONE; earlier
+capture images and test artifacts must not be relabelled as later source.
+
+### Retained public and prior-release decisions
 
 Transfer is not proceeding: the enterprise identity is an Enterprise Managed
 User and cannot join or own this external repository. Owner remains WilliamNg18.
@@ -292,8 +355,8 @@ Latest owner direction: use `bsa-bsa-demo-r2j2l3dxhtohy` in `rg-bsa-bsa-demo`,
 subscription `8b02c7be-06b9-4d15-a916-eba62a775f02`. Azure login works; the
 coordinator created the deployment identity, main-branch federation, site-only
 Website Contributor grant and five GitHub variables. Owner actions for setup:
-none. The current strict-header application has actual 14-check live acceptance
-at clean `c0203fc`; earlier `b813c62` evidence remains source-pinned. DEPLOYMENT records
+none. The current strict-header application has actual 20-check hosted acceptance
+at clean `1327e65`; earlier `c0203fc` and `b813c62` evidence remains source-pinned. DEPLOYMENT records
 startup and commit verification; coordinator owns Azure mutations and the
 fresh latest-commit check after each new deployment.
 

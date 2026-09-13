@@ -1,0 +1,98 @@
+[
+  {
+    "path": "/pharmacy",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "status": 200,
+    "checkedAt": "2026-09-13T14:46:59.500Z",
+    "headers": {
+      "cache-control": "no-store",
+      "content-length": "786",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Sun, 13 Sep 2026 14:46:59 GMT",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  },
+  {
+    "path": "/pharmacy/claims",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims",
+    "status": 200,
+    "checkedAt": "2026-09-13T14:46:59.756Z",
+    "headers": {
+      "cache-control": "no-store",
+      "content-length": "786",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Sun, 13 Sep 2026 14:47:00 GMT",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  },
+  {
+    "path": "/queue",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "status": 200,
+    "checkedAt": "2026-09-13T14:47:00.216Z",
+    "headers": {
+      "cache-control": "no-store",
+      "content-length": "786",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Sun, 13 Sep 2026 14:47:00 GMT",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  },
+  {
+    "path": "/case/EX-24112",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112",
+    "status": 200,
+    "checkedAt": "2026-09-13T14:47:00.487Z",
+    "headers": {
+      "cache-control": "no-store",
+      "content-length": "786",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Sun, 13 Sep 2026 14:47:01 GMT",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  },
+  {
+    "path": "/case/EX-24112/trace",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/trace",
+    "status": 200,
+    "checkedAt": "2026-09-13T14:47:00.737Z",
+    "headers": {
+      "cache-control": "no-store",
+      "content-length": "786",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Sun, 13 Sep 2026 14:47:01 GMT",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  },
+  {
+    "path": "/case/EX-24112/record",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "status": 200,
+    "checkedAt": "2026-09-13T14:47:01.014Z",
+    "headers": {
+      "cache-control": "no-store",
+      "content-length": "786",
+      "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+      "content-type": "text/html; charset=utf-8",
+      "date": "Sun, 13 Sep 2026 14:47:01 GMT",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "DENY"
+    }
+  }
+]

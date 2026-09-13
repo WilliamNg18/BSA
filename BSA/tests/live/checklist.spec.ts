@@ -1,12 +1,15 @@
 import type { Page } from "@playwright/test";
-import { audit, captureJson, expect, test } from "./fixtures";
-import { cases, captureCheckpoint, confirmReset, navigatePrimary, staticRoutes } from "../e2e/fixtures";
+import { audit, captureJson, captureView as captureCheckpoint, expect, test } from "./fixtures";
+import { cases, confirmReset, navigatePrimary, staticRoutes } from "../e2e/fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
-import { MONTH_MODEL_DEFAULTS, monthModel, formatBaselineNumber } from "../../src/lib/domain/baseline";
+import { PROCESS_MONTH_DEFAULTS, monthModel, formatProcessHours, formatProcessItems } from "../../src/lib/domain/baseline";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { startDemonstrationReview } from "../e2e/lifecycle-helpers";
+import { chooseProcessChapter, expandProcessInputs, expectProcessMetrics, expectSceneMetrics } from "../e2e/process-model-helpers";
+import { confirmCompletePaper, openFourCases, submitCompletePaper } from "../e2e/paper-capture-helpers";
+import { LIVE_CHECKS } from "./inventory";
 
 const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -19,10 +22,23 @@ const routes = [...new Set([
   ...cases.flatMap((c) => [`/case/${c.id}`, `/case/${c.id}/trace`, `/case/${c.id}/record`]),
 ])];
 
-test("01 Root Overview starts Agent Off and serves the approved build", async ({ page }, info) => {
+async function expectUnconfirmedPaperEvidence(page: Page) {
+  const reconciliation = page.getByRole("list", { name: "Confidence signals", exact: true })
+    .getByRole("listitem").filter({ hasText: "Sources reconcile" });
+  await expect(reconciliation).toBeVisible();
+  await expect(reconciliation).toContainText("Not established");
+  await expect(reconciliation).not.toContainText("Agree");
+  await expect(reconciliation).not.toContainText(", satisfied");
+  await expect(page.getByText("Reconciliation not established.", { exact: true })).toBeVisible();
+  await expect(page.getByText("No detected conflict does not establish agreement. Missing, unreadable or unconfirmed fields still need evidence.", { exact: true })).toBeVisible();
+  await expect(page.getByText("The sources agree.", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Case built, awaiting operator", { exact: true })).toHaveCount(0);
+}
+
+test(LIVE_CHECKS.root, async ({ page }, info) => {
   const response = await page.goto("/");
   expect(response?.status()).toBe(200);
-  await expect(page.getByRole("heading", { name: "The referred-back subset", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Most items need no person", exact: true })).toBeVisible();
   await expect(flag(page)).not.toBeChecked();
   await expect(page.locator("[data-key-figure]")).toHaveCount(3);
   await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("1/8");
@@ -31,7 +47,7 @@ test("01 Root Overview starts Agent Off and serves the approved build", async ({
   await captureCheckpoint(page, info, "overview-off");
 });
 
-test("02 Every current route toggles On and back Off without errors", async ({ page }, info) => {
+test(LIVE_CHECKS.routes, async ({ page }, info) => {
   for (const route of routes) {
     await test.step(route, async () => {
       await page.goto(route);
@@ -50,36 +66,67 @@ test("02 Every current route toggles On and back Off without errors", async ({ p
   await audit(page, info, "overview", true);
 });
 
-test("03 Three monthly inputs update both headline tiles and shared Scene figures", async ({ page }, info) => {
+test(LIVE_CHECKS.model, async ({ page }, info) => {
   await page.goto("/#month");
-  await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill("120");
-  await page.getByLabel("Minutes an operator spends per item today", { exact: true }).fill("15");
-  await page.getByLabel("Minutes an operator spends judging a case the agent has built", { exact: true }).fill("3");
-  const input = { ...MONTH_MODEL_DEFAULTS, volume: 120, todayMinutes: 15, judgingMinutes: 3 };
+  await expandProcessInputs(page);
+  await page.getByRole("textbox", { name: "Items referred back a month", exact: true }).fill("120");
+  await page.getByRole("textbox", { name: "NHSBSA minutes per referral", exact: true }).fill("5");
+  await page.getByRole("textbox", { name: "Pharmacy minutes per referral", exact: true }).fill("7");
+  const input = { ...PROCESS_MONTH_DEFAULTS, monthlyReferrals: 120, investigationMinutesToday: 5, pharmacyCompletionMinutes: 7 };
   const expected = monthModel(input);
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
-    const hours = formatBaselineNumber(enabled ? expected.withAgent.operatorHours : expected.today.operatorHours, 1);
-    const capacity = formatBaselineNumber(enabled ? expected.capacity.withAgent : expected.capacity.today, 1);
-    await expect(page.locator("[data-month-hours]")).toHaveText(hours);
-    await expect(page.locator("[data-month-capacity]")).toHaveText(capacity);
-    await navigatePrimary(page, "Overview");
-    await expect(page.locator("[data-scene-volume]")).toHaveText("120");
-    await expect(page.locator("[data-scene-hours]")).toHaveText(hours);
-    await expect(page.locator("[data-scene-capacity]")).toHaveText(capacity);
-    await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
+    await expectProcessMetrics(page, input, enabled);
+    await audit(page, info, "edited-process-model", enabled);
+    await chooseProcessChapter(page, 1);
+    await expectSceneMetrics(page, input, enabled);
+    await chooseProcessChapter(page, 2);
+  }
+  await navigatePrimary(page, "NHSBSA queue");
+  for (const [label, key] of [
+    ["Type 2 operator hours", "type2OperatorHours"], ["Referred-back operator hours", "referralOperatorHours"],
+    ["Pharmacy completion hours", "pharmacyCompletionHours"], ["Items referred back", "referredBackItems"],
+  ] as const) {
+    const format = key === "referredBackItems" ? formatProcessItems : formatProcessHours;
+    await expect(page.locator("[data-queue-month-summary] dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
+      .toHaveText(`${format(expected.today[key])} / ${format(expected.withAgent[key])}`);
+  }
+  await navigatePrimary(page, "Pharmacy claims");
+  const projection = page.getByRole("region", { name: "Shared monthly process projection", exact: true });
+  for (const enabled of [false, true]) {
+    await flag(page).setChecked(enabled);
+    for (const [label, key] of [
+      ["Items referred back", "referredBackItems"], ["Caught before submission", "caughtBeforeSubmission"],
+      ["Referral-loop operator hours", "referralOperatorHours"], ["Pharmacy completion hours", "pharmacyCompletionHours"],
+    ] as const) {
+      await expect(projection.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
+        .toHaveText((key.endsWith("Hours") ? formatProcessHours : formatProcessItems)(expected[enabled ? "withAgent" : "today"][key]));
+    }
   }
   await captureJson(info, "shared-month-inputs", { input, expected });
 });
 
-test("04 Four case cards open their matching case packs and traces", async ({ page }) => {
+test(LIVE_CHECKS.cards, async ({ page }, info) => {
   for (const [index, scenario] of ["A", "B", "C", "D"].entries()) {
     await page.goto("/#cases");
     await flag(page).setChecked(true);
     const cards = page.getByRole("list", { name: "Four canonical synthetic cases" });
     await expect(cards.locator(":scope > li")).toHaveCount(4);
-    await expect(cards.locator("[data-outcome]")).toHaveText(["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION", "ABSTAIN"]);
-    await cards.getByRole("link", { name: `Open case ${scenario}`, exact: true }).click();
+    const card = cards.locator(`[data-case="${scenario}"]`);
+    await expect(card).toHaveAttribute("data-case-routing",
+      scenario === "A" ? "auto_priced" : scenario === "B" ? "referred_back" : scenario === "C" ? "type2_endorsement" : "type1_capture");
+    if (scenario === "A") await audit(page, info, "canonical-case-cards", true);
+    if (scenario === "A") {
+      await expect(card.locator("[data-outcome], [data-manual-tasks]")).toHaveCount(0);
+      await card.getByRole("link", { name: "View automatically priced claim", exact: true }).click();
+      await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+      await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+      await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    } else {
+      if (scenario === "D") await expect(card.locator("[data-outcome]")).toHaveCount(0);
+      else await expect(card.locator("[data-outcome]")).toHaveText(scenario === "B" ? "REFER_BACK" : "REQUEST_INFORMATION");
+      await card.getByRole("link", { name: `Open case ${scenario}`, exact: true }).click();
+    }
     await expect(page).toHaveURL(new RegExp(`/case/${cases[index].id}$`));
     await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Case-building trace", exact: true }).click();
@@ -93,9 +140,9 @@ test("04 Four case cards open their matching case packs and traces", async ({ pa
   }
 });
 
-test("05 Three pharmacy scenarios remain advisory in both modes", async ({ page }, info) => {
+test(LIVE_CHECKS.pharmacy, async ({ page }, info) => {
   const scenarios = [
-    { label: "Complete endorsement", status: "Ready to submit" },
+    { label: "Complete endorsement", status: "Complete: will flow to automated pricing" },
     { label: "Information missing", status: "Information may be missing" },
     { label: "Unreadable form", status: "Agent unable to determine" },
   ];
@@ -104,14 +151,16 @@ test("05 Three pharmacy scenarios remain advisory in both modes", async ({ page 
     await flag(page).setChecked(enabled);
     for (const scenario of scenarios) {
       await page.getByRole("radio", { name: scenario.label, exact: true }).click();
+      await expect(page.getByRole("radio", { name: scenario.label === "Unreadable form" ? "Paper" : "EPS", exact: true })).toBeChecked();
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? scenario.status : "Not checked: manual submission");
       await expect(page.getByRole("button", { name: "Continue with submission", exact: true })).toBeEnabled();
+      await captureCheckpoint(page, info, `pharmacy-${scenario.label.replaceAll(" ", "-")}-${enabled ? "on" : "off"}`);
     }
     await audit(page, info, "pharmacy", enabled);
   }
 });
 
-test("06 Claims seed list opens a matching seeded claim and history", async ({ page }, info) => {
+test(LIVE_CHECKS.claims, async ({ page }, info) => {
   await page.goto("/pharmacy/claims");
   const list = page.getByRole("table", { name: "Pharmacy claims", exact: true });
   await expect(list.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true })).toBeVisible();
@@ -121,36 +170,44 @@ test("06 Claims seed list opens a matching seeded claim and history", async ({ p
   await expect(history(page)).toBeVisible();
   for (const enabled of [false, true]) {
     await flag(page).setChecked(enabled);
+    await expect(page.getByRole("group", { name: "Claim filters", exact: true })).toBeVisible();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
     await audit(page, info, "claims", enabled);
   }
 });
 
-test("07 Queue bounded window and one-hour comparison preserve recorded states", async ({ page }) => {
+test(LIVE_CHECKS.queue, async ({ page }, info) => {
   await page.goto("/queue");
-  const table = page.getByRole("region", { name: "Exception queue table", exact: true });
+  const table = page.getByRole("region", { name: "Type 2 items", exact: true });
   await expect(table.locator("thead th")).toHaveCount(6);
-  await expect(table.locator("tbody tr")).toHaveCount(50);
-  const counter = page.locator("[data-queue-counter]");
-  await expect(counter).toContainText("showing 1 to 50 of ");
-  const states = await table.locator("[data-recorded-state]").evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")));
-  await page.getByRole("button", { name: "Next 50", exact: true }).click();
-  await expect(counter).toContainText("showing 51 to 100 of ");
-  await expect(table.locator("tbody tr")).toHaveCount(50);
-  await page.getByRole("button", { name: "First items", exact: true }).click();
-  await flag(page).setChecked(true);
-  await page.getByRole("button", { name: "Compare", exact: true }).click();
-  await page.getByRole("button", { name: "Run one hour", exact: true }).click();
-  await expect(page.locator("[data-comparison-clock]")).toHaveText("60 synthetic minutes · Stopped", { timeout: 15_000 });
-  const today = Number(await page.locator('[data-comparison-summary="today"] dd').nth(1).innerText());
-  const assisted = Number(await page.locator('[data-comparison-summary="assisted"] dd').nth(1).innerText());
-  expect(assisted).toBeGreaterThan(today);
-  await page.getByRole("button", { name: "Close comparison", exact: true }).click();
-  await flag(page).setChecked(false);
-  expect(await table.locator("[data-recorded-state]").evaluateAll((cells) => cells.map((cell) => cell.getAttribute("data-recorded-state")))).toEqual(states);
+  const rows = page.locator("[data-case-id]");
+  const recorded = () => rows.evaluateAll((items) => items.map((row) => ({
+    id: row.getAttribute("data-case-id"), evidence: Array.from(row.querySelectorAll("td")).slice(0, 4).map((cell) => cell.textContent),
+  })));
+  const before = await recorded();
+  expect(before.length).toBeGreaterThan(0);
+  const model = monthModel(PROCESS_MONTH_DEFAULTS);
+  const summary = page.locator("[data-queue-month-summary]");
+  for (const enabled of [true, false]) {
+    await flag(page).setChecked(enabled);
+    expect(await recorded()).toEqual(before);
+    for (const id of ["EX-24107", "EX-24101", "EX-24123"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+    await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
+    for (const [label, key] of [
+      ["Type 2 operator hours", "type2OperatorHours"], ["Referred-back operator hours", "referralOperatorHours"],
+      ["Pharmacy completion hours", "pharmacyCompletionHours"], ["Items referred back", "referredBackItems"],
+    ] as const) {
+      const format = key === "referredBackItems" ? formatProcessItems : formatProcessHours;
+      await expect(summary.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd"))
+        .toHaveText(`${format(model.today[key])} / ${format(model.withAgent[key])}`);
+    }
+    await audit(page, info, "actual-worklist", enabled);
+  }
+  await expect(page.getByRole("button", { name: "Compare", exact: true })).toHaveCount(0);
+  await expect(page.locator("[data-comparison-clock]")).toHaveCount(0);
 });
 
-test("08 Full Off then On round trips retain Follow and Switch side", async ({ page }, info) => {
+test(LIVE_CHECKS.roundtrip, async ({ page }, info) => {
   for (const enabled of [false, true]) {
     await test.step(`Agent ${enabled ? "On" : "Off"}`, async () => {
       await page.goto("/pharmacy");
@@ -162,16 +219,19 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
       await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
       await page.getByRole("button", { name: "Start review", exact: true }).click();
       await page.getByRole("radio", { name: /^Refer back / }).check();
+      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
       await page.getByRole("textbox", { name: /^Reason/ }).fill("Please add the dispensing date beside the initials");
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await audit(page, info, "human-referral-record", enabled);
       await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
       await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
       const originalEvents = await history(page).locator('ol[aria-label="Lifecycle events"] > li').allTextContents();
       expect(originalEvents.length).toBeGreaterThan(0);
       if (enabled) {
         await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
-        await expect(detail(page)).not.toContainText("Please add the dispensing date beside the initials");
+        await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" }))
+          .not.toContainText("Please add the dispensing date beside the initials");
         await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
         await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
         await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
@@ -198,6 +258,7 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
       const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true });
       expect((await events.locator(":scope > li").allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
       await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
+      await audit(page, info, "corrected-eps-paid-history", enabled);
       await captureJson(info, `roundtrip-${enabled ? "on" : "off"}`, { url: page.url(), history: await history(page).innerText() });
       await confirmReset(page);
       await expect(flag(page)).not.toBeChecked();
@@ -206,44 +267,101 @@ test("08 Full Off then On round trips retain Follow and Switch side", async ({ p
   }
 });
 
-test("09 Case D retains three abstention reasons and gate NOT RUN", async ({ page }) => {
-  await page.goto("/case/EX-24123");
-  await flag(page).setChecked(true);
-  const reasons = page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li");
-  await expect(reasons).toHaveCount(3);
-  await expect(reasons).toHaveText(runAgent(CASES[3], { agentEnabled: true }).abstainReasons);
-  await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
-  const signals = page.getByRole("list", { name: "Confidence signals", exact: true });
-  await expect(signals.locator(":scope > li")).toHaveCount(5);
-  await expect(signals.locator(".sr-only").filter({ hasText: ", failed" })).toHaveCount(4);
+test(LIVE_CHECKS.paper, async ({ page }, info) => {
+  for (const enabled of [false, true]) {
+    await page.goto("/case/EX-24123");
+    await flag(page).setChecked(enabled);
+    const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
+    await expect(capture).toBeVisible();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    if (enabled) {
+      const reasons = page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li");
+      await expect(reasons).toHaveText(runAgent(CASES[3], { agentEnabled: true }).abstainReasons);
+      await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
+      await expect(capture).toContainText("declared by the pharmacy, not read from the form");
+      await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+      await expect(capture.getByRole("alert")).toContainText("Reconcile the declaration with the paper");
+      await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+    } else {
+      for (const name of ["Product code", "Quantity", "Endorsement", "Prescriber"]) {
+        await expect(capture.getByRole("textbox", { name, exact: true })).toHaveValue("");
+      }
+    }
+    if (enabled) await expectUnconfirmedPaperEvidence(page);
+    await audit(page, info, "unconfirmed-capture", enabled);
+    await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+    await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+    await page.getByRole("radio", { name: /^Refer back / }).check();
+    await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("RB2B");
+    await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human requests pharmacy confirmation of the product presentation");
+    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(page).toHaveURL(/\/case\/EX-24123\/record$/);
+    await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
+    await expect(detail(page)).toContainText("RB2B");
+    await history(page).locator("summary").first().click();
+    const attempts = history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li");
+    const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    const originalAttempts = await attempts.allTextContents();
+    const originalEvents = await events.allTextContents();
+    expect(originalAttempts).toHaveLength(1);
+    for (const [name, value] of [
+      ["Declared product code", "SYN-COCOD-100"], ["Declared quantity", "100"],
+      ["Declared prescriber (synthetic)", "Dr Demo (synthetic)"], ["Corrected endorsement", "NCSO AB 27/08/26"],
+    ]) {
+      await page.getByRole(name === "Declared quantity" ? "spinbutton" : "textbox", { name, exact: true }).fill(value);
+    }
+    await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+    await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+    await expect(attempts).toHaveCount(2);
+    expect((await attempts.allTextContents()).slice(0, originalAttempts.length)).toEqual(originalAttempts);
+    expect((await events.allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
+    await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+    await expect(capture).toBeVisible();
+    await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    if (enabled) {
+      await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true })).not.toBeChecked();
+      await expectUnconfirmedPaperEvidence(page);
+    }
+    await captureCheckpoint(page, info, `d-fresh-capture-after-referral-${enabled ? "on" : "off"}`);
+  }
 });
 
-test("10 Case E remains deterministic without an agent call", async ({ page }) => {
+test(LIVE_CHECKS.deterministic, async ({ page }, info) => {
   await page.goto("/case/EX-24101/trace");
   await flag(page).setChecked(true);
   const trace = page.getByRole("list", { name: "Deterministic clearance trace", exact: true });
   await expect(trace.locator(":scope > li")).toHaveCount(2);
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
+  await expect(page.getByText("Priced by NHSBSA's existing rules engine; no person involved. The agent was not invoked.", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open case evidence", exact: true })).toHaveAttribute("href", "/case/EX-24101");
+  await expect(page.getByText("The agent's part is over. The rest is a person.", { exact: true })).toHaveCount(0);
   await expect(trace).not.toContainText("run_endorsement_checks");
+  await audit(page, info, "deterministic-e-trace", true);
 });
 
-test("11 Case B July replay is Sufficient while August refers back", async ({ page }) => {
+test(LIVE_CHECKS.replay, async ({ page }, info) => {
   await page.goto("/case/EX-24112");
   await startDemonstrationReview(page);
   await flag(page).setChecked(true);
   await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
   const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
   await replay.selectOption("2026-07");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Sufficient: release to pricing once confirmed");
+  await captureCheckpoint(page, info, "b-july-replay");
   await replay.selectOption("2026-08");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Refer back with the exact fix");
+  await captureCheckpoint(page, info, "b-august-replay");
 });
 
-test("12 Six root deep links return the application with strict headers", async ({ page }, info) => {
+test(LIVE_CHECKS.deepLinks, async ({ page }, info) => {
   const links = ["/pharmacy", "/pharmacy/claims", "/queue", "/case/EX-24112", "/case/EX-24112/trace", "/case/EX-24112/record"];
   const evidence = [];
   for (const path of links) {
@@ -264,9 +382,10 @@ test("12 Six root deep links return the application with strict headers", async 
   await captureJson(info, "six-root-deep-links", evidence);
 });
 
-test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page }) => {
+test(LIVE_CHECKS.reset, async ({ page }) => {
   await page.goto("/#month");
-  await page.getByLabel("Items reaching the exception queue each month", { exact: true }).fill("120");
+  await expandProcessInputs(page);
+  await page.getByRole("textbox", { name: "Items referred back a month", exact: true }).fill("120");
   await flag(page).setChecked(true);
   await navigatePrimary(page, "Pharmacy claims");
   await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
@@ -279,6 +398,121 @@ test("13 Reset restores seeded claims, calculator and Agent Off", async ({ page 
   await history(page).locator("summary").first().click();
   await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts" }).locator(":scope > li")).toHaveCount(1);
   await navigatePrimary(page, "Overview");
-  await page.getByRole("link", { name: "Edit scenario assumptions", exact: true }).click();
-  await expect(page.getByLabel("Items reaching the exception queue each month", { exact: true })).toHaveValue(String(MONTH_MODEL_DEFAULTS.volume));
+  await chooseProcessChapter(page, 2);
+  await expandProcessInputs(page);
+  await expect(page.getByRole("textbox", { name: "Items referred back a month", exact: true })).toHaveValue(String(PROCESS_MONTH_DEFAULTS.monthlyReferrals));
+  await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, false);
+});
+
+test(LIVE_CHECKS.conflict, async ({ page }, info) => {
+  for (const enabled of [false, true]) {
+    await page.goto("/case/EX-24119");
+    await flag(page).setChecked(enabled);
+    await startDemonstrationReview(page);
+    await page.getByRole("radio", { name: /^Request information / }).check();
+    await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Please confirm both conflicting quantities against the synthetic form");
+    if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
+    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(page).toHaveURL(/\/case\/EX-24119\/record$/);
+    await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
+    const confirmation = page.getByRole("region", { name: "Requested confirmation", exact: true });
+    for (const [label, value] of [["Captured form quantity", "56"], ["Claim ledger quantity", "84"]]) {
+      await expect(confirmation.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd")).toHaveText(value);
+    }
+    await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
+    await expect(page.getByRole("alert").filter({ hasText: "Pharmacy text is required" })).toBeVisible();
+    const text = "The form says 56 while the claim ledger says 84; please review both values";
+    await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill(text);
+    await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
+    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
+    await history(page).locator("summary").first().click();
+    await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true })).toContainText(text);
+    await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
+    await expect(history(page)).toContainText(LIFECYCLE_LABELS.resubmitted.nhsbsa[enabled ? "on" : "off"]);
+    await page.getByRole("button", { name: "Start review", exact: true }).click();
+    await expect(page.getByRole("main")).toContainText("56");
+    await expect(page.getByRole("main")).toContainText("84");
+    if (enabled) await expect(page.getByRole("radio", { name: /^Request information \(as recommended\)/ })).toBeChecked();
+    await captureCheckpoint(page, info, `c-confirmation-still-conflicted-${enabled ? "on" : "off"}`);
+  }
+});
+
+test(LIVE_CHECKS.historical, async ({ page }, info) => {
+  await page.goto("/case/EX-24088/record");
+  await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
+  const records = page.locator("[data-original-records]");
+  await records.locator("summary").click();
+  const original = await records.innerText();
+  expect(original).toContain("DR-000871");
+  expect(original).toContain("2026-08");
+  const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
+  for (const enabled of [true, false, true]) {
+    await flag(page).setChecked(enabled);
+    await expect(records).toHaveText(original, { useInnerText: true });
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    if (enabled) {
+      for (const month of ["2026-07", "2026-08"]) {
+        await replay.selectOption(month);
+        await expect(records).toHaveText(original, { useInnerText: true });
+        await expect(page.getByRole("heading", { name: "Record DR-000871", exact: true })).toBeVisible();
+      }
+    } else {
+      await expect(replay).toBeDisabled();
+      await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveCount(0);
+    }
+  }
+  await captureJson(info, "f-original-record-retained", { record: original, url: page.url() });
+  await audit(page, info, "historical-f-record", true);
+});
+
+test(LIVE_CHECKS.completedCapture, async ({ page }, info) => {
+  const action = async (_label: string, _side: "Pharmacy" | "NHSBSA", perform: () => Promise<void>) => perform();
+  for (const enabled of [false, true]) {
+    await page.goto("/pharmacy");
+    await flag(page).setChecked(enabled);
+    await submitCompletePaper(page, action);
+    await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
+    await history(page).locator("summary").first().click();
+    const attempts = history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li");
+    const events = history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    const originalAttempts = await attempts.allTextContents();
+    const originalEvents = await events.allTextContents();
+    expect(originalAttempts).toHaveLength(2);
+
+    await confirmCompletePaper(page, enabled, action);
+    await page.getByRole("button", { name: /^Decided/ }).click();
+    await expect(page.getByRole("region", { name: "Completed Type 1 captures", exact: true })).toContainText("Human capture confirmed");
+    await expect(page.getByRole("region", { name: "Type 2 items", exact: true })).not.toContainText(B);
+    for (const id of [B, "EX-24107", "EX-24101"]) {
+      await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+    }
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await audit(page, info, "completed-type1-queue", enabled);
+    await captureCheckpoint(page, info, `completed-type1-queue-${enabled ? "on" : "off"}`);
+
+    await openFourCases(page);
+    const card = page.locator('[data-case="B"]');
+    for (const current of [!enabled, enabled]) {
+      await flag(page).setChecked(current);
+      await expect(card).toHaveAttribute("data-case-routing", "type1_capture");
+      await expect(card).toHaveAttribute("data-case-capture", "complete");
+      await expect(card.getByRole("region", { name: "Completed Type 1 capture", exact: true })).toContainText("Capture complete · Existing pricing");
+      await expect(card).toContainText("A person confirmed the captured fields");
+      await expect(card).not.toContainText("Awaiting Type 1 capture");
+      await expect(card).not.toContainText("no person involved");
+      await expect(card.getByRole("link", { name: "Open case", exact: true })).toHaveCount(0);
+    }
+    await audit(page, info, "completed-type1-card", enabled);
+    await captureCheckpoint(page, info, `completed-type1-card-${enabled ? "on" : "off"}`);
+    await card.getByRole("link", { name: "View priced claim", exact: true }).click();
+    await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    await history(page).locator("summary").first().click();
+    expect(await attempts.allTextContents()).toEqual(originalAttempts);
+    const completeEvents = await events.allTextContents();
+    expect(completeEvents.slice(0, originalEvents.length)).toEqual(originalEvents);
+    expect(completeEvents).toHaveLength(originalEvents.length + 2);
+    await expect(events).toContainText(["Human capture confirmed; code routed the captured fields."]);
+    await captureJson(info, `completed-type1-retained-history-${enabled ? "on" : "off"}`, { attempts: originalAttempts, events: completeEvents });
+  }
 });

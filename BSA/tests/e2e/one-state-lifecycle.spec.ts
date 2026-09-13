@@ -1,0 +1,189 @@
+import type { Page } from "@playwright/test";
+import { expect, navigatePrimary, test } from "./fixtures";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
+
+const B = "EX-24112";
+const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
+
+function expectUnrelatedCases(before: DomainSnapshot, after: DomainSnapshot, changed: string) {
+  for (const key of ["lifecycles", "caseRevisions", "itemProcesses", "caseStates"] as const) {
+    for (const id of Object.keys(before[key])) {
+      if (id !== changed) expect(after[key][id], `${key}: ${id} is not part of this action`).toEqual(before[key][id]);
+    }
+  }
+  expect(after.records.slice(0, before.records.length)).toEqual(before.records);
+  expect(after.caseRevisions[changed].slice(0, before.caseRevisions[changed].length)).toEqual(before.caseRevisions[changed]);
+  expect(after.lifecycles[changed].history.slice(0, before.lifecycles[changed].history.length)).toEqual(before.lifecycles[changed].history);
+}
+
+async function openWork(page: Page, action: DomainAction, id: string) {
+  await action(`Navigate to the actual worklist for ${id}`, "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+  await action(`Open ${id} without starting review`, "NHSBSA", async () => {
+    await page.getByRole("link", { name: `Open ${id}`, exact: true }).click();
+  });
+}
+
+for (const approval of ["manual", "unchecked", "approved"] as const) {
+  const enabled = approval !== "manual";
+  test(`one state: B referral and corrected EPS pricing with ${approval} draft`, async ({ page }, info) => {
+    await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
+      const initial = await readDomainState(page);
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information may be missing" : "Not checked: manual submission");
+      const submitted = await action("Submit B with the missing dispensing date", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+      });
+      expect(submitted.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement", requiresHuman: true } });
+      await openWork(page, action, B);
+      expect(await readDomainState(page), "Reading new work is not a human review").toEqual(submitted);
+      await action("Explicitly start B review", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Start review", exact: true }).click();
+      });
+      await action("Choose a human referral", "NHSBSA", async () => {
+        await page.getByRole("radio", { name: /^Refer back / }).check();
+      });
+      const reviewing = await readDomainState(page);
+      await action("Reject a missing human reason", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
+      });
+      expect(await readDomainState(page)).toEqual(reviewing);
+      const reason = `Human ${approval} referral: add the missing dispensing date`;
+      await action("Write the human referral reason", "NHSBSA", async () => {
+        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill(reason);
+      });
+      await action("Reject a referral without an explicit RB code", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page).toHaveURL(/\/case\/EX-24112$/);
+        await expect(page.getByRole("alert").filter({ hasText: "Choose an RB code for the referral." })).toBeVisible();
+      });
+      expect(await readDomainState(page)).toEqual(reviewing);
+      await action("Choose the synthetic missing-endorsement RB code", "NHSBSA", async () => {
+        await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+      });
+      const draft = page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true });
+      if (enabled) await expect(draft).not.toBeChecked();
+      else await expect(draft).toHaveCount(0);
+      if (approval === "approved") await action("Approve only this generated pharmacy draft", "NHSBSA", async () => { await draft.check(); });
+      expect(await readDomainState(page), "A draft checkbox is not a committed decision").toEqual(reviewing);
+      const referred = await action("Record the human referral once", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
+      });
+      expect(referred.records).toHaveLength(initial.records.length + 1);
+      const record = referred.records.at(-1);
+      expect(record).toMatchObject({ caseId: B, reason, rbCode: "SYN-NCSO" });
+      if (approval === "approved") expect(record?.approvedDraft).toMatchObject({ approvedBy: "Demo operator", decision: "REFER_BACK" });
+      else expect(record?.approvedDraft).toBeUndefined();
+      expect(referred.lifecycles[B].state).toBe("referred_back");
+      expect(referred.caseRevisions).toEqual(submitted.caseRevisions);
+      if (enabled) {
+        for (const [month, outcome] of [["2026-07", "Sufficient: release to pricing once confirmed"], ["2026-08", "Refer back with the exact fix"]] as const) {
+          await action(`Replay the recorded evidence under ${month}`, "NHSBSA", async () => {
+            await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption(month);
+            await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText(outcome);
+          });
+          expect(await readDomainState(page), "Replay is not a new decision or mutation of its original rule").toEqual(referred);
+        }
+      }
+      await action("Navigate to the pharmacy side of the same B record", "Pharmacy", async () => {
+        await navigatePrimary(page, "Pharmacy claims");
+      });
+      await action("Open the actual referred-back B item", "Pharmacy", async () => {
+        await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
+      });
+      await expect(detail(page)).toContainText("SYN-NCSO");
+      await expect(page.getByRole("region", { name: "Operator-approved pharmacy note", exact: true })).toHaveCount(approval === "approved" ? 1 : 0);
+      if (approval === "approved") {
+        await action("Check the current missing endorsement", "Pharmacy", async () => {
+          await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
+        });
+        await action("Apply the approved date correction without submitting", "Pharmacy", async () => {
+          await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
+        });
+      } else {
+        await action("Type the complete pharmacy endorsement without draft approval", "Pharmacy", async () => {
+          await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
+        });
+      }
+      await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
+      expect(await readDomainState(page), "Correcting a draft does not send it").toEqual(referred);
+      const paid = await action("Explicitly resubmit the complete EPS correction", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+        await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+      });
+      expect(paid.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "auto_priced", requiresHuman: false } });
+      expect(paid.records).toEqual(referred.records);
+      expect(paid.caseRevisions[B].at(-1)).toMatchObject({
+        channel: "eps", kind: "resubmission", endorsementText: "NCSO  RK 21/08/26",
+        precheck: { status: enabled ? "ready" : "not_checked", mode: enabled ? "scripted" : "off" },
+      });
+      expectUnrelatedCases(referred, paid, B);
+      expect(paid.lifecycles[B].history.slice(initial.lifecycles[B].history.length)
+        .filter((event) => event.processStep === "type2_judgement" || event.processStep === "referral")).toHaveLength(1);
+      await action("Read the automatically priced B case", "NHSBSA", async () => {
+        await navigatePrimary(page, "NHSBSA queue");
+        await expect(page.locator(`[data-case-id="${B}"]`)).toHaveCount(0);
+        for (const id of ["EX-24107", "EX-24101"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+      });
+      expect(await readDomainState(page)).toEqual(paid);
+    });
+  });
+}
+
+for (const enabled of [false, true]) {
+  test(`one state: actual A EPS selection has no capture or approval, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
+    await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
+      const initial = await readDomainState(page);
+      await action("Choose the complete A submission example", "Pharmacy", async () => {
+        await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+      });
+      await action("Explicitly select the EPS channel", "Pharmacy", async () => {
+        await page.getByRole("radio", { name: "EPS", exact: true }).check();
+      });
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Complete: will flow to automated pricing" : "Not checked: manual submission");
+      const paid = await action("Submit complete A EPS for existing pricing", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+        await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("no person involved");
+      });
+      expect(paid.itemProcesses["EX-24107"]).toMatchObject({ channel: "eps", capture: null, routing: { outcome: "auto_priced", requiresHuman: false } });
+      expect(paid.records).toEqual(initial.records);
+      expectUnrelatedCases(initial, paid, "EX-24107");
+      await action("Inspect work after automatic A pricing", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+      for (const id of ["EX-24107", "EX-24101"]) {
+        await expect(page.locator(`[data-case-id="${id}"], [data-type1-case="${id}"]`)).toHaveCount(0);
+      }
+      expect(await readDomainState(page)).toEqual(paid);
+    });
+  });
+
+  test(`one state: human release remains staff work, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
+    await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
+      const initial = await readDomainState(page);
+      await action("Submit unresolved B evidence", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+      });
+      await openWork(page, action, B);
+      await action("Start the human review", "NHSBSA", async () => { await page.getByRole("button", { name: "Start review", exact: true }).click(); });
+      await action("Choose a human release rather than the referral recommendation", "NHSBSA", async () => {
+        await page.getByRole("radio", { name: enabled ? /^Amend / : /^Sufficient \(human choice\)/ }).check();
+      });
+      await action("Enter the human judgement reason", "NHSBSA", async () => {
+        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human reviewed the synthetic evidence and judged it sufficient");
+      });
+      const decided = await action("Record the sufficient human decision", "NHSBSA", async () => {
+        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await expect(page).toHaveURL(/\/record$/);
+      });
+      expect(decided.records).toHaveLength(initial.records.length + 1);
+      expect(decided.itemProcesses[B].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
+      expect(decided.lifecycles[B].state).toBe("paid");
+      expectUnrelatedCases(initial, decided, B);
+      await action("Return to actual staff work after human acceptance", "NHSBSA", async () => { await page.getByRole("link", { name: "Back to queue", exact: true }).click(); });
+      await action("Filter human-decided work", "NHSBSA", async () => { await page.getByRole("button", { name: /^Decided/ }).click(); });
+      await expect(page.locator(`[data-case-id="${B}"]`)).toBeVisible();
+      for (const id of ["EX-24107", "EX-24101"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+      expect(await readDomainState(page)).toEqual(decided);
+    });
+  });
+}
