@@ -1,23 +1,25 @@
 ---
-title: Eighteen-task implementation progress
+title: Twenty-four-task implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
 ms.date: 2026-09-13
 ---
 
-## Current work: Tasks 19-24, process streams and one state
+## Current acceptance: Tasks 19-24, process streams and one state
 
 The owner now requires the whole-item process, not a referral-only queue model.
-Prior Tasks 14-18 and the 13 September header-only change remain historical
-acceptance, not evidence that this new scope is done.
+Tasks 19-24 have completed their bounded implementation and repaired hosted/
+visual acceptance at clean `d5832e0faa44c32242cb75f2970288d4499befae`.
+V's final documentation merge and latest-main recheck remain release steps.
+Prior Tasks 14-18 and the header-only change retain their historical evidence.
 
 | Task | Stream | Exclusive ownership | Status |
 | --- | --- | --- | --- |
-| 19 Shared process model | M, #69 | Domain routing/baseline/lifecycle/agent/fixtures and unit tests; store.ts, pharmacy-store/queue-store consolidation; shared model hooks | Implementation merged, PR #76; final programme integration pending |
-| 20 Pharmacy process | P, #68 | Pharmacy check/claims/detail/history/timeline components; pharmacy process UI | In progress, PR #78 |
-| 21 Unreadable paper | U, #70 | New Type 1 capture component, proposed-D presentation and isolated paper-capture helper; D fixture changes requested through M | Component merged, PR #74; deployed queue embedding follows Q |
-| 22 NHSBSA work streams | Q, #72 | Queue, case pack, trace, decision-record pages/components; Type 1 lane embedding U's component | In progress, PR #75 |
-| 23 Numbers and tour | N, #71 | Chapters 1/2/3/close, home and baseline/pipeline presentation; public-facts display copy | In progress, PR #77 |
-| 24 Verification and docs | V, #73 | All e2e/live tests, screenshots, demo-script/SPEC/KNOWN/README; one-state equivalence and final live proof | In progress |
+| 19 Shared process model | M, #69 | Domain routing/baseline/lifecycle/agent/fixtures and unit tests; store consolidation and shared hooks | Done, #76 plus reviewed follow-ups #77/#80 |
+| 20 Pharmacy process | P, #68 | Pharmacy check/claims/detail/history/timeline components | Done, #78; repaired hosted flows passed |
+| 21 Unreadable paper | U, #70 | Type 1 capture and explicit human confirmation | Done, #74; embedded through Q and verified live |
+| 22 NHSBSA work streams | Q, #72 | Queue, case pack, trace and decision record | Done, #75 plus visual-honesty repair #80 |
+| 23 Numbers and tour | N, #71 | Shared figures, branching process, tour and provider-neutral presentation | Done, #77 plus completion-copy repair #80 |
+| 24 Verification and docs | V, #73 | Exact state equivalence, hosted flows, screenshots and process documentation | Done against repaired evidence; #79 merges last |
 
 Step 0 reached main at `c45111e1fe0fe38dceda3674845b0b089a8e78b2`.
 M merged at `19ed7c317b102891cf3d0a36109fdbab17eac899`: CI 34758110076
@@ -31,8 +33,96 @@ U merged at `85541757c0340d771a6ca0c5a0cb24933f98beb0`: exact candidate
 matrix passed against that component in the Q integration build, including
 whole-state comparisons, explicit human confirmation, invalid fields and axe.
 Deployment 34759907944 and two root/deep-link smoke checks passed. This does
-not claim that M's legacy queue already embeds the new component: Q supplies
-that presentation. Final all-flow latest-main acceptance remains outstanding.
+not claim that M's legacy queue already embedded the new component: Q supplied
+that presentation in its later release.
+
+P merged at `62d140932106be6862450da2a6fba5f9bfb9d8ff`: exact CI 34760462002
+passed 873 unique units, 1,189 ordinary browsers and five instrumented cases.
+Deployment 34761020141 and five live root/deep-link/header checks passed.
+Separate real UI probes verified explicit EPS automatic pricing and seeded D
+replay in both modes, with unchanged old attempts and no capture confirmation.
+
+Q merged at `c4b768f266316d4698461b8f67f0c34b621be990`: exact CI 34760427218
+passed 890 unique units, 1,182 ordinary browsers and 19 instrumented cases.
+Deployment 34761508468 and five live root/deep-link/header checks passed.
+The real D sequence required explicit reconciliation, capture and a human
+Type 2 decision; the decided item remained listed while automatic A/E did not.
+Two coordinator probe wording errors were retained and corrected before the
+whole sequence passed; they were not application changes.
+
+N merged at `1327e65fffeafebf43df1b1b566c6e4152452b46`: exact final functional
+candidate `f7d90393f30f11b19b178a050511a1115f2dc2a4` passed CI 34762790314,
+923 unique units, 1,186 ordinary browsers (297/297/296/296) and 21 instrumented
+cases (6/5/5/5). Deployment 34763282060 passed; root 200, strict CSP and the
+clean deployed build identity were independently checked. N includes the
+reviewed distinction between completed and awaiting Type 1 capture, and M's
+narrow fix allowing compatible ordinary manual capture to proceed without
+pretending a pharmacy declaration was reconciled. D and declaration-based
+evidence retain their stricter trust checks.
+
+V's coherent local state-equivalence matrix subsequently passed 32/32 cases,
+including complete manual Type 1 capture Off and declaration confirmation On.
+The final hosted checklist has 20 checks and is verified separately from this
+instrumented, read-only-observer test build. The ordinary deployment and PR
+artifacts have no observer. The source-pinned repaired acceptance is below;
+the final documentation merge must still receive its own latest-main check.
+
+### Visual-review correction, not a relabelled pass
+
+The first full hosted run at `1327e65` passed all 20 functional checks, but
+independent review of its 43 images failed two content checks: missing D
+evidence appeared to agree, and E's automatic trace implied further human work.
+Claim filters also had an unsupported accessible-name attribute without a role.
+Those original captures and the failed visual verdict remain source-pinned.
+
+Repair PR #80 merged at `d5832e0faa44c32242cb75f2970288d4499befae`.
+Exact candidate `15e30aa` passed CI 34765290816: 943 unique units, 1,186
+ordinary browsers and 21 instrumented cases, all four shards successful.
+Missing reconciliation is now explicitly Not established, in-review history
+labels do not imply a built case, automatic trace completion says no agent or
+person is involved, and claim filters have an accessible group role.
+Deployment 34765809076 passed; the coordinator verified the clean build,
+root 200 and strict CSP before authorising new hosted checks and recapture.
+New evidence must use `d5832e0`, never overwrite the failed `1327e65` review.
+
+### Repaired hosted and visual acceptance
+
+The full hosted suite passed **20/20** on clean `d5832e0`, with **40 matching
+before/after identities**, UTC 15:33:04.170 to 15:37:41.131 on 13 September.
+Test/capture source `59bdf65` has identical application/runtime files; it is not
+the deployed commit. The durable evidence is under `screens/task24/d5832e0`.
+
+There are **43 images**, 19 Off and 24 On: 41 metadata-paired captures and two
+separately identified perspective-helper captures, 35 distinct PNG hashes.
+An independent QA verifier inspected all 43 at full height and passed the
+novice/content review with no remaining blocking finding. D now reports
+reconciliation Not established before trustworthy capture, E describes no
+agent/person work on automatic pricing, and claim filters are a named group.
+The minor wording "1 items" remains a non-blocking limitation in KNOWN-ISSUES.
+
+The **24 actual axe audits** (10 Off/14 On) contain zero violations. Sixteen
+audits retain color-contrast incomplete checks affecting 121 nodes. These
+automated and visual results are not full manual WCAG certification or a
+participant study. The image set is mostly Both perspective, not a static
+matrix of every route/side; per-action state tests and header route checks
+cover perspective behaviour separately.
+
+The exact-state suite passed **32/32** in one local instrumented run, preserving
+all authoritative fields and ordinary-build hashes. The final V CI must include
+that complete suite. Full hosted checks cover EPS automatic items excluded from
+worklists, Type 1 manual/confirmed/withheld paths, Type 2 RB codes and optional
+approved drafts, C's unresolved 56/84 conflict, F's immutable history, B July
+replay, shared edited figures, perspective equivalence and Reset.
+
+Informational actual public-resource gzip at repaired `d5832e0`: **216,882
+bytes** across HTML, CSS, JavaScript, build-info and favicon. Python 3.13.14,
+zlib 1.3.1, independent level-9 gzip with mtime 0; private server/policy files
+are excluded. The final documentation build's metadata can change this figure.
+
+No blocking application issue is deferred. Final release requires #79 merged,
+green exact latest-main CI/deployment, the complete 20-check hosted suite, and
+a fresh Overview/identity check. The coordinator records that verdict on #73
+without rewriting source-pinned evidence or creating a self-referential commit.
 
 Step 0 freezes `ItemChannel`, `RoutingOutcome`, `RoutingFacts`/`RoutingResult`
 and `RouteSubmission` in types.ts; submission/capture/decision inputs,

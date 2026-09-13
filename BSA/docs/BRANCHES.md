@@ -6,7 +6,23 @@ ms.date: 2026-09-13
 
 # Current integration
 
-Tasks 14-18 are merged and accepted on main
+The Tasks 19-24 functional streams merged serially M #76, U #74, P #78,
+Q #75 and N #77. Their integrated functional main is
+`1327e65fffeafebf43df1b1b566c6e4152452b46`, deployed by 34763282060.
+Final functional CI at `f7d9039` passed 923 unique unit tests,
+1,186 ordinary blocking browsers and 21 instrumented state-equivalence cases.
+Independent visual review then required repair #80, merged as
+`d5832e0faa44c32242cb75f2970288d4499befae` and deployed by 34765809076.
+Its exact-head CI passed 943 units, 1,186 ordinary browsers and 21 instrumented
+cases. The first 1327e65 visual failure remains recorded. Repaired `d5832e0`
+passed all 20 hosted checks and independent review of 43 images, with zero
+violations in 24 axe audits; incomplete manual-review limitations are retained.
+V's final documentation merge and latest-main acceptance follow separately.
+No functional release automatically promotes the rollback branch.
+
+## Retained rollback checkpoint
+
+Tasks 14-18 were merged and accepted on main
 `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`. Final CI 34720652232 passed
 774 unique units and 1,086 blocking browsers. Deployment 34720652234 and
 all 14 final live checks passed, with clean matching build identities.
