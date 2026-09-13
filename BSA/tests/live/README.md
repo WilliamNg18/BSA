@@ -58,7 +58,9 @@ Each flow runs in Both and again with opposite-side/back perspective switches
 before every action, separately with Agent Off and On. Snapshots are compared
 after every action and every presentation switch; failure attachments retain
 the snapshots collected before the failure. The first M-stage coverage is
-complete EPS automatic pricing and incomplete EPS draft/submission; this is
+complete EPS automatic pricing using B's explicit typed correction, and
+incomplete EPS draft/submission. B retains its recorded EPS channel; these
+checks do not reinterpret A's paper seed as EPS. This is
 not yet evidence for the later Type 1, Type 2 or full referral-cycle UI.
 
 To repeat only these checks locally after an ordinary build:
