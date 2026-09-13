@@ -28,7 +28,6 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const submitItem = useAppStore((s) => s.submitItem);
-  const resubmitItem = useAppStore((s) => s.resubmitItem);
   const id = useId();
   const [draft, setDraft] = useState<PaperDeclarationDraft>({ ...EMPTY_PAPER_DECLARATION });
   const [sourceRevision, setSourceRevision] = useState(revision);
@@ -58,8 +57,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
     event.preventDefault();
     if (validationError) { setError(validationError); return; }
     try {
-      const send = lifecycle!.state === "referred_back" || lifecycle!.state === "information_requested" ? resubmitItem : submitItem;
-      send({
+      submitItem({
         caseId, revision: revision!.number, channel: "paper", endorsementText: paper?.endorsementText ?? c!.extracted.endorsementText,
         ...(paper ? { paperDeclaration: paper } : {}),
         precheck: pharmacySnapshot(paper?.endorsementText ?? c!.extracted.endorsementText,
@@ -115,6 +113,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
         </>}
         {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         <Button type="submit">{enabled ? "Post paper with declaration" : "Post paper"}</Button>
+        <p className="text-xs">Post a new synthetic attempt. To correct an existing referral, use its claim details and resubmit there.</p>
         <p className="text-xs">Posting never confirms capture or makes a Type 2 decision.</p>
       </form>
     </div>

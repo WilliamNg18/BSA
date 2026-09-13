@@ -1495,3 +1495,9 @@ historical citation plus a non-blank human reason. Agent On does not fabricate
 this proof. The synthetic Today experience-only comparison is qualified and
 does not hide F's original sources or any later correction record. Automatic
 trace views do not show fictitious human gathering, including when Agent is Off.
+
+The Paper workbench's Post action always starts an explicit new synthetic
+attempt, like the EPS workbench. It does not silently turn into a correction
+because its selected fixture has a prior referral. Existing referral correction
+and resubmission remain in claim details, with C's required human re-check.
+This preserves ordinary complete paper B's initial capture-to-code-pricing path.

@@ -57,6 +57,8 @@ describe("paper pharmacy and Type 1 surfaces", () => {
   it("preserves the ordinary paper variant without describing a readable image as unreadable", () => {
     const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
     expect(html).toContain("Code routes complete evidence to existing pricing");
+    expect(html).toContain("Post a new synthetic attempt");
+    expect(html).toContain("use its claim details and resubmit there");
     expect(html).not.toContain("image cannot be read");
     useAppStore.getState().setAgentEnabled(true);
     const assisted = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
