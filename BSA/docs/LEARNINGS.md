@@ -998,17 +998,25 @@ Pre-submission correction increments the event-based catch counter without
 creating a receipt or attempt; repeated application for that revision remains
 one catch. Navigation remounts the workbench's local example, not session history.
 
-## 2026-09-13: Task 21 U keeps declaration preparation below the authority boundary
+## 2026-09-13: Task 23 process figures need separate denominators
 
-Prefilling a form and reconciling evidence are different actions. Draft
-preparation must not return a ready, confident or reconciled flag. Preserve
-the pharmacy's original values beside editable capture fields, clear the human
-reconciliation assertion after edits, and submit only through the shared store.
+The real-stream defaults increase modelled Type 2 hours while reducing referrals
+and the referral loop. Showing only a combined or selected favourable total
+would hide that trade-off. Keep operator investigation, pharmacy completion and
+Type 2 judgement separate, and state explicitly that the overlapping operator
+measures cannot be summed.
 
-An optional captured prescriber is still mandatory evidence where the gate
-requires it. Keeping the original "Illegible" image evidence visible is not
-permission to waive that requirement. A step-through assumed stopwatch is
-presentation only; it neither measures operator work nor confirms anything.
+Tour cards must use the current shared revision and routing, not just canonical
+fixtures. An initially automatic item can later be submitted with a missing
+endorsement, and a poor-paper item can acquire human-confirmed declared evidence.
+Rendering fixtures alone would contradict the same item on operational pages.
+
+The isolated production diagnostics exercised seven changed routes in both
+modes at 320px dark, 360px light and 1440px light. All 42 observations had no
+horizontal overflow or browser errors; 28 unrestricted axe audits reported zero
+violations. A normal-motion check also retained exact 0.1/0.2 endpoints through
+repeated header toggles, invalid-input recovery and keyboard figure tooltips.
+These are local presentation checks, not final live or all-flow acceptance.
 
 ## 2026-09-13: Task 20 separates a receipt from a process forecast
 

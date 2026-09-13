@@ -1080,6 +1080,57 @@ Keep `lkg-2026-09-13`, older tags and `cowork-v1` unchanged. The one-header
 Agent change remains in force. Each new public-process claim is owner-supplied
 context, not a claimed fresh external verification or a real NHSBSA service.
 
+## 2026-09-13: Task 23 presents separate process and referral measures
+
+N's chapters consume M's frozen `useProcessMonth` result and the same store
+inputs as operational views. The two monthly headline groups are referred-back
+items and referral-loop hours. Operator and pharmacy hours remain separate
+measures within that second group, never a combined labour total. Type 2 hours
+sit beneath them with an explicit non-additivity warning: investigation overlaps
+the Type 2 cohort, and 45-second built-case judgement is not a speed-up over a
+13-second average. No independent cohort arithmetic is introduced in views.
+
+The two comparison columns stay visible. Header mode changes replay the existing
+reduced-motion-aware number animation, with exact endpoints and stable accessible
+values. All fourteen process inputs are available through one reusable editor on
+the month and assumptions pages. The old assumptions register is retained only
+inside a collapsed, explicitly historical referral-only comparison.
+
+Public process context is qualified as owner-supplied and not independently
+verified. Figure provenance lives in keyboard-accessible tooltips. Today zero
+rule records and experience-only assurance describe this synthetic comparison,
+not all NHSBSA staff. Existing human history is not changed.
+
+The process diagram branches: complete items bypass staff, uncertain capture
+uses Type 1 and rerouting, and interpretation uses Type 2 with a human decision.
+Pharmacy-corrected items still enter normal processing; they avoid a referral,
+not submission. The boundary labels poor-paper declaration pre-fill **proposed**:
+fields are declared by the pharmacy, not read from the form. Human confirmation
+is required, and irreconcilable evidence follows today's path.
+
+## 2026-09-13: Task 20 pharmacy process follows recorded authority
+
+P reads receipt contents directly from immutable shared case revisions, retaining
+only the selected case/revision as local presentation state. The pharmacy
+timeline replays recorded events rather than inventing future referrals or Paid
+events. Playback cannot perform a submission, capture confirmation or decision.
+Monthly service projections consume `useProcessMonth`; selected-pharmacy
+recorded counts remain separate, including actual correction evidence.
+
+Channel is local submission input, not another global control. EPS carries
+typed claim text; Paper starts with empty declaration fields alongside the
+synthetic form. Product, quantity, endorsement and optional prescriber are
+explicitly pharmacy-declared, never represented as image reads. D's proposed
+complete declaration still needs human Type 1 confirmation and Type 2 judgement.
+The existing gate is not weakened for an unreadable prescriber.
+
+On correction/resubmission rechecks current declaration/text through the shared
+checker. Applying a fix does not submit. Referral advice is visible only when
+the actual operator-approved note exists; Off preserves the raw human reason.
+Legacy decisions without an RB code say it was not recorded, rather than
+retroactively inventing a code. MYS/NHSmail and payment timing are public process
+context, not services implemented by this static demonstration.
+
 ## 2026-09-13: Task 22 staff views follow the current submitted revision
 
 Q replaces the mounted virtual referral projection with an actual-session
@@ -1104,78 +1155,6 @@ as the API's sufficient outcome.
 Agent Off is an experience-only comparison, not a destructive audit filter.
 Actual human reasons and original rule versions remain available in immutable
 record history in both modes. Agent On never manufactures a rule retrospectively.
-
-## 2026-09-13: Task 21 U proposed paper declaration confirmation
-
-The unreadable-paper design is proposed, not existing NHSBSA functionality.
-One store-connected `Type1Capture({caseId})` surface is shared by the queue and
-case pack. The original synthetic poor image is displayed without changing its
-quality, extracted prescriber or read-confidence evidence. Agent On cannot read
-it. Fields are prefilled only from the immutable submitted pharmacy declaration,
-each labelled "declared by the pharmacy, not read from the form".
-
-Human edits remain a local draft until explicit confirmation through M's
-`confirmType1`. A separate unchecked human-reconciliation checkbox is required
-for declaration provenance and clears after any field edit. A successful typed
-check never checks that box. Irreconcilable evidence has a blank manual-capture
-path; unknown values stay null rather than being guessed. Product, quantity,
-endorsement and the parent's added prescriber field are captured. A missing
-prescriber cannot be waived to produce a built recommendation.
-
-M alone validates authority, compatibility, revision and routing; the new
-paper-capture helper only prepares drafts and confirmation input. Type 1 capture
-never records a Type 2 judgement. A compatible complete confirmed declaration
-may support a built Type 2 case with a retrieved dated clause; other evidence
-remains manual or withheld, and insufficient D may be referred back with RB2B.
-
-The stopwatch is a step-through illustration, not elapsed work or a lifecycle
-clock. Today keying and declaration confirmation consume shared editable
-`type1KeySeconds`/`type1ConfirmSeconds` assumptions, default 30/10 seconds.
-These describe this difficult example, not the public 880-items/hour average.
-Static results and keyboard-operated timing steps need no animation and work
-unchanged under reduced motion. N owns the matching proposed boundary label;
-V owns integrated browser/axe and live evidence.
-
-The parent-owned perspective guard retains an already visited page as hidden
-and inert at the same URL. U's pending fields and explicit checkbox therefore
-remain local presentation state across perspective switches, not a second
-operational store. Real route navigation discards the draft; Reset clears it
-even when the new seed has the same revision number and timestamp.
-
-When confirmed values differ from the immutable declaration, the submitted
-capture provenance is `human_capture`, not `pharmacy_declaration`. An explicitly
-checked reconciliation remains true for that human correction; compatibility
-and the mandatory evidence gate still decide whether advice can be shown.
-The original declaration stays visible and unchanged.
-
-The shared capture surface also accepts readable handwritten paper items.
-Only genuinely poor image style or quality below the existing threshold gets
-the poor-scan/cannot-read wording. D keeps its guaranteed Type 2 continuation;
-other items use a neutral confirmation label because code may route complete
-captured evidence to existing pricing. This changes copy, not routing authority.
-
-## 2026-09-13: Task 20 pharmacy process follows recorded authority
-
-P reads receipt contents directly from immutable shared case revisions, retaining
-only the selected case/revision as local presentation state. The pharmacy
-timeline replays recorded events rather than inventing future referrals or Paid
-events. Playback cannot perform a submission, capture confirmation or decision.
-Monthly service projections consume `useProcessMonth`; selected-pharmacy
-recorded counts remain separate, including actual correction evidence.
-
-Channel is local submission input, not another global control. EPS carries
-typed claim text; Paper starts with empty declaration fields alongside the
-synthetic form. Product, quantity, endorsement and optional prescriber are
-explicitly pharmacy-declared, never represented as image reads. D's proposed
-complete declaration still needs human Type 1 confirmation and Type 2 judgement.
-The existing gate is not weakened for an unreadable prescriber.
-
-On correction/resubmission rechecks current declaration/text through the shared
-checker. Applying a fix does not submit. Referral advice is visible only when
-the actual operator-approved note exists; Off preserves the raw human reason.
-Legacy decisions without an RB code say it was not recorded, rather than
-retroactively inventing a code. MYS/NHSmail and payment timing are public process
-context, not services implemented by this static demonstration.
 
 ## 2026-09-13: Task 21 U proposed paper declaration confirmation
 
@@ -1318,3 +1297,33 @@ automatic endorsement path is limited to complete NCSO evidence in this demo;
 other present endorsement types require Type 2 interpretation. This routing
 classification is identical with the Agent Off or On and does not trust an
 advisory precheck status.
+
+## 2026-09-13: Task 23 applies provider-neutral copy to Architecture
+
+The latest owner brief bans implementation vendor and product names across the
+interface, superseding the earlier Architecture-only exception. At the
+coordinator's explicit direction, N changes the architecture diagram and
+proposed-service presentation to capability roles: event messaging, deterministic
+functions, governed orchestration, versioned search, records, identity and
+observability. NHSBSA ownership, proposed status and exact tool contracts remain.
+
+The shared display helper applies aliases only to presentation strings. Original
+domain mappings, source evidence, versions and stored audit records are not
+rewritten. Required NHSBSA, MYS, NHSmail, EPS, dm+d and Tariff process vocabulary
+remains permitted. No hosting or infrastructure change is made.
+
+## 2026-09-13: Manual Type 1 capture is not declaration reconciliation
+
+A complete, matching non-D human capture now reroutes as read without asserting
+that a pharmacy declaration was reconciled. Factual captured-field agreement is
+a separate pure check from the existing declaration-trust predicate. Both
+paths still require known product, matching source quantities, complete
+mandatory evidence and the existing endorsement rules. Completed Type 1 work
+retains its human-capture origin rather than becoming a no-person item.
+
+Pharmacy-declaration captures still require explicit reconciliation. D's
+proposed path retains that requirement and its unchanged agent trust checks;
+manual D still requires Type 2. Conflicts, unknown fields, original revisions
+and append-only capture history are preserved. The regression uses the real
+manual form-preparation helpers with reconciliation false, not an injected
+checkbox value or an Agent-dependent routing condition.

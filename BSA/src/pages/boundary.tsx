@@ -21,6 +21,23 @@ export function BoundaryPage() {
         </p>
       </div>
 
+      <PageSection title="Proposed: poor-paper declaration path" description="The agent cannot read the poor scan. A typed declaration supplies evidence, not image certainty.">
+        <div className="grid gap-4 md:grid-cols-3" data-proposed-type1-boundary>
+          <section className="space-y-3 rounded-lg border p-4">
+            <h2 className="font-semibold">Pharmacy declaration</h2><BoundaryTag cls="human" />
+            <p className="text-sm">Every pre-filled field is declared by the pharmacy, not read from the form. The original synthetic image remains visible.</p>
+          </section>
+          <section className="space-y-3 rounded-lg border p-4">
+            <h2 className="font-semibold">Evidence pre-fill</h2><BoundaryTag cls="agent" />
+            <p className="text-sm">Retrieve the dated clause and build from the declaration. The agent cannot confirm capture or replace the image with invented certainty.</p>
+          </section>
+          <section className="space-y-3 rounded-lg border p-4">
+            <h2 className="font-semibold">Confirm or correct</h2><BoundaryTag cls="human" />
+            <p className="text-sm">A Type 1 operator reconciles the evidence. If it cannot be reconciled, abstain and use today&apos;s path; Type 2 judgement remains human.</p>
+          </section>
+        </div>
+      </PageSection>
+
       <PageSection title="Four classes" description="Filter the table by class.">
         <ToggleGroup value={filter} onValueChange={(v) => v && setFilter(v as BoundaryClass | "all")} aria-label="Filter by class" className="flex-wrap justify-start">
           <ToggleGroupItem value="all" className="h-8 data-[state=on]:bg-teal-700 data-[state=on]:text-white">All ({BOUNDARY_ROWS.length})</ToggleGroupItem>

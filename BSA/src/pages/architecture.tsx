@@ -5,6 +5,7 @@ import { BoundaryTag } from "@/components/demo/labels";
 import { ARCHITECTURE, NOT_BUILT } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
 import { cn } from "@/lib/utils";
+import { productionServiceLabel } from "@/lib/service-display";
 
 const BUILT: Record<string, string> = {
   "Built for real": "bg-emerald-700 text-white",
@@ -27,21 +28,21 @@ export function ArchitecturePage() {
 {`EXISTING (unchanged; read-only from the new component)
   scanners + capture  -->  extracted fields + image store  -->  pricing (straightforward items)  -->  exception routing to operators
                                                                                                           |  exception event
-NEW: EXCEPTION CASE BUILDER (inside the existing accredited landing zone, UK region)                       v
-  [ingress]   Service Bus topic ........................ { item_id, image_ref, fields, routing_reason }
-  [tier 0]    Azure Functions (Durable) ................ deterministic pre-checks: required? mandatory fields? quality? coverage?
-  [agent]     Foundry Agent Service .................... PLAN -> GATHER -> RETRIEVE -> RECONCILE -> ASSESS -> RECOMMEND | ABSTAIN
-                 tools: read_image_region (Document Intelligence layout), lookup_product_pack, lookup_claim,
-                        check_history, retrieve_tariff (AI Search, effective-date filter), run_endorsement_checks, validate_citation
-                 model: Azure OpenAI, constrained call, structured output, three samples, cites retrieved passages only
-  [gate]      Azure Function ........................... compliance gate: pure code the model cannot influence
-  [record]    Cosmos DB (append-only) .................. versions pinned: Tariff, model, prompt; replayable
+NEW: EXCEPTION CASE BUILDER (proposed deployment boundary, UK region)                                       v
+  [ingress]   Event messaging topic .................... { item_id, image_ref, fields, routing_reason }
+  [tier 0]    Deterministic workflow functions ......... pre-checks: required? mandatory fields? quality? coverage?
+  [agent]     Governed agent orchestration ............. PLAN -> GATHER -> RETRIEVE -> RECONCILE -> ASSESS -> RECOMMEND | ABSTAIN
+                 tools: read_image_region (document layout analysis), lookup_product_pack, lookup_claim,
+                        check_history, retrieve_tariff (versioned search, effective-date filter), run_endorsement_checks, validate_citation
+                 model: constrained call, structured output, three samples, cites retrieved passages only
+  [gate]      Deterministic function ................... compliance gate: pure code the model cannot influence
+  [record]    Append-only record store ................. versions pinned: Tariff, model, prompt; replayable
   [surface]   operator case pack ....................... inside the queue tool if extensible; else a thin web app
   [human]     operator decides ......................... accept | amend | request information | refer back | escalate, with reason
 
   [pharmacy]  Manage Your Service on claim submission ... same kernel, advisory, never blocks; later: supplier API into dispensing systems
   [evals]     golden set in CI ......................... gates every prompt, model, corpus-version or code change
-  [observe]   Application Insights + Azure Monitor + agent tracing; Purview lineage; Entra ID; Key Vault; Private Link
+  [observe]   Application telemetry + service monitoring + agent tracing; data lineage; workload identity; secret storage; private network access
   PRICING never enters this picture. PATIENT IDENTITY is redacted before any model call.`}
         </pre>
       </PageSection>
@@ -62,8 +63,8 @@ NEW: EXCEPTION CASE BUILDER (inside the existing accredited landing zone, UK reg
               {ARCHITECTURE.map((r) => (
                 <TableRow key={r.component}>
                   <TableCell className="whitespace-normal align-top font-medium">{r.component}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{r.prototype}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{r.production}</TableCell>
+                  <TableCell className="whitespace-normal align-top text-sm">{productionServiceLabel(r.prototype)}</TableCell>
+                  <TableCell className="whitespace-normal align-top text-sm">{productionServiceLabel(r.production)}</TableCell>
                   <TableCell className="whitespace-normal align-top text-sm text-muted-foreground">{r.owns}</TableCell>
                   <TableCell className="align-top"><Badge className={cn("whitespace-normal border-transparent", BUILT[r.built])}>{r.built}</Badge></TableCell>
                 </TableRow>
@@ -99,7 +100,7 @@ NEW: EXCEPTION CASE BUILDER (inside the existing accredited landing zone, UK reg
                   <TableCell className="whitespace-normal align-top font-mono text-xs">{t.input}</TableCell>
                   <TableCell className="whitespace-normal align-top font-mono text-xs">{t.output}</TableCell>
                   <TableCell className="whitespace-normal align-top text-sm text-muted-foreground">{t.mock}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{t.production}</TableCell>
+                  <TableCell className="whitespace-normal align-top text-sm">{productionServiceLabel(t.production)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -4,7 +4,8 @@ import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
-import { MONTH_FIELDS, MONTH_DETAIL_FIELDS } from "../../src/lib/domain/baseline";
+import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "../../src/lib/domain/baseline";
+import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
@@ -91,7 +92,11 @@ for (const enabled of [true, false]) {
         await expect(page.locator("[data-case]")).toHaveCount(4);
         await expect(page.locator("[data-pipeline]")).toHaveCount(0);
       }
-      if (stop.chapter === 6) await expect(page.getByRole("heading", { name: "6. The queue", exact: true })).toBeVisible();
+      if (stop.chapter === 6) {
+        await expect(page.getByRole("heading", { level: 1, name: "NHSBSA exception queue", exact: true })).toBeFocused();
+        await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
+        await expect(page.getByRole("region", { name: "Type 1 capture lane", exact: true })).toBeVisible();
+      }
       if (stop.chapter === 7) await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
     }
     await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
@@ -154,7 +159,7 @@ for (const enabled of [true, false]) {
         const fields = route === "pharmacy"
           ? [page.getByRole("textbox", { name: "Endorsement entered by the pharmacy" })]
           : await page.getByRole("region", { name: "Monthly workload calculator" }).getByRole("textbox").all();
-        expect(fields).toHaveLength(route === "pharmacy" ? 1 : MONTH_FIELDS.length + MONTH_DETAIL_FIELDS.length);
+        expect(fields).toHaveLength(route === "pharmacy" ? 1 : PROCESS_FIELDS.length);
         for (const field of fields) {
           await field.fill(route === "pharmacy" ? "NCSO RK" : "12");
           await field.press("End");
@@ -261,22 +266,40 @@ test("mobile navigation closes without animation events after live reduced-motio
   await expect(overlay).toHaveCount(0);
 });
 
-test("documentary scene figures are invariant; A–D match runAgent and off is neutral manual work", async ({ page }) => {
+test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases follow their actual routing", async ({ page }) => {
   await page.goto("./#scene");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Most items need no person");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   const scene = page.getByRole("list", { name: "Public context figures" });
   const before = await scene.innerText();
   await page.getByRole("switch", { name: "Agent: On" }).click();
   await expect(scene).toHaveText(before, { useInnerText: true });
-  await expect(page.locator("[data-scene-with-gathering], [data-scene-referrals]")).toHaveCount(0);
+  await expectSceneMetrics(page, undefined, false);
+  const context = page.getByRole("region", { name: "Public process context", exact: true });
+  for (const value of [
+    `Over ${formatProcessItems(PROCESS_PUBLIC_FACTS.monthlyItemsLowerBound)}`,
+    `${PROCESS_PUBLIC_FACTS.epsPercent}%`, `${PROCESS_PUBLIC_FACTS.paperPercent}%`,
+    formatProcessItems(PROCESS_PUBLIC_FACTS.type1MonthlyItems),
+    formatProcessItems(PROCESS_PUBLIC_FACTS.type2MonthlyItems),
+  ]) await expect(context).toContainText(value);
   await page.getByRole("switch", { name: "Agent: Off" }).click();
-  await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "4. Four cases", exact: true }).click();
-  for (const item of CASES.slice(0, 4)) {
+  await expectSceneMetrics(page);
+  await chooseProcessChapter(page, 4);
+  await expect(page.getByRole("heading", { name: "Processing cases · Follow each path", exact: true })).toBeVisible();
+  const a = page.locator('[data-case="A"]');
+  await expect(a).toHaveAttribute("data-case-routing", "auto_priced");
+  await expect(a).toContainText("never an operator queue row");
+  await expect(a.getByRole("link", { name: "View automatically priced claim", exact: true })).toHaveAttribute("href", "/pharmacy/claims?case=EX-24107");
+  await expect(a.getByRole("link", { name: "Open case A", exact: true })).toHaveCount(0);
+  await expect(a.locator("[data-outcome], [data-pain-marker], [data-manual-tasks]")).toHaveCount(0);
+  await expect(a).not.toContainText(/Gate:|recommendation|Human decision/);
+  for (const item of CASES.filter((item) => ["B", "C"].includes(item.scenario))) {
     const card = page.locator(`[data-case="${item.scenario}"]`);
     const pack = runAgent(item);
+    await expect(card).toHaveAttribute("data-case-routing", item.scenario === "B" ? "referred_back" : "type2_endorsement");
     await expect(card.locator("[data-outcome]")).toHaveText(pack.recommendation);
     await expect(card).toContainText(`Gate: ${pack.gate.result.replaceAll("_", " ")}`);
+    await expect(card.getByRole("link", { name: `Open case ${item.scenario}`, exact: true })).toBeVisible();
   }
   await expect(page.locator('[data-case="B"] [data-correction]')).toHaveText("Fix: add the date beside the initials.");
   const c = page.locator('[data-case="C"]');
@@ -284,14 +307,59 @@ test("documentary scene figures are invariant; A–D match runAgent and off is n
   await expect(c).toContainText("84");
   await expect(c).toContainText("Unresolved");
   const d = page.locator('[data-case="D"]');
-  await d.locator("summary").click();
-  await expect(d.getByRole("list", { name: "Abstention reasons", exact: true }).locator("li")).toHaveText(runAgent(CASES[3]).abstainReasons);
+  await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
+  await expect(d).toContainText("Fields are declared by the pharmacy, not read from the form");
+  await expect(d).toContainText("Unreconciled evidence still abstains");
+  await expect(d.locator("[data-outcome]")).toHaveCount(0);
+  await expect(d.getByRole("link", { name: "Open case D", exact: true })).toBeVisible();
   await page.getByRole("switch", { name: "Agent: On" }).click();
   await expect(page.locator("[data-outcome]")).toHaveCount(0);
-  await expect(page.locator("[data-manual-tasks]")).toHaveCount(4);
+  await expect(page.locator("[data-manual-tasks]")).toHaveCount(2);
+  await expect(d).toContainText("Key product, quantity and endorsement manually from the image");
+  await expect(a).toHaveAttribute("data-case-routing", "auto_priced");
+  await expect(a.locator("[data-pain-marker]")).toHaveCount(0);
   await expect(page.locator('[aria-label="Four canonical synthetic cases"]')).not.toContainText(/minutes|seconds|savings|SUFFICIENT|REFER_BACK|REQUEST_INFORMATION|ABSTAIN/);
   await page.getByRole("switch", { name: "Agent: Off" }).click();
-  await expect(page.locator("[data-outcome]")).toHaveCount(4);
+  await expect(page.locator("[data-outcome]")).toHaveCount(2);
+});
+
+test("case D card follows human-confirmed current capture instead of retaining its seeded Type 1 branch", async ({ page }) => {
+  await page.goto("./#cases");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  const d = page.locator('[data-case="D"]');
+  await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
+  await navigatePrimary(page, "Pharmacy check");
+  await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
+  const source = CASES.find((item) => item.scenario === "D")!;
+  await page.getByLabel("Declared product code", { exact: true }).fill(source.claim.productCode);
+  await page.getByLabel("Declared quantity", { exact: true }).fill(String(source.claim.quantity));
+  await page.getByLabel("Declared prescriber (synthetic)", { exact: true }).fill("Dr Demo (synthetic)");
+  await page.getByRole("textbox", { name: "Endorsement entered by the pharmacy", exact: true }).fill("NCSO RK 27/08/26");
+  await page.getByRole("button", { name: "Continue with submission", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Submitted pharmacy declaration", exact: true })).toBeVisible();
+  await chooseProcessChapter(page, 4);
+  await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
+  await d.getByRole("link", { name: "Open case D", exact: true }).click();
+  const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
+  await expect(capture).toContainText("The agent cannot read this scan");
+  await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+  await expect(capture.getByRole("alert")).toBeVisible();
+  await chooseProcessChapter(page, 4);
+  await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
+  await d.getByRole("link", { name: "Open case D", exact: true }).click();
+  await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the paper", exact: true }).check();
+  await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+  await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeFocused();
+  await chooseProcessChapter(page, 4);
+  await expect(d).toHaveAttribute("data-case-routing", "type2_endorsement");
+  await expect(d.locator("[data-outcome]")).toBeVisible();
+  await expect(d.getByRole("region", { name: "Awaiting Type 1 capture", exact: true })).toHaveCount(0);
+  await page.getByRole("banner").getByRole("switch").setChecked(false);
+  await expect(d).toHaveAttribute("data-case-routing", "type2_endorsement");
+  await expect(d.locator("[data-manual-tasks]")).toBeVisible();
+  await confirmReset(page);
+  await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
+  await expect(d.locator("[data-outcome], [data-manual-tasks]")).toHaveCount(0);
 });
 
 test("one sourcing footer and concise qualifications replace documentary disclosures", async ({ page }) => {
@@ -299,10 +367,13 @@ test("one sourcing footer and concise qualifications replace documentary disclos
   await expect(page.locator("[data-key-figure]")).toHaveCount(3);
   await expect(page.locator('footer[aria-label="Sources"]')).toHaveText(`Sources: ${SOURCES_FOOTER}`);
   await expect(page.locator("[data-source-disclosure]")).toHaveCount(0);
-  const referrals = page.locator('[data-key-figure="monthly-referrals"]');
-  await referrals.getByText("Figure qualification", { exact: true }).focus();
-  await page.keyboard.press("Enter");
-  await expect(referrals).toContainText("approximately 83,333, not exactly 85,000");
+  for (const figure of TOUR_CONTENT.keyFigures) {
+    const fact = page.locator(`[data-key-figure="${figure.id}"]`);
+    await expect(fact).toContainText(figure.value);
+    await fact.getByRole("button", { name: `${figure.label}: figure context`, exact: true }).focus();
+    await expect(page.getByRole("tooltip", { name: `Public: ${figure.qualifier}`, exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
+  }
   await page.goto("./#close");
   await page.getByText(TOUR_CONTENT.questionsDisclosure.title, { exact: true }).click();
   const questions = page.getByRole("list", { name: "Seven discovery questions" }).locator(":scope > li");
@@ -405,7 +476,7 @@ test("unknown routes do not claim a tour chapter and retain start and home recov
   await expect(page).toHaveURL(/#scene$/);
 });
 
-test("chapter narrative stays within 25 words in both states; selected QA screenshots", async ({ page }, testInfo) => {
+test("chapter narrative and responsive presentation in both states; selected QA screenshots", async ({ page }, testInfo) => {
   test.setTimeout(60_000);
   for (const width of [1440, 360]) {
     await page.setViewportSize({ width, height: 1000 });
@@ -415,8 +486,7 @@ test("chapter narrative stays within 25 words in both states; selected QA screen
       for (const enabled of [true, false]) {
         // Hash navigation preserves session state, unlike a full page reload.
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-        const prose = await page.locator("[data-tour-prose] > p").innerText();
-        console.info("Advisory word count / budget 25:", prose.trim().split(/\s+/).length);
+        await expect(page.locator("[data-tour-prose] > p")).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
         await page.screenshot({ path: testInfo.outputPath(`${fragment}-${width}-${width === 1440 ? "light" : "dark"}-${enabled ? "on" : "off"}.png`), fullPage: true });
       }

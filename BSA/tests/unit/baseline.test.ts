@@ -8,12 +8,12 @@ import { useAppStore } from "../../src/lib/store";
 import { PUBLIC_FACTS, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 
 describe("baseline source and synthetic default provenance", () => {
-  it("pins exactly three public context figures: annual items, monthly referrals and monthly rulebook publication", () => {
+  it("pins three public process figures: automatic pricing, staff touch and monthly referrals", () => {
     expect(PUBLIC_FACTS).toMatchObject({ annualItems: 1_100_000_000, monthlyReferrals: 85_000, rulebookPublication: "Monthly" });
     expect(TOUR_CONTENT.keyFigures.map(({ id, value }) => ({ id, value }))).toEqual([
-      { id: "annual-items", value: "Approximately 1.1 billion" },
+      { id: "automated-items", value: "Most items" },
+      { id: "staff-touch", value: "Approximately 4%" },
       { id: "monthly-referrals", value: "Approximately 85,000" },
-      { id: "rulebook-publication", value: "Monthly" },
     ]);
     expect(JSON.stringify(TOUR_CONTENT.keyFigures)).not.toMatch(/99\.85|100%|accuracy-target/);
     expect(BASELINE_DEFAULTS.volume).toBe(PUBLIC_FACTS.monthlyReferrals);

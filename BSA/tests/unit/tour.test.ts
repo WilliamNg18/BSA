@@ -52,7 +52,7 @@ describe("curated display boundary", () => {
     expect(TOUR_CONTENT.chapters.map((chapter) => chapter.chapter)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
   });
   it("retains the single exact sourcing statement", () => {
-    expect(SOURCES_FOOTER).toBe("Public information (NHSBSA and Community Pharmacy England publications) and stated assumptions. All operational data on this site is synthetic.");
+    expect(SOURCES_FOOTER).toBe("Owner-supplied public process context attributed to NHSBSA and Community Pharmacy England; not independently verified here. All operational data is synthetic.");
   });
   it("caps every chapter and discovery question without documentary exemptions", () => {
     for (const text of [...TOUR_CONTENT.chapters.map((c) => c.prose), ...TOUR_CONTENT.questionsDisclosure.questions.map((q) => q.text)]) {

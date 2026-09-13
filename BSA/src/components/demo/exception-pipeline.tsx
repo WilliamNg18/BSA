@@ -1,117 +1,89 @@
-import { ArrowDown, CheckCircle2 } from "lucide-react";
+import { ArrowDown, CornerDownRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useBaselineScenario } from "@/hooks/use-baseline-scenario";
-import { ASSISTANCE_PHASES, useAssistancePresentation } from "@/hooks/use-assistance-presentation";
-import { GATHERING_STEPS, formatBaselineNumber } from "@/lib/domain/baseline";
-import { runAgent } from "@/lib/domain/agent";
-import { CASES } from "@/lib/domain/cases";
+import { useProcessMonth } from "@/hooks/use-process-month";
 import { useAppStore } from "@/lib/store";
+import { formatProcessItems } from "@/lib/domain/baseline";
 import { BoundaryTag } from "./labels";
-import { PainMarker } from "./pain-marker";
-import { ReferralProxy } from "./referral-proxy";
+import { MonthlyNumber } from "./monthly-number";
+import { ProcessFigure } from "./process-figure";
 
-const earlyStages = [
-  { title: "Scanning and capture", text: "Capture the form and retain its image.", cls: "existing" },
-  { title: "ICR and extraction", text: "Printed fields work; uncertain handwriting still needs review.", cls: "existing" },
-  { title: "Deterministic pricing", text: "Price certain items through existing code. Route uncertain exceptions onwards; no agent prices or approves payments.", cls: "deterministic" },
-] as const;
-
-// Each manual input keeps its own marker; only its completed presentation
-// phase can assist the built cohort. This mapping never changes case state.
-const gatheringPhase = {
-  findFormMinutes: 0,
-  readEndorsementMinutes: 1,
-  productPackMinutes: 1,
-  claimRecordsMinutes: 1,
-  tariffVersionClauseMinutes: 2,
-  compareSourcesMinutes: 3,
-  recordReasonMinutes: 4,
-} as const satisfies Record<(typeof GATHERING_STEPS)[number]["key"], number>;
-
-/** Presentation only. The shared selector supplies every scenario count. */
 export function ExceptionPipeline() {
   const enabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
-  const { result, input } = useBaselineScenario();
-  const { preparing, phase } = useAssistancePresentation();
-  const builtReady = enabled && !preparing && !!result && result.built > 0;
-  const n = (value: number) => formatBaselineNumber(value, 1);
-  const correction = runAgent(CASES[1], { agentEnabled: true });
-  const draftReady = builtReady && correction.gate.result === "PASS" && !!correction.draftToPharmacy;
-  return <section aria-label="Six-stage exception pipeline" className="space-y-4" data-pipeline>
-    <section aria-label="Earlier pharmacy exit" className="space-y-3 rounded-xl border border-dashed bg-muted/30 p-4" data-pharmacy-exit>
-      <div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold">Before stage 1 · Pharmacy pre-check</h2><BoundaryTag cls="deterministic" /></div>
-      <p className="text-sm">Assumption: catch and correct missing information before submission. These items never enter the NHSBSA pipeline.</p>
-      {enabled && result && <dl className="text-sm"><div><dt>Earlier exits · Estimate</dt><dd data-pipeline-pharmacy>{n(result.pharmacyCaught)}</dd></div></dl>}
+  const { result } = useProcessMonth();
+  const column = result && (enabled ? result.withAgent : result.today);
+  return <section aria-label="Prescription processing paths" className="space-y-4" data-pipeline>
+    <section aria-label="Pharmacy check before submission" className="space-y-3 rounded-xl border border-dashed bg-muted/30 p-5" data-pharmacy-exit>
+      <div className="flex flex-wrap items-center gap-2"><h2 className="font-semibold">Pharmacy check before submission</h2><BoundaryTag cls={enabled ? "agent" : "human"} /></div>
+      <p className="text-sm">{enabled ? "Check the declaration against the dated rule; show the exact gap. The pharmacist corrects or submits." : "The pharmacist checks the endorsement and submits. Incomplete information can return later as a referral."}</p>
+      {enabled && <p className="text-sm font-medium" data-agent-kernel="pharmacy">Agent kernel: verify and advise, never submit or pay.</p>}
+      {enabled && column && <p className="text-sm">Items caught before submission: <ProcessFigure source="Assumption" label="Items caught before submission" explanation="Shared model catch assumption, applied only to would-be referrals. Corrected items still enter normal processing.">
+        <span data-pipeline-pharmacy><MonthlyNumber value={column.caughtBeforeSubmission} format={formatProcessItems} /></span>
+      </ProcessFigure></p>}
       {perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to="/pharmacy">Try the pharmacy check</Link>}
     </section>
-    <div className="flex items-center gap-2 text-xs text-muted-foreground"><ArrowDown className="size-4" aria-hidden="true" />Remaining submissions enter capture</div>
-    <ol aria-label="Processing stages" className="grid items-start gap-4 md:grid-cols-3">
-      {earlyStages.map((stage, index) => <li key={stage.title} data-pipeline-stage={index + 1} className="space-y-3 rounded-xl border bg-card p-5">
-        <h2 className="font-semibold">{index + 1}. {stage.title}</h2>
-        <BoundaryTag cls={stage.cls} />
-        <div className="flex items-center gap-2 text-sm"><CheckCircle2 className="size-4 shrink-0" aria-hidden="true" />Works today · Unchanged</div>
-        <p className="text-sm text-muted-foreground">{stage.text}</p>
-        {index === 1 && <PainMarker resolved={false} pain="Handwriting uncertainty" resolution="" />}
-      </li>)}
-      <li data-pipeline-stage="4" className="space-y-4 rounded-xl border-2 border-primary/40 bg-card p-5 md:col-span-3">
-        <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-semibold">4. Uncertain exceptions · Evidence gathering</h2><BoundaryTag cls={enabled ? "agent" : "human"} /></div>
-        <section data-prose="gathering assumption"><p className="text-sm text-muted-foreground">Assumption: operators gather evidence across systems. Durations are editable synthetic inputs, not measured working practice.</p></section>
-        <div className="grid gap-5 lg:grid-cols-2">
-          <section aria-label="Seven gathering steps" className="space-y-3">
-            <h3 className="font-medium">Manual baseline · Seven steps</h3>
-            <ol className="space-y-2 text-sm">{GATHERING_STEPS.map(({ key, label }, index) => {
-              const step = label.replace(" minutes / item", "");
-              const completed = enabled && !!result && result.built > 0 && phase > gatheringPhase[key];
-              return <li key={key} data-gathering-step={key} data-gathering-phase={gatheringPhase[key]} className="space-y-2 rounded-md bg-muted/40 p-2">
-                <div className="flex justify-between gap-3"><span>{index + 1}. {step}</span><span className="shrink-0 tabular-nums">{input ? `${n(input[key])} min` : "Unavailable"}</span></div>
-                <PainMarker resolved={completed} pain={step} resolution={`${step} · Built only; human review remains`} />
-              </li>;
-            })}</ol>
-            {result && <dl className="text-sm"><div><dt>Gathering · Assumed minutes / item</dt><dd data-pipeline-gathering>{n(result.manualGatheringMinutes)}</dd></div></dl>}
-          </section>
-          <section aria-label="Conditional evidence kernel" className="space-y-3 rounded-lg border bg-muted/20 p-4" data-kernel>
-            <h3 className="font-medium">Only uncertain items reach the kernel</h3>
-            {enabled && result ? <>
-              <div className="text-sm" role="status" aria-live="polite" aria-atomic="true" data-kernel-status>{preparing ? `Preparing assistance · ${ASSISTANCE_PHASES[phase] ?? "Complete"}` : "Evidence presentation ready · Simulated, not a model call"}</div>
-              <ol aria-label="Kernel phases" className="space-y-2 text-sm">{ASSISTANCE_PHASES.map((label, index) => <li key={label} data-kernel-phase={preparing ? index < phase ? "complete" : index === phase ? "active" : "pending" : "complete"} className="flex flex-wrap justify-between gap-2 rounded-md border p-2"><span>{label}</span><span>{preparing ? index < phase ? "Shown" : index === phase ? "Preparing" : "Next" : "Shown"}</span>{index === 3 && <BoundaryTag cls="deterministic" />}</li>)}</ol>
-              <dl className="grid gap-3 text-sm sm:grid-cols-2">
-                <div><dt>Built · Human review</dt><dd data-pipeline-built>{n(result.built)}</dd></div>
-                <div><dt>Abstained · Manual fallback</dt><dd data-pipeline-abstained>{n(result.abstained)}</dd></div>
-              </dl>
-              <PainMarker resolved={false} pain="Case D stays manual; no safe interpretation" resolution="" />
-            </> : <p className="text-sm">{enabled ? "Estimates unavailable. Correct the calculator inputs." : "Agent Off. Gather evidence manually; no recommendation or proposed record."}</p>}
-          </section>
-        </div>
-        <Link className="inline-block text-sm underline underline-offset-4" to="/#month">Edit shared gathering assumptions</Link>
+    <ArrowDown className="mx-auto size-5" aria-hidden="true" />
+    <section aria-label="Submission channels" className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="channels">
+      <h2 className="font-semibold">EPS message or paper scan</h2><BoundaryTag cls="existing" />
+      <ul className="grid gap-3 text-sm sm:grid-cols-2">
+        <li className="rounded-lg border p-3">EPS: dm+d codes and typed endorsements in the claim message.</li>
+        <li className="rounded-lg border p-3">Paper: scanned form and character recognition; uncertain handwriting needs human capture.</li>
+      </ul>
+    </section>
+    <ArrowDown className="mx-auto size-5" aria-hidden="true" />
+    <section aria-label="Rules-engine routing" className="space-y-4 rounded-xl border bg-card p-5" data-pipeline-stage="rules">
+      <h2 className="font-semibold">Rules engine</h2><BoundaryTag cls="deterministic" />
+      <p className="text-sm">Code routes from readable facts. Complete items bypass staff; uncertain capture and endorsement interpretation take different paths.</p>
+      <section className="space-y-2 rounded-lg border bg-muted/30 p-4" aria-label="Automatic pricing bypass" data-auto-bypass>
+        <h3 className="flex items-center gap-2 font-medium"><CornerDownRight className="size-4" aria-hidden="true" />Complete and readable: automated pricing</h3>
+        <BoundaryTag cls="existing" />
+        <p className="text-sm">Priced by NHSBSA&apos;s existing rules engine; no person involved. Normal payment schedule, outside this prototype.</p>
+        <p className="text-sm font-medium">No Type 1 or Type 2 queue row.</p>
+      </section>
+    </section>
+    <div className="grid items-start gap-4 md:grid-cols-2" aria-label="Conditional staff paths">
+      <section aria-label="Type 1 capture path" className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="type1">
+        <h2 className="font-semibold">If handwritten or uncertain: Type 1 capture</h2><BoundaryTag cls="human" />
+        <p className="text-sm">A person confirms product, quantity and endorsement. Code routes again: automated pricing if complete, Type 2 if interpretation is needed.</p>
+        {enabled ? <section className="space-y-2 rounded-lg border p-3" data-agent-kernel="type1">
+          <h3 className="font-medium">Proposed: declaration pre-fill</h3><BoundaryTag cls="agent" />
+          <p className="text-sm">Fields are declared by the pharmacy, not read from the form. A person confirms or corrects; unreconciled evidence follows today&apos;s path.</p>
+        </section> : <p className="text-sm">Poor paper: key manually from the image. No guidance, experience only in this synthetic comparison.</p>}
+        <Link className="inline-block text-sm underline underline-offset-4" to="/boundary">Read the proposed paper boundary</Link>
+      </section>
+      <section aria-label="Type 2 judgement path" className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="type2">
+        <h2 className="font-semibold">If interpretation is needed: Type 2 judgement</h2><BoundaryTag cls="human" />
+        <p className="text-sm">Typed EPS endorsements can arrive directly. Captured paper can follow Type 1. People judge endorsements, extra fees and finalisation.</p>
+        {enabled ? <section className="space-y-2 rounded-lg border p-3" data-agent-kernel="type2">
+          <h3 className="font-medium">Case built for human judgement</h3><BoundaryTag cls="agent" />
+          <p className="text-sm">Retrieve the dated clause, check requirements and propose a reason. Code validates; a person decides. Insufficient evidence means abstention.</p>
+        </section> : <p className="text-sm">Find the governing rule and write a reason. Experience only, no rule recorded in this synthetic comparison, not all real practice.</p>}
+        <p className="text-sm">Sufficient evidence returns to existing pricing. Still insufficient: a person refers back with an RB code and reason.</p>
+        {perspective !== "pharmacy" && <Link className="inline-block text-sm underline underline-offset-4" to="/queue">Review the Type 2 queue</Link>}
+      </section>
+    </div>
+    <ArrowDown className="mx-auto size-5" aria-hidden="true" />
+    <ol aria-label="Referral and resubmission stages" className="grid items-start gap-4 md:grid-cols-3">
+      <li className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="referred-back">
+        <h2 className="font-semibold">Referred back</h2><BoundaryTag cls="human" />
+        <p className="text-sm">An RB code explains the missing endorsement. Only that item&apos;s payment is delayed.</p>
+        {enabled && <p className="text-sm">The operator approves the exact-fix note with its clause and version. The agent does not send or approve it.</p>}
+        {column && <p className="text-sm">Monthly items: <ProcessFigure source="Assumption" label="Monthly referrals" explanation="Shared process scenario; With the agent reduces referrals only by the assumed pre-submission catch.">
+          <span data-pipeline-referrals><MonthlyNumber value={column.referredBackItems} format={formatProcessItems} /></span>
+        </ProcessFigure></p>}
       </li>
-      <li data-pipeline-stage="5" className="space-y-4 rounded-xl border bg-card p-5 md:col-span-2">
-        <h2 className="font-semibold">5. Operator judgement and reason</h2>
-        <BoundaryTag cls="human" />
-        <section data-prose="operator assumption"><h3 className="text-sm font-medium">Assumption · Validate current practice</h3><p className="mt-2 text-sm text-muted-foreground">Free-text reasons may omit the governing rule. This is not an established description of NHSBSA operators.</p></section>
-        {enabled && result && <section aria-label="Built-only proposal" className="space-y-3 rounded-lg border p-3">
-          <div className="flex flex-wrap items-center gap-2"><h3 className="text-sm font-semibold">Built exceptions only · Proposed record</h3><BoundaryTag cls="agent" /></div>
-          <dl className="text-sm"><div><dt>Rule and reason proposals · Estimate</dt><dd data-pipeline-proposals>{n(result.built)}</dd></div></dl>
-          <p className="text-sm">Retrieved rule, checked evidence and proposed reason. A human accepts, amends or escalates; nothing is recorded automatically.</p>
-        </section>}
-        <PainMarker resolved={builtReady} pain="Reason and rule require manual review" resolution="Built-only proposal; operator still decides" />
-        <section data-prose="manual residual"><p className="text-sm">Case D has no proposed rule or recommendation. Abstained items retain manual gathering and judgement.</p></section>
-        {perspective !== "pharmacy" && <Link className="inline-block text-sm underline underline-offset-4" to="/queue">Review the exception queue</Link>}
+      <li className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="mys">
+        <h2 className="font-semibold">MYS Unpaid items</h2><BoundaryTag cls="existing" />
+        <p className="text-sm">The pharmacy receives an NHSmail email, opens Unpaid items and reads the RB code and NHSBSA&apos;s reason.</p>
+        {perspective !== "nhsbsa" && <Link className="inline-block text-sm underline underline-offset-4" to="/pharmacy/claims">Open pharmacy claims</Link>}
       </li>
-      <li data-pipeline-stage="6" className="space-y-4 rounded-xl border bg-card p-5">
-        <h2 className="font-semibold">6. Referral and correction</h2>
-        <BoundaryTag cls="human" />
-        <section data-prose="referral assumption"><h3 className="text-sm font-medium">Assumption · Validate cycle time</h3><p className="mt-2 text-sm text-muted-foreground">A reason-code referral cycle may take weeks. Neither that duration nor current correction detail is established here.</p></section>
-        {enabled && result && <>
-          <section aria-label="Exact-fix draft" className="space-y-2 rounded-lg border p-3"><h3 className="text-sm font-medium">Case B · Synthetic draft, not sent</h3><BoundaryTag cls="agent" />{draftReady ? <p className="text-sm" data-pipeline-correction>{correction.draftToPharmacy}</p> : <p className="text-sm">Draft unavailable until built evidence is ready and the compliance gate passes.</p>}</section>
-          <dl className="space-y-3 text-sm"><div><dt>Assumed referrals · Same shared model</dt><dd data-pipeline-referrals>{n(result.referrals.withAgent)}</dd></div><div><dt>Residual risk · Abstained + deficient built</dt><dd data-pipeline-risk>{n(result.referralRiskResidual)}</dd></div></dl>
-        </>}
-        <div data-exact-fix-marker><PainMarker resolved={draftReady} pain="Exact correction needs manual drafting" resolution="Exact-fix draft ready · Built only, not sent" /></div>
-        <PainMarker resolved={false} pain="Referral risk remains; no perfect outcome claim" resolution="" />
-        {perspective !== "pharmacy" && <Link className="inline-block text-sm underline underline-offset-4" to="/case/EX-24112">Review case B and decide</Link>}
+      <li className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="resubmit">
+        <h2 className="font-semibold">Correct and resubmit</h2><BoundaryTag cls="human" />
+        <p className="text-sm">The pharmacy completes the endorsement and resubmits. Code routes the revised facts again; existing pricing keeps its normal schedule.</p>
+        {enabled && <p className="text-sm">The pharmacy pre-check runs again, without replacing submission or human judgement.</p>}
       </li>
     </ol>
-    {enabled && result && <ReferralProxy result={result} />}
-    {!result && <p role="status" className="text-sm">Scenario estimates unavailable: correct the calculator inputs. The illustrative workflow is not a live execution.</p>}
+    <p className="text-sm font-medium">The agent verifies the submission and advises; a person decides.</p>
+    {!result && <p role="status" className="text-sm">Scenario estimates unavailable: correct the calculator inputs. These paths illustrate the process, not a live execution.</p>}
   </section>;
 }
