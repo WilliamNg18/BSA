@@ -14,7 +14,7 @@ import { TARIFF_VERSIONS } from "@/lib/domain/tariff";
 import { useAppStore } from "@/lib/store";
 import { agentVersionLabel } from "@/lib/service-display";
 import { MissingAssistedSlots } from "@/components/demo/case-presentation";
-import { caseViewState } from "@/lib/case-presentation";
+import { caseViewState, recordHasRule } from "@/lib/case-presentation";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -47,7 +47,7 @@ function DecisionRecordContent() {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
   }
 
-  const hasRecordedRule = Boolean(latest && TARIFF_VERSIONS.some((v) => v.version === latest.tariffVersion));
+  const hasRecordedRule = recordHasRule(latest);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -110,7 +110,7 @@ function DecisionRecordContent() {
               <ol className="mt-2 space-y-3 text-sm">{records.map((record) => <li key={record.id}>
                 <p className="font-medium">{record.id}: {record.decision.replaceAll("_", " ")} by {record.operator}</p>
                 <p>Human reason: {record.reason || record.overrideReason || "Not recorded"}</p>
-                <p>Original rule: {record.tariffVersion === "n/a" ? "Not recorded" : record.tariffVersion}{record.clauseId ? `, ${record.clauseId}` : ""}</p>
+                <p>{recordHasRule(record) ? "Original rule" : "Stored Tariff context, no rule recorded"}: {record.tariffVersion === "n/a" ? "Not recorded" : record.tariffVersion}{record.clauseId ? `, ${record.clauseId}` : ""}</p>
                 {record.rbCode && <p>RB code: {record.rbCode}</p>}
               </li>)}</ol>
             </details>

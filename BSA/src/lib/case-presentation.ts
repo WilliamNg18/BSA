@@ -1,5 +1,14 @@
 import type { CasePack, CaseState, HumanDecision } from "./domain/types";
-import type { ItemProcess } from "./domain/lifecycle";
+import type { ItemProcess, LifecycleDecisionRecord } from "./domain/lifecycle";
+import { TARIFF_VERSIONS } from "./domain/tariff";
+
+export function recordHasRule(record: LifecycleDecisionRecord | undefined): boolean {
+  if (!record) return false;
+  const version = TARIFF_VERSIONS.find((entry) => entry.version === record.tariffVersion);
+  if (!version) return false;
+  return Boolean(version.clauses.some((clause) => clause.id === record.clauseId)
+    || record.revision === undefined && record.checks.some((check) => check.name === "Recommendation cites a validated provision" && check.pass));
+}
 
 export function caseViewState(pack: CasePack | null, process: ItemProcess | undefined, hasCurrentRecord: boolean): CaseState {
   if (hasCurrentRecord) return "human_decision_recorded";

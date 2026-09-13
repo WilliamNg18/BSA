@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { caseViewState } from "../../src/lib/case-presentation";
+import { caseViewState, recordHasRule } from "../../src/lib/case-presentation";
 import { runAgent } from "../../src/lib/domain/agent";
 import { CASES } from "../../src/lib/domain/cases";
 import { useAppStore } from "../../src/lib/store";
@@ -27,5 +27,12 @@ describe("current-revision case header state", () => {
 
   it("attributes automatic routing to code rather than an agent or operator", () => {
     expect(caseViewState(null, useAppStore.getState().itemProcesses[CASES[0].id], false)).toBe("cleared_by_rules");
+  });
+
+  it("preserves the historical validated citation without inventing one from a Tariff date", () => {
+    const original = useAppStore.getState().records[0];
+    expect(recordHasRule(original)).toBe(true);
+    expect(recordHasRule({ ...original, revision: 2, clauseId: undefined, recommendation: "ABSTAIN", checks: [] })).toBe(false);
+    expect(recordHasRule({ ...original, tariffVersion: "n/a" })).toBe(false);
   });
 });

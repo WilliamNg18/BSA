@@ -7,7 +7,7 @@ import { Type1Capture } from "@/components/demo/type1-capture";
 import { useProcessMonth } from "@/hooks/use-process-month";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
-import { permitsProposal } from "@/lib/case-presentation";
+import { permitsProposal, recordHasRule } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
 import { formatBaselineNumber as n } from "@/lib/domain/baseline";
 
@@ -49,7 +49,7 @@ function QueueWorklist() {
       : type1 ? "Declaration pre-fill where available; human confirmation required"
       : referred ? record?.approvedDraft ? "Operator-approved exact fix recorded" : "No approved draft; human reason retained"
       : captureCompleted ? "Human capture complete; existing pricing follows"
-      : decided ? record && record.tariffVersion !== "n/a" ? "Original rule version retained in the human record" : "No rule recorded for this decision"
+      : decided ? recordHasRule(record) ? "Original rule version retained in the human record" : "No rule recorded for this decision"
       : category === "abstained" ? "Abstained; worked as today"
       : category === "evidence" ? "Evidence assembled; unresolved facts remain"
       : "Case built; dated clause and requirements checked";
