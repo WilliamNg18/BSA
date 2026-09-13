@@ -101,7 +101,8 @@ for (const enabled of [true, false]) {
           await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
         }
         else {
-          await expect(page.getByRole("list", { name: "Manual gathering trace", exact: true }).locator(":scope > li")).toHaveCount(7);
+          const complete = [...automaticCaseIds, "EX-24088"].some((id) => route === `case/${id}/trace`);
+          await expect(page.getByRole("list", { name: "Manual gathering trace", exact: true }).locator(":scope > li")).toHaveCount(complete ? 0 : 7);
           await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
         }
       }

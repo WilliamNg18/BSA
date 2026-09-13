@@ -7,10 +7,11 @@ for (const c of cases) {
   test(`Task6 ${c.id} manual trace and raw pack are not agent evidence`, async ({ page }) => {
     await page.goto(`case/${c.id}/trace`);
     const trace = page.getByRole("list", { name: "Manual gathering trace", exact: true });
-    if (automaticCaseIds.includes(c.id)) {
+    if (automaticCaseIds.includes(c.id) || c.id === "EX-24088") {
       await expect(trace).toHaveCount(0);
       await expect(page.locator("[data-manual-total], [data-assisted-slot]")).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Replay unavailable in manual comparison", exact: true })).toHaveCount(0);
+      if (c.id === "EX-24088") await expect(page.getByText("Human review is complete. Existing rules-engine pricing follows; no further operator decision is needed.", { exact: true })).toBeVisible();
     } else {
     await expect(trace.locator(":scope > li")).toHaveCount(7);
     for (const { key } of GATHERING_STEPS) {

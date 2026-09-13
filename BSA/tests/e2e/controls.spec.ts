@@ -164,7 +164,7 @@ test("D shows its three abstention reasons; E has no agent trace", async ({ page
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "d-abstention-not-run");
   await page.goto("case/EX-24101/trace");
-  await expect(page.getByRole("list", { name: "Manual gathering trace" }).locator(":scope > li")).toHaveCount(7);
+  await expect(page.getByRole("list", { name: "Manual gathering trace" })).toHaveCount(0);
   await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
