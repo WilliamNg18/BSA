@@ -58,6 +58,7 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(table).not.toContain("EX-24123");
     expect(table).toContain("SYN-FQ123-MISMATCH");
     expect(table).not.toContain("EX-24119");
+    expect(table).not.toContain("EX-24088");
     for (const lifecycle of Object.values(before.lifecycles)) {
       const process = before.itemProcesses[lifecycle.caseId];
       if (staffLane(lifecycle, process) === "type2") expect(table).toContain(lifecycle.caseId);
@@ -130,15 +131,20 @@ describe("Task 29 current-revision staff presentation", () => {
     }
   });
 
-  it.each([false, true])("retains actual B reason and cited history across inspection mode %s", (enabled) => {
+  it.each([false, true])("retains actual B decision reasons and cited history in mode %s", (enabled) => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
     store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
     store.arriveInQueue("EX-24112");
-    store.recordType2Decision({ caseId: "EX-24112", decision: "REFER_BACK", reason: "The endorsement date remains missing.", rbCode: "SYN-NCSO" });
+    store.applySuggestionToDecision("EX-24112");
+    const draft = useAppStore.getState().operatorDrafts["EX-24112"];
+    store.referBack("EX-24112", draft.rbCode, draft.note);
+    store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.arriveInQueue("EX-24112");
+    store.releaseToPricing("EX-24112", "Human checked the corrected endorsement.");
     store.setAgentEnabled(enabled);
     const before = useAppStore.getState();
-    const original = before.records.at(-1)!;
+    const original = before.records.find((entry) => entry.caseId === "EX-24112")!;
     const html = record("EX-24112");
     expect(html).toContain("Original decision history");
     expect(html).toContain(original.tariffVersion);
@@ -260,11 +266,11 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(useAppStore.getState()).toBe(before);
   });
 
-  it.each([false, true])("uses the current EPS revision rather than A's original paper claim, agent %s", (enabled) => {
+  it.each([false, true])("uses the current EPS revision rather than D's original paper claim, agent %s", (enabled) => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.submitItem({ caseId: "EX-24123", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
     store.setAgentEnabled(enabled);
-    const c = sessionCase("EX-24107")!;
+    const c = sessionCase("EX-24123")!;
     expect(c.channel).toBe("Electronic (EPS)");
     expect(c.claim.submittedVia).toBe("EPS claim message");
     expect(CASES[0].claim.submittedVia).toBe("FP34C batch");

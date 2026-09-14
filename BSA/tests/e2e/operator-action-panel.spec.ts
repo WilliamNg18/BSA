@@ -4,12 +4,12 @@ import { expect, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 async function openReview(page: Page, enabled: boolean) {
-  await page.goto("/case/EX-24112");
+  await page.goto("/pharmacy");
   await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-  await page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true }).click();
-  const detail = page.getByRole("region", { name: "Claim detail", exact: true });
-  await detail.getByText("Demonstration replay", { exact: true }).click();
-  await detail.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
+  await page.getByRole("radio", { name: "EPS", exact: true }).check();
+  await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
+  await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
 }
@@ -50,7 +50,10 @@ for (const width of [1280, 1440]) {
     const panel = page.getByRole("region", { name: "Operator decision", exact: true });
     await expect(panel).toContainText("experience only");
     await expect(panel.getByRole("textbox", { name: "Reason (required)", exact: true })).toHaveValue("");
-    await panel.getByRole("button", { name: "Refer back", exact: true }).click();
+    await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).focus();
+    await page.keyboard.press("Tab");
+    await expect(panel.getByRole("button", { name: "Refer back", exact: true })).toBeFocused();
+    await page.keyboard.press("Enter");
     await expect(panel.getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
     await expect(panel.getByRole("alert")).toBeFocused();
     await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("The dispensing date is missing.");
@@ -70,7 +73,8 @@ for (const width of [1280, 1440]) {
     await expect(capture.getByRole("textbox", { name: "Prescriber", exact: true })).toHaveValue("");
     const attestation = capture.getByRole("checkbox");
     await attestation.check();
-    await capture.getByRole("button", { name: "Correct", exact: true }).click();
+    await capture.getByRole("button", { name: "Correct", exact: true }).focus();
+    await page.keyboard.press("Enter");
     await expect(capture).toHaveAttribute("data-type1-mode", "correcting");
     await expect(capture.getByRole("textbox", { name: "Product code", exact: true })).toBeFocused();
     await expect(attestation).not.toBeChecked();
