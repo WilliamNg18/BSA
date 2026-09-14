@@ -1,5 +1,6 @@
 import { automaticCaseIds, cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
-import { TOUR_STOPS } from "../../src/lib/tour-navigation";
+import { DEMO_STEPS, demoStepDestination } from "../../src/lib/domain/demo-steps";
+import { enterDesktopDemo } from "./desktop-step-helpers";
 
 for (const enabled of [true, false]) {
   const stateTag = enabled ? "@agent-on" : "@agent-off";
@@ -35,46 +36,43 @@ for (const enabled of [true, false]) {
   }
 
   test(`rapid consecutive tour inputs agent=${enabled}`, { tag: ["@hosted-qa", "@fast-keyboard", stateTag] }, async ({ page }) => {
-    await page.goto("./#scene");
-    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    const rail = page.getByRole("navigation", { name: "Guided tour" });
+    await enterDesktopDemo(page, enabled);
+    const rail = page.getByTestId("demo-strip");
     // The native switch is an input; shortcuts deliberately ignore fields.
     await page.getByRole("heading", { level: 1 }).focus();
     // Real keyboard events, deliberately no screenshot, sleep or assertion
     // between inputs. Cross both hash and pathname transitions in both directions.
     for (let pass = 0; pass < 3; pass++) {
-      for (let step = 1; step < TOUR_STOPS.length; step++) await page.keyboard.press("Alt+ArrowRight");
+      for (let step = 1; step < DEMO_STEPS.length; step++) await page.keyboard.press("Alt+ArrowRight");
       await expect(page).toHaveURL(/#close$/);
-      await expect(rail).toContainText("6/6");
+      await expect(rail).toContainText("11 / 11");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      for (let step = 1; step < TOUR_STOPS.length; step++) await page.keyboard.press("Alt+ArrowLeft");
-      await expect(page).toHaveURL(/#scene$/);
-      await expect(rail).toContainText("1/6");
+      for (let step = 1; step < DEMO_STEPS.length; step++) await page.keyboard.press("Alt+ArrowLeft");
+      await expect(page).toHaveURL(/#pipeline$/);
+      await expect(rail).toContainText("1 / 11");
     }
     // A same-task burst deterministically exercises history ahead of React's
     // commit. Assert EVERY requested stop, including immediate reversals/limits.
-    const directions = [1, -1, -1, ...Array<number>(TOUR_STOPS.length).fill(1), ...Array<number>(TOUR_STOPS.length).fill(-1)];
+    const directions = [1, -1, -1, ...Array<number>(DEMO_STEPS.length).fill(1), ...Array<number>(DEMO_STEPS.length).fill(-1)];
     let index = 0;
     const expected = directions.map((direction) => {
-      index = Math.max(0, Math.min(TOUR_STOPS.length - 1, index + direction));
-      return TOUR_STOPS[index].to;
+      index = Math.max(0, Math.min(DEMO_STEPS.length - 1, index + direction));
+      return demoStepDestination(DEMO_STEPS[index]);
     });
     const visited = await page.evaluate((steps) => steps.map((direction) => {
       window.dispatchEvent(new KeyboardEvent("keydown", { key: direction > 0 ? "ArrowRight" : "ArrowLeft", altKey: true, bubbles: true, cancelable: true }));
-      return `${location.pathname}${location.hash}`;
+      return `${location.pathname}${location.search}${location.hash}`;
     }), directions);
     expect(visited).toEqual(expected);
-    await expect(page).toHaveURL(/#scene$/);
-    // An unrelated navigation must become the new cursor, not the previous tour stop.
+    await expect(page).toHaveURL(/#pipeline$/);
+    await rail.getByRole("button", { name: "Exit demo", exact: true }).click();
     await navigatePrimary(page, "Pharmacy check");
     await page.getByRole("heading", { level: 1 }).click();
     await page.keyboard.press("Alt+ArrowLeft");
-    await expect(page).toHaveURL(/#two-places$/);
-    await expect(rail).toContainText("5/6");
-    await page.goBack();
     await expect(page).toHaveURL(/\/pharmacy$/);
     await page.keyboard.press("Alt+ArrowRight");
-    await expect(page).toHaveURL(/\/queue$/);
+    await expect(page).toHaveURL(/\/pharmacy$/);
+    await expect(rail.getByRole("button", { name: "Enter demo mode", exact: true })).toBeVisible();
     await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
   });
 

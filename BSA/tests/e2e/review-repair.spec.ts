@@ -1,13 +1,13 @@
-import { expect, navigatePrimary, test } from "./fixtures";
+import { expect, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
-import { startDemonstrationReview } from "./lifecycle-helpers";
-import { openAuditRecord, operatorAction, operatorDecision } from "./operator-action-helpers";
+import { openAuditRecord, operatorAction, operatorDecision, startDemonstrationReview } from "./operator-action-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 test("complete EPS Off describes hypothetical risk without running a hidden check", async ({ page }) => {
   await page.goto("/pharmacy");
-  await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+  await choosePharmacyRadio(page, "Complete endorsement");
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Not checked: manual submission");
+  await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Manual: If incomplete, problems may be found at NHSBSA weeks later", exact: true })).toBeVisible();
   await expect(page.getByRole("list", { name: "Requirement checkboxes", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
@@ -29,9 +29,8 @@ test("confirmed conflicted paper records an attestation without claiming agreeme
   await expect(page.getByRole("main")).toContainText("The operator attested reconciliation; this does not prove source agreement.");
   await expect(page.getByRole("main")).not.toContainText("declaration and paper explicitly reconciled");
   await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
-  await navigatePrimary(page, "Overview");
-  await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
-  await page.getByRole("menuitem", { name: "4. Cases and boundaries", exact: true }).click();
+  await page.goto("/#cases");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.locator('[data-case="C"]')).toHaveCount(0);
   const currentB = page.locator("[data-case]").filter({ hasText: "EX-24112" });
   await expect(currentB.locator("[data-outcome]")).toHaveText("Refer back with the exact fix");

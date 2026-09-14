@@ -30,6 +30,8 @@ test("header state persists through page navigation and staff filters cannot cha
     await navigatePrimary(page, "Pharmacy claims");
     await expect(flag).toBeChecked({ checked: enabled });
     await navigatePrimary(page, "Pharmacy check");
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+    await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(enabled ? 1 : 0);
+    if (enabled) await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
+    else await expect(page.getByRole("button", { name: "Manual: No advisory check; later correction is possible", exact: true })).toBeVisible();
   }
 });
