@@ -1,8 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { captureJson, confirmReset, expect, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { DEMONSTRABLE_LIFECYCLE_STATES } from "./lifecycle-helpers";
+import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState } from "./lifecycle-helpers";
 
 const B = "EX-24112";
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -97,21 +97,9 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       test.describe(`Task13 claims ${state} Agent=${enabled} motion=${reducedMotion}`, () => {
         test.use({ reducedMotion, viewport: { width: 1440, height: 900 }, colorScheme: reducedMotion === "reduce" ? "dark" : "light" });
         test("list and expanded detail unrestricted axe", async ({ page }, info) => {
-          if (state === "submitted") {
-            await page.goto("pharmacy");
-            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-            await page.getByRole("button", { name: "Send claim", exact: true }).click();
-            await navigatePrimary(page, "Pharmacy claims");
-          } else if (state === "escalated") {
-            await page.goto("case/SYN-FQ123-TYPE2");
-            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-            await page.getByRole("radio", { name: /^Escalate / }).check();
-            await decide(page, "Human requests senior review of the synthetic supply evidence");
-            await navigatePrimary(page, "Pharmacy claims");
-          } else {
-            await page.goto("pharmacy/claims");
-            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-          }
+          await page.goto("pharmacy/claims");
+          await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+          await prepareUnseededState(page, state);
           await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
           const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell", { name: LIFECYCLE_LABELS[state].pharmacy, exact: true }) });
           expect(await rows.count()).toBeGreaterThan(0);
@@ -176,13 +164,19 @@ for (const colorScheme of ["light", "dark"] as const) {
       await page.keyboard.press("Enter"); await expect(page.getByRole("main")).toBeFocused();
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.focus();
+      await expect(flag).toHaveAccessibleDescription(/Off withholds recommendations/);
+      await expect(flag).toHaveAttribute("title", /Off withholds recommendations/);
+      await expect(page.getByRole("tooltip")).toHaveCount(0);
+      await page.goto("./#pipeline");
+      const figure = page.getByRole("button", { name: "Monthly referrals: figure context", exact: true });
+      await figure.focus();
       const tooltip = page.getByRole("tooltip");
-      await expect(tooltip).toContainText("Off withholds recommendations");
+      await expect(tooltip).toContainText("after sequential pharmacy prevention and code clearance");
       const tooltipAudit = await new AxeBuilder({ page }).analyze();
       await captureJson(info, "compact-tooltip-axe", tooltipAudit);
       expect(tooltipAudit.violations).toEqual([]);
       await tooltip.hover(); await expect(tooltip).toBeVisible();
-      await page.keyboard.press("Escape"); await expect(tooltip).toHaveCount(0); await expect(flag).toBeFocused();
+      await page.keyboard.press("Escape"); await expect(tooltip).toHaveCount(0); await expect(figure).toBeFocused();
       const header = await page.getByRole("banner").boundingBox();
       expect(header!.height).toBeLessThan(64);
       await page.getByRole("button", { name: "Reset demo", exact: true }).press("Enter");

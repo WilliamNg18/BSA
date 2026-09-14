@@ -11,7 +11,7 @@ import { sessionCase, useAppStore } from "../../src/lib/store";
 import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
-import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { itemStateLabel, LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CaseSourceEvidence, ConfirmedCaptureEvidence, OriginalPaperDeclaration, RawCaseFields } from "../../src/components/demo/case-presentation";
 import { CASES } from "../../src/lib/domain/cases";
 import type { EpsPrescription } from "../../src/lib/domain/types";
@@ -56,12 +56,13 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(table).not.toContain("EX-24107");
     expect(table).not.toContain("EX-24101");
     expect(table).not.toContain("EX-24123");
-    expect(table).toContain("EX-24119");
+    expect(table).toContain("SYN-FQ123-MISMATCH");
+    expect(table).not.toContain("EX-24119");
     for (const lifecycle of Object.values(before.lifecycles)) {
       const process = before.itemProcesses[lifecycle.caseId];
       if (staffLane(lifecycle, process) === "type2") expect(table).toContain(lifecycle.caseId);
       else expect(table).not.toContain(`data-case-id="${lifecycle.caseId}"`);
-      if (staffLane(lifecycle, process)) expect(html).toContain(LIFECYCLE_LABELS[lifecycle.state].pharmacy);
+      if (staffLane(lifecycle, process)) expect(html).toContain(itemStateLabel(lifecycle, "nhsbsa", enabled));
     }
     expect(html).toContain('data-type1-case="EX-24123"');
     expect(html).toContain("Priced automatically this month, no person involved:");
@@ -121,7 +122,7 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it.each([false, true])("does not invent human gathering on automatic traces, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
-    for (const id of ["EX-24107", "EX-24101"]) {
+    for (const id of ["EX-24107"]) {
       const html = trace(id);
       expect(html).not.toContain("Manual gathering trace");
       expect(html).not.toContain("Replay step by step");
@@ -129,11 +130,16 @@ describe("Task 29 current-revision staff presentation", () => {
     }
   });
 
-  it.each([false, true])("retains F's original reason and cited history in mode %s", (enabled) => {
-    useAppStore.getState().setAgentEnabled(enabled);
+  it.each([false, true])("retains actual B reason and cited history across inspection mode %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(true);
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+    store.arriveInQueue("EX-24112");
+    store.recordType2Decision({ caseId: "EX-24112", decision: "REFER_BACK", reason: "The endorsement date remains missing.", rbCode: "SYN-NCSO" });
+    store.setAgentEnabled(enabled);
     const before = useAppStore.getState();
-    const original = before.records.find((entry) => entry.caseId === "EX-24088")!;
-    const html = record("EX-24088");
+    const original = before.records.at(-1)!;
+    const html = record("EX-24112");
     expect(html).toContain("Original decision history");
     expect(html).toContain(original.tariffVersion);
     expect(html).toContain(original.reason || original.overrideReason || "Not recorded");
@@ -161,7 +167,7 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it("keeps human-completed Type 2 decisions visible without moving them into the automatic aggregate", () => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
+    store.resubmitFromPharmacy("EX-24112", "NCSO AB 21/08/26");
     store.arriveInQueue("EX-24112");
     store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT",
       reason: "Human completed the independent evidence review" });
@@ -260,7 +266,8 @@ describe("Task 29 current-revision staff presentation", () => {
     store.setAgentEnabled(enabled);
     const c = sessionCase("EX-24107")!;
     expect(c.channel).toBe("Electronic (EPS)");
-    expect(c.claim.submittedVia).toBe("FP34C batch");
+    expect(c.claim.submittedVia).toBe("EPS claim message");
+    expect(CASES[0].claim.submittedVia).toBe("FP34C batch");
     const before = useAppStore.getState();
     const evidence = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
     expect(evidence).toContain("EPS claim message");

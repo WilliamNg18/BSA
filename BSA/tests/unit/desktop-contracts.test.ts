@@ -29,7 +29,7 @@ describe("Tasks 31-36 desktop contracts", () => {
     expect(LIFECYCLE_LABELS.released_to_pricing.pharmacy).toBe("Verified and released to pricing (synthetic)");
     expect(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on).toBe("Verified, released to existing pricing, no operator action");
     const original = getDomainSnapshot();
-    expect(() => store().releaseToPricing("SYN-FQ123-TYPE2", "Human checked this item")).toThrow("Both verification gates");
+    expect(() => store().releaseToPricing("SYN-FQ123-MISMATCH", "Human checked this item")).toThrow(/pack/i);
     expect(getDomainSnapshot()).toEqual(original);
   });
 
@@ -86,7 +86,16 @@ describe("Tasks 31-36 desktop contracts", () => {
     };
     expect(itemStateLabel(row, "nhsbsa", true)).toContain("after operator review");
     expect(itemStateLabel(row, "pharmacy")).not.toContain("no operator action");
-    const automatic: CaseLifecycle = { ...row, history: [{ ...row.history[0], actor: "code", releaseOrigin: "automatic_verification" }] };
+    const unverified: CaseLifecycle = { ...row, history: [{ ...row.history[0], actor: "code", releaseOrigin: "automatic_verification" }] };
+    expect(itemStateLabel(unverified, "nhsbsa", true)).toBe("Release recorded; verification provenance unavailable (synthetic)");
+    const id = "EX-24107";
+    store().setAgentEnabled(true);
+    store().submitItem({ caseId: id, channel: "eps", endorsementText: store().caseRevisions[id][0].endorsementText });
+    const automatic = store().lifecycles[id];
+    expect(automatic.history.at(-1)).toMatchObject({
+      actor: "code", releaseOrigin: "automatic_verification",
+      verification: { gate1: "pass", gate2: "pass", reconciled: true, released: true },
+    });
     expect(itemStateLabel(automatic, "nhsbsa", true)).toBe("Verified, released to existing pricing, no operator action");
   });
 });

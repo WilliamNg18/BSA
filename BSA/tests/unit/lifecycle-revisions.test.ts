@@ -1,28 +1,36 @@
 import { afterEach, beforeEach, expect, it } from "vitest";
 import { CASES } from "../../src/lib/domain/cases";
-import { useAppStore, sessionCase } from "../../src/lib/store";
+import { historicalDecisionRecords, useAppStore, sessionCase } from "../../src/lib/store";
+import { historicalLifecycleFixtures } from "../../src/lib/domain/lifecycle-seed";
 import { runAgent } from "../../src/lib/domain/agent";
 import { pharmacySnapshot } from "../../src/lib/domain/pharmacy-check";
 
 const store = () => useAppStore.getState();
-const F = CASES[5], B = CASES[1];
+const A = CASES[0], F = CASES[5], B = CASES[1];
 beforeEach(() => store().resetDemo());
 afterEach(() => store().resetDemo());
 
-it.each([false, true])("F's history never blocks a new complete EPS demonstration submission, flag=%s", (on) => {
-  const original = structuredClone(store().records[0]);
+it.each([false, true])("A's new complete EPS submission leaves F's historical evidence untouched, flag=%s", (on) => {
+  const historicalRecords = historicalDecisionRecords();
+  const historical = historicalLifecycleFixtures();
+  const original = structuredClone({ historicalRecords, historical });
   const records = store().records;
   store().setAgentEnabled(on);
-  store().submitItem({ caseId: F.id, channel: "eps", endorsementText: "NCSO DL 06/08/26" });
-  expect(store().itemProcesses[F.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
-  store().arriveInQueue(F.id);
-  expect(store().caseStates[F.id]).not.toBe("human_decision_recorded");
-  expect(runAgent(sessionCase(F.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
-  expect(store().lifecycles[F.id].state).toBe("paid");
+  store().submitItem({ caseId: A.id, channel: "eps", endorsementText: A.extracted.endorsementText });
+  expect(store().itemProcesses[A.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
+  store().arriveInQueue(A.id);
+  expect(store().caseStates[A.id]).not.toBe("human_decision_recorded");
+  expect(runAgent(sessionCase(A.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
+  expect(store().lifecycles[A.id].state).toBe(on ? "released_to_pricing" : "paid");
   expect(store().records).toBe(records);
-  expect(store().records[0]).toEqual(original);
-  expect(store().lifecycles[F.id].history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
-  expect(() => store().recordOperatorDecision(F.id, "ACCEPT", "Human checked corrected evidence")).toThrow(/while paid/);
+  expect(store().records).toEqual([]);
+  expect({ historicalRecords, historical }).toEqual(original);
+  expect(historicalDecisionRecords()).toEqual(original.historicalRecords);
+  expect(historicalLifecycleFixtures()).toEqual(original.historical);
+  expect(sessionCase(F.id)).toBeNull();
+  expect(store().caseRevisions[A.id].at(-1)?.verificationEnabled).toBe(on);
+  expect(store().lifecycles[A.id].history.at(-1)).toMatchObject({ actor: "code", revision: 2 });
+  expect(() => store().recordOperatorDecision(A.id, "ACCEPT", "Human checked corrected evidence")).toThrow(/while paid|while released_to_pricing/);
 });
 
 it.each(["off", "pending", "unavailable"] as const)("retains an unperformed %s precheck without inventing results", (mode) => {
@@ -44,5 +52,5 @@ it("a claimed ready snapshot cannot change a recommendation or pay a claim", () 
   store().arriveInQueue(B.id);
   expect(store().lifecycles[B.id].state).toBe("in_review");
   expect(runAgent(sessionCase(B.id)!).recommendation).toBe("REFER_BACK");
-  expect(store().records).toHaveLength(2);
+  expect(store().records).toHaveLength(0);
 });

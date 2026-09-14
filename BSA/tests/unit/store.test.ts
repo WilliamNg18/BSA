@@ -32,7 +32,7 @@ describe("product-only session state", () => {
     const record = seed.recordDecision({
       caseId: "EX-24112", tariffVersion: "2026-08", agentVersion: "synthetic-test",
       inputs: ["Synthetic input"], sources: ["Synthetic source"], checks: pack.gate.checks,
-      recommendation: "REFER_BACK", decision: "AMEND", overrideReason: "Synthetic override reason",
+      recommendation: "REFER_BACK", decision: "REQUEST_INFORMATION", overrideReason: "Synthetic override reason",
     });
     const recorded = useAppStore.getState();
     expect(recorded.caseStates["EX-24112"]).toBe("human_decision_recorded");
@@ -45,6 +45,6 @@ describe("product-only session state", () => {
     expect(useAppStore.getState().agentEnabled).toBe(false);
     expect(useAppStore.getState().caseStates).toEqual(seed.caseStates);
     expect(useAppStore.getState().records).toEqual(seed.records);
-    expect(useAppStore.getState().records.map((r) => r.id)).toEqual(["DR-000871", "DR-000872"]);
+    expect(useAppStore.getState().records).toEqual([]);
   });
 });

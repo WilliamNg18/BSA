@@ -1,5 +1,6 @@
 /** Synthetic month for the single operational pharmacy. */
-import { CASES } from "./cases";
+import { CASES, TWO_GATE_CASES, PLAYABLE_CASE_IDS } from "./cases";
+import { createEpsPrescription } from "./eps-check";
 import { HILLCREST_PHARMACY, productByCode } from "./reference";
 import { type CaseLifecycle, type CaseRevision, type HistoryEvent, type LifecycleState } from "./lifecycle";
 import { immutable } from "./lifecycle-model";
@@ -8,7 +9,7 @@ const canonicalStates: LifecycleState[] = ["paid", "referred_back", "information
 const templates: Record<LifecycleState, number> = { submitted: 1, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3, released_to_pricing: 0 };
 
 /** Fresh deeply immutable seeds. Metadata-only rows use explicitly synthetic templates. */
-export function seededLifecycleSession(): {
+export function historicalLifecycleFixtures(): {
   lifecycles: Record<string, CaseLifecycle>;
   caseRevisions: Record<string, readonly CaseRevision[]>;
 } {
@@ -58,6 +59,16 @@ export function seededLifecycleSession(): {
     supplyEvidence: { ruleId: "SYN-EPS-SUPPLY", brandManufacturer: "", packSize: 21, form: "capsules" },
   } }];
   add("SYN-FQ123-RECHECK", HILLCREST_PHARMACY.contractorCode, "referred_back", 1);
+  for (const c of TWO_GATE_CASES) {
+    add(c.id, HILLCREST_PHARMACY.contractorCode, c.epsPrescription ? "in_review" : "paid", c.epsPrescription ? 4 : 0);
+    const revision = caseRevisions[c.id][0];
+    caseRevisions[c.id] = [{ ...revision, templateCaseId: c.id,
+      ...(c.epsPrescription ? { epsPrescription: c.epsPrescription, channel: "eps" as const } : {}),
+      ...(c.paperDeclaration ? { paperDeclaration: c.paperDeclaration, channel: "paper" as const,
+        declaration: { fields: { productCode: c.extracted.productCode, quantity: c.extracted.quantity, endorsementText: c.extracted.endorsementText },
+          declaredAt: revision.at, provenance: "pharmacy_declaration" as const } } : {}),
+    }];
+  }
   const appendCorrection = (id: string, text: string, at: string) => {
     const previous = caseRevisions[id][0], row = lifecycles[id];
     caseRevisions[id] = [...caseRevisions[id], { ...previous, number: 2, at, kind: "resubmission", endorsementText: text }];
@@ -81,6 +92,18 @@ export function seededLifecycleSession(): {
   for (const id of [CASES[1].id, "SYN-FQ123-RECHECK"]) {
     const referral = lifecycles[id].history.find((event) => event.to === "referred_back")!;
     Object.assign(referral, { rbCode: "SYN-NCSO", processStep: "referral", exactFix: "Add the endorsement date beside the initials." });
+  }
+  return immutable({ lifecycles, caseRevisions });
+}
+
+/** Four playable items only. Historical fixtures remain read-only test evidence. */
+export function seededLifecycleSession(): ReturnType<typeof historicalLifecycleFixtures> {
+  const historical = historicalLifecycleFixtures();
+  const lifecycles = Object.fromEntries(PLAYABLE_CASE_IDS.map((id) => [id, historical.lifecycles[id]]));
+  const caseRevisions = Object.fromEntries(PLAYABLE_CASE_IDS.map((id) => [id, historical.caseRevisions[id]]));
+  for (const c of [CASES[0], CASES[1]]) {
+    caseRevisions[c.id] = [{ ...caseRevisions[c.id][0], channel: "eps",
+      epsPrescription: { ...createEpsPrescription(c), claimMessageState: "submitted" } }];
   }
   return immutable({ lifecycles, caseRevisions });
 }

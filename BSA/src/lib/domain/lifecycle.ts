@@ -27,11 +27,14 @@ export interface OperatorDecisionDraft {
 
 export interface PharmacyCorrectionDraft {
   readonly revision: number;
+  readonly channel?: ItemChannel;
+  readonly purpose?: "new_submission" | "correction";
   readonly endorsementText: string;
   readonly declaration?: PharmacyDeclaration;
   readonly paperDeclaration?: PaperDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly appliedSuggestion: boolean;
+  readonly confirmation?: string;
 }
 
 /** Human-invoked controls. The agent must never invoke these actions. */
@@ -63,6 +66,7 @@ export interface HistoryEvent {
   recordId?: string;
   decision?: HumanDecision;
   recommendation?: Recommendation;
+  recommendationGate?: "PASS" | "FAIL" | "NOT_RUN";
   reason?: string;
   approvedDraft?: ApprovedDraft;
   channel?: ItemChannel;
@@ -72,6 +76,8 @@ export interface HistoryEvent {
   readonly releaseOrigin?: ReleaseOrigin;
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
+  /** Snapshot of advice explicitly copied by a person, not recomputed on release. */
+  readonly appliedSuggestionEvidence?: Pick<DecisionRecord, "recommendation" | "tariffVersion" | "agentVersion" | "inputs" | "sources" | "checks">;
 }
 
 /** Created only by an explicit human approval argument, never by the flag. */
@@ -107,6 +113,8 @@ export interface CaseRevision {
   readonly declaration?: PharmacyDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly paperDeclaration?: PaperDeclaration;
+  /** Captured at explicit Send/Post, never inferred from a later header toggle. */
+  readonly verificationEnabled?: boolean;
 }
 
 export interface Type1Capture {
@@ -116,6 +124,8 @@ export interface Type1Capture {
   readonly fields: DeclaredItemFields;
   readonly provenance: FieldProvenance;
   readonly declarationReconciled: boolean;
+  /** Mode at the explicit human capture action, independent of the earlier Send. */
+  readonly assistanceEnabled?: boolean;
 }
 
 /** Routing metadata only. Lifecycle/history and attempts remain authoritative. */
@@ -216,15 +226,45 @@ export const LIFECYCLE_LABELS = {
   },
 } as const satisfies Record<LifecycleState, { pharmacy: string; nhsbsa: { on: string; off: string } }>;
 
+function automaticReleaseVerified(event: HistoryEvent | undefined): boolean {
+  return Boolean(event?.actor === "code" && event.releaseOrigin === "automatic_verification" &&
+    event.verification?.gate1 === "pass" && event.verification.gate2 === "pass" && event.verification.reconciled && event.verification.released);
+}
+
 /** The no-operator label must never erase an actual operator release. */
 export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nhsbsa" | "both", enabled = false): string {
   const release = row.state === "released_to_pricing"
-    ? row.history.filter((event) => event.to === "released_to_pricing").at(-1) : undefined;
+    ? row.history.filter((event) => event.to === "released_to_pricing" &&
+      (event.from !== event.to || event.processStep === "release_to_pricing" || event.releaseOrigin !== undefined)).at(-1) : undefined;
   if (release?.releaseOrigin === "human_decision" || release?.actor === "operator") {
+    if (release.verification?.gate1 !== "pass" || release.verification.gate2 !== "pass" || !release.verification.reconciled) return perspective === "pharmacy"
+      ? "Released to pricing after operator review (synthetic)"
+      : "Released to existing pricing after operator review";
     return perspective === "pharmacy"
       ? "Verified and released to pricing after operator review (synthetic)"
       : "Verified and released to existing pricing after operator review";
   }
+  if (row.state === "released_to_pricing" && !automaticReleaseVerified(release)) {
+    return "Release recorded; verification provenance unavailable (synthetic)";
+  }
   const labels = LIFECYCLE_LABELS[row.state];
   return perspective === "pharmacy" ? labels.pharmacy : labels.nhsbsa[enabled ? "on" : "off"];
+}
+
+/** Receipt status comes from the selected attempt's recorded pricing event, never today's toggle. */
+export function receiptPricingLabel(row: CaseLifecycle, revision: number): string | null {
+  const history = row.history.filter((event) => event.revision === revision);
+  const pricing = history.filter((event) => event.processStep === "release_to_pricing" ||
+    event.processStep === "automatic_pricing" || event.processStep === "existing_pricing").at(-1);
+  if (pricing?.to === "released_to_pricing") {
+    const label = itemStateLabel({ ...row, state: pricing.to, history }, "nhsbsa");
+    return pricing.releaseOrigin === "human_decision" || pricing.actor === "operator" || automaticReleaseVerified(pricing)
+      ? `Paid on the normal schedule (synthetic). ${label}.` : label;
+  }
+  if (pricing?.actor === "code" && pricing.to === "paid") {
+    return pricing.processStep === "automatic_pricing"
+      ? "Paid on the normal schedule: priced by NHSBSA's existing rules engine, no person involved."
+      : "Paid on the normal schedule after human review through NHSBSA's existing rules engine (synthetic).";
+  }
+  return null;
 }

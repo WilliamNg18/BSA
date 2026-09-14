@@ -1,5 +1,5 @@
 import { calculateBaseline, manualGatheringMinutes, type BaselineInputs, type BaselineResult, type MonthModelResult } from "./baseline";
-import { CASES, QUEUE_FILLER } from "./cases";
+import { BACKGROUND_CASES, PLAYABLE_CASES, QUEUE_FILLER } from "./cases";
 import type { CasePack, CaseState, ExceptionCase } from "./types";
 import type { CaseLifecycle } from "./lifecycle";
 import { mandatoryFieldsCheck, sampleAgreement, validateCitation } from "./rules";
@@ -18,8 +18,9 @@ export const COHORT_LABELS: Record<QueueCohort, string> = {
   abstained: "Abstention projection", built: "Case-built projection",
 };
 export const QUEUE_SEEDS = [
-  ...CASES.map((c) => ({ id: c.id, label: `Case ${c.scenario}`, canonical: true, state: c.initialState })),
-  ...QUEUE_FILLER.map((c, index) => ({ id: c.id, label: `Example ${index + 7}`, canonical: false, state: c.state })),
+  ...PLAYABLE_CASES.map((c) => ({ id: c.id, label: c.title, canonical: true, state: c.initialState })),
+  ...BACKGROUND_CASES.map((c) => ({ id: c.id, label: `Case ${c.scenario} · Background only`, canonical: false, state: c.initialState })),
+  ...QUEUE_FILLER.map((c, index) => ({ id: c.id, label: `Background example ${index + 7}`, canonical: false, state: c.state })),
 ].map((c) => ({ ...c, kind: (c.state === "cleared_by_rules" ? "cleared" : c.state === "agent_abstained" ? "abstained" : c.state === "human_decision_recorded" ? "recorded" : "built") as SeedKind }));
 
 /** A rotated bijection gives exact baseline cohort counts without allocating a month. */

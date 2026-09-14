@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { NativeSwitch as Switch } from "@/components/ui/native-switch";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipProvider as TooltipProvider, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 import { useConfirm } from "@/hooks/use-confirm";
 import { PerspectiveSwitch } from "@/components/demo/perspective-switch";
 import { canViewPath } from "@/lib/perspective";
@@ -76,10 +75,9 @@ export function TopNav({ onReset }: { onReset: () => void }) {
         <div className="ml-auto flex shrink-0 items-center gap-3">
           <PerspectiveSwitch />
           <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-2 py-1.5">
-            <TooltipProvider><Tooltip>
-              <TooltipTrigger asChild><span className="inline-flex"><Switch id="agent-flag" aria-label={`Agent: ${agentEnabled ? "On" : "Off"}`} aria-describedby="agent-help" checked={agentEnabled} onCheckedChange={setAgentEnabled} className="data-[state=checked]:bg-teal-700" /></span></TooltipTrigger>
-              <TooltipContent className="max-w-64">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</TooltipContent>
-            </Tooltip></TooltipProvider>
+            <Switch id="agent-flag" aria-label={`Agent: ${agentEnabled ? "On" : "Off"}`} aria-describedby="agent-help"
+              title="On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain."
+              checked={agentEnabled} onCheckedChange={setAgentEnabled} className="data-[state=checked]:bg-teal-700" />
             <span id="agent-help" className="sr-only">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</span>
             <Label htmlFor="agent-flag" className="whitespace-nowrap text-xs font-semibold">Agent: {agentEnabled ? "On" : "Off"}</Label>
           </div>

@@ -4,6 +4,7 @@ import type { Page, TestInfo } from "@playwright/test";
 import { captureJson, expect, staticRoutes, test as base } from "./fixtures";
 import { PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
+import { prepareDecisionRecord } from "./lifecycle-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -46,7 +47,7 @@ const surfaces = [
   ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => [`Overview ${chapter}`, `./#${chapter}`]),
   ["Pharmacy check", "pharmacy"], ["Pharmacy claims", "pharmacy/claims"],
   ["Exception queue", "queue"], ["Case pack", "case/EX-24112"],
-  ["How the case was built", "case/EX-24112/trace"], ["Decision record", "case/EX-24088/record"],
+  ["How the case was built", "case/EX-24112/trace"], ["Decision record", "case/EX-24112/record"],
 ] as const;
 
 for (const colorScheme of ["light", "dark"] as const) {
@@ -58,6 +59,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           test(`axe ${name}`, async ({ page }, info) => {
             await page.goto(route);
             await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+            if (name === "Decision record") await prepareDecisionRecord(page);
             await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
             if (enabled && route.endsWith("/trace")) await page.getByRole("button", { name: "Show all", exact: true }).click();
             await audit(page, info, "screen-axe");
@@ -89,8 +91,18 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await flag.focus();
   await flag.press("Space");
   await expect(flag).toBeChecked();
+  await expect(flag).toHaveAccessibleDescription(/Off withholds recommendations/);
+  await expect(flag).toHaveAttribute("title", /Off withholds recommendations/);
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await page.goto("./#pipeline");
+  const figure = page.getByRole("button", { name: "Monthly referrals: figure context", exact: true });
+  await figure.focus();
+  await expect(page.getByRole("tooltip")).toBeVisible();
+  await page.getByRole("tooltip").hover();
   await expect(page.getByRole("tooltip")).toBeVisible();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await expect(figure).toBeFocused();
   const chapter = page.getByRole("button", { name: "Choose tour chapter" });
   await chapter.press("ArrowDown");
   await expect(page.getByRole("menuitem").first()).toBeFocused();

@@ -120,33 +120,33 @@ test("Task9 toggling never approves a draft and arbitrary BB edits never receive
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
 });
 
-test("Task9 C shows both conflict values, approved note and confirmation without resolving evidence", async ({ page }) => {
-  await page.goto("case/EX-24119");
+test("Task9 an actual B information request preserves pharmacy confirmation for human recheck", async ({ page }) => {
+  await page.goto(`case/${B}`);
   await startDemonstrationReview(page);
-  await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-  await record(page, "Please confirm the conflicting quantities before a decision");
+  await page.getByRole("radio", { name: /^Request information/ }).check();
+  const question = "Please confirm the dispensing date beside the initials.";
+  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill(question);
+  await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  await expect(detail(page)).toContainText("Operator-approved note");
-  const quantities = detail(page).getByRole("region", { name: "Requested confirmation", exact: true }).locator("dl");
-  await expect(quantities).toContainText("56");
-  await expect(quantities).toContainText("84");
+  await expect(detail(page)).toContainText(LIFECYCLE_LABELS.information_requested.pharmacy);
+  await expect(detail(page)).toContainText(question);
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("Pharmacy text is required");
-  await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill("Please review both values against the synthetic form");
+  const confirmation = "The dispensing date is 21 August 2026; please check the original endorsement.";
+  await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill(confirmation);
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
-  await queueReview(page, "EX-24119");
-  await expect(page.getByRole("radio", { name: /^Request information \(as recommended\)/ })).toBeChecked();
-  await expect(page.getByRole("heading", { name: "Conflicts and missing evidence", exact: true })).toBeVisible();
+  await queueReview(page, B);
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.off);
   await history(page).getByText("History and attempts (3)", { exact: true }).click();
-  await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText("Please review both values against the synthetic form");
+  await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText(confirmation);
+  await expect(page.getByRole("list", { name: "Lifecycle events" })).toContainText(question);
 });
 
-test("Task19 D blocks Type 2 before capture and E clears by code without entering the queue", async ({ page }) => {
+test("Task19 D blocks Type 2 before capture and A Today clears by code without an operator", async ({ page }) => {
   await page.goto("pharmacy");
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
   await expect(page.getByLabel("Declared product", { exact: true })).toHaveCount(0);
   await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveCount(0);
@@ -159,20 +159,24 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("radio", { name: /^Refer back / })).toHaveCount(0);
+  await expect(page.getByRole("radio", { name: /^Refer back/ })).toHaveCount(0);
   await expect(page).toHaveURL(/\/case\/EX-24123$/);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
-  await page.goto("pharmacy/claims?caseId=EX-24101");
-  await detail(page).getByText("Demonstration replay", { exact: true }).click();
-  await page.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
+  await page.goto("pharmacy");
+  await page.getByRole("radio", { name: "Complete endorsement", exact: true }).click();
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
+  await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
-  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.nhsbsa.off);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("alert")).toContainText("Cleared by deterministic rules; the agent was not called");
+  await page.locator('a[href="/case/EX-24107/trace"]').first().click();
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).toContainText("agent not invoked");
+  await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
 });
 
-test("Hillcrest has seven states, real totals, read-only dispositions and shared ID deep links without a pharmacy selector", async ({ page }) => {
+test("Hillcrest's four items exercise real states, totals and shared ID links without a pharmacy selector", async ({ page }) => {
   await page.goto("pharmacy/claims");
   const pharmacy = page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true });
   await expect(pharmacy).toHaveCount(0);
@@ -180,7 +184,8 @@ test("Hillcrest has seven states, real totals, read-only dispositions and shared
   {
     await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
     const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
-    const allRows = table.locator("tbody tr");
+    const allRows = table.locator("tbody tr:not([data-background-case])");
+    await expect(allRows).toHaveCount(4);
     const amounts = await allRows.locator("td:nth-child(3)").allTextContents();
     const total = amounts.reduce((sum, text) => sum + Number(text.replace(/[£,]/g, "")), 0);
     await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText(
@@ -189,7 +194,7 @@ test("Hillcrest has seven states, real totals, read-only dispositions and shared
       await prepareUnseededState(page, state);
       await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
       const labels = LIFECYCLE_LABELS[state];
-      const rows = table.getByRole("row").filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) });
+      const rows = table.getByRole("row").filter({ has: page.getByRole("cell").filter({ hasText: labels.pharmacy }) });
       expect(await rows.count()).toBeGreaterThan(0);
       await rows.first().getByRole("button").click();
       if (!["referred_back", "information_requested"].includes(state)) await expect(detail(page).getByRole("textbox")).toHaveCount(0);

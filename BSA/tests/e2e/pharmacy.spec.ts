@@ -2,16 +2,21 @@ import AxeBuilder from "@axe-core/playwright";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import type { Page } from "@playwright/test";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { choosePaperExample, choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 const scenarios = [
-  { id: "A", label: "Complete endorsement", status: "Complete: will flow to automated pricing, no person involved" },
-  { id: "B", label: "NCSO missing date", status: "Information missing" },
-  { id: "D", label: "Unreadable form", status: "Declaration complete, not capture confirmed" },
+  { id: "A", caseId: "EX-24107", label: "Complete endorsement", status: "Complete: will flow to automated pricing, no person involved" },
+  { id: "B", caseId: "EX-24112", label: "NCSO missing date", status: "Information missing" },
+  { id: "M", caseId: "SYN-FQ123-MISMATCH", label: "Wrong pack size", status: "Information missing" },
+  { id: "D", caseId: "EX-24123", label: "Unreadable paper", status: "Declaration complete, not capture confirmed" },
 ];
 
 async function chooseScenario(page: Page, scenario: typeof scenarios[number], enabled: boolean) {
-  await page.getByRole("radio", { name: scenario.id === "D" ? "Paper" : "EPS", exact: true }).check();
-  await page.getByRole("radio", { name: scenario.label, exact: true }).check();
+  if (scenario.id === "D") await choosePaperExample(page);
+  else {
+    await choosePharmacyRadio(page, "EPS");
+    await choosePharmacyRadio(page, scenario.label);
+  }
   if (scenario.id === "D" && enabled) await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
 }
 
@@ -43,6 +48,9 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     } else if (scenario.id === "D") {
       await expect(page.getByRole("list", { name: "Declaration requirement checks", exact: true })).toContainText("Met: Dated");
       await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toContainText("not capture confirmed");
+    } else if (scenario.id === "M") {
+      await expect(page.locator("#eps-pack")).toHaveValue("28");
+      await expect(page.getByRole("checkbox", { name: "Pack size dispensed", exact: true })).not.toBeChecked();
     } else {
       await expect(page.getByRole("checkbox", { name: "Dated", exact: true })).toBeChecked({ checked: scenario.id === "A" });
     }
@@ -50,19 +58,23 @@ for (const theme of ["light", "dark"] as const) for (const on of [false, true]) 
     await expect(continueButton).toBeEnabled();
     await continueButton.click();
     const receipt = page.getByRole("region", { name: "Submission receipt" });
-    await expect(receipt).toContainText(`${scenario.id === "A" ? "EX-24107" : scenario.id === "B" ? "EX-24112" : "EX-24123"}:2`);
+    await expect(receipt).toContainText(`${scenario.caseId}:2`);
     await expect(receipt).toContainText(text);
     if (!on) await expect(receipt).toContainText("No checks performed");
     const timeline = page.getByRole("list", { name: "Submission timeline", exact: true });
-    await expect(timeline.locator("li")).toHaveCount(scenario.id === "A" ? 2 : 1);
+    await expect(timeline.locator("li")).toHaveCount(on || scenario.id === "A" ? 2 : 1);
+    await expect(timeline.locator("li").first()).toContainText("pharmacy");
     if (scenario.id === "A") {
       await page.getByRole("button", { name: "Jump to end", exact: true }).click();
-      await expect(receipt).toContainText("priced by NHSBSA's existing rules engine, no person involved");
-      await expect(timeline).toContainText("automatic pricing");
+      await expect(receipt).toContainText(on ? "released to existing pricing, no operator action" : "priced by NHSBSA's existing rules engine, no person involved");
+      await expect(timeline).toContainText(on ? "release to pricing" : "automatic pricing");
     } else {
-      await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
+      if (on) await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeEnabled();
+      else await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
       await expect(timeline).not.toContainText("automatic pricing");
       await expect(timeline).not.toContainText("referred_back");
+      await expect(timeline.getByRole("heading", { name: "release to pricing", exact: true })).toHaveCount(0);
+      if (on) await expect(timeline.locator("li").last()).toContainText("verification");
     }
     if (scenario.id === "D") {
       if (on) await expect(receipt).toContainText("NCSO JB 27/08/26");
@@ -135,7 +147,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("button", { name: "Step timeline", exact: true }).focus();
   await page.keyboard.press("Enter");
-  await expect(page.locator("[data-pharmacy-timeline] [role=status]")).toContainText("no person involved");
+  await expect(page.locator("[data-pharmacy-timeline] [role=status]")).toContainText("released to existing pricing, no operator action");
   await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
   await expect(page.getByRole("list", { name: "Submission timeline" }).locator("li")).toHaveCount(2);
   await page.getByRole("button", { name: "Restore draft", exact: true }).click();
@@ -173,10 +185,11 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     await expect(receipt).toContainText(text);
     await expect(receipt).toContainText("unable");
     await expect(receipt).toContainText("Not retrieved / Not retrieved");
-    await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeEnabled();
     const timeline = page.getByRole("list", { name: "Submission timeline" });
     await expect(timeline.getByText("Not needed", { exact: true })).toHaveCount(0);
-    await expect(timeline.locator("li")).toHaveCount(1);
+    await expect(timeline.locator("li")).toHaveCount(2);
+    await expect(timeline.locator("li").last()).toContainText("verification");
     await expect(timeline).not.toContainText("Illustrative referral");
     await expect(receipt).toContainText("Awaiting Type 2 judgement");
   });
@@ -184,8 +197,7 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
 
 test("Task4 D combined caption stays within 25 words and retains synthetic confidence labels", async ({ page }) => {
   await page.goto("pharmacy");
-  await page.getByRole("radio", { name: "Paper", exact: true }).click();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+  await choosePaperExample(page);
   const caption = page.locator("figcaption");
   const text = await caption.innerText();
   console.info("Advisory word count / budget 25:", text.match(/[\p{L}\p{N}]+(?:['’\u002d][\p{L}\p{N}]+)*/gu)?.length ?? 0);
@@ -219,8 +231,7 @@ test("Task4 global Reset clears receipts, channel and declaration drafts on this
   const submit = page.getByRole("button", { name: "Send claim", exact: true });
   await flag.setChecked(true);
   await field.fill("Unknown endorsement");
-  await page.getByRole("radio", { name: "Paper", exact: true }).click();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+  await choosePaperExample(page);
   await page.getByRole("textbox", { name: "Declared endorsement", exact: true }).fill("Unknown endorsement");
   await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
   await flag.setChecked(false);
@@ -278,7 +289,7 @@ test("Task4 rapid revisions, pending submission, cancellation and reduced-motion
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Scripted check in progress");
   await page.clock.runFor(1);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
-  await page.getByRole("radio", { name: "Generic missing brand", exact: true }).click();
+  await choosePharmacyRadio(page, "Wrong pack size");
   await expect(page.getByRole("heading", { name: /^Rule retrieved/ })).toHaveCount(0);
   await page.clock.runFor(2000);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
@@ -311,8 +322,7 @@ for (const theme of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto("pharmacy");
-    await page.getByRole("radio", { name: "Paper", exact: true }).click();
-    await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+    await choosePaperExample(page);
     await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
     const endorsement = page.getByLabel("Declared endorsement", { exact: true });
     await expect(endorsement).toHaveCount(0);
@@ -378,8 +388,7 @@ for (const theme of ["light", "dark"] as const) {
 test("Task20 declaration edits invalidate the check and reject malformed quantity without submitting", async ({ page }) => {
   await page.goto("pharmacy");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: "Paper", exact: true }).click();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
+  await choosePaperExample(page);
   await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
   await expect(page.locator("[data-declaration-advice]")).toContainText("Declaration complete, not capture confirmed.");
   await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
@@ -410,9 +419,10 @@ for (const enabled of [false, true]) {
     await expect(attempts.nth(1).getByRole("definition").first()).toHaveText("NCSO JB 27/08/26");
     await expect(detail.getByRole("region", { name: "Declaration for attempt 2", exact: true })).not.toContainText("Dr Demo (synthetic)");
     await expect(detail.getByRole("region", { name: "Type 1 capture for attempt 2", exact: true })).toHaveCount(0);
-    const event = detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").last();
-    await expect(event).toContainText("pharmacy");
-    await expect(event).not.toContainText("automatic pricing");
+    const newEvents = detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    await expect(newEvents.filter({ hasText: "Explicit demo submission; previous revisions retained." }).last()).toContainText("pharmacy");
+    await expect(newEvents.last()).toContainText(enabled ? "code" : "pharmacy");
+    await expect(newEvents.last()).not.toContainText("automatic pricing");
     await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
   });
 }

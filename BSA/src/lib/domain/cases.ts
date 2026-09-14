@@ -1,4 +1,4 @@
-import type { EndorsementFacts, ExceptionCase } from "./types";
+import type { EndorsementFacts, ExceptionCase, ItemChannel } from "./types";
 import { HILLCREST_PHARMACY } from "./reference";
 
 // SYNTHETIC demonstration cases. No real prescriptions, patients, pharmacies or
@@ -249,11 +249,53 @@ const GENERIC_SUPPLY_CASE: ExceptionCase = {
   initialState: "operator_review_required",
 };
 
+export const TWO_GATE_CASES: readonly ExceptionCase[] = [
+  {
+    ...GENERIC_SUPPLY_CASE, id: "SYN-FQ123-MISMATCH", title: "Complete format, wrong pack",
+    purpose: "A plausible pack passes format checks but conflicts with the independently retained claim and product catalogue.",
+    routingReason: "Pack and claimed amount require reconciliation; legacy outcome is uncertain",
+    epsPrescription: {
+      prescriber: { name: GENERIC_SUPPLY_CASE.extracted.prescriber, practice: "Hillcrest practice (synthetic)" },
+      patientLabel: "Mismatch example (synthetic)", prescriptionDate: "2026-08-11", dispensingDate: "2026-08-11",
+      items: [{ prescribedCode: "SYN-AMOX500-GENERIC-21", product: "Amoxicillin 500mg capsules (generic synthetic)",
+        strength: "500mg", form: "capsules", quantity: 21, dose: "Synthetic instruction, not for clinical use",
+        dispensedCode: "SYN-AMOX500-GENERIC-21", dispensedName: "Amoxicillin 500mg capsules (generic synthetic)" }],
+      prescriberEndorsement: "", dispenserEndorsement: "", exemptionStatus: "not_recorded", claimMessageState: "submitted",
+      supplyEvidence: { ruleId: "SYN-EPS-SUPPLY", brandManufacturer: "Demo manufacturer (synthetic)", packSize: 28, form: "capsules" },
+    },
+  },
+  {
+    ...CASES[0], id: "SYN-FQ123-READABLE", title: "Readable paper, matching declaration",
+    purpose: "A known readable synthetic scan independently agrees with the pharmacy declaration and claim.",
+    paperDeclaration: { typedProduct: "Sertraline 50mg tablets", quantity: 28, endorsementText: "NCSO JB 14/08/26",
+      dispensingDate: "2026-08-14", declaredByPharmacy: true },
+  },
+];
+
+/** The only operational identities in the current four-case demonstration. */
+export const PLAYABLE_CASE_IDS = Object.freeze(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"] as const);
+export function isPlayableCase(id: string | null | undefined): boolean {
+  return typeof id === "string" && PLAYABLE_CASE_IDS.some((candidate) => candidate === id);
+}
+export const PLAYABLE_CASE_CHANNELS: Readonly<Record<typeof PLAYABLE_CASE_IDS[number], ItemChannel>> = Object.freeze({
+  "EX-24107": "eps", "EX-24112": "eps", "SYN-FQ123-MISMATCH": "eps", "EX-24123": "paper",
+});
+export function playableCaseChannel(id: string): ItemChannel | null {
+  const known = PLAYABLE_CASE_IDS.find((candidate) => candidate === id);
+  return known ? PLAYABLE_CASE_CHANNELS[known] : null;
+}
+export const BACKGROUND_CASES: readonly ExceptionCase[] = Object.freeze(CASES.filter((c) => c.scenario === "C" || c.scenario === "F"));
+
 export function caseById(id: string | undefined): ExceptionCase | null {
   if (!id) return null;
   if (id === GENERIC_SUPPLY_CASE.id) return GENERIC_SUPPLY_CASE;
-  return CASES.find((c) => c.id === id) ?? null;
+  return CASES.find((c) => c.id === id) ?? TWO_GATE_CASES.find((c) => c.id === id) ?? null;
 }
+export const PLAYABLE_CASES: readonly ExceptionCase[] = Object.freeze(PLAYABLE_CASE_IDS.map((id) => {
+  const c = caseById(id);
+  if (!c) throw new Error(`Missing playable synthetic case: ${id}`);
+  return c;
+}));
 
 /** Additional synthetic queue rows so the queue reads like a working day. */
 export const QUEUE_FILLER: {

@@ -1,6 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "./fixtures";
+import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { PLAYABLE_CASES } from "../../src/lib/domain/cases";
+import { openHistory } from "./perspective-helpers";
 
 const stops = [
   { chapter: 1, label: "Real process", path: "/#scene" },
@@ -33,9 +35,13 @@ for (const enabled of [false, true]) {
         await expect(page.getByRole("region", { name: "Prescription processing paths" })).toHaveCount(0);
         const cards = page.getByRole("list", { name: "Four canonical synthetic cases" }).locator(":scope > li");
         await expect(cards).toHaveCount(4);
-        for (const [caseIndex, scenario] of ["A", "B", "C", "D"].entries()) {
-          await expect(cards.nth(caseIndex).getByRole("link", { name: scenario === "A" ? "View automatically priced claim" : `Open case ${scenario}`, exact: true })).toBeVisible();
-          if (scenario === "A") {
+        expect(PLAYABLE_CASES.map((item) => item.id)).toEqual(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"]);
+        for (const [caseIndex, item] of PLAYABLE_CASES.entries()) {
+          await expect(cards.nth(caseIndex)).toContainText(item.id);
+          const open = cards.nth(caseIndex).getByRole("link", { name: item.id === "EX-24107" ? "View automatically priced claim" : `Open case ${item.scenario}`, exact: true });
+          await expect(open).toBeVisible();
+          await expect(open).toHaveAttribute("href", item.id === "EX-24107" ? "/pharmacy/claims?case=EX-24107" : `/case/${item.id}`);
+          if (item.id === "EX-24107") {
             await expect(cards.nth(caseIndex)).toHaveAttribute("data-case-routing", "auto_priced");
             await expect(cards.nth(caseIndex).getByRole("link", { name: "Open case A", exact: true })).toHaveCount(0);
             await expect(cards.nth(caseIndex).locator("[data-pain-marker], [data-outcome]")).toHaveCount(0);
@@ -92,6 +98,7 @@ for (const enabled of [false, true]) {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24112:2");
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
     const recorded = page.getByRole("region", { name: "Shared case history", exact: true });
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
@@ -113,8 +120,10 @@ for (const enabled of [false, true]) {
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
-    const priorHistory = await recorded.getByRole("listitem").allTextContents();
-    const recordFields = recorded.locator("dl > div")
+    await openHistory(page);
+    const events = recorded.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    const priorHistory = await events.allTextContents();
+    const recordFields = events.locator("dl > div")
       .filter({ has: page.getByText("Attempt / record", { exact: true }) }).locator("dd");
     const priorRecords = (await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text));
     expect(priorRecords.length).toBeGreaterThan(0);
@@ -129,7 +138,13 @@ for (const enabled of [false, true]) {
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
-    expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
+    await openHistory(page);
+    expect((await events.allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
+    await expect(events.nth(-2)).toContainText("Human decision recorded (synthetic).");
+    await expect(events.nth(-2).locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("operator");
+    await expect(events.last()).toContainText("Priced by NHSBSA's existing rules engine after human judgement");
+    await expect(events.last().locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("code");
+    await expect(page.getByRole("region", { name: "Existing pricing outcome", exact: true })).not.toContainText("no person involved");
     const acceptedRecords = (await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text));
     expect(acceptedRecords.slice(0, priorRecords.length)).toEqual(priorRecords);
     expect(acceptedRecords).toHaveLength(priorRecords.length + 1);
@@ -144,10 +159,74 @@ for (const enabled of [false, true]) {
     await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
-    expect((await recorded.getByRole("listitem").allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
+    await openHistory(page);
+    expect((await events.allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
     expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(acceptedRecords);
     await expect(recorded).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
     await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+  });
+
+  test(`submission receipts distinguish complete B from wrong-pack review: agent ${enabled}`, async ({ page }) => {
+    await page.goto("pharmacy");
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    if (enabled) {
+      await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+    } else {
+      await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK 21/08/26");
+    }
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+    await expect(receipt).toContainText("EX-24112:2");
+    await expect(receipt).toContainText("NCSO RK 21/08/26");
+    await receipt.getByRole("link", { name: "View submitted claim", exact: true }).click();
+    const recorded = page.getByRole("region", { name: "Shared case history", exact: true });
+    const releasedState = enabled ? LIFECYCLE_LABELS.released_to_pricing.pharmacy : LIFECYCLE_LABELS.paid.pharmacy;
+    await expect(recorded.getByRole("status")).toHaveText(releasedState);
+    await openHistory(page);
+    const events = recorded.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    await expect(events.last()).toContainText(enabled
+      ? "Verified, released to existing pricing, no operator action. No payment calculated."
+      : "no person involved");
+    await expect(events.last().locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("code");
+    await expect(events.last()).toContainText("No decision record");
+    const releaseIdentity = () => events.evaluateAll((items) => items.map((item) => ({
+      fields: Array.from(item.querySelectorAll("dl > div"))
+        .filter((field) => ["Time / actor", "Attempt / record"].includes(field.querySelector("dt")?.textContent ?? ""))
+        .map((field) => field.textContent),
+      message: item.querySelector(":scope > p")?.textContent,
+    })));
+    const releasedHistory = await releaseIdentity();
+    for (const mode of [!enabled, enabled]) {
+      await page.getByRole("banner").getByRole("switch").setChecked(mode);
+      await expect(recorded.getByRole("status")).toHaveText(releasedState);
+      expect(await releaseIdentity()).toEqual(releasedHistory);
+    }
+    await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+
+    await navigatePrimary(page, "Pharmacy check");
+    await page.getByRole("radio", { name: "Wrong pack size", exact: true }).check();
+    await expect(page.getByRole("spinbutton", { name: "Pack size dispensed", exact: true })).toHaveValue("28");
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    await expect(receipt).toContainText("SYN-FQ123-MISMATCH:2");
+    await receipt.getByRole("link", { name: "View submitted claim", exact: true }).click();
+    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
+    await openHistory(page);
+    if (enabled) {
+      // Plausible typed format is not source agreement: G's second gate withholds release.
+      await expect(events.last()).toContainText("Product pack and presentation agree");
+      await expect(events.last().locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("code");
+    } else {
+      await expect(events.last()).toContainText("Explicit demo submission");
+      await expect(events.last().locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("pharmacy");
+    }
+    await expect(events.last()).toContainText("No decision record");
+    await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+    await expect(page).toHaveURL(/\/case\/SYN-FQ123-MISMATCH$/);
+    await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   });
 }
 

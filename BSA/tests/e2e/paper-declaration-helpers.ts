@@ -1,13 +1,19 @@
 import type { Page } from "@playwright/test";
 import { expect, navigatePrimary } from "./fixtures";
+import { choosePaperExample } from "./pharmacy-scenario-helpers";
 
 export const DECLARATION_RECONCILIATION = "I have reconciled the declaration with the available evidence, including the dispensing date";
+export const PAPER_D_CAPTURE_FIELDS = {
+  "Product code": "SYN-COCOD-100",
+  Quantity: "100",
+  Endorsement: "NCSO JB 27/08/26",
+  Prescriber: "Dr Demo (synthetic)",
+} as const;
 
 export async function postWorkedPaperDeclaration(page: Page) {
   await navigatePrimary(page, "Pharmacy check");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: "Paper", exact: true }).check();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
+  await choosePaperExample(page);
   for (const name of ["Declared product", "Declared quantity", "Declared endorsement", "Declared dispensing date"]) {
     await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
   }

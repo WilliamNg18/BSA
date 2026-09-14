@@ -1,8 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { caseViewState, recordHasRule, recordHasRuleAndReason, staffLane } from "../../src/lib/case-presentation";
 import { runAgent } from "../../src/lib/domain/agent";
 import { CASES } from "../../src/lib/domain/cases";
-import { useAppStore } from "../../src/lib/store";
+import { historicalDecisionRecords, useAppStore } from "../../src/lib/store";
+
+beforeEach(() => useAppStore.getState().resetDemo());
 
 describe("current-revision case header state", () => {
   it("does not recycle the seeded D abstention when assistance is Off", () => {
@@ -15,7 +17,7 @@ describe("current-revision case header state", () => {
     expect(caseViewState(pack, undefined, false)).toBe("additional_evidence_required");
   });
 
-  it("shows a current human record regardless of the comparison mode", () => {
+  it("presents the historical F fixture's recorded decision regardless of comparison mode", () => {
     for (const agentEnabled of [false, true]) {
       expect(caseViewState(runAgent(CASES[5], { agentEnabled }), undefined, true)).toBe("human_decision_recorded");
     }
@@ -30,7 +32,8 @@ describe("current-revision case header state", () => {
   });
 
   it("preserves the historical validated citation without inventing one from a Tariff date", () => {
-    const original = useAppStore.getState().records[0];
+    const original = historicalDecisionRecords()[0];
+    expect(useAppStore.getState().records).toEqual([]);
     expect(recordHasRule(original)).toBe(true);
     expect(recordHasRule({ ...original, revision: 2, clauseId: undefined, recommendation: "ABSTAIN", checks: [] })).toBe(false);
     expect(recordHasRule({ ...original, tariffVersion: "n/a" })).toBe(false);
@@ -49,6 +52,9 @@ describe("current-revision case header state", () => {
     expect(staffLane({ ...lifecycle, state: "resubmitted" }, humanRoute)).toBe("type2");
     expect(staffLane({ ...lifecycle, state: "referred_back" }, humanRoute)).toBe("referred");
     expect(staffLane({ ...lifecycle, state: "paid" }, { ...humanRoute, routing: {
+      ...humanRoute.routing, requiresHuman: false, pricingAuthority: "existing_rules_engine",
+    } })).toBe("decided");
+    expect(staffLane({ ...lifecycle, state: "released_to_pricing" }, { ...humanRoute, releaseOrigin: "human_decision", routing: {
       ...humanRoute.routing, requiresHuman: false, pricingAuthority: "existing_rules_engine",
     } })).toBe("decided");
     expect(staffLane({ ...lifecycle, state: "submitted" }, { ...humanRoute, routing: { ...humanRoute.routing, outcome: "type1_capture" } })).toBe("type1");

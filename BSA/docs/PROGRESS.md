@@ -4,9 +4,14 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-13
 ---
 
-## Active scope: Tasks 31-36
+## Active scope: Tasks 25-37, four-case desktop vision
 
-The 14 September brief supersedes the prior final-closeout workflow. Desktop
+The latest 14 September Vision brief supersedes the prior final-closeout workflow.
+Only four examples remain playable: complete EPS, missing-date EPS,
+wrong-information EPS and unreadable paper. C/F are unclickable background;
+E's rule-only behaviour is shown within complete EPS Today. ALIGNMENT records
+each main/branch gap and its correction owner. All seven streams are active.
+Desktop
 widths are 1280 and 1440 px only, with new screenshots at 1440 px. Mobile/tablet
 layouts, navigation and their active tests/captures are removed in Step 0.
 This does not declare the interrupted Tasks 25-30 image review accepted.
@@ -29,18 +34,30 @@ retrieve the original bytes from their original Git commits, not the current tre
 
 | Task | Stream | Ownership | Status |
 | --- | --- | --- | --- |
-| 31 | D | Demo strip, eleven step layouts and navigation | Awaiting Step 0 main |
-| 32 | F | Follow banner and explicit side links | Awaiting Step 0 main |
-| 33 | O | Operator decision and Type 1 panels | Awaiting Step 0 main |
-| 34 | P | Pharmacy claim actions, submission receipts and released count | Awaiting Step 0 main |
-| 35 | G | Verification/routing, shared store actions and wrong-information scenario | Awaiting Step 0 main |
-| 36 | V | Desktop tests/screenshots, live checklist and final documentation | Awaiting Step 0 main |
+| 31 | D | Demo strip, eleven step layouts and navigation | In progress; unmounted core draft #88, integration follows O/P |
+| 32 | F | Follow banner and explicit side links | In progress; explicit navigation and single-store correction implemented, latest four-case proof pending |
+| 33 | O | Operator decision and Type 1 panels | In progress; shared panel and actions authored, concrete capture crash referred to G |
+| 34 | P | Pharmacy claim actions, submission receipts and released count | In progress; compact exports authored, four-case presentation and integrated proof pending |
+| 35 | G | Verification/routing, shared store actions and wrong-information scenario | In progress; early `22e1b47` callable foundation, legacy regression repair and four-case cut pending |
+| 36 | V | Desktop tests/screenshots, live checklist and final documentation | In progress; phased compatibility, latest four-case live inventory and source checks |
+| 37 | S | How it works, SYSTEM-DESIGN, contents rail, diagrams and bounded tests | In progress; existing architecture route retained, new stream on Step 0 main |
 
-All six streams start after the single Step 0 commit reaches main. G and D
-merge first, O/P/F next, V last. Final acceptance uses actual latest-main CI,
+Step 0 reached main as `5e8fb35d5a849cfaaefa4bc45ba95a042a50e945`.
+Deployment 34870106263 succeeded; public root/build identity matched with strict
+CSP unchanged. CI 34870106295 failed a tour Next click and a pipeline keyboard
+check. D's isolated `91da78c` removes the obstructing redundant header tooltip;
+`ca2f126` fixes registration of its new unit regression. V's exact two browser
+rechecks passed, but this is not a full browser pass or a main merge.
+
+All six original streams started after Step 0; the latest brief added S.
+G and D merge first, O/P/F/S next, V last. Final acceptance uses actual latest-main CI,
 deployment, the entire desktop live checklist and a fresh URL check within
 ten minutes. No image quota is bypassed and no unexecuted visual or WCAG review
-is claimed. Decisions and resource constraints are recorded explicitly.
+is claimed. All four cases must complete their applicable live cycles in Both
+and again switching perspectives at every state. Automatic complete EPS needs
+no invented referral/operator work; mismatched facts must be corrected before
+release, never waived to finish the walkthrough. Decisions and resource
+constraints are recorded explicitly. No new task is accepted yet.
 
 ## Active scope: Tasks 25-30, one pharmacy and one continuous cycle
 

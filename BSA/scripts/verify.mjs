@@ -23,14 +23,14 @@ export function verificationStages(shard) {
     "--project=chromium", "--reporter=dot", ...partition];
   return [
     { name: "Check (typecheck, lint, build)", args: ["run", "check"], informational: false },
-    { name: "Unit tests", args: ["test"], informational: false },
+    { name: "Unit tests", args: ["test", "--", "--maxWorkers=2"], informational: false },
     ...(!shard || shard.index === 1 ? [
       { name: "Content report", args: ["run", "check:content"], informational: true },
       { name: "Gzip report", script: fileURLToPath(new URL("report-gzip.mjs", import.meta.url)), args: [], informational: true },
     ] : []),
-    { name: "Blocking production browsers", args: [...browser, "--grep-invert", "@quarantine", "--output", join("test-results", "blocking")], informational: false },
-    { name: "Informational quarantined browsers", args: [...browser, "--grep", "@quarantine", "--pass-with-no-tests",
-      "--output", join("test-results", "quarantine")], informational: true },
+    { name: "Blocking production browsers", args: [...browser, "--grep-invert", "@quarantine|@informational", "--output", join("test-results", "blocking")], informational: false },
+    { name: "Informational browser reports", args: [...browser, "--grep", "@quarantine|@informational", "--pass-with-no-tests",
+      "--output", join("test-results", "informational")], informational: true },
     { name: "Blocking instrumented one-state equivalence", args: ["run", "test:e2e", "--", "--config", "tests/e2e/one-state.config.ts",
       "--project=chromium", "--reporter=dot", ...partition, "--output", join("test-results", "one-state")], informational: false },
   ];

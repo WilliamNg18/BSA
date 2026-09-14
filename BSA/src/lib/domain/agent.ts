@@ -276,8 +276,8 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       ...requirementResults.map((r) => `${r.met === true ? "Met" : r.met === false ? "Not met" : "Unknown"}: ${r.requirement.label}`),
     ],
     toolCalls: [
-      { tool: "run_endorsement_checks", productionService: "Azure Functions (pure functions)", cls: "deterministic", input: { clause: clause?.id ?? null, readings: c.readings.length }, outputSummary: `${requirementResults.filter((r) => r.met).length} of ${requirementResults.length} requirements met`, sourceLabel: "Deterministic code", durationMs: 12, status: "ok" },
-      { tool: "validate_citation", productionService: "Azure Functions", cls: "deterministic", input: { clauseId: clause?.id ?? null, version: version?.version ?? null }, outputSummary: citationValid === null ? "Nothing to validate" : citationValid ? "Citation resolves to the corpus" : "Citation does not resolve", sourceLabel: "Deterministic code", durationMs: 8, status: citationValid === false ? "fail" : "ok" },
+      { tool: "run_endorsement_checks", productionService: "Deterministic code (pure functions)", cls: "deterministic", input: { clause: clause?.id ?? null, readings: c.readings.length }, outputSummary: `${requirementResults.filter((r) => r.met).length} of ${requirementResults.length} requirements met`, sourceLabel: "Deterministic code", durationMs: 12, status: "ok" },
+      { tool: "validate_citation", productionService: "Deterministic code", cls: "deterministic", input: { clauseId: clause?.id ?? null, version: version?.version ?? null }, outputSummary: citationValid === null ? "Nothing to validate" : citationValid ? "Citation resolves to the corpus" : "Citation does not resolve", sourceLabel: "Deterministic code", durationMs: 8, status: citationValid === false ? "fail" : "ok" },
     ],
     status: agreement.agree >= 2 ? "ok" : "warn",
   });
@@ -402,7 +402,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       ? "Evidence and failed checks remain available. Recommendation, alternative and draft are withheld. A human decision with a reason is required."
       : "Review evidence, rule, conflicts, signals and gate checks. Accept, amend, request information, refer back or escalate; the human decides.",
     items: [`Decision record prepared (append-only). Pinned: Tariff ${version?.version ?? "n/a"}, agent ${AGENT_VERSION}`],
-    toolCalls: [{ tool: "write_decision_record", productionService: "Azure Cosmos DB (append-only)", cls: "deterministic", input: { caseId: c.id }, outputSummary: "Case pack appended; awaiting human decision", sourceLabel: "In-memory record", durationMs: 15, status: "ok" }],
+    toolCalls: [{ tool: "write_decision_record", productionService: "Append-only record store", cls: "deterministic", input: { caseId: c.id }, outputSummary: "Case pack prepared; awaiting human decision", sourceLabel: "Prepared in memory", durationMs: 15, status: "ok" }],
     status: "ok",
   });
 

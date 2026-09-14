@@ -31,8 +31,10 @@ test("confirmed conflicted paper records an attestation without claiming agreeme
   await navigatePrimary(page, "Overview");
   await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
   await page.getByRole("menuitem", { name: "4. Cases and boundaries", exact: true }).click();
-  await expect(page.locator('[data-case="C"] [data-outcome]')).toHaveText("Request information from the pharmacy");
-  await expect(page.locator('[data-case="C"]')).not.toContainText("REQUEST_INFORMATION");
+  await expect(page.locator('[data-case="C"]')).toHaveCount(0);
+  const currentB = page.locator("[data-case]").filter({ hasText: "EX-24112" });
+  await expect(currentB.locator("[data-outcome]")).toHaveText("Refer back with the exact fix");
+  await expect(currentB).not.toContainText("REFER_BACK");
 });
 
 for (const enabled of [false, true]) {

@@ -3,7 +3,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { capturedFieldsMatchSources, compatibleCapture } from "../../src/lib/domain/capture-evidence";
 import { prepareCaptureConfirmation, preparePaperCapture } from "../../src/lib/domain/paper-capture";
-import { sessionCase, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import type { PaperCaptureDraft } from "../../src/lib/domain/paper-capture";
 import type { PharmacyDeclaration } from "../../src/lib/domain/types";
 
@@ -120,13 +120,15 @@ describe("Type 1 manual capture routes as read without declaration reconciliatio
 
   it("preserves C's conflict and rejects capture outside the Type 1 lane", () => {
     const original = structuredClone(C);
-    store().submitItem({ caseId: C.id, channel: "paper", endorsementText: C.extracted.endorsementText });
-    expect(store().itemProcesses[C.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
-    expect(() => store().confirmType1(manualConfirmation(C.id, {
-      productCode: C.claim.productCode, quantity: String(C.claim.quantity),
-      endorsementText: C.extracted.endorsementText, prescriber: C.extracted.prescriber,
-    }))).toThrow("current awaiting Type 1 revision");
-    expect(runAgent(sessionCase(C.id)!).recommendation).toBe("REQUEST_INFORMATION");
+    store().submitItem({ caseId: B.id, channel: "eps", endorsementText: B.extracted.endorsementText });
+    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
+    const before = getDomainSnapshot();
+    expect(() => store().confirmType1(manualConfirmation(B.id, completeB))).toThrow("current awaiting Type 1 revision");
+    expect(getDomainSnapshot()).toEqual(before);
+    expect(runAgent(C)).toMatchObject({ recommendation: "REQUEST_INFORMATION", conflicts: [
+      expect.objectContaining({ field: "Quantity", material: true }),
+    ] });
+    expect(sessionCase(C.id)).toBeNull();
     expect(C).toEqual(original);
   });
 });

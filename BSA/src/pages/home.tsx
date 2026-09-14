@@ -12,7 +12,7 @@ import { ProcessFigure } from "@/components/demo/process-figure";
 import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "@/lib/domain/baseline";
 import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
-import { CASES } from "@/lib/domain/cases";
+import { PLAYABLE_CASE_IDS } from "@/lib/domain/cases";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "@/lib/domain/public-facts";
 import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { useAppStore } from "@/lib/store";
@@ -118,7 +118,7 @@ export function HomePage() {
         <h2 className="text-2xl font-semibold">Processing cases · Follow each path</h2>
         <p className="text-sm font-medium">Synthetic cases · Human confirmation and judgement where required</p>
         <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 grid-cols-2 xl:grid-cols-4">
-          {CASES.filter((item) => ["A", "B", "C", "D"].includes(item.scenario)).map((item) => <TourProcessCase key={item.id} id={item.id} />)}
+          {PLAYABLE_CASE_IDS.map((id) => <TourProcessCase key={id} id={id} />)}
         </ul>
         <Button asChild variant="outline"><Link to="/boundary">Inspect the proposed evidence boundary</Link></Button>
       </>}

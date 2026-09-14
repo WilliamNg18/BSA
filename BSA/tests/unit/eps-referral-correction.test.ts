@@ -18,13 +18,13 @@ vi.mock("@/lib/store", async (importOriginal) => {
   ) };
 });
 
-const id = "SYN-FQ123-TYPE2", store = () => useAppStore.getState();
+const id = "SYN-FQ123-MISMATCH", store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
 function refer() {
   const source = store().caseRevisions[id][0].epsPrescription!;
   store().submitItem({ caseId: id, channel: "eps", endorsementText: source.dispenserEndorsement, epsPrescription: source });
   store().arriveInQueue(id);
-  store().recordType2Decision({ caseId: id, decision: "REFER_BACK", reason: "Add the brand or manufacturer dispensed.", rbCode: "RB2B" });
+  store().recordType2Decision({ caseId: id, decision: "REFER_BACK", reason: "Correct the pack size against the claimed item.", rbCode: "RB2B" });
   return store().caseRevisions[id].at(-1)!;
 }
 
@@ -39,7 +39,7 @@ it("exposes the actual generic supply correction controls on the referred item's
 it.each([false, true])("corrects the same generic item through explicit human recheck, Agent %s", (enabled) => {
   const revision = refer(), original = store(), source = revision.epsPrescription!;
   store().setAgentEnabled(enabled);
-  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, brandManufacturer: "Demo manufacturer (synthetic)" } };
+  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, packSize: 21 } };
   const projected = projectEpsResubmissionDraft(id, corrected, store().lifecycles, store().caseRevisions);
   expect(projected.requiresHumanRecheck).toBe(true);
   const checked = checkEpsFields(projected, corrected.dispenserEndorsement);
@@ -56,7 +56,8 @@ it.each([false, true])("corrects the same generic item through explicit human re
   expect(resubmitted.lifecycles[id].history.slice(0, original.lifecycles[id].history.length)).toEqual(original.lifecycles[id].history);
   expect(resubmitted.records).toEqual(original.records);
   expect(resubmitted.caseRevisions[id].at(-1)?.epsPrescription?.supplyEvidence?.brandManufacturer).toBe("Demo manufacturer (synthetic)");
-  expect(source.supplyEvidence?.brandManufacturer).toBe("");
+  expect(resubmitted.caseRevisions[id].at(-1)?.epsPrescription?.supplyEvidence?.packSize).toBe(21);
+  expect(source.supplyEvidence?.packSize).toBe(28);
   expect(() => store().resubmitItem(payload)).toThrow();
   store().arriveInQueue(id);
   const c = caseForLifecycle(id, store().lifecycles, store().caseRevisions, store().itemProcesses)!;
@@ -68,7 +69,7 @@ it.each([false, true])("corrects the same generic item through explicit human re
 
 it.each(["brandManufacturer", "packSize", "form"] as const)("does not approve an incomplete corrected supply field: %s", (field) => {
   const revision = refer(), source = revision.epsPrescription!;
-  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, brandManufacturer: "Demo manufacturer (synthetic)", [field]: field === "packSize" ? null : "" } };
+  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, packSize: 21, brandManufacturer: "Demo manufacturer (synthetic)", [field]: field === "packSize" ? null : "" } };
   const projected = projectEpsResubmissionDraft(id, corrected, store().lifecycles, store().caseRevisions);
   expect(checkEpsFields(projected, corrected.dispenserEndorsement).status).toBe("missing");
   store().resubmitItem({ caseId: id, revision: revision.number, channel: "eps", endorsementText: corrected.dispenserEndorsement, epsPrescription: corrected });

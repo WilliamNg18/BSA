@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BASELINE_FIELDS, GATHERING_STEPS, baselineDraft, baselineSummary, calculateBaseline, parseBaselineDraft, selectBaselineScenario, manualGatheringMinutes, BASELINE_DEFAULTS, BASELINE_VOLUME_REFERENCE, baselineDefaultCopy, referralFreeProxyDisplay, type BaselineInputs } from "../../src/lib/domain/baseline";
 import { BASELINE_PROVENANCE } from "../../src/lib/domain/baseline-defaults";
-import { CASES, QUEUE_FILLER } from "../../src/lib/domain/cases";
+import { BACKGROUND_CASES, CASES, PLAYABLE_CASES, PLAYABLE_CASE_IDS, QUEUE_FILLER, caseById } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { SOURCE_CLAIMS } from "../../data/reference/source-audit";
 import { useAppStore } from "../../src/lib/store";
@@ -37,22 +37,25 @@ describe("baseline source and synthetic default provenance", () => {
 
   it("derives sequential percentages from the twelve seed rows without reclassifying recorded history", () => {
     const p = BASELINE_PROVENANCE;
-    expect(CASES.length + QUEUE_FILLER.length).toBe(12);
-    expect(p.pharmacy).toEqual({ ids: ["EX-24112", "EX-24109"], numerator: 2, denominator: 12 });
-    expect(p.cleared).toEqual({ ids: ["EX-24107", "EX-24101", "EX-24098"], numerator: 3, denominator: 10 });
+    expect(PLAYABLE_CASES.length + BACKGROUND_CASES.length + QUEUE_FILLER.length).toBe(12);
+    expect(p.canonicalCount).toBe(4);
+    expect(p.fillerCount).toBe(8);
+    expect(p.pharmacy).toEqual({ ids: ["EX-24112", "SYN-FQ123-MISMATCH", "EX-24109"], numerator: 3, denominator: 12 });
+    expect(p.cleared).toEqual({ ids: ["EX-24107", "EX-24098"], numerator: 2, denominator: 9 });
     expect(p.abstain).toEqual({ ids: ["EX-24123", "EX-24120"], numerator: 2, denominator: 7 });
-    const rows = [...CASES.map((c) => ({ state: c.initialState })), ...QUEUE_FILLER];
-    expect(rows.filter((r) => r.state === "cleared_by_rules")).toHaveLength(3);
+    const rows = [...PLAYABLE_CASES, ...BACKGROUND_CASES].map((c) => ({ state: c.initialState })).concat(QUEUE_FILLER);
+    expect(rows.filter((r) => r.state === "cleared_by_rules")).toHaveLength(2);
     expect(rows.filter((r) => r.state === "agent_abstained")).toHaveLength(2);
-    expect(BASELINE_DEFAULTS.precheckPercent).toBe(2 / 12 * 100);
-    expect(BASELINE_DEFAULTS.clearedPercent).toBe(30);
+    expect(BASELINE_DEFAULTS.precheckPercent).toBe(3 / 12 * 100);
+    expect(BASELINE_DEFAULTS.clearedPercent).toBe(2 / 9 * 100);
     expect(BASELINE_DEFAULTS.abstainPercent).toBe(2 / 7 * 100);
-    expect(calculateBaseline({ ...BASELINE_DEFAULTS, volume: 12 })).toMatchObject({ pharmacyCaught: 2, cleared: 3, abstained: 2, built: 5 });
+    expect(calculateBaseline({ ...BASELINE_DEFAULTS, volume: 12 })).toMatchObject({ pharmacyCaught: 3, cleared: 2, abstained: 2, built: 5 });
   });
 
-  it("uses active recommended packs for latency and citation denominator, excluding D/E/F and fillers", () => {
-    const packs = CASES.slice(1, 3).map((c) => runAgent(c));
-    expect(BASELINE_PROVENANCE.assembly.ids).toEqual(CASES.slice(1, 3).map((c) => c.id));
+  it("uses B and wrong-pack advice for latency, excluding automatic, abstained and background cases", () => {
+    const ids = ["EX-24112", "SYN-FQ123-MISMATCH"];
+    const packs = ids.map((id) => runAgent(caseById(id)!));
+    expect(BASELINE_PROVENANCE.assembly.ids).toEqual(ids);
     expect(BASELINE_DEFAULTS.assemblySeconds).toBe(packs.reduce((sum, p) => sum + p.assemblySeconds, 0) / packs.length);
     expect(BASELINE_PROVENANCE.citations).toEqual({ numerator: 2, denominator: 2 });
     expect(runAgent(CASES[3]).clause).toBeNull();
@@ -66,7 +69,7 @@ describe("baseline source and synthetic default provenance", () => {
     const spy = vi.spyOn(agent, "runAgent");
     try {
       await import("../../src/lib/domain/baseline-defaults");
-      expect(spy.mock.calls.map(([item]) => item.id)).toEqual(CASES.slice(0, 5).map((c) => c.id));
+      expect(spy.mock.calls.map(([item]) => item.id)).toEqual(PLAYABLE_CASE_IDS);
     } finally {
       spy.mockRestore();
     }
@@ -76,7 +79,7 @@ describe("baseline source and synthetic default provenance", () => {
 describe("baseline arithmetic", () => {
   it("conserves default rounded cohorts and separates gathering, judging and machine latency", () => {
     const result = calculateBaseline(BASELINE_DEFAULTS);
-    expect(result).toMatchObject({ volume: 85_000, pharmacyCaught: 14_167, cleared: 21_250, abstained: 14_167, built: 35_416 });
+    expect(result).toMatchObject({ volume: 85_000, pharmacyCaught: 21_250, cleared: 14_167, abstained: 14_167, built: 35_416 });
     expect(result.today).toEqual({ gatheringMinutes: 425_000, judgingMinutes: 170_000, operatorHours: 595_000 / 60 });
     expect(result.manualGatheringMinutes).toBe(5);
     expect(result.withAgent).toEqual({ gatheringMinutes: 106_251, judgingMinutes: 170_000, operatorHours: 276_251 / 60 });
@@ -144,9 +147,9 @@ describe("baseline arithmetic", () => {
 
   it("generates all cohorts from the result and hides assisted estimates when off", () => {
     const result = calculateBaseline(BASELINE_DEFAULTS);
-    expect(baselineSummary(result, true)).toBe("Synthetic scenario: 14,167 pharmacy-caught, 21,250 cleared, 14,167 abstained, 35,416 built; 15,938 referrals. Judging unchanged. Not measured savings or decisions.");
+    expect(baselineSummary(result, true)).toBe("Synthetic scenario: 21,250 pharmacy-caught, 14,167 cleared, 14,167 abstained, 35,416 built; 15,938 referrals. Judging unchanged. Not measured savings or decisions.");
     const edited = calculateBaseline({ ...BASELINE_DEFAULTS, volume: 12 });
-    expect(baselineSummary(edited, true)).toContain("2 pharmacy-caught, 3 cleared, 2 abstained, 5 built");
+    expect(baselineSummary(edited, true)).toContain("3 pharmacy-caught, 2 cleared, 2 abstained, 5 built");
     expect(baselineSummary(edited, false)).toBe("Synthetic scenario: 12 items; 1.4 reference hours. Assisted estimates hidden. No measured savings.");
     for (const enabled of [true, false]) console.info("Advisory word count / budget 25:", baselineSummary(result, enabled).split(/\s+/).length);
   });

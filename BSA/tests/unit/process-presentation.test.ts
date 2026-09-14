@@ -30,6 +30,18 @@ vi.mock("@/lib/store", async (importOriginal) => {
 function render(Component: ComponentType, path = "/") {
   return renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, createElement(Component)));
 }
+function tourCard(markup: string, scenario: string) {
+  const start = markup.search(new RegExp(`<li\\b[^>]*data-case="${scenario}"`));
+  expect(start, `Tour card ${scenario}`).toBeGreaterThanOrEqual(0);
+  const tail = markup.slice(start);
+  let depth = 0;
+  for (const tag of tail.matchAll(/<\/?li\b[^>]*>/g)) {
+    depth += tag[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) return tail.slice(0, tag.index + tag[0].length);
+  }
+  throw new Error(`Tour card ${scenario} has no closing list item`);
+}
+
 
 beforeEach(() => {
   useAppStore.getState().resetDemo();
@@ -52,7 +64,6 @@ describe("whole-process presentation", () => {
       expect(markup).toContain(label);
     }
     expect(JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS })).toBe(source);
-    expect(source).toContain("Azure");
     expect(useAppStore.getState()).toBe(state);
   });
 
@@ -186,6 +197,18 @@ describe("whole-process presentation", () => {
     expect(resubmitted).toContain("Open case A");
   });
 
+  it("renders all four playable tour items without treating background C as unavailable evidence", () => {
+    const before = useAppStore.getState();
+    const markup = render(HomePage, "/#cases");
+    expect(markup).not.toContain('role="alert"');
+    for (const id of ["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"]) {
+      expect(markup).toContain(id);
+    }
+    expect(markup).not.toContain('href="/case/EX-24119"');
+    expect(markup).not.toContain('href="/case/EX-24088"');
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it.each([
     { name: "B EPS Off", id: "EX-24112", scenario: "B", paper: false, enabled: false, declared: false },
     { name: "B readable paper Off", id: "EX-24112", scenario: "B", paper: true, enabled: false, declared: false },
@@ -201,7 +224,7 @@ describe("whole-process presentation", () => {
     store.setAgentEnabled(enabled);
     const before = useAppStore.getState();
     const markup = render(HomePage, "/#cases");
-    const card = markup.split(`data-case="${scenario}"`)[1].split('data-case="C"')[0];
+    const card = tourCard(markup, scenario);
     expect(useAppStore.getState()).toBe(before);
     if (!paper) {
       expect(card).toContain("Read EPS claim message");
@@ -249,7 +272,7 @@ describe("whole-process presentation", () => {
       store.setPerspective(perspective);
       const before = useAppStore.getState();
       const markup = render(HomePage, "/#cases");
-      const card = markup.split('data-case="B"')[1].split('data-case="C"')[0];
+      const card = tourCard(markup, "B");
       expect(card).toContain('data-case-capture="complete"');
       expect(card).toContain("Completed Type 1 capture");
       expect(card).toContain("A person confirmed the captured fields");

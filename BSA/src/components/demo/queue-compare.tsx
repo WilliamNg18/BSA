@@ -5,7 +5,7 @@ import { formatBaselineNumber as n, type MonthModelResult } from "@/lib/domain/b
 import { projectQueueComparison, queueCitationAvailable } from "@/lib/domain/queue-model";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useAppStore } from "@/lib/store";
-import { CASES } from "@/lib/domain/cases";
+import { PLAYABLE_CASE_IDS } from "@/lib/domain/cases";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { CompactTooltip as Tooltip, CompactTooltipContent as TooltipContent, CompactTooltipTrigger as TooltipTrigger } from "@/components/ui/compact-tooltip";
 
@@ -14,10 +14,10 @@ export function QueueComparison({ result, elapsed }: { result: MonthModelResult;
   const lifecycles = useAppStore((s) => s.lifecycles);
   const revisions = useAppStore((s) => s.caseRevisions);
   const recorded = Object.keys(states).filter((id) => states[id] === "human_decision_recorded");
-  const citedIds = useMemo(() => CASES.filter((item) => {
-    const current = caseForLifecycle(item.id, lifecycles, revisions);
+  const citedIds = useMemo(() => PLAYABLE_CASE_IDS.filter((id) => {
+    const current = caseForLifecycle(id, lifecycles, revisions);
     return current !== null && queueCitationAvailable(current);
-  }).map((item) => item.id), [lifecycles, revisions]);
+  }), [lifecycles, revisions]);
   return <div className="grid gap-4 grid-cols-2" data-comparison-columns>
     {[false, true].map((assisted) => {
       const projection = projectQueueComparison(result, elapsed, assisted, recorded, citedIds);

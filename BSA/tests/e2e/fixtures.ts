@@ -8,6 +8,13 @@ export async function captureJson(testInfo: TestInfo, name: string, value: unkno
 }
 
 export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: string) {
+  if (page.viewportSize()?.width !== 1440) {
+    await captureJson(testInfo, `${name}-capture-scope`, {
+      captured: false, reason: "New PNG evidence is 1440 px only; functional assertions still run at 1280 px.",
+      viewport: page.viewportSize(),
+    });
+    return;
+  }
   const path = testInfo.outputPath(`${name}.png`);
   await page.screenshot({ path, fullPage: true });
   await testInfo.attach(name, { path, contentType: "image/png" });
@@ -54,7 +61,7 @@ export async function confirmReset(page: Page) {
   await expect(dialog).toHaveCount(0);
 }
 
-export const automaticCaseIds = ["EX-24107", "EX-24101"];
+export const automaticCaseIds = ["EX-24107"];
 
 export async function openCaseFromQueueOrClaim(page: Page, id: string) {
   if (!automaticCaseIds.includes(id)) {
@@ -91,10 +98,8 @@ export { expect };
 export const cases = [
   { id: "EX-24107", title: "Valid and complete" },
   { id: "EX-24112", title: "Missing or insufficient information" },
-  { id: "EX-24119", title: "Evidence conflict" },
+  { id: "SYN-FQ123-MISMATCH", title: "Complete format, wrong pack" },
   { id: "EX-24123", title: "Deliberate failure and abstention" },
-  { id: "EX-24101", title: "Cleared by rules (no model call)" },
-  { id: "EX-24088", title: "Human decision recorded" },
 ];
 
 export const staticRoutes = [

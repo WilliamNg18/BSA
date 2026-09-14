@@ -8,7 +8,7 @@ import { PainMarker } from "./pain-marker";
 import { PrescriptionForm } from "./prescription-form";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useAppStore } from "@/lib/store";
-import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
+import { itemStateLabel } from "@/lib/domain/lifecycle";
 import { PAPER_DECLARATION_PROVENANCE } from "@/lib/domain/paper-capture";
 import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, paperDeclarationAdvice, preparePaperDeclaration, WORKED_PAPER_DECLARATION, type PaperDeclarationDraft } from "@/lib/domain/paper-declaration";
 import { pharmacyDateCorrection, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
@@ -114,7 +114,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
     </div>
     <section aria-label={submitted ? "Submission receipt" : "Current paper submission"} className="space-y-2 rounded-lg border p-4">
       {submitted && <h2 className="font-semibold">Submission receipt</h2>}
-      <h3 className="font-semibold">Current item: {LIFECYCLE_LABELS[lifecycle.state].pharmacy}</h3>
+      <h3 className="font-semibold">Current item: {itemStateLabel(lifecycle, "pharmacy")}</h3>
       <p className="text-sm">Attempt {revision.number}. Shared with NHSBSA in every perspective.</p>
       {submitted && <>
         <p role="status" className="text-sm">Submitted (synthetic). No claim sent; no payment changed by this demonstration.</p>

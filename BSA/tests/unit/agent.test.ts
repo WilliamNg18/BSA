@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { runAgent } from "../../src/lib/domain/agent";
 import { CASES } from "../../src/lib/domain/cases";
-import { useAppStore } from "../../src/lib/store";
+import { historicalDecisionRecords, sessionCase, useAppStore } from "../../src/lib/store";
 
 beforeEach(() => useAppStore.getState().resetDemo());
 
@@ -69,10 +69,13 @@ describe("six synthetic outcomes", () => {
     expect(useAppStore.getState().records).toBe(records);
   });
 
-  it("F remains decided in session state with its pinned seeded record", () => {
+  it("F retains its pinned historical records without becoming operational", () => {
+    const before = useAppStore.getState();
     runAgent(CASES[5]);
-    expect(useAppStore.getState().caseStates["EX-24088"]).toBe("human_decision_recorded");
-    expect(useAppStore.getState().records).toEqual([expect.objectContaining({
+    expect(sessionCase("EX-24088")).toBeNull();
+    expect(useAppStore.getState()).toBe(before);
+    expect(before.records).toEqual([]);
+    expect(historicalDecisionRecords()).toEqual([expect.objectContaining({
       id: "DR-000871", caseId: "EX-24088", tariffVersion: "2026-08",
       recommendation: "REFER_BACK", decision: "REFER_BACK", isOverride: false, synthetic: true,
     }), expect.objectContaining({
@@ -109,7 +112,7 @@ describe("governance and fail-open paths", () => {
       agentVersion: pack.agentVersion, inputs: [], sources: [], checks: pack.gate.checks,
       recommendation: pack.recommendation, decision: "ESCALATE", overrideReason: "Senior review required" });
     expect(record).toMatchObject({ isOverride: true, overrideReason: "Senior review required" });
-    expect(originalRecords).toHaveLength(2);
+    expect(originalRecords).toHaveLength(0);
     expect(useAppStore.getState().records).toEqual([...originalRecords, record]);
     store.setAgentEnabled(false);
     store.resetDemo();
