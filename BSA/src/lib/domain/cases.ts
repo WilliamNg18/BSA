@@ -272,6 +272,13 @@ export const TWO_GATE_CASES: readonly ExceptionCase[] = [
   },
 ];
 
+/** The only operational identities in the current four-case demonstration. */
+export const PLAYABLE_CASE_IDS = Object.freeze(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"] as const);
+export function isPlayableCase(id: string | null | undefined): boolean {
+  return typeof id === "string" && PLAYABLE_CASE_IDS.some((candidate) => candidate === id);
+}
+export const BACKGROUND_CASES: readonly ExceptionCase[] = Object.freeze(CASES.filter((c) => c.scenario === "C" || c.scenario === "F"));
+
 export function caseById(id: string | undefined): ExceptionCase | null {
   if (!id) return null;
   if (id === GENERIC_SUPPLY_CASE.id) return GENERIC_SUPPLY_CASE;

@@ -1,5 +1,6 @@
 /** Synthetic month for the single operational pharmacy. */
-import { CASES, TWO_GATE_CASES } from "./cases";
+import { CASES, TWO_GATE_CASES, PLAYABLE_CASE_IDS } from "./cases";
+import { createEpsPrescription } from "./eps-check";
 import { HILLCREST_PHARMACY, productByCode } from "./reference";
 import { type CaseLifecycle, type CaseRevision, type HistoryEvent, type LifecycleState } from "./lifecycle";
 import { immutable } from "./lifecycle-model";
@@ -8,7 +9,7 @@ const canonicalStates: LifecycleState[] = ["paid", "referred_back", "information
 const templates: Record<LifecycleState, number> = { submitted: 1, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3, released_to_pricing: 0 };
 
 /** Fresh deeply immutable seeds. Metadata-only rows use explicitly synthetic templates. */
-export function seededLifecycleSession(): {
+export function historicalLifecycleFixtures(): {
   lifecycles: Record<string, CaseLifecycle>;
   caseRevisions: Record<string, readonly CaseRevision[]>;
 } {
@@ -92,6 +93,16 @@ export function seededLifecycleSession(): {
     const referral = lifecycles[id].history.find((event) => event.to === "referred_back")!;
     Object.assign(referral, { rbCode: "SYN-NCSO", processStep: "referral", exactFix: "Add the endorsement date beside the initials." });
   }
+  return immutable({ lifecycles, caseRevisions });
+}
+
+/** Four playable items only. Historical fixtures remain read-only test evidence. */
+export function seededLifecycleSession(): ReturnType<typeof historicalLifecycleFixtures> {
+  const historical = historicalLifecycleFixtures();
+  const lifecycles = Object.fromEntries(PLAYABLE_CASE_IDS.map((id) => [id, historical.lifecycles[id]]));
+  const caseRevisions = Object.fromEntries(PLAYABLE_CASE_IDS.map((id) => [id, historical.caseRevisions[id]]));
+  caseRevisions[CASES[0].id] = [{ ...caseRevisions[CASES[0].id][0], channel: "eps",
+    epsPrescription: { ...createEpsPrescription(CASES[0]), claimMessageState: "submitted" } }];
   return immutable({ lifecycles, caseRevisions });
 }
 

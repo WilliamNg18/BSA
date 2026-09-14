@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { caseById } from "../../src/lib/domain/cases";
+import { caseById, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
+import { historicalLifecycleFixtures } from "../../src/lib/domain/lifecycle-seed";
 import { NO_VERIFICATION, itemStateLabel } from "../../src/lib/domain/lifecycle";
 import { evaluateItemVerification } from "../../src/lib/domain/verification";
 import { checkPharmacyCorrection, initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
@@ -28,7 +29,7 @@ describe("authoritative two-gate source verification", () => {
     expect(store().lifecycles[mismatch].state).toBe("in_review");
   });
 
-  it.each(["EX-24107", "EX-24101", readable])("matching %s releases automatically only on explicit On submission", (id) => {
+  it.each(["EX-24107"])("matching %s releases automatically only on explicit On submission", (id) => {
     const before = getDomainSnapshot();
     store().setAgentEnabled(true);
     expect(getDomainSnapshot()).toEqual(before);
@@ -47,7 +48,7 @@ describe("authoritative two-gate source verification", () => {
 
   it("readable scan does not corroborate an edited declaration", () => {
     const original = caseById(readable)!;
-    const revision = store().caseRevisions[readable][0];
+    const revision = historicalLifecycleFixtures().caseRevisions[readable][0];
     const paperDeclaration = { ...revision.paperDeclaration!, quantity: 56 };
     const result = evaluateItemVerification(original, { ...revision, paperDeclaration, declaration: undefined }, true);
     expect(result.verification).toEqual({ gate1: "pass", gate2: "fail", reconciled: false, released: false });
@@ -112,22 +113,23 @@ describe("authoritative two-gate source verification", () => {
   });
 
   it("a new submission invalidates release, drafts and capture, preserving old history", () => {
-    send(readable, true);
-    const before = structuredClone(store().lifecycles[readable].history);
-    store().setPharmacyDraft(readable, { ...initialisePharmacyDraft(sessionCase(readable)!, store().caseRevisions[readable].at(-1)!) });
-    send(readable, false);
-    expect(store().itemVerification[readable]).toEqual(NO_VERIFICATION);
-    expect(store().itemProcesses[readable].releaseOrigin).toBeUndefined();
-    expect(store().pharmacyDrafts[readable]).toBeUndefined();
-    expect(store().lifecycles[readable].history.slice(0, before.length)).toEqual(before);
-    expect(() => store().setPharmacyDraft(readable, { revision: 2, endorsementText: "old" })).toThrow("stale");
+    const id = "EX-24107";
+    send(id, true);
+    const before = structuredClone(store().lifecycles[id].history);
+    store().setPharmacyDraft(id, { ...initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!) });
+    send(id, false);
+    expect(store().itemVerification[id]).toEqual(NO_VERIFICATION);
+    expect(store().itemProcesses[id].releaseOrigin).toBeUndefined();
+    expect(store().pharmacyDrafts[id]).toBeUndefined();
+    expect(store().lifecycles[id].history.slice(0, before.length)).toEqual(before);
+    expect(() => store().setPharmacyDraft(id, { revision: 2, endorsementText: "old" })).toThrow("stale");
   });
 
   it("Apply suggestion fills a draft; final matching referral explicitly approves the note; pharmacy Apply is separate", () => {
     send(b, true);
     store().arriveInQueue(b);
     store().applySuggestionToDecision(b);
-    expect(store().records).toHaveLength(2);
+    expect(store().records).toHaveLength(0);
     const draft = store().operatorDrafts[b];
     store().referBack(b, draft.rbCode, draft.note);
     expect(store().records.at(-1)?.approvedDraft?.text).toBe(draft.note);
@@ -146,11 +148,32 @@ describe("authoritative two-gate source verification", () => {
   });
 
   it("generic correction fills actual source fields and never approves or submits from Apply", () => {
-    const id = "SYN-FQ123-TYPE2";
+    const id = mismatch;
     store().setAgentEnabled(true);
     store().applySuggestedCorrection(id);
     expect(store().pharmacyDrafts[id].epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
     expect(store().lifecycles[id].state).toBe("in_review");
     expect(store().caseRevisions[id]).toHaveLength(1);
+  });
+
+  it("keeps exactly four operational identities and blocks every background action", () => {
+    for (const map of [store().lifecycles, store().caseRevisions, store().itemProcesses, store().itemVerification, store().caseStates]) {
+      expect(Object.keys(map).sort()).toEqual([...PLAYABLE_CASE_IDS].sort());
+    }
+    for (const id of ["EX-24119", "EX-24101", "EX-24088", readable, "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) {
+      expect(sessionCase(id)).toBeNull();
+      expect(() => store().followCase(id)).toThrow("Unknown");
+      expect(() => store().submitItem({ caseId: id, channel: "eps", endorsementText: "" })).toThrow("Unknown");
+    }
+  });
+
+  it("validates human-confirmed seed D without treating its retained scan text as the declaration", () => {
+    const seed = store().caseRevisions[d][0], snapshot = structuredClone(seed);
+    store().setAgentEnabled(true);
+    store().confirmType1({ caseId: d, revision: 1, provenance: "human_capture", declarationReconciled: true,
+      fields: { ...seed.declaration!.fields, prescriber: "Separately established synthetic prescriber" } });
+    expect(getReleaseEligibility(d).allowed).toBe(true);
+    expect(store().caseRevisions[d][0]).toEqual(snapshot);
+    expect(caseById(d)!.extracted.endorsementText).not.toBe(seed.declaration!.fields.endorsementText);
   });
 });
