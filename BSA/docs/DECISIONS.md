@@ -1914,3 +1914,13 @@ All streams keep check, units, desktop functional browser coverage and axe
 blocking. No tool quota is bypassed, and no CI result is called a manual
 WCAG certification. The existing hosting, billing, visibility and protected
 rollback/archive references remain unchanged.
+
+## 2026-09-14: Header help cannot block navigation
+
+Question: retain the Agent switch's focus-triggered floating help? Choice:
+remove only this redundant custom tooltip, keep the persistent `agent-help`
+accessible description and native hover title. The current On/Off label stays
+visible. Tie-breakers: reachable human controls and the smallest fix. The shared
+hoverable, Escape-dismissible tooltip remains unchanged for evidence figures.
+The bottom-flipped header tooltip demonstrably intercepted the tour Next button;
+no forced clicks, longer timeouts or pointer-event suppression are used.
