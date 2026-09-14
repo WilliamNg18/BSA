@@ -2124,6 +2124,11 @@ An explicit side visit shows only that item's side. Opening a normal step 8
 queue row instead updates the queue's case/channel query and keeps its one
 opened row. Both operations are presentation-only. Tie-breaker: one focus.
 
+Question: may a generic Follow comparison imply operator work for complete A?
+Choice: no. Reuse the existing case-specific scenario, with D's pharmacy or
+operator hand-off selected by side. A keeps its automatic/no-operator comparison.
+Tie-breaker: truthful attribution.
+
 ## 2026-09-14: Source authority and integration follow-through
 
 - Question: can the seeded referral's workbench apply a fix before a new Send? Choice: an explicit `new_submission` draft purpose permits preparation without approving the historical referral; Resubmit rejects that purpose. Tie-breaker: working pre-send flow without hidden submission or approval.
