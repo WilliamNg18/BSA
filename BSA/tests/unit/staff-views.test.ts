@@ -11,7 +11,7 @@ import { sessionCase, useAppStore } from "../../src/lib/store";
 import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
-import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { itemStateLabel, LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CaseSourceEvidence, ConfirmedCaptureEvidence, OriginalPaperDeclaration, RawCaseFields } from "../../src/components/demo/case-presentation";
 import { CASES } from "../../src/lib/domain/cases";
 import type { EpsPrescription } from "../../src/lib/domain/types";
@@ -63,7 +63,7 @@ describe("Task 29 current-revision staff presentation", () => {
       const process = before.itemProcesses[lifecycle.caseId];
       if (staffLane(lifecycle, process) === "type2") expect(table).toContain(lifecycle.caseId);
       else expect(table).not.toContain(`data-case-id="${lifecycle.caseId}"`);
-      if (staffLane(lifecycle, process)) expect(html).toContain(LIFECYCLE_LABELS[lifecycle.state].pharmacy);
+      if (staffLane(lifecycle, process)) expect(html).toContain(itemStateLabel(lifecycle, "nhsbsa", enabled));
     }
     expect(html).toContain('data-type1-case="EX-24123"');
     expect(html).toContain("Priced automatically this month, no person involved:");
