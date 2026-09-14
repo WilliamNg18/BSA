@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { NativeChoiceGroup, NativeChoiceItem } from "@/components/ui/native-radio-group";
 import { BoundaryTag, SyntheticTag } from "@/components/demo/labels";
 import { EpsPharmacyCapture } from "@/components/demo/eps-pharmacy-capture";
@@ -8,7 +8,7 @@ import type { ItemChannel } from "@/lib/domain/types";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { PharmacyReleasedCount } from "./pharmacy-submission-receipt";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
-import { isPlayableCase } from "@/lib/domain/cases";
+import { isPlayableCase, playableCaseChannel } from "@/lib/domain/cases";
 
 export function PharmacySubmissionPanel({ caseId, channel, controls = "correct-and-submit" }: {
   caseId: string; channel?: ItemChannel; controls?: "submit" | "correct-and-submit";
@@ -22,7 +22,21 @@ export function PharmacySubmissionPanel({ caseId, channel, controls = "correct-a
 }
 
 export function PharmacyPage() {
-  const [channel, setChannel] = useState<ItemChannel>("eps");
+  const [params, setParams] = useSearchParams();
+  const requestedCase = params.get("caseId") ?? params.get("case");
+  const requestedChannel = params.get("channel");
+  const channel = requestedChannel === "eps" || requestedChannel === "paper" ? requestedChannel
+    : playableCaseChannel(requestedCase ?? "") ?? "eps";
+  const caseId = requestedCase ?? (channel === "paper" ? "EX-24123" : "EX-24112");
+  const invalidSelection = !isPlayableCase(caseId) || playableCaseChannel(caseId) !== channel ||
+    requestedChannel !== null && requestedChannel !== "eps" && requestedChannel !== "paper";
+  function select(caseId: string, channel: ItemChannel) {
+    const next = new URLSearchParams(params);
+    next.delete("caseId");
+    next.set("case", caseId);
+    next.set("channel", channel);
+    setParams(next);
+  }
   return <div className="mx-auto max-w-7xl space-y-6">
     <header className="space-y-2">
       <SyntheticTag>Synthetic pharmacy, synthetic prescription, synthetic claim</SyntheticTag>
@@ -34,13 +48,17 @@ export function PharmacyPage() {
         <BoundaryTag cls="human" />
       </div>
     </header>
-    <NativeChoiceGroup value={channel} onValueChange={(value) => {
-      if (value === "eps" || value === "paper") setChannel(value);
+    <NativeChoiceGroup value={invalidSelection ? "" : channel} onValueChange={(value) => {
+      if (value === "eps" || value === "paper") {
+        select(playableCaseChannel(caseId) === value ? caseId : value === "eps" ? "EX-24112" : "EX-24123", value);
+      }
     }} aria-label="Submission channel" className="justify-start">
       <NativeChoiceItem value="eps">EPS</NativeChoiceItem>
       <NativeChoiceItem value="paper">Paper</NativeChoiceItem>
     </NativeChoiceGroup>
-    {channel === "eps" ? <EpsPharmacyCapture /> : <PaperPharmacyCapture caseId="EX-24123" />}
+    {invalidSelection ? <p role="alert">Unknown or mismatched example. Choose a submission channel to continue.</p>
+      : channel === "eps" ? <EpsPharmacyCapture caseId={caseId} onCaseChange={(id) => select(id, "eps")} />
+        : <PaperPharmacyCapture caseId={caseId} />}
     <PharmacyReleasedCount />
     <PharmacyModelStrip />
   </div>;

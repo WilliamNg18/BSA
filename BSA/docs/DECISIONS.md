@@ -1982,6 +1982,8 @@ Where should Apply write? Use revision-bound `operatorDrafts` for the actual
 visible outcome, RB code and note, not page-local decision copies; one state
 and explicit human authority take precedence over presentation convenience.
 
+- Question: what item appears after exiting a pharmacy demo step? Chosen: the ordinary form reads the retained case/channel query, and its selectors update that query; invalid combinations show no substitute item. Same-item continuity without operational mutations wins.
+
 Does Off discard an applied suggestion? Start empty before any human drafting,
 but preserve subsequent human edits and Apply history when toggling; the
 one-state rule takes precedence over a destructive interpretation of empty.

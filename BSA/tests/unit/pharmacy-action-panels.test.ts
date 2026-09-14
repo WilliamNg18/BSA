@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PharmacyClaimActionPanel } from "@/components/demo/claim-detail";
-import { PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
+import { PharmacyPage, PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
 import { PharmacyReleasedCount, PharmacySubmissionReceipt } from "@/components/demo/pharmacy-submission-receipt";
 import { useAppStore, getDomainSnapshot } from "@/lib/store";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
@@ -23,7 +23,8 @@ vi.mock("@/lib/store", async (importOriginal) => {
     original.useAppStore,
   ) };
 });
-const render = (component: ReturnType<typeof createElement>) => renderToStaticMarkup(createElement(MemoryRouter, null, component));
+const render = (component: ReturnType<typeof createElement>, path = "/") =>
+  renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, component));
 function currentDraft(id: string, channel?: "eps" | "paper") {
   const s = useAppStore.getState();
   return initialisePharmacyDraft(caseForLifecycle(id, s.lifecycles, s.caseRevisions, s.itemProcesses)!, s.caseRevisions[id].at(-1)!, channel);
@@ -216,6 +217,41 @@ describe("recorded receipt and release count", () => {
     expect(render(createElement(PharmacyReleasedCount))).toMatch(/data-pharmacy-released-count="true">1</);
     s.setManualLoopInput("preventionPercent", "1");
     expect(render(createElement(PharmacyReleasedCount))).toMatch(/data-pharmacy-released-count="true">1</);
+  });
+
+  describe("ordinary pharmacy preserves demo exit context", () => {
+    it.each([
+      ["EX-24107", "eps"], ["EX-24112", "eps"], ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
+    ])("keeps %s and its channel without submission on exit", (caseId, channel) => {
+      const s = useAppStore.getState();
+      s.followCase(caseId);
+      s.setAgentEnabled(true);
+      s.setDemoStep(3);
+      const before = getDomainSnapshot();
+      s.setDemoStep(null);
+      const html = render(createElement(PharmacyPage), `/pharmacy?case=${caseId}&channel=${channel}`);
+      expect(html).toContain(`data-pharmacy-case="${caseId}"`);
+      expect(html).toContain(channel === "eps" ? "Send claim" : "Post paper with declaration");
+      if (channel === "eps") expect(html).toContain('aria-label="Choose an EPS scenario"');
+      expect(useAppStore.getState().followedCaseId).toBe(caseId);
+      expect(useAppStore.getState().agentEnabled).toBe(true);
+      expect(getDomainSnapshot()).toEqual(before);
+    });
+
+    it("supports existing caseId links and derives their canonical channel", () => {
+      const html = render(createElement(PharmacyPage), "/pharmacy?caseId=EX-24123");
+      expect(html).toContain('data-pharmacy-case="EX-24123"');
+      expect(html).toContain("Post paper");
+      expect(html).not.toContain("Send claim");
+    });
+
+    it.each(["case=EX-24119", "case=EX-24107&channel=paper", "case=EX-24107&channel=unknown"])("never silently edits a different item for %s", (query) => {
+      const before = getDomainSnapshot();
+      const html = render(createElement(PharmacyPage), `/pharmacy?${query}`);
+      expect(html).toContain("Unknown or mismatched example");
+      expect(html).not.toContain("data-pharmacy-case");
+      expect(getDomainSnapshot()).toEqual(before);
+    });
   });
 
   it("never relabels a human-origin release no-operator", () => {

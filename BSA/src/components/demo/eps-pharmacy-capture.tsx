@@ -18,13 +18,13 @@ const SCENARIOS = [
   { id: "SYN-FQ123-MISMATCH", label: "Wrong pack size" },
 ] as const;
 
-export function EpsPharmacyCapture({ caseId: fixedCaseId, compact = false, controls = "correct-and-submit" }: {
-  caseId?: string; compact?: boolean; controls?: "submit" | "correct-and-submit";
+export function EpsPharmacyCapture({ caseId: fixedCaseId, onCaseChange, compact = false, controls = "correct-and-submit" }: {
+  caseId?: string; onCaseChange?: (caseId: string) => void; compact?: boolean; controls?: "submit" | "correct-and-submit";
 } = {}) {
   const [selected, select] = useState("EX-24112");
   const caseId = fixedCaseId ?? selected;
   return <div className="space-y-4">
-    {!fixedCaseId && <NativeChoiceGroup value={caseId} onValueChange={select} aria-label="Choose an EPS scenario" className="justify-start">
+    {(!fixedCaseId || onCaseChange) && <NativeChoiceGroup value={caseId} onValueChange={onCaseChange ?? select} aria-label="Choose an EPS scenario" className="justify-start">
       {SCENARIOS.map((scenario) => <NativeChoiceItem key={scenario.id} value={scenario.id}>{scenario.label}</NativeChoiceItem>)}
     </NativeChoiceGroup>}
     <EpsClaimEditor key={caseId} caseId={caseId} compact={compact} controls={controls} />

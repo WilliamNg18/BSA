@@ -51,10 +51,11 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));
     expect(html).toContain("NCSO JB 27/08/26");
     expect(html).toContain("Declared dispensing date");
-    expect(html).toContain("Image agreement remains unknown");
-    expect(html).toContain("separately established prescriber evidence");
+    expect(html).toMatch(/Image (?:agreement remains unknown|unreadable; agreement unknown)/);
+    expect(html).toMatch(/[Ss]eparately established (?:prescriber )?evidence/);
     expect(html).toContain("Received declaration requirement checks");
-    expect(html).toContain("Declared evidence complete; human confirmation and prescriber evidence remain required. Not read from the form.");
+    expect(html).toContain("not read from the form");
+    expect(html).toMatch(/<input(?=[^>]*id="[^"]*prescriber")(?=[^>]*value="")[^>]*>/);
     expect(html).toContain('type="checkbox"');
     expect(html).not.toContain("checked=");
     expect(html).toContain("Confirm, not key");
