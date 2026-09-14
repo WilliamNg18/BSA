@@ -95,7 +95,7 @@ describe("claims presentation uses recorded events separately from monthly proje
     const store = useAppStore.getState();
     const at = new Date().toISOString();
     const b = store.lifecycles["EX-24112"];
-    const c = store.lifecycles["EX-24119"];
+    const c = store.lifecycles["EX-24123"];
     useAppStore.setState({
       lifecycles: {
         [b.caseId]: { ...b, history: [

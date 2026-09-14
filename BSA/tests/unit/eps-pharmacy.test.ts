@@ -74,7 +74,7 @@ describe("visible EPS prescription", () => {
 
   it("shows exactly three EPS scenarios, the source fields, manual pain and explicit Send", () => {
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(EpsPharmacyCapture)));
-    for (const label of ["Complete endorsement", "NCSO missing date", "Generic missing brand", "Dispenser endorsement", "Exemption status", "Send claim", "No check against this month", "If incomplete, problems may be found at NHSBSA weeks later"]) expect(html).toContain(label);
+    for (const label of ["Complete endorsement", "NCSO missing date", "Wrong pack size", "Dispenser endorsement", "Exemption status", "Send claim", "No check against this month", "If incomplete, problems may be found at NHSBSA weeks later"]) expect(html).toContain(label);
     expect(html).not.toContain("Unreadable form");
     expect(html).not.toContain("Apply correction");
     expect(html).toContain("NOT RUN");
@@ -149,17 +149,17 @@ describe("visible EPS prescription", () => {
       items: original.items.map((item) => ({ ...item, prescribedCode: EPS_SUPPLY_RULE.productCode, dispensedCode: EPS_SUPPLY_RULE.productCode, product: "Amoxicillin 500mg capsules (generic synthetic)", dispensedName: "Amoxicillin 500mg capsules (generic synthetic)" })),
       supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: 21, form: "capsules" },
     };
-    const missing = checkEpsPharmacy(preview("SYN-FQ123-TYPE2", generic), "");
+    const missing = checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", generic), "");
     expect(missing.status).toBe("missing");
     expect(missing.gap).toContain("Brand or manufacturer");
     const complete = { ...generic, supplyEvidence: { ...generic.supplyEvidence!, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer } };
-    expect(checkEpsPharmacy(preview("SYN-FQ123-TYPE2", complete), "").status).toBe("ready");
-    expect(checkEpsPharmacy(preview("EX-24101", complete), "").status).not.toBe("ready");
+    expect(checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", complete), "").status).toBe("ready");
+    expect(checkEpsPharmacy(preview("EX-24107", complete), "").status).not.toBe("ready");
     const missingPrescriber = { ...complete, prescriber: { ...complete.prescriber, name: "" } };
-    const incomplete = checkEpsPharmacy(preview("SYN-FQ123-TYPE2", missingPrescriber), "");
+    const incomplete = checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", missingPrescriber), "");
     expect(incomplete.status).toBe("missing");
     expect(incomplete.gap).not.toBe("None");
     expect(incomplete.gap.toLowerCase()).toContain("prescriber");
-    expect(useAppStore.getState().caseRevisions["EX-24101"]).toHaveLength(1);
+    expect(useAppStore.getState().caseRevisions["SYN-FQ123-MISMATCH"]).toHaveLength(1);
   });
 });

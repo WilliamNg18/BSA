@@ -63,7 +63,7 @@ export function PharmacyClaimsPage() {
     <p data-pharmacy-identity>{HILLCREST_PHARMACY.name} ({pharmacy}) · Synthetic pharmacy</p>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
-      <p className="text-sm">Paid on the normal schedule includes recorded release to existing pricing. Synthetic categories overlap; no payments calculated.</p>
+      <p className="text-sm">Paid on the normal schedule includes release to existing pricing. Categories overlap; no payments calculated.</p>
       <dl className="grid gap-3 grid-cols-5">
         {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{formatProcessItems(total)}</dd></div>)}
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
