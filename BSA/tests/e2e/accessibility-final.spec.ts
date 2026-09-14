@@ -89,8 +89,18 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await flag.focus();
   await flag.press("Space");
   await expect(flag).toBeChecked();
+  await expect(flag).toHaveAccessibleDescription(/Off withholds recommendations/);
+  await expect(flag).toHaveAttribute("title", /Off withholds recommendations/);
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await page.goto("./#pipeline");
+  const figure = page.getByRole("button", { name: "Monthly referrals: figure context", exact: true });
+  await figure.focus();
+  await expect(page.getByRole("tooltip")).toBeVisible();
+  await page.getByRole("tooltip").hover();
   await expect(page.getByRole("tooltip")).toBeVisible();
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await expect(figure).toBeFocused();
   const chapter = page.getByRole("button", { name: "Choose tour chapter" });
   await chapter.press("ArrowDown");
   await expect(page.getByRole("menuitem").first()).toBeFocused();
