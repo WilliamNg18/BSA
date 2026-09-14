@@ -5,8 +5,8 @@ import { REFERENCE_MAPPING } from "@/components/how-it-works/reference-mapping";
 
 function ReferenceTable({ table, reference = false }: { table: DesignTable; reference?: boolean }) {
   return (
-    <div className="overflow-x-auto rounded-lg border" role="region" tabIndex={0} aria-label={table.caption}>
-      <table className="w-full table-fixed text-left text-sm" data-reference-mapping={reference || undefined}>
+    <div className="overflow-x-auto rounded-lg border" role="region" tabIndex={0} aria-label={`${table.caption} table`}>
+      <table className="w-full table-fixed text-left text-sm tabular-nums" data-reference-mapping={reference || undefined}>
         <caption className="p-4 text-left font-semibold text-foreground">{table.caption}</caption>
         <thead className="border-y bg-muted/40"><tr>{table.headers.map((header) => <th key={header} scope="col" className="p-3 align-top">{header}</th>)}</tr></thead>
         <tbody>{table.rows.map((row) => <tr key={row[0]} className="border-b last:border-0">
@@ -30,7 +30,7 @@ export function ArchitecturePage() {
         <p className="max-w-4xl text-sm">{DESIGN_PRINCIPLE}</p>
       </header>
       <div className="grid grid-cols-[13rem_minmax(0,1fr)] items-start gap-8">
-        <nav aria-label="How it works contents" className="sticky top-4 max-h-[calc(100vh-2rem)] space-y-3 overflow-y-auto rounded-lg border p-3">
+        <nav aria-label="How it works contents" className="sticky top-[calc(var(--app-chrome-height,auto)+1rem)] max-h-[calc(100vh-var(--app-chrome-height,0px)-2rem)] space-y-3 overflow-y-auto rounded-lg border p-3">
           <h2 className="font-semibold">On this page</h2>
           <ol className="space-y-1">{contents.map(({ id, title }) => <li key={id}>
             <a href={`#${id}`} aria-current={hash === `#${id}` ? "location" : undefined}
