@@ -2214,3 +2214,8 @@ Question: may a generic Follow comparison imply operator work for complete A?
 Choice: no. Reuse the existing case-specific scenario, with D's pharmacy or
 operator hand-off selected by side. A keeps its automatic/no-operator comparison.
 Tie-breaker: truthful attribution.
+
+Question: may the Off comparison use low-contrast muted text? Choice: no.
+The actual desktop axe run measured 4.34:1 on the muted background. Keep the
+grey panel and read-only label, but use darker light-theme text and lighter
+dark-theme text. Re-run the unchanged checks. Tie-breaker: accessibility.
