@@ -2151,3 +2151,25 @@ in either header mode. No payment is calculated or approved.
 - Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
 - Question: why did the first queue repair remain partially clipped? Choice: preserve the measured failure: the actual table cell was y945, height57, ending at1002 in a1000px viewport after a same-filter click. Explicit filter selections now request focus again, with a small viewport margin for the complete original cell; no span proxy, relaxed visibility ratio or deadline increase. Track actual target/lane changes separately without resetting a user's unchanged filter every render.
 - Question: why was a received answer above the viewport after Follow returned to its NHSBSA case? Choice: case routes need explicit entry focus because the chapter shell deliberately skips them. Focus the actual case heading without implicit scrolling, then align the complete case header below the existing sticky chrome. Run only on route/item changes, never field edits or mode changes; preserve the actual state, answer, card and unchanged one-second verifier.
+
+## 2026-09-14: Mount the real compact tasks, not hidden operational pages
+
+Question: how should the shell enter the new walkthrough? Choice: replace the
+chapter rail with Demo mode after the actual O/P task exports are available.
+The shell mounts exactly one compact submission, claim, Type 1 or operator
+panel in the current comparison column. Ordinary Outlet content is not mounted
+behind it. Exit returns that Outlet without changing operational state.
+Tie-breakers: one action authority and honest focused presentation.
+
+Question: can a perspective change hide the current step? Choice: no. The
+Follow banner remains directly under the header, followed by the separate demo
+strip. Demo layouts sit outside the ordinary opposite-side guard. Explicit
+follow links choose the same item's task surface; the step persists. Header
+Primary navigation and Reset return only after Exit, while the one Agent switch
+and perspective switch remain. Tie-breaker: a continuous shared demonstration.
+
+Question: what should Next focus? Choice: the new step heading, at the top of
+the page, on step or route changes only. Header mode and perspective changes
+do not steal focus. Frozen submission channels are passed to P's renderer,
+without rewriting an item's latest recorded channel. Tie-breakers: keyboard
+operability and truthful source presentation.

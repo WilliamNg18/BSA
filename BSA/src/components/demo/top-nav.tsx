@@ -25,12 +25,13 @@ export function TopNav({ onReset }: { onReset: () => void }) {
     if (navigating.current) event.preventDefault();
     navigating.current = false;
   }
-  const { agentEnabled, setAgentEnabled, resetDemo, perspective } = useAppStore(
+  const { agentEnabled, setAgentEnabled, resetDemo, perspective, demoStep } = useAppStore(
     useShallow((s) => ({
       agentEnabled: s.agentEnabled,
       setAgentEnabled: s.setAgentEnabled,
       resetDemo: s.resetDemo,
       perspective: s.perspective,
+      demoStep: s.demoStep,
     })),
   );
   const navRoutes = routes.filter((r) => r.label && canViewPath(perspective, r.path));
@@ -51,7 +52,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
       >
         Skip to main content
       </a>
-      <div className="flex min-h-[calc(3.5rem-1px)] flex-wrap items-center gap-4 px-6 py-1">
+      <div className="flex min-h-[calc(3.5rem-1px)] flex-nowrap items-center gap-4 px-6 py-1">
         <Link to="/#scene" aria-label="Prescription Exception Case Builder" className="flex shrink-0 items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2">
           <span className="flex size-9 items-center justify-center rounded-md bg-teal-700 text-white" aria-hidden="true">
             <ShieldCheck className="size-5" />
@@ -59,7 +60,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
           <span className="hidden whitespace-nowrap text-sm font-semibold 2xl:inline">Prescription Exception Case Builder</span>
           <span className="hidden whitespace-nowrap text-sm font-semibold xl:inline 2xl:hidden" aria-hidden="true">NHSBSA Case Builder</span>
         </Link>
-        <nav aria-label="Primary" className="ml-0 flex-1">
+        {demoStep === null ? <nav aria-label="Primary" className="ml-0 flex-1">
           <div className="flex items-center gap-1">
             {groups.map((group) => {
               const items = navRoutes.filter((route) => route.group === group);
@@ -71,7 +72,7 @@ export function TopNav({ onReset }: { onReset: () => void }) {
               </DropdownMenu>;
             })}
           </div>
-        </nav>
+        </nav> : <span className="flex-1 text-sm font-semibold">Demo mode</span>}
         <div className="ml-auto flex shrink-0 items-center gap-3">
           <PerspectiveSwitch />
           <div className="flex items-center gap-2 rounded-md border bg-muted/50 px-2 py-1.5">
@@ -81,9 +82,9 @@ export function TopNav({ onReset }: { onReset: () => void }) {
             <span id="agent-help" className="sr-only">On shows synthetic assistance. Off withholds recommendations; evidence and human decisions remain. Scene facts do not change.</span>
             <Label htmlFor="agent-flag" className="whitespace-nowrap text-xs font-semibold">Agent: {agentEnabled ? "On" : "Off"}</Label>
           </div>
-          <Button type="button" size="sm" variant="ghost" onClick={reset} aria-label="Reset demo">
+          {demoStep === null && <Button type="button" size="sm" variant="ghost" onClick={reset} aria-label="Reset demo">
             <RotateCcw aria-hidden="true" /><span>Reset demo</span>
-          </Button>
+          </Button>}
         </div>
       </div>
     </header>
