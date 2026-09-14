@@ -441,7 +441,19 @@ export const useAppStore = create<AppState>((set, get) => {
       const s = get(), revision = s.caseRevisions[caseId]?.at(-1), draft = s.pharmacyDrafts[caseId];
       if (!revision || !draft || draft.revision !== revision.number) throw new Error("A current pharmacy correction draft is required.");
       if (draft.purpose === "new_submission") throw new Error("Send the explicit new attempt, or prepare a correction before resubmitting.");
-      get().resubmitItem({ ...draft, caseId, revision: revision.number, channel: draft.channel ?? revision.channel ?? s.itemProcesses[caseId].channel });
+      const channel = draft.channel ?? revision.channel ?? s.itemProcesses[caseId].channel;
+      const legacy = legacySubmission(caseId, draft.endorsementText);
+      const currentDraft = !draft.epsPrescription && !draft.paperDeclaration && !draft.declaration && channel === revision.channel ? {
+        ...draft, ...(legacy.declaration ? { declaration: legacy.declaration } : {}),
+        ...(legacy.paperDeclaration ? { paperDeclaration: legacy.paperDeclaration } : {}),
+        ...(channel === "eps" && revision.epsPrescription
+          ? { epsPrescription: { ...revision.epsPrescription, dispenserEndorsement: draft.endorsementText } } : {}),
+      } : draft;
+      const checked = s.agentEnabled ? checkPharmacyCorrection(currentCase(caseId), revision, currentDraft) : null;
+      const date = currentDraft.epsPrescription?.dispensingDate ?? currentDraft.paperDeclaration?.dispensingDate ?? currentCase(caseId).extracted.dispensingDate;
+      const precheck = pharmacySnapshot(currentDraft.endorsementText, date, s.agentEnabled ? "scripted" : "off",
+        checked, checked ? timestamp(caseId) : null);
+      get().resubmitItem({ ...currentDraft, caseId, revision: revision.number, channel, precheck });
     },
     pharmacy: createPharmacyState((update) => set((s) => ({ pharmacy: { ...s.pharmacy, ...(typeof update === "function" ? update(s.pharmacy) : update) } })), () => get().pharmacy),
     queue: createQueueState((update) => set((s) => ({ queue: { ...s.queue, ...(typeof update === "function" ? update(s.queue) : update) } }))),

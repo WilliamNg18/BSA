@@ -346,6 +346,35 @@ describe("authoritative two-gate source verification", () => {
     expect(store().caseRevisions[d][0]).toBe(revision);
   });
 
+  it.each([false, true])("shared resubmission records its actual precheck mode rather than a seed placeholder, enabled=%s", (enabled) => {
+    store().setAgentEnabled(enabled);
+    const revision = store().caseRevisions[b][0], draft = initialisePharmacyDraft(sessionCase(b)!, revision);
+    store().setPharmacyDraft(b, { ...draft, purpose: "correction", endorsementText: "NCSO RK 21/08/26",
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO RK 21/08/26" } });
+    store().resubmit(b);
+    const submitted = store().caseRevisions[b].at(-1)!;
+    expect(submitted.kind).toBe("resubmission");
+    expect(submitted.precheck).toMatchObject({
+      typedText: "NCSO RK 21/08/26", dispensingDate: "2026-08-21",
+      mode: enabled ? "scripted" : "off", status: enabled ? "ready" : "not_checked",
+    });
+    if (enabled) expect(submitted.precheck?.checkedAt).toBeTruthy();
+    else expect(submitted.precheck).toMatchObject({ facts: null, checks: [], checkedAt: null, clauseId: null, tariffVersion: null });
+    expect(store().caseRevisions[b][0]).toEqual(revision);
+  });
+
+  it("retains the source for a text-only shared correction while recording its On check", () => {
+    store().setAgentEnabled(true);
+    const original = store().caseRevisions[b][0];
+    store().setPharmacyDraft(b, { revision: 1, endorsementText: "NCSO RK 21/08/26" });
+    store().resubmit(b);
+    expect(store().caseRevisions[b].at(-1)).toMatchObject({
+      epsPrescription: { ...original.epsPrescription!, dispenserEndorsement: "NCSO RK 21/08/26" },
+      precheck: { mode: "scripted", status: "ready" },
+    });
+    expect(store().caseRevisions[b][0]).toEqual(original);
+  });
+
   it("same-state pharmacy preparation cannot erase a human release anchor", () => {
     store().setAgentEnabled(true);
     store().resubmitFromPharmacy(b, "NCSO RK 21/08/26");
