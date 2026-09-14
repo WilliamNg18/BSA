@@ -62,6 +62,12 @@ describe("mounted desktop demo with real compact panels", () => {
     const strip = html.slice(html.indexOf('data-testid="demo-strip"'), html.indexOf("</nav>", html.indexOf('data-testid="demo-strip"')));
     expect(strip).toContain(mismatch);
     expect(strip).toContain("EPS");
+    state().applySuggestedCorrection(mismatch);
+    state().resubmit(mismatch);
+    expect(state().lifecycles[mismatch].state).toBe("resubmitted");
+    expect(state().lifecycles[b].state).toBe("released_to_pricing");
+    expect(state().demoStep).toBe(9);
+    expect(state().followedCaseId).toBe(mismatch);
   });
 
   it.each(DEMO_STEPS.flatMap((step) => [false, true].map((enabled) => ({ step, enabled }))))(
