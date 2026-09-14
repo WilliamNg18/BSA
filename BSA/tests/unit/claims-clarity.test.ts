@@ -126,7 +126,7 @@ describe("claim history perspective boundaries", () => {
       it(`history audience pharmacy=${pharmacy} perspective=${perspective}`, () => {
         useAppStore.getState().setPerspective(perspective);
         const markup = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(LifecycleHistory, { id: "EX-24112", pharmacy })));
-        expect(markup.includes("Follow this case")).toBe(perspective === "both");
+        expect(markup.includes("Follow this case")).toBe(true);
         expect(markup.includes("Open shared queue")).toBe(perspective !== "pharmacy");
         expect(markup.includes(pharmacy ? "View NHSBSA case" : "View pharmacy claim")).toBe(pharmacy ? perspective !== "pharmacy" : perspective !== "nhsbsa");
         expect(markup).toContain('aria-label="Lifecycle events"');

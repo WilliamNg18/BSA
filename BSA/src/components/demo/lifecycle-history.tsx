@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
-import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
+import { itemStateLabel } from "@/lib/domain/lifecycle";
+import { historyStateLabel } from "@/lib/follow-presentation";
 import { useAppStore } from "@/lib/store";
 
 export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmacy?: boolean }) {
@@ -15,7 +16,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
   const actor = row.history.at(-1)?.actor;
   return <section aria-label="Shared case history" className={pharmacy ? "space-y-3 border-t pt-4" : "space-y-3 rounded-xl border bg-card p-4"}>
     <h2 className="font-semibold">Shared case history</h2>
-    <p role="status">{pharmacy ? LIFECYCLE_LABELS[row.state].pharmacy : LIFECYCLE_LABELS[row.state].nhsbsa[enabled ? "on" : "off"]}</p>
+    <p role="status">{itemStateLabel(row, pharmacy ? "pharmacy" : "nhsbsa", enabled)}</p>
     <div className="flex flex-wrap items-center gap-2">
       <BoundaryTag cls={actor === "code" ? "deterministic" : actor === "agent" ? "agent" : "human"} />
       <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>
@@ -27,7 +28,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
         {row.history.map((event, i) => <li key={i} className="rounded-md border p-3 text-sm">
           <dl className="grid gap-1 grid-cols-2">
             <div><dt>Time / actor</dt><dd>{event.at} · {event.actor}</dd></div>
-            <div><dt>Transition</dt><dd>{event.from ? pharmacy ? LIFECYCLE_LABELS[event.from].pharmacy : LIFECYCLE_LABELS[event.from].nhsbsa[enabled ? "on" : "off"] : "New"} → {pharmacy ? LIFECYCLE_LABELS[event.to].pharmacy : LIFECYCLE_LABELS[event.to].nhsbsa[enabled ? "on" : "off"]}</dd></div>
+            <div><dt>Transition</dt><dd>{historyStateLabel(row, i, pharmacy ? "pharmacy" : "nhsbsa", enabled, true)} → {historyStateLabel(row, i, pharmacy ? "pharmacy" : "nhsbsa", enabled)}</dd></div>
             <div><dt>Attempt / record</dt><dd>{event.revision ?? "Historical"} · {event.recordId ?? "No decision record"}</dd></div>
             {event.channel && <div><dt>Channel</dt><dd>{event.channel === "eps" ? "EPS" : "Paper"}</dd></div>}
             {event.rbCode && <div><dt>RB code</dt><dd>{event.rbCode}</dd></div>}
