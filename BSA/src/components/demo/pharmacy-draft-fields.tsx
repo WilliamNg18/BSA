@@ -58,6 +58,6 @@ export function PharmacyDraftFields({ draft, original, channel, update, correcti
           } } })} />
       </label>)}
     </div>}
-    {draft.appliedSuggestion && <p id={`${id}-applied`} role="status" className="text-sm">Pharmacy applied correction. Changed fields highlighted; not submitted.</p>}
+    {draft.appliedSuggestion && <p id={`${id}-applied`} role="status" className="text-sm">Changed fields highlighted; not sent.</p>}
   </fieldset>;
 }

@@ -176,6 +176,28 @@ describe("pharmacy panel human controls", () => {
     expect(after.lifecycles[id].history.at(-1)).toMatchObject({ actor: "pharmacy", processStep: "correction_applied" });
     expect(render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }))).toContain("Ready");
   });
+
+  it("keeps applied compact paper prose cumulatively below 25 words", () => {
+    const id = "EX-24123", s = useAppStore.getState();
+    s.setAgentEnabled(true);
+    const draft = currentDraft(id, "paper");
+    s.setPharmacyDraft(id, { ...draft, endorsementText: "NCSO JB",
+      paperDeclaration: { ...draft.paperDeclaration!, endorsementText: "NCSO JB" } });
+    render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "paper" }));
+    controls.get("apply-correction")!();
+    const html = render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "paper" }));
+    const prose = [...html.matchAll(/<p[^>]*>(.*?)<\/p>/g)].map((match) => match[1].replace(/<[^>]*>/g, "")).join(" ");
+    expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
+  });
+
+  it.each(["EX-24119", "EX-24088", "SYN-FQ123-READABLE", "SYN-FQ123-TYPE2"])("does not expose action controls for background %s", (caseId) => {
+    const before = getDomainSnapshot();
+    const html = render(createElement(PharmacyClaimActionPanel, { caseId }));
+    expect(html).toContain("Background only, not playable");
+    expect(html).not.toContain("<input");
+    expect(html).not.toContain("<button");
+    expect(getDomainSnapshot()).toEqual(before);
+  });
 });
 
 describe("recorded receipt and release count", () => {
