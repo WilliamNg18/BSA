@@ -227,14 +227,19 @@ export const LIFECYCLE_LABELS = {
 /** The no-operator label must never erase an actual operator release. */
 export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nhsbsa" | "both", enabled = false): string {
   const release = row.state === "released_to_pricing"
-    ? row.history.filter((event) => event.to === "released_to_pricing").at(-1) : undefined;
+    ? row.history.filter((event) => event.to === "released_to_pricing" &&
+      (event.from !== event.to || event.processStep === "release_to_pricing" || event.releaseOrigin !== undefined)).at(-1) : undefined;
   if (release?.releaseOrigin === "human_decision" || release?.actor === "operator") {
-    if (release.verification?.gate1 === "none" && release.verification.gate2 === "none") return perspective === "pharmacy"
+    if (release.verification?.gate1 !== "pass" || release.verification.gate2 !== "pass" || !release.verification.reconciled) return perspective === "pharmacy"
       ? "Released to pricing after operator review (synthetic)"
       : "Released to existing pricing after operator review";
     return perspective === "pharmacy"
       ? "Verified and released to pricing after operator review (synthetic)"
       : "Verified and released to existing pricing after operator review";
+  }
+  if (row.state === "released_to_pricing" && !(release?.actor === "code" && release.releaseOrigin === "automatic_verification" &&
+    release.verification?.gate1 === "pass" && release.verification.gate2 === "pass" && release.verification.reconciled && release.verification.released)) {
+    return "Release recorded; verification provenance unavailable (synthetic)";
   }
   const labels = LIFECYCLE_LABELS[row.state];
   return perspective === "pharmacy" ? labels.pharmacy : labels.nhsbsa[enabled ? "on" : "off"];
