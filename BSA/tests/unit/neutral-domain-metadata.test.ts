@@ -36,4 +36,12 @@ describe("neutral current metadata and immutable historical provenance", () => {
     expect(runAgent(CASES[3]).abstainReasons).toHaveLength(3);
     expect(runAgent(CASES[4])).toMatchObject({ recommendation: "NONE", agentInvoked: false });
   });
+
+  it("describes the prepared case pack without claiming an unperformed record write", () => {
+    const records = useAppStore.getState().records;
+    const call = runAgent(CASES[1]).trace.flatMap((step) => step.toolCalls)
+      .find((entry) => entry.tool === "write_decision_record");
+    expect(call?.outputSummary).toBe("Case pack prepared; awaiting human decision");
+    expect(useAppStore.getState().records).toBe(records);
+  });
 });
