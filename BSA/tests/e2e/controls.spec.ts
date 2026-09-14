@@ -123,11 +123,15 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await startDemonstrationReview(page);
   await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  const background = page.getByRole("region", { name: "Historical cases, background", exact: true });
-  await expect(background).toContainText("EX-24119");
-  await expect(background).toContainText("EX-24088");
-  await expect(background.getByRole("link")).toHaveCount(0);
-  await expect(background.getByRole("button")).toHaveCount(0);
+  const background = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("[data-background-case]");
+  await expect(background).toHaveCount(2);
+  for (const id of ["EX-24119", "EX-24088"]) {
+    const row = background.filter({ has: page.getByRole("rowheader", { name: id, exact: true }) });
+    await expect(row).toBeVisible();
+    await expect(row).toContainText("Background only, not playable");
+    await expect(row.getByRole("link")).toHaveCount(0);
+    await expect(row.getByRole("button")).toHaveCount(0);
+  }
 });
 
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {
