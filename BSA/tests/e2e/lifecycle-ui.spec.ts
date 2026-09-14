@@ -1,10 +1,11 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
-import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
+import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState } from "./current-lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { operatorDecision, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { decisionNote, operatorDecision, operatorRadio, performDecision, startDemonstrationReview, type OperatorOutcome } from "./operator-action-helpers";
 import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS } from "../support/release-labels";
+import { PLAYABLE_CASES } from "../../src/lib/domain/cases";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -53,9 +54,9 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
-  await expect(detail(page)).toContainText("Not checked for this edit");
+  await expect(detail(page)).toContainText("Ready");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-  await expect(detail(page)).toContainText("Ready to resubmit");
+  await expect(detail(page)).toContainText("Ready");
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
   await page.getByRole("button", { name: "Resubmit", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
@@ -117,26 +118,27 @@ test("Task9 toggling never approves a draft and arbitrary BB edits never receive
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("BB RK 21/08/26");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-  await expect(detail(page)).toContainText("Agent unable to determine");
+  await expect(detail(page)).toContainText("No supported correction");
   await page.getByText("Precheck evidence", { exact: true }).click();
-  await expect(detail(page)).toContainText("Clause: NOT RUN");
+  await expect(detail(page)).toContainText("2026-08 / P2-C8");
+  await expect(detail(page)).not.toContainText("2026-08 / P2-C9");
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
 });
 
 test("Task9 an actual B information request preserves pharmacy confirmation for human recheck", async ({ page }) => {
   await page.goto(`case/${B}`);
   await startDemonstrationReview(page);
-  await page.getByRole("radio", { name: /^Request information/ }).check();
+  await operatorRadio(page, "REQUEST_INFORMATION").check();
   const question = "Please confirm the dispensing date beside the initials.";
-  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill(question);
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await decisionNote(page, "REQUEST_INFORMATION").fill(question);
+  await performDecision(page, "REQUEST_INFORMATION");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page)).toContainText(LIFECYCLE_LABELS.information_requested.pharmacy);
   await expect(detail(page)).toContainText(question);
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("Pharmacy text is required");
   const confirmation = "The dispensing date is 21 August 2026; please check the original endorsement.";
-  await page.getByRole("textbox", { name: "Confirmation", exact: true }).fill(confirmation);
+  await page.getByRole("textbox", { name: "Confirm", exact: true }).fill(confirmation);
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await queueReview(page, B);
@@ -179,7 +181,7 @@ test("Task19 D blocks Type 2 before capture and A Today clears by code without a
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
 });
 
-test("Hillcrest's four items exercise real states, totals and shared ID links without a pharmacy selector", async ({ page }) => {
+test("Hillcrest's four items exercise real states, counts and claimed amounts without a pharmacy selector", async ({ page }) => {
   await page.goto("pharmacy/claims");
   const pharmacy = page.getByRole("combobox", { name: "Pharmacy (synthetic)", exact: true });
   await expect(pharmacy).toHaveCount(0);
@@ -189,10 +191,11 @@ test("Hillcrest's four items exercise real states, totals and shared ID links wi
     const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
     const allRows = table.locator("tbody tr:not([data-background-case])");
     await expect(allRows).toHaveCount(4);
-    const amounts = await allRows.locator("td:nth-child(3)").allTextContents();
-    const total = amounts.reduce((sum, text) => sum + Number(text.replace(/[£,]/g, "")), 0);
-    await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText(
-      new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(total));
+    await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText("4");
+    for (const item of PLAYABLE_CASES) {
+      await expect(allRows.filter({ hasText: item.id }).locator("td:nth-child(3)")).toHaveText(
+        new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(item.claim.amountClaimed));
+    }
     for (const state of DEMONSTRABLE_LIFECYCLE_STATES) {
       await prepareUnseededState(page, state);
       await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
