@@ -43,6 +43,7 @@ for (const width of [1280, 1440]) {
       await link.focus();
       await link.press("Enter");
       await expect(page).toHaveURL(new RegExp(`/architecture#${id}$`));
+      await expect(link).toHaveAttribute("aria-current", "location");
       await expect(page.locator(`h2#${id}`)).toBeFocused();
       await expect(page.locator(`h2#${id}`)).toBeInViewport();
       const headingTop = await page.locator(`h2#${id}`).evaluate((node) => node.getBoundingClientRect().top);
