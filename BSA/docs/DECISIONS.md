@@ -2120,3 +2120,13 @@ Question: should a pharmacy Follow visit retain queue controls? Choice: no.
 An explicit side visit shows only that item's side. Opening a normal step 8
 queue row instead updates the queue's case/channel query and keeps its one
 opened row. Both operations are presentation-only. Tie-breaker: one focus.
+
+## 2026-09-14: Source authority and integration follow-through
+
+- Question: can the seeded referral's workbench apply a fix before a new Send? Choice: an explicit `new_submission` draft purpose permits preparation without approving the historical referral; Resubmit rejects that purpose. Tie-breaker: working pre-send flow without hidden submission or approval.
+- Question: how does G remain deployable before new panels merge? Choice: the coordinator authorised minimal existing selector, overview, background and completed-bucket compatibility; no new O/P panels or D mounting are included. Tie-breaker: no dead controls and the smallest dependency cut.
+- Question: can a later same-state Apply change a release label? Choice: labels anchor to the actual release transition/provenance, not the latest event whose destination happens to be released. Missing automatic evidence is labelled unavailable. Tie-breaker: truthful human attribution.
+- Question: can advice metadata clear an item on queue arrival? Choice: agent events remain same-state; only the independent submission/release paths can advance to pricing. Tie-breaker: no agent state authority.
+- Question: does an arbitrary lower claimed amount count as reconciliation? Choice: compare against the known dated synthetic pack reference, not merely an upper bound; unsupported differences require review. Tie-breaker: actual reconciliation without calculating a payment.
+- Question: how are four-case equivalence tests proved? Choice: run all four real cycles in both modes, in Both and switched perspectives, comparing full snapshots after every actual action with a controlled clock. No timestamps, IDs or operational fields are erased. Tie-breaker: exact one-state evidence.
+- Question: how does current domain metadata satisfy the single reference-mapping rule? Choice: current tool and trace service metadata use neutral capabilities, with agent definition `prototype-0.6`; the original F records retain all values in a frozen archival fixture outside production `src`. No current configuration is hidden there. Tie-breaker: newest platform-neutrality rule and immutable historical evidence.
