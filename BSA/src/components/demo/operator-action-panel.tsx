@@ -6,10 +6,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { NativeRadioGroup, NativeRadioItem } from "@/components/ui/native-radio-group";
 import { BoundaryTag, RecommendationBadge } from "@/components/demo/labels";
 import { SignalList } from "@/components/demo/signals";
+import { RawCaseFields } from "@/components/demo/case-presentation";
+import { ReleaseRecord } from "@/components/demo/release-record";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { permitsProposal } from "@/lib/case-presentation";
 import { runAgent } from "@/lib/domain/agent";
-import type { OperatorDecisionDraft } from "@/lib/domain/lifecycle";
+import { itemStateLabel, type OperatorDecisionDraft } from "@/lib/domain/lifecycle";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 import type { HumanDecision } from "@/lib/domain/types";
 import { getReleaseEligibility, useAppStore } from "@/lib/store";
@@ -35,6 +37,7 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const process = useAppStore((s) => s.itemProcesses[caseId]);
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
+  const records = useAppStore((s) => s.records);
   const storedDraft = useAppStore((s) => s.operatorDrafts[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]);
   const setDraft = useAppStore((s) => s.setOperatorDraft);
@@ -55,9 +58,18 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
   }
   const active = process.routing.outcome === "type2_endorsement" && process.routing.requiresHuman;
   if (!active || !["in_review", "escalated", "submitted", "resubmitted"].includes(lifecycle.state)) {
+    const record = records.filter((entry) => entry.caseId === caseId && (entry.revision ?? 1) === revision.number).at(-1);
+    const event = lifecycle.history.filter((entry) => entry.actor === "operator" && entry.revision === revision.number).at(-1);
     return <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
-      <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(caseId)}/record`}>Open audit record</Link></Button>
+      {compact ? lifecycle.state === "released_to_pricing" ? <ReleaseRecord caseId={caseId} /> : <>
+        <p>{itemStateLabel(lifecycle, "nhsbsa", agentEnabled)}</p>
+        <dl className="grid gap-2 text-sm">
+          <div><dt className="font-medium">Recorded human decision</dt><dd>{record?.decision ?? event?.decision ?? "None"}</dd></div>
+          <div><dt className="font-medium">Human reason</dt><dd>{record?.reason ?? event?.reason ?? "Not recorded"}</dd></div>
+          <div><dt className="font-medium">Recorded rule</dt><dd>{record?.clauseId ?? event?.clauseId ?? "Not recorded"} · {record?.tariffVersion ?? event?.tariffVersion ?? "Not recorded"}</dd></div>
+        </dl>
+      </> : <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(caseId)}/record`}>Open audit record</Link></Button>}
     </section>;
   }
 
@@ -94,6 +106,13 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
     <div className="flex items-center justify-between gap-2">
       <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
     </div>
+    {compact && <details open className="space-y-3 rounded-lg border p-3">
+      <summary className="cursor-pointer font-medium focus-visible:outline-2">Evidence and received source</summary>
+      <RawCaseFields c={c} compact />
+      {pack && <dl className="grid gap-2 text-sm">{pack.evidence.map((evidence) => <div key={evidence.id}>
+        <dt className="font-medium">{evidence.field}</dt><dd>{evidence.value}</dd><dd className="text-xs">Source: {evidence.origin}</dd>
+      </div>)}</dl>}
+    </details>}
     {!reviewing ? <>
       <Button onClick={() => perform(() => arrive(caseId))}>Start review</Button>
       {error && <p ref={errorRef} tabIndex={-1} role="alert">{error}</p>}

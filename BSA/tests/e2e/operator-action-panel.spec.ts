@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 async function openReview(page: Page, enabled: boolean) {
   await page.goto("/case/EX-24112");
@@ -35,7 +36,7 @@ for (const width of [1280, 1440]) {
     await expect(panel).toContainText("applied by the operator from the agent's suggestion");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
     await panel.getByRole("button", { name: "Refer back", exact: true }).click();
-    await expect(history.getByRole("status")).toContainText(/Referred back/i);
+    await expect(history.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa.on);
     await expect(panel.getByRole("button", { name: "Refer back", exact: true })).toHaveCount(0);
     await panel.getByRole("link", { name: "Open audit record", exact: true }).click();
     await expect(page.getByText("rule and reason recorded", { exact: true }).first()).toBeVisible();
@@ -80,19 +81,26 @@ for (const width of [1280, 1440]) {
     await expect(capture.getByRole("alert")).toBeVisible();
     await expect(capture.getByRole("alert")).toBeFocused();
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+    await attestation.check();
+    await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
+    await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
+    const history = page.getByRole("region", { name: "Shared case history", exact: true });
+    await history.getByText(/^History and attempts/).click();
+    await expect(history.getByRole("region", { name: /Type 1 capture for attempt/ }).last()).toContainText("Separately established synthetic prescriber");
   });
 }
 
 for (const outcome of ["Request information", "Escalate"] as const) {
   test(`operator ${outcome} appends a human event`, async ({ page }) => {
-    await page.goto("/case/SYN-FQ123-TYPE2");
+    await openReview(page, false);
     const panel = page.getByRole("region", { name: "Operator decision", exact: true });
     await panel.getByRole("radio", { name: outcome, exact: true }).check();
     await panel.getByRole("textbox", { name: outcome === "Request information" ? "Question (required)" : "Reason (required)", exact: true })
       .fill(outcome === "Request information" ? "Please confirm the manufacturer supplied." : "Senior evidence review is required.");
     await panel.getByRole("button", { name: outcome, exact: true }).click();
     const history = page.getByRole("region", { name: "Shared case history", exact: true });
-    await expect(history.getByRole("status")).toContainText(outcome === "Request information" ? /information/i : /escalated/i);
+    await expect(history.getByRole("status")).toHaveText(LIFECYCLE_LABELS[outcome === "Request information" ? "information_requested" : "escalated"].nhsbsa.off);
     await history.getByText(/^History and attempts/).click();
     await expect(history.getByRole("list", { name: "Lifecycle events", exact: true }).getByRole("listitem").last()).toContainText("operator");
   });
@@ -100,9 +108,20 @@ for (const outcome of ["Request information", "Escalate"] as const) {
 
 for (const enabled of [false, true]) {
   test(`valid recheck releases only after the operator action, Agent ${enabled}`, async ({ page }) => {
-    await page.goto("/case/SYN-FQ123-RECHECK");
-    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    await openReview(page, enabled);
     const panel = page.getByRole("region", { name: "Operator decision", exact: true });
+    if (enabled) await panel.getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    else {
+      await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("The dispensing date is missing.");
+      await panel.getByLabel("RB code (required)", { exact: true }).selectOption("SYN-NCSO");
+    }
+    await panel.getByRole("button", { name: "Refer back", exact: true }).click();
+    await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
+    const detail = page.getByRole("region", { name: "Claim detail", exact: true });
+    if (enabled) await detail.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
+    else await detail.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO RK 21/08/26");
+    await detail.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
+    await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await panel.getByRole("button", { name: "Start review", exact: true }).click();
     if (enabled) await panel.getByRole("button", { name: "Apply suggestion", exact: true }).click();
     else await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human reviewed the corrected endorsement date.");

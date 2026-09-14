@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { BoundaryTag } from "@/components/demo/labels";
 import { useAppStore } from "@/lib/store";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
+import { isPlayableCase } from "@/lib/domain/cases";
 
 export function ReleaseRecord({ caseId }: { caseId: string }) {
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
@@ -42,6 +43,7 @@ export function AutomatedCaseRecords() {
   const processes = useAppStore((s) => s.itemProcesses);
   const revisions = useAppStore((s) => s.caseRevisions);
   const automatic = Object.values(lifecycles).filter((row) => {
+    if (!isPlayableCase(row.caseId)) return false;
     const process = processes[row.caseId];
     return process?.revision === revisions[row.caseId]?.at(-1)?.number
       && process.routing.outcome === "auto_priced"
