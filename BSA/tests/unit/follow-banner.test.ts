@@ -130,6 +130,18 @@ describe("persistent followed item banner", () => {
     expect(render()).toContain("after operator review");
     expect(render()).not.toContain("no operator action");
     expect(render()).toContain("Released after operator review");
+    if (enabled) {
+      const draft = initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!);
+      const endorsementText = "NCSO JB";
+      store().setPharmacyDraft(id, { ...draft, purpose: "new_submission", endorsementText,
+        paperDeclaration: { ...draft.paperDeclaration!, endorsementText },
+        declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields, endorsementText } } });
+      store().applySuggestedCorrection(id);
+      expect(store().lifecycles[id].state).toBe("released_to_pricing");
+      expect(render()).toContain("Pharmacy applied correction");
+      expect(render()).toContain("after operator review");
+      expect(render()).not.toContain("no operator action");
+    }
   });
 
   it("reserves no-operator copy for a real automatic release and retains it across toggle changes", () => {
