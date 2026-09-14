@@ -98,14 +98,17 @@ for (const enabled of [false, true]) {
         itemProcesses: { "EX-24112": { channel: "eps", routing: {
           outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine",
         } } },
-        lifecycles: { "EX-24112": { state: "paid", history: expect.arrayContaining([
-          expect.objectContaining({ actor: "code", processStep: "automatic_pricing" }),
+        lifecycles: { "EX-24112": { state: enabled ? "released_to_pricing" : "paid", history: expect.arrayContaining([
+          expect.objectContaining({ actor: "code", processStep: enabled ? "release_to_pricing" : "automatic_pricing" }),
         ]) } },
         caseStates: { "EX-24112": "cleared_by_rules" },
         caseRevisions: { "EX-24112": expect.arrayContaining([expect.objectContaining({
           kind: "submission", channel: "eps", endorsementText: "NCSO AB 27/08/26",
         })]) },
       });
+      expect(submitted.itemVerification["EX-24112"]).toEqual(enabled
+        ? { gate1: "pass", gate2: "pass", reconciled: true, released: true }
+        : { gate1: "none", gate2: "none", reconciled: false, released: false });
       expect(initial.records).toEqual(expect.any(Array));
       expect(submitted.records, "Automatic pricing must not append a human approval").toEqual(initial.records);
       await action("Read the automatic item receipt", "Pharmacy", async () => {

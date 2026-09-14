@@ -1,66 +1,60 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
+import { caseById } from "../../src/lib/domain/cases";
 
-const C = "EX-24119";
+const B = "EX-24112";
 const D = "EX-24123";
 
 for (const enabled of [false, true]) {
-  test(`one state: C confirmation retains both conflicting quantities, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
+  test(`one state: B confirmation preserves received evidence and still requires human recheck, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      await action("Navigate to the pharmacy C seed", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
-      await action("Verify Hillcrest owns C without a selector", "Pharmacy", async () => {
-        await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[C].pharmacyCode})`);
+      await action("Select the playable missing-date EPS item", "Pharmacy", async () => {
+        await page.getByRole("radio", { name: "EPS", exact: true }).check();
+        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+        await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK");
       });
-      await action("Open the historically requested C item", "Pharmacy", async () => {
-        await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
-          .filter({ hasText: C }).getByRole("button").click();
+      const submitted = await action("Send an actual B revision with unresolved evidence", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Send claim", exact: true }).click();
       });
-      await action("Open the explicit C demonstration replay", "Pharmacy", async () => {
-        await page.getByRole("region", { name: "Claim detail", exact: true }).getByText("Demonstration replay", { exact: true }).click();
+      expect(submitted.itemProcesses[B].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
+      await action("Navigate to actual B work", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+      await action("Open the unresolved B case", "NHSBSA", async () => {
+        await page.getByRole("link", { name: `Open ${B}`, exact: true }).click();
       });
-      await action("Submit a new C attempt without rewriting its historical request", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
-      });
-      await action("Navigate to actual C work", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
-      await action("Open the unresolved C case", "NHSBSA", async () => {
-        await page.getByRole("link", { name: `Open ${C}`, exact: true }).click();
-      });
-      await action("Explicitly start the C review", "NHSBSA", async () => {
+      await action("Explicitly start the B review", "NHSBSA", async () => {
         await page.getByRole("button", { name: "Start review", exact: true }).click();
       });
-      await action("Request information without resolving either quantity", "NHSBSA", async () => {
+      await action("Request information without silently correcting the source", "NHSBSA", async () => {
         await page.getByRole("radio", { name: /^Request information / }).check();
       });
       await action("Write the human confirmation request", "NHSBSA", async () => {
-        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Please confirm both conflicting quantities against the synthetic form");
-      });
-      if (enabled) await action("Explicitly approve the C request draft", "NHSBSA", async () => {
-        await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
+        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Please confirm the dispensing date against the original EPS endorsement");
       });
       const requested = await action("Record one human request for information", "NHSBSA", async () => {
         await page.getByRole("button", { name: "Record decision", exact: true }).click();
-        await expect(page).toHaveURL(/\/case\/EX-24119\/record$/);
+        await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
       });
-      expect(requested.lifecycles[C].state).toBe("information_requested");
+      expect(requested.lifecycles[B].state).toBe("information_requested");
       expect(requested.records).toHaveLength(initial.records.length + 1);
-      expect(requested.records.at(-1)).toMatchObject({ caseId: C, decision: "REQUEST_INFORMATION" });
-      if (enabled) expect(requested.records.at(-1)?.approvedDraft).toMatchObject({ decision: "REQUEST_INFORMATION", approvedBy: "Demo operator" });
-      else expect(requested.records.at(-1)?.approvedDraft).toBeUndefined();
+      expect(requested.records.at(-1)).toMatchObject({ caseId: B, decision: "REQUEST_INFORMATION" });
+      expect(requested.records.at(-1)?.approvedDraft).toBeUndefined();
+      expect(requested.caseRevisions).toEqual(submitted.caseRevisions);
       await action("Dismiss the human information-request notification", "NHSBSA", async () => {
         await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
       });
       expect(await readDomainState(page), "Dismissing a notification cannot change the recorded request").toEqual(requested);
       await action("Navigate to pharmacy claims", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
-      await action("Verify C's pharmacy for the new request", "Pharmacy", async () => {
-        await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[C].pharmacyCode})`);
+      await action("Verify B's pharmacy for the new request", "Pharmacy", async () => {
+        await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[B].pharmacyCode})`);
       });
-      await action("Open the pharmacy C confirmation", "Pharmacy", async () => {
+      await action("Open the pharmacy B confirmation", "Pharmacy", async () => {
         await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
-          .filter({ hasText: C }).getByRole("button").click();
+          .filter({ hasText: B }).getByRole("button").click();
       });
       const confirmation = page.getByRole("region", { name: "Requested confirmation", exact: true });
-      for (const [label, value] of [["Captured form quantity", "56"], ["Claim ledger quantity", "84"]]) {
+      const source = caseById(B)!;
+      for (const [label, value] of [["Captured form quantity", String(source.extracted.quantity)], ["Claim ledger quantity", String(source.claim.quantity)]]) {
         await expect(confirmation.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd")).toHaveText(value);
       }
       await action("Reject an empty pharmacy confirmation", "Pharmacy", async () => {
@@ -68,7 +62,7 @@ for (const enabled of [false, true]) {
         await expect(page.getByRole("alert").filter({ hasText: "Pharmacy text is required" })).toBeVisible();
       });
       expect(await readDomainState(page)).toEqual(requested);
-      const text = "The synthetic form says 56 while the claim ledger says 84; please review both values";
+      const text = "Please review the dispensing date; this response does not amend the original NCSO endorsement";
       await action("Type confirmation without sending or resolving evidence", "Pharmacy", async () => {
         await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill(text);
       });
@@ -77,21 +71,21 @@ for (const enabled of [false, true]) {
         await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
       });
       expect(sent.records).toEqual(requested.records);
-      expect(sent.caseRevisions[C].slice(0, requested.caseRevisions[C].length)).toEqual(requested.caseRevisions[C]);
-      expect(sent.caseRevisions[C].at(-1)).toMatchObject({ kind: "confirmation", confirmation: text, channel: "eps" });
-      expect(sent.lifecycles[C].history.slice(0, requested.lifecycles[C].history.length)).toEqual(requested.lifecycles[C].history);
-      expect(sent.itemProcesses[C].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
-      expect(sent.lifecycles[C].state).toBe("resubmitted");
-      await action("Return to actual C work after confirmation", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
-      await action("Open C without beginning the next human review", "NHSBSA", async () => {
-        await page.getByRole("link", { name: `Open ${C}`, exact: true }).click();
+      expect(sent.caseRevisions[B].slice(0, requested.caseRevisions[B].length)).toEqual(requested.caseRevisions[B]);
+      expect(sent.caseRevisions[B].at(-1)).toMatchObject({
+        kind: "confirmation", confirmation: text, channel: "eps",
+        endorsementText: requested.caseRevisions[B].at(-1)!.endorsementText,
+        epsPrescription: requested.caseRevisions[B].at(-1)!.epsPrescription,
+      });
+      expect(sent.lifecycles[B].history.slice(0, requested.lifecycles[B].history.length)).toEqual(requested.lifecycles[B].history);
+      expect(sent.itemProcesses[B].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
+      expect(sent.lifecycles[B].state).toBe("resubmitted");
+      expect(sent.itemVerification[B].released).toBe(false);
+      await action("Return to actual B work after confirmation", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+      await action("Open B without beginning the next human review", "NHSBSA", async () => {
+        await page.getByRole("link", { name: `Open ${B}`, exact: true }).click();
       });
       await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
-      if (enabled) {
-        await expect(page.getByRole("heading", { name: "Conflicts and missing evidence", exact: true })).toBeVisible();
-        await expect(page.getByRole("main")).toContainText("56");
-        await expect(page.getByRole("main")).toContainText("84");
-      }
       expect(await readDomainState(page), "Reading confirmation cannot resolve evidence or record a decision").toEqual(sent);
     });
   });

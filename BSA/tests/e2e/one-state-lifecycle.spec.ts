@@ -77,6 +77,13 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
       else expect(record?.approvedDraft).toBeUndefined();
       expect(referred.lifecycles[B].state).toBe("referred_back");
       expect(referred.caseRevisions).toEqual(submitted.caseRevisions);
+      await action("Dismiss the recorded referral notification normally", "NHSBSA", async () => {
+        const notice = page.getByRole("complementary", { name: "Decision notifications", exact: true });
+        await expect(notice.locator('[data-decision-notice="success"]')).toContainText("Decision recorded");
+        await notice.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+        await expect(notice.locator("[data-decision-notice]")).toHaveCount(0);
+      });
+      expect(await readDomainState(page)).toEqual(referred);
       if (enabled) {
         for (const [month, outcome] of [["2026-07", "Sufficient: release to pricing once confirmed"], ["2026-08", "Refer back with the exact fix"]] as const) {
           await action(`Replay the recorded evidence under ${month}`, "NHSBSA", async () => {
@@ -163,8 +170,10 @@ for (const enabled of [false, true]) {
       await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Complete: will flow to automated pricing, no person involved" : "Not checked: manual submission");
       const paid = await action("Submit complete A EPS for existing pricing", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Send claim", exact: true }).click();
-        await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("no person involved");
+        await expect(page.getByRole("region", { name: "Submission receipt", exact: true }))
+          .toContainText(enabled ? "released to existing pricing, no operator action" : "no person involved");
       });
+      expect(paid.lifecycles["EX-24107"].state).toBe(enabled ? "released_to_pricing" : "paid");
       expect(paid.itemProcesses["EX-24107"]).toMatchObject({ channel: "eps", capture: null, routing: { outcome: "auto_priced", requiresHuman: false } });
       expect(paid.records).toEqual(initial.records);
       expectUnrelatedCases(initial, paid, "EX-24107");
@@ -179,13 +188,27 @@ for (const enabled of [false, true]) {
   test(`one state: human release remains staff work, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      await action("Submit unresolved B evidence", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Send claim", exact: true }).click();
+      await action("Open the existing B referral for a real correction", "Pharmacy", async () => {
+        await navigatePrimary(page, "Pharmacy claims");
+        await page.getByRole("button", { name: `Correct and resubmit ${B}`, exact: true }).click();
       });
+      await action("Supply the missing date before asking for human release", "Pharmacy", async () => {
+        await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO RK 21/08/26");
+      });
+      if (enabled) await action("Check the corrected source rather than override missing facts", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
+        await expect(detail(page)).toContainText("Ready to resubmit");
+      });
+      const resubmitted = await action("Resubmit complete B evidence for explicit human recheck", "Pharmacy", async () => {
+        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+      });
+      expect(resubmitted.lifecycles[B].state).toBe("resubmitted");
+      expect(resubmitted.itemProcesses[B].routing.requiresHuman).toBe(true);
+      expect(resubmitted.records).toEqual(initial.records);
       await openWork(page, action, B);
       await action("Start the human review", "NHSBSA", async () => { await page.getByRole("button", { name: "Start review", exact: true }).click(); });
-      await action("Choose a human release rather than the referral recommendation", "NHSBSA", async () => {
-        await page.getByRole("radio", { name: enabled ? /^Amend / : /^Sufficient \(human choice\)/ }).check();
+      await action("Choose a human release only after the code facts are valid", "NHSBSA", async () => {
+        await page.getByRole("radio", { name: enabled ? /^Accept the recommendation/ : /^Sufficient \(human choice\)/ }).check();
       });
       await action("Enter the human judgement reason", "NHSBSA", async () => {
         await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human reviewed the synthetic evidence and judged it sufficient");
