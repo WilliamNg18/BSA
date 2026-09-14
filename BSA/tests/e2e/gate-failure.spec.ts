@@ -3,7 +3,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { REC_META } from "../../src/components/demo/label-meta";
 import { injectPrescriberFault } from "../support/prescriber-fault";
-import { cases, startDemonstrationReview } from "./operator-action-helpers";
+import { cases, operatorAction, operatorDecision, operatorRadio, performDecision, startDemonstrationReview } from "./operator-action-helpers";
 
 for (const c of cases.filter((item) => item.id === "EX-24112")) {
   test(`gate FAIL withholds ${c.id} advice in queue, pack, trace, human record and replay`, async ({ page }) => {
@@ -71,6 +71,7 @@ for (const c of cases.filter((item) => item.id === "EX-24112")) {
     }
 
     await nav.getByRole("link", { name: "Operator case pack", exact: true }).click();
+    await operatorRadio(page, "ESCALATE").check();
     const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
     await expect(reason).toHaveAttribute("aria-required", "true");
     for (const value of ["", "1234567", "   1234567   "]) {
@@ -80,7 +81,7 @@ for (const c of cases.filter((item) => item.id === "EX-24112")) {
       await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
     }
     await reason.fill("Review prescriber evidence");
-    await performDecision(page, "ESCALATE", { openAudit: true });
+    await performDecision(page, "ESCALATE");
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd")).toContainText("ESCALATE by Demo operator");
     await expect(page.getByText("No. Note: Review prescriber evidence", { exact: true })).toBeVisible();
