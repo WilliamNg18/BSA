@@ -1,6 +1,5 @@
 import { automaticCaseIds, cases, expect, navigatePrimary, staticRoutes, test } from "./fixtures";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
-import { TOOL_DEFINITIONS } from "../../src/lib/domain/tools";
 
 for (const enabled of [true, false]) {
   const stateTag = enabled ? "@agent-on" : "@agent-off";
@@ -108,15 +107,24 @@ for (const enabled of [true, false]) {
       }
       // Include expanded disclosures and audit metadata, not just default copy.
       await page.locator("main details").evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
-      await expect(page.locator("body"), route).not.toContainText(/\b(?:Azure|OpenAI|Cosmos DB|Copilot|Microsoft|Foundry|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript)\b/i);
+      const mapping = page.locator("table[data-reference-mapping]");
+      await expect(mapping).toHaveCount(route === "architecture" ? 1 : 0);
+      if (route === "architecture") await expect(mapping.locator("caption")).toHaveText("Reference mapping, one example");
+      const neutralText = await page.locator("body").evaluate((body) => {
+        const copy = body.cloneNode(true) as HTMLElement;
+        copy.querySelector("table[data-reference-mapping]")?.remove();
+        return copy.textContent ?? "";
+      });
+      expect(neutralText, route).not.toMatch(/\b(?:Azure|OpenAI|Cosmos DB|Copilot|Microsoft|Foundry|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript)\b/i);
       await expect(page.locator('a[href$=".pdf"], a[href$=".docx"]')).toHaveCount(0);
       if (route === "architecture") {
-        await expect(page.getByRole("main")).toContainText("Production mappings are proposals");
+        await expect(page.getByRole("main")).toContainText("Equivalents exist on other platforms");
         await expect(page.getByRole("main")).toContainText("NHSBSA");
         await expect(page.getByRole("main")).toContainText("dm+d");
-        for (const tool of TOOL_DEFINITIONS) {
-          await expect(page.getByRole("region", { name: "Tool definitions", exact: true }).getByText(tool.name, { exact: true })).toBeVisible();
+        for (const tool of ["Read image region", "look up product/pack", "look up claim", "check history", "retrieve the effective-date Tariff clause"]) {
+          await expect(page.getByRole("main")).toContainText(tool);
         }
+        await expect(page.getByRole("main")).toContainText("Recording is application-owned, not a model write tool");
       }
       if (route === "case/EX-24088/record") {
         await expect(page.getByRole("heading", { name: "Record DR-000872", exact: true })).toBeVisible();
