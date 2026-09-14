@@ -75,6 +75,8 @@ export interface HistoryEvent {
   readonly releaseOrigin?: ReleaseOrigin;
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
+  /** Snapshot of advice explicitly copied by a person, not recomputed on release. */
+  readonly appliedSuggestionEvidence?: Pick<DecisionRecord, "recommendation" | "tariffVersion" | "agentVersion" | "inputs" | "sources" | "checks">;
 }
 
 /** Created only by an explicit human approval argument, never by the flag. */

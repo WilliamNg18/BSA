@@ -2035,3 +2035,24 @@ Question: should entering step 8 make historical B actionable? Choice: no.
 Show its actual state and let the audience open a genuine waiting row. Never
 submit, reset, release or fabricate review work merely to enter a step.
 Tie-breakers: preserved history and human decisions.
+
+## 2026-09-14: Four-case Vision and system-design decisions
+
+- Ten seeded items or four playable cases? Keep only complete EPS, missing-date EPS, wrong-information EPS and unreadable paper playable; C/F are fixed unclickable background and E's rule-only behaviour is shown within complete EPS Today; decided by (e), the explicit latest four-case instruction.
+- Does the four-case cut erase old six-case evidence? No: preserve historical records and pure regression fixtures, but remove their live actions, list links and deep-link reachability; decided by (a), truthful records, then (e), the new playable scope.
+- Eleven steps after removing readable paper? Replace step 6 with unreadable-paper pharmacy declaration/submission and retain step 7 for that same item's Type 1 capture/confirmation; decided by (c), two distinct visible hand-offs, while satisfying the latest eleven-step and four-case requirements.
+- Does pharmacy Paid mean this prototype paid? No: present actually released items in the normal-schedule Paid grouping with explicit release-to-existing-pricing wording and preserved code/human provenance; no new payment calculation or synthetic approval transition; decided by (a), the governing principle.
+- Can temporary Follow context create another Zustand store? No: put that UI-only context in the existing store, exclude it from the domain snapshot and clear it on Reset/item change; decided by (a), one authoritative store.
+- Which prose limit applies to system design? Under 60 words per How it works panel only; all other meaningful panels remain under 25; decided by (e), the explicit reference-page exception.
+- Where are concrete platform names allowed? Only the labelled Reference mapping, one example table, sourced from one dedicated module; CI scans first-party displayed source copy without treating package imports as interface claims; decided by (e), the precise platform-neutrality exception, then (d), a narrow enforceable boundary.
+- Do supplied scale and cost figures prove capacity or pricing? No: expose arithmetic, working-day/peak assumptions, token/sample/rate inputs and operator-touch comparison; label latency and production costs assumptions rather than measured guarantees; decided by (a), honest evidence.
+- How does S integrate without blocking the existing streams? Keep the existing `/architecture` route and ArchitecturePage export, add its owned design content/document/tests, coordinate navigation with D and global source checks with V; merge after G/D alongside O/P/F, before V; decided by (d), the smallest isolated integration.
+- What closes the new alignment register? Actual reviewed, integrated source and the latest main's required live results, not an owner's promise or an old capture; decided by (a), evidence integrity.
+
+## 2026-09-14: Four-case source authority follow-through
+
+- Question: do historical fixtures remain playable? Choice: only the frozen four IDs appear in operational maps; C/F evidence and other old fixtures remain pure archival inputs, not a hidden store mode. Tie-breaker: newest four-case Vision.
+- Question: how does seed D validate after human capture? Choice: check its retained declaration as declared, not against the seed's deliberately different scan-text field; independently compare the actual capture and claim. Tie-breaker: no false image reading and no success fallback.
+- Question: does Release erase an earlier applied suggestion after toggling Off? Choice: retain the real current-revision applied recommendation, agent version and source/check snapshot in its human decision record without invoking the agent again. Separate production model/prompt identifiers remain proposed because the scripted kernel has none. Tie-breaker: truthful audit provenance.
+- Question: can paper draft copies drift? Choice: the shared setter derives the declaration copy from edited paper form fields while preserving explicitly entered prescriber evidence; no submitted source, verification result or history is rewritten. Tie-breaker: one draft authority.
+- Question: what source does a legacy EPS text action retain? Choice: A and B now seed explicit EPS payloads so subsequent submissions retain actual message fields beside the independent claim ledger. Tie-breaker: source-bound reconciliation rather than projection self-corroboration.

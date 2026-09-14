@@ -101,8 +101,10 @@ export function seededLifecycleSession(): ReturnType<typeof historicalLifecycleF
   const historical = historicalLifecycleFixtures();
   const lifecycles = Object.fromEntries(PLAYABLE_CASE_IDS.map((id) => [id, historical.lifecycles[id]]));
   const caseRevisions = Object.fromEntries(PLAYABLE_CASE_IDS.map((id) => [id, historical.caseRevisions[id]]));
-  caseRevisions[CASES[0].id] = [{ ...caseRevisions[CASES[0].id][0], channel: "eps",
-    epsPrescription: { ...createEpsPrescription(CASES[0]), claimMessageState: "submitted" } }];
+  for (const c of [CASES[0], CASES[1]]) {
+    caseRevisions[c.id] = [{ ...caseRevisions[c.id][0], channel: "eps",
+      epsPrescription: { ...createEpsPrescription(c), claimMessageState: "submitted" } }];
+  }
   return immutable({ lifecycles, caseRevisions });
 }
 
