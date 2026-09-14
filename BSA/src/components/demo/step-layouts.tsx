@@ -8,7 +8,9 @@ import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { formatProcessHours, formatProcessItems, PROCESS_PUBLIC_FACTS } from "@/lib/domain/baseline";
 import { getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
+import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
+import type { ItemChannel } from "@/lib/domain/types";
 import { staffLane } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -18,6 +20,7 @@ export interface DemoTaskProps {
   kind: DemoTaskKind;
   caseId: string;
   allowCorrection: boolean;
+  channel: ItemChannel | null;
 }
 export type DemoTaskRenderer = (props: DemoTaskProps) => ReactNode;
 
@@ -35,12 +38,12 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
     assisted: ["Gate 1: format passes", "Gate 2: pack and claimed amount mismatch", "Not released; built case for operator"],
   },
   6: {
-    today: ["Readable paper scanned", "Existing rules price the item"],
-    assisted: ["Gate 1: declaration checked", "Gate 2: scan reconciled", "released to existing pricing, no operator action"],
+    today: ["Unreadable paper posted", "Missing information returns weeks later (illustrative)"],
+    assisted: ["declared by the pharmacy, not read from the form", "Gate 1 checks the declaration", "Human posts; unreadable scan needs confirmation"],
   },
   7: {
-    today: ["Type 1 keys by eye", "Type 2 judges", "RB2B weeks later (illustrative)"],
-    assisted: ["declared by the pharmacy, not read from the form", "Type 1 confirms", "Unreconciled evidence: abstain; never automatic release"],
+    today: ["Type 1 keys by eye", "Type 2 judges", "RB2B if evidence remains insufficient"],
+    assisted: ["Type 1 confirms the pharmacy declaration", "Reconciled evidence supports human judgement", "Unreconciled evidence: abstain; never automatic release"],
   },
   8: {
     today: ["Hillcrest staff work only", "Type 1 capture; Type 2 judgement", "experience only"],
@@ -89,6 +92,12 @@ function ProcessPanel({ assisted }: { assisted: boolean }) {
     ["Referred back", "85,000 items monthly; pharmacy corrects", "human"],
   ] as const;
   return <div className="space-y-4" data-demo-pipeline>
+    {!assisted && <dl className="grid grid-cols-2 gap-2 rounded-lg border p-3 text-sm">
+      <div><dt>Items monthly</dt><dd className="font-semibold">Over 100 million</dd></div>
+      <div><dt>Most items</dt><dd className="font-semibold">Priced without a person</dd></div>
+      <div><dt>Staff touch</dt><dd className="font-semibold">Roughly 4%</dd></div>
+      <div><dt>Referred back monthly</dt><dd className="font-semibold">85,000</dd></div>
+    </dl>}
     <ol className="space-y-3">{stages.map(([title, text, cls], index) => <li key={title} className="rounded-lg border bg-background p-3">
       <div className="flex items-center justify-between gap-2"><h3 className="font-semibold">{index + 1}. {title}</h3><BoundaryTag cls={cls} /></div>
       <p className="mt-2 text-sm">{text}</p>
@@ -156,6 +165,7 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
   const navigate = useNavigate();
   const [filter, setFilter] = useState("all");
   const rows = Object.values(lifecycles).flatMap((row) => {
+    if (!isPlayableCase(row.caseId)) return [];
     const process = processes[row.caseId];
     const lane = process ? staffLane(row, process) : null;
     return lane ? [{ row, process, lane }] : [];
@@ -180,6 +190,10 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
             navigate(`/case/${encodeURIComponent(row.caseId)}`);
           }}>Open</Button></td>
         </tr>)}</tbody>
+        <tfoot className="border-t bg-muted text-xs">
+          {BACKGROUND_CASES.map((item) => <tr key={item.id}><td className="p-2">Case {item.scenario}</td>
+            <td colSpan={2}>Background only · {item.scenario === "C" ? "Information request" : "Recorded decision"}</td></tr>)}
+        </tfoot>
       </table>
       {!rows.some((item) => filter === "all" || item.lane === filter) && <p className="p-3 text-sm" role="status">No items match this filter.</p>}
     </div>
@@ -200,7 +214,7 @@ function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition
       <h3 className="text-lg font-semibold">{caseId}</h3>
       <p className="text-sm" data-item-state>{itemStateLabel(lifecycle, kind === "operator" ? "nhsbsa" : "pharmacy", enabled)}</p>
       <dl className="grid grid-cols-2 gap-3 text-sm">
-        <div><dt className="font-medium">Channel</dt><dd>{process.channel === "eps" ? "EPS" : "Paper"}</dd></div>
+        <div><dt className="font-medium">{kind === "submission" ? "Submission channel" : "Channel"}</dt><dd>{(kind === "submission" ? step.channel : process.channel) === "eps" ? "EPS" : "Paper"}</dd></div>
         <div><dt className="font-medium">Current endorsement</dt><dd>{item.extracted.endorsementText || "None"}</dd></div>
       </dl>
     </div>
@@ -210,7 +224,7 @@ function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition
       <div><dt>Reconciliation</dt><dd>{verification.reconciled ? "Agrees" : "Not established"}</dd></div>
     </dl>}
     <div data-demo-control={task === "operator" ? "operator" : task === "type1" ? "type1-capture" : undefined}>
-      {renderTask({ kind: task, caseId, allowCorrection: step.number === 4 || step.number === 10 })}
+      {renderTask({ kind: task, caseId, allowCorrection: step.number === 4 || step.number === 10, channel: kind === "submission" ? step.channel : process.channel })}
     </div>
     {step.number === 10 && <details data-demo-control="history" className="rounded-lg border p-3">
       <summary className="cursor-pointer font-medium">Same-item history</summary>

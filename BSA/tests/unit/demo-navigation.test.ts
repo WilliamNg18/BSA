@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { DEMO_ALLOWED_CONTROLS, DEMO_CONTROL_SELECTORS, DEMO_STEPS, demoStepDestination, getDemoStep } from "../../src/lib/domain/demo-steps";
+import { DEMO_ALLOWED_CONTROLS, DEMO_CASE_IDS, DEMO_CONTROL_SELECTORS, DEMO_STEPS, demoStepDestination, getDemoStep } from "../../src/lib/domain/demo-steps";
 import { navigateDemoStep } from "../../src/lib/demo-navigation";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 
 beforeEach(() => useAppStore.getState().resetDemo());
 
@@ -22,8 +23,7 @@ describe("eleven-step navigation, never a business action", () => {
     store.setPharmacyDraft("EX-24112", { revision: store.caseRevisions["EX-24112"].at(-1)!.number, endorsementText: "Unsent human edit" });
     const before = getDomainSnapshot();
     const destinations: string[] = [];
-    const available = DEMO_STEPS.filter((step) => !step.caseId || store.lifecycles[step.caseId]);
-    for (const step of [...available, ...[...available].reverse(), getDemoStep(4), getDemoStep(10)]) {
+    for (const step of [...DEMO_STEPS, ...[...DEMO_STEPS].reverse(), getDemoStep(4), getDemoStep(10)]) {
       navigateDemoStep(step.number, (path) => destinations.push(path));
       expect(useAppStore.getState().demoStep).toBe(step.number);
       expect(useAppStore.getState().agentEnabled).toBe(enabled);
@@ -52,8 +52,17 @@ describe("eleven-step navigation, never a business action", () => {
       const controls = DEMO_ALLOWED_CONTROLS[step.number];
       expect(Object.isFrozen(controls)).toBe(true);
       expect(controls.every((control) => Boolean(DEMO_CONTROL_SELECTORS[control]))).toBe(true);
-      if (![8, 10].includes(step.number)) expect(controls).not.toContain("operator");
+      if (![7, 8, 10].includes(step.number)) expect(controls).not.toContain("operator");
       if (step.number !== 8) expect(controls).not.toContain("queue-filter");
     }
+  });
+
+  it("uses only four playable cases and distinct paper hand-offs", () => {
+    expect(DEMO_CASE_IDS).toEqual(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"]);
+    expect(DEMO_CASE_IDS).toEqual(PLAYABLE_CASE_IDS);
+    expect(getDemoStep(6)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy" });
+    expect(getDemoStep(7)).toMatchObject({ caseId: "EX-24123", path: "/case/EX-24123" });
+    expect(DEMO_ALLOWED_CONTROLS[6]).toEqual(["submission"]);
+    expect(DEMO_ALLOWED_CONTROLS[7]).not.toContain("submission");
   });
 });

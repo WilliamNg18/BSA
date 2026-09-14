@@ -2016,3 +2016,22 @@ in either header mode. No payment is calculated or approved.
 - Question: which queue items act? Chosen: G's authoritative playable set only, with C/F as fixed unclickable background; the newest four-case instruction wins.
 - Question: where does compact NHSBSA evidence live? Chosen: the same operator component exposes the actual source, captured fields and gathered evidence alongside advice; visible evidence authority wins over a suggestion-only demo.
 - Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.
+
+## 2026-09-14: Four playable cases, eleven distinct demonstration steps
+
+Question: keep readable paper as a fifth playable case? Choice: no. The latest
+vision supersedes the original step 6 fixture. Step 6 is D's pharmacy declaration
+and explicit Post; step 7 is that same D's human Type 1 confirmation and case.
+Their different hand-offs retain eleven steps without duplicate controls.
+Tie-breakers: latest four-case scope and a clearer Today/With comparison.
+
+Question: which rows may the focused queue open? Choice: use G's authoritative
+`isPlayableCase` helper; only A, B, the mismatch and D are operational. Render
+G's C/F background records without controls or staff counts. The presentation
+case-ID set is tested against G's inventory, not used as another authority.
+Tie-breaker: one state.
+
+Question: should entering step 8 make historical B actionable? Choice: no.
+Show its actual state and let the audience open a genuine waiting row. Never
+submit, reset, release or fabricate review work merely to enter a step.
+Tie-breakers: preserved history and human decisions.
