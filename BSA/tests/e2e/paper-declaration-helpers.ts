@@ -32,7 +32,7 @@ export async function postWorkedPaperDeclaration(page: Page) {
   await receipt.getByRole("link", { name: "Open shared queue", exact: true }).click();
   const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
   await expect(capture).toBeVisible();
-  await expect(capture).toContainText("Image cannot be read");
+  await expect(capture).toContainText("Image unreadable; agreement unknown.");
   await expect(capture).toContainText("declared by the pharmacy, not read from the form");
   await expect(capture.getByRole("textbox", { name: "Product code", exact: true })).toHaveValue("SYN-COCOD-100");
   await expect(capture.getByRole("textbox", { name: "Quantity", exact: true })).toHaveValue("100");

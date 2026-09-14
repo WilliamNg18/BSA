@@ -149,7 +149,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await page.getByRole("button", { name: "Step timeline", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("[data-pharmacy-timeline] [role=status]")).toContainText("released to existing pricing, no operator action");
-  await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
   await expect(page.getByRole("list", { name: "Submission timeline" }).locator("li")).toHaveCount(2);
   await field.fill("NCSO  RK");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
@@ -177,7 +177,10 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     await expect(page.locator("[data-pharmacy-status]")).toContainText("No supported correction");
     const check = await openPharmacyPrecheck(page);
     await expect(check).toContainText("Supported typed endorsement: missing");
-    await expect(check.locator("blockquote")).toHaveCount(0);
+    const clause = text.startsWith("BB") ? "P2-C8" : "P2-C12";
+    await expect(check).toContainText(`2026-08 / ${clause}`);
+    await expect(check).not.toContainText("P2-C9");
+    await expect(check.locator("blockquote")).toContainText(text.startsWith("BB") ? "endorsed BB" : "endorse XP");
     await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
     const submit = page.getByRole("button", { name: "Send claim", exact: true });
     await expect(submit).toBeEnabled();
@@ -185,9 +188,9 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     const receipt = await openPharmacyReceipt(page);
     await expect(receipt).toContainText(text);
     await expect(receipt).toContainText("missing");
-    await expect(receipt).toContainText("2026-08 / Not retrieved");
+    await expect(receipt).toContainText(`2026-08 / ${clause}`);
     await expect(receipt.locator("dl").first()).toContainText("Gate 1fail");
-    await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeEnabled();
     const timeline = page.getByRole("list", { name: "Submission timeline" });
     await expect(timeline.getByText("Not needed", { exact: true })).toHaveCount(0);
     await expect(timeline.locator("li")).toHaveCount(2);

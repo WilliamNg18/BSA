@@ -68,10 +68,11 @@ for (const enabled of [false, true]) {
     }
     if (enabled) await capture.getByRole("checkbox", { name: DECLARATION_RECONCILIATION, exact: true }).check();
     await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
-    await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
     const row = page.getByRole("region", { name: "Type 2 worklist", exact: true }).locator('[data-case-id="EX-24123"]');
     await expect(row).toBeVisible();
     await row.getByRole("link", { name: "Open EX-24123", exact: true }).click();
+    await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true })
+      .getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
     await operatorRadio(page, "ACCEPT").check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human checked the captured product, quantity, endorsement and independently established prescriber.");
     await performDecision(page, "ACCEPT", { releaseVerified: enabled });
