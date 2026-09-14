@@ -15,7 +15,7 @@ describe("follow history and current location presentation", () => {
     [{ processStep: "correction_applied", actor: "pharmacy" }, "Pharmacy applied correction 4 September (synthetic)"],
     [{ processStep: "type1_capture" }, "Operator confirmed capture 4 September (synthetic)"],
     [{ processStep: "release_to_pricing", releaseOrigin: "human_decision" }, "Released after operator review 4 September (synthetic)"],
-    [{ processStep: "release_to_pricing", actor: "code", releaseOrigin: "automatic_verification" }, "Verified and released 4 September (synthetic)"],
+    [{ processStep: "release_to_pricing", actor: "code", releaseOrigin: "automatic_verification" }, "Released to existing pricing 4 September (synthetic)"],
     [{ processStep: "resubmission", actor: "pharmacy" }, "Pharmacy resubmitted item 4 September (synthetic)"],
     [{ decision: "REQUEST_INFORMATION" }, "Operator requested information 4 September (synthetic)"],
     [{ decision: "ESCALATE" }, "Operator escalated item 4 September (synthetic)"],
