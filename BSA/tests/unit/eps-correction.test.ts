@@ -5,7 +5,7 @@ import { checkEpsPharmacy } from "@/lib/domain/eps-pharmacy-check";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import type { EpsPrescription } from "@/lib/domain/types";
 
-const id = "SYN-FQ123-TYPE2";
+const id = "SYN-FQ123-MISMATCH";
 const store = () => useAppStore.getState();
 function snapshot(source: EpsPrescription) {
   const s = store();
@@ -13,8 +13,9 @@ function snapshot(source: EpsPrescription) {
   return pharmacySnapshot(source.dispenserEndorsement, source.dispensingDate, "scripted", checkEpsPharmacy(c, source.dispenserEndorsement), "2026-09-13T12:00:00.000Z");
 }
 function sources() {
-  const before = structuredClone(store().caseRevisions[id][0].epsPrescription!);
-  const after = { ...before, supplyEvidence: { ...before.supplyEvidence!, brandManufacturer: "Demo manufacturer (synthetic)" } };
+  const seed = store().caseRevisions[id][0].epsPrescription!;
+  const before = structuredClone({ ...seed, supplyEvidence: { ...seed.supplyEvidence!, brandManufacturer: "" } });
+  const after = { ...before, supplyEvidence: { ...before.supplyEvidence!, brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21 } };
   return { before, after };
 }
 beforeEach(() => { store().resetDemo(); store().setAgentEnabled(true); });
