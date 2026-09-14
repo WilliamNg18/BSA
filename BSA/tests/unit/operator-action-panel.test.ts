@@ -156,6 +156,23 @@ describe("shared operator action panel", () => {
   it("does not invent a release record for an unreleased case", () => {
     expect(renderToStaticMarkup(createElement(ReleaseRecord, { caseId: "EX-24112" }))).toBe("");
   });
+
+  it("fails closed when a recorded release has conflicting actor attribution", () => {
+    const store = useAppStore.getState();
+    const row = store.lifecycles["EX-24112"];
+    useAppStore.setState({ lifecycles: { ...store.lifecycles, "EX-24112": {
+      ...row, state: "released_to_pricing", history: [...row.history, {
+        at: "2026-09-14T12:00:00Z", actor: "code", from: row.state, to: "released_to_pricing",
+        revision: 1, processStep: "release_to_pricing", releaseOrigin: "human_decision", message: "Conflicting attribution",
+        verification: { gate1: "none", gate2: "none", reconciled: false, released: true },
+      }],
+    } } });
+    const html = renderToStaticMarkup(createElement(ReleaseRecord, { caseId: "EX-24112" }));
+    expect(html).toContain('role="alert"');
+    expect(html).toContain("Release attribution or verification incomplete");
+    expect(html).not.toContain("no operator action");
+    expect(html).not.toContain("after operator review");
+  });
 });
 
 describe("compact Type 1 declaration confirmation", () => {

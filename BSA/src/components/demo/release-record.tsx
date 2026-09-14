@@ -16,7 +16,8 @@ export function ReleaseRecord({ caseId }: { caseId: string }) {
   const automatic = event.actor === "code" && event.releaseOrigin === "automatic_verification"
     && event.verification?.gate1 === "pass" && event.verification.gate2 === "pass"
     && event.verification.reconciled && event.verification.released;
-  if (!automatic && event.releaseOrigin !== "human_decision") {
+  const human = event.actor === "operator" && event.releaseOrigin === "human_decision" && event.verification?.released;
+  if (!automatic && !human) {
     return <p role="alert">Release attribution or verification incomplete.</p>;
   }
   return <section aria-label="Release record" data-release-record={caseId} data-automatic-case={automatic ? "" : undefined}
