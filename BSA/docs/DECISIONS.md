@@ -2196,3 +2196,9 @@ controls, not B's completed record.
 - Question: what does an unknown invoice suggestion fill? Choice: nothing; its control focuses the existing authoritative endorsement input for human entry. No claimed amount is copied into invoice evidence.
 - Question: how are restored values highlighted? Choice: use R's applied-field metadata comparing the actual before/after draft, including fields restored to their original values; manual edits clear that metadata.
 - Question: can unreadable paper receipts promise automatic release? Choice: no; preserve recorded gate results and state explicitly that an operator compares the declaration with the scan. A pending item is not labelled as already built or released.
+
+## 2026-09-15: Compact Type 1 evidence and editor placement
+
+- Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
+- Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
+- Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
