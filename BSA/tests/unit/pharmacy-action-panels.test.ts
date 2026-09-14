@@ -230,4 +230,29 @@ describe("recorded receipt and release count", () => {
     expect(html).toContain("after operator review");
     expect(html).not.toContain("no operator action");
   });
+
+  it("keeps a receipt's release attribution after a later same-state pharmacy Apply", () => {
+    const id = "EX-24107", s = useAppStore.getState();
+    s.setAgentEnabled(true);
+    s.submitItem({ ...currentDraft(id, "eps"), caseId: id, channel: "eps" });
+    const revisionNumber = useAppStore.getState().caseRevisions[id].at(-1)!.number;
+    const draft = currentDraft(id, "eps");
+    s.setPharmacyDraft(id, { ...draft, purpose: "new_submission", endorsementText: "NCSO JB",
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO JB" } });
+    s.applySuggestedCorrection(id);
+    expect(useAppStore.getState().lifecycles[id].history.at(-1)?.actor).toBe("pharmacy");
+    const html = render(createElement(PharmacySubmissionReceipt, { caseId: id, revisionNumber, compact: true }));
+    expect(html).toContain("released to existing pricing, no operator action");
+    expect(html).toContain("Paid on the normal schedule");
+  });
+
+  it("does not invent no-operator verification for an unattributed release record", () => {
+    const id = "EX-24107", s = useAppStore.getState(), row = s.lifecycles[id];
+    useAppStore.setState({ lifecycles: { ...s.lifecycles, [id]: { ...row, state: "released_to_pricing", history: [...row.history,
+      { at: new Date().toISOString(), actor: "code", from: "in_review", to: "released_to_pricing", revision: 1, message: "Legacy release" }] } } });
+    const html = render(createElement(PharmacySubmissionReceipt, { caseId: id, revisionNumber: 1, compact: true }));
+    expect(html).toContain("verification provenance unavailable");
+    expect(html).not.toContain("no operator action");
+    expect(html).not.toContain("Paid on the normal schedule");
+  });
 });

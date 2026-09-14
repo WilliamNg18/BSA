@@ -14,14 +14,14 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
   if (!row || !revision) return <p role="alert">Submission receipt unavailable.</p>;
   const events = row.history.filter((event) => event.revision === revisionNumber);
   const verification = events.filter((event) => event.verification).at(-1)?.verification ?? NO_VERIFICATION;
-  const release = events.find((event) => event.to === "released_to_pricing");
+  const release = events.filter((event) => event.to === "released_to_pricing" &&
+    (event.from !== event.to || event.processStep === "release_to_pricing" || event.releaseOrigin !== undefined)).at(-1);
   const pricing = events.find((event) => event.to === "paid");
   const built = events.some((event) => event.actor === "agent" && event.recommendationGate === "PASS" &&
     event.recommendation && ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"].includes(event.recommendation));
   const humanRelease = release?.releaseOrigin === "human_decision" || release?.actor === "operator";
   const nextPath = release
-    ? humanRelease ? "Released to existing pricing after operator review."
-      : "Verified, released to existing pricing, no operator action."
+    ? itemStateLabel({ ...row, state: "released_to_pricing", history: events }, "nhsbsa")
     : pricing ? events.some((event) => event.actor === "operator") || pricing.processStep !== "automatic_pricing"
       ? "Priced by NHSBSA's existing rules engine after human review."
       : "priced by NHSBSA's existing rules engine, no person involved"
@@ -32,7 +32,7 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
   return <section aria-label="Submission receipt" data-pharmacy-receipt className="space-y-3 rounded-xl border p-4">
     <h2 className="font-semibold">Submission receipt</h2>
     <BoundaryTag cls={release || pricing ? humanRelease ? "human" : "deterministic" : "human"} />
-    <p role="status">{release ? "Paid on the normal schedule (synthetic)." : nextPath}</p>
+    <p role="status">{release?.verification?.released ? "Paid on the normal schedule (synthetic)." : nextPath}</p>
     <dl className="grid grid-cols-2 gap-3 text-sm">
       <KeyValue k="Receipt" v={`${caseId}:${revision.number}`} />
       <KeyValue k="Gate 1" v={verification.gate1} />

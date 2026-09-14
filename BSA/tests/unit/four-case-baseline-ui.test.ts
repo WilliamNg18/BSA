@@ -55,7 +55,8 @@ describe("four-case baseline compatibility before new panels land", () => {
 
   it("rejects a background pharmacy deep link without manufacturing a playable claim", () => {
     const html = render(PharmacyClaimsPage, "/pharmacy/claims?caseId=EX-24119");
-    expect(html).toContain("Unknown synthetic claim");
+    expect(html).toContain("Background only, not playable");
+    expect(html).not.toContain("Corrected endorsement");
     expect(useAppStore.getState().lifecycles["EX-24119"]).toBeUndefined();
   });
 });

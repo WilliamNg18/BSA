@@ -20,7 +20,7 @@ const SCENARIOS = [
 
 export function EpsPharmacyCapture({ caseId: fixedCaseId, compact = false, controls = "correct-and-submit" }: {
   caseId?: string; compact?: boolean; controls?: "submit" | "correct-and-submit";
-}) {
+} = {}) {
   const [selected, select] = useState("EX-24112");
   const caseId = fixedCaseId ?? selected;
   return <div className="space-y-4">
