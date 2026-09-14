@@ -16,6 +16,8 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
   const verification = events.filter((event) => event.verification).at(-1)?.verification ?? NO_VERIFICATION;
   const release = events.find((event) => event.to === "released_to_pricing");
   const pricing = events.find((event) => event.to === "paid");
+  const built = events.some((event) => event.actor === "agent" && event.recommendationGate === "PASS" &&
+    event.recommendation && ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"].includes(event.recommendation));
   const humanRelease = release?.releaseOrigin === "human_decision" || release?.actor === "operator";
   const nextPath = release
     ? humanRelease ? "Released to existing pricing after operator review."
@@ -23,18 +25,20 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
     : pricing ? events.some((event) => event.actor === "operator") || pricing.processStep !== "automatic_pricing"
       ? "Priced by NHSBSA's existing rules engine after human review."
       : "priced by NHSBSA's existing rules engine, no person involved"
+    : built ? "An operator will see a built case."
     : events.some((event) => event.processStep === "type1_capture")
       ? "Human capture recorded; human review pending."
       : revision.channel === "paper" ? "Human capture or reconciliation pending." : "Human review pending.";
   return <section aria-label="Submission receipt" data-pharmacy-receipt className="space-y-3 rounded-xl border p-4">
     <h2 className="font-semibold">Submission receipt</h2>
     <BoundaryTag cls={release || pricing ? humanRelease ? "human" : "deterministic" : "human"} />
-    <p role="status">{nextPath}</p>
+    <p role="status">{release ? "Paid on the normal schedule (synthetic)." : nextPath}</p>
     <dl className="grid grid-cols-2 gap-3 text-sm">
       <KeyValue k="Receipt" v={`${caseId}:${revision.number}`} />
       <KeyValue k="Gate 1" v={verification.gate1} />
       <KeyValue k="Gate 2" v={verification.gate2} />
       <KeyValue k="Reconciled" v={verification.reconciled ? "Yes" : "Not established"} />
+      {release && <KeyValue k="Pricing path" v={nextPath} />}
     </dl>
     {!compact && <>
       <details><summary className="cursor-pointer">Recorded submission</summary>

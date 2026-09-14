@@ -96,9 +96,12 @@ describe("pharmacy panel human controls", () => {
   });
 
   it("Send confirmation uses retained input without changing conflicting source quantities", () => {
-    const id = "EX-24119";
+    const id = "EX-24112";
     const s = useAppStore.getState();
-    const before = structuredClone(s.caseRevisions[id]);
+    s.submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+    s.arriveInQueue(id);
+    s.requestInformation(id, "Please confirm the supplied endorsement with the original form.");
+    const before = structuredClone(useAppStore.getState().caseRevisions[id]);
     s.setPharmacyDraft(id, { ...currentDraft(id), confirmation: "Please review both recorded quantities with the original form." });
     const html = render(createElement(PharmacyClaimActionPanel, { caseId: id }));
     expect(html).toContain(">Confirm");
@@ -142,14 +145,14 @@ describe("pharmacy panel human controls", () => {
   });
 
   it("generic Apply writes actual brand, pack and form without rewriting the EPS source", () => {
-    const id = "SYN-FQ123-TYPE2";
+    const id = "SYN-FQ123-MISMATCH";
     useAppStore.getState().setAgentEnabled(true);
     const before = structuredClone(useAppStore.getState().caseRevisions[id]);
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
     controls.get("apply-correction")!();
     const after = useAppStore.getState();
     expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.brandManufacturer).not.toBe("");
-    expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.packSize).toBeGreaterThan(0);
+    expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.packSize).toBe(21);
     expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.form).not.toBe("");
     expect(after.caseRevisions[id]).toEqual(before);
     expect(after.lifecycles[id].history.at(-1)).toMatchObject({ actor: "pharmacy", processStep: "correction_applied" });

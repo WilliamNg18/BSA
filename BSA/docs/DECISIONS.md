@@ -2078,3 +2078,9 @@ the page, on step or route changes only. Header mode and perspective changes
 do not steal focus. Frozen submission channels are passed to P's renderer,
 without rewriting an item's latest recorded channel. Tie-breakers: keyboard
 operability and truthful source presentation.
+
+## 2026-09-14: Task 34 four-case vision alignment
+
+- Question: retain extra pharmacy scenarios? Chosen: only A/B/wrong-pack EPS and unreadable D paper are selectable; C/F are fixed unclickable background. The latest four-case instruction supersedes earlier extra-playable requirements.
+- Question: where do released items appear to a pharmacy? Chosen: Paid on the normal schedule, with the recorded release-to-existing-pricing qualifier and human-origin label; do not add a fake paid transition. The latest vision and immutable authority both hold.
+- Question: does Gate 1 Ready hide a valid correction? Chosen: separately evaluate supported correction availability, so an approved wrong-pack referral can apply real source fields despite passing format checks. Two-gate correctness wins.

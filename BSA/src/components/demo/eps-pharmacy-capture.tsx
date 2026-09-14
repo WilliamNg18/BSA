@@ -15,7 +15,6 @@ import { useAppStore } from "@/lib/store";
 const SCENARIOS = [
   { id: "EX-24107", label: "Complete endorsement" },
   { id: "EX-24112", label: "NCSO missing date" },
-  { id: "SYN-FQ123-TYPE2", label: "Generic missing brand" },
   { id: "SYN-FQ123-MISMATCH", label: "Wrong pack size" },
 ] as const;
 
@@ -33,7 +32,7 @@ export function EpsPharmacyCapture({ caseId: fixedCaseId, compact = false, contr
 }
 
 function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact: boolean; controls: "submit" | "correct-and-submit" }) {
-  const { c, revision, draft, original, enabled, result, validationError, error, act, update } = usePharmacyDraft(caseId, "eps");
+  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId, "eps");
   if (!c || !revision || !draft?.epsPrescription || !original) return <p role="alert">EPS item unavailable.</p>;
   const eps = draft.epsPrescription;
   const receipt = revision.kind !== "seed";
@@ -53,8 +52,8 @@ function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact
         <NativeChoiceItem value="exempt">Exempt</NativeChoiceItem><NativeChoiceItem value="chargeable">Chargeable</NativeChoiceItem><NativeChoiceItem value="not_recorded">Not recorded</NativeChoiceItem>
       </NativeChoiceGroup>
     </fieldset>}
-    {enabled ? <PharmacyDraftCheck result={result} error={validationError}
-      apply={controls === "correct-and-submit" ? () => act(() => {
+    {enabled ? <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
+      apply={controls === "correct-and-submit" && canApply ? () => act(() => {
         const store = useAppStore.getState();
         store.setPharmacyDraft(caseId, draft);
         store.applySuggestedCorrection(caseId);

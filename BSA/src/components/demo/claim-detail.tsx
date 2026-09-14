@@ -7,8 +7,9 @@ import { PharmacyDraftFields } from "./pharmacy-draft-fields";
 import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { useAppStore } from "@/lib/store";
-import { itemStateLabel, type CaseLifecycle } from "@/lib/domain/lifecycle";
+import { itemStateLabel, NO_VERIFICATION, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
+import { isPlayableCase } from "@/lib/domain/cases";
 
 export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
   return <section aria-label="Claim detail" className="space-y-4 rounded-xl border bg-card p-5">
@@ -18,13 +19,15 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
 }
 
 export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: string; compact?: boolean }) {
-  const { c, revision, draft, original, enabled, result, validationError, error, act, update } = usePharmacyDraft(caseId);
+  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId);
   const row = useAppStore((s) => s.lifecycles[caseId]);
+  const verification = useAppStore((s) => s.itemVerification[caseId]) ?? NO_VERIFICATION;
   const [message, setMessage] = useState("");
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (!compact) heading.current?.focus(); }, [caseId, compact]);
+  if (!isPlayableCase(caseId)) return <p role="status">Background only, not playable.</p>;
   if (!c || !revision || !draft || !original || !row) return <p role="alert">Unknown pharmacy claim.</p>;
-  const channel = revision.channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper");
+  const channel = draft.channel ?? revision.channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper");
   const editable = row.state === "referred_back";
   const requested = row.state === "information_requested";
   const response = row.history.filter((event) => event.actor === "operator" && (event.revision ?? 1) === revision.number &&
@@ -34,7 +37,13 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
   return <div data-pharmacy-case={caseId} className="space-y-3">
     <h2 ref={heading} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {caseId}</h2>
     <p role="status">{itemStateLabel(row, "pharmacy", enabled)}</p>
+    {row.state === "released_to_pricing" && <p>Paid on the normal schedule (synthetic).</p>}
     <BoundaryTag cls="human" />
+    <dl aria-label="Item verification" className="grid grid-cols-3 gap-2 text-sm">
+      <div><dt>Gate 1</dt><dd>{verification.gate1}</dd></div>
+      <div><dt>Gate 2</dt><dd>{verification.gate2}</dd></div>
+      <div><dt>Reconciled</dt><dd>{verification.reconciled ? "Yes" : "Not established"}</dd></div>
+    </dl>
     {!compact && <dl className="grid grid-cols-2 gap-2 text-sm">
       <div><dt>Pharmacy</dt><dd>{c.pharmacy.name} (synthetic)</dd></div>
       <div><dt>Dispensing date</dt><dd>{c.extracted.dispensingDate}</dd></div>
@@ -62,8 +71,8 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
       <PharmacyDraftFields draft={draft} original={original} channel={channel} update={update} correction />
-      {enabled && <PharmacyDraftCheck result={result} error={validationError}
-        apply={approved ? () => act(() => {
+      {enabled && <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
+        apply={approved && canApply ? () => act(() => {
           useAppStore.getState().applySuggestedCorrection(caseId);
           document.getElementById("claim-endorsement")?.focus();
         }) : undefined}

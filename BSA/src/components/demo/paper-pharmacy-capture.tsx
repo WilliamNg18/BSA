@@ -15,7 +15,7 @@ import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, controls = "correct-and-submit" }: {
   caseId?: string; compact?: boolean; controls?: "submit" | "correct-and-submit";
 }) {
-  const { c, revision, draft, original, enabled, result, validationError, error, act, update } = usePharmacyDraft(caseId, "paper");
+  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId, "paper");
   if (!c || !revision || !draft || !original) return <p role="alert">Paper item unavailable.</p>;
   const poorScan = c.imageQuality < QUALITY_THRESHOLD;
   const submitted = revision.kind !== "seed";
@@ -29,8 +29,8 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
         {c.scenario === "D" ? "Load worked declaration" : "Load complete paper declaration"}
       </Button>}
       <PharmacyDraftFields draft={draft} original={original} channel="paper" update={update} />
-      <PharmacyDraftCheck result={result} error={validationError}
-        apply={controls === "correct-and-submit" ? () => act(() => {
+      <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
+        apply={controls === "correct-and-submit" && canApply ? () => act(() => {
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, draft);
           store.applySuggestedCorrection(caseId);

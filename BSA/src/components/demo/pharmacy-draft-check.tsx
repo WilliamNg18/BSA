@@ -15,7 +15,7 @@ export function PharmacyDraftCheck({ result, error, apply, recheck }: {
       <ul aria-label="Requirement checkboxes">{result.checks.map((check) => <li key={check.id}>{check.label}: {check.met === true ? "met" : check.met === false ? "missing" : "unknown"}</li>)}</ul>
     </details>}
     <div className="flex flex-wrap gap-2">
-      {apply && result?.status === "missing" && <Button variant="outline" data-pharmacy-action="apply-correction" onClick={apply}>Apply suggested correction</Button>}
+      {apply && <Button variant="outline" data-pharmacy-action="apply-correction" onClick={apply}>Apply suggested correction</Button>}
       {recheck && <Button variant="outline" onClick={recheck}>Re-check endorsement</Button>}
     </div>
   </section>;
