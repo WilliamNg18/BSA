@@ -212,7 +212,9 @@ describe("authoritative two-gate source verification", () => {
     store().referBack(b, draft.rbCode, draft.note);
     expect(store().records.at(-1)?.approvedDraft?.text).toBe(draft.note);
     const revision = store().caseRevisions[b].at(-1)!;
+    store().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, revision), purpose: "correction" });
     store().applySuggestedCorrection(b);
+    expect(store().pharmacyCorrections).toHaveLength(0);
     expect(store().lifecycles[b].state).toBe("referred_back");
     expect(store().lifecycles[b].history.at(-1)?.actor).toBe("pharmacy");
     expect(checkPharmacyCorrection(sessionCase(b)!, revision, store().pharmacyDrafts[b]).status).toBe("ready");
@@ -228,6 +230,7 @@ describe("authoritative two-gate source verification", () => {
   it("generic correction fills actual source fields and never approves or submits from Apply", () => {
     const id = mismatch;
     store().setAgentEnabled(true);
+    store().setPharmacyDraft(id, { ...initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id][0]), purpose: "new_submission" });
     store().applySuggestedCorrection(id);
     expect(store().pharmacyDrafts[id].epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
     expect(store().lifecycles[id].state).toBe("in_review");
