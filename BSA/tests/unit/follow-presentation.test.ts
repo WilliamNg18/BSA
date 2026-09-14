@@ -59,6 +59,24 @@ describe("follow history and current location presentation", () => {
     expect(followedLocation({ ...item, state: "information_requested" })).toBe("Pharmacy: confirmation requested");
   });
 
+  it("names a real pharmacy confirmation rather than the shared resubmission process code", () => {
+    const store = useAppStore.getState();
+    store.resetDemo();
+    try {
+      store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+      store.arriveInQueue("EX-24112");
+      store.requestInformation("EX-24112", "Please confirm the dispensing details.");
+      store.sendConfirmation("EX-24112", "The pharmacy has confirmed the dispensing details.");
+      const item = useAppStore.getState().lifecycles["EX-24112"];
+      expect(item.history.at(-1)).toMatchObject({
+        actor: "pharmacy", from: "information_requested", to: "resubmitted", processStep: "resubmission",
+      });
+      expect(followedLastEvent(item)).toMatch(/^Pharmacy sent confirmation \d+ \w+ \(synthetic\)$/);
+    } finally {
+      store.resetDemo();
+    }
+  });
+
   it("does not let a later automatic release erase an earlier operator's involvement", () => {
     const item = row({ to: "released_to_pricing", releaseOrigin: "human_decision" });
     item.history.push({ ...item.history[0], actor: "code", from: "released_to_pricing", releaseOrigin: "automatic_verification",
