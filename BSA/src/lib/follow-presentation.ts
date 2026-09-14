@@ -31,6 +31,9 @@ export function followedLocation(row: CaseLifecycle, process?: ItemProcess): str
 }
 
 function historyAction(event: HistoryEvent): string {
+  if (event.actor === "pharmacy" && event.from === "information_requested" && event.to === "resubmitted") {
+    return "Pharmacy sent confirmation";
+  }
   switch (event.processStep) {
     case "suggestion_applied": return "Operator applied suggestion";
     case "correction_applied": return "Pharmacy applied correction";
@@ -52,7 +55,6 @@ function historyAction(event: HistoryEvent): string {
     case "AMEND": return "Operator amended decision";
   }
   if (event.actor === "agent") return event.recommendation === "ABSTAIN" ? "Agent abstained" : "Agent advice recorded";
-  if (event.actor === "pharmacy" && event.from === "information_requested") return "Pharmacy sent confirmation";
   switch (event.to) {
     case "submitted": return "Pharmacy submitted item";
     case "resubmitted": return "Pharmacy resubmitted item";
