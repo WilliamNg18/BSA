@@ -2152,3 +2152,17 @@ dark-theme text. Re-run the unchanged checks. Tie-breaker: accessibility.
 - Question: can a partial or retried checklist establish acceptance? Choice: require every named check exactly once, one passing attempt, and valid clean before/after identities matching the expected commit. Preserve missing identities, malformed attachments and all failed attempts as explicit evidence. HTTP remains local rehearsal, never hosted acceptance.
 - Question: are the development state runs source-pinned release proof? Choice: report their actual dirty build identity and full results separately. The coherent eight-test run proves sixteen actual Both/switched UI cycles locally; it does not replace a clean final run or latest-main hosted acceptance.
 - Question: did the baseline process-test split preserve registration? Choice: correct the misplaced new test at suite scope, retain all five existing variants, and verify the committed registration separately. Earlier combined-worktree results do not certify the faulty intermediate commit.
+
+## 2026-09-14: Carry the actual operator response into step 9
+
+Question: should Next open fixed B after the operator refers a different item?
+Choice: on step 8 to 9 only, retain the followed playable item when it actually
+needs pharmacy action (referred back or information requested), with its recorded
+channel. Otherwise retain the frozen B default. The strip and live panel use
+that same destination; navigation appends no events and changes no drafts.
+Tie-breakers: a functional shared hand-off and preserved operational history.
+
+The regression explicitly corrects and sends B to automatic release, submits
+the wrong-pack EPS item, applies the operator suggestion and refers it back.
+Next must then open that actual referral with correction and resubmission
+controls, not B's completed record.
