@@ -4,8 +4,10 @@ import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FollowBanner } from "../../src/components/demo/follow-banner";
 import { FollowItem } from "../../src/components/demo/case-links";
-import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import { itemStateLabel } from "../../src/lib/domain/lifecycle";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { visitFollowedCase } from "../../src/lib/follow-navigation";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -53,5 +55,79 @@ describe("persistent followed item banner", () => {
   it("renders no banner without Follow and no control for an unknown item", () => {
     expect(render()).toBe("");
     expect(renderToStaticMarkup(createElement(FollowItem, { id: "unknown" }))).toBe("");
+  });
+
+  it.each([false, true])("follows actual D submission, capture, referral, correction, resubmission and human release, Agent=%s", (enabled) => {
+    const id = "EX-24123";
+    store().setAgentEnabled(enabled);
+    store().setDemoStep(10);
+    store().followCase(id);
+    const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB", prescriber: "Dr Example (synthetic)" };
+    const checkpoint = () => {
+      const before = getDomainSnapshot();
+      for (const perspective of ["both", "pharmacy", "nhsbsa"] as const) {
+        store().setPerspective(perspective);
+        for (const side of ["pharmacy", "nhsbsa"] as const) {
+          visitFollowedCase(side);
+          expect(getDomainSnapshot()).toEqual(before);
+          expect(store().agentEnabled).toBe(enabled);
+          expect(store().demoStep).toBe(10);
+          expect(store().followedCaseId).toBe(id);
+          const html = render();
+          expect(html).toContain("Following EX-24123 | Paper");
+          expect(html).toContain(itemStateLabel(store().lifecycles[id], store().perspective, enabled));
+          expect(html).toContain("Pharmacy view");
+          expect(html).toContain("NHSBSA view");
+        }
+      }
+    };
+    store().submitItem({ caseId: id, channel: "paper", endorsementText: fields.endorsementText,
+      declaration: { fields, declaredAt: "2026-09-04T09:00:00Z", provenance: "pharmacy_declaration" } });
+    checkpoint();
+    store().confirmType1({ caseId: id, revision: store().caseRevisions[id].at(-1)!.number, fields,
+      provenance: "pharmacy_declaration", declarationReconciled: true });
+    checkpoint();
+    if (enabled) {
+      store().applySuggestionToDecision(id);
+      checkpoint();
+    }
+    store().referBack(id, "RB2B", enabled ? store().operatorDrafts[id].note : "Human requires the missing endorsement date.");
+    checkpoint();
+    expect(render()).toContain(", RB2B (synthetic)");
+    if (enabled) store().applySuggestedCorrection(id);
+    else {
+      const draft = initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!);
+      const endorsementText = "NCSO JB 27/08/26";
+      store().setPharmacyDraft(id, { ...draft, endorsementText,
+        paperDeclaration: { ...draft.paperDeclaration!, endorsementText },
+        declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields, endorsementText } } });
+    }
+    checkpoint();
+    store().resubmit(id);
+    checkpoint();
+    const corrected = store().caseRevisions[id].at(-1)!;
+    store().confirmType1({ caseId: id, revision: corrected.number, fields: corrected.declaration!.fields,
+      provenance: "pharmacy_declaration", declarationReconciled: true });
+    checkpoint();
+    store().releaseToPricing(id, "Human reconciled the corrected declaration and source evidence.");
+    checkpoint();
+    expect(store().lifecycles[id].state).toBe("released_to_pricing");
+    expect(render()).toContain("after operator review");
+    expect(render()).not.toContain("no operator action");
+    expect(render()).toContain("Released after operator review");
+  });
+
+  it("reserves no-operator copy for a real automatic release and retains it across toggle changes", () => {
+    const id = "EX-24107";
+    store().setAgentEnabled(true);
+    const draft = initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!);
+    store().submitItem({ ...draft, caseId: id, channel: draft.channel! });
+    store().followCase(id);
+    store().setPerspective("nhsbsa");
+    for (const enabled of [false, true]) {
+      store().setAgentEnabled(enabled);
+      expect(render()).toContain("released to existing pricing, no operator action");
+      expect(render()).not.toContain("after operator review");
+    }
   });
 });
