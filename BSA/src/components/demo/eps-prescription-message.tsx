@@ -2,11 +2,13 @@ import { KeyValue } from "@/components/demo/labels";
 import type { EpsPrescription } from "@/lib/domain/types";
 
 /** The recorded message is evidence, not an inferred reading of a paper form. */
-export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
+export function EpsPrescriptionMessage({ prescription, dispenser = true, contextLabel }: {
   prescription: EpsPrescription;
   dispenser?: boolean;
+  contextLabel?: string;
 }) {
-  const sourceLabel = prescription.claimMessageState === "submitted" ? "Submitted electronic prescription, synthetic" : "Draft electronic prescription, synthetic";
+  const messageLabel = prescription.claimMessageState === "submitted" ? "Submitted electronic prescription, synthetic" : "Draft electronic prescription, synthetic";
+  const sourceLabel = contextLabel ? `${contextLabel}: ${messageLabel}` : messageLabel;
   return <section aria-label={sourceLabel} className="space-y-4 rounded-xl border bg-card p-4">
     <header className="space-y-2">
       <h3 className="font-semibold">Electronic prescription, synthetic</h3>
@@ -30,7 +32,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
       </dl>
     </section>)}
     <dl className="text-sm"><KeyValue k="Prescriber endorsement" v={prescription.prescriberEndorsement || "None recorded"} /></dl>
-    {dispenser && <section aria-label="Recorded dispenser claim" className="space-y-2 border-t pt-3">
+    {dispenser && <section aria-label={contextLabel ? `${contextLabel}: Recorded dispenser claim` : "Recorded dispenser claim"} className="space-y-2 border-t pt-3">
       <h4 className="font-semibold">Dispenser&apos;s part</h4>
       <dl className="grid gap-3 text-sm grid-cols-2">
         {prescription.items.map((item, index) => <KeyValue key={index} k="Product dispensed (synthetic)" v={`${item.dispensedCode} · ${item.dispensedName}`} />)}
