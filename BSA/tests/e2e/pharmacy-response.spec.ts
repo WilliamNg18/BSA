@@ -38,10 +38,7 @@ async function verifyPharmacyModes(page: Page, reason: string, approvedText?: st
   await expect(approved).toHaveCount(0);
 }
 
-for (const [id, reason] of [
-  ["EX-24112", "Endorsement initialled but not dated."],
-  ["EX-24119", "Confirm the conflicting quantities; do not choose one automatically."],
-] as const) {
+for (const [id, reason] of [["EX-24112", "Endorsement initialled but not dated."]] as const) {
   test(`seeded ${id} pharmacy reasons remain manual through Off On Off`, async ({ page }, info) => {
     await page.goto(`pharmacy/claims?caseId=${id}`);
     await verifyPharmacyModes(page, reason);
@@ -49,15 +46,37 @@ for (const [id, reason] of [
   });
 }
 
-for (const id of ["EX-24112", "EX-24119"]) {
+// C/F are now fixed background. The live information-request contract is exercised on B below.
+for (const id of ["EX-24119", "EX-24088"]) {
+  test(`background ${id} stays unclickable through Off On Off`, async ({ page }, info) => {
+    await page.goto(`pharmacy/claims?caseId=${id}`);
+    const background = page.getByRole("region", { name: "Historical cases, background", exact: true });
+    const original = await background.innerText();
+    const flag = page.getByRole("banner").getByRole("switch");
+    for (const enabled of [false, true, false]) {
+      await flag.setChecked(enabled);
+      await expect(background).toHaveText(original, { useInnerText: true });
+      await expect(background).toContainText(id);
+      await expect(background).toContainText("Background only, not playable");
+      await expect(background.getByRole("link")).toHaveCount(0);
+      await expect(background.getByRole("button")).toHaveCount(0);
+      await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Resubmit claim", exact: true })).toHaveCount(0);
+    }
+    await captureJson(info, "background-not-promoted-to-live-claim", original);
+  });
+}
+
+for (const kind of ["referral", "information request"] as const) {
+  const id = "EX-24112";
   for (const mode of ["manual", "unapproved", "approved"] as const) {
-    test(`new ${id} ${mode} response never promotes the human reason to an approved note`, async ({ page }, info) => {
+    test(`new ${id} ${kind} ${mode} never promotes the human reason to an approved note`, async ({ page }, info) => {
       await page.goto(`case/${id}`);
       await startDemonstrationReview(page);
       const enabled = mode !== "manual";
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-      await page.getByRole("radio", { name: id === "EX-24112" ? /^Refer back / : /^Request information / }).check();
-      if (id === "EX-24112") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+      await page.getByRole("radio", { name: kind === "referral" ? /^Refer back / : /^Request information / }).check();
+      if (kind === "referral") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       let approvedText: string | undefined;
       if (enabled) {
         const approval = page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true });
@@ -67,7 +86,7 @@ for (const id of ["EX-24112", "EX-24119"]) {
           await approval.check();
         }
       }
-      const reason = `Internal operator rationale for ${id} ${mode}, not the pharmacy draft`;
+      const reason = `Internal operator rationale for ${id} ${kind} ${mode}, not the pharmacy draft`;
       await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
       await page.getByRole("button", { name: "Record decision", exact: true }).click();
       await expect(page).toHaveURL(/\/record$/);
