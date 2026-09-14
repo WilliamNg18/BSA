@@ -3,6 +3,7 @@ import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS, postWorkedPaperDeclaration } from "./paper-declaration-helpers";
 import { choosePaperExample } from "./pharmacy-scenario-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { operatorRadio, performDecision } from "./operator-action-helpers";
 
 test("worked paper declaration reaches Sufficient only after explicit human evidence and confirmation", async ({ page }, info) => {
   await page.goto("/pharmacy");
@@ -71,13 +72,14 @@ for (const enabled of [false, true]) {
     const row = page.getByRole("region", { name: "Type 2 worklist", exact: true }).locator('[data-case-id="EX-24123"]');
     await expect(row).toBeVisible();
     await row.getByRole("link", { name: "Open EX-24123", exact: true }).click();
-    await page.getByRole("radio", { name: /^Accept the recommendation/ }).check();
+    await operatorRadio(page, "ACCEPT").check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human checked the captured product, quantity, endorsement and independently established prescriber.");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
-    await expect(page).toHaveURL(/\/record$/);
+    await performDecision(page, "ACCEPT", { releaseVerified: enabled });
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     const detail = page.getByRole("region", { name: "Claim detail", exact: true });
     await expect(detail).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    await expect(detail).toContainText("after operator review");
+    await expect(detail).not.toContainText("no operator action");
     await expect(detail).not.toContainText("no person involved");
     await detail.getByText("History and attempts (2)", { exact: true }).click();
     await expect(detail.getByRole("region", { name: "Type 1 capture for attempt 2", exact: true })).toContainText("Dr Demo (synthetic)");
