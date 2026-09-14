@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { operatorDecision, performDecision } from "./operator-action-helpers";
 
 for (const [width, colorScheme] of [[1440, "light"]] as const) {
   test.describe(`claims resubmission comparison ${width} ${colorScheme}`, () => {
@@ -38,7 +39,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await expect(page.getByRole("tooltip")).toHaveCount(0);
       await expect(marker).toBeFocused();
       await page.keyboard.press("Tab");
-      const resubmit = page.getByRole("button", { name: "Resubmit claim", exact: true });
+      const resubmit = page.getByRole("button", { name: "Resubmit blind", exact: true });
       await expect(resubmit).toBeFocused();
       await expect(resubmit).toBeEnabled();
       await page.keyboard.press("Enter");
@@ -60,10 +61,8 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await startDemonstrationReview(page);
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
-      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-      await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-      await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed and approved the dispensing-date instruction");
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await performDecision(page, "REFER_BACK", { openAudit: true });
       await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
       await expect(page.getByRole("heading", { name: "Claim detail: EX-24112", exact: true })).toBeVisible();
       const history = page.getByRole("region", { name: "Shared case history", exact: true });
@@ -72,7 +71,10 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       const state = "Action needed: correction required";
       await expect(history.getByRole("status")).toHaveText(state);
       await history.locator("summary").first().click();
-      const originalHistory = await history.innerText();
+      const attempts = history.getByRole("list", { name: "Immutable pharmacy attempts", exact: true });
+      const originalAttempts = await attempts.innerText();
+      const events = history.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+      const originalEvents = await events.allTextContents();
       const recheck = page.getByRole("button", { name: "Re-check endorsement", exact: true });
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
       await recheck.focus();
@@ -100,11 +102,14 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
       await expect(page.getByRole("region", { name: "Claims precheck" })).toContainText("Not checked for this edit");
       await expect(history.getByRole("status")).toHaveText(state);
-      await expect(history).toHaveText(originalHistory, { useInnerText: true });
+      await expect(attempts).toHaveText(originalAttempts, { useInnerText: true });
+      await expect(events).toHaveCount(originalEvents.length + 1);
+      expect((await events.allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
+      await expect(events.last()).toContainText("Suggested correction applied by the pharmacy; not resubmitted.");
       const audit = await new AxeBuilder({ page }).analyze();
       await captureJson(info, "assisted-resubmission-axe", audit);
       expect(audit.violations).toEqual([]);
-      await expect(page.getByRole("button", { name: "Resubmit claim", exact: true })).toBeEnabled();
+      await expect(page.getByRole("button", { name: "Resubmit", exact: true })).toBeEnabled();
     });
   });
 }

@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { operatorDecision, performDecision } from "./operator-action-helpers";
 
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
 const response = (page: Page) => page.getByRole("region", { name: "Operator response", exact: true });
@@ -17,7 +18,7 @@ async function verifyPharmacyModes(page: Page, reason: string, approvedText?: st
   const originalAttempts = await history(page).getByRole("list", { name: "Immutable pharmacy attempts" }).innerText();
 
   await flag.setChecked(true);
-  await expect(page.getByRole("main")).not.toContainText(reason);
+  if (!approvedText) await expect(page.getByRole("main")).not.toContainText(reason);
   await expect(history(page).getByRole("status")).toHaveText(originalState);
   await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts" })).toHaveText(originalAttempts, { useInnerText: true });
   const approved = response(page).getByRole("region", { name: "Operator-approved pharmacy note", exact: true });
@@ -56,20 +57,21 @@ for (const id of ["EX-24112", "EX-24119"]) {
       await startDemonstrationReview(page);
       const enabled = mode !== "manual";
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-      await page.getByRole("radio", { name: id === "EX-24112" ? /^Refer back / : /^Request information / }).check();
+      await page.getByRole("radio", { name: id === "EX-24112" ? "Refer back" : "Request information", exact: true }).check();
       if (id === "EX-24112") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       let approvedText: string | undefined;
-      if (enabled) {
-        const approval = page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true });
-        await expect(approval).not.toBeChecked();
-        if (mode === "approved") {
-          approvedText = await page.locator('[data-prose="pharmacy draft"] blockquote').innerText();
-          await approval.check();
-        }
+      const note = operatorDecision(page).getByRole("textbox", {
+        name: id === "EX-24112" ? "Reason (required)" : "Question (required)", exact: true,
+      });
+      await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
+      await note.fill(`Internal operator rationale for ${id} ${mode}, not the pharmacy draft`);
+      if (mode === "approved") {
+        await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+        approvedText = await note.inputValue();
+        expect(approvedText).not.toContain("Internal operator rationale");
       }
-      const reason = `Internal operator rationale for ${id} ${mode}, not the pharmacy draft`;
-      await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      const reason = await note.inputValue();
+      await performDecision(page, id === "EX-24112" ? "REFER_BACK" : "REQUEST_INFORMATION", { openAudit: true });
       await expect(page).toHaveURL(/\/record$/);
       await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
       await verifyPharmacyModes(page, reason, approvedText);

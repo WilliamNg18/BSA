@@ -72,7 +72,7 @@ test("Task16 monthly actual counts and action filters update on explicit resubmi
   const beforeActions = Number((await actionTile.innerText()).match(/(\d+) items/)![1]);
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO RK 21/08/26");
   await expect(corrected).toHaveText(String(before));
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit blind", exact: true }).click();
   await expect(corrected).toHaveText(String(before + 1), { timeout: 1000 });
   await expect(actionTile).toContainText(`${beforeActions - 1} items`, { timeout: 1000 });
   await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy, { timeout: 1000 });

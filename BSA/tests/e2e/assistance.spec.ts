@@ -1,5 +1,6 @@
 import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { performDecision } from "./operator-action-helpers";
 
 test("actual worklist hides advice without changing evidence, routing or human decisions", async ({ page }) => {
   await page.goto("case/EX-24112");
@@ -7,7 +8,7 @@ test("actual worklist hides advice without changing evidence, routing or human d
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await performDecision(page, "REFER_BACK", { openAudit: true });
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();

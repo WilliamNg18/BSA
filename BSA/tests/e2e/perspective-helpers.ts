@@ -1,6 +1,7 @@
 import type { Page, TestInfo } from "@playwright/test";
 import { captureCheckpoint, captureJson, expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { operatorDecision, performDecision } from "./operator-action-helpers";
 
 export const perspectiveGuard = "This view belongs to the other side; switch perspective to see it";
 export const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
@@ -57,7 +58,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     const submittedIdentity = await historyIdentity(page);
     if (previousDecision) {
       expect(events).toContain(previousDecision);
-      expect(await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").count()).toBe(previousEventCount + 1);
+      expect(await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").count()).toBe(previousEventCount + (enabled ? 2 : 1));
     }
     await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
     await choosePerspective(page, "NHSBSA");
@@ -79,12 +80,13 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(reviewingIdentity.slice(submittedIdentity.length).map((event) => event.message)).toEqual(enabled
       ? ["Arrived for review.", "Scripted case built; human decision required."]
       : ["Arrived for review."]);
-    await page.getByRole("radio", { name: /^Refer back / }).check();
+    await page.getByRole("radio", { name: "Refer back", exact: true }).check();
     await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-    if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-    const reason = `Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`;
-    await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    const note = operatorDecision(page).getByRole("textbox", { name: "Reason (required)", exact: true });
+    await note.fill(`Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`);
+    if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    const reason = await note.inputValue();
+    await performDecision(page, "REFER_BACK", { openAudit: true });
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);

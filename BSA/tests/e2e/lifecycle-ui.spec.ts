@@ -3,6 +3,7 @@ import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS, operatorDecision, performDecision, type OperatorOutcome } from "./operator-action-helpers";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -13,10 +14,9 @@ async function queueReview(page: Page, id = B) {
   await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
   await page.getByRole("button", { name: "Start review", exact: true }).click();
 }
-async function record(page: Page, reason: string) {
-  await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
-  await expect(page).toHaveURL(/\/record$/);
+async function record(page: Page, outcome: OperatorOutcome, reason: string, releaseVerified?: boolean) {
+  await operatorDecision(page).getByRole("textbox", { name: "Reason (required)", exact: true }).fill(reason);
+  await performDecision(page, outcome, { openAudit: true, releaseVerified });
 }
 
 test("Task25 Off referral to approved On correction requires a human recheck before pricing", async ({ page }, info) => {
@@ -32,22 +32,21 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   const blindAttempt = await attempts.locator(":scope > li").last().innerText();
   await page.getByRole("button", { name: "Follow this case", exact: true }).click();
   await queueReview(page);
-  await page.getByRole("radio", { name: /^Refer back / }).check();
+  await page.getByRole("radio", { name: "Refer back", exact: true }).check();
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await record(page, "Please add the dispensing date beside the initials");
+  await record(page, "REFER_BACK", "Please add the dispensing date beside the initials");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit blind", exact: true }).click();
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await queueReview(page);
-  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
-  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).not.toBeChecked();
-  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-  await record(page, "Reviewed missing date and approved the exact pharmacy instruction");
+  await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
+  await performDecision(page, "REFER_BACK", { openAudit: true });
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
@@ -57,21 +56,21 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await expect(detail(page)).toContainText("Ready to resubmit");
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.on);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
-  await page.getByRole("radio", { name: /^Accept the recommendation \(as recommended\)/ }).check();
-  await record(page, "Human recheck confirms the corrected date before existing pricing");
+  await expect(operatorDecision(page).getByRole("region", { name: "Suggestion", exact: true }).getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Sufficient (human choice)", exact: true }).check();
+  await record(page, "ACCEPT", "Human recheck confirms the corrected date before existing pricing", true);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-08");
   await expect(page.getByRole("status", { name: "Replay outcome", exact: true })).toHaveText("Sufficient: release to pricing once confirmed");
-  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+  await expect(history(page).getByRole("status")).toHaveText(HUMAN_RELEASE_LABELS.nhsbsa);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  await expect(detail(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+  await expect(history(page).getByRole("status")).toHaveText(HUMAN_RELEASE_LABELS.pharmacy);
   await expect(page.getByRole("button", { name: "Stop following this case", exact: true })).toBeVisible();
   await history(page).getByText("History and attempts (4)", { exact: true }).click();
   await expect(attempts.locator(":scope > li")).toHaveCount(4);
@@ -79,7 +78,9 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await expect(attempts.locator(":scope > li").nth(2)).toContainText("NCSO  RK");
   await expect(attempts.locator(":scope > li").nth(2)).toContainText("not_checked · off");
   await expect(attempts.locator(":scope > li").nth(3)).toContainText("ready · scripted");
-  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(3);
+  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Lifecycle events" })).toContainText("Human review complete; released to existing pricing. No payment calculated.");
+  await expect(history(page).getByRole("status")).not.toContainText("no operator action");
   await captureJson(info, "off-to-on-roundtrip-history", await history(page).innerText());
   await captureJson(info, "roundtrip-elapsed-time", { elapsedMs: Date.now() - started, informational: true });
 });
@@ -88,22 +89,23 @@ test("Task25 manual EPS correction retains an unchecked snapshot until explicit 
   await page.goto("pharmacy");
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await queueReview(page);
-  await page.getByRole("radio", { name: /^Refer back / }).check();
+  await page.getByRole("radio", { name: "Refer back", exact: true }).check();
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await record(page, "Human requests the missing date beside initials");
+  await record(page, "REFER_BACK", "Human requests the missing date beside initials");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit blind", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.off);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await page.getByRole("radio", { name: /^Sufficient / }).check();
-  await record(page, "Human recheck confirms the manually corrected endorsement");
-  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await page.getByRole("radio", { name: "Sufficient (human choice)", exact: true }).check();
+  await record(page, "ACCEPT", "Human recheck confirms the manually corrected endorsement", false);
+  await expect(history(page).getByRole("status")).toHaveText(MANUAL_RELEASE_LABELS.nhsbsa);
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
   await history(page).getByText("History and attempts (3)", { exact: true }).click();
   await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText("not_checked · off");
-  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);
+  await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
+  await expect(page.getByRole("list", { name: "Lifecycle events" })).toContainText("Human review complete; released to existing pricing. No payment calculated.");
 });
 
 test("Task9 toggling never approves a draft and arbitrary BB edits never receive the B date correction", async ({ page }) => {
@@ -124,8 +126,8 @@ test("Task9 C shows both conflict values, approved note and confirmation without
   await page.goto("case/EX-24119");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-  await record(page, "Please confirm the conflicting quantities before a decision");
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await performDecision(page, "REQUEST_INFORMATION", { openAudit: true });
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page)).toContainText("Operator-approved note");
   const quantities = detail(page).getByRole("region", { name: "Requested confirmation", exact: true }).locator("dl");
@@ -133,11 +135,13 @@ test("Task9 C shows both conflict values, approved note and confirmation without
   await expect(quantities).toContainText("84");
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("Pharmacy text is required");
-  await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill("Please review both values against the synthetic form");
+  await page.getByRole("textbox", { name: "Confirm", exact: true }).fill("Please review both values against the synthetic form");
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await queueReview(page, "EX-24119");
-  await expect(page.getByRole("radio", { name: /^Request information \(as recommended\)/ })).toBeChecked();
+  await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Request information", exact: true })).toBeChecked();
   await expect(page.getByRole("heading", { name: "Conflicts and missing evidence", exact: true })).toBeVisible();
   await history(page).getByText("History and attempts (3)", { exact: true }).click();
   await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText("Please review both values against the synthetic form");
@@ -158,8 +162,8 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li")).toHaveCount(3);
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("radio", { name: /^Refer back / })).toHaveCount(0);
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toHaveCount(0);
   await expect(page).toHaveURL(/\/case\/EX-24123$/);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
@@ -167,8 +171,8 @@ test("Task19 D blocks Type 2 before capture and E clears by code without enterin
   await detail(page).getByText("Demonstration replay", { exact: true }).click();
   await page.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
-  await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on);
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
   await expect(page.getByRole("alert")).toContainText("Cleared by deterministic rules; the agent was not called");
 });
 
@@ -217,6 +221,6 @@ for (const width of [1280, 1440]) for (const enabled of [false, true]) {
     expect(axe.violations).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.evaluate(() => window.scrollTo(0, 0));
-    await page.screenshot({ path: info.outputPath("claims.png"), fullPage: true });
+    if (page.viewportSize()?.width === 1440) await page.screenshot({ path: info.outputPath("claims.png"), fullPage: true });
   });
 }

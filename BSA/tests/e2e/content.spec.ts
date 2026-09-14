@@ -1,6 +1,7 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { operatorDecision, performDecision } from "./operator-action-helpers";
 
 /** Executes in the rendered page: no source-code word counting or truncation. */
 function auditProse() {
@@ -83,7 +84,7 @@ for (const enabled of [false, true]) {
         if (!enabled) await page.getByRole("banner").getByRole("switch").setChecked(false);
       }
       if (enabled && scenario === "NCSO missing date") {
-        await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+        await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
         await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
         audits.push({ scenario, phase: "corrected", ...await page.evaluate(auditProse) });
       }
@@ -101,8 +102,8 @@ for (const enabled of [false, true]) {
     if (enabled) await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
     const audits = [{ state: "pack-comparison", ...await page.evaluate(auditProse) }];
     await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
-    if (enabled) await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    await performDecision(page, enabled ? "REFER_BACK" : "ESCALATE", { openAudit: true });
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
     if (enabled) {
@@ -252,6 +253,6 @@ for (const enabled of [false, true]) {
     await captureJson(info, "task5-copy", audits);
     console.info("Advisory queue word counts", audits.flatMap((audit) => audit.failures));
     await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
   });
 }

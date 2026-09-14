@@ -126,7 +126,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   const field = page.getByLabel("Dispenser endorsement", { exact: true });
   await expect(field).toHaveValue("NCSO  RK");
   await expect(page.getByRole("checkbox", { name: "Dated", exact: true })).not.toBeChecked();
-  await page.getByRole("button", { name: "Apply correction", exact: true }).focus();
+  await page.getByRole("button", { name: "Apply suggested correction", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO  RK 21/08/26");
@@ -148,7 +148,9 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).not.toBeChecked();
+  await page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
 });
 
 for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
@@ -156,7 +158,7 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
     // Establish a successful revision first to detect stale rule/ready reuse.
-    await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+    await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
     await page.getByLabel("Dispenser endorsement", { exact: true }).fill(text);
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Manual review required");
@@ -165,7 +167,7 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     ]);
     await expect(page.getByRole("region", { name: "Validated synthetic rule" })).toHaveCount(0);
     await expect(page.getByRole("list", { name: "Requirement checkboxes" })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
     const submit = page.getByRole("button", { name: "Send claim", exact: true });
     await expect(submit).toBeEnabled();
     await submit.click();
@@ -199,7 +201,7 @@ test("Task4 corrected B stays corrected when submitted Off, without performed ch
   await page.goto("pharmacy");
   const flag = page.getByRole("banner").getByRole("switch");
   await flag.setChecked(true);
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+  await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
   await flag.setChecked(false);
   await page.getByRole("button", { name: "Send claim", exact: true }).click();

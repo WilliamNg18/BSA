@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { automaticCaseIds, captureCheckpoint, captureJson, cases, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { openAuditRecord, operatorAction, operatorDecision } from "./operator-action-helpers";
 
 const surfaces = [
   ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => ({ name: `overview-${chapter}`, path: `./#${chapter}` })),
@@ -26,7 +27,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             if (automaticCaseIds.some((id) => surface.name === `${id}-pack`)) {
               await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
               await expect(page.locator("[data-pack-assembly]")).toHaveCount(0);
-              await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+              await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
             } else {
               await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "6");
             }
@@ -47,25 +48,28 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: /^Amend / }).check();
-  const record = page.getByRole("button", { name: "Record decision", exact: true });
+  await page.getByRole("radio", { name: "Refer back", exact: true }).check();
+  const record = operatorAction(page, "REFER_BACK");
   await record.focus();
   await page.keyboard.press("Enter");
   const notices = page.getByRole("complementary", { name: "Decision notifications" });
   const dismiss = notices.getByRole("button", { name: "Dismiss notification" });
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
+  await expect(operatorDecision(page).getByRole("alert")).toBeFocused();
   let axe = await new AxeBuilder({ page }).analyze();
   await captureJson(testInfo, "axe-notice-error", axe);
   expect(axe.violations).toEqual([]);
   await expect(dismiss).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "notification-error-keyboard");
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  await expect(operatorDecision(page).getByRole("alert")).toBeFocused();
   await captureCheckpoint(page, testInfo, "notification-restored-record-focus");
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Operator reviewed the evidence");
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await record.press("Enter");
   await expect(notices).toContainText("Human decision recorded");
+  await expect(page).toHaveURL(/\/case\/EX-24112$/);
+  await openAuditRecord(page);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
   await replay.focus();
@@ -91,14 +95,14 @@ test("Task7 inline decision errors focus the error and preserve publishing field
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
-  const record = page.getByRole("button", { name: "Record decision", exact: true });
+  const record = operatorAction(page, "ESCALATE");
   const dismiss = page.getByRole("button", { name: "Dismiss notification", exact: true });
   await reason.focus();
   // Publish without moving focus, as with a form's implicit submission.
   await record.evaluate((button: HTMLButtonElement) => button.click());
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
+  await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
   await expect(dismiss).toHaveCount(0);
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  await expect(operatorDecision(page).getByRole("alert")).toBeFocused();
   await expect(reason).toHaveValue("");
   await captureCheckpoint(page, testInfo, "notification-restored-field-focus");
   await record.press("Enter");

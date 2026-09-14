@@ -4,6 +4,7 @@ import { runAgent } from "../../src/lib/domain/agent";
 import { REC_META } from "../../src/components/demo/label-meta";
 import { injectPrescriberFault } from "../support/prescriber-fault";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { operatorAction, operatorDecision, performDecision } from "./operator-action-helpers";
 
 for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id))) {
   test(`gate FAIL withholds ${c.id} advice in queue, pack, trace, human record and replay`, async ({ page }) => {
@@ -40,13 +41,13 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");
     await expect(page.getByText("Gate: FAIL", { exact: true })).toBeVisible();
-    await expect(page.getByText("No recommendation", { exact: true })).toBeVisible();
+    await expect(operatorDecision(page).getByRole("region", { name: "Suggestion", exact: true }).getByText("No recommendation", { exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Draft explanation to the pharmacy" })).toHaveCount(0);
     await expect(page.getByText(/^Alternative considered:/)).toHaveCount(0);
-    await expect(page.getByRole("radio", { name: /^Escalate / })).toBeChecked();
-    await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).toBeDisabled();
-    await expect(page.getByRole("radio", { name: /^Amend / })).toBeDisabled();
+    await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
+    await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+    await expect(operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true })).toBeDisabled();
     for (const rec of ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"] as const) {
       await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);
     }
@@ -77,12 +78,12 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
     await expect(reason).toHaveAttribute("aria-required", "true");
     for (const value of ["", "1234567", "   1234567   "]) {
       await reason.fill(value);
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await operatorAction(page, "ESCALATE").click();
       await expect(page).toHaveURL(new RegExp(`/case/${c.id}$`));
-      await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
+      await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
     }
     await reason.fill("Review prescriber evidence");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await performDecision(page, "ESCALATE", { openAudit: true });
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd")).toContainText("ESCALATE by Demo operator");
     await expect(page.getByText("No. Note: Review prescriber evidence", { exact: true })).toBeVisible();

@@ -15,8 +15,11 @@ test("worked paper declaration reaches Sufficient only after explicit human evid
   await expect(page.getByText("Gate: PASS", { exact: true })).toBeVisible();
   await expect(page.getByText("All mandatory fields supplied", { exact: true })).toBeVisible();
   await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
-  await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
-  await expect(page.getByRole("radio", { name: /^Accept the recommendation \(as recommended\)/ })).toBeChecked();
+  const decision = page.getByRole("region", { name: "Operator decision", exact: true });
+  await expect(decision.getByRole("region", { name: "Suggestion", exact: true }).getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+  await expect(decision.getByRole("radio", { checked: true })).toHaveCount(0);
+  await decision.getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(decision.getByRole("radio", { name: "Sufficient (human choice)", exact: true })).toBeChecked();
   await expect(page.getByRole("main")).toContainText("declared by the pharmacy, not read from the form");
   const audit = await new AxeBuilder({ page }).analyze();
   await captureJson(info, "worked-declaration-built-case-axe", audit);
@@ -38,7 +41,7 @@ test("a contradictory human capture does not turn a complete declaration into so
   await page.locator('[data-case-id="EX-24123"]').getByRole("link", { name: "Open EX-24123", exact: true }).click();
   await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
   await expect(page.getByText("The sources agree.", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("button", { name: "Apply suggestion", exact: true })).toBeDisabled();
 });
 
 for (const enabled of [false, true]) {

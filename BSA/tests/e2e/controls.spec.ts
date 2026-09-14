@@ -1,5 +1,6 @@
 import { captureCheckpoint, cases, confirmReset, expect, openCaseFromQueueOrClaim, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { openAuditRecord, operatorAction, operatorDecision, performDecision } from "./operator-action-helpers";
 
 for (const caseId of ["EX-24112", "EX-24119"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
@@ -34,7 +35,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   await expect(status).toHaveText("Information missing");
   await captureCheckpoint(page, testInfo, "pharmacy-before-date");
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+  await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO  RK 21/08/26");
   await expect(status).toHaveText("Complete: will flow to automated pricing, no person involved");
@@ -70,37 +71,37 @@ test("override requires eight trimmed characters then writes and preserves a hum
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Missing or insufficient information");
   await captureCheckpoint(page, testInfo, "b-pack");
-  await page.getByRole("radio", { name: /^Amend / }).click();
+  await page.getByRole("radio", { name: "Escalate", exact: true }).click();
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
   await expect(reason).toHaveAttribute("aria-required", "true");
   for (const value of ["", "1234567", "   1234567   "]) {
     await reason.fill(value);
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await operatorAction(page, "ESCALATE").click();
     await expect(page).toHaveURL(/\/case\/EX-24112$/);
-    await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
+    await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
     if (value === "") await captureCheckpoint(page, testInfo, "b-rejected-empty-reason");
   }
   await reason.fill("12345678");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await performDecision(page, "ESCALATE", { openAudit: true });
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await expect(page.getByText("Yes. Reason: 12345678", { exact: true })).toBeVisible();
   await expect(page.getByText("Drug Tariff 2026-08", { exact: true })).toBeVisible();
-  await captureCheckpoint(page, testInfo, "b-accepted-amendment-record");
+  await captureCheckpoint(page, testInfo, "b-escalation-override-record");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-  await expect(page.getByText("Read-only: not awaiting an operator decision", { exact: false })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Awaiting senior review");
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toBeVisible();
 });
 
 test("recommended B decision replays under July; flag off applies to replay; Reset restores seed", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
-  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
-  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
+  await performDecision(page, "REFER_BACK");
+  await openAuditRecord(page);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-recommended-decision-record");
   await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-07");
@@ -120,7 +121,7 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Open the case pack", exact: true }).click();
   await startDemonstrationReview(page);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   await page.locator("a[href='/case/EX-24088']").first().click();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
@@ -194,7 +195,7 @@ test("product header retains working controls without presentation UI", async ({
   await confirmReset(page);
   await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByRole("alertdialog")).toHaveCount(0);
-  await header.screenshot({ path: testInfo.outputPath("after-header.png") });
+  if (page.viewportSize()?.width === 1440) await header.screenshot({ path: testInfo.outputPath("after-header.png") });
 });
 
 test("queue state filters are interactive", async ({ page }) => {

@@ -1,8 +1,9 @@
 import type { Page } from "@playwright/test";
 import { expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
+import { performDecision } from "./operator-action-helpers";
 
-// Released to pricing is reserved for the future verification-gated workflow.
+// Historical paid seeds remain distinct from new verification-gated releases.
 export const DEMONSTRABLE_LIFECYCLE_STATES: LifecycleState[] = [
   "in_review", "information_requested", "referred_back", "resubmitted", "paid", "submitted", "escalated",
 ];
@@ -22,10 +23,10 @@ export async function prepareUnseededState(page: Page, state: LifecycleState) {
   } else if (state === "escalated") {
     await navigatePrimary(page, "NHSBSA queue");
     await page.getByRole("link", { name: "Open SYN-FQ123-TYPE2", exact: true }).click();
-    await page.getByRole("radio", { name: /^Escalate / }).check();
+    await page.getByRole("radio", { name: "Escalate", exact: true }).check();
     await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human requests senior review of this synthetic supply evidence");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
-    await expect(page).toHaveURL(/\/record$/);
+    await performDecision(page, "ESCALATE");
+    await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.escalated.nhsbsa.off);
     await navigatePrimary(page, "Pharmacy claims");
   }
 }
