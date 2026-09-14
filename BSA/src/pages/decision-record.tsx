@@ -50,6 +50,11 @@ function DecisionRecordContent() {
   }
 
   const hasRecordedRule = recordHasRule(latest);
+  const automaticallyPriced = lifecycle?.state === "paid" && process !== undefined && process.revision === revision
+    && process.routing.outcome === "auto_priced"
+    && lifecycle.history.some((event) => event.revision === revision && event.actor === "code" && event.to === "paid");
+  const automaticRecord = automaticallyPriced || lifecycle?.state === "released_to_pricing"
+    && process !== undefined && process.revision === revision && process.releaseOrigin === "automatic_verification";
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -62,14 +67,20 @@ function DecisionRecordContent() {
       <LifecycleHistory id={c.id} />
       <ReleaseRecord caseId={c.id} />
 
-      {!agentEnabled && <><section className="rounded-xl border p-4" data-manual-record-comparison>
+      {!agentEnabled && !automaticRecord && <><section className="rounded-xl border p-4" data-manual-record-comparison>
         <h2 className="font-semibold">Synthetic Today comparison: experience only, no rule recorded</h2>
         <p className="text-sm text-muted-foreground">A proposed comparison, not a claim about NHSBSA staff. Actual evidence, reasons and cited rules remain visible below.</p>
       </section><MissingAssistedSlots />{!latest && <section className="space-y-2 rounded-xl border p-4">
         <Button type="button" disabled>Replay unavailable</Button>
         <p className="text-sm text-muted-foreground">No recorded rule version to replay in this manual comparison</p>
       </section>}</>}
-      {!latest && lifecycle?.state === "released_to_pricing" ? null : !latest ? (
+      {!latest && lifecycle?.state === "released_to_pricing" ? null : !latest && automaticallyPriced ? (
+        <PageSection title="Existing automatic pricing record">
+          <BoundaryTag cls="existing" />
+          <p className="mt-2 text-sm">priced by NHSBSA&apos;s existing rules engine, no person involved</p>
+          <p className="text-sm">No human decision was required.</p>
+        </PageSection>
+      ) : !latest ? (
         <EmptyState
           icon={History}
           title="No human decision recorded yet"

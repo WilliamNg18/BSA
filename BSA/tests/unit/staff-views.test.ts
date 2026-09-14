@@ -121,6 +121,18 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(html).not.toContain(">Record decision<");
   });
 
+  it.each([false, true])("shows an automated audit without requesting an impossible human decision, Agent %s", (enabled) => {
+    useAppStore.getState().setAgentEnabled(enabled);
+    const before = useAppStore.getState();
+    const html = record("EX-24107");
+    expect(html).toContain("Existing automatic pricing record");
+    expect(html).toContain("No human decision was required");
+    expect(html).not.toContain("Record a human decision from the case pack");
+    expect(html).not.toContain("No human decision recorded yet");
+    expect(html).not.toContain("data-manual-record-comparison");
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it.each([false, true])("does not invent human gathering on automatic traces, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     for (const id of ["EX-24107"]) {
