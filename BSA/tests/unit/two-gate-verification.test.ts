@@ -101,6 +101,29 @@ describe("authoritative two-gate source verification", () => {
     expect(store().lifecycles[d].history.some((event) => event.capture)).toBe(false);
   });
 
+  it.each([false, true])("complete manual Off capture needs no proposed attestation; On still does, enabled=%s", (enabled) => {
+    store().setAgentEnabled(enabled);
+    store().submitItem({ caseId: d, channel: "paper", endorsementText: caseById(d)!.extracted.endorsementText });
+    const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB", prescriber: "Manually keyed synthetic prescriber" };
+    store().confirmType1({ caseId: d, revision: 2, fields, provenance: "human_capture", declarationReconciled: false });
+    store().referBack(d, "RB2B", "Complete the missing paper fields and endorsement date.");
+    store().setPharmacyDraft(d, {
+      revision: 2, channel: "paper", purpose: "correction", endorsementText: "NCSO JB 27/08/26",
+      paperDeclaration: { typedProduct: fields.productCode, quantity: fields.quantity,
+        endorsementText: "NCSO JB 27/08/26", dispensingDate: "2026-08-27", declaredByPharmacy: true },
+    });
+    store().resubmit(d);
+    store().confirmType1({ caseId: d, revision: 3, fields: { ...fields, endorsementText: "NCSO JB 27/08/26" },
+      provenance: "human_capture", declarationReconciled: false });
+    expect(getReleaseEligibility(d).allowed).toBe(!enabled);
+    if (enabled) expect(() => store().releaseToPricing(d, "No attestation was supplied.")).toThrow();
+    else {
+      store().releaseToPricing(d, "Manually keyed facts independently match the claim.");
+      expect(store().itemVerification[d]).toEqual({ ...NO_VERIFICATION, released: true });
+      expect(itemStateLabel(store().lifecycles[d], "nhsbsa")).toContain("after operator review");
+    }
+  });
+
   it("changing received EPS product and quantity does not rewrite its independent claim ledger", () => {
     const original = initialisePharmacyDraft(sessionCase(b)!, store().caseRevisions[b][0]);
     const epsPrescription = { ...original.epsPrescription!, items: [{ ...original.epsPrescription!.items[0], quantity: 56 }],
