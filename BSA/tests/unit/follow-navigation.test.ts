@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { endFollowVisit, followDestination, resolveFollowVisit, useFollowVisit, visitFollowedCase } from "../../src/lib/follow-navigation";
+import { endFollowVisit, followDestination, resolveFollowVisit, visitFollowedCase } from "../../src/lib/follow-navigation";
 import { getDomainSnapshot, useAppStore, type Perspective } from "../../src/lib/store";
 
 const store = () => useAppStore.getState();
@@ -61,14 +61,14 @@ describe("explicit same-item follow navigation", () => {
     store().setPerspective(origin);
     visitFollowedCase(other);
     expect(store().perspective).toBe("both");
-    expect(useFollowVisit.getState().temporary).toEqual({ caseId: id, origin });
+    expect(store().temporaryFollowVisit).toEqual({ caseId: id, origin });
     store().setAgentEnabled(true);
     store().setDemoStep(9);
     visitFollowedCase(other);
     expect(store().perspective).toBe("both");
     visitFollowedCase(origin);
     expect(store().perspective).toBe(origin);
-    expect(useFollowVisit.getState().temporary).toBeNull();
+    expect(store().temporaryFollowVisit).toBeNull();
   });
 
   it.each(["both", "pharmacy", "nhsbsa"] satisfies Perspective[])("honours an explicit %s choice instead of restoring the old perspective", (choice) => {
@@ -79,7 +79,7 @@ describe("explicit same-item follow navigation", () => {
     store().setPerspective(choice);
     visitFollowedCase(choice === "nhsbsa" ? "nhsbsa" : "pharmacy");
     expect(store().perspective).toBe(choice);
-    expect(useFollowVisit.getState().temporary).toBeNull();
+    expect(store().temporaryFollowVisit).toBeNull();
   });
 
   it("clears temporary context on dismissal, a new followed item and Reset", () => {
@@ -88,7 +88,7 @@ describe("explicit same-item follow navigation", () => {
       store().setPerspective("pharmacy");
       visitFollowedCase("nhsbsa");
       change();
-      expect(useFollowVisit.getState().temporary).toBeNull();
+      expect(store().temporaryFollowVisit).toBeNull();
     }
   });
 

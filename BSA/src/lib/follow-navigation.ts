@@ -1,15 +1,11 @@
-import { create } from "zustand";
 import { nhsbsaCaseLink, pharmacyCaseLink } from "./case-links";
 import { useAppStore, type Perspective } from "./store";
 
 export type FollowSide = Exclude<Perspective, "both">;
-interface TemporaryVisit { caseId: string; origin: FollowSide }
-
-/** Presentation context only; the item and its actions remain in useAppStore. */
-export const useFollowVisit = create<{ temporary: TemporaryVisit | null }>(() => ({ temporary: null }));
 
 export function endFollowVisit() {
-  useFollowVisit.setState({ temporary: null });
+  const state = useAppStore.getState();
+  if (state.temporaryFollowVisit) state.setTemporaryFollowVisit(null);
 }
 
 export function followDestination(side: FollowSide, caseId: string) {
@@ -32,13 +28,13 @@ export function visitFollowedCase(side: FollowSide): string {
   const state = useAppStore.getState();
   const caseId = state.followedCaseId;
   if (!caseId || !state.lifecycles[caseId]) throw new Error("Follow an existing item before changing its view.");
-  const temporary = useFollowVisit.getState().temporary;
+  const temporary = state.temporaryFollowVisit;
   const next = resolveFollowVisit(state.perspective, side, temporary?.caseId === caseId ? temporary.origin : null);
-  useFollowVisit.setState({ temporary: next.origin ? { caseId, origin: next.origin } : null });
   if (next.perspective !== state.perspective) state.setPerspective(next.perspective);
+  state.setTemporaryFollowVisit(next.origin ? { caseId, origin: next.origin } : null);
   return followDestination(side, caseId);
 }
 
 useAppStore.subscribe((state, previous) => {
-  if (state.followedCaseId !== previous.followedCaseId || state.perspective !== "both") endFollowVisit();
+  if (state.temporaryFollowVisit && (state.followedCaseId !== previous.followedCaseId || state.perspective !== "both")) endFollowVisit();
 });

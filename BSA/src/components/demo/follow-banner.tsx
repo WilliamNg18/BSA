@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
-import { endFollowVisit, useFollowVisit, visitFollowedCase, type FollowSide } from "@/lib/follow-navigation";
+import { endFollowVisit, visitFollowedCase, type FollowSide } from "@/lib/follow-navigation";
 import { followedChannel, followedLastEvent, followedLocation } from "@/lib/follow-presentation";
 import { useAppStore } from "@/lib/store";
 
@@ -12,7 +12,7 @@ export function FollowBanner() {
   const enabled = useAppStore((s) => s.agentEnabled);
   const follow = useAppStore((s) => s.followCase);
   const perspective = useAppStore((s) => s.perspective);
-  const temporary = useFollowVisit((s) => s.temporary);
+  const temporary = useAppStore((s) => s.temporaryFollowVisit);
   const navigate = useNavigate();
   if (!row) return null;
   const visit = (side: FollowSide) => navigate(visitFollowedCase(side));
