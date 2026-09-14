@@ -28,3 +28,53 @@ export interface DemoModeSlice {
   demoStep: number | null;
   setDemoStep: (step: number | null) => void;
 }
+
+/** Selectors cover task controls inside the step, not the persistent header. */
+export const DEMO_CONTROL_SELECTORS = Object.freeze({
+  "month-detail": '[data-demo-control="month-detail"]',
+  submission: '[data-pharmacy-action="submit"]',
+  correction: '[data-pharmacy-action="apply-correction"]',
+  resubmission: '[data-pharmacy-action="resubmit"]',
+  confirmation: '[data-pharmacy-action="confirmation"]',
+  operator: '[data-demo-control="operator"]',
+  "type1-capture": '[data-demo-control="type1-capture"]',
+  "queue-filter": '[data-demo-control="queue-filter"]',
+  "queue-row": '[data-demo-control="queue-row"]',
+  history: '[data-demo-control="history"]',
+});
+
+export type DemoControl = keyof typeof DEMO_CONTROL_SELECTORS;
+
+export const DEMO_ALLOWED_CONTROLS: Readonly<Record<number, readonly DemoControl[]>> = Object.freeze({
+  1: Object.freeze([]),
+  2: Object.freeze(["month-detail"] as const),
+  3: Object.freeze(["submission"] as const),
+  4: Object.freeze(["submission", "correction"] as const),
+  5: Object.freeze(["submission"] as const),
+  6: Object.freeze(["submission"] as const),
+  7: Object.freeze(["submission"] as const),
+  8: Object.freeze(["queue-filter", "queue-row", "operator", "type1-capture"] as const),
+  9: Object.freeze(["correction", "resubmission", "confirmation"] as const),
+  10: Object.freeze(["submission", "correction", "resubmission", "confirmation", "operator", "type1-capture", "history"] as const),
+  11: Object.freeze([]),
+});
+
+// Explicit Follow links may open the same operational item on the other side.
+export const DEMO_FOLLOW_CONTROLS = Object.freeze({
+  pharmacy: Object.freeze(["correction", "resubmission", "confirmation"] as const),
+  nhsbsa: Object.freeze(["operator", "type1-capture"] as const),
+});
+
+export function getDemoStep(number: number): DemoStepDefinition {
+  const step = DEMO_STEPS.find((candidate) => candidate.number === number);
+  if (!step) throw new Error(`Unknown demo step: ${number}`);
+  return step;
+}
+
+export function demoStepDestination(step: DemoStepDefinition): string {
+  const [pathname, hash] = step.path.split("#");
+  const params = new URLSearchParams();
+  if (step.caseId) params.set("case", step.caseId);
+  if (step.channel) params.set("channel", step.channel);
+  return `${pathname}${params.size ? `?${params}` : ""}${hash ? `#${hash}` : ""}`;
+}

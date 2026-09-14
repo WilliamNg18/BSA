@@ -1924,3 +1924,31 @@ visible. Tie-breakers: reachable human controls and the smallest fix. The shared
 hoverable, Escape-dismissible tooltip remains unchanged for evidence figures.
 The bottom-flipped header tooltip demonstrably intercepted the tour Next button;
 no forced clicks, longer timeouts or pointer-event suppression are used.
+
+## 2026-09-14: Explicit eleven-step entry and one live comparison
+
+Question: enter the demonstration automatically? Choice: keep `demoStep: null`
+for ordinary operations and show a prominent Enter demo mode action once all
+task panels are integrated. Entry selects step 1; Exit retains the current
+route, case, mode, drafts and history. Tie-breakers: one authoritative state
+and a visible, deliberate presentation choice.
+
+Question: how should two columns act? Choice: exactly one task renderer, in
+Today when Off and With the agent when On. The other column explicitly says
+Read-only scenario projection; its forecast is never recorded history.
+Two-second presentation movement has no processing-time or model-time claim;
+reduced motion reaches the identical final state immediately. Tie-breakers:
+truthful authority and clearer comparison.
+
+Question: how do frozen historical cases support a pre-send demonstration?
+Choice: an explicit human Send/Post may create a new immutable attempt for the
+same ID, labelled New demonstration attempt; history retained. Navigation never
+creates an attempt. Step 9 and cross-side claim links use current lifecycle
+correction/resubmission instead. Tie-breakers: preserve evidence and human action.
+
+Question: land D before compact O/P exports exist? Choice: commit independently
+buildable strip, navigation and layouts with a typed task-renderer seam, but
+leave them unmounted until the separate integration commit imports real panels.
+No placeholder controls or unavailable imports ship. The existing ordinary
+routes remain usable; final eleven-step acceptance is explicitly pending.
+Tie-breakers: real controls before visual completeness, then simple merge order.
