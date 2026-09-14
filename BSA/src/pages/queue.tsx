@@ -13,6 +13,7 @@ import { BACKGROUND_CASES } from "@/lib/domain/cases";
 import { permitsProposal, recordHasRuleAndReason, staffLane, type StaffLane } from "@/lib/case-presentation";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
+import { AutomatedCaseRecords } from "@/components/demo/release-record";
 
 type WorkFilter = "all" | StaffLane | "new";
 
@@ -86,6 +87,7 @@ function QueueWorklist() {
         ? "Type 2 worklist: the agent verifies and advises; a person decides."
         : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement."}</p>
       <AutomaticPricingCount />
+      <AutomatedCaseRecords />
     </header>
     <section aria-label="Other pharmacies, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
       <h2 className="font-semibold">Other pharmacies, background</h2>

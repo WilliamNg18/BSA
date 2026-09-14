@@ -15,6 +15,7 @@ import { useAppStore } from "@/lib/store";
 import { agentVersionLabel } from "@/lib/service-display";
 import { MissingAssistedSlots } from "@/components/demo/case-presentation";
 import { caseViewState, recordHasRule, recordHasRuleAndReason } from "@/lib/case-presentation";
+import { ReleaseRecord } from "@/components/demo/release-record";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -31,6 +32,7 @@ function DecisionRecordContent() {
   const { id } = useParams();
   const c = useLifecycleCase(id);
   const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
+  const lifecycle = useAppStore((s) => id ? s.lifecycles[id] : undefined);
   const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
   const allRecords = useAppStore((s) => s.records);
   const records = useMemo(() => allRecords.filter((r) => r.caseId === id), [allRecords, id]);
@@ -58,6 +60,7 @@ function DecisionRecordContent() {
         intro="Review evidence, versions, checks and the recorded human decision. Replay compares synthetic rule versions without changing history."
       />
       <LifecycleHistory id={c.id} />
+      <ReleaseRecord caseId={c.id} />
 
       {!agentEnabled && <><section className="rounded-xl border p-4" data-manual-record-comparison>
         <h2 className="font-semibold">Synthetic Today comparison: experience only, no rule recorded</h2>
@@ -66,7 +69,7 @@ function DecisionRecordContent() {
         <Button type="button" disabled>Replay unavailable</Button>
         <p className="text-sm text-muted-foreground">No recorded rule version to replay in this manual comparison</p>
       </section>}</>}
-      {!latest ? (
+      {!latest && lifecycle?.state === "released_to_pricing" ? null : !latest ? (
         <EmptyState
           icon={History}
           title="No human decision recorded yet"

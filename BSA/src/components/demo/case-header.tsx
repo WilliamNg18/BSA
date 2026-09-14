@@ -6,7 +6,7 @@ import type { CaseState, ExceptionCase } from "@/lib/domain/types";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
 import { canViewPath } from "@/lib/perspective";
-import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
+import { itemStateLabel } from "@/lib/domain/lifecycle";
 
 export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state: CaseState; title: string; intro: string }) {
   const { pathname } = useLocation();
@@ -22,7 +22,7 @@ export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <SyntheticTag>Synthetic case {c.scenario} · {c.id}</SyntheticTag>
-        {lifecycle ? <span className="rounded-md border px-2 py-1 text-xs font-medium" data-item-state>{LIFECYCLE_LABELS[lifecycle.state].pharmacy}</span> : <StateBadge state={state} />}
+        {lifecycle ? <span className="rounded-md border px-2 py-1 text-xs font-medium" data-item-state>{itemStateLabel(lifecycle, "pharmacy")}</span> : <StateBadge state={state} />}
         <Button asChild size="sm" variant="ghost"><Link to="/queue">Back to queue</Link></Button>
       </div>
       <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
