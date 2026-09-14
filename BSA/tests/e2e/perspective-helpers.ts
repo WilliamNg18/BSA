@@ -32,6 +32,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
   await page.goto("/pharmacy");
   let previousDecision = "";
   let previousEventCount = 0;
+  let previousIdentity: Awaited<ReturnType<typeof historyIdentity>> = [];
   let submittedId = "";
   for (const enabled of [false, true]) {
     await choosePerspective(page, "Pharmacy");
@@ -41,10 +42,13 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
     const endorsement = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
-    const submitted = page.getByRole("link", { name: "View submitted claim", exact: true });
+    const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+    await expect(receipt).toContainText(`EX-24112:${enabled ? 3 : 2}`);
+    await expect(receipt).toContainText(endorsement);
+    const submitted = receipt.getByRole("link", { name: "View submitted claim", exact: true });
     const href = await submitted.getAttribute("href");
     const id = new URL(href!, page.url()).searchParams.get("caseId")!;
-    expect(id).toBeTruthy();
+    expect(id).toBe("EX-24112");
     if (submittedId) expect(id).toBe(submittedId);
     submittedId = id;
     await submitted.click();
@@ -58,7 +62,16 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     const submittedIdentity = await historyIdentity(page);
     if (previousDecision) {
       expect(events).toContain(previousDecision);
-      expect(await history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").count()).toBe(previousEventCount + (enabled ? 2 : 1));
+      expect(submittedIdentity.slice(0, previousIdentity.length)).toEqual(previousIdentity);
+      // G appends a code verification receipt as well as the explicit pharmacy submission.
+      expect(submittedIdentity).toHaveLength(previousEventCount + (enabled ? 2 : 1));
+    }
+    const submissionEvents = submittedIdentity.slice(enabled ? -2 : -1);
+    expect(submissionEvents[0].fields[0]).toContain("pharmacy");
+    expect(submissionEvents[0].message).toBe("Explicit demo submission; previous revisions retained.");
+    if (enabled) {
+      expect(submissionEvents[1].fields[0]).toContain("code");
+      expect(submissionEvents[1].fields[1]).toContain("No decision record");
     }
     await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
     await choosePerspective(page, "NHSBSA");
@@ -97,6 +110,9 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(recordId).toMatch(/DR-\d+/);
     await expect(lastDecision).toContainText(reason);
     const stableEvents = await historyIdentity(page);
+    expect(stableEvents.slice(0, reviewingIdentity.length)).toEqual(reviewingIdentity);
+    expect(stableEvents).toHaveLength(reviewingIdentity.length + 1);
+    expect(stableEvents.at(-1)!.fields[0]).toContain("operator");
     await expect(lastDecision).toContainText(`${LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]} → ${LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]}`);
     await choosePerspective(page, "Pharmacy");
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
@@ -116,6 +132,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(returnedEvents.locator(":scope > li").last()).toContainText(`${LIFECYCLE_LABELS.in_review.pharmacy} → ${LIFECYCLE_LABELS.referred_back.pharmacy}`);
     previousDecision = recordId;
     previousEventCount = eventCount;
+    previousIdentity = stableEvents;
     await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
