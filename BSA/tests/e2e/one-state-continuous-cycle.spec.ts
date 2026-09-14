@@ -30,11 +30,10 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const seed = await readDomainState(page);
       expect(Object.keys(seed.lifecycles).sort()).toEqual([
-        "EX-24088", "EX-24101", "EX-24107", "EX-24112", "EX-24119", "EX-24123",
-        "SYN-FQ123-MISMATCH", "SYN-FQ123-READABLE", "SYN-FQ123-RECHECK", "SYN-FQ123-TYPE2",
+        "EX-24107", "EX-24112", "EX-24123", "SYN-FQ123-MISMATCH",
       ]);
       expect(Object.entries(seed.itemProcesses).filter(([, process]) => process.routing.outcome === "auto_priced").map(([id]) => id).sort())
-        .toEqual(["EX-24101", "EX-24107", "SYN-FQ123-READABLE"]);
+        .toEqual(["EX-24107"]);
       await action("Read Hillcrest pharmacy claims", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
       await action("Show the waiting paper item", "Pharmacy", async () => {
         await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^Waiting on NHSBSA/ }).click();
