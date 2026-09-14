@@ -61,7 +61,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
             <div><dt>Endorsement snapshot</dt><dd className="break-words">{revision.endorsementText || "None"}</dd></div>
             <div><dt>Channel</dt><dd>{revision.channel === "eps" ? "EPS" : revision.channel === "paper" ? "Paper" : "Not recorded (legacy attempt)"}</dd></div>
             <div><dt>Confirmation</dt><dd>{revision.confirmation ?? "None"}</dd></div>
-            <div><dt>Precheck / mode</dt><dd>{revision.precheck?.status ?? "Not checked"} · {revision.precheck?.mode ?? "Seed"}</dd></div>
+            <div><dt>Precheck / mode</dt><dd>{revision.precheck?.status ?? "Not checked"} · {revision.precheck?.mode ?? (revision.kind === "seed" ? "Seed" : "Check not recorded")}</dd></div>
             <div><dt>Rule / clause / checked at</dt><dd>{revision.precheck?.tariffVersion ?? "None"} · {revision.precheck?.clauseId ?? "None"} · {revision.precheck?.checkedAt ?? "Not checked"}</dd></div>
           </dl>
           {revision.declaration && <section aria-label={`Declaration for attempt ${revision.number}`} className="mt-2 space-y-1">

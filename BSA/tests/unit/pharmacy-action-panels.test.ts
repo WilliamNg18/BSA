@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PharmacyClaimActionPanel } from "@/components/demo/claim-detail";
 import { PharmacyPage, PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
 import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
+import { ClaimDetail } from "@/components/demo/claim-detail";
 import { PharmacyReleasedCount, PharmacySubmissionReceipt } from "@/components/demo/pharmacy-submission-receipt";
 import { useAppStore, getDomainSnapshot } from "@/lib/store";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
@@ -80,6 +81,10 @@ describe("pharmacy panel human controls", () => {
     expect(html).not.toContain("Claims precheck");
     expect(controls.has("apply-correction")).toBe(false);
     expect(getDomainSnapshot()).toEqual(before);
+    controls.get("resubmit")!();
+    expect(useAppStore.getState().caseRevisions["EX-24112"].at(-1)?.precheck).toMatchObject({
+      mode: "off", status: "not_checked", facts: null, checks: [], checkedAt: null,
+    });
   });
 
   it.each([false, true])("preserves same drafts and sources across all perspectives, On=%s", (enabled) => {
@@ -112,6 +117,12 @@ describe("pharmacy panel human controls", () => {
     expect(after.caseRevisions[id].slice(0, -1)).toEqual(before);
     expect(after.caseRevisions[id].at(-1)?.confirmation).toBe("Please review both recorded quantities with the original form.");
     expect(after.lifecycles[id].history.some((event) => event.actor === "pharmacy" && event.to === "resubmitted")).toBe(true);
+    const c = caseForLifecycle(id, after.lifecycles, after.caseRevisions, after.itemProcesses)!;
+    const markup = render(createElement(ClaimDetail, { c, row: after.lifecycles[id] }));
+    const confirmationAttempt = markup.split(`Attempt ${after.caseRevisions[id].at(-1)!.number} · confirmation`)[1];
+    expect(confirmationAttempt).toContain("Check not recorded");
+    expect(confirmationAttempt).not.toContain("· Seed");
+    expect(confirmationAttempt).not.toContain("Full advisory snapshot");
   });
 
   it("compact panels expose only item actions and navigation never submits", () => {
