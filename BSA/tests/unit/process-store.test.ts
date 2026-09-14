@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routing";
-import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, historicalDecisionRecords, sessionCase, useAppStore } from "../../src/lib/store";
 import { usePharmacyStore } from "../../src/lib/pharmacy-store";
 import { useQueueStore } from "../../src/lib/queue-store";
 import { caseForLifecycle } from "../../src/lib/domain/lifecycle-model";
@@ -21,7 +21,8 @@ function submitD(captured = fields, reconciled = true) {
 }
 
 describe("canonical deterministic routing", () => {
-  it.each([A, E])("$scenario automatically prices without any human or model", (c) => {
+  it("A automatically prices without any human or model", () => {
+    const c = A;
     for (const enabled of [false, true]) {
       store().setAgentEnabled(enabled);
       store().submitItem({ caseId: c.id, channel: "eps", endorsementText: c.extracted.endorsementText });
@@ -32,11 +33,20 @@ describe("canonical deterministic routing", () => {
       expect(() => store().recordType2Decision({ caseId: c.id, decision: "ACCEPT", reason: "Not an operator item" })).toThrow();
     }
   });
+  it("E's empty endorsement remains a pure no-model outcome, not a playable item", () => {
+    const before = getDomainSnapshot();
+    expect(E.extracted.endorsementText).toBe("");
+    expect(runAgent(E)).toMatchObject({ agentInvoked: false, state: "cleared_by_rules", recommendation: "NONE" });
+    expect(routeSubmission(routingFactsForCase(E, "eps"))).toMatchObject({ outcome: "auto_priced", requiresHuman: false });
+    expect(sessionCase(E.id)).toBeNull();
+    expect(getDomainSnapshot()).toEqual(before);
+  });
   it("B August refers, July is sufficient; C conflict and F historical decision survive", () => {
     expect(runAgent(B).recommendation).toBe("REFER_BACK");
     expect(runAgent(B, { tariffVersion: "2026-07" }).recommendation).toBe("SUFFICIENT");
     expect(runAgent(C).recommendation).toBe("REQUEST_INFORMATION");
-    expect(store().records[0]).toMatchObject({ caseId: F.id, id: "DR-000871" });
+    expect(historicalDecisionRecords()[0]).toMatchObject({ caseId: F.id, id: "DR-000871" });
+    expect(store().records).toEqual([]);
     expect(routeSubmission(routingFactsForCase(B, "eps")).outcome).toBe("type2_endorsement");
     expect(routeSubmission(routingFactsForCase(B, "paper")).outcome).toBe("type1_capture");
   });
@@ -144,10 +154,12 @@ describe("explicit captured authority", () => {
   });
 
   it("takes machine channels from actual claim metadata, not legacy image labels", () => {
-    expect(CASES.map((c) => store().caseRevisions[c.id][0].channel)).toEqual(["paper", "eps", "eps", "paper", "eps", "eps"]);
-    for (const c of CASES) {
-      expect(sessionCase(c.id)?.channel).toBe(c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10");
+    expect(PLAYABLE_CASE_IDS.map((id) => store().caseRevisions[id][0].channel)).toEqual(["eps", "eps", "eps", "paper"]);
+    for (const id of PLAYABLE_CASE_IDS) {
+      expect(sessionCase(id)?.channel).toBe(store().caseRevisions[id][0].channel === "eps" ? "Electronic (EPS)" : "Paper FP10");
     }
+    expect(A.claim.submittedVia).toBe("FP34C batch");
+    expect(sessionCase(A.id)?.epsPrescription).toEqual(store().caseRevisions[A.id][0].epsPrescription);
   });
   it("records a human sufficient D as decided Type 2, never no-person automatic", () => {
     submitD();

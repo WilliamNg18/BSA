@@ -5,15 +5,16 @@ import { runAgent } from "../../src/lib/domain/agent";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 
 const store = () => useAppStore.getState();
-const D = CASES[3], E = CASES[4];
+const A = CASES[0], B = CASES[1], D = CASES[3];
 beforeEach(() => store().resetDemo());
 
 describe("reviewed source authority boundaries", () => {
   it.each(["ESCALATE", "REQUEST_INFORMATION", "REFER_BACK"] as const)("retains review authority after a human %s disposition", (decision) => {
     for (const enabled of [false, true]) {
       store().resetDemo();
-      const id = "SYN-FQ123-RECHECK";
+      const id = B.id;
       store().setAgentEnabled(enabled);
+      store().resubmitFromPharmacy(id, "NCSO RK 21/08/26");
       store().arriveInQueue(id);
       store().recordType2Decision({ caseId: id, decision, reason: "Further human review of corrected evidence is required.", rbCode: "SYN-NCSO" });
       const pack = runAgent(sessionCase(id)!, { agentEnabled: enabled });
@@ -25,7 +26,7 @@ describe("reviewed source authority boundaries", () => {
     }
   });
   it("a newly declared generic paper product cannot price as its nongeneric template", () => {
-    const id = "SYN-FQ123-TYPE2";
+    const id = "SYN-FQ123-MISMATCH";
     store().submitItem({ caseId: id, channel: "paper", endorsementText: "", paperDeclaration: {
       typedProduct: "SYN-AMOX500-GENERIC-21", quantity: 21, dispensingDate: "2026-08-11",
       endorsementText: "", declaredByPharmacy: true,
@@ -40,7 +41,7 @@ describe("reviewed source authority boundaries", () => {
   });
 
   it("omitting both source payloads cannot change the generic item's prescribed identity", () => {
-    const id = "SYN-FQ123-TYPE2";
+    const id = "SYN-FQ123-MISMATCH";
     store().submitItem({ caseId: id, channel: "paper", endorsementText: "" });
     expect(sessionCase(id)?.extracted.productCode).toBe("SYN-AMOX500-GENERIC-21");
     expect(store().itemProcesses[id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
@@ -48,11 +49,11 @@ describe("reviewed source authority boundaries", () => {
   });
 
   it("rejects incompatible prescribed and dispensed products rather than erasing the discrepancy", () => {
-    const original = createEpsPrescription(E);
+    const original = createEpsPrescription(A);
     const prescription = { ...original, claimMessageState: "submitted" as const,
       items: [{ ...original.items[0], dispensedCode: "SYN-LEVO100-28", dispensedName: "Levothyroxine 100mcg tablets" }] };
     const before = getDomainSnapshot();
-    expect(() => store().submitItem({ caseId: E.id, channel: "eps", endorsementText: "", epsPrescription: prescription })).toThrow(/product|substitut/i);
+    expect(() => store().submitItem({ caseId: A.id, channel: "eps", endorsementText: prescription.dispenserEndorsement, epsPrescription: prescription })).toThrow(/product|substitut/i);
     expect(getDomainSnapshot()).toEqual(before);
   });
 
@@ -86,8 +87,9 @@ describe("reviewed source authority boundaries", () => {
   });
 
   it.each([false, true])("the pending human recheck is also authoritative in its agent pack, enabled=%s", (enabled) => {
-    const id = "SYN-FQ123-RECHECK";
+    const id = B.id;
     store().setAgentEnabled(enabled);
+    store().resubmitFromPharmacy(id, "NCSO RK 21/08/26");
     store().arriveInQueue(id);
     expect(store().itemProcesses[id].routing.requiresHuman).toBe(true);
     const pack = runAgent(sessionCase(id)!, { agentEnabled: enabled });

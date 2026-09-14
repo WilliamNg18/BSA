@@ -1,18 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
 import { runAgent } from "../../src/lib/domain/agent";
 import { immutable, paperDeclarationFields } from "../../src/lib/domain/lifecycle-model";
-import { seededLifecycleSession } from "../../src/lib/domain/lifecycle-seed";
+import { historicalLifecycleFixtures, seededLifecycleSession } from "../../src/lib/domain/lifecycle-seed";
 import { LIFECYCLE_LABELS, type ProcessSubmission } from "../../src/lib/domain/lifecycle";
 import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routing";
 import { pharmacySnapshot, checkPharmacy } from "../../src/lib/domain/pharmacy-check";
-import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, historicalDecisionRecords, sessionCase, useAppStore } from "../../src/lib/store";
 import type { EpsPrescription, PaperDeclaration } from "../../src/lib/domain/types";
 
 const store = () => useAppStore.getState();
-const [A, B, C, D, E, F] = CASES;
-const generic = "SYN-FQ123-TYPE2";
+const [A, B, , D, , F] = CASES;
+const generic = "SYN-FQ123-MISMATCH";
 const paper: PaperDeclaration = { typedProduct: "Co-codamol 30/500 tablets", quantity: 100,
   endorsementText: "NCSO JB 27/08/26", dispensingDate: "2026-08-27", declaredByPharmacy: true };
 const eps = (id = B.id): EpsPrescription => ({ ...createEpsPrescription(sessionCase(id)!), claimMessageState: "submitted" });
@@ -22,19 +22,20 @@ beforeEach(() => { store().resetDemo(); vi.spyOn(Date, "now").mockReturnValue(Da
 afterEach(() => vi.restoreAllMocks());
 
 describe("single Hillcrest first-load cycle", () => {
-  it("seeds ten operational items and three untouched automatic prices", () => {
+  it("seeds exactly four operational items and one untouched automatic price", () => {
     const s = store();
-    expect(Object.keys(s.lifecycles)).toHaveLength(10);
+    expect(Object.keys(s.lifecycles)).toEqual(PLAYABLE_CASE_IDS);
     expect(Object.values(s.lifecycles).every((row) => row.pharmacyCode === "FQ123")).toBe(true);
-    expect(Object.entries(s.itemProcesses).filter(([, process]) => process.routing.outcome === "auto_priced").map(([id]) => id)).toEqual([A.id, E.id, "SYN-FQ123-READABLE"]);
+    expect(Object.entries(s.itemProcesses).filter(([, process]) => process.routing.outcome === "auto_priced").map(([id]) => id)).toEqual([A.id]);
+    expect(s.lifecycles[A.id].state).toBe("paid");
+    expect(s.records).toEqual([]);
     expect(s.itemProcesses[D.id].routing.outcome).toBe("type1_capture");
     expect(s.itemProcesses[generic].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
     expect(s.lifecycles[B.id].state).toBe("referred_back");
     expect(s.itemProcesses[B.id].rbCode).toBe("SYN-NCSO");
-    expect(s.lifecycles[C.id].state).toBe("information_requested");
-    expect(s.lifecycles["SYN-FQ123-RECHECK"].state).toBe("resubmitted");
-    expect(s.lifecycles[F.id].state).toBe("paid");
-    expect(s.itemProcesses[F.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
+    for (const map of [s.caseStates, s.caseRevisions, s.itemProcesses, s.itemVerification]) {
+      expect(Object.keys(map).sort()).toEqual([...PLAYABLE_CASE_IDS].sort());
+    }
     for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
       if (state !== "released_to_pricing") expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
     }
@@ -42,16 +43,21 @@ describe("single Hillcrest first-load cycle", () => {
     expect(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on).toBe(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.off);
   });
 
-  it("retains F's historical evidence and appends a separate corrected revision and human record", () => {
-    const s = store(), history = s.lifecycles[F.id].history;
-    expect(s.records[0]).toMatchObject({ id: "DR-000871", timestamp: "2026-09-03T15:02:11", decision: "REFER_BACK" });
+  it("retains F's original and corrected evidence as pure historical fixtures", () => {
+    const before = getDomainSnapshot();
+    const s = historicalLifecycleFixtures(), history = s.lifecycles[F.id].history;
+    const records = historicalDecisionRecords();
+    expect(Object.keys(s.lifecycles)).toHaveLength(10);
+    expect(records[0]).toMatchObject({ id: "DR-000871", timestamp: "2026-09-03T15:02:11", decision: "REFER_BACK" });
     expect(history[2]).toMatchObject({ recordId: "DR-000871", to: "referred_back", revision: 1 });
     expect(s.caseRevisions[F.id][0].endorsementText).toBe(F.extracted.endorsementText);
     expect(s.caseRevisions[F.id][1]).toMatchObject({ number: 2, kind: "resubmission", endorsementText: "NCSO DL 06/08/26" });
     expect(history.slice(3).map((event) => event.actor)).toEqual(["pharmacy", "code", "operator", "code"]);
-    expect(s.records[1]).toMatchObject({ id: "DR-000872", decision: "ACCEPT", revision: 2, recommendation: "NONE" });
+    expect(records[1]).toMatchObject({ id: "DR-000872", decision: "ACCEPT", revision: 2, recommendation: "NONE" });
     expect(history.at(-1)?.message).toContain("NHSBSA's existing rules engine");
     expect(F.extracted.endorsementText).toBe("NCSO  DL");
+    expect(sessionCase(F.id)).toBeNull();
+    expect(getDomainSnapshot()).toEqual(before);
   });
 });
 
@@ -163,8 +169,8 @@ describe("immutable source submission contracts", () => {
 
   it("legacy correction retains EPS source and supply evidence instead of dropping the generic obligation", () => {
     const before = store().caseRevisions[generic][0];
-    store().recordType2Decision({ caseId: generic, decision: "REFER_BACK", reason: "Human requires the missing manufacturer.", rbCode: "RB2B" });
-    store().resubmitFromPharmacy(generic, "Pharmacy correction, manufacturer still missing");
+    store().recordType2Decision({ caseId: generic, decision: "REFER_BACK", reason: "Human requires the correct supply pack.", rbCode: "RB2B" });
+    store().resubmitFromPharmacy(generic, "Pharmacy correction, supply pack still mismatched");
     const latest = store().caseRevisions[generic].at(-1)!;
     expect(latest.epsPrescription).toEqual({ ...before.epsPrescription, dispenserEndorsement: latest.endorsementText });
     expect(latest.epsPrescription?.supplyEvidence).toEqual(before.epsPrescription?.supplyEvidence);

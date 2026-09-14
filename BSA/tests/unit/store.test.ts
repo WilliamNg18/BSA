@@ -45,6 +45,6 @@ describe("product-only session state", () => {
     expect(useAppStore.getState().agentEnabled).toBe(false);
     expect(useAppStore.getState().caseStates).toEqual(seed.caseStates);
     expect(useAppStore.getState().records).toEqual(seed.records);
-    expect(useAppStore.getState().records.map((r) => r.id)).toEqual(["DR-000871", "DR-000872"]);
+    expect(useAppStore.getState().records).toEqual([]);
   });
 });
