@@ -41,7 +41,7 @@ import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@
 import { NO_VERIFICATION, type HumanActionSlice, type CaseRevision, type HistoryEvent, type LifecycleDecisionRecord, type LifecycleSlice, type LifecycleState, type PharmacyPrecheckSnapshot, type ProcessSlice, type ProcessSubmission, type ItemProcess } from "@/lib/domain/lifecycle";
 import { DEMO_STEPS, type DemoModeSlice } from "@/lib/domain/demo-steps";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
-import { appendHistory, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
+import { appendHistory, captureForRevision, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
 import { validateEpsCorrection, type EpsCorrectionSources } from "@/lib/domain/eps-correction";
@@ -180,7 +180,7 @@ export const useAppStore = create<AppState>((set, get) => {
     requireLifecycle(caseId, s.lifecycles);
     const original = caseById(caseId) ?? caseById(revision?.templateCaseId);
     if (!original || !revision) throw new Error("Original source evidence is unavailable.");
-    return evaluateItemVerification(original, revision, revision.verificationEnabled === true, s.itemProcesses[caseId]?.capture);
+    return evaluateItemVerification(original, revision, revision.verificationEnabled === true, captureForRevision(s.lifecycles[caseId], revision.number));
   };
   const timestamp = (caseId: string) => new Date(Math.max(Date.now(), Date.parse(get().lifecycles[caseId].history.at(-1)!.at) + 1)).toISOString();
   const requireState = (caseId: string, states: LifecycleState[]) => {
@@ -577,7 +577,7 @@ export function getReleaseEligibility(caseId: string): { allowed: boolean; reaso
   if (process.routing.outcome === "type1_capture" && process.routing.requiresHuman) return { allowed: false, reason: "Complete human Type 1 capture before release." };
   const original = caseById(caseId) ?? caseById(revision.templateCaseId);
   if (!original) return { allowed: false, reason: "Original source evidence is unavailable." };
-  const assessment = evaluateItemVerification(original, revision, revision.verificationEnabled === true, process.capture);
+  const assessment = evaluateItemVerification(original, revision, revision.verificationEnabled === true, captureForRevision(row, revision.number));
   return { allowed: assessment.releaseEligible, reason: assessment.reason };
 }
 
