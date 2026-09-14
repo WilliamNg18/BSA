@@ -249,10 +249,33 @@ const GENERIC_SUPPLY_CASE: ExceptionCase = {
   initialState: "operator_review_required",
 };
 
+export const TWO_GATE_CASES: readonly ExceptionCase[] = [
+  {
+    ...GENERIC_SUPPLY_CASE, id: "SYN-FQ123-MISMATCH", title: "Complete format, wrong pack",
+    purpose: "A plausible pack passes format checks but conflicts with the independently retained claim and product catalogue.",
+    routingReason: "Pack and claimed amount require reconciliation; legacy outcome is uncertain",
+    epsPrescription: {
+      prescriber: { name: GENERIC_SUPPLY_CASE.extracted.prescriber, practice: "Hillcrest practice (synthetic)" },
+      patientLabel: "Mismatch example (synthetic)", prescriptionDate: "2026-08-11", dispensingDate: "2026-08-11",
+      items: [{ prescribedCode: "SYN-AMOX500-GENERIC-21", product: "Amoxicillin 500mg capsules (generic synthetic)",
+        strength: "500mg", form: "capsules", quantity: 21, dose: "Synthetic instruction, not for clinical use",
+        dispensedCode: "SYN-AMOX500-GENERIC-21", dispensedName: "Amoxicillin 500mg capsules (generic synthetic)" }],
+      prescriberEndorsement: "", dispenserEndorsement: "", exemptionStatus: "not_recorded", claimMessageState: "submitted",
+      supplyEvidence: { ruleId: "SYN-EPS-SUPPLY", brandManufacturer: "Demo manufacturer (synthetic)", packSize: 28, form: "capsules" },
+    },
+  },
+  {
+    ...CASES[0], id: "SYN-FQ123-READABLE", title: "Readable paper, matching declaration",
+    purpose: "A known readable synthetic scan independently agrees with the pharmacy declaration and claim.",
+    paperDeclaration: { typedProduct: "Sertraline 50mg tablets", quantity: 28, endorsementText: "NCSO JB 14/08/26",
+      dispensingDate: "2026-08-14", declaredByPharmacy: true },
+  },
+];
+
 export function caseById(id: string | undefined): ExceptionCase | null {
   if (!id) return null;
   if (id === GENERIC_SUPPLY_CASE.id) return GENERIC_SUPPLY_CASE;
-  return CASES.find((c) => c.id === id) ?? null;
+  return CASES.find((c) => c.id === id) ?? TWO_GATE_CASES.find((c) => c.id === id) ?? null;
 }
 
 /** Additional synthetic queue rows so the queue reads like a working day. */

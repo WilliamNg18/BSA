@@ -23,6 +23,7 @@ export function routeSubmission(facts: RoutingFacts): RoutingResult {
   if (facts.channel === "paper" && !facts.captureConfirmed && (!facts.readable || facts.handwritten)) return result("type1_capture", "Human product capture required before routing.");
   if (facts.type2Decision === "insufficient") return result("referred_back", "Human judgement found insufficient information; RB code and reason required.");
   if (!facts.mandatoryFieldsComplete) return result("type2_endorsement", "Mandatory evidence is missing; human review required before pricing.");
+  if (facts.hasConflict) return result("type2_endorsement", "Conflicting evidence requires human judgement.");
   if (facts.type2Decision === "sufficient") return {
     outcome: "type2_endorsement", reason: "Human judgement complete; existing rules engine handles normal pricing.",
     requiresHuman: false, pricingAuthority: "existing_rules_engine",
@@ -48,7 +49,8 @@ export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["cha
   const complete = requirements.length > 0 && requirements.every((entry) => entry.met === true);
   const readable = channel === "eps"
     ? Boolean(product && c.extracted.quantity !== null)
-    : !c.paperDeclaration && c.imageQuality >= QUALITY_THRESHOLD && Math.min(c.extracted.productConfidence, c.extracted.quantityConfidence, c.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
+    : (!c.paperDeclaration || c.claim.submittedVia !== "EPS claim message") && c.imageQuality >= QUALITY_THRESHOLD &&
+      Math.min(c.extracted.productConfidence, c.extracted.quantityConfidence, c.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
   const concession = version?.concessions.find((entry) => entry.productCode === product?.code);
   const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : c.extracted.productCode === EPS_SUPPLY_RULE.productCode && c.extracted.quantity !== null
     ? evaluateEpsSupply(createEpsPrescription(c)) : null;
