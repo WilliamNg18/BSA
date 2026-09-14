@@ -156,7 +156,8 @@ test(LIVE_CHECKS.background, async ({ page }) => {
   }
   for (const id of retired) {
     await page.goto(`/case/${id}`);
-    await expect(page.getByRole("heading", { name: "Case not found", exact: true })).toBeVisible();
+    await expect(page.getByRole("main").getByText("Case not found", { exact: true })).toBeVisible();
+    await expect(page.getByRole("main").getByRole("link", { name: "Go to the queue", exact: true })).toHaveAttribute("href", "/queue");
     await expect(page.getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Release to pricing", exact: true })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Follow this case", exact: true })).toHaveCount(0);
