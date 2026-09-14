@@ -40,8 +40,33 @@ storage, not claimed as portable hosted evidence:
 | Corrected coherent state run | 8 passed, 16 actual cycles, no retries, 2.6 minutes | Instrumented build `e799b3774a73bd22d4c8bb69265db771ef3c115d`, `dirty: true`; not clean source-pinned or hosted proof |
 
 The last row predates the additional every-state temporary-perspective return
-assertions. Those strengthened checks require a fresh clean run. It does not
+assertions. Their separate clean result is recorded below; it does not
 inherit a pass from the earlier matrix.
+
+## Clean local validation after recovery
+
+| Candidate | Actual result | Boundary |
+| --- | --- | --- |
+| `bdb6a2e7c1214ad047622c77be13d6ec7e04b0a3` | 8/8 instrumented checks passed in 3.0 minutes, zero retries | Sixteen actual cycles, including hidden-side visits, temporary Both and explicit origin restoration after every state; full domain snapshots retained |
+| Same clean `bdb6a2e` | 51/55 named rehearsal checks passed | Full selection, not full acceptance. Four obsolete selector expectations failed; this report remains preserved |
+| `357a147b9f78a40f14b99b37c8c2b09c081af900` | Fresh whole 55/55 local rehearsal passed in 6.3 minutes, zero retries | A separate complete run after repairs, not an aggregation of earlier passes |
+
+The successful rehearsal report identifies itself as **local rehearsal, not
+hosted acceptance**. All 110 before/after identities match the clean expected
+commit. There are no missing, unexpected or duplicate check names. Forty-four
+axe audits have zero violations; 43 retain incomplete findings, so this is
+not manual accessibility certification.
+
+All 43 PNG attachments were checked against their recorded SHA-256 and actual
+PNG dimensions: every width is 1440 px. This validates artifact identity and
+capture scope, not visual quality. Image review is still pending.
+Artifacts remain in the session's `task36-clean-bdb-state`,
+`task36-clean-bdb-rehearsal` and `task36-clean-357-rehearsal` directories.
+The last candidate includes G's later received-source verification fix;
+the earlier eight-check source identity is not silently changed to match it.
+
+These local results do not satisfy the remaining latest-main CI, deployment,
+hosted checklist and fresh-URL gates. No hosted capture has been authorised.
 
 The intermediate baseline test split `e799b37` also misplaced a new test
 inside an existing parameterised test. `a208ffe` restores suite-level
