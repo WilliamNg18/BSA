@@ -402,7 +402,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       ? "Evidence and failed checks remain available. Recommendation, alternative and draft are withheld. A human decision with a reason is required."
       : "Review evidence, rule, conflicts, signals and gate checks. Accept, amend, request information, refer back or escalate; the human decides.",
     items: [`Decision record prepared (append-only). Pinned: Tariff ${version?.version ?? "n/a"}, agent ${AGENT_VERSION}`],
-    toolCalls: [{ tool: "write_decision_record", productionService: "Append-only record store", cls: "deterministic", input: { caseId: c.id }, outputSummary: "Case pack appended; awaiting human decision", sourceLabel: "In-memory record", durationMs: 15, status: "ok" }],
+    toolCalls: [{ tool: "write_decision_record", productionService: "Append-only record store", cls: "deterministic", input: { caseId: c.id }, outputSummary: "Case pack prepared; awaiting human decision", sourceLabel: "Prepared in memory", durationMs: 15, status: "ok" }],
     status: "ok",
   });
 
