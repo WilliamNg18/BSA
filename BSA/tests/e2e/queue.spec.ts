@@ -22,9 +22,12 @@ for (const enabled of [false, true]) {
     for (const id of [...automaticCaseIds, "EX-24098"]) {
       await expect(page.locator(`[data-case-id="${id}"], [data-type1-case="${id}"]`)).toHaveCount(0);
     }
-    for (const id of ["EX-24119", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK", "SYN-FQ123-MISMATCH"]) await expect(worklist(page).locator(`[data-case-id="${id}"]`)).toBeVisible();
+    await expect(worklist(page).locator('[data-case-id="SYN-FQ123-MISMATCH"]')).toBeVisible();
     await expect(page.getByRole("region", { name: "Referred back", exact: true }).locator('[data-case-id="EX-24112"]')).toBeVisible();
-    await expect(page.getByRole("region", { name: "Decided", exact: true }).locator('[data-case-id="EX-24088"]')).toBeVisible();
+    await expect(page.getByRole("region", { name: "Decided", exact: true }).locator("[data-case-id]")).toHaveCount(0);
+    for (const id of ["EX-24119", "EX-24088", "EX-24101", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) {
+      await expect(page.locator(`[data-case-id="${id}"], [data-type1-case="${id}"], a[href*="${id}"]`)).toHaveCount(0);
+    }
     await expect(captureLane(page).locator('[data-type1-case="EX-24123"]')).toBeVisible();
     await expect(worklist(page).locator('[data-case-id="EX-24123"]')).toHaveCount(0);
     await expect(page.locator("[data-month-row], [data-queue-seed], [data-compare-seed]")).toHaveCount(0);
@@ -60,10 +63,10 @@ for (const enabled of [false, true]) {
     expect(total).toBe(initial.length);
     await counts(page).getByRole("button", { name: /^All staff items/ }).click();
     expect(await rowIds(page)).toEqual(initial);
-    const fresh = counts(page).getByRole("button", { name: "New submissions (2)", exact: true });
+    const fresh = counts(page).getByRole("button", { name: "New submissions (0)", exact: true });
     await fresh.click();
     await expect(fresh).toHaveAttribute("aria-pressed", "true");
-    expect(await rowIds(page)).toEqual(["EX-24088", "SYN-FQ123-RECHECK"]);
+    expect(await rowIds(page)).toEqual([]);
     await confirmReset(page);
     await expect(counts(page).getByRole("button", { name: /^All staff items/ })).toHaveAttribute("aria-pressed", "true");
     expect(await rowIds(page)).toEqual(initial);
@@ -74,19 +77,19 @@ test("Task22 an explicit incomplete submission becomes New and opens the same ca
   await page.goto("pharmacy");
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
   await page.getByRole("link", { name: "Open shared queue", exact: true }).click();
-  const fresh = counts(page).getByRole("button", { name: "New submissions (3)", exact: true });
+  const fresh = counts(page).getByRole("button", { name: "New submissions (1)", exact: true });
   await fresh.click();
   const row = worklist(page).locator('[data-case-id="EX-24112"]');
   await expect(row).toBeVisible();
   await expect(row).toContainText("New submission");
   await expect(row).toContainText("EPS");
-  expect(await rowIds(page)).toEqual(["EX-24088", "EX-24112", "SYN-FQ123-RECHECK"]);
+  expect(await rowIds(page)).toEqual(["EX-24112"]);
   await row.getByRole("link", { name: "Open EX-24112", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("radiogroup", { name: "Decision", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
 });
 
 for (const width of [1280, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {
