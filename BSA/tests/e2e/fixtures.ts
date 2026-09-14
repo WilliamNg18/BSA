@@ -54,7 +54,7 @@ export async function confirmReset(page: Page) {
   await expect(dialog).toHaveCount(0);
 }
 
-export const automaticCaseIds = ["EX-24107", "EX-24101"];
+export const automaticCaseIds = ["EX-24107", "EX-24101", "SYN-FQ123-READABLE"];
 
 export async function openCaseFromQueueOrClaim(page: Page, id: string) {
   if (!automaticCaseIds.includes(id)) {
