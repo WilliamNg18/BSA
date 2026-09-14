@@ -6,6 +6,32 @@ ms.date: 2026-09-13
 
 # Current integration
 
+Tasks 25-30 merged in order N #81 (`34349a9`), C #83 (`a96a448`),
+U #82 (`837417e`), E #84 (`28036c6`), Q #85 (`2ce8e70`) and V #86
+(`b05b06ad67860fea9d9809eed09b5f1636168f66`). V's runtime candidate
+`b60869f` passed 1,116 unique units, 1,196 ordinary browser checks, 34
+instrumented state checks and a clean full 30-check local rehearsal.
+The deployed runtime then passed 30/30 hosted checks with 60 matching clean
+identities. Independent review subsequently failed that capture's wording
+and prose gate. The original images, report and contract-correction addendum
+remain immutable.
+
+Repair #87 merged at `34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e`.
+Its exact candidate passed 1,134 unique units, 1,202 ordinary browser checks,
+34 instrumented state checks and a clean full local rehearsal. The repaired
+deployment passed a new 30/30 hosted run with 60 clean identities. Actual
+repaired visual/accessibility review and the evidence-only release are
+recorded in PROGRESS, not inferred from CI or a merge.
+
+The final V evidence/documentation PR must contain no application, runtime or
+hosting changes. Its merge still receives matching main CI, deployment, the
+entire named live checklist and a fresh URL check. Neither release stage moves
+rollback refs. Each original or repaired evidence set stays pinned to its
+captured runtime,
+even when final documentation changes the deployed build identity.
+
+## Historical Tasks 19-24 integration
+
 The Tasks 19-24 functional streams merged serially M #76, U #74, P #78,
 Q #75 and N #77. Their integrated functional main is
 `1327e65fffeafebf43df1b1b566c6e4152452b46`, deployed by 34763282060.
@@ -26,7 +52,7 @@ Tasks 14-18 were merged and accepted on main
 `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`. Final CI 34720652232 passed
 774 unique units and 1,086 blocking browsers. Deployment 34720652234 and
 all 14 final live checks passed, with clean matching build identities.
-The site has eight chapters, shared monthly figures, action-first queue/claims
+That retained release had eight chapters, shared monthly figures, action-first queue/claims
 and independent Pharmacy/NHSBSA/Both perspectives.
 
 On 13 September the owner explicitly promoted this exact pre-change main to

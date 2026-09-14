@@ -95,7 +95,9 @@ describe("following is presentation state only", () => {
     const render = (enabled: boolean, claim?: CaseLifecycle) => renderToStaticMarkup(
       createElement(MemoryRouter, null, createElement(ReferralCycle, { enabled, claim })),
     );
-    it.each(Object.keys(LIFECYCLE_LABELS) as LifecycleState[])("renders only recorded %s state in both modes without mutation", (state) => {
+    // The future gated release has no recorded Step 0 item to present.
+    const currentStates = (Object.keys(LIFECYCLE_LABELS) as LifecycleState[]).filter((state) => state !== "released_to_pricing");
+    it.each(currentStates)("renders only recorded %s state in both modes without mutation", (state) => {
       const claim: CaseLifecycle = { caseId: "EX-24112", pharmacyCode: "FQ123", state, history: [] };
       Object.freeze(claim.history);
       Object.freeze(claim);

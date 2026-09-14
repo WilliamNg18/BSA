@@ -10,29 +10,16 @@ import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 import { REC_META } from "../../src/components/demo/label-meta";
 
-// The shared legacy helper's Operations labels are owned by integration QA.
 async function navigatePrimary(page: Page, label: string) {
-  if (!["Pharmacy claims", "NHSBSA queue"].includes(label)) return navigateExisting(page, label);
-  const nav = page.getByRole("navigation", { name: "Primary", exact: true });
-  const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
-  if (await mobile.isVisible()) {
-    await mobile.press("Enter");
-    await page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true }).press("Enter");
-    await expect(page.getByRole("dialog", { name: "Navigation", exact: true })).toHaveCount(0);
-  } else {
-    await nav.getByRole("button", { name: "Operations", exact: true }).press("Enter");
-    const item = page.getByRole("menuitem", { name: label, exact: true });
-    await item.focus();
-    await expect(item).toBeFocused();
-    await item.press("Enter");
-    await expect(page.getByRole("menu")).toHaveCount(0);
+  await navigateExisting(page, label);
+  if (["Pharmacy claims", "NHSBSA queue"].includes(label)) {
+    await expect(page).toHaveURL(label === "Pharmacy claims" ? /\/pharmacy\/claims$/ : /\/queue$/);
+    await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
   }
-  await expect(page).toHaveURL(label === "Pharmacy claims" ? /\/pharmacy\/claims$/ : /\/queue$/);
-  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
 }
 
 for (const colorScheme of ["light", "dark"] as const) {
-  for (const width of [360, 768, 960, 1024, 1280, 1440, 1920]) {
+  for (const width of [1280, 1440]) {
     test.describe(`tour header ${width} ${colorScheme}`, () => {
       test.use({ colorScheme, viewport: { width, height: 900 } });
       test("single row, pinned rail, full grouped navigation and both agent states", async ({ page }) => {
@@ -45,7 +32,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           await expect(header.getByRole("switch")).toHaveAttribute("data-state", enabled ? "checked" : "unchecked");
           expect(box?.height).toBeLessThanOrEqual(64);
           await expect(header.getByRole("radio", { name: "Both", exact: true })).toBeChecked();
-          const navigation = width < 1024 ? header.getByRole("button", { name: "Open navigation", exact: true }) : header.getByRole("button", { name: "Operations", exact: true });
+          const navigation = header.getByRole("button", { name: "Operations", exact: true });
           const controls = [header.getByRole("link", { name: "Prescription Exception Case Builder" }), navigation, header.getByRole("group", { name: "Perspective", exact: true }), header.getByRole("switch"), header.getByRole("button", { name: "Reset demo" })];
           const centres: number[] = [];
           for (const control of controls) {
@@ -210,62 +197,6 @@ for (const enabled of [true, false]) {
     });
   }
 }
-
-test("mobile navigation closes without animation events after live reduced-motion changes", async ({ page }) => {
-  await page.setViewportSize({ width: 960, height: 900 });
-  await page.emulateMedia({ colorScheme: "dark", reducedMotion: "no-preference" });
-  await page.goto("./#scene");
-  const trigger = page.getByRole("button", { name: "Open navigation", exact: true });
-  const content = page.locator('[data-slot="sheet-content"]');
-  const overlay = page.locator('[data-slot="sheet-overlay"]');
-
-  for (const action of ["Escape", "Close", "Pharmacy check"]) {
-    await trigger.focus();
-    await trigger.press("Enter");
-    await expect(content).toHaveAttribute("data-state", "open");
-    // Normal opening animation remains; preference changes apply to this mounted sheet.
-    await expect(content).toHaveCSS("animation-name", "enter");
-    await expect(content).toHaveCSS("animation-duration", "0.5s");
-    await expect(overlay).toHaveCSS("animation-name", "enter");
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    for (const layer of [content, overlay]) {
-      await expect(layer).toHaveCSS("animation-name", "none");
-      await expect(layer).toHaveCSS("transition-duration", "0s");
-    }
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await expect(content).toHaveCSS("animation-name", "enter");
-    await expect(overlay).toHaveCSS("animation-name", "enter");
-    // Deterministically withhold animation completion, as in a stalled background tab.
-    // Closing must use Presence's no-animation unmount, not wait for a timeout/event.
-    await page.locator('[data-slot="sheet-content"], [data-slot="sheet-overlay"]').evaluateAll((layers) => {
-      for (const layer of layers) (layer as HTMLElement).style.animationPlayState = "paused";
-    });
-    if (action === "Escape") await page.keyboard.press("Escape");
-    else if (action === "Close") await content.getByRole("button", { name: "Close", exact: true }).press("Enter");
-    else await content.getByRole("link", { name: action, exact: true }).press("Enter");
-
-    // Raw selectors include hidden/closed layers; an inert remnant cannot pass.
-    await expect(content).toHaveCount(0);
-    await expect(overlay).toHaveCount(0);
-    await expect(trigger).toHaveAttribute("aria-expanded", "false");
-    await expect(page.locator("body")).not.toHaveCSS("pointer-events", "none");
-    await expect(page.locator("body")).not.toHaveAttribute("data-scroll-locked");
-    await expect(page.locator('#root[aria-hidden="true"], #root[inert], #root [inert]')).toHaveCount(0);
-    if (action !== "Pharmacy check") await expect(trigger).toBeFocused();
-    else await expect(page).toHaveURL(/\/pharmacy$/);
-    const flag = page.getByRole("banner").getByRole("switch");
-    await flag.focus();
-    await expect(flag).toBeFocused();
-    const enabled = await flag.isChecked();
-    await flag.press("Space");
-    await expect(flag).toBeChecked({ checked: !enabled });
-    await expect(flag).toBeFocused();
-  }
-  // Keep the shared helper's strict zero-dialog assertion and exercise it again.
-  await navigatePrimary(page, "NHSBSA queue");
-  await expect(content).toHaveCount(0);
-  await expect(overlay).toHaveCount(0);
-});
 
 test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases follow their actual routing", async ({ page }) => {
   await page.goto("./#scene");
@@ -481,7 +412,7 @@ test("unknown routes do not claim a tour chapter and retain start and home recov
 
 test("chapter narrative and responsive presentation in both states; selected QA screenshots", async ({ page }, testInfo) => {
   test.setTimeout(60_000);
-  for (const width of [1440, 360]) {
+  for (const width of [1440, 1280]) {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ colorScheme: width === 1440 ? "light" : "dark" });
     for (const fragment of ["scene", "month", "pipeline", "cases", "two-places", "close"]) {
@@ -498,7 +429,7 @@ test("chapter narrative and responsive presentation in both states; selected QA 
 });
 
 for (const reducedMotion of ["reduce", "no-preference"] as const) {
-  for (const width of [360, 768, 960, 1024, 1280, 1440, 1920]) {
+  for (const width of [1280, 1440]) {
     test.describe(`follow banner ${width} ${reducedMotion}`, () => {
       test.use({ viewport: { width, height: 900 }, reducedMotion, colorScheme: reducedMotion === "reduce" ? "dark" : "light" });
       test("@tour-follow same item, dynamic sticky layout, keyboard dismissal and reset", async ({ page }, testInfo) => {

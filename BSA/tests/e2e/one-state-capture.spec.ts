@@ -8,8 +8,8 @@ const declaration = { productCode: "SYN-COCOD-100", quantity: 100, endorsementTe
 const labels = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" } as const;
 
 function expectOtherCasesUnchanged(before: DomainSnapshot, after: DomainSnapshot) {
-  for (const key of ["caseRevisions", "lifecycles", "itemProcesses", "caseStates"] as const) {
-    for (const id of Object.keys(before[key])) {
+  for (const key of ["caseRevisions", "lifecycles", "itemProcesses", "itemVerification", "operatorDrafts", "pharmacyDrafts", "caseStates"] as const) {
+    for (const id of new Set([...Object.keys(before[key]), ...Object.keys(after[key])])) {
       if (id !== D) expect(after[key][id], `${key}: unrelated ${id} remains exact`).toEqual(before[key][id]);
     }
   }
@@ -30,7 +30,7 @@ async function fillCapture(action: DomainAction, capture: Locator, fields: Parti
 for (const enabled of [false, true]) {
   for (const scenario of ["fresh unknown", "corrected fields", "missing prescriber", "invalid quantity", "manual mode", "reset draft"] as const) {
     test(`one state: Type 1 ${scenario}, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
-      await page.setViewportSize({ width: enabled ? 360 : 1440, height: 1000 });
+      await page.setViewportSize({ width: 1440, height: 1000 });
       await page.emulateMedia({ colorScheme: enabled ? "dark" : "light", reducedMotion: "reduce" });
       await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
         const initial = await readDomainState(page);
@@ -161,7 +161,7 @@ for (const enabled of [false, true]) {
         const audit = await new AxeBuilder({ page }).analyze();
         await captureJson(info, `capture-${scenario}-axe`, audit);
         expect(audit.violations).toEqual([]);
-        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(enabled ? 360 : 1440);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
 
         const confirmed = await action("Record human capture, not a Type 2 decision", "NHSBSA", async () => {
           await confirm.click();

@@ -30,7 +30,7 @@ export function MissingAssistedSlots({ markers = false }: { markers?: boolean })
   return <section className="rounded-xl border bg-muted/30 p-4" aria-label="Assisted fields not recorded">
     <h2 className="mb-2 text-base font-semibold">Assisted fields</h2>
     <p className="mb-3 text-xs text-muted-foreground">Not recorded in this synthetic manual comparison; this does not describe real NHSBSA records.</p>
-    <dl className="grid gap-2 sm:grid-cols-2">{ASSISTED_SLOTS.map((slot) => <div key={slot} className="rounded-md border p-3" data-assisted-slot={slot}>
+    <dl className="grid gap-2 grid-cols-2">{ASSISTED_SLOTS.map((slot) => <div key={slot} className="rounded-md border p-3" data-assisted-slot={slot}>
       <dt className="text-sm font-medium">{slot}</dt><dd className="space-y-2 text-sm text-muted-foreground"><span className="block">Not recorded</span>
       {markers && <PainMarker resolved={false} pain={`${slot} not recorded`} resolution="" />}</dd>
     </div>)}</dl>
@@ -40,7 +40,7 @@ export function MissingAssistedSlots({ markers = false }: { markers?: boolean })
 export function ManualCaseTrace() {
   const { input } = useManualLoopMonth();
   return <PageSection title="Manual gathering trace" description="Synthetic manual workflow assumptions, not observed NHSBSA steps or measured timings.">
-    <ol aria-label="Manual gathering trace" className="grid gap-3 sm:grid-cols-2">
+    <ol aria-label="Manual gathering trace" className="grid gap-3 grid-cols-2">
       {GATHERING_STEPS.map(({ key, label }, index) => <li key={key} className="space-y-2 rounded-xl border p-4" data-manual-step={key}>
         <h3 className="text-sm font-semibold">{index + 1}. {label.replace(" minutes / item", "")}</h3>
         <BoundaryTag cls="human" />
@@ -123,7 +123,7 @@ export function OriginalPaperDeclaration({ declaration }: { declaration: PaperDe
 export function RawCaseFields({ c }: { c: ExceptionCase }) {
   const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
   const original = paperImageEvidence(c, templateCaseId).extracted;
-  return <div className="grid gap-4 md:grid-cols-2" data-manual-pack>
+  return <div className="grid gap-4 grid-cols-2" data-manual-pack>
     <CaseSourceEvidence c={c} />
     <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">

@@ -16,7 +16,7 @@ export function BaselineAssumptions({ register = false }: { register?: boolean }
     <summary className="cursor-pointer font-semibold">Calculator assumptions and formula</summary>
     <div className="mt-4 min-w-0 space-y-4 text-sm">
       <p>Estimates only. Replace these assumptions with validated NHSBSA figures. Defaults are illustrative, not measured current practice or a forecast.</p>
-      <ul aria-label="Calculator defaults and current inputs" className="grid gap-2 sm:grid-cols-2">
+      <ul aria-label="Calculator defaults and current inputs" className="grid gap-2 grid-cols-2">
         {fields.map(({ key, label, hint }) => {
           const value = key === "todayMinutes" ? todayMinutes : draft[key];
           return <li key={key} className="min-w-0 rounded-md bg-muted/40 p-3">

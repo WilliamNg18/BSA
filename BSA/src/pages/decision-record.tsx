@@ -138,7 +138,7 @@ function DecisionRecordContent() {
                     <CardTitle className="text-base">Replayed under {replay.tariffLabel}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
-                    <div className="grid gap-2 sm:grid-cols-2">
+                    <div className="grid gap-2 grid-cols-2">
                       <div className="rounded-md bg-muted/50 p-2.5">
                         <p className="text-xs text-muted-foreground">Recorded ({latest.tariffVersion})</p>
                         <RecommendationBadge rec={latest.recommendation} className="mt-1 text-xs" />
@@ -151,7 +151,7 @@ function DecisionRecordContent() {
                     {replay.clause && (
                       <blockquote className="border-l-4 border-sky-600 pl-3 text-sm text-muted-foreground">"{replay.clause.text}"</blockquote>
                     )}
-                    <ul className="grid gap-1 sm:grid-cols-2">
+                    <ul className="grid gap-1 grid-cols-2">
                       {replay.requirementResults.map((r) => (
                         <li key={r.requirement.id} className="flex items-center gap-2 rounded-md border px-2.5 py-1.5">
                           <span className={`size-2.5 rounded-full ${r.met === true ? "bg-emerald-600" : r.met === false ? "bg-rose-600" : "bg-slate-400"}`} aria-hidden="true" />

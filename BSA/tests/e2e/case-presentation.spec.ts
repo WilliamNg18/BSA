@@ -240,7 +240,7 @@ test("Task6 D keeps three reasons, four failed signals and unestablished reconci
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
 });
 
-for (const screen of [{ name: "desktop", width: 1440, height: 1000, colorScheme: "light" }, { name: "phone", width: 360, height: 800, colorScheme: "dark" }] as const) {
+for (const screen of [{ name: "desktop", width: 1440, height: 1000, colorScheme: "light" }] as const) {
   for (const enabled of [false, true]) {
     for (const view of ["pack", "trace", "record"]) {
       test(`Task6 screenshot and all-rule axe ${view} ${screen.name} On=${enabled}`, async ({ page }, info) => {

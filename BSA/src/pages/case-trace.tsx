@@ -73,7 +73,7 @@ export function CaseTracePage() {
         <p className="text-sm text-muted-foreground">
           {pack.trace.length} steps · {totalCalls} scripted tool calls · Tariff {pack.tariffLabel} · {pack.agentInvoked ? "agent invoked" : "agent not invoked"} · Current submission evidence
         </p>
-        <section aria-label="Case assembly slots" className="grid gap-3 sm:grid-cols-2" aria-live="polite">
+        <section aria-label="Case assembly slots" className="grid gap-3 grid-cols-2" aria-live="polite">
           {ASSISTED_SLOTS.map((slot) => <div key={slot} className="rounded-xl border p-4" data-assisted-slot={slot} data-prose={`assembly ${slot}`}>
             <h2 className="mb-2 font-semibold">{slot}</h2>
             {!traceSlotReady(pack, revealed, slot) ? <p className="text-sm text-muted-foreground">{pack.gate.result === "FAIL" ? "Withheld: gate FAIL" : pack.recommendation === "ABSTAIN" ? "Unavailable: abstained" : pack.agentInvoked ? "Not yet assembled" : "Not applicable: no agent call"}</p>

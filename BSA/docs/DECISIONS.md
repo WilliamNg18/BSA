@@ -1828,3 +1828,89 @@ to sRGB and alpha-composited against the observed dialog background measure
 17.928:1 light and 18.968:1 dark. Both themes must exceed 3:1 in the regression.
 Global theme and desktop styles are unchanged. This repairs the observed focus
 indicator; it does not establish full WCAG conformance or rewrite old evidence.
+
+## 2026-09-14: Desktop contracts and the eleven-step demonstration
+
+Desktop demo; time is better spent on clarity than on small screens.
+This owner-authorised scope cut supersedes all earlier mobile/tablet obligations.
+Supported verification widths are 1280 and 1440 px; new screenshots use 1440.
+Remove mobile navigation, lower-than-1024 layout breakpoints and small-screen
+test variants. Withdraw mobile/tablet screenshot files from the active checkout;
+their original commits, protected rollback tags and historical reported results
+are not rewritten. A removed historical screenshot is not a newly passing audit.
+
+Tasks 25-30 runtime, repaired at `34d7567`, is the implementation base.
+Its 30-check hosted functional pass is historical evidence, not an independent
+image-review pass. The original review was interrupted; a permitted recovery
+review could not complete image inspection. Original reports and a later
+delivery clarification are retained on the prior verification branch through
+`3461d57c475e516406ef9f7404cfb3de7704dd34`. The image-delivery restriction is
+not permission to bypass a tool limit or invent a visual verdict. Tasks 31-36
+have their own desktop functional and accessibility acceptance; no previous
+unverified image is reclassified as passed.
+
+Freeze `DemoStepDefinition` and the eleven ordered `DEMO_STEPS` in
+`domain/demo-steps.ts`, with one-based numbers and `demoStep: number | null`
+in the existing application store. Null means ordinary operational navigation.
+Step 0 defaults to null so the existing application remains usable before D's
+step layouts arrive. D owns the final strip and entry behaviour. Selecting a
+step changes presentation only, never submits, applies, confirms or releases.
+The new wrong-information and readable-paper examples use
+`SYN-FQ123-MISMATCH` and `SYN-FQ123-READABLE`, implemented by G.
+
+Freeze `ItemVerification` as gate1/gate2 (`pass`, `fail`, `none`), reconciled
+and released. `itemVerification` is a single-store map for the current item
+revision; submissions reset it to none until G performs real validation.
+No placeholder pass is allowed. G must bind results to the submitted revision
+and invalidate stale decisions when source fields change. Both gates use pure
+facts and retrieved provisions; the mode is captured at a human submission,
+not retroactively applied to old history whenever the header is toggled.
+Off performs no proposed gates. On makes the proposed two-gate path available.
+Perspective is never an input to either algorithm.
+
+The user explicitly selected one lifecycle state `released_to_pricing` with
+distinct attribution: reserve "no operator action" for automatic release;
+show operator involvement on human releases. The frozen default pharmacy label
+is "Verified and released to pricing (synthetic)" and NHSBSA label is
+"Verified, released to existing pricing, no operator action".
+`releaseOrigin` and `itemStateLabel` preserve the human-release distinction.
+These labels describe release to the existing engine, never a calculated,
+approved or completed payment. A code-only gate release has actor code;
+operator buttons have actor operator and pharmacy buttons actor pharmacy.
+The agent never calls transition actions.
+
+The exact six human-control action names are frozen in `HumanActionSlice`:
+`applySuggestionToDecision(caseId)`, `releaseToPricing(caseId, reason?)`,
+`referBack(caseId, rbCode, note)`, `requestInformation(caseId, question)`,
+`applySuggestedCorrection(caseId)` and `resubmit(caseId)`.
+Step 0 supplies real guarded adapters over current functionality. Release
+fails closed while the gates are none; G supplies actual two-gate computation
+and the complete release semantics before any new release UI is enabled.
+Shared `operatorDrafts` and `pharmacyDrafts` retain revision-bound edited fields
+and explicit Apply attribution. Setters retain incomplete drafts without
+claiming validation. Applying a suggestion records a human event and fills a
+draft; it is not a decision. G/P extend correction preparation to the supported
+generic and paper fields; an unsupported correction must error explicitly,
+not invent a fix. Current old UI remains functional during this additive stage.
+
+The wrong-but-complete example must not use randomness or knowingly label a
+detected mismatch safe. "Depending on luck" is narrative context for unverified
+manual handling, not a random pricing algorithm. Preserve deterministic Today
+routing and show uncertainty honestly. Gate 1 validates the typed requirements;
+Gate 2 independently checks original evidence, quantity/pack/claimed amount,
+the actual received source and the dated citation. A matching declaration
+cannot corroborate itself. Unreadable paper cannot be automatically reconciled;
+explicit human-confirmed evidence may support a later operator decision, never
+an assertion that code read the image or that no person was involved.
+
+Merge order is Step 0, G and D, then O/P/F, then V. G owns the single store,
+verification/routing, revision-bound drafts and callable action implementations.
+D owns step definitions/layouts/strip and demo navigation. F owns Follow and
+the explicit Pharmacy view/NHSBSA view controls. O owns case decision/Type 1
+panels; P owns claims/pharmacy submission and correction controls. V owns
+desktop verification, screenshot generation and final documentation.
+Shared edits require isolated owner handoffs, not competing store logic.
+All streams keep check, units, desktop functional browser coverage and axe
+blocking. No tool quota is bypassed, and no CI result is called a manual
+WCAG certification. The existing hosting, billing, visibility and protected
+rollback/archive references remain unchanged.

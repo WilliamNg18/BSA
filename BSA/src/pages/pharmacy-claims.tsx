@@ -62,7 +62,7 @@ export function PharmacyClaimsPage() {
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
       <p className="text-sm">Recorded UTC-month synthetic items; categories overlap. Paid requires recorded pricing; no payments calculated.</p>
-      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+      <dl className="grid gap-3 grid-cols-5">
         {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{formatProcessItems(total)}</dd></div>)}
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
       </dl>

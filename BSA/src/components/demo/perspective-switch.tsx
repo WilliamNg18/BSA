@@ -10,7 +10,7 @@ export function PerspectiveSwitch() {
       <input type="radio" name="perspective" value={value} checked={perspective === value}
         onChange={() => setPerspective(value)} className="peer absolute inset-0 m-0 size-full cursor-pointer opacity-0" />
       <span className={cn(
-        "pointer-events-none block rounded-sm px-1 py-2 text-[10px] font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring sm:px-2 sm:text-xs",
+        "pointer-events-none block rounded-sm py-2 font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring px-2 text-xs",
         perspective === value ? "bg-teal-700 text-white" : "text-foreground hover:bg-muted",
       )}>{label}</span>
     </label>)}

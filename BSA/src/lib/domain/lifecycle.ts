@@ -1,8 +1,53 @@
 /** Frozen cross-stream contracts. Synthetic session data, not payment authority. */
 import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, EpsPrescription, FieldProvenance, HumanDecision, ItemChannel, PaperDeclaration, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
 
-export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated";
+export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated" | "released_to_pricing";
 export type Actor = "pharmacy" | "agent" | "code" | "operator";
+
+export type VerificationGateResult = "pass" | "fail" | "none";
+export type ReleaseOrigin = "automatic_verification" | "human_decision";
+export interface ItemVerification {
+  readonly gate1: VerificationGateResult;
+  readonly gate2: VerificationGateResult;
+  readonly reconciled: boolean;
+  readonly released: boolean;
+}
+
+export const NO_VERIFICATION: Readonly<ItemVerification> = Object.freeze({
+  gate1: "none", gate2: "none", reconciled: false, released: false,
+});
+
+export interface OperatorDecisionDraft {
+  readonly revision: number;
+  readonly outcome: HumanDecision | null;
+  readonly rbCode: string;
+  readonly note: string;
+  readonly appliedSuggestion: boolean;
+}
+
+export interface PharmacyCorrectionDraft {
+  readonly revision: number;
+  readonly endorsementText: string;
+  readonly declaration?: PharmacyDeclaration;
+  readonly paperDeclaration?: PaperDeclaration;
+  readonly epsPrescription?: EpsPrescription;
+  readonly appliedSuggestion: boolean;
+}
+
+/** Human-invoked controls. The agent must never invoke these actions. */
+export interface HumanActionSlice {
+  itemVerification: Record<string, ItemVerification>;
+  operatorDrafts: Record<string, OperatorDecisionDraft>;
+  pharmacyDrafts: Record<string, PharmacyCorrectionDraft>;
+  setOperatorDraft: (caseId: string, draft: Pick<OperatorDecisionDraft, "revision" | "outcome" | "rbCode" | "note">) => void;
+  setPharmacyDraft: (caseId: string, draft: Omit<PharmacyCorrectionDraft, "appliedSuggestion">) => void;
+  applySuggestionToDecision: (caseId: string) => void;
+  releaseToPricing: (caseId: string, reason?: string) => void;
+  referBack: (caseId: string, rbCode: string, note: string) => void;
+  requestInformation: (caseId: string, question: string) => void;
+  applySuggestedCorrection: (caseId: string) => void;
+  resubmit: (caseId: string) => void;
+}
 
 export interface HistoryEvent {
   /** ISO 8601 timestamp. */
@@ -22,7 +67,9 @@ export interface HistoryEvent {
   approvedDraft?: ApprovedDraft;
   channel?: ItemChannel;
   rbCode?: string;
-  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission";
+  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission" | "suggestion_applied" | "correction_applied" | "verification" | "release_to_pricing";
+  readonly verification?: ItemVerification;
+  readonly releaseOrigin?: ReleaseOrigin;
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
 }
@@ -78,6 +125,7 @@ export interface ItemProcess {
   readonly routing: RoutingResult;
   readonly capture: Type1Capture | null;
   readonly rbCode: string | null;
+  readonly releaseOrigin?: ReleaseOrigin;
 }
 
 export interface ProcessSubmission {
@@ -159,4 +207,24 @@ export const LIFECYCLE_LABELS = {
   resubmitted: sharedLabel("Resubmitted, awaiting re-check"),
   paid: sharedLabel("Paid on the normal schedule (synthetic)"),
   escalated: sharedLabel("Awaiting senior review"),
+  released_to_pricing: {
+    pharmacy: "Verified and released to pricing (synthetic)",
+    nhsbsa: {
+      on: "Verified, released to existing pricing, no operator action",
+      off: "Verified, released to existing pricing, no operator action",
+    },
+  },
 } as const satisfies Record<LifecycleState, { pharmacy: string; nhsbsa: { on: string; off: string } }>;
+
+/** The no-operator label must never erase an actual operator release. */
+export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nhsbsa" | "both", enabled = false): string {
+  const release = row.state === "released_to_pricing"
+    ? row.history.filter((event) => event.to === "released_to_pricing").at(-1) : undefined;
+  if (release?.releaseOrigin === "human_decision" || release?.actor === "operator") {
+    return perspective === "pharmacy"
+      ? "Verified and released to pricing after operator review (synthetic)"
+      : "Verified and released to existing pricing after operator review";
+  }
+  const labels = LIFECYCLE_LABELS[row.state];
+  return perspective === "pharmacy" ? labels.pharmacy : labels.nhsbsa[enabled ? "on" : "off"];
+}

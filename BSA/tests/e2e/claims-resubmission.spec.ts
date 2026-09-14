@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
+for (const [width, colorScheme] of [[1440, "light"]] as const) {
   test.describe(`claims resubmission comparison ${width} ${colorScheme}`, () => {
     test.use({ viewport: { width, height: 1000 }, colorScheme });
 

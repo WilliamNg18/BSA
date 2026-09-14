@@ -1086,3 +1086,17 @@ Replaying its retained declaration must use that declaration's endorsement,
 not combine it with the unreadable scan text. The replay disclosure names the
 source before the human submits. Original attempts, image and readings remain
 unchanged; the new paper revision still awaits human Type 1 confirmation.
+
+## 2026-09-14: Preserve evidence boundaries while cutting desktop scope
+
+A running reviewer and a partial inspection ledger do not establish a verdict.
+The final Tasks 25-30 visual recovery remained unverified after image-delivery
+limitations. Preserve that qualification when starting a new scope.
+The owner now explicitly removes mobile/tablet acceptance, not functional,
+keyboard, reduced-motion or axe coverage at the supported desktop widths.
+
+New presentation steps must not mutate operational data on navigation.
+Freeze routes and case identities before parallel implementation, and put
+human draft/application actions in the existing store so switching sides
+cannot create a second authority. Distinguish automatic release from a human
+release even when both reach the same existing pricing engine.

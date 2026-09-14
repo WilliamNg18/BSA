@@ -1,5 +1,5 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
-import { ALL_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
+import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 /** Executes in the rendered page: no source-code word counting or truncation. */
@@ -145,7 +145,7 @@ for (const enabled of [false, true]) {
     await page.goto("pharmacy/claims");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const audits = [];
-    for (const state of ALL_LIFECYCLE_STATES) {
+    for (const state of DEMONSTRABLE_LIFECYCLE_STATES) {
       await prepareUnseededState(page, state);
       const labels = LIFECYCLE_LABELS[state];
       await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();

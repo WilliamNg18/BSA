@@ -18,16 +18,8 @@ export async function navigatePrimary(page: Page, label: string) {
   if (label === "Exception queue") label = "NHSBSA queue";
   const nav = page.getByRole("navigation", { name: "Primary", exact: true });
   await expect(nav).toBeVisible();
-  const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
   let destination: string;
-  if (await mobile.isVisible()) {
-    await mobile.click();
-    const link = page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("link", { name: label, exact: true });
-    await expect(link).toBeVisible();
-    destination = await link.getAttribute("href") as string;
-    await link.click();
-    await expect(page.getByRole("dialog", { name: "Navigation", exact: true })).toHaveCount(0);
-  } else if (label === "Overview") {
+  if (label === "Overview") {
     const link = nav.getByRole("link", { name: label, exact: true });
     destination = await link.getAttribute("href") as string;
     await link.click();

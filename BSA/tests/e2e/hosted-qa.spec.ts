@@ -4,7 +4,7 @@ import { TOOL_DEFINITIONS } from "../../src/lib/domain/tools";
 
 for (const enabled of [true, false]) {
   const stateTag = enabled ? "@agent-on" : "@agent-off";
-  for (const width of [360, 1440]) {
+  for (const width of [1280, 1440]) {
     for (const action of ["Escape", "Keep working", "Reset demonstration"]) {
       test(`reset focus ${action} width=${width} agent=${enabled}`, { tag: ["@hosted-qa", "@reset-focus", stateTag] }, async ({ page }) => {
         await page.setViewportSize({ width, height: 900 });

@@ -11,7 +11,7 @@ const surfaces = [
 ];
 
 for (const reducedMotion of ["reduce", "no-preference"] as const) {
-  for (const [width, colorScheme] of [[360, "dark"], [1440, "light"]] as const) {
+  for (const [width, colorScheme] of [[1440, "light"]] as const) {
     test.describe(`Task7 ${width} ${colorScheme} ${reducedMotion}`, () => {
       test.use({ viewport: { width, height: 1000 }, colorScheme, reducedMotion });
       for (const enabled of [false, true]) for (const surface of surfaces) {

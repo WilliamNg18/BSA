@@ -37,7 +37,7 @@ export function PharmacyTimeline({ caseId, revision }: { caseId: string; revisio
       <Button variant="outline" disabled={index === stages.length - 1} onClick={() => { setPlaying(false); setIndex(stages.length - 1); }}>Jump to end</Button>
       <Button variant="ghost" disabled={index === 0 && !playing} onClick={() => { setPlaying(false); setIndex(0); }}>Restart timeline</Button>
     </div>
-    <ol aria-label="Submission timeline" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    <ol aria-label="Submission timeline" className="grid gap-2 grid-cols-2 lg:grid-cols-3">
       {stages.map((stage, position) => <li key={position} aria-current={position === index ? "step" : undefined} className={`rounded-lg border p-3 ${position === index ? "border-teal-700 ring-1 ring-teal-700" : "border-border"}`}>
         <h3 className="font-semibold">{stage.processStep?.replaceAll("_", " ") ?? stage.to.replaceAll("_", " ")}</h3>
         <dl className="mt-2 space-y-1 text-sm"><KeyValue k="Recorded at" v={stage.at} /><KeyValue k="Actor" v={stage.actor} /><KeyValue k="Outcome" v={stage.message} /><KeyValue k="Playback" v={position <= index ? "Shown" : "Pending"} /></dl>

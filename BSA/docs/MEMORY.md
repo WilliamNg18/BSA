@@ -6,7 +6,38 @@ ms.date: 2026-09-13
 
 ## Purpose and principle
 
-Current scope is Tasks 25-30, the single Hillcrest continuous cycle. Tasks 19-24
+Current scope is Tasks 31-36: a desktop-only eleven-step demonstration, explicit
+operator/pharmacy action panels, a persistent followed item and two verification
+gates. Verify at 1280 and 1440 px; capture new screenshots at 1440 px only.
+The owner explicitly removed mobile/tablet layouts, navigation and test/capture
+coverage. Follow the 14 September contracts in DECISIONS before any older rule.
+
+Gate 1 checks typed EPS or declared paper against the dispensing-month provision.
+Gate 2 independently reconciles what arrived with source evidence and the claim.
+Only both passing and reconciled can produce automatic `released_to_pricing`.
+Unreadable or mismatched source evidence still needs people. The header selects
+the proposal for a human-initiated attempt; toggling never rewrites old release
+history. The user explicitly approved distinct labels for human releases:
+"no operator action" applies only to code-only verification, never an actual
+operator Release button. No release here calculates or approves a payment.
+
+One store also holds revision-bound operator and pharmacy drafts, current
+`itemVerification`, and presentation-only `demoStep`. `DEMO_STEPS` is the frozen
+eleven-step sequence. Apply buttons fill drafts and append human-attributed
+history; Release, referral, information request and resubmission remain
+separate explicit controls. Navigation preserves the step, toggle and followed
+item without executing business actions. F replaces Switch side with explicit
+Pharmacy view and NHSBSA view; hidden sides temporarily use Both with disclosure.
+
+Tasks 25-30 are historical, not completely accepted: their repaired runtime
+`34d7567` passed 30 hosted checks, but final independent visual review remained
+unverified after an interrupted review and image-delivery limitation.
+Unmerged records are retained through prior V branch commit `3461d57`.
+New desktop scope does not retroactively mark those images or reviews passed.
+Old mobile screenshots are removed from the active tree by explicit request;
+Git history and protected refs preserve their provenance.
+
+Tasks 19-24
 completed on main `887d2a4f76d49f1793665aa5068a45abd99ba6aa`: 955 unique
 units, 1,186 ordinary plus 32 state checks, and 20/20 final hosted checks.
 Final release proof is issue #73 comment 5654511835. Its original failed and
@@ -27,13 +58,19 @@ figure says estimate; old monthly defaults below become historical comparisons.
 EPS has no unreadable image or Type 1 path. Paper declarations are proposed,
 declared-not-read evidence; explicit human confirmation remains necessary.
 
-Tasks 25-30 integrate on the accepted `887d2a4` release. N #81, C #83 and
-U #82 have merged through `837417e`; E #84, Q #85 and V #86 remain in the
-release sequence. PROGRESS owns exact source/CI/hosted evidence. The historical
+Tasks 25-30 integrate on the accepted `887d2a4` release. N #81, C #83,
+U #82, E #84, Q #85 and V #86 merged through initial runtime `b05b06a`;
+review repair #87 is deployed at `34d7567`.
+PROGRESS owns exact source/CI/hosted evidence. The historical
 `1327e65` visual failure and repaired `d5832e0` 43-image review stay immutable.
-Infrastructure remains frozen. V's six-chapter runtime must deploy before the
-complete new hosted inventory; a final runtime-identical evidence/docs PR and
-latest-main repeat close the release. No final Tasks 25-30 acceptance is implied.
+Infrastructure remains frozen. Both initial and repaired runtimes passed their
+separate 30-check hosted runs, each with 60 clean identities, 58 images and
+26 zero-violation axe audits. Independent review failed the original image/prose
+gate; that report, capture set and manual record stay immutable. Repair #87
+corrects source wording, cumulative prose, capture obstruction and mobile focus
+without changing domain outcomes or historical records. Independent review of
+the new `34d7567` capture remains a gate before the runtime-identical evidence/docs
+PR and latest-main repeat close the release. Do not infer acceptance from CI.
 
 ## Process model
 
@@ -172,6 +209,11 @@ keep their stricter reconciliation checks. Original pharmacy attempts are never
 enriched after submission; capture evidence is appended to revision-linked history.
 
 ## Presentation and storage
+
+The following earlier responsive/tour details are historical. Tasks 31-36
+replace the chapter rail with an eleven-step desktop strip and remove
+small-screen layouts. The single operational store and authority boundaries
+continue to apply; current desktop widths and contracts above take precedence.
 
 Header has Pharmacy/NHSBSA/Both immediately before Agent. Navigation and cross-side
 links are filtered by perspective; the same pages and operational store remain.

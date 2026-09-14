@@ -12,15 +12,17 @@ Each release must verify its actual build commit and strict headers.**
 Live URL: https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
 The historical Tasks 14-18 release `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`
 is pinned by annotated `lkg-2026-09-13` and `last-known-good`.
-Those tags are not evidence for the Tasks 19-24 process migration described
-below. [Tasks 19-24 functional deployment evidence](docs/screens/task24/README.md)
-records 20 hosted checks against clean `1327e65`, separate from the final
-merged-V-main release gate tracked by the coordinator.
-The [independent 43-image review](docs/FIRST-TIME-VIEWER.md) found D/E content
-failures; functional success alone is not final novice-story acceptance.
-The repaired deployment `d5832e0` passed a separate full 20-check hosted run
-and bounded independent review of all 43 new images. The original failed
-review is preserved; manual accessibility caveats and final release gating remain.
+Those refs are rollback history, not the current release. Tasks 19-24 completed
+at `887d2a4`; their initial failed visual review and repaired `d5832e0` captures
+remain immutable under [Task 24 evidence](docs/screens/task24/README.md).
+Tasks 25-30 now implement the Hillcrest cycle. Runtime
+`34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e` passed all 30 hosted checks
+after the source-aware wording, prose and focus repairs. The earlier
+`b05b06a` visual/prose failure and its images remain preserved.
+[Task 30 evidence](docs/screens/task30/README.md),
+[viewer review](docs/FIRST-TIME-VIEWER.md) and [PROGRESS](docs/PROGRESS.md)
+separate functional results, actual image review, accessibility limits and the
+final runtime-identical documentation deployment.
 The single Agent On/Off switch is in the header, top right: pharmacy, queue
 and all other pages read that shared state and have no local overrides.
 
@@ -29,17 +31,29 @@ and all other pages read that shared state and have no local overrides.
 
 ## What it demonstrates
 
+The current Tasks 31-36 brief targets desktop only at 1280 and 1440 px, with
+new captures at 1440 px. It replaces the chapter rail with eleven focused
+steps, two verification gates and explicit action panels. This section
+otherwise describes the implemented Tasks 25-30 baseline, not acceptance of
+the new steps or a completed independent visual review.
+
 Pharmacy submission, Type 1 capture and Type 2 judgement share one session-only
-case history. Complete EPS items, including corrected resubmissions, are
-automatically priced by existing routing without a second human approval.
+case history for **Hillcrest Pharmacy (FQ123)**. There is no pharmacy selector;
+fixed other-pharmacy background cannot be opened or counted as Hillcrest work.
+The eight-item seed includes two automatic items and the capture, judgement,
+referral, resubmission, information-request and paid-after-correction paths.
+Complete new EPS submissions can reach existing pricing without a person.
+Corrected human referrals remain Resubmitted until explicit human recheck.
 Incomplete endorsements require explicit human judgement, a reason and an RB
 code for referrals. Approving a generated pharmacy draft is optional and
 separate from recording the human decision.
 
 Unreadable paper remains unconfirmed until explicit human capture. Proposed
 pre-fill comes from a pharmacy declaration, **not from reading the form**;
-the person must reconcile it with the original image. Resubmitted paper needs
-fresh capture. Original attempts, images and decisions remain unchanged.
+the person must reconcile available evidence, including the declared date and
+separately established prescriber. An unreadable image remains unreadable.
+Resubmitted paper needs fresh capture. Original attempts, images and decisions
+remain unchanged.
 **Paid on the normal schedule (synthetic)** is attributed to existing pricing,
 not an agent payment decision. Toggling assistance never advances the lifecycle.
 
@@ -47,10 +61,20 @@ The supplied public context is over 100 million items monthly, roughly 91% EPS /
 9% paper, 2.2 million Type 1 items, 2 million Type 2 items and 85,000 referrals.
 Type 1 and Type 2 overlap; referrals are a subset, not the whole exception queue.
 These are attributed figures, not independently verified operational measurements.
-The shared model separates the roughly 13-second Type 2 average, a four-minute
-referral-investigation assumption and six-minute pharmacy-completion assumption.
-They are not additive phases or measured savings. Today and With the agent
-remain visible together; actual session counters are separate from projections.
+The shared editable manual-loop model uses 85,000 as a referral-subset
+denominator. Its default assumptions are ten minutes gathering, three minutes
+judging, a second judgement on 25%, 80% pharmacy prevention, 70% subsequent
+code clearance and 5% abstention of the remaining queue. It estimates 5,100
+referrals and **297.5 total operator hours**, including 255 judging and 42.5
+abstention-gathering hours, versus 19,479.166666... Today hours.
+Pharmacy completion remains a separate workforce: 8,500 versus 510 hours at
+six minutes per referral. These are labelled assumptions, not measured savings.
+Today and With remain visible together; actual item counts are separate.
+
+The EPS panel shows a synthetic digital prescription and separate dispenser
+fields. Complete, missing-date and missing-brand examples use dated synthetic
+rules; Apply changes a draft, never submits. Generic referrals can be corrected
+in the same claim's manufacturer, pack and form fields before human recheck.
 
 ## Aim, problem and outcomes to test
 
@@ -83,8 +107,9 @@ observe actual work and agree accuracy/stop criteria before assisted use.
 | `/case/:id`, `/case/:id/trace`, `/case/:id/record` | Evidence pack, observable trace, human record and counterfactual rule replay |
 | `/evaluation`, `/boundary`, `/assumptions`, `/architecture` | Reflective pages |
 
-Eight tour chapters have nine stops: Pharmacy check is chapter 5's substop;
-Pharmacy claims is chapter 7. Header navigation groups Overview, Operations and
+Six tour chapters retain nine stops. Chapter 5 includes the continuous-cycle
+introduction, Pharmacy check, queue and claims; chapter 6 closes on the current
+editable prevention assumption. Header navigation groups Overview, Operations and
 How it works (the queue menu item is **NHSBSA queue**). The header's sole Agent
 switch defaults **Off**; confirmed Reset restores Off and seeded
 session data. Perspective defaults to **Both** and survives Reset; Pharmacy
@@ -96,7 +121,8 @@ Discussion mode and `/notes` are removed; use the [demo script](docs/demo-script
 The six canonical cases are A automatic existing-rules pricing, B missing a
 date (July replay sufficient), C unresolved 56/84 quantity conflict, D initial
 capture abstention, E code-only clearance without a model call, and F an
-immutable historical human record. Human-decided work remains in the queue's
+immutable original human record alongside its subsequent correction and paid
+outcome. Human-decided work remains in the queue's
 Decided filter; A/E's no-human automatic items do not.
 
 ## Run locally

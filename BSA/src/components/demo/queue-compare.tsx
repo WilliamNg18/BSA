@@ -18,7 +18,7 @@ export function QueueComparison({ result, elapsed }: { result: MonthModelResult;
     const current = caseForLifecycle(item.id, lifecycles, revisions);
     return current !== null && queueCitationAvailable(current);
   }).map((item) => item.id), [lifecycles, revisions]);
-  return <div className="grid gap-4 md:grid-cols-2" data-comparison-columns>
+  return <div className="grid gap-4 grid-cols-2" data-comparison-columns>
     {[false, true].map((assisted) => {
       const projection = projectQueueComparison(result, elapsed, assisted, recorded, citedIds);
       return <section key={String(assisted)} aria-label={assisted ? "With agent comparison" : "Today comparison"} className="min-w-0 space-y-3 rounded-lg border bg-card p-3">

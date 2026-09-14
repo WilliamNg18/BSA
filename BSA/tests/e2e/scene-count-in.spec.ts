@@ -124,7 +124,7 @@ test.describe("scene estimate count-in with motion", () => {
 });
 
 test.describe("scene estimate reduced motion", () => {
-  test.use({ reducedMotion: "reduce", viewport: { width: 360, height: 900 } });
+  test.use({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
 
   test("On is immediately exact without clock progress, including zero and billion-item inputs", async ({ page }, testInfo) => {
     await freezeScene(page);

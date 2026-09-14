@@ -2,7 +2,8 @@ import type { Page } from "@playwright/test";
 import { expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
 
-export const ALL_LIFECYCLE_STATES: LifecycleState[] = [
+// Released to pricing is reserved for the future verification-gated workflow.
+export const DEMONSTRABLE_LIFECYCLE_STATES: LifecycleState[] = [
   "in_review", "information_requested", "referred_back", "resubmitted", "paid", "submitted", "escalated",
 ];
 

@@ -47,7 +47,7 @@ export function Type1Capture({ caseId }: { caseId: string }) {
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
         <p className="text-sm">Capture recorded; follow current routing.</p>
-        <dl className="grid gap-3 break-words text-sm sm:grid-cols-2">
+        <dl className="grid gap-3 break-words text-sm grid-cols-2">
           {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => <div key={field}>
             <dt className="font-medium">{{ productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field]}</dt>
             <dd>{capture.fields[field] || "Unreadable or absent"}</dd>
@@ -136,7 +136,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1 }: {
   }
 
   return (
-    <section aria-label={`Type 1 capture for ${c.id}`} className="space-y-4 rounded-xl border bg-card p-4 sm:p-5">
+    <section aria-label={`Type 1 capture for ${c.id}`} className="space-y-4 rounded-xl border bg-card p-5">
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="mr-auto font-semibold">Type 1: {assisted ? "confirm, not key" : "manual keying"}</h3>
         <BoundaryTag cls="human" />
@@ -252,7 +252,7 @@ function CaptureTiming({ assisted }: { assisted: boolean }) {
       <p className="text-xs text-muted-foreground">Difficult-example assumptions, not the public Type 1 average. Timing never confirms capture or changes the item.</p>
       <details>
         <summary className="cursor-pointer text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2">Edit timing assumptions</summary>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <div className="mt-3 grid gap-3 grid-cols-2">
           {(["type1KeySeconds", "type1ConfirmSeconds"] as const).map((field) => (
             <div key={field} className="space-y-1.5">
               <Label htmlFor={`${id}-${field}`}>{field === "type1KeySeconds" ? "Today keying seconds" : "With declaration confirmation seconds"} (assumption)</Label>

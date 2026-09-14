@@ -6,9 +6,11 @@ description: Active development, the verified rollback point and the immutable o
 ## Active development
 
 Use `main` as the integration branch. Create focused changes from the latest
-merged main. Tasks 14-18 are accepted at
-`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`. A stale local `main` is not the
-active integration baseline.
+merged main. Repaired Tasks 25-30 runtime is integrated at
+`34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e`; source-pinned acceptance and the
+final evidence-only release boundary are recorded in
+[PROGRESS](BSA/docs/PROGRESS.md). A stale local `main` is not the active
+integration baseline. The Tasks 14-18 commit below is rollback history.
 
 ## Last known good
 

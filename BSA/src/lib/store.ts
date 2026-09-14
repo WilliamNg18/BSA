@@ -38,11 +38,12 @@ import type { ManualLoopModelSlice } from "@/lib/domain/baseline";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS, PHARMACY_ASSUMPTION_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessModelSlice, type ProcessMonthDraft } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
-import type { CaseRevision, HistoryEvent, LifecycleDecisionRecord, LifecycleSlice, LifecycleState, PharmacyPrecheckSnapshot, ProcessSlice, ProcessSubmission, ItemProcess } from "@/lib/domain/lifecycle";
+import { NO_VERIFICATION, type HumanActionSlice, type CaseRevision, type HistoryEvent, type LifecycleDecisionRecord, type LifecycleSlice, type LifecycleState, type PharmacyPrecheckSnapshot, type ProcessSlice, type ProcessSubmission, type ItemProcess } from "@/lib/domain/lifecycle";
+import { DEMO_STEPS, type DemoModeSlice } from "@/lib/domain/demo-steps";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
 import { appendHistory, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
-import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
+import { checkPharmacy, pharmacyDateCorrection, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
 import { validateEpsCorrection, type EpsCorrectionSources } from "@/lib/domain/eps-correction";
 import { routeSubmission, routingFactsForCase, RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { createPharmacyState, type PharmacyState } from "./pharmacy-store";
@@ -100,7 +101,7 @@ export interface PharmacyCorrectionEvent {
   readonly after: PharmacyPrecheckSnapshot;
 }
 
-interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, ManualLoopModelSlice {
+interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, ManualLoopModelSlice, DemoModeSlice, HumanActionSlice {
   pharmacy: PharmacyState;
   queue: QueueState;
   caseStates: Record<string, CaseState>;
@@ -136,6 +137,8 @@ const initialStates = (): Record<string, CaseState> => {
 };
 
 const processDraft = (): ProcessMonthDraft => Object.fromEntries(Object.entries(PROCESS_MONTH_DEFAULTS).map(([key, value]) => [key, String(value)])) as ProcessMonthDraft;
+const seededVerification = (): HumanActionSlice["itemVerification"] =>
+  immutable(Object.fromEntries(Object.keys(seededLifecycleSession().lifecycles).map((id) => [id, { ...NO_VERIFICATION }])));
 
 function seededProcesses(): Record<string, ItemProcess> {
   const { lifecycles, caseRevisions } = seededLifecycleSession();
@@ -223,6 +226,7 @@ export const useAppStore = create<AppState>((set, get) => {
     if (routing.outcome === "auto_priced") row = appendHistory(row, { at, actor: "code", from: row.state, to: "paid", message: routing.reason, revision: revision.number, channel, processStep: "automatic_pricing" });
     set({ lifecycles: immutable({ ...s.lifecycles, [caseId]: row }),
       caseRevisions: revisions,
+      itemVerification: immutable({ ...s.itemVerification, [caseId]: { ...NO_VERIFICATION } }),
       itemProcesses: immutable({ ...s.itemProcesses, [caseId]: { revision: revision.number, channel, routing, capture: null, rbCode: null } }),
       caseStates: { ...s.caseStates, [caseId]: routing.outcome === "auto_priced" ? "cleared_by_rules" : "operator_review_required" } });
   };
@@ -279,6 +283,107 @@ export const useAppStore = create<AppState>((set, get) => {
   };
 
   return {
+    demoStep: null,
+    setDemoStep: (step) => {
+      if (step !== null && (!Number.isInteger(step) || !DEMO_STEPS.some((entry) => entry.number === step))) throw new Error("Choose a supported demonstration step.");
+      set({ demoStep: step });
+    },
+    itemVerification: seededVerification(),
+    operatorDrafts: {},
+    pharmacyDrafts: {},
+    setOperatorDraft: (caseId, draft) => {
+      const row = requireState(caseId, ["in_review", "escalated"]);
+      if (draft.outcome !== null && !Object.hasOwn(targets, draft.outcome)) throw new Error("Choose a supported human outcome.");
+      if (typeof draft.rbCode !== "string" || typeof draft.note !== "string") throw new Error("Decision fields must contain text.");
+      const s = get();
+      if (draft.revision !== s.caseRevisions[caseId].at(-1)!.number) throw new Error("Decision draft is stale; review the current item.");
+      set({ operatorDrafts: immutable({ ...s.operatorDrafts, [row.caseId]: {
+        ...draft, revision: s.caseRevisions[caseId].at(-1)!.number, appliedSuggestion: false,
+      } }) });
+    },
+    setPharmacyDraft: (caseId, draft) => {
+      requireState(caseId, ["referred_back"]);
+      if (typeof draft.endorsementText !== "string") throw new Error("Correction endorsement must contain text.");
+      const s = get(), revision = s.caseRevisions[caseId].at(-1)!;
+      if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale; reopen the current item.");
+      set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
+        ...draft, revision: revision.number, appliedSuggestion: false,
+      } }) });
+    },
+    applySuggestionToDecision: (caseId) => {
+      const row = requireState(caseId, ["in_review", "escalated"]), s = get();
+      if (!s.agentEnabled) throw new Error("Agent assistance is off; enter your own decision.");
+      const c = currentCase(caseId), pack = runAgent(c, { agentEnabled: true });
+      const outcome = pack.recommendation === "SUFFICIENT" ? "ACCEPT"
+        : pack.recommendation === "REFER_BACK" ? "REFER_BACK"
+          : pack.recommendation === "REQUEST_INFORMATION" ? "REQUEST_INFORMATION" : null;
+      if (!outcome || pack.gate.result !== "PASS") throw new Error("No validated suggestion is available to apply.");
+      const revision = s.caseRevisions[caseId].at(-1)!.number;
+      const rbCode = outcome === "REFER_BACK" ? c.scenario === "D" ? "RB2B" : c.scenario === "B" ? "SYN-NCSO" : "" : "";
+      const event: HistoryEvent = { at: timestamp(caseId), actor: "operator", from: row.state, to: row.state,
+        revision, processStep: "suggestion_applied", recommendation: pack.recommendation,
+        message: "Applied by the operator from the agent's suggestion." };
+      set({
+        operatorDrafts: immutable({ ...s.operatorDrafts, [caseId]: {
+          revision, outcome, rbCode, note: pack.draftToPharmacy ?? "", appliedSuggestion: true,
+        } }),
+        lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
+      });
+    },
+    releaseToPricing: (caseId, reason) => {
+      const s = get(), row = requireState(caseId, ["in_review", "escalated"]);
+      const verification = s.itemVerification[caseId], process = s.itemProcesses[caseId];
+      if (!verification || verification.gate1 !== "pass" || verification.gate2 !== "pass" || !verification.reconciled || verification.released) {
+        throw new Error("Both verification gates must pass and evidence must reconcile before release.");
+      }
+      const draft = s.operatorDrafts[caseId], revision = s.caseRevisions[caseId].at(-1)!.number;
+      if (draft && draft.revision !== revision) throw new Error("Decision draft is stale; review the current item.");
+      const note = reason ?? draft?.note ?? "";
+      requireText(note, "Release reason", 8);
+      const c = currentCase(caseId), facts = routingFactsForCase({ ...c, extracted: capturedFields(c) }, process.channel, Boolean(process.capture));
+      if (!facts.mandatoryFieldsComplete || facts.hasConflict || facts.endorsementRequired && !facts.endorsementComplete ||
+        process.routing.outcome === "type1_capture" && process.routing.requiresHuman) throw new Error("Current evidence does not satisfy the release gate.");
+      const released = { ...verification, released: true };
+      const event: HistoryEvent = { at: timestamp(caseId), actor: "operator", from: row.state, to: "released_to_pricing",
+        revision, processStep: "release_to_pricing", verification: released, releaseOrigin: "human_decision", reason: note,
+        message: "Human review complete; released to existing pricing. No payment calculated." };
+      set({
+        itemVerification: immutable({ ...s.itemVerification, [caseId]: released }),
+        lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
+        itemProcesses: immutable({ ...s.itemProcesses, [caseId]: { ...process, releaseOrigin: "human_decision", routing: {
+          ...process.routing, requiresHuman: false, pricingAuthority: "existing_rules_engine",
+        } } }),
+        caseStates: { ...s.caseStates, [caseId]: "human_decision_recorded" },
+      });
+    },
+    referBack: (caseId, rbCode, note) => get().recordType2Decision({ caseId, decision: "REFER_BACK", rbCode, reason: note }),
+    requestInformation: (caseId, question) => get().recordType2Decision({ caseId, decision: "REQUEST_INFORMATION", reason: question }),
+    applySuggestedCorrection: (caseId) => {
+      const s = get(), row = requireState(caseId, ["referred_back"]), revision = s.caseRevisions[caseId].at(-1)!;
+      if (!s.agentEnabled) throw new Error("Agent assistance is off; enter your correction manually.");
+      const approval = s.records.filter((record) => record.caseId === caseId && (record.revision ?? 1) === revision.number).at(-1)?.approvedDraft;
+      if (!approval) throw new Error("No operator-approved correction is available for this revision.");
+      const c = currentCase(caseId), correction = pharmacyDateCorrection(c, revision.endorsementText);
+      if (correction === revision.endorsementText) throw new Error("No applicable date correction is available; edit the required fields.");
+      const source = legacySubmission(caseId, correction);
+      const event: HistoryEvent = { at: timestamp(caseId), actor: "pharmacy", from: row.state, to: row.state,
+        revision: revision.number, processStep: "correction_applied", message: "Suggested correction applied by the pharmacy; not resubmitted." };
+      set({
+        pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
+          revision: revision.number, endorsementText: correction,
+          ...(source.declaration ? { declaration: source.declaration } : {}),
+          ...(source.paperDeclaration ? { paperDeclaration: source.paperDeclaration } : {}),
+          ...(revision.epsPrescription ? { epsPrescription: { ...revision.epsPrescription, dispenserEndorsement: correction } } : {}),
+          appliedSuggestion: true,
+        } }),
+        lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
+      });
+    },
+    resubmit: (caseId) => {
+      const s = get(), revision = s.caseRevisions[caseId]?.at(-1), draft = s.pharmacyDrafts[caseId];
+      if (!revision || !draft || draft.revision !== revision.number) throw new Error("A current pharmacy correction draft is required.");
+      get().resubmitItem({ ...draft, caseId, revision: revision.number, channel: revision.channel ?? s.itemProcesses[caseId].channel });
+    },
     pharmacy: createPharmacyState((update) => set((s) => ({ pharmacy: { ...s.pharmacy, ...(typeof update === "function" ? update(s.pharmacy) : update) } })), () => get().pharmacy),
     queue: createQueueState((update) => set((s) => ({ queue: { ...s.queue, ...(typeof update === "function" ? update(s.queue) : update) } }))),
     processInputs: processDraft(),
@@ -384,7 +489,7 @@ export const useAppStore = create<AppState>((set, get) => {
     setAgentEnabled: (agentEnabled) => set((s) => ({ agentEnabled, queue: { ...s.queue, sweep: [], phase: -1, sweeping: false, playing: false } })),
     // Preserve all three replacement identities used by existing reset subscribers.
     resetDemo: () => {
-      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
+      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), itemVerification: seededVerification(), operatorDrafts: {}, pharmacyDrafts: {}, demoStep: null, processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
         pharmacy: { ...s.pharmacy, assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS }, receipts: [] },
         queue: { ...s.queue, position: 0, day: 0, playing: false, sweep: [], phase: -1, sweeping: false, revision: s.queue.revision + 1 },
       }));
@@ -402,6 +507,7 @@ export function sessionCase(caseId: string) {
 export function getDomainSnapshot() {
   const s = useAppStore.getState();
   return immutable({ lifecycles: s.lifecycles, caseRevisions: s.caseRevisions, itemProcesses: s.itemProcesses, records: s.records,
+    itemVerification: s.itemVerification, operatorDrafts: s.operatorDrafts, pharmacyDrafts: s.pharmacyDrafts,
     caseStates: s.caseStates, processInputs: s.processInputs, manualLoopInputs: s.manualLoopInputs, baselineInputs: s.baselineInputs, todayMinutes: s.todayMinutes,
     pharmacyCorrections: s.pharmacyCorrections, pharmacy: { assumptions: s.pharmacy.assumptions, receipts: s.pharmacy.receipts } });
 }

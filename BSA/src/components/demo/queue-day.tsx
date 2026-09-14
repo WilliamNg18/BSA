@@ -39,7 +39,7 @@ function LegacyQueueDay({ input }: { input: BaselineInputs }) {
       <output aria-live="polite" aria-label="Shared day clock" className="rounded-md bg-muted px-3 py-2 text-xl font-semibold tabular-nums">{dayClock(day)}</output>
     </div>
     <details><summary className="cursor-pointer font-medium">Day assumptions and capacity</summary>
-      <dl className="grid gap-3 pt-2 text-sm sm:grid-cols-2">
+      <dl className="grid gap-3 pt-2 text-sm grid-cols-2">
         {[["Gathering / built review / judging", `${n(manualGatheringMinutes(input))} / ${n(input.builtReviewMinutes)} / ${n(input.judgingMinutes)} minutes; shared calculator inputs`],
           ["Today capacity", "min(volume, floor(540 / (gathering + judging))); zero-cost work stays volume-capped"],
           ["Assisted capacity", "Built and abstained share one 540-minute budget proportionally; rounded down. Code-cleared items receive no review."],

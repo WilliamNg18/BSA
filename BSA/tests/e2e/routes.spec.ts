@@ -7,7 +7,7 @@ const caseRoutes = cases.flatMap((c) => [
 ]);
 
 for (const colorScheme of ["light", "dark"] as const) {
-  for (const width of [360, 768, 1024, 1440]) {
+  for (const width of [1280, 1440]) {
     test.describe(`${width}px ${colorScheme}`, () => {
       test.use({ viewport: { width, height: 900 }, colorScheme });
       for (const route of [...staticRoutes, ...caseRoutes]) {

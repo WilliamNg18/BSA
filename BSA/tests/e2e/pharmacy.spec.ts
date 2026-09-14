@@ -27,7 +27,7 @@ async function expectScenarioStatus(page: Page, scenario: typeof scenarios[numbe
 for (const theme of ["light", "dark"] as const) for (const on of [false, true]) for (const scenario of scenarios) {
   test(`Task4 ${scenario.id} agent=${on} ${theme}: receipt, timeline, all-rule axe`, async ({ page }, info) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
-    await page.setViewportSize({ width: theme === "dark" ? 360 : 1440, height: 1000 });
+    await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(on);
     await chooseScenario(page, scenario, on);
@@ -309,7 +309,7 @@ test("Task4 rapid revisions, pending submission, cancellation and reduced-motion
 for (const theme of ["light", "dark"] as const) {
   test(`Task20 paper declaration ${theme}: explicit fields survive perspective changes without reading the scan`, async ({ page }, info) => {
     await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
-    await page.setViewportSize({ width: theme === "dark" ? 360 : 1440, height: 1000 });
+    await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto("pharmacy");
     await page.getByRole("radio", { name: "Paper", exact: true }).click();
     await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();

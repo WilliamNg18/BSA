@@ -27,8 +27,8 @@ for (const enabled of [false, true]) {
           expect.objectContaining({ actor: "operator", processStep: "type1_capture", capture: confirmed.itemProcesses[PAPER_B].capture }),
           expect.objectContaining({ actor: "code", processStep: "existing_pricing", from: "in_review", to: "paid" }),
         ]);
-      for (const key of ["caseRevisions", "lifecycles", "itemProcesses", "caseStates"] as const) {
-        for (const id of Object.keys(initial[key])) {
+      for (const key of ["caseRevisions", "lifecycles", "itemProcesses", "itemVerification", "operatorDrafts", "pharmacyDrafts", "caseStates"] as const) {
+        for (const id of new Set([...Object.keys(initial[key]), ...Object.keys(confirmed[key])])) {
           if (id !== PAPER_B) expect(confirmed[key][id], `${key}: unrelated ${id} stays exact`).toEqual(initial[key][id]);
         }
       }

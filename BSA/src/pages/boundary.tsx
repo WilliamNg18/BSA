@@ -22,7 +22,7 @@ export function BoundaryPage() {
       </div>
 
       <PageSection title="Proposed: poor-paper declaration path" description="The agent cannot read the poor scan. A typed declaration supplies evidence, not image certainty.">
-        <div className="grid gap-4 md:grid-cols-3" data-proposed-type1-boundary>
+        <div className="grid gap-4 grid-cols-3" data-proposed-type1-boundary>
           <section className="space-y-3 rounded-lg border p-4">
             <h2 className="font-semibold">Pharmacy declaration</h2><BoundaryTag cls="human" />
             <p className="text-sm">Every pre-filled field is declared by the pharmacy, not read from the form. The original synthetic image remains visible.</p>
@@ -70,7 +70,7 @@ export function BoundaryPage() {
       </PageSection>
 
       <PageSection title="Where a model must not be used" description="Design commitments, not caveats.">
-        <ul className="grid gap-2 md:grid-cols-2">
+        <ul className="grid gap-2 grid-cols-2">
           {[
             ["Payment calculation and any exact arithmetic", "Legally consequential, beside a 99.85 per cent accuracy target. Existing NHSBSA code, unchanged."],
             ["Explicit mandatory-field rules and thresholds", "Cheaper, testable and auditable as code."],
@@ -88,7 +88,7 @@ export function BoundaryPage() {
       </PageSection>
 
       <PageSection title="What makes the agentic part genuinely agentic" description="Not a fixed workflow, not a lookup, not a chatbot.">
-        <ul className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-2 grid-cols-2 lg:grid-cols-3">
           {[
             "Goal-directed planning: which questions this item needs answered.",
             "Deciding what evidence is required and which tools can supply it.",

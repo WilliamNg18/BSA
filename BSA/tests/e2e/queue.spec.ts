@@ -89,7 +89,7 @@ test("Task22 an explicit incomplete submission becomes New and opens the same ca
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
 });
 
-for (const width of [360, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {
+for (const width of [1280, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {
   test(`Task22 staff lanes and capture controls axe ${width} ${colorScheme} agent=${enabled}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });

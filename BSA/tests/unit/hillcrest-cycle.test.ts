@@ -35,7 +35,11 @@ describe("single Hillcrest first-load cycle", () => {
     expect(s.lifecycles["SYN-FQ123-RECHECK"].state).toBe("resubmitted");
     expect(s.lifecycles[F.id].state).toBe("paid");
     expect(s.itemProcesses[F.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
-    for (const labels of Object.values(LIFECYCLE_LABELS)) expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
+    for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
+      if (state !== "released_to_pricing") expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
+    }
+    expect(Object.values(s.lifecycles).some((item) => item.state === "released_to_pricing")).toBe(false);
+    expect(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on).toBe(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.off);
   });
 
   it("retains F's historical evidence and appends a separate corrected revision and human record", () => {

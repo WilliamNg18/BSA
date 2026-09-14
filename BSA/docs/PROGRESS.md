@@ -1,8 +1,46 @@
 ---
-title: Thirty-task implementation progress
+title: Desktop demonstration implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
 ms.date: 2026-09-13
 ---
+
+## Active scope: Tasks 31-36
+
+The 14 September brief supersedes the prior final-closeout workflow. Desktop
+widths are 1280 and 1440 px only, with new screenshots at 1440 px. Mobile/tablet
+layouts, navigation and their active tests/captures are removed in Step 0.
+This does not declare the interrupted Tasks 25-30 image review accepted.
+Its available reports remain preserved in Git and the prior verification branch.
+
+Step 0 freezes the eleven `DEMO_STEPS`, `demoStep`, current-item verification,
+release attribution and revision-bound draft/action signatures in DECISIONS.
+Gate results start as none, not a fabricated pass. G implements both gates and
+complete action semantics before O/P enable the new controls.
+
+Step 0 validation: check (type/lint/production build) passed and all 1,140 unit
+tests in 61 files passed with two workers. Twelve targeted desktop browser
+checks passed, including axe, keyboard, perspective, Reset and snapshot checks.
+The retained browser inventory is 833 ordinary cases plus 34 instrumented
+state cases; these inventory counts are not a full executed browser verdict.
+The desktop cut removed 222 inspected 360px screenshot files. All 493 retained
+desktop screenshots and 798 non-image evidence resources were verified unchanged.
+Historical manifest references to removed small-screen images remain historical;
+retrieve the original bytes from their original Git commits, not the current tree.
+
+| Task | Stream | Ownership | Status |
+| --- | --- | --- | --- |
+| 31 | D | Demo strip, eleven step layouts and navigation | Awaiting Step 0 main |
+| 32 | F | Follow banner and explicit side links | Awaiting Step 0 main |
+| 33 | O | Operator decision and Type 1 panels | Awaiting Step 0 main |
+| 34 | P | Pharmacy claim actions, submission receipts and released count | Awaiting Step 0 main |
+| 35 | G | Verification/routing, shared store actions and wrong-information scenario | Awaiting Step 0 main |
+| 36 | V | Desktop tests/screenshots, live checklist and final documentation | Awaiting Step 0 main |
+
+All six streams start after the single Step 0 commit reaches main. G and D
+merge first, O/P/F next, V last. Final acceptance uses actual latest-main CI,
+deployment, the entire desktop live checklist and a fresh URL check within
+ten minutes. No image quota is bypassed and no unexecuted visual or WCAG review
+is claimed. Decisions and resource constraints are recorded explicitly.
 
 ## Active scope: Tasks 25-30, one pharmacy and one continuous cycle
 
@@ -21,11 +59,11 @@ No final Tasks 25-30 acceptance is implied by Step 0.
 | Task | Stream | Ownership | Status |
 | --- | --- | --- | --- |
 | 25 | C | Seed, lifecycle/store, domain adapters, new cycle equivalence tests | Merged #83 at `a96a448`; reviewed authority repairs and scoped hosted checks passed |
-| 26 | E | EPS prescription component, pharmacy shell and EPS advice | #84 final rebase/CI; reviewed correction recording and prospective-draft fixes |
+| 26 | E | EPS prescription component, pharmacy shell and EPS advice | Merged #84 at `28036c6`; scoped hosted checks and six EPS scenario/mode probes passed |
 | 27 | U | Paper component, declaration checks, Type 1 and D | Merged #82 at `837417e`; hosted capture guard/Sufficient path passed; new pharmacy mounting follows E |
 | 28 | N | Frozen monthly model, shared figures, chapter 1/2 | Merged #81 at `34349a9`; scoped hosted checks and matching main CI passed |
-| 29 | Q | Queue, case pack, trace and decision record | #85 draft integration CI; final E-main rebase remains |
-| 30 | V | Remaining e2e/live, tour, screenshots and documentation | #86 runtime/verification draft; final hosted evidence and independent visual review remain |
+| 29 | Q | Queue, case pack, trace and decision record | Merged #85 at `2ce8e70`; scoped hosted checks and four cross-channel source-panel probes passed |
+| 30 | V | Remaining e2e/live, tour, screenshots and documentation | Initial `b05b06a` hosted pass/visual failure preserved; repair #87 at `34d7567` passed new hosted 30/30; independent re-review and final evidence closeout pending |
 
 Step 0 reached main as `8bc93d7`; CI 34770112795 and deployment 34770112772
 passed. All six streams then ran in parallel. Actual integration order is N,
@@ -56,17 +94,109 @@ verified rejection before reconciliation, an initially empty prescriber,
 explicit human evidence and confirmation, then Sufficient with Gate PASS.
 No Type 2 decision was recorded by the probe; the production observer was absent.
 
-V's clean `145d4ca` passed a complete **local rehearsal**, 29/29, with 58
+E's final reviewed `a20b872` passed CI 34779886964: 1,095 unique units,
+1,196 ordinary browser checks and 34 instrumented state checks. Review and
+actual UI tests corrected three tightly related omissions: recorded Apply
+evidence, prospective submission preview authority and the same-item generic
+referral correction path. Main `28036c6` passed CI 34780437648, deployment
+34780437697 and five scoped hosted checks. Six additional real EPS
+scenario/mode submissions passed with 12 clean identities, no browser errors
+and no observer in production.
+
+Q's final reviewed `110ca19` passed CI 34781000646: 1,107 unique units,
+1,196 ordinary browser checks and 34 instrumented state checks. A cross-channel
+source-panel defect was reproduced, repaired and independently re-reviewed:
+the current revision channel selects the image or EPS message, not legacy
+claim metadata. Main `2ce8e70` passed CI 34781585658 and deployment 34781585647.
+The first scoped hosted run passed four of five; its old region/column
+selectors did not match the new worklist. The updated five-check run passed,
+retaining both state and routing-reason comparisons across Agent changes.
+Four separate live changed-channel probes passed in Off/On with eight clean
+identities, no observer and no browser errors.
+
+V's earlier clean `145d4ca` passed a complete **local rehearsal**, 29/29, with 58
 identity checks and 26 zero-violation axe audits. Its 56 local screenshots
 are not hosted or independently reviewed acceptance. Earlier rehearsal
 failures, including a dirty-source guard failure, remain separate records.
-Later runtime fixes require fresh final verification; no prior capture is
-relabelled as a different build.
+The final checklist includes the added same-item generic referral correction
+case: it contains 30 named checks, not the historical 29. No prior capture
+or run is relabelled as a different build or inventory.
+
+V's reviewed runtime candidate `b60869f` passed CI 34781860731: 1,116 unique
+units in 59 files, 1,196 ordinary browser checks and 34 instrumented state
+checks. The coherent clean local rehearsal passed 30/30 on that exact source.
+Only four intended runtime files changed relative to the merged operational
+application: tour rail, tour navigation, chapter copy and home presentation.
+PR #86 merged at `b05b06ad67860fea9d9809eed09b5f1636168f66`; main CI
+34782412481 and deployment 34782412469 passed.
+
+The **full hosted 30/30 run passed** against clean `b05b06a`, UTC
+21:02:01.623 to 21:08:28.324 on 13 September. All 60 before/after identities
+match the clean deployed commit. There are 58 full-page screenshots, 25 Off
+and 33 On, and 26 axe audits with zero violations. Eighteen audits retain
+incomplete findings: color contrast in 18 audits (129 node occurrences) and
+table-header associations in two audits (four node occurrences). These are
+not accessibility passes. The new exported
+set under `screens/task30/b05b06a` was committed before independent review.
+All 279 exported artifact files and the original checklist match their
+committed byte lengths and SHA-256 hashes. The 58 images have 53 distinct
+hashes; technical integrity is not a visual-review verdict.
+All prior failed and historical evidence stays immutable.
+
+Independent review inspected all 58 image paths at full height using 202
+native-resolution tiles. Its verdict is **FAIL: 24 image PASS, 34 image FAIL,
+zero unreviewed**. Valid findings concern supplied fields incorrectly described
+as read, reconciliation attestation presented as established agreement,
+complete-EPS manual pain phrased as an inevitable problem, a toast-obscured July
+capture, a raw recommendation enum and 46 occurrences of overlong prose panels.
+The original report and per-image ledger are preserved under
+`screens/task30/review-b05b06a`.
+
+The reviewer's proposed three-failed-signals requirement was withdrawn in a
+separate addendum. Three abstention reasons are distinct from five structural
+signals; four failed signals plus neutral unestablished reconciliation are
+correct. No real signal is hidden or reclassified to satisfy that mistaken
+criterion. Other findings still make the review fail.
+
+Separate manual observations support bounded keyboard behaviour and 11 sampled
+text-contrast pairs, with ratios 4.74 to 19.80. They do not establish complete
+WCAG conformance. The original incomplete audits and manual limits remain
+visible; the complete manual record is under `screens/task30/manual-b05b06a`.
+Repair #87 delivered one source-aware copy/capture batch, including the observed
+mobile-link class-composition defect. All five structural signals, original
+abstention reasons, domain outcomes, arithmetic and historical records remain
+unchanged. The new mobile indicator was measured after the fix at 17.93:1
+light and 18.97:1 dark, with its 2px keyboard-focus outline preserved.
+
+Exact repair candidate `a6f8e49` passed CI 34787130520: 1,134 unique units in
+60 files, 1,202 ordinary browser checks and 34 instrumented state checks.
+A clean full 30-check local rehearsal passed on that same candidate.
+Main `34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e` passed CI 34787652657
+and deployment 34787652659. Its separate **hosted 30/30 run passed**, UTC
+22:46:41.922 to 22:52:52.227 on 13 September, with no retries and a clean,
+unchanged capture tree. All 60 identities match the repaired deployment.
+There are 58 new images, 25 Off and 33 On, and 26 zero-violation axe audits.
+The 18 incomplete audits retain 129 contrast and four table-header node
+occurrences; they are not silently cleared.
+
+The repaired export under `screens/task30/34d7567` was committed before the
+same independent verifier began its new full-height review. All 279 artifact
+files, 58 images and the original report match their recorded hashes; there
+are 53 unique image hashes. The new visual/prose verdict and repaired manual
+observations remain pending here. Nothing overwrites or clears the old
+`b05b06a` failed image set.
+
+Runtime public-resource gzip is informational: 227,106 bytes for `b05b06a`
+and 227,119 for repaired `34d7567`, across root HTML,
+linked JavaScript/CSS, build identity and favicon, independently compressed
+with Python level 9 and mtime 0. Private server/configuration files are excluded.
+The final documentation build's identity can change this total.
 
 V owns runtime tour changes, so #86 must merge after E/Q before its complete
-29-check hosted inventory can run against main. After reviewed runtime CI and
-local checks, deploy #86 normally, run full hosted acceptance and independently
-review every final capture. A separate V evidence/documentation PR merges last,
+29-check hosted inventory can run against main. Runtime CI, local and hosted functional checks for `b05b06a` are complete, but
+its independent visual/prose gate failed. Preserve that failed release evidence;
+the repaired hosted pass also requires its own independent review before acceptance.
+A separate V evidence/documentation PR merges last,
 without runtime changes. Repeat latest-main CI, deployment and the entire live
 inventory after that merge. ALL DONE also requires a fresh URL check within ten
 minutes, protected-reference integrity and explicit accessibility limitations.

@@ -13,7 +13,7 @@ export function BaselineCalculator() {
     <dl className="grid grid-cols-2 gap-4">
       {(["today", "withAgent"] as const).map((mode) => <div key={mode} className="min-w-0 space-y-2" data-process-column={mode} data-active={(mode === "withAgent") === enabled}>
         <dt className="text-sm font-medium">{mode === "today" ? "Today" : "With the agent (estimate)"}</dt>
-        <dd className="break-words text-2xl font-semibold sm:text-3xl" data-process-metric={`${mode}-${key}`}>
+        <dd className="break-words font-semibold text-3xl" data-process-metric={`${mode}-${key}`}>
           <MonthlyNumber value={result[mode][key]} replayKey={enabled ? "on" : "off"} format={format} />
           {mode === "withAgent" && <span className="block text-xs font-normal">estimate</span>}
         </dd>
@@ -30,7 +30,7 @@ export function BaselineCalculator() {
       <p className="text-sm">Assumptions: built cases need no human gathering. With total includes abstention gathering and judgement for every queued item, without double-checks.</p>
       <section aria-label="Sequential referral cohorts" className="space-y-3 rounded-xl border p-5">
         <h2 className="font-semibold">How the smaller queue is estimated</h2>
-        <dl className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+        <dl className="grid gap-3 text-sm grid-cols-2 lg:grid-cols-3">
           {([
             ["manualLoopItems", "Referral-loop denominator"],
             ["prevented", "Prevented at pharmacy"],

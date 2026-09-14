@@ -89,14 +89,14 @@ function QueueWorklist() {
     <section aria-label="Other pharmacies, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
       <h2 className="font-semibold">Other pharmacies, background</h2>
       <p>Fixed synthetic context only. These entries cannot be opened and are excluded from Hillcrest&apos;s items and counts.</p>
-      <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+      <ul className="mt-2 grid gap-2 grid-cols-2">
         {BACKGROUND_PHARMACIES.map((pharmacy) => <li key={pharmacy.contractorCode}>{pharmacy.name} · Background only</li>)}
       </ul>
     </section>
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
     <section aria-label="Actual session work counts" className="space-y-3">
       <h2 className="font-semibold">Actual synthetic session items</h2>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-2 grid-cols-2 lg:grid-cols-4">
         {tiles.map((tile) => <Button key={tile.key} variant="outline" aria-pressed={active === tile.key}
           className="h-auto justify-between gap-3 whitespace-normal p-4 text-left" onClick={() => setFilter(tile.key)}>
           <span>{tile.label}</span><span className="text-xl tabular-nums">{tile.count}</span>

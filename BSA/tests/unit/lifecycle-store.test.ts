@@ -47,7 +47,11 @@ describe("Task 8 seeds and projections", () => {
     const rows = Object.values(store().lifecycles).filter((r) => r.pharmacyCode === pharmacy.contractorCode);
     expect(rows).toHaveLength(8);
     expect(new Set(rows.map((r) => r.state))).toEqual(new Set(["paid", "in_review", "referred_back", "information_requested", "resubmitted"]));
-    for (const labels of Object.values(LIFECYCLE_LABELS)) expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
+    for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
+      if (state !== "released_to_pricing") expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
+    }
+    expect(rows.some((item) => item.state === "released_to_pricing")).toBe(false);
+    expect(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on).toBe(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.off);
   });
 
   it("retains all canonical mappings, original fixtures and historical F record", () => {

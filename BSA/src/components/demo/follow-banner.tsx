@@ -11,7 +11,7 @@ export function FollowBanner() {
   const both = useAppStore((s) => s.perspective === "both");
   if (!row || !both) return null;
   const labels = LIFECYCLE_LABELS[row.state];
-  return <section aria-label="Followed item" className="border-b bg-muted px-3 py-2 text-xs md:px-6">
+  return <section aria-label="Followed item" className="border-b bg-muted py-2 text-xs px-6">
     <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2">
       <strong className="break-all">Following {row.caseId}</strong>
       <dl aria-live="polite" className="flex min-w-0 flex-1 flex-wrap gap-x-4 gap-y-1">

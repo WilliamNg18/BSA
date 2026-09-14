@@ -267,7 +267,7 @@ function CasePackContent() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <blockquote className="border-l-4 border-sky-600 pl-3 text-sm">"{pack.clause.text}"</blockquote>
-                  <ul className="grid gap-1 text-sm sm:grid-cols-2">
+                  <ul className="grid gap-1 text-sm grid-cols-2">
                     {pack.requirementResults.map((r) => (
                       <li key={r.requirement.id} className="flex items-center gap-2 rounded-md border px-2.5 py-1.5">
                         <span className={`size-2.5 rounded-full ${r.met === true ? "bg-emerald-600" : r.met === false ? "bg-rose-600" : "bg-slate-400"}`} aria-hidden="true" />
@@ -296,7 +296,7 @@ function CasePackContent() {
                 {pack.conflicts.map((k) => (
                   <li key={k.field} className="rounded-md border border-amber-500 bg-amber-50 p-3 text-sm dark:bg-amber-950">
                     <h3 className="font-semibold">{k.field} {k.material && <span className="ml-1 rounded bg-amber-700 px-1.5 py-0.5 text-xs text-white">material</span>}</h3>
-                    <ul className="mt-1 grid gap-1 sm:grid-cols-2">{k.values.map((v) => <li key={v.origin} className="rounded bg-background px-2 py-1"><span className="text-muted-foreground">{v.origin}:</span> <span className="font-medium">{v.value}</span></li>)}</ul>
+                    <ul className="mt-1 grid gap-1 grid-cols-2">{k.values.map((v) => <li key={v.origin} className="rounded bg-background px-2 py-1"><span className="text-muted-foreground">{v.origin}:</span> <span className="font-medium">{v.value}</span></li>)}</ul>
                     <p className="mt-1 text-muted-foreground">{k.note}</p>
                   </li>
                 ))}
@@ -353,7 +353,7 @@ function CasePackContent() {
           </CardHeader>
           {!decided && (
             <CardContent className="space-y-4">
-              <RadioGroup value={chosen} onValueChange={(v) => setDecision(v as HumanDecision)} aria-label="Decision" className="grid gap-2 sm:grid-cols-2">
+              <RadioGroup value={chosen} onValueChange={(v) => setDecision(v as HumanDecision)} aria-label="Decision" className="grid gap-2 grid-cols-2">
                 {DECISIONS.filter((d) => agentEnabled || d.value !== "AMEND").map((d) => (
                   <div key={d.value} className="flex items-start gap-2 rounded-md border p-2.5">
                     <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "AMEND" || pack.agentInvoked && d.value === "ACCEPT")} />

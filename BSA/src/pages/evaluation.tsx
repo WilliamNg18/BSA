@@ -97,7 +97,7 @@ export function EvaluationPage() {
       </div>
 
       <PageSection title="How this becomes evidence, in order" description="Startup speed means testing the highest-risk assumption first, not skipping evaluation or oversight.">
-        <ol className="grid gap-2 md:grid-cols-3">
+        <ol className="grid gap-2 grid-cols-3">
           {DELIVERY_SEQUENCE.map((d) => (
             <li key={d.step} className="rounded-lg border p-3">
               <span className="text-xs font-medium text-teal-800 dark:text-teal-300">Step {d.step} · {d.weeks}</span>

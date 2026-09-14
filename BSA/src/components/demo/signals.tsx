@@ -25,7 +25,7 @@ export function SignalList({ signals, compact = false }: { signals: Signals; com
     { label: "In validated coverage", value: signals.inCoverage ? "Yes" : "No", ok: signals.inCoverage },
   ];
   return (
-    <ul className={cn("grid gap-1.5", compact ? "grid-cols-1" : "sm:grid-cols-2")} aria-label="Confidence signals">
+    <ul className={cn("grid gap-1.5", compact ? "grid-cols-1" : "grid-cols-2")} aria-label="Confidence signals">
       {rows.map((r) => (
         <li key={r.label} className="flex items-center justify-between gap-3 rounded-md border px-2.5 py-1.5 text-sm">
           <span className="flex items-center gap-2">

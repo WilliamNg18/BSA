@@ -161,7 +161,7 @@ for (const { key, label } of PROCESS_FIELDS) {
 }
 
 for (const colorScheme of ["light", "dark"] as const) {
-  for (const width of [320, 360, 768, 1024, 1440]) {
+  for (const width of [1280, 1440]) {
     test.describe(`monthly reflow ${colorScheme} ${width}`, () => {
       test.use({ colorScheme, viewport: { width, height: 1000 } });
       test("both comparisons and all expanded valid and invalid inputs pass axe without overflow", async ({ page }, testInfo) => {

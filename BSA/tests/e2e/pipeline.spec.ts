@@ -141,7 +141,7 @@ test("path links and figure context remain keyboard accessible; reset describes 
   await expect(page.getByRole("alertdialog")).not.toContainText("turn Agent on");
 });
 
-for (const { width, colorScheme } of [{ width: 360, colorScheme: "dark" }, { width: 1440, colorScheme: "light" }] as const) {
+for (const { width, colorScheme } of [{ width: 1440, colorScheme: "light" }] as const) {
   for (const enabled of [false, true]) {
     test(`pipeline selected ${width} ${colorScheme} ${enabled ? "on" : "off"}: reflow and all-rules axe`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 1000 });
@@ -155,7 +155,7 @@ for (const { width, colorScheme } of [{ width: 360, colorScheme: "dark" }, { wid
       await captureJson(testInfo, "axe-pipeline", axe);
       expect(axe.violations).toEqual([]);
       await captureCheckpoint(page, testInfo, `pipeline-${width}-${colorScheme}-${enabled ? "on" : "off"}`);
-      for (const nextWidth of [320, 768, 1024]) {
+      for (const nextWidth of [1280, 1440]) {
         await page.setViewportSize({ width: nextWidth, height: 1000 });
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
       }

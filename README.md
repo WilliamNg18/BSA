@@ -10,26 +10,47 @@ attributed, not presented as independently verified measurements.
 
 **Verified demo URL:** https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/
 on the existing Azure App Service F1. The owner selected this target in #48.
-Tasks 14-18 were accepted at `80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`
-with 14 live checks, 774 unique unit tests and 1,086 blocking browser tests.
+Tasks 25-30 implement one continuous Hillcrest Pharmacy cycle, visible EPS
+prescriptions, proposed paper declarations and a shared referral-loop estimate.
+Repaired runtime `34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e` passed the complete
+30-check hosted checklist. [Current progress](BSA/docs/PROGRESS.md) distinguishes
+that functional result from visual review and final documentation-release checks.
+The earlier `b05b06a` visual/prose failure and its images remain preserved.
+The historical Tasks 14-18 release is
+`80d955bdde6a7ef4e59ceb720d9c9a654efbe5e3`.
 The annotated checkpoint **`lkg-2026-09-13`** and rollback branch
 `last-known-good` pin that release. Older tags and `cowork-v1` are unchanged.
 Each subsequent deployment verifies its own build identity and strict headers.
 
 ## Explore the demo
 
+**Current work: desktop-only Tasks 31-36.** The next release replaces the
+chapter rail with eleven focused demo steps and adds two-gate verification and
+explicit operator/pharmacy controls. Supported widths are 1280 and 1440 px;
+small-screen layouts and active screenshot/test coverage are retired.
+The following six-chapter description records the implementation baseline
+until the new streams merge. See PROGRESS for actual current acceptance.
+
 The header's **Pharmacy | NHSBSA | Both** perspective switch filters the same
-pages and shared history. Both shows the eight-chapter tour: scene, month,
-pipeline, four cases, two places (including Pharmacy check), queue, pharmacy
-claims and close. Pharmacy and NHSBSA show their own navigation; opposite-side
-deep links offer a perspective switch.
+pages and shared history. Both shows six chapters across nine stops: real
+process, numbers, pipeline, cases and boundaries, the continuous cycle
+(including Pharmacy check, queue and claims), then the central bet.
+Pharmacy and NHSBSA show their own navigation; opposite-side deep links offer
+a perspective switch. Hillcrest (FQ123) owns every operational item; other
+pharmacies are fixed, unclickable background.
 
 **Agent On/Off exists only in the header, at the top right.** It controls every
 page, including pharmacy checks and queue evidence. Page controls never override
-it; Compare shows labelled read-only projections without changing assistance
-or recording decisions. Reset restores Agent Off and seeded data but retains
+it. Projections never change assistance or record decisions. Reset restores
+Agent Off and the eight seeded items but retains
 perspective. Follow one item from explicit submission through human review,
 approved correction and resubmission without Reset.
+
+Complete new EPS submissions can bypass staff. Corrected referrals retain
+explicit human recheck; declared paper never becomes a pretend image reading.
+The editable model estimates 5,100 referrals and 297.5 operator hours at defaults,
+including manual gathering for abstentions. These are labelled assumptions,
+not measured NHSBSA savings or calculated payments.
 
 See [current progress](BSA/docs/PROGRESS.md), the
 [first-time-viewer review](BSA/docs/FIRST-TIME-VIEWER.md) and

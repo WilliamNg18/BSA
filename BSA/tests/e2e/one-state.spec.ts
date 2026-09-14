@@ -5,8 +5,8 @@ test("one state: observer is read-only and retains every authoritative collectio
   await page.goto("/pharmacy");
   const snapshot = await readDomainState(page);
   expect(Object.keys(snapshot).sort()).toEqual([
-    "baselineInputs", "caseRevisions", "caseStates", "itemProcesses", "lifecycles", "manualLoopInputs",
-    "pharmacy", "pharmacyCorrections", "processInputs", "records", "todayMinutes",
+    "baselineInputs", "caseRevisions", "caseStates", "itemProcesses", "itemVerification", "lifecycles", "manualLoopInputs",
+    "operatorDrafts", "pharmacy", "pharmacyCorrections", "pharmacyDrafts", "processInputs", "records", "todayMinutes",
   ]);
   const observer = await page.evaluate(() => {
     const descriptor = Object.getOwnPropertyDescriptor(window, "__BSA_READ_DOMAIN_STATE__");

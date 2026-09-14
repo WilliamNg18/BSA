@@ -4,9 +4,14 @@ This repository holds the **Prescription Exception Case Builder**, a proof of co
 
 ## The one rule that governs everything
 
-Current work is Tasks 25-30: one Hillcrest pharmacy, one continuous cycle,
-visible EPS prescriptions, proposed paper declarations and a labelled manual-loop
-estimate. Read the latest DECISIONS contract freeze and PROGRESS ownership.
+Current work is Tasks 31-36: a desktop-only eleven-step demonstration, two
+verification gates, explicit operator/pharmacy actions and same-item follow
+navigation. Read the latest DECISIONS contract freeze and PROGRESS ownership.
+Desktop verification widths are 1280 and 1440 px only. The owner explicitly
+removed mobile/tablet layouts, navigation and their tests/screenshots.
+Tasks 25-30 runtime is delivered at `34d7567`, but its final independent
+visual acceptance remains unverified; never convert the interrupted review
+or its tool-delivery limitation into a passing verdict.
 Tasks 19-24 released successfully at `887d2a4`; their evidence stays historical.
 MEMORY's **Process model** and **One state** continue to govern authority.
 The owner's 13 September process brief explicitly supersedes the older D-only
@@ -23,12 +28,13 @@ Any change that lets the "agent" price an item, change a case state, bypass the 
 
 - **Synthetic data only.** No real prescriptions, patients, pharmacies, contractor codes or Drug Tariff text. Keep `SYN-` product codes, "(synthetic)" labels and the amber banner on every screen.
 - **Static, offline, private.** No back end, no run-time network calls, no analytics, no external fonts at run time, nothing persisted except presentation preferences. `Reset demo` must return the application to its seeded state.
-- **Perspective is presentation only.** Pharmacy, NHSBSA and Both use the same operational store. Reset retains perspective while restoring seeded data and Agent Off. Human-applied correction evidence never submits an item or changes lifecycle state.
+- **Perspective is presentation only.** Pharmacy, NHSBSA and Both use the same operational store. Reset retains perspective while restoring seeded data and Agent Off. Human-applied suggestions/corrections may append explicitly attributed events but never submit or release an item by themselves. Demo navigation changes no operational state.
 - **One Agent control.** Only the top-right header may change `agentEnabled`. Pages read the shared state and conditionally show assistance actions; do not add page-local Agent switches or availability overrides.
 - **Every action is classified** as existing NHSBSA capability, deterministic code, agentic action or human decision, and the tag is shown where the action appears.
 - **The six cases keep their outcomes**: A sufficient; B refer back (initialled, not dated) and sufficient under July replay; C request information (quantity conflict, surfaced not resolved); D abstain (no provision, quality below 0.60, readings disagree); E cleared by rules with no agent call; F already decided.
 - **The gate is code.** `complianceGate` in `src/lib/domain/rules.ts` must stay a pure function the interpretation step cannot influence. Confidence is the five structural signals, never a self-reported percentage.
 - **Accessibility is a requirement**: WCAG 2.2 AA contrast, full keyboard operability, visible focus, correct names and roles, `aria-live` on the trace replay, reduced-motion support, no meaning carried by colour alone.
+- **Desktop only.** Verify at 1280 and 1440 px. Do not restore mobile navigation, tablet layouts, sub-1024 breakpoints or small-screen test matrices.
 - **UK English.** No em dashes in interface copy. No implementation vendor or product branding anywhere in the interface, including Architecture. Use capability labels without rewriting source mappings, tool contracts or stored audit evidence. Preserve NHSBSA, MYS, NHSmail, EPS, dm+d and Drug Tariff process names.
 - **Existing Azure App Service.** Vite base and router basename are `/`. Root `hosting.config.json` and the packaged static server supply deep-link fallback and strict headers. No business/model backend, added authentication service or unapproved tier change. See issue #48 for the explicit superseding hosting decision.
 - **Gates.** Only check (typecheck, lint, build), Vitest, browser crash/dead-control/six-outcome regressions and zero-violation axe block. No byte or performance budgets. CI reports gzip size once as information; word counts, Lighthouse and screenshot differences are informational. Proven flakes need an issue and `@quarantine` tag.
@@ -63,7 +69,7 @@ npm run check      # typecheck + lint + build: must pass before any pull request
 ## How to verify a change
 
 1. `npm run check` passes with no errors and no warnings.
-2. Open every route listed in `docs/SPEC.md` section 3 at 360, 768, 1024 and 1440 px, light and dark. No console errors.
+2. Open every route listed in `docs/SPEC.md` section 3 at 1280 and 1440 px, light and dark. No console errors. New screenshots are 1440 px only.
 3. Walk the six cases: outcomes, gate results and states match the table in `docs/SPEC.md` section 5.3.
 4. Toggle the agent flag off: every case shows evidence only; nothing else changes.
 5. Run an accessibility audit (axe or Lighthouse) on Overview, Pharmacy, a case pack and a trace.

@@ -11,7 +11,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
     <header className="space-y-2">
       <h3 className="font-semibold">Electronic prescription, synthetic</h3>
       <p className="text-sm text-muted-foreground">The prescriber sends this digital prescription to the pharmacy.</p>
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="grid gap-3 text-sm grid-cols-2">
         <KeyValue k="Prescriber" v={prescription.prescriber.name} />
         <KeyValue k="Practice" v={prescription.prescriber.practice} />
         <KeyValue k="Prescription date" v={prescription.prescriptionDate} />
@@ -20,7 +20,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
     </header>
     {prescription.items.map((item, index) => <section key={`${item.prescribedCode}:${index}`} aria-label={`${sourceLabel}: prescribed item ${index + 1}`} className="space-y-2 rounded-lg bg-muted/40 p-3 [&_dt]:text-foreground">
       <h4 className="font-semibold">Prescribed item</h4>
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="grid gap-3 text-sm grid-cols-2">
         <KeyValue k="Product" v={item.product} />
         <KeyValue k="Strength" v={item.strength} />
         <KeyValue k="Form" v={item.form} />
@@ -32,7 +32,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true }: {
     <dl className="text-sm"><KeyValue k="Prescriber endorsement" v={prescription.prescriberEndorsement || "None recorded"} /></dl>
     {dispenser && <section aria-label="Recorded dispenser claim" className="space-y-2 border-t pt-3">
       <h4 className="font-semibold">Dispenser&apos;s part</h4>
-      <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      <dl className="grid gap-3 text-sm grid-cols-2">
         {prescription.items.map((item, index) => <KeyValue key={index} k="Product dispensed (synthetic)" v={`${item.dispensedCode} · ${item.dispensedName}`} />)}
         <KeyValue k="Dispenser endorsement" v={prescription.dispenserEndorsement || "None recorded"} />
         <KeyValue k="Dispensing date" v={prescription.dispensingDate} />

@@ -21,7 +21,7 @@ export function QueueLifecycle() {
     <BoundaryTag cls="human" />
     {followed && perspective !== "nhsbsa" && <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(followed)}`}>Followed claim: {followed}</Link></Button>}
     {error && <p role="alert">{error}</p>}
-    <ul className="grid gap-3 md:grid-cols-2">
+    <ul className="grid gap-3 grid-cols-2">
       {rows.map((row) => <li key={row.caseId} data-shared-case={row.caseId} className="space-y-2 rounded-md border p-3">
         <h3 className="break-all font-semibold">{row.caseId}{followed === row.caseId ? " · Following" : ""}</h3>
         <div className="text-sm">{PHARMACIES.find((p) => p.contractorCode === row.pharmacyCode)?.name} (synthetic)</div>

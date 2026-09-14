@@ -18,7 +18,7 @@ export function ProcessAssumptions() {
     <summary className="cursor-pointer font-semibold">Edit the monthly assumptions{Object.keys(errors).length > 0 ? " · Check invalid inputs" : ""}</summary>
     <fieldset className="min-w-0 pt-4">
       <legend className="sr-only">Shared referral-loop and process inputs</legend>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">{PROCESS_FIELDS.map(({ key, label }) => <div key={key} className="min-w-0 space-y-2">
+      <div className="grid gap-5 grid-cols-2 lg:grid-cols-3">{PROCESS_FIELDS.map(({ key, label }) => <div key={key} className="min-w-0 space-y-2">
         <Label htmlFor={`process-${key}`}>{label}</Label>
         <Input id={`process-${key}`} type="text" inputMode={key === "monthlyItems" || key === "manualLoopItems" ? "numeric" : "decimal"} autoComplete="off" spellCheck={false}
           value={draft[key]} onChange={(event) => { setExpanded(true); setInput(key, event.target.value); }}

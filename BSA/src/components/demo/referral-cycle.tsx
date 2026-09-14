@@ -17,7 +17,7 @@ export function ReferralCycle({ enabled, claim }: { enabled: boolean; claim?: Ca
         ? "Illustrative: operator-approved drafts support human correction and resubmission; code validates and humans decide. Optional checks never guarantee shorter waits."
         : "Illustrative: humans review the reason, find the rule, correct, resubmit and decide after code validates. Waiting times are not guaranteed."}</p>
     </section>
-    <ol aria-label="Referral cycle stages" className="grid items-start gap-3 sm:grid-cols-2 xl:grid-cols-5">
+    <ol aria-label="Referral cycle stages" className="grid items-start gap-3 grid-cols-2 xl:grid-cols-5">
       <li className="space-y-2 rounded-lg border p-3">
         <h3 className="font-semibold">1. Referred back</h3><BoundaryTag cls="human" />
         <p className="text-sm">An operator records the referral reason. With assistance, only an explicitly approved draft becomes the pharmacy note.</p>

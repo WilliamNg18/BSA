@@ -85,13 +85,13 @@ export function HomePage() {
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6" data-tour-chapter={chapterNumber}>
       <div className="max-w-3xl space-y-3" data-tour-prose data-prose="chapter narrative">
-        <h1 tabIndex={-1} data-tour-heading className="rounded-sm text-3xl font-semibold tracking-tight focus-visible:outline-2 md:text-4xl">{chapter?.title ?? "A month of work"}</h1>
+        <h1 tabIndex={-1} data-tour-heading className="rounded-sm font-semibold tracking-tight focus-visible:outline-2 text-4xl">{chapter?.title ?? "A month of work"}</h1>
         <p className="text-muted-foreground">{chapter?.prose ?? "Compare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured NHSBSA performance."}</p>
       </div>
       {chapterNumber === 1 && <>
         <ul aria-label="Public context figures" className="grid gap-4 lg:grid-cols-3">
           {TOUR_CONTENT.keyFigures.map((figure) => <li key={figure.id} className="space-y-3 rounded-xl border bg-card p-5" data-key-figure={figure.id}>
-            <p className="text-3xl font-semibold tracking-tight md:text-4xl"><ProcessFigure source="Public" label={figure.label} explanation={figure.qualifier}>{figure.value}</ProcessFigure></p>
+            <p className="font-semibold tracking-tight text-4xl"><ProcessFigure source="Public" label={figure.label} explanation={figure.qualifier}>{figure.value}</ProcessFigure></p>
             <p className="text-sm font-medium">{figure.label}</p>
           </li>)}
         </ul>
@@ -117,7 +117,7 @@ export function HomePage() {
       {chapterNumber === 4 && <>
         <h2 className="text-2xl font-semibold">Processing cases · Follow each path</h2>
         <p className="text-sm font-medium">Synthetic cases · Human confirmation and judgement where required</p>
-        <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <ul aria-label="Four canonical synthetic cases" className="grid items-start gap-4 grid-cols-2 xl:grid-cols-4">
           {CASES.filter((item) => ["A", "B", "C", "D"].includes(item.scenario)).map((item) => <TourProcessCase key={item.id} id={item.id} />)}
         </ul>
         <Button asChild variant="outline"><Link to="/boundary">Inspect the proposed evidence boundary</Link></Button>
@@ -126,7 +126,7 @@ export function HomePage() {
         <TwoPlacesDiagram enabled={agentEnabled} />
         <section aria-label="Referral and resubmission loop" className="space-y-3 rounded-xl border p-5">
           <h2 className="font-semibold">One item, both sides</h2>
-          <ol className="grid gap-3 text-sm sm:grid-cols-3">
+          <ol className="grid gap-3 text-sm grid-cols-3">
             <li>{perspective === "pharmacy" ? "NHSBSA: human referral decision" : <Link className="underline" to="/case/EX-24112">NHSBSA: human referral decision</Link>}</li>
             <li>{perspective === "nhsbsa" ? "Pharmacy: correction and resubmission" : <Link className="underline" to={pharmacyCaseLink("EX-24112")}>Pharmacy: correction and resubmission</Link>}</li>
             <li>{perspective === "pharmacy" ? "NHSBSA: human re-check" : <Link className="underline" to="/queue">NHSBSA: human re-check</Link>}</li>
@@ -147,7 +147,7 @@ export function HomePage() {
           <h2 className="font-semibold">Fewer items back. A judgement you can reconstruct.</h2>
           <p className="text-sm">Rule and reason recorded; the agent verifies and advises; a person decides. Existing pricing stays unchanged. Fewer referrals are estimates, not measured savings.</p>
         </section>
-        <dl className="grid gap-4 rounded-xl border bg-card p-5 sm:grid-cols-3">
+        <dl className="grid gap-4 rounded-xl border bg-card p-5 grid-cols-3">
           <div><dt className="text-xs text-muted-foreground">First test</dt><dd className="mt-1 font-medium">Concentration of referral reasons</dd></div>
           <div><dt className="text-xs text-muted-foreground">Requested history</dt><dd className="mt-1 font-medium">Two years · Item-level reasons</dd></div>
           <div><dt className="text-xs text-muted-foreground">Decision</dt><dd className="mt-1 font-medium">Proceed, reshape or stop</dd></div>

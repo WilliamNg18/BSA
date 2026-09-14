@@ -1,11 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Page, TestInfo } from "@playwright/test";
-import { automaticCaseIds, captureJson, expect, staticRoutes, test as base } from "./fixtures";
-import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { captureJson, expect, staticRoutes, test as base } from "./fixtures";
 import { PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
-import { ALL_LIFECYCLE_STATES, prepareUnseededState } from "./lifecycle-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -81,41 +79,6 @@ for (const colorScheme of ["light", "dark"] as const) {
         });
       });
     }
-  }
-}
-
-for (const reducedMotion of ["reduce", "no-preference"] as const) {
-  for (const enabled of [false, true]) {
-    test.describe(`phone pack motion=${reducedMotion} agent=${enabled}`, () => {
-      test.use({ reducedMotion, colorScheme: "dark", viewport: { width: 360, height: 900 } });
-      for (const id of ["EX-24107", "EX-24112", "EX-24119", "EX-24123", "EX-24101", "EX-24088"]) {
-        test(`axe and reflow ${id}`, async ({ page }, info) => {
-          await page.goto(`case/${id}`);
-          await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-          const automatic = automaticCaseIds.includes(id);
-          if (enabled && !automatic) await page.getByRole("button", { name: "Show all", exact: true }).press("Enter");
-          if (automatic) {
-            await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
-            await expect(page.getByRole("button", { name: "Show all", exact: true })).toHaveCount(0);
-            await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-            await expect(page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true })).toHaveCount(0);
-          }
-          await audit(page, info, "phone-pack-axe");
-          expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-          // System-font metrics differ on Linux; enlarged text also forces the
-          // historical replay link to wrap instead of widening the page.
-          await page.evaluate(() => { document.documentElement.style.fontSize = "18px"; });
-          expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-          if (id !== "EX-24123") {
-            const replay = page.getByRole("link", { name: automatic ? "View pharmacy claim" : "Open pharmacy claim for another attempt", exact: true });
-            const bounds = await replay.boundingBox();
-            expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(360);
-            await replay.press("Enter");
-            await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toBeVisible();
-          }
-        });
-      }
-    });
   }
 }
 
@@ -223,28 +186,6 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       await audit(page, info, "capture-timing-axe");
     });
 
-    test("mobile navigation sheet retains focus and scroll lock", async ({ page }, info) => {
-      await page.setViewportSize({ width: 360, height: 800 });
-      await page.goto("./#scene");
-      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      const trigger = page.getByRole("button", { name: "Open navigation", exact: true });
-      await trigger.press("Enter");
-      const sheet = page.getByRole("dialog", { name: "Navigation", exact: true });
-      await expect(sheet).toBeVisible();
-      await expect(page.locator("body")).toHaveAttribute("data-scroll-locked", "1");
-      await audit(page, info, "mobile-navigation-axe");
-      await page.keyboard.press("Escape");
-      await expect(sheet).toHaveCount(0);
-      await expect(trigger).toBeFocused();
-      await expect(page.locator("body")).not.toHaveAttribute("data-scroll-locked");
-      await trigger.press("Enter");
-      await sheet.getByRole("link", { name: "Pharmacy claims", exact: true }).press("Enter");
-      await expect(page).toHaveURL(/\/pharmacy\/claims$/);
-      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      await expect(sheet).toHaveCount(0);
-      await expect(page.locator("body")).not.toHaveAttribute("data-scroll-locked");
-    });
-
     test("tour dismissal and restoration retain keyboard focus", async ({ page }) => {
       await page.goto("./#scene");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
@@ -267,52 +208,4 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       }
     });
   });
-}
-
-for (const colorScheme of ["light", "dark"] as const) {
-  for (const reducedMotion of ["reduce", "no-preference"] as const) {
-    for (const enabled of [false, true]) {
-      test.describe(`mobile claims ${colorScheme} motion=${reducedMotion} agent=${enabled}`, () => {
-        test.use({ colorScheme, reducedMotion, viewport: { width: 360, height: 900 } });
-        for (const state of ALL_LIFECYCLE_STATES) {
-          const labels = LIFECYCLE_LABELS[state];
-          test(`axe list and action panel ${state}`, async ({ page }, info) => {
-            await page.goto("pharmacy/claims");
-            await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-            await prepareUnseededState(page, state);
-            const filter = page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / });
-            await filter.focus();
-            await filter.press("Enter");
-            await expect(filter).toHaveAttribute("aria-pressed", "true");
-            await audit(page, info, "claims-list-axe");
-            await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
-              .filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) }).first().getByRole("button").press("Enter");
-            const detail = page.getByRole("region", { name: "Claim detail", exact: true });
-            await expect(detail.getByRole("heading", { name: /^Claim detail:/ })).toBeFocused();
-            await expect(detail.getByRole("status").first()).toHaveText(labels.pharmacy);
-            if (enabled && state === "referred_back") {
-              await detail.getByRole("button", { name: "Re-check endorsement", exact: true }).press("Enter");
-            }
-            await page.getByRole("region", { name: "Shared case history", exact: true }).locator("summary").first().press("Enter");
-            await audit(page, info, "claims-detail-axe");
-            expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-            if (state === "referred_back") {
-              const endorsement = detail.getByRole("textbox", { name: "Corrected endorsement", exact: true });
-              await endorsement.focus();
-              await endorsement.press("End");
-              await page.keyboard.type(" 2025-08-12");
-              await detail.getByRole("button", { name: "Resubmit claim", exact: true }).press("Enter");
-              await expect(detail.getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
-            } else if (state === "information_requested") {
-              const confirmation = detail.getByRole("textbox", { name: "Pharmacy confirmation", exact: true });
-              await confirmation.focus();
-              await page.keyboard.type("Synthetic clarification: please re-check both quantities.");
-              await detail.getByRole("button", { name: "Send confirmation", exact: true }).press("Enter");
-              await expect(detail.getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
-            }
-          });
-        }
-      });
-    }
-  }
 }

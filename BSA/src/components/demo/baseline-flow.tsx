@@ -25,7 +25,7 @@ export function BaselineFlow({ result }: { result: BaselineResult }) {
           data-flow={cohort.key} data-count={cohort.count} data-thickness={height} />;
       })}
     </svg>
-    <ol className="grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4" aria-label="Flow counts in top-to-bottom order">
+    <ol className="grid gap-3 text-sm grid-cols-2 lg:grid-cols-4" aria-label="Flow counts in top-to-bottom order">
       {cohorts.map((cohort, index) => <li key={cohort.key} className="min-w-0 rounded-md border p-3"><span className="font-medium">{index + 1}. {cohort.label}</span><p className="mt-1 tabular-nums">{n(cohort.count)} items</p></li>)}
     </ol>
     <p className="mt-3 text-xs text-muted-foreground">Counts sum exactly to {n(result.volume)}. Pharmacy avoidance is count-only; this flow does not measure operator savings.</p>

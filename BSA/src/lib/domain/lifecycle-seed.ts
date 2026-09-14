@@ -5,7 +5,7 @@ import { type CaseLifecycle, type CaseRevision, type HistoryEvent, type Lifecycl
 import { immutable } from "./lifecycle-model";
 
 const canonicalStates: LifecycleState[] = ["paid", "referred_back", "information_requested", "in_review", "paid", "referred_back"];
-const templates: Record<LifecycleState, number> = { submitted: 1, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3 };
+const templates: Record<LifecycleState, number> = { submitted: 1, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3, released_to_pricing: 0 };
 
 /** Fresh deeply immutable seeds. Metadata-only rows use explicitly synthetic templates. */
 export function seededLifecycleSession(): {

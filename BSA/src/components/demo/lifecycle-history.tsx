@@ -25,7 +25,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
     <details><summary className="cursor-pointer">History and attempts ({revisions?.length ?? 0})</summary>
       <ol aria-label="Lifecycle events" className="mt-3 space-y-3">
         {row.history.map((event, i) => <li key={i} className="rounded-md border p-3 text-sm">
-          <dl className="grid gap-1 sm:grid-cols-2">
+          <dl className="grid gap-1 grid-cols-2">
             <div><dt>Time / actor</dt><dd>{event.at} · {event.actor}</dd></div>
             <div><dt>Transition</dt><dd>{event.from ? pharmacy ? LIFECYCLE_LABELS[event.from].pharmacy : LIFECYCLE_LABELS[event.from].nhsbsa[enabled ? "on" : "off"] : "New"} → {pharmacy ? LIFECYCLE_LABELS[event.to].pharmacy : LIFECYCLE_LABELS[event.to].nhsbsa[enabled ? "on" : "off"]}</dd></div>
             <div><dt>Attempt / record</dt><dd>{event.revision ?? "Historical"} · {event.recordId ?? "No decision record"}</dd></div>
@@ -42,7 +42,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
           {event.capture && <section aria-label={`Type 1 capture for attempt ${event.capture.revision}`} className="mt-2 space-y-1 border-t pt-2">
             <h3 className="font-semibold">Recorded human Type 1 capture</h3>
             <p>{event.capture.provenance === "pharmacy_declaration" ? "declared by the pharmacy, not read from the form" : "Keyed by a human operator, not read automatically."}</p>
-            <dl className="grid gap-1 sm:grid-cols-2">
+            <dl className="grid gap-1 grid-cols-2">
               <div><dt>Product code</dt><dd>{event.capture.fields.productCode ?? "Unresolved"}</dd></div>
               <div><dt>Quantity</dt><dd>{event.capture.fields.quantity ?? "Unresolved"}</dd></div>
               <div><dt>Prescriber</dt><dd>{event.capture.fields.prescriber ?? "Not captured"}</dd></div>
@@ -56,7 +56,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
       <ol aria-label="Immutable pharmacy attempts" className="mt-3 space-y-3">
         {revisions?.map((revision) => <li key={revision.number} className="rounded-md border p-3 text-sm">
           <h3 className="font-semibold">Attempt {revision.number} · {revision.kind}</h3>
-          <dl className="grid gap-1 sm:grid-cols-2">
+          <dl className="grid gap-1 grid-cols-2">
             <div><dt>Endorsement snapshot</dt><dd className="break-words">{revision.endorsementText || "None"}</dd></div>
             <div><dt>Channel</dt><dd>{revision.channel === "eps" ? "EPS" : revision.channel === "paper" ? "Paper" : "Not recorded (legacy attempt)"}</dd></div>
             <div><dt>Confirmation</dt><dd>{revision.confirmation ?? "None"}</dd></div>
@@ -66,7 +66,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
           {revision.declaration && <section aria-label={`Declaration for attempt ${revision.number}`} className="mt-2 space-y-1">
             <h4 className="font-semibold">Immutable pharmacy declaration</h4>
             <p>Every field: declared by the pharmacy, not read from the form.</p>
-            <dl className="grid gap-1 sm:grid-cols-2">
+            <dl className="grid gap-1 grid-cols-2">
               <div><dt>Product code</dt><dd>{revision.declaration.fields.productCode ?? "Not declared"}</dd></div>
               <div><dt>Quantity</dt><dd>{revision.declaration.fields.quantity ?? "Not declared"}</dd></div>
               <div><dt>Prescriber</dt><dd>{revision.declaration.fields.prescriber ?? "Not declared"}</dd></div>

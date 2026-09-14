@@ -2,65 +2,6 @@ import { expect, navigatePrimary, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 
-for (const colorScheme of ["light", "dark"] as const) {
-test(`mobile navigation keeps active classes and contrasting keyboard focus in ${colorScheme}`, async ({ page }, testInfo) => {
-  await page.setViewportSize({ width: 360, height: 900 });
-  await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
-  await page.goto("/pharmacy/claims");
-  const trigger = page.getByRole("button", { name: "Open navigation", exact: true });
-  await trigger.press("Enter");
-  const dialog = page.getByRole("dialog", { name: "Navigation", exact: true });
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("button", { name: "Close", exact: true })).toBeFocused();
-  for (let step = 0; step < 3; step++) await page.keyboard.press("Tab");
-  const current = dialog.getByRole("link", { name: "Pharmacy claims", exact: true });
-  await expect(current).toBeFocused();
-  await expect(current).toHaveAttribute("aria-current", "page");
-  await expect(current).toHaveClass(/\bbg-accent\b/);
-  await expect(current).toHaveClass(/focus-visible:outline-2/);
-  expect(await current.getAttribute("class")).not.toMatch(/isActive|=>|\(\{/);
-  const focus = await current.evaluate((element) => {
-    const style = getComputedStyle(element);
-    const rect = element.getBoundingClientRect();
-    const dialog = element.closest('[role="dialog"]');
-    if (!dialog) throw new Error("The focused route must be inside its navigation dialog.");
-    const surroundingColor = getComputedStyle(dialog).backgroundColor;
-    const context = document.createElement("canvas").getContext("2d");
-    if (!context) throw new Error("Canvas colour conversion is unavailable.");
-    const rgba = (color: string) => {
-      context.clearRect(0, 0, 1, 1);
-      context.fillStyle = color;
-      context.fillRect(0, 0, 1, 1);
-      return Array.from(context.getImageData(0, 0, 1, 1).data);
-    };
-    const outline = rgba(style.outlineColor);
-    const background = rgba(surroundingColor);
-    const composite = outline.slice(0, 3).map((channel, index) => channel * outline[3] / 255 + background[index] * (1 - outline[3] / 255));
-    const luminance = (rgb: number[]) => rgb.reduce((total, channel, index) => {
-      const value = channel / 255;
-      return total + (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4) * [0.2126, 0.7152, 0.0722][index];
-    }, 0);
-    const foregroundLuminance = luminance(composite);
-    const backgroundLuminance = luminance(background.slice(0, 3));
-    const contrast = (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
-    return { outlineWidth: style.outlineWidth, outlineStyle: style.outlineStyle, outlineColor: style.outlineColor, surroundingColor, outline, background, contrast, top: rect.top, bottom: rect.bottom, width: rect.width };
-  });
-  await testInfo.attach(`mobile-focus-${colorScheme}`, { body: JSON.stringify(focus, null, 2), contentType: "application/json" });
-  expect(focus.outlineWidth).toBe("2px");
-  expect(focus.outlineStyle).not.toBe("none");
-  expect(focus.background[3]).toBe(255);
-  expect(focus.contrast).toBeGreaterThanOrEqual(3);
-  expect(focus.outline[3]).toBe(255);
-  expect(focus.top).toBeGreaterThanOrEqual(0);
-  expect(focus.bottom).toBeLessThanOrEqual(900);
-  expect(focus.width).toBeGreaterThan(0);
-  await page.keyboard.press("Escape");
-  await expect(dialog).toHaveCount(0);
-  await expect(trigger).toBeFocused();
-  await expect(page).toHaveURL(/\/pharmacy\/claims$/);
-});
-}
-
 test("complete EPS Off describes hypothetical risk without running a hidden check", async ({ page }) => {
   await page.goto("/pharmacy");
   await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();

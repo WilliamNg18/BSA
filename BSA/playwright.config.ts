@@ -17,7 +17,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
     reducedMotion: "reduce",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } } }],
   webServer: {
     command: "npm run build && node scripts/serve-production.mjs",
     env: { PLAYWRIGHT_PORT: String(port) },

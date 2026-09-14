@@ -6,13 +6,39 @@ ms.date: 2026-09-13
 
 # Scope register
 
+## Current scope: Tasks 31-36, desktop only
+
+The 14 September owner brief supersedes the previous closeout. Supported
+verification widths are 1280 and 1440 px; new captures are 1440 px only.
+Mobile/tablet layouts and active tests/screenshots are intentionally removed.
+Earlier results retain their original source and cannot establish this scope.
+
+| Task | Required outcome |
+| --- | --- |
+| 31 D | Eleven focused step screens, Today/With panels, persistent strip and correct routes/case/channel |
+| 32 F | Same-item reference/channel/state/location/history and explicit Pharmacy/NHSBSA side controls |
+| 33 O | Human Apply suggestion and Release/referral/information/escalation controls with code gating |
+| 34 P | Actual approved correction application, resubmission, confirmation and verification receipts |
+| 35 G | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released |
+| 36 V | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
+
+No new task is accepted yet. The user approved keeping human-release provenance
+visible; only automatic two-gate release may say no operator action.
+The prior Tasks 25-30 visual acceptance is unverified, not silently waived or
+renamed complete by the new desktop scope.
+
 ## Active scope: Tasks 25-30
 
 Step 0 freezes one operational Hillcrest pharmacy, a visible EPS-message
 contract, a typed paper declaration and labelled manual-loop arithmetic.
-Tasks 25-30 are not yet accepted as a complete release. N #81, C #83 and
-U #82 have merged through `837417e`; their scoped evidence is in PROGRESS.
-E #84, Q #85 and V #86 still require final integration. The prior release is
+All six implementation streams have merged through runtime
+`b05b06ad67860fea9d9809eed09b5f1636168f66`: N #81, C #83, U #82,
+E #84, Q #85 and V #86. Full hosted functional acceptance passed 30/30, but
+independent inspection of all 58 images failed its visual/prose gate. The
+failed archive is preserved. Repair #87 at `34d7567` passed a new complete
+30-check hosted run; independent review of the new capture and the final
+evidence-only release still remain.
+Tasks 25-30 are not yet declared ALL DONE. The prior release is
 `887d2a4`, recorded on issue #73 comment 5654511835.
 
 | Task | Acceptance required |

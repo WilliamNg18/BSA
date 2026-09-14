@@ -75,7 +75,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     <h2 ref={heading} tabIndex={-1} className="scroll-mt-32 break-all rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {c.id}</h2>
     <p role="status">{LIFECYCLE_LABELS[row.state].pharmacy}</p>
     <BoundaryTag cls={event?.actor === "code" ? "deterministic" : event?.actor === "agent" ? "agent" : "human"} />
-    <dl className="grid gap-2 text-sm sm:grid-cols-2">
+    <dl className="grid gap-2 text-sm grid-cols-2">
       <div><dt>Pharmacy</dt><dd>{c.pharmacy.name} (synthetic)</dd></div>
       <div><dt>Dispensing date</dt><dd>{c.extracted.dispensingDate}</dd></div>
       <div><dt>Claimed amount, not payment</dt><dd>£{c.claim.amountClaimed.toFixed(2)} (synthetic)</dd></div>
@@ -101,16 +101,16 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
       </>}
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
-      {channel === "paper" && <fieldset className="grid gap-3 sm:grid-cols-2">
+      {channel === "paper" && <fieldset className="grid gap-3 grid-cols-2">
         <legend className="font-semibold">Correct the paper declaration</legend>
-        <p id="claim-declaration-provenance" className="text-sm sm:col-span-2">Every field: declared by the pharmacy, not read from the form.</p>
+        <p id="claim-declaration-provenance" className="text-sm col-span-2">Every field: declared by the pharmacy, not read from the form.</p>
         <label className="grid gap-1">Declared product code<input className="rounded-md border bg-background p-2" value={productCode} aria-describedby="claim-declaration-provenance" onChange={(e) => { setProductCode(e.target.value); setChecked(null); }} /></label>
         <label className="grid gap-1">Declared quantity<input type="number" min="1" step="1" className="rounded-md border bg-background p-2" value={quantity} aria-describedby="claim-declaration-provenance" onChange={(e) => { setQuantity(e.target.value); setChecked(null); }} /></label>
-        <label className="grid gap-1 sm:col-span-2">Declared prescriber (synthetic)<input className="rounded-md border bg-background p-2" value={prescriber} aria-describedby="claim-declaration-provenance" onChange={(e) => { setPrescriber(e.target.value); setChecked(null); }} /></label>
+        <label className="grid gap-1 col-span-2">Declared prescriber (synthetic)<input className="rounded-md border bg-background p-2" value={prescriber} aria-describedby="claim-declaration-provenance" onChange={(e) => { setPrescriber(e.target.value); setChecked(null); }} /></label>
       </fieldset>}
-      {genericEps && <fieldset className="grid gap-3 sm:grid-cols-2">
+      {genericEps && <fieldset className="grid gap-3 grid-cols-2">
         <legend className="font-semibold">Correct the EPS supply evidence</legend>
-        <label className="grid gap-1 sm:col-span-2">Brand or manufacturer dispensed
+        <label className="grid gap-1 col-span-2">Brand or manufacturer dispensed
           <input className="rounded-md border bg-background p-2" value={manufacturer} onChange={(e) => { setManufacturer(e.target.value); setChecked(null); }} />
         </label>
         <label className="grid gap-1">Pack size dispensed
@@ -145,7 +145,7 @@ function ClaimDetailContent({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
     </section>}
     {row.state === "information_requested" && <section aria-label="Requested confirmation" className="space-y-3">
       <h3 className="font-semibold">Conflicting quantities</h3>
-      <dl className="grid gap-2 sm:grid-cols-2"><div><dt>Captured form quantity</dt><dd>{c.extracted.quantity ?? "Unreadable"}</dd></div><div><dt>Claim ledger quantity</dt><dd>{c.claim.quantity}</dd></div></dl>
+      <dl className="grid gap-2 grid-cols-2"><div><dt>Captured form quantity</dt><dd>{c.extracted.quantity ?? "Unreadable"}</dd></div><div><dt>Claim ledger quantity</dt><dd>{c.claim.quantity}</dd></div></dl>
       <p>Both values remain evidence. Confirmation does not resolve the conflict automatically.</p>
       <label className="grid gap-2" htmlFor="claim-confirmation">Pharmacy confirmation
         <textarea id="claim-confirmation" className="min-h-20 rounded-md border bg-background p-2" value={confirmation} onChange={(e) => setConfirmation(e.target.value)} />

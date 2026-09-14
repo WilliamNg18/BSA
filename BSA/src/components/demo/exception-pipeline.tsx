@@ -25,7 +25,7 @@ export function ExceptionPipeline() {
     <ArrowDown className="mx-auto size-5" aria-hidden="true" />
     <section aria-label="Submission channels" className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="channels">
       <h2 className="font-semibold">EPS message or paper scan</h2><BoundaryTag cls="existing" />
-      <ul className="grid gap-3 text-sm sm:grid-cols-2">
+      <ul className="grid gap-3 text-sm grid-cols-2">
         <li className="rounded-lg border p-3">EPS: dm+d codes and typed endorsements in the claim message.</li>
         <li className="rounded-lg border p-3">Paper: scanned form and character recognition; uncertain handwriting needs human capture.</li>
       </ul>
@@ -41,7 +41,7 @@ export function ExceptionPipeline() {
         <p className="text-sm font-medium">No Type 1 or Type 2 queue row.</p>
       </section>
     </section>
-    <div className="grid items-start gap-4 md:grid-cols-2" aria-label="Conditional staff paths">
+    <div className="grid items-start gap-4 grid-cols-2" aria-label="Conditional staff paths">
       <section aria-label="Type 1 capture path" className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="type1">
         <h2 className="font-semibold">If handwritten or uncertain: Type 1 capture</h2><BoundaryTag cls="human" />
         <p className="text-sm">A person confirms product, quantity and endorsement. Code routes again: automated pricing if complete, Type 2 if interpretation is needed.</p>
@@ -63,7 +63,7 @@ export function ExceptionPipeline() {
       </section>
     </div>
     <ArrowDown className="mx-auto size-5" aria-hidden="true" />
-    <ol aria-label="Referral and resubmission stages" className="grid items-start gap-4 md:grid-cols-3">
+    <ol aria-label="Referral and resubmission stages" className="grid items-start gap-4 grid-cols-3">
       <li className="space-y-3 rounded-xl border bg-card p-5" data-pipeline-stage="referred-back">
         <h2 className="font-semibold">Referred back</h2><BoundaryTag cls="human" />
         <p className="text-sm">An RB code explains the missing endorsement. Only that item&apos;s payment is delayed.</p>

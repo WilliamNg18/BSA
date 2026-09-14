@@ -11,7 +11,7 @@ export function PharmacyAssumptions() {
   return <details className="rounded-xl border bg-card p-4" data-pharmacy-assumptions>
     <summary className="cursor-pointer font-semibold">Timeline assumptions</summary>
     <p className="my-3 text-sm text-muted-foreground">Editable scenario days, not measured delays. Existing receipts keep their original assumptions.</p>
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="grid gap-3 grid-cols-2 lg:grid-cols-5">
       {PHARMACY_ASSUMPTION_FIELDS.map(({ key, label }) => {
         const raw = draft[key] ?? String(values[key]);
         const invalid = validPharmacyDays(raw) === null;

@@ -1,7 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
-import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { DEMONSTRABLE_LIFECYCLE_STATES } from "./lifecycle-helpers";
 
 const B = "EX-24112";
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -92,9 +93,9 @@ for (const enabled of [false, true]) {
 
 for (const reducedMotion of ["reduce", "no-preference"] as const) {
   for (const enabled of [false, true]) {
-    for (const state of Object.keys(LIFECYCLE_LABELS) as LifecycleState[]) {
+    for (const state of DEMONSTRABLE_LIFECYCLE_STATES) {
       test.describe(`Task13 claims ${state} Agent=${enabled} motion=${reducedMotion}`, () => {
-        test.use({ reducedMotion, viewport: { width: reducedMotion === "reduce" ? 360 : 1440, height: 900 }, colorScheme: reducedMotion === "reduce" ? "dark" : "light" });
+        test.use({ reducedMotion, viewport: { width: 1440, height: 900 }, colorScheme: reducedMotion === "reduce" ? "dark" : "light" });
         test("list and expanded detail unrestricted axe", async ({ page }, info) => {
           if (state === "submitted") {
             await page.goto("pharmacy");

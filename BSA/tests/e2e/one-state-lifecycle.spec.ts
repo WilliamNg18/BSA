@@ -7,8 +7,8 @@ const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
 
 function expectUnrelatedCases(before: DomainSnapshot, after: DomainSnapshot, changed: string) {
-  for (const key of ["lifecycles", "caseRevisions", "itemProcesses", "caseStates"] as const) {
-    for (const id of Object.keys(before[key])) {
+  for (const key of ["lifecycles", "caseRevisions", "itemProcesses", "itemVerification", "operatorDrafts", "pharmacyDrafts", "caseStates"] as const) {
+    for (const id of new Set([...Object.keys(before[key]), ...Object.keys(after[key])])) {
       if (id !== changed) expect(after[key][id], `${key}: ${id} is not part of this action`).toEqual(before[key][id]);
     }
   }

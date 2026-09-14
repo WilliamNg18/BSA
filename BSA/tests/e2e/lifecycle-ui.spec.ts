@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
-import { ALL_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
+import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 const B = "EX-24112";
@@ -185,7 +185,7 @@ test("Hillcrest has seven states, real totals, read-only dispositions and shared
     const total = amounts.reduce((sum, text) => sum + Number(text.replace(/[£,]/g, "")), 0);
     await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText(
       new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(total));
-    for (const state of ALL_LIFECYCLE_STATES) {
+    for (const state of DEMONSTRABLE_LIFECYCLE_STATES) {
       await prepareUnseededState(page, state);
       await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
       const labels = LIFECYCLE_LABELS[state];
@@ -204,10 +204,10 @@ test("Hillcrest has seven states, real totals, read-only dispositions and shared
   }
 });
 
-for (const width of [360, 1440]) for (const enabled of [false, true]) {
+for (const width of [1280, 1440]) for (const enabled of [false, true]) {
   test(`Task9 claims full-rule accessibility width=${width} On=${enabled}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.emulateMedia({ colorScheme: width === 360 ? "dark" : "light" });
+    await page.emulateMedia({ colorScheme: width === 1280 ? "dark" : "light" });
     await page.goto(`pharmacy/claims?caseId=${B}`);
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     if (enabled) await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();

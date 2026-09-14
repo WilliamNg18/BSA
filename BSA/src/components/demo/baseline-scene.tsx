@@ -12,7 +12,7 @@ export function BaselineScene() {
   return <section aria-label="Shared scenario estimates" className="space-y-3 rounded-xl border bg-card p-5" data-scene-estimates>
     <h2 className="font-semibold">A month across the process</h2>
     <p className="text-sm text-muted-foreground">Whole-service context and a separate referral-loop estimate. Not observed activity; staff streams can overlap.</p>
-    {result && column ? <dl className="grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
+    {result && column ? <dl className="grid gap-4 text-sm grid-cols-2 lg:grid-cols-3">
       {([
         ["monthlyItems", "Items a month", result.counts.monthlyItems],
         ["autoPricedItems", "Priced automatically, no person involved", result.counts.autoPricedItems],

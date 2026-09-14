@@ -118,7 +118,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
       <p className="text-sm">Attempt {revision.number}. Shared with NHSBSA in every perspective.</p>
       {submitted && <>
         <p role="status" className="text-sm">Submitted (synthetic). No claim sent; no payment changed by this demonstration.</p>
-        <dl className="grid gap-3 text-sm sm:grid-cols-2">
+        <dl className="grid gap-3 text-sm grid-cols-2">
           <div><dt>Receipt</dt><dd>{caseId}:{revision.number}</dd></div>
           <div><dt>Submitted at</dt><dd>{revision.at}</dd></div>
           <div><dt>Endorsement snapshot</dt><dd className="break-words">{revision.endorsementText || "Empty"}</dd></div>
@@ -129,7 +129,7 @@ export function PaperPharmacyCapture({ caseId = defaultCaseId }: { caseId?: stri
         <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(caseId)}`}>View submitted claim</Link></Button>
         {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}
       </>}
-      {enabled && revision.paperDeclaration && <dl className="grid gap-3 text-sm sm:grid-cols-2">
+      {enabled && revision.paperDeclaration && <dl className="grid gap-3 text-sm grid-cols-2">
         {(Object.keys(labels) as (keyof PaperDeclarationDraft)[]).map((field) => <div key={field}>
           <dt className="font-medium">{labels[field]}</dt>
           <dd>{String(revision.paperDeclaration![field] ?? "Not declared") || "Not declared"}</dd>

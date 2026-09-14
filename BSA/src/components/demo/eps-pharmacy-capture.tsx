@@ -113,7 +113,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
         <EpsPrescriptionMessage prescription={draft} dispenser={false} />
         <section aria-label="Dispenser's part" className="space-y-4 rounded-xl border p-4">
           <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="font-semibold">Dispenser&apos;s part</h3><BoundaryTag cls="human" /></div>
-          <dl className="grid gap-3 text-sm sm:grid-cols-2">
+          <dl className="grid gap-3 text-sm grid-cols-2">
             <KeyValue k="Product dispensed" v={draft.items[0].dispensedName} />
             <KeyValue k="dm+d-style code (synthetic)" v={draft.items[0].dispensedCode} />
           </dl>
@@ -136,7 +136,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
             <div className="space-y-1"><Label htmlFor="eps-manufacturer">Brand or manufacturer dispensed</Label>
               <Input id="eps-manufacturer" value={supply?.brandManufacturer ?? ""} onChange={(event) => supplyUpdate({ brandManufacturer: event.target.value })} aria-describedby={enabled && missing.has("brand_manufacturer") ? "eps-gap" : undefined} />
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 grid-cols-2">
               <div className="space-y-1"><Label htmlFor="eps-pack">Pack size dispensed</Label>
                 <Input id="eps-pack" type="number" min="1" step="1" value={supply?.packSize ?? ""} onChange={(event) => supplyUpdate({ packSize: event.target.value === "" ? null : Number(event.target.value) })} />
               </div>
@@ -166,7 +166,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
               <span>{index === 0 ? "Digital claim fields" : label}</span><span>{result?.stages[index] ?? (index < current.phase ? "Staged" : index === current.phase ? "Checking" : "Pending")}</span>
             </li>)}
           </ol>
-          <dl className="grid gap-3 text-sm sm:grid-cols-2">
+          <dl className="grid gap-3 text-sm grid-cols-2">
             <KeyValue k="Endorsement type recognised" v={result?.facts?.type ?? "Pending"} />
             <KeyValue k="Dispensing-date version" v={result?.version ?? "Not retrieved"} />
           </dl>
@@ -227,7 +227,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
       <p role="status">Submitted (synthetic). Original attempts are retained.</p>
       <p className="text-sm">{automatic ? "Paid on the normal schedule: priced by NHSBSA's existing rules engine, no person involved."
         : receipt.kind === "resubmission" ? "Resubmitted: awaiting human re-check." : "Awaiting Type 2 judgement. No referral or operator decision has been made by the agent."}</p>
-      <dl className="grid gap-3 text-sm sm:grid-cols-2"><KeyValue k="Receipt" v={`${caseId}:${receipt.number}`} /><KeyValue k="Submitted at" v={receipt.at} />
+      <dl className="grid gap-3 text-sm grid-cols-2"><KeyValue k="Receipt" v={`${caseId}:${receipt.number}`} /><KeyValue k="Submitted at" v={receipt.at} />
         <KeyValue k="Typed text snapshot" v={receipt.endorsementText || "Empty"} /><KeyValue k="Check result" v={receipt.precheck?.status ?? "not_checked"} />
         <KeyValue k="Check timestamp" v={receipt.precheck?.checkedAt ?? "No checks performed"} />
         <KeyValue k="Version / clause" v={`${receipt.precheck?.tariffVersion ?? "Not retrieved"} / ${receipt.precheck?.clauseId ?? "Not retrieved"}`} />

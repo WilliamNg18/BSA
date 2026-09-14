@@ -123,6 +123,9 @@ for (const enabled of [false, true]) {
         expect(paid.lifecycles[id]).toEqual(seed.lifecycles[id]);
         expect(paid.caseRevisions[id]).toEqual(seed.caseRevisions[id]);
         expect(paid.itemProcesses[id]).toEqual(seed.itemProcesses[id]);
+        expect(paid.itemVerification[id]).toEqual(seed.itemVerification[id]);
+        expect(paid.operatorDrafts[id]).toEqual(seed.operatorDrafts[id]);
+        expect(paid.pharmacyDrafts[id]).toEqual(seed.pharmacyDrafts[id]);
       }
       await action("Reset the demonstration through its confirmation", "NHSBSA", async () => {
         await page.getByRole("button", { name: "Reset demo", exact: true }).click();

@@ -76,7 +76,7 @@ export function AssumptionsPage() {
       </PageSection>
 
       <PageSection title="How the prototype's own claims are classified" description="Used throughout the interface.">
-        <ul className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-2 grid-cols-2 lg:grid-cols-3">
           {[
             ["Publicly supported", "Published processing context and approximate referral figures. Targets are not achieved performance; submission channels and implementation details need validation."],
             ["Reasoned assumption", "Manual assembly, separate systems, accessible history and integration feasibility require observation and validation."],

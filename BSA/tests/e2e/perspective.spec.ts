@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { captureCheckpoint, captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
+import { captureCheckpoint, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { choosePerspective, flag, perspectiveGuard, perspectiveRoundTrips } from "./perspective-helpers";
 
 test("Pharmacy submit to NHSBSA decision to Pharmacy same decision, Off then On without Reset", async ({ page }, info) => {
@@ -60,7 +60,7 @@ for (const cancellation of ["edit", "scenario", "Agent Off", "leave page", "Rese
   });
 }
 
-for (const width of [360, 768, 1024, 1440, 1920]) {
+for (const width of [1280, 1440]) {
   for (const colorScheme of ["light", "dark"] as const) {
     test(`perspective header, filtered navigation and zero-violation axe ${width} ${colorScheme}`, async ({ page }, info) => {
       await page.setViewportSize({ width, height: 1000 });
@@ -83,11 +83,9 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
         expect(groupBox!.x + groupBox!.width).toBeLessThanOrEqual(flagBox!.x);
         expect(await header.evaluate((element) => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
         const nav = page.getByRole("navigation", { name: "Primary", exact: true });
-        const mobile = nav.getByRole("button", { name: "Open navigation", exact: true });
-        const mobileNavigation = await mobile.isVisible();
-        await (mobileNavigation ? mobile : nav.getByRole("button", { name: "Operations", exact: true })).click();
+        await nav.getByRole("button", { name: "Operations", exact: true }).click();
         const expected = perspective === "Pharmacy" ? ["Pharmacy check", "Pharmacy claims"] : perspective === "NHSBSA" ? ["NHSBSA queue"] : ["Pharmacy check", "Pharmacy claims", "NHSBSA queue"];
-        const menu = mobileNavigation ? page.getByRole("dialog", { name: "Navigation", exact: true }).getByRole("region", { name: "Operations", exact: true }).getByRole("link") : page.getByRole("menuitem");
+        const menu = page.getByRole("menuitem");
         await expect(menu).toHaveText(expected);
         await page.keyboard.press("Escape");
         await expect(page.getByRole("dialog")).toHaveCount(0);
@@ -103,78 +101,6 @@ for (const width of [360, 768, 1024, 1440, 1920]) {
       }
     });
   }
-}
-
-for (const width of [320, 360, 768]) for (const colorScheme of ["light", "dark"] as const) for (const fontSize of [16, 18]) {
-  test(`document reflow for every perspective and Agent mode ${width} ${colorScheme} fallback font ${fontSize}`, async ({ page }, info) => {
-    await page.setViewportSize({ width, height: 1000 });
-    await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
-    await page.goto("/evaluation");
-    await page.evaluate((size) => {
-      document.documentElement.style.fontSize = `${size}px`;
-      document.body.style.fontFamily = "Arial, sans-serif";
-    }, fontSize);
-    await page.evaluate(() => document.fonts.ready);
-    for (const side of ["Pharmacy", "NHSBSA", "Both"] as const) for (const enabled of [false, true]) {
-      await choosePerspective(page, side);
-      await flag(page).setChecked(enabled);
-      const layout = await page.evaluate(() => ({
-        viewport: innerWidth, document: document.documentElement.scrollWidth, body: document.body.scrollWidth,
-        overflow: Array.from(document.querySelectorAll("body *")).flatMap((element) => {
-          const rect = element.getBoundingClientRect();
-          return rect.right > innerWidth + 1 ? [{
-            tag: element.tagName, class: element.getAttribute("class"), right: rect.right, width: rect.width,
-            text: element.textContent?.slice(0, 100),
-          }] : [];
-        }),
-      }));
-      await captureJson(info, `reflow-${side}-${enabled}`, layout);
-      expect(layout.document).toBeLessThanOrEqual(width);
-      expect(layout.body).toBeLessThanOrEqual(width);
-      if (width >= 360 && fontSize === 16) {
-        const header = page.getByRole("banner");
-        expect((await header.boundingBox())!.height).toBeLessThanOrEqual(64);
-        const boxes = await Promise.all([
-          header.getByRole("link", { name: "Prescription Exception Case Builder", exact: true }),
-          header.getByRole("button", { name: "Open navigation", exact: true }),
-          header.getByRole("group", { name: "Perspective", exact: true }),
-          flag(page),
-          header.getByRole("button", { name: "Reset demo", exact: true }),
-        ].map((control) => control.boundingBox()));
-        const centres = boxes.map((box) => box!.y + box!.height / 2);
-        expect(Math.max(...centres) - Math.min(...centres)).toBeLessThanOrEqual(1);
-      }
-      const radio = page.getByRole("group", { name: "Perspective", exact: true }).getByRole("radio", { name: side, exact: true });
-      await radio.focus();
-      await expect(radio).toBeFocused();
-      const box = (await radio.boundingBox())!;
-      expect(box.x).toBeGreaterThanOrEqual(2);
-      expect(box.x + box.width).toBeLessThanOrEqual(width - 2);
-      await navigatePrimary(page, "Overview");
-      const heading = page.getByRole("main").getByRole("heading", { level: 1 });
-      await expect(heading).toBeFocused();
-      const chrome = page.getByRole("banner").locator("..");
-      await expect.poll(async () => {
-        const title = (await heading.boundingBox())!, stack = (await chrome.boundingBox())!;
-        return title.y - stack.y - stack.height;
-      }).toBeGreaterThanOrEqual(0);
-      await confirmReset(page);
-      const reset = page.getByRole("button", { name: "Reset demo", exact: true });
-      await expect(reset).toBeFocused();
-      const resetBox = (await reset.boundingBox())!, headerBox = (await page.getByRole("banner").boundingBox())!;
-      expect(resetBox.y).toBeGreaterThanOrEqual(headerBox.y);
-      expect(resetBox.y + resetBox.height).toBeLessThanOrEqual(headerBox.y + headerBox.height);
-      if (side === "Both") {
-        await page.getByRole("navigation", { name: "Guided tour", exact: true }).getByRole("button", { name: "Next", exact: true }).click();
-        await expect(heading).toBeFocused();
-        await expect.poll(async () => {
-          const title = (await heading.boundingBox())!, stack = (await chrome.boundingBox())!;
-          return title.y - stack.y - stack.height;
-        }).toBeGreaterThanOrEqual(0);
-      }
-      await navigatePrimary(page, "Evaluation");
-    }
-  });
 }
 
 test("native perspective keyboard, Reset retention and suspended tour shortcuts", async ({ page }) => {

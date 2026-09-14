@@ -3,7 +3,7 @@ import { referralFreeProxyDisplay, formatBaselineNumber, type BaselineResult } f
 export function ReferralProxy({ result }: { result: BaselineResult }) {
   return <section aria-label="Referral-free proxy estimate" className="space-y-3 rounded-xl border border-amber-600/40 bg-amber-500/5 p-4">
     <h2 className="font-semibold">Referral-free proxy · Estimate</h2>
-    <dl className="grid gap-3 text-sm sm:grid-cols-2">
+    <dl className="grid gap-3 text-sm grid-cols-2">
       <div><dt>Scenario proxy · Not observed accuracy</dt><dd className="text-2xl font-semibold tabular-nums" data-referral-proxy>{referralFreeProxyDisplay(result)}</dd></div>
       <div><dt>Residual risk · All abstained + deficient built</dt><dd className="text-2xl font-semibold tabular-nums" data-risk-residual>{formatBaselineNumber(result.referralRiskResidual, 0)}</dd></div>
       <div><dt>Assumed referrals · Not observed outcomes</dt><dd className="text-2xl font-semibold tabular-nums" data-referrals-with>{formatBaselineNumber(result.referrals.withAgent, 0)}</dd></div>

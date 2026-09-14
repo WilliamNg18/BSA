@@ -65,13 +65,13 @@ export function AppShell() {
         }} />
       </div>
       <section aria-label="Demonstration scope and governing principle">
-      <div className="border-b border-amber-300 bg-amber-50 px-4 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 md:px-6" data-disclaimer>
+      <div className="border-b border-amber-300 bg-amber-50 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 px-6" data-disclaimer>
         <button type="button" className="rounded-sm text-left font-medium underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" aria-expanded={disclaimerOpen} aria-controls="synthetic-disclaimer" onClick={() => setDisclaimerOpen((open) => !open)}>
           Synthetic demonstration data throughout. {disclaimerOpen ? "Hide details" : "Show details"}
         </button>
         <p id="synthetic-disclaimer" hidden={!disclaimerOpen} className="mt-2">No payments calculated or approved. Not measured NHSBSA performance.</p>
       </div>
-      <p className="border-b bg-muted/30 px-4 py-3 text-xs font-medium md:px-6" data-principle>The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.</p>
+      <p className="border-b bg-muted/30 py-3 text-xs font-medium px-6" data-principle>The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.</p>
       </section>
       <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
         <TooltipProvider><AssistanceTransition>
@@ -80,7 +80,7 @@ export function AppShell() {
             <Outlet/> would animate the NEXT route's content, not the leaving one. */}
         <div
           key={`${pathname}:${resetEpoch}`}
-          className="flex-1 px-4 py-6 md:px-6 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
+          className="flex-1 py-6 px-6 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
         >
           {both && pathname === "/queue" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
             <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
@@ -97,7 +97,7 @@ export function AppShell() {
         </div>
         </AssistanceTransition></TooltipProvider>
       </main>
-      <footer className="flex flex-wrap items-center justify-between gap-3 border-t px-4 py-4 text-xs text-muted-foreground md:px-6">
+      <footer className="flex flex-wrap items-center justify-between gap-3 border-t py-4 text-xs text-muted-foreground px-6">
         <span>Session only · Synthetic cases · No payments calculated or approved</span>
         {both && (tourVisible ? <span>Tour shortcuts: Alt + ← / → outside fields and menus</span> : <Button variant="outline" size="sm" onClick={() => {
           restoreTourFocus.current = true;

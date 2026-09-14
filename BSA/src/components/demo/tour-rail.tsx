@@ -38,10 +38,10 @@ export function TourRail({ visible, onDismiss }: { visible: boolean; onDismiss: 
 
   if (!visible || !both) return null;
   return (
-    <nav aria-label="Guided tour" className="border-b bg-background/95 px-3 backdrop-blur md:px-6">
+    <nav aria-label="Guided tour" className="border-b bg-background/95 backdrop-blur px-6">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-2">
         <Button variant="outline" size="sm" disabled={index <= 0} aria-keyshortcuts="Alt+ArrowLeft" onClick={() => navigate(TOUR_STOPS[index - 1].to)}>
-          <ArrowLeft aria-hidden="true" /><span className="hidden sm:inline">Back</span><span className="sr-only sm:hidden">Back</span>
+          <ArrowLeft aria-hidden="true" /><span>Back</span>
         </Button>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
