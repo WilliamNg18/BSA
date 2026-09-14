@@ -129,7 +129,7 @@ for (const enabled of [false, true]) {
   });
 }
 
-test("copy cap positive controls reject long prose and split-paragraph evasion", async ({ page }) => {
+test("copy cap positive controls reject long prose and split-paragraph evasion", { tag: "@informational" }, async ({ page }) => {
   await page.setContent(`<main><section data-prose="test"><h1>Heading excluded</h1><p>${"word ".repeat(26)}</p></section><section><p>${"word ".repeat(15)}</p><p>${"word ".repeat(15)}</p></section><p data-copy="label">${"label ".repeat(26)}</p><p><span data-slot="badge">Status</span>${"badge ".repeat(26)}</p><ul><li><a href="#">Link</a>${"linked ".repeat(26)}</li></ul><div>${"untagged ".repeat(26)}</div><dl><dd>${"definition ".repeat(26)}</dd></dl></main>`);
   const result = await page.evaluate(auditProse);
   expect(result.failures).toEqual(expect.arrayContaining([
