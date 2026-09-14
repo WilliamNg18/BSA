@@ -61,7 +61,8 @@ describe("follow history and current location presentation", () => {
 
   it("does not let a later automatic release erase an earlier operator's involvement", () => {
     const item = row({ to: "released_to_pricing", releaseOrigin: "human_decision" });
-    item.history.push({ ...item.history[0], actor: "code", from: "released_to_pricing", releaseOrigin: "automatic_verification" });
+    item.history.push({ ...item.history[0], actor: "code", from: "released_to_pricing", releaseOrigin: "automatic_verification",
+      verification: { gate1: "pass", gate2: "pass", reconciled: true, released: true } });
     for (const enabled of [false, true]) {
       expect(historyStateLabel(item, 0, "nhsbsa", enabled)).toContain("after operator review");
       expect(historyStateLabel(item, 1, "nhsbsa", enabled, true)).toContain("after operator review");
