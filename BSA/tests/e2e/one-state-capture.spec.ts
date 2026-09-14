@@ -37,7 +37,8 @@ for (const enabled of [false, true]) {
         if (scenario === "fresh unknown") {
           await action("Choose unreadable paper without a declaration", "Pharmacy", async () => {
             await page.getByRole("radio", { name: "Paper", exact: true }).check();
-            await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
+            await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
+            await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toBeVisible();
           });
           await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
           if (enabled) {
