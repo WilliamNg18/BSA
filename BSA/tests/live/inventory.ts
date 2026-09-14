@@ -6,7 +6,7 @@ export const LIVE_CHECKS = {
   pharmacy: "05 Three pharmacy scenarios remain advisory in both modes",
   claims: "06 Claims seed list opens a matching seeded claim and history",
   queue: "07 Actual staff work and separate monthly projections survive Agent changes",
-  roundtrip: "08 Full Off then On round trips retain Follow and Switch side",
+  roundtrip: "08 Full Off then On round trips retain Follow and explicit Pharmacy and NHSBSA views",
   paper: "09 D abstains until human capture and retains history through paper referral",
   deterministic: "10 Case E remains deterministic without an agent call",
   replay: "11 Case B July replay is Sufficient while August refers back",

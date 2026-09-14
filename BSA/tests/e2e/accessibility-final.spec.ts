@@ -73,7 +73,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           await page.getByRole("button", { name: "Follow this case", exact: true }).press("Enter");
           await expect(page.getByRole("region", { name: "Followed item" })).toBeVisible();
           await audit(page, info, "claim-follow-axe");
-          await page.getByRole("link", { name: "Switch side: NHSBSA", exact: true }).press("Enter");
+          await page.getByRole("button", { name: "NHSBSA view", exact: true }).press("Enter");
           await expect(page).toHaveURL(/\/case\/EX-24112$/);
           await audit(page, info, "case-follow-axe");
           await page.getByRole("button", { name: "Dismiss followed item" }).press("Enter");
