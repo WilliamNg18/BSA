@@ -2010,3 +2010,9 @@ count links to read-only case records, independently of monthly estimates.
 Only a recorded code-origin two-gate release says no operator action.
 Human releases show after operator review; historical sources remain visible
 in either header mode. No payment is calculated or approved.
+
+## 2026-09-14: Task 33 follows the four-case vision correction
+
+- Question: which queue items act? Chosen: G's authoritative playable set only, with C/F as fixed unclickable background; the newest four-case instruction wins.
+- Question: where does compact NHSBSA evidence live? Chosen: the same operator component exposes the actual source, captured fields and gathered evidence alongside advice; visible evidence authority wins over a suggestion-only demo.
+- Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.

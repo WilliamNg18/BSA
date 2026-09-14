@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { OperatorActionPanel } from "../../src/components/demo/operator-action-panel";
 import { AutomatedCaseRecords, ReleaseRecord } from "../../src/components/demo/release-record";
 import { Type1Capture } from "../../src/components/demo/type1-capture";
+import { QueuePage } from "../../src/pages/queue";
 import { getDomainSnapshot, getReleaseEligibility, useAppStore } from "../../src/lib/store";
 import * as agent from "../../src/lib/domain/agent";
 
@@ -121,12 +122,38 @@ describe("shared operator action panel", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
+  it("keeps C and F as unclickable background outside the four playable queue counts", () => {
+    const before = getDomainSnapshot();
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(QueuePage)));
+    expect(Object.keys(before.lifecycles).sort()).toEqual(["EX-24107", "EX-24112", "EX-24123", "SYN-FQ123-MISMATCH"].sort());
+    expect(html).toContain('aria-label="Background cases"');
+    for (const id of ["EX-24119", "EX-24088"]) {
+      expect(html).toContain(id);
+      expect(html).not.toContain(`href="/case/${id}"`);
+      expect(html).not.toContain(`data-case-id="${id}"`);
+    }
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
   it("does not invent a release record for an unreleased case", () => {
     expect(renderToStaticMarkup(createElement(ReleaseRecord, { caseId: "EX-24112" }))).toBe("");
   });
 });
 
 describe("compact Type 1 declaration confirmation", () => {
+  it("renders the operator handoff after a real human confirmation of the historical D declaration", () => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(true);
+    const revision = store.caseRevisions["EX-24123"].at(-1)!;
+    store.confirmType1({ caseId: "EX-24123", revision: revision.number, provenance: "human_capture", declarationReconciled: true,
+      fields: { ...revision.declaration!.fields, prescriber: "Separately established synthetic prescriber" } });
+    const confirmed = getDomainSnapshot();
+    expect(() => renderPanel("EX-24123")).not.toThrow();
+    expect(renderPanel("EX-24123")).toContain("Operator decision");
+    expect(confirmed.lifecycles["EX-24123"].history.at(-1)?.actor).toBe("operator");
+    expect(getDomainSnapshot()).toEqual(confirmed);
+  });
+
   it("shows immutable declaration values and an empty unknown prescriber beside the poor scan", () => {
     useAppStore.getState().setAgentEnabled(true);
     const before = getDomainSnapshot();

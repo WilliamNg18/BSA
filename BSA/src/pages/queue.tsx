@@ -8,7 +8,7 @@ import { Type1Capture } from "@/components/demo/type1-capture";
 import { AutomaticPricingCount, ManualLoopProjection } from "@/components/demo/manual-loop-projection";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
-import { BACKGROUND_PHARMACIES } from "@/lib/domain/reference";
+import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 import { permitsProposal, recordHasRuleAndReason, staffLane, type StaffLane } from "@/lib/case-presentation";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
@@ -33,6 +33,7 @@ function QueueWorklist() {
   const worklistHeading = useRef<HTMLHeadingElement>(null);
   const rows = useMemo(() => Object.values(lifecycles).flatMap((lifecycle) => {
     const id = lifecycle.caseId;
+    if (!isPlayableCase(id)) return [];
     const revision = revisions[id]?.at(-1);
     const process = processes[id];
     if (!revision || !process || process.revision !== revision.number) return [];
@@ -88,11 +89,11 @@ function QueueWorklist() {
       <AutomaticPricingCount />
       <AutomatedCaseRecords />
     </header>
-    <section aria-label="Other pharmacies, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
-      <h2 className="font-semibold">Other pharmacies, background</h2>
-      <p>Fixed synthetic context only. These entries cannot be opened and are excluded from Hillcrest&apos;s items and counts.</p>
+    <section aria-label="Background cases" className="rounded-xl border bg-muted/30 p-4 text-sm">
+      <h2 className="font-semibold">Background cases</h2>
+      <p>Fixed historical context, excluded from playable items and counts.</p>
       <ul className="mt-2 grid gap-2 grid-cols-2">
-        {BACKGROUND_PHARMACIES.map((pharmacy) => <li key={pharmacy.contractorCode}>{pharmacy.name} · Background only</li>)}
+        {BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · {c.title} · Background only</li>)}
       </ul>
     </section>
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
