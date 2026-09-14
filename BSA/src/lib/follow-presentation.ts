@@ -1,4 +1,12 @@
-import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess } from "./domain/lifecycle";
+import { itemStateLabel, type CaseLifecycle, type CaseRevision, type HistoryEvent, type ItemProcess } from "./domain/lifecycle";
+
+export function historyStateLabel(row: CaseLifecycle, index: number, side: "pharmacy" | "nhsbsa", enabled: boolean, before = false): string {
+  const event = row.history[index];
+  if (!event) throw new Error("The requested history event is unavailable.");
+  const state = before ? event.from : event.to;
+  if (!state) return "New";
+  return itemStateLabel({ ...row, state, history: row.history.slice(0, index + (before ? 0 : 1)) }, side, enabled);
+}
 
 export function followedChannel(row: CaseLifecycle, process?: ItemProcess, revision?: CaseRevision): string {
   const channel = process?.channel ?? revision?.channel ?? row.history.filter((event) => event.channel).at(-1)?.channel;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { followedChannel, followedLastEvent, followedLocation } from "../../src/lib/follow-presentation";
+import { followedChannel, followedLastEvent, followedLocation, historyStateLabel } from "../../src/lib/follow-presentation";
 import type { CaseLifecycle, HistoryEvent } from "../../src/lib/domain/lifecycle";
 import { useAppStore } from "../../src/lib/store";
 
@@ -57,5 +57,16 @@ describe("follow history and current location presentation", () => {
     expect(followedLocation({ ...item, state: "referred_back" })).toBe("Referred back to pharmacy");
     expect(followedLocation({ ...item, state: "released_to_pricing" })).toBe("Released to existing pricing");
     expect(followedLocation({ ...item, state: "information_requested" })).toBe("Pharmacy: confirmation requested");
+  });
+
+  it("does not let a later automatic release erase an earlier operator's involvement", () => {
+    const item = row({ to: "released_to_pricing", releaseOrigin: "human_decision" });
+    item.history.push({ ...item.history[0], actor: "code", from: "released_to_pricing", releaseOrigin: "automatic_verification" });
+    for (const enabled of [false, true]) {
+      expect(historyStateLabel(item, 0, "nhsbsa", enabled)).toContain("after operator review");
+      expect(historyStateLabel(item, 1, "nhsbsa", enabled, true)).toContain("after operator review");
+      expect(historyStateLabel(item, 1, "nhsbsa", enabled)).toContain("no operator action");
+      expect(historyStateLabel(item, 0, "pharmacy", enabled)).toContain("after operator review");
+    }
   });
 });
