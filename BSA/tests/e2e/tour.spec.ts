@@ -2,7 +2,7 @@ import { confirmReset, expect, navigatePrimary as navigateExisting, test } from 
 import type { Page } from "@playwright/test";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, PLAYABLE_CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "../../src/lib/domain/baseline";
 import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
@@ -225,19 +225,25 @@ test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases foll
   await expect(a.getByRole("link", { name: "Open case A", exact: true })).toHaveCount(0);
   await expect(a.locator("[data-outcome], [data-pain-marker], [data-manual-tasks]")).toHaveCount(0);
   await expect(a).not.toContainText(/Gate:|recommendation|Human decision/);
-  for (const item of CASES.filter((item) => ["B", "C"].includes(item.scenario))) {
-    const card = page.locator(`[data-case="${item.scenario}"]`);
+  const cards = page.getByRole("list", { name: "Four canonical synthetic cases" }).locator(":scope > li");
+  for (const item of PLAYABLE_CASES.filter((item) => ["EX-24112", "SYN-FQ123-MISMATCH"].includes(item.id))) {
+    const card = cards.filter({ hasText: item.id });
     const pack = runAgent(item);
-    await expect(card).toHaveAttribute("data-case-routing", item.scenario === "B" ? "referred_back" : "type2_endorsement");
+    await expect(card).toHaveAttribute("data-case-routing", item.id === "EX-24112" ? "referred_back" : "type2_endorsement");
     await expect(card.locator("[data-outcome]")).toHaveText(REC_META[pack.recommendation].label);
     await expect(card).toContainText(`Gate: ${pack.gate.result.replaceAll("_", " ")}`);
-    await expect(card.getByRole("link", { name: `Open case ${item.scenario}`, exact: true })).toBeVisible();
+    const open = card.getByRole("link", { name: `Open case ${item.scenario}`, exact: true });
+    await expect(open).toBeVisible();
+    await expect(open).toHaveAttribute("href", `/case/${item.id}`);
   }
   await expect(page.locator('[data-case="B"] [data-correction]')).toHaveText("Fix: add the date beside the initials.");
-  const c = page.locator('[data-case="C"]');
-  await expect(c).toContainText("56");
-  await expect(c).toContainText("84");
-  await expect(c).toContainText("Unresolved");
+  // C's archival quantity conflict is replaced by the playable wrong-pack evidence boundary.
+  const mismatch = cards.filter({ hasText: "SYN-FQ123-MISMATCH" });
+  await expect(mismatch).toContainText("Complete format, wrong pack");
+  await mismatch.locator("summary", { hasText: "Outcome evidence and exact correction" }).click();
+  await expect(mismatch.getByRole("list", { name: "Requirement checks" })).toContainText("Pack size dispensed: not met");
+  await expect(mismatch.locator("[data-outcome]")).not.toHaveText(REC_META.SUFFICIENT.label);
+  await expect(page.getByRole("list", { name: "Four canonical synthetic cases" })).not.toContainText(/EX-24119|EX-24088|EX-24101|SYN-FQ123-READABLE|SYN-FQ123-RECHECK/);
   const d = page.locator('[data-case="D"]');
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await expect(d).toContainText("Proposed: declared by the pharmacy, not read from the form.");
@@ -341,7 +347,12 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await page.getByRole("radio", { name: /^Refer back / }).check();
+  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
+  await page.getByRole("textbox", { name: /^Reason/ }).fill("Reset must preserve this human referral until explicitly confirmed");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
   await navigatePrimary(page, "Pharmacy check");
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   const seed = await field.inputValue();
