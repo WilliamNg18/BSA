@@ -89,6 +89,18 @@ describe("shared operator action panel", () => {
     expect(() => store.releaseToPricing("EX-24112")).toThrow();
   });
 
+  it("names the unresolved source gaps when the agent abstains after manual capture", () => {
+    const store = useAppStore.getState();
+    store.confirmType1({ caseId: "EX-24123", revision: 1, provenance: "human_capture", declarationReconciled: false,
+      fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
+    store.setAgentEnabled(true);
+    const html = renderPanel("EX-24123");
+    expect(html).toContain("Exact gap");
+    expect(html).toContain("Missing product.");
+    expect(html).toContain("Missing prescriber.");
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Release to pricing<\/button>/);
+  });
+
   it("records final referral separately, retains the approved exact note and removes decision controls", () => {
     openReview(true);
     const store = useAppStore.getState();
