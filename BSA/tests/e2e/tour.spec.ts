@@ -284,8 +284,12 @@ test("case D card follows human-confirmed current capture instead of retaining i
   const d = page.locator('[data-case="D"]');
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await navigatePrimary(page, "Pharmacy check");
-  await page.getByRole("radio", { name: "Paper", exact: true }).check();
+  const paper = page.getByRole("radio", { name: "Paper", exact: true });
+  await paper.click();
+  await expect(paper).toBeChecked();
   await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24123");
+  await expect(page).toHaveURL((url) => url.pathname === "/pharmacy"
+    && url.searchParams.get("case") === "EX-24123" && url.searchParams.get("channel") === "paper");
   const source = CASES.find((item) => item.scenario === "D")!;
   await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
   await page.getByLabel("Declared quantity", { exact: true }).fill(String(source.claim.quantity));

@@ -85,9 +85,17 @@ for (const boundary of ["edit", "scenario", "Agent Off", "leave page", "Reset", 
     await expect(page.locator("[data-pharmacy-released-count]")).toHaveText("0");
     if (boundary === "edit") await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO XY 21/08/26");
     if (boundary === "scenario") {
-      await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
-      await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
-      await expect(page.getByRole("textbox", { name: "Dispenser endorsement", exact: true })).toHaveValue(/21\/08\/26$/);
+      const endorsement = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
+      const corrected = await endorsement.inputValue();
+      for (const [name, caseId] of [["Complete endorsement", "EX-24107"], ["NCSO missing date", "EX-24112"]] as const) {
+        const scenario = page.getByRole("radio", { name, exact: true });
+        await scenario.click();
+        await expect(scenario).toBeChecked();
+        await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", caseId);
+        await expect(page).toHaveURL((url) => url.pathname === "/pharmacy"
+          && url.searchParams.get("case") === caseId && url.searchParams.get("channel") === "eps");
+      }
+      await expect(endorsement).toHaveValue(corrected);
     }
     if (boundary === "Agent Off") await flag(page).setChecked(false);
     if (boundary === "leave page") await navigatePrimary(page, "Pharmacy claims");
@@ -177,6 +185,12 @@ test("native perspective keyboard, Reset retention and explicit demo shortcuts",
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
   await choosePerspective(page, "NHSBSA");
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
+  await expect(page.getByRole("radio", { name: "NHSBSA", exact: true })).toBeFocused();
+  await page.keyboard.press("Alt+ArrowRight");
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
+  await expect(page.getByRole("radio", { name: "NHSBSA", exact: true })).toBeFocused();
+  await page.getByRole("main").getByRole("heading", { level: 1 }).focus();
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "2");
   await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();

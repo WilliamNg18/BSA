@@ -38,7 +38,12 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await choosePerspective(page, "Pharmacy");
     await navigatePrimary(page, "Pharmacy check");
     await flag(page).setChecked(enabled);
-    await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+    const missingDate = page.getByRole("radio", { name: "NCSO missing date", exact: true });
+    await missingDate.click();
+    await expect(missingDate).toBeChecked();
+    await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
+    await expect(page.getByRole("radio", { name: "EPS", exact: true })).toBeChecked();
+    await expect(page).toHaveURL(/\/pharmacy$/);
     if (enabled) await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
     else await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
     const endorsement = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();

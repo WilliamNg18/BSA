@@ -144,7 +144,12 @@ for (const enabled of [false, true]) {
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await expect(page.getByRole("button", { name: /^(Start review|Release to pricing|Apply suggestion)$/ })).toHaveCount(0);
     await navigatePrimary(page, "Pharmacy check");
-    await page.getByRole("radio", { name: "Wrong pack size", exact: true }).check();
+    const mismatch = page.getByRole("radio", { name: "Wrong pack size", exact: true });
+    await mismatch.click();
+    await expect(mismatch).toBeChecked();
+    await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "SYN-FQ123-MISMATCH");
+    await expect(page).toHaveURL((url) => url.pathname === "/pharmacy"
+      && url.searchParams.get("case") === "SYN-FQ123-MISMATCH" && url.searchParams.get("channel") === "eps");
     await expect(page.getByRole("spinbutton", { name: "Pack size dispensed", exact: true })).toHaveValue("28");
     await page.locator('[data-pharmacy-action="submit"]').click();
     await expect(receipt).toContainText("SYN-FQ123-MISMATCH:2");
