@@ -2130,3 +2130,4 @@ in either header mode. No payment is calculated or approved.
 - Question: which queue items act? Chosen: G's authoritative playable set only, with C/F as fixed unclickable background; the newest four-case instruction wins.
 - Question: where does compact NHSBSA evidence live? Chosen: the same operator component exposes the actual source, captured fields and gathered evidence alongside advice; visible evidence authority wins over a suggestion-only demo.
 - Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.
+- Question: what does an automatic item's audit show without a human record? Chosen: the recorded existing-pricing outcome, not a manual comparison or an impossible request for a human decision; truthful human authority wins.
