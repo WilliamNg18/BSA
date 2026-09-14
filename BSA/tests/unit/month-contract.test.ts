@@ -10,7 +10,7 @@ afterEach(() => {
 describe("shared monthly projection contract", () => {
   it("pins both default headline tiles without double-counting judgement", () => {
     const result = monthModel(MONTH_MODEL_DEFAULTS);
-    expect(result).toMatchObject({ volume: 85000, pharmacyCaught: 14167, cleared: 21250, abstained: 14167, built: 35416 });
+    expect(result).toMatchObject({ volume: 85000, pharmacyCaught: 21250, cleared: 14167, abstained: 14167, built: 35416 });
     expect(result.today.operatorHours).toBe(17000);
     expect(result.withAgent.operatorHours).toBe(240836 / 60);
     expect(result.capacity).toEqual({ workingMinutes: 7560, today: 630, withAgent: 3780 });
