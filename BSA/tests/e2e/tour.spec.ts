@@ -388,7 +388,9 @@ test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmati
   await expect(page).toHaveURL(/\/pharmacy$/);
   await page.keyboard.press("Escape");
   await page.getByRole("switch", { name: "Agent: On" }).focus();
-  await expect(page.getByRole("tooltip")).toContainText("Off withholds recommendations");
+  await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAccessibleDescription(/Off withholds recommendations/);
+  await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("title", /Off withholds recommendations/);
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("data-state", "checked");
   await page.getByRole("button", { name: "Choose tour chapter" }).click();
   await page.getByRole("menuitem", { name: "3. Evidence to a decision", exact: true }).click();
@@ -422,7 +424,7 @@ test("chapter narrative and responsive presentation in both states; selected QA 
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
         await expect(page.locator("[data-tour-prose] > p")).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
-        await page.screenshot({ path: testInfo.outputPath(`${fragment}-${width}-${width === 1440 ? "light" : "dark"}-${enabled ? "on" : "off"}.png`), fullPage: true });
+        if (width === 1440) await page.screenshot({ path: testInfo.outputPath(`${fragment}-${width}-light-${enabled ? "on" : "off"}.png`), fullPage: true });
       }
     }
   }
@@ -510,7 +512,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
         await expect(page).toHaveURL(url);
         await history.locator("summary").first().press("Enter");
         await expect(events).toHaveText(before, { useInnerText: true });
-        await page.screenshot({ path: testInfo.outputPath("follow-reset.png"), fullPage: true });
+        if (width === 1440) await page.screenshot({ path: testInfo.outputPath("follow-reset.png"), fullPage: true });
       });
     });
   }
