@@ -6,7 +6,7 @@ ms.date: 2026-09-13
 
 ## Purpose and principle
 
-Current scope is Tasks 25-37: a desktop-only eleven-step demonstration, explicit
+Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit
 operator/pharmacy action panels, a persistent followed item and two verification
 gates. Verify at 1280 and 1440 px; capture new screenshots at 1440 px only.
 The owner explicitly removed mobile/tablet layouts, navigation and test/capture
@@ -40,6 +40,39 @@ there only, with built/proposed/assumption labels. Vendor names are permitted
 only in its single "Reference mapping, one example" table; all other interface
 copy stays capability-based. ALIGNMENT tracks drift against actual main and
 in-flight commits; a contract decision alone is not deployed acceptance.
+
+### Recommendation always visible and concrete
+
+The latest addition extends Tasks 25-37; it does not replace their safeguards.
+Every Agent-On item view shows an expanded Recommendation card with the
+dispensing-date clause/version, requirement results, missing facts, concrete
+suggestions and exact corrected previews, outcome and five confidence signals.
+The card says "the agent verifies and advises; a person decides".
+Complete items say what is complete and that nothing needs adding. A missing
+provision or unknown value is disclosed, never fabricated. Non-item reference,
+pipeline and monthly screens do not invent a selected prescription.
+
+Preview and Apply use one shared, source-bound patch. Dates come from the
+dispensing date; manufacturer, pack and form suggestions cite actual product
+evidence. An unknown invoice price remains a required human input with a
+placeholder, not a value inferred from the claim or an invented invoice.
+Applying a suggestion remains distinct from sending, resubmitting or deciding.
+
+The unreadable-paper demonstration has explicit scanner-preview and complete/
+missing-declaration preparation controls. They prepare a synthetic draft, never
+silently send it or rewrite the original scan. Post remains available when
+advice is incomplete; unreadable paper always needs an actual operator release.
+Type 1 confirms or corrects declared evidence, then Type 2 takes the final action.
+Disagreement stays visible: safe Refer back/Request information advice must not
+turn abstention into verified agreement or permit release. Only a separate
+human decision can approve a communication or change disposition.
+
+All four cases must show each successful business action on both sides within
+one second, with the same item, exact reason/answer, and truthful last event.
+The Follow controls preserve the ongoing case without Reset. Timed browser
+assertions must measure the actual action and destination view, not a timeout
+started after an arbitrary sleep. The expanded requirements are recorded in
+ALIGNMENT and verified on the latest deployed main before completion.
 
 ## Decision authority
 

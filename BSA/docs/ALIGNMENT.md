@@ -6,15 +6,48 @@ ms.date: 2026-09-14
 
 # Vision alignment
 
-The latest owner brief aligns Tasks 25-37 around four playable synthetic cases.
+The latest owner brief extends Tasks 25-38 around four playable synthetic cases.
 This register distinguishes inspected source, implementation commitments and
 actual live acceptance. No pending correction is marked aligned merely because
 an owner has received it.
 
-Baseline main: `5e8fb35d5a849cfaaefa4bc45ba95a042a50e945`.
-Its deployment succeeded, public identity matched and strict CSP was unchanged.
-Its CI failed two navigation checks. The isolated source repair has two passing
-targeted browsers; it is not yet merged or proof of the whole application.
+Current main: `5dd65d2c5f271bbebde57baf8cd79bb60f8d4fcd`.
+G #93 merged at `71127d24` after all four exact-head CI shards passed, including
+1,201 unique units, 796 ordinary checks and 34 state checks. D's independent
+core #88 then merged after its four CI shards passed; actual demo mounting
+remains a later integration. The normal D-core deployment succeeded and its
+public build identity matched with `dirty:false`. These are not final UI or
+expanded Tasks 25-38 live acceptance.
+
+The earlier table below retains the in-flight comparison context. The following
+classification is authoritative for the new five requirements; "done" is used
+only for the specifically verified existing kernel capability, not its pending UI.
+
+## Additional requirements 1-5: classification and ownership
+
+| Requirement | Classification | Existing evidence and exact extension | Owner |
+| --- | --- | --- | --- |
+| 1: shared recommendation object/card | New, previously unowned: Task 38 | Existing packs/checks do not provide one complete, always-visible cross-surface contract. Add clause/version, requirements, missing list, concrete values/preview, outcome and signals, all source/revision bound | R |
+| 1: visible on every Agent-On item surface | Extend work in progress | Mount the shared card in pharmacy check/detail, operator/Type 1/record and trace/item views, and case-bearing demo screens; no click required, no duplicate card or invented item on reference-only screens | R, P, O, D |
+| 1: complete and unavailable states | Extend/new shared contract | Show complete-against-clause/version with nothing to add; absent clauses or uncertain facts remain explicitly unavailable, not invented or marked met | R |
+| 2: exact missing-date preview and Apply | Kernel done; UI extension required | G's date correction is on main through #93 and uses the dispensing date. Referred-back preview visibility and exact preview-to-field equality still need the new shared contract and consumer tests | R, P, O |
+| 2: manufacturer, pack and presentation values | Extend work in progress | Reuse actual catalogue/dispensed-source values and supported correction code; display the value, source and corrected result before Apply rather than only naming a gap | R, P, O |
+| 2: missing invoice price | New shared suggestion pattern | Show required human entry and focus its field; never invent an invoice value or substitute the claim amount as invoice evidence | R, P |
+| 3A: scanner preview and complete/missing demo controls | Extend work in progress | Current P paper controls exist, but the requested named controls and two explicit declaration variants do not. They change draft/presentation only; original unreadable scan and submission history remain immutable | P, R |
+| 3A: non-blocking Post and truthful receipt | Kernel partly done; extend UI | G preserves human submission and failed-gate routing. Verify incomplete advice never disables Post, and state the unreadable-paper operator path explicitly in the receipt | P, R |
+| 3B: Type 1 confirmation, Type 2 release | Kernel done; extend/verify UI | Main #93 requires validated human capture and preserves human release provenance; completed paper/state tests passed. Add always-visible card, compact evidence/form and the complete/missing three-part walkthrough | O, P, R |
+| 3B: field disagreement and safe next action | New Task 38 action contract | Preserve failed verification/abstention. Add source-backed, code-validated Refer back/Request information diagnostics and Apply-to-draft; never claim reconciliation or unlock release on disagreement | R, O |
+| 3C: Paid/Action needed, concrete correction and resubmission | Extend work in progress | P/F/O have current actionful flows and bounded local proof, not merged final acceptance. Show actual Type 1/Type 2 history and human-approved reason, plus exact suggestion/preview and resubmitted queue state | P, O, F, R |
+| 4: one authoritative state and human-only transitions | Done on main, expanded proof pending | #93 / `71127d24` verified shared actions, immutable attempts, operator/code attribution and 34 exact Both/switched state tests. Preserve this foundation | R, P, O, F |
+| 4: every cross-side action visible within one second | New measurable acceptance | Existing actions are shared, but the specified deadline has not been measured for every action/case/view. Add actual timed source/destination assertions, including question and answer, not snapshot-only proxies | V, F, P, O |
+| 4: approval and reasoning labels | Extend work in progress | Display actual RB code, human-approved note and available clause/version/gap. Apply or toggling alone cannot create operator approval; unapproved/manual provenance remains explicit | R, P, O, F |
+| 5: steps 7-10 and documentation | Extend work in progress | Keep eleven steps. Expand paper step 7, paper operator step 8, concrete referred-back preview step 9 and complete Follow step 10; update script/SPEC/current records without silently changing business state on navigation | D, V, R, P, O, F |
+| Blocking tests for requirements 1-5 | Extend work in progress | Four recommendation objects, exact values, no unreadable/wrong-EPS automatic release, 1280/1440 Off/On visibility, three-part paper and one-second cross-side assertions, console/axe and latest-main live proof | V and feature owners |
+
+R is the only new stream. The former U paper responsibilities are already owned
+by P (pharmacy) and O (capture/operator), with R supplying shared recommendations;
+no completed historical U stream is restarted. Existing streams continue their
+current merge/check work while isolated additions are built.
 
 | Item | Aligned or drifted | What changed or remains | Stream | Commit |
 | --- | --- | --- | --- | --- |
