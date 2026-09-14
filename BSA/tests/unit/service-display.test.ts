@@ -6,13 +6,13 @@ import { AGENT_VERSION, TOOL_DEFINITIONS } from "../../src/lib/domain/tools";
 
 describe("production metadata display only", () => {
   it.each([
-    ["Azure AI Document Intelligence (layout)", "Document layout analysis"],
-    ["Azure AI Search (versioned corpus, effective-date filter)", "Search (versioned corpus, effective-date filter)"],
-    ["Azure Functions (pure functions)", "Deterministic code (pure functions)"],
-    ["Azure Functions", "Deterministic code"],
-    ["Azure Cosmos DB (append-only)", "Append-only record store"],
-  ])("maps %s to a generic service", (raw, label) => {
-    expect(productionServiceLabel(raw)).toBe(label);
+    "Document layout analysis",
+    "Search (versioned corpus, effective-date filter)",
+    "Deterministic code (pure functions)",
+    "Serverless deterministic functions",
+    "Append-only record store",
+  ])("retains source-neutral capability %s without aliases", (label) => {
+    expect(productionServiceLabel(label)).toBe(label);
   });
 
   it("preserves unmapped source labels verbatim, not a blanket vendor scrub", () => {
@@ -22,9 +22,9 @@ describe("production metadata display only", () => {
   });
 
   it("preserves the agent version identifier and mocked status", () => {
-    expect(agentVersionLabel(AGENT_VERSION)).toBe("prototype-0.5 (interpretation step mocked; production: constrained model call)");
+    expect(agentVersionLabel(AGENT_VERSION)).toBe("prototype-0.6 (interpretation step mocked; production: constrained model call)");
     expect(agentVersionLabel("other-version")).toBe("other-version");
-    expect(AGENT_VERSION).toContain("Azure OpenAI");
+    expect(AGENT_VERSION).not.toMatch(/Azure|OpenAI|Microsoft/);
   });
 
   it.each(CASES)("does not mutate case $scenario evidence or production contracts", (item) => {
@@ -37,6 +37,6 @@ describe("production metadata display only", () => {
     }
     expect(pack).toEqual(before);
     expect(TOOL_DEFINITIONS).toEqual(definitions);
-    expect(TOOL_DEFINITIONS.find((tool) => tool.name === "read_image_region")?.production).toContain("Azure AI Document Intelligence");
+    expect(TOOL_DEFINITIONS.find((tool) => tool.name === "read_image_region")?.production).toContain("Document layout analysis");
   });
 });
