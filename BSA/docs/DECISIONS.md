@@ -1954,3 +1954,16 @@ visible. Tie-breakers: reachable human controls and the smallest fix. The shared
 hoverable, Escape-dismissible tooltip remains unchanged for evidence figures.
 The bottom-flipped header tooltip demonstrably intercepted the tour Next button;
 no forced clicks, longer timeouts or pointer-event suppression are used.
+
+## 2026-09-14: Four-case vision and the system-design stream
+
+- Ten seeded items or four playable cases? Keep only complete EPS, missing-date EPS, wrong-information EPS and unreadable paper playable; C/F are fixed unclickable background and E's rule-only behaviour is shown within complete EPS Today; decided by (e), the explicit latest four-case instruction.
+- Does the four-case cut erase old six-case evidence? No: preserve historical records and pure regression fixtures, but remove their live actions, list links and deep-link reachability; decided by (a), truthful records, then (e), the new playable scope.
+- Eleven steps after removing readable paper? Replace step 6 with unreadable-paper pharmacy declaration/submission and retain step 7 for that same item's Type 1 capture/confirmation; decided by (c), two distinct visible hand-offs, while satisfying the latest eleven-step and four-case requirements.
+- Does pharmacy Paid mean this prototype paid? No: present actually released items in the normal-schedule Paid grouping with explicit release-to-existing-pricing wording and preserved code/human provenance; no new payment calculation or synthetic approval transition; decided by (a), the governing principle.
+- Can temporary Follow context create another Zustand store? No: put that UI-only context in the existing store, exclude it from the domain snapshot and clear it on Reset/item change; decided by (a), one authoritative store.
+- Which prose limit applies to system design? Under 60 words per How it works panel only; all other meaningful panels remain under 25; decided by (e), the explicit reference-page exception.
+- Where are concrete platform names allowed? Only the labelled Reference mapping, one example table, sourced from one dedicated module; CI scans first-party displayed source copy without treating package imports as interface claims; decided by (e), the precise platform-neutrality exception, then (d), a narrow enforceable boundary.
+- Do supplied scale and cost figures prove capacity or pricing? No: expose arithmetic, working-day/peak assumptions, token/sample/rate inputs and operator-touch comparison; label latency and production costs assumptions rather than measured guarantees; decided by (a), honest evidence.
+- How does S integrate without blocking the existing streams? Keep the existing `/architecture` route and ArchitecturePage export, add its owned design content/document/tests, coordinate navigation with D and global source checks with V; merge after G/D alongside O/P/F, before V; decided by (d), the smallest isolated integration.
+- What closes the new alignment register? Actual reviewed, integrated source and the latest main's required live results, not an owner's promise or an old capture; decided by (a), evidence integrity.

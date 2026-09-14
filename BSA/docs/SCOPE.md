@@ -6,12 +6,15 @@ ms.date: 2026-09-13
 
 # Scope register
 
-## Current scope: Tasks 31-36, desktop only
+## Current scope: Tasks 25-37, four-case desktop vision
 
 The 14 September owner brief supersedes the previous closeout. Supported
 verification widths are 1280 and 1440 px; new captures are 1440 px only.
 Mobile/tablet layouts and active tests/screenshots are intentionally removed.
 Earlier results retain their original source and cannot establish this scope.
+The latest playable set is complete EPS, missing-date EPS, wrong-information
+EPS and unreadable paper. C/F are fixed unclickable background; E's rule-only
+behaviour is contained in complete EPS Today. ALIGNMENT owns drift and proof.
 
 | Task | Status | Required outcome |
 | --- | --- | --- |
@@ -21,13 +24,14 @@ Earlier results retain their original source and cannot establish this scope.
 | 34 P | In progress | Actual approved correction application, resubmission, confirmation and verification receipts |
 | 35 G | In progress | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released |
 | 36 V | In progress | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
+| 37 S | In progress | Complete How it works reference page, SYSTEM-DESIGN, contents rail, diagrams, labelled assumptions and sole concrete-service mapping table |
 
 No new task is accepted yet. The user approved keeping human-release provenance
 visible; only automatic two-gate release may say no operator action.
 The prior Tasks 25-30 visual acceptance is unverified, not silently waived or
 renamed complete by the new desktop scope. Current completion instead requires
-the owner's latest Tasks 25-36 desktop live checklist against the final main.
-All six new rows are owned and active; no unowned Not started row currently
+the owner's latest Tasks 25-37 desktop live checklist against the final main.
+All seven new rows are owned and active; no unowned Not started row currently
 exists. A finished stream completes its integration/proof handoff before taking
 the next newly recorded, unowned Not started row.
 

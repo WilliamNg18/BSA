@@ -6,11 +6,40 @@ ms.date: 2026-09-13
 
 ## Purpose and principle
 
-Current scope is Tasks 31-36: a desktop-only eleven-step demonstration, explicit
+Current scope is Tasks 25-37: a desktop-only eleven-step demonstration, explicit
 operator/pharmacy action panels, a persistent followed item and two verification
 gates. Verify at 1280 and 1440 px; capture new screenshots at 1440 px only.
 The owner explicitly removed mobile/tablet layouts, navigation and test/capture
 coverage. Follow the 14 September contracts in DECISIONS before any older rule.
+
+## Vision
+
+This is a proof of concept showing the art of the possible with agentic AI on one real problem at NHSBSA, presented as a Forward Deployed Engineer would show it to stakeholders: the problem first, then the outcome, with the audience watching the change rather than being told about it.
+
+The header toggle is the story. Off is Today: what NHSBSA and the pharmacy have now. On is With the agent: the same step, solved. Every step shows both, side by side.
+Both perspective is the guided walkthrough: the problem in numbers (over 100 million items a month; most priced with no person; roughly four per cent touched by staff; 85,000 a month referred back), what they have now, what they are trying to achieve, then the agentic outcome step by step.
+Wherever the agent is On and the item is not automatic, a case is built, the agent advises, and one button acts on the advice: at the pharmacy, Apply suggested correction then Send or Resubmit; at NHSBSA, Apply suggestion then Release to pricing or Refer back. The agent never presses the final button.
+The cycle is live and shared: submit from the pharmacy and the item appears in NHSBSA's queue; satisfied at both gates means completed with no operator action and the pharmacy sees Paid on the normal schedule (released to existing pricing; the agent pays nothing); not satisfied means NHSBSA is notified, the operator opens a case with image, extracted fields, evidence and recommendation, applies the fix or refers back, and the pharmacy sees exactly why. Following a case shows the same item at every point; switching perspective shows exactly what that side sees, without Reset.
+Four real cases only, playable end to end and re-playable; everything else is labelled background.
+
+The four playable examples are synthetic: EPS complete `EX-24107`, EPS missing
+date `EX-24112`, wrong-but-complete-looking EPS `SYN-FQ123-MISMATCH`, and unreadable
+paper `EX-24123`. C and F are fixed unclickable background; E's rule-only behaviour
+is illustrated within complete EPS Today. All other playable seeds are removed.
+Historic six-case records and domain regression evidence are not rewritten.
+The latest four-case instruction supersedes the earlier ten-item seed proposal.
+Paid means the existing pricing path and normal schedule, not a payment performed
+or approved by this prototype. Failed gates never imply automatic completion.
+
+The eleven-step order remains. The former readable-paper step becomes the
+unreadable paper's pharmacy declaration/submission; the next step shows that
+same item's NHSBSA capture/confirmation. These are two distinct human hand-offs,
+not a fifth scenario or two copies of one panel.
+Task 37 adds the separate How it works reference page: panels under 60 words
+there only, with built/proposed/assumption labels. Vendor names are permitted
+only in its single "Reference mapping, one example" table; all other interface
+copy stays capability-based. ALIGNMENT tracks drift against actual main and
+in-flight commits; a contract decision alone is not deployed acceptance.
 
 ## Decision authority
 
@@ -29,8 +58,9 @@ Required interface wording: "released to existing pricing, no operator action";
 "experience only"; and "estimate" on every With figure.
 The no-operator phrases apply only to actual automatic paths, never human releases.
 Do not use "approved by the agent", "paid by the agent", implementation vendor,
-product or documentary names, or em dashes. Required process names and synthetic
-prescription content remain permitted, as recorded in DECISIONS.
+product or documentary names, or em dashes. Task 37 permits concrete services
+only in its single labelled reference-mapping table. Required process names and
+synthetic prescription content remain permitted, as recorded in DECISIONS.
 
 ## Current desktop contracts
 
