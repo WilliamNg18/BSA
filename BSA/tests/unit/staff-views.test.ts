@@ -161,7 +161,7 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it("keeps human-completed Type 2 decisions visible without moving them into the automatic aggregate", () => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
+    store.resubmitFromPharmacy("EX-24112", "NCSO AB 21/08/26");
     store.arriveInQueue("EX-24112");
     store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT",
       reason: "Human completed the independent evidence review" });

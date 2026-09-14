@@ -22,11 +22,11 @@ beforeEach(() => { store().resetDemo(); vi.spyOn(Date, "now").mockReturnValue(Da
 afterEach(() => vi.restoreAllMocks());
 
 describe("single Hillcrest first-load cycle", () => {
-  it("seeds precisely eight operational items and two untouched automatic prices", () => {
+  it("seeds ten operational items and three untouched automatic prices", () => {
     const s = store();
-    expect(Object.keys(s.lifecycles)).toHaveLength(8);
+    expect(Object.keys(s.lifecycles)).toHaveLength(10);
     expect(Object.values(s.lifecycles).every((row) => row.pharmacyCode === "FQ123")).toBe(true);
-    expect(Object.entries(s.itemProcesses).filter(([, process]) => process.routing.outcome === "auto_priced").map(([id]) => id)).toEqual([A.id, E.id]);
+    expect(Object.entries(s.itemProcesses).filter(([, process]) => process.routing.outcome === "auto_priced").map(([id]) => id)).toEqual([A.id, E.id, "SYN-FQ123-READABLE"]);
     expect(s.itemProcesses[D.id].routing.outcome).toBe("type1_capture");
     expect(s.itemProcesses[generic].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
     expect(s.lifecycles[B.id].state).toBe("referred_back");

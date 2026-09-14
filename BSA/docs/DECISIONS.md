@@ -1915,6 +1915,21 @@ blocking. No tool quota is bypassed, and no CI result is called a manual
 WCAG certification. The existing hosting, billing, visibility and protected
 rollback/archive references remain unchanged.
 
+## 2026-09-14: Task 35 source-bound gates and shared human controls
+
+- Question: what validates a release? Choice: retained source and independent claim ledger, dated citation, mandatory facts, product pack and claimed amount; never submitted-field projection copies or advisory flags. Tie-breaker: code authority and two-gate correctness.
+- Question: does a complete-looking pack establish correctness? Choice: Gate 1 checks positive pack format; Gate 2 checks the actual catalogue pack and claim. `SYN-FQ123-MISMATCH` passes format but fails reconciliation in every run. Tie-breaker: two distinct gates, no random legacy outcome.
+- Question: can a readable paper declaration corroborate itself? Choice: compare with the retained readable scan; unreadable D stays unreconciled until explicit compatible human capture. Tie-breaker: declared is not read.
+- Question: can Off human Release proceed? Choice: user explicitly permits existing deterministic source checks plus human judgement, with both proposed gates `none`, `human_decision` origin and a human-review label without an automatic-verification claim. Tie-breaker: latest explicit owner clarification.
+- Question: when is mode captured? Choice: explicit Send, Post, resubmit or confirmation appends `verificationEnabled` on the revision; toggles, perspectives and demo navigation cannot rewrite it or any operational snapshot. Tie-breaker: one state and immutable history.
+- Question: do old APIs bypass new checks? Choice: preserve signatures and legitimate existing capture/pricing paths, but manual ACCEPT or AMEND cannot waive missing mandatory facts or a proven mismatch. Tie-breaker: code validation before human release.
+- Question: what does Apply approve? Choice: nothing by itself; same-state operator or pharmacy events fill revision-bound drafts. A final matching referral or information-request action explicitly approves the copied note and records citation and exact fix. Tie-breaker: human decision authority.
+- Question: can all pharmacy editors retain drafts across views? Choice: one shared revision-bound draft with optional explicit channel and confirmation; helper functions initialise and check sources without committing them. Tie-breaker: one store, no hidden submissions.
+- Question: what correction may be suggested? Choice: dated NCSO completion and configured synthetic generic manufacturer, pack and form; never invent an unreadable prescriber or unknown source fact. Unsupported corrections fail explicitly. Tie-breaker: smaller agent role.
+- Question: are new seeds already verified? Choice: ten Hillcrest items, all proposed gates initially `none`; readable paper is a historical ordinary auto-priced item, wrong-pack EPS remains an operator case. Tie-breaker: no retroactive verification claims.
+- Question: does a pending receipt claim a built case? Choice: only an actually recorded agent recommendation with its recorded passing recommendation gate supports that label; otherwise show pending human review. Tie-breaker: honest evidence.
+- Question: does Follow need another store? Choice: temporary visit metadata lives in the same Zustand store and is excluded from the operational snapshot, like `demoStep`. Tie-breaker: literal one-store requirement.
+
 ## 2026-09-14: Header help cannot block navigation
 
 Question: retain the Agent switch's focus-triggered floating help? Choice:

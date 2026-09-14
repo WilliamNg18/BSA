@@ -26,7 +26,7 @@ describe("canonical deterministic routing", () => {
       store().setAgentEnabled(enabled);
       store().submitItem({ caseId: c.id, channel: "eps", endorsementText: c.extracted.endorsementText });
       expect(store().itemProcesses[c.id].routing).toMatchObject({ outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine" });
-      expect(store().lifecycles[c.id].state).toBe("paid");
+      expect(store().lifecycles[c.id].state).toBe(enabled ? "released_to_pricing" : "paid");
       expect(store().lifecycles[c.id].history.some((event) => event.actor === "operator")).toBe(false);
       expect(runAgent(sessionCase(c.id)!).agentInvoked).toBe(false);
       expect(() => store().recordType2Decision({ caseId: c.id, decision: "ACCEPT", reason: "Not an operator item" })).toThrow();
@@ -57,7 +57,7 @@ describe("canonical deterministic routing", () => {
       store().submitItem({ caseId: B.id, channel: "eps", endorsementText });
       expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
       expect(store().lifecycles[B.id].state).toBe("submitted");
-      expect(store().lifecycles[B.id].history.at(-1)?.processStep).toBe("submission");
+      expect(store().lifecycles[B.id].history.at(-1)?.processStep).toBe(enabled ? "verification" : "submission");
     }
   });
   it("keeps interpretation work in Type 2 even when the base product needs no endorsement", () => {

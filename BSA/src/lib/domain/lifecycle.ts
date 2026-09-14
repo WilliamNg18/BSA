@@ -65,6 +65,7 @@ export interface HistoryEvent {
   recordId?: string;
   decision?: HumanDecision;
   recommendation?: Recommendation;
+  recommendationGate?: "PASS" | "FAIL" | "NOT_RUN";
   reason?: string;
   approvedDraft?: ApprovedDraft;
   channel?: ItemChannel;

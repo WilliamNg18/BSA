@@ -62,7 +62,7 @@ describe("Task 6 read-only presentation", () => {
     expect(manualChoice("AMEND")).toBe("ESCALATE");
     expect(manualChoice("ACCEPT")).toBe("ACCEPT");
     const before = useAppStore.getState();
-    before.submitItem({ caseId: CASES[1].id, channel: "eps", endorsementText: CASES[1].extracted.endorsementText });
+    before.resubmitFromPharmacy(CASES[1].id, "NCSO RK 21/08/26");
     before.arriveInQueue(CASES[1].id);
     const record = before.recordDecision({ caseId: CASES[1].id, tariffVersion: "n/a", agentVersion: "not invoked", inputs: ["Synthetic captured form"], sources: ["Existing capture"], checks: [], recommendation: "NONE", decision: "ACCEPT", overrideReason: "Human judgement on the captured evidence" });
     expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, tariffVersion: "n/a", checks: [] });
