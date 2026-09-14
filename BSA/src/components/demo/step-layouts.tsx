@@ -70,7 +70,7 @@ export function DemoComparison({ enabled, today, assisted, activeLabel = "Curren
     <section key={enabled ? "on" : "off"} aria-labelledby="demo-assisted-heading" data-testid="demo-assisted" data-readonly={!enabled}
       className={cn("relative isolate min-w-0 space-y-4 rounded-xl border p-5", enabled
         ? "border-teal-700 bg-card ring-1 ring-teal-700 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-[2000ms]"
-        : "border-dashed bg-muted text-muted-foreground")}>
+        : "border-dashed bg-muted text-neutral-700 dark:text-neutral-300")}>
       {enabled && <span aria-hidden="true" data-demo-motion="background" className="pointer-events-none absolute inset-0 -z-10 rounded-xl bg-teal-50 dark:bg-teal-950 motion-reduce:animate-in motion-reduce:fade-in-0 motion-reduce:duration-150" />}
       <div className="border-b pb-3"><h2 id="demo-assisted-heading" className="text-xl font-semibold">With the agent</h2>
         <p className="mt-1 text-xs font-medium">{enabled ? activeLabel : "Read-only scenario projection · Agent Off"}</p></div>
