@@ -42,7 +42,7 @@ describe("verification shard arguments", () => {
 describe("shared verification stages", () => {
   it("retains the ordinary artifact browsers before a separate instrumented equivalence stage", () => {
     const stages = verificationStages(null);
-    expect(stages.slice(0, 2).map((stage) => stage.args)).toEqual([["run", "check"], ["test"]]);
+    expect(stages.slice(0, 2).map((stage) => stage.args)).toEqual([["run", "check"], ["test", "--", "--maxWorkers=2"]]);
     const browser = stages.filter((stage) => stage.args.includes("test:e2e"));
     expect(browser).toHaveLength(3);
     for (const stage of browser.slice(0, 2)) {
@@ -52,7 +52,8 @@ describe("shared verification stages", () => {
     }
     expect(browser[0].args).toContain("--grep-invert");
     expect(browser[0].informational).toBe(false);
-    expect(browser[1].args).toEqual(expect.arrayContaining(["--grep", "@quarantine", "--pass-with-no-tests"]));
+    expect(browser[0].args).toContain("@quarantine|@informational");
+    expect(browser[1].args).toEqual(expect.arrayContaining(["--grep", "@quarantine|@informational", "--pass-with-no-tests"]));
     expect(browser[1].informational).toBe(true);
     expect(browser[0].args.at(-1)).not.toBe(browser[1].args.at(-1));
     expect(browser[2].args).toContain("tests/e2e/one-state.config.ts");
@@ -79,7 +80,7 @@ describe("shared verification stages", () => {
       expect(visited.at(-1)).toBe(name);
     },
   );
-  it.each(["Content report", "Gzip report", "Informational quarantined browsers"])(
+  it.each(["Content report", "Gzip report", "Informational browser reports"])(
     "retains %s failure as informational", async (name) => {
       const execute = vi.fn((stage: Stage) => stage.name === name ? 9 : 0);
       const log = vi.fn();
