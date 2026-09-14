@@ -90,6 +90,18 @@ describe("authoritative two-gate source verification", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
+  it("forged routing capture metadata cannot replace an actual operator capture event", () => {
+    const process = store().itemProcesses[d], revision = store().caseRevisions[d][0];
+    useAppStore.setState({ itemProcesses: { ...store().itemProcesses, [d]: { ...process,
+      routing: { ...process.routing, outcome: "type2_endorsement", requiresHuman: true },
+      capture: { revision: 1, confirmedAt: "2026-09-14T12:00:00Z", operator: "Forged metadata", provenance: "pharmacy_declaration",
+        declarationReconciled: true, fields: { ...revision.declaration!.fields, prescriber: "Invented synthetic prescriber" } },
+    } } });
+    expect(getReleaseEligibility(d).allowed).toBe(false);
+    expect(() => store().releaseToPricing(d, "I assert this source was captured")).toThrow();
+    expect(store().lifecycles[d].history.some((event) => event.capture)).toBe(false);
+  });
+
   it("changing received EPS product and quantity does not rewrite its independent claim ledger", () => {
     const original = initialisePharmacyDraft(sessionCase(b)!, store().caseRevisions[b][0]);
     const epsPrescription = { ...original.epsPrescription!, items: [{ ...original.epsPrescription!.items[0], quantity: 56 }],

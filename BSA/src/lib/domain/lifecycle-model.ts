@@ -3,7 +3,7 @@ import { caseById } from "./cases";
 import { interpretPharmacyText } from "./pharmacy-check";
 import { PHARMACIES, PRODUCTS, productByCode } from "./reference";
 import { versionForDate } from "./tariff";
-import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot, ProcessSubmission } from "./lifecycle";
+import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot, ProcessSubmission, Type1Capture } from "./lifecycle";
 import type { DeclaredItemFields, ExceptionCase, PaperDeclaration } from "./types";
 
 /** Clone before recursively freezing: caller-owned objects and fixtures stay untouched. */
@@ -31,6 +31,12 @@ export function requireLifecycle(caseId: string, lifecycles: Record<string, Case
 export function appendHistory(current: CaseLifecycle, event: HistoryEvent): CaseLifecycle {
   if (event.from !== current.state || (event.actor === "agent" && event.to !== current.state)) throw new Error("Invalid lifecycle event.");
   return immutable({ ...current, state: event.to, history: [...current.history, event] });
+}
+
+/** Human capture authority comes from its append-only event, not routing metadata. */
+export function captureForRevision(row: CaseLifecycle, revision: number): Type1Capture | null {
+  return row.history.filter((event) => event.actor === "operator" && event.processStep === "type1_capture" &&
+    event.capture?.revision === revision).at(-1)?.capture ?? null;
 }
 
 function requireDate(date: string): void {
