@@ -132,10 +132,10 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await startDemonstrationReview(page);
   await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  const background = page.locator("tr[data-background-case]");
+  const background = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("tr[data-background-case]");
   await expect(background).toHaveCount(2);
   for (const id of ["EX-24119", "EX-24088"]) {
-    const row = background.filter({ hasText: id });
+    const row = background.filter({ has: page.getByRole("rowheader", { name: id, exact: true }) });
     await expect(row).toBeVisible();
     await expect(row).toContainText(/not playable/i);
     await expect(row.getByRole("link")).toHaveCount(0);
