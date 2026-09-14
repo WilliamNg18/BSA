@@ -17,7 +17,7 @@ const labels = {
 } as const;
 
 // G-phase contract: the original panel has one submit control and help in radio names.
-export const operatorDecision = (page: Page) => page.getByRole("region", { name: "Operator decision", exact: true });
+export const operatorDecision = (page: Page) => page.getByRole("radiogroup", { name: "Decision", exact: true });
 export const operatorRadio = (page: Page, outcome: OperatorOutcome) =>
   operatorDecision(page).getByRole("radio", { name: new RegExp(`^${labels[outcome]} `) });
 export const operatorAction = (page: Page) => page.getByRole("button", { name: "Record decision", exact: true });
