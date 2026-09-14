@@ -58,6 +58,33 @@ test("caught-before-submission records only a completed human-applied correction
   await expect(metric).toHaveText("0");
 });
 
+test("shared human edits persist; recorded releases count only explicit verified submissions", async ({ page }) => {
+  await page.goto("/pharmacy");
+  await choosePerspective(page, "Pharmacy");
+  await flag(page).setChecked(true);
+  const endorsement = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
+  const metric = page.locator("[data-pharmacy-released-count]");
+  await endorsement.fill("NCSO RK 21/08/26");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+  await navigatePrimary(page, "Pharmacy claims");
+  await expect(metric).toHaveText("0");
+  await navigatePrimary(page, "Pharmacy check");
+  await expect(endorsement).toHaveValue("NCSO RK 21/08/26");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+  await expect(page.locator('[data-pharmacy-action="apply-correction"]')).toHaveCount(0);
+  await expect(metric).toHaveText("0");
+  await page.locator('[data-pharmacy-action="submit"]').click();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("released to existing pricing, no operator action");
+  await expect(metric).toHaveText("1");
+  await page.locator('[data-pharmacy-action="submit"]').click();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24112:3");
+  await navigatePrimary(page, "Pharmacy claims");
+  await expect(metric).toHaveText("1");
+  await confirmReset(page);
+  await flag(page).setChecked(true);
+  await expect(metric).toHaveText("0");
+});
+
 for (const boundary of ["edit", "scenario", "Agent Off", "leave page", "Reset", "submit"] as const) {
   test(`applied correction retains audit evidence without implicit submission across ${boundary}`, async ({ page }) => {
     await page.goto("/pharmacy");
@@ -160,10 +187,11 @@ for (const width of [1280, 1440]) {
         await expect(page.getByRole("menu")).toHaveCount(0);
         await navigatePrimary(page, "Evaluation");
         await expect(group.getByRole("radio", { name: perspective, exact: true })).toBeChecked();
-        await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(perspective === "Both" ? 1 : 0);
+        await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
+        await expect(page.getByRole("button", { name: "Enter demo mode", exact: true })).toBeVisible();
         expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-        await captureCheckpoint(page, info, `perspective-${perspective.toLowerCase()}-${width}-${colorScheme}`);
         if (width === 1440) {
+          await captureCheckpoint(page, info, `perspective-${perspective.toLowerCase()}-${width}-${colorScheme}`);
           const headerPath = info.outputPath(`header-${perspective.toLowerCase()}-${width}-${colorScheme}.png`);
           await header.screenshot({ path: headerPath });
           await info.attach("Perspective header", { path: headerPath, contentType: "image/png" });
@@ -173,7 +201,7 @@ for (const width of [1280, 1440]) {
   }
 }
 
-test("native perspective keyboard, Reset retention and suspended tour shortcuts", async ({ page }) => {
+test("native perspective keyboard, Reset retention and explicit demo shortcuts", async ({ page }) => {
   await page.goto("/#scene");
   const both = page.getByRole("radio", { name: "Both", exact: true });
   await both.focus();
@@ -190,30 +218,42 @@ test("native perspective keyboard, Reset retention and suspended tour shortcuts"
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page).toHaveURL(/#scene$/);
   await choosePerspective(page, "Both");
-  await page.getByRole("button", { name: "Dismiss tour", exact: true }).click();
+  await page.getByRole("button", { name: "Enter demo mode", exact: true }).click();
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
   await choosePerspective(page, "NHSBSA");
-  await expect(page.getByRole("button", { name: "Restore tour", exact: true })).toHaveCount(0);
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
+  await page.keyboard.press("Alt+ArrowRight");
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "2");
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
   await choosePerspective(page, "Both");
-  await page.getByRole("button", { name: "Restore tour", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Choose tour chapter", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Exit demo", exact: true }).click();
+  await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
 });
 
-test("single perspectives retain Follow and explicit same-item side controls", async ({ page }) => {
+test("Follow persists in every perspective and explicit opposite visits restore their origin", async ({ page }) => {
   await page.goto("/#cases");
   await page.locator('[data-case="B"]').getByRole("button", { name: "Follow this item", exact: true }).click();
   const followed = page.getByRole("region", { name: "Followed item", exact: true });
   await expect(followed).toContainText("Following EX-24112");
+  const lastEvent = await followed.locator("p").first().innerText();
   for (const side of ["Pharmacy", "NHSBSA"] as const) {
     await choosePerspective(page, side);
     await expect(followed).toBeVisible();
-    await expect(followed).toContainText("Following EX-24112");
-    await expect(followed.getByRole("button", { name: "Pharmacy view", exact: true })).toBeVisible();
-    await expect(followed.getByRole("button", { name: "NHSBSA view", exact: true })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Switch side", exact: true })).toHaveCount(0);
+    const opposite = side === "Pharmacy" ? "NHSBSA" : "Pharmacy";
+    await followed.getByRole("button", { name: `${opposite} view`, exact: true }).click();
+    await expect(page).toHaveURL(side === "Pharmacy" ? /\/case\/EX-24112$/ : /\/pharmacy\/claims\?case=EX-24112$/);
+    await expect(page.getByRole("radio", { name: "Both", exact: true })).toBeChecked();
+    await expect(followed).toContainText("Both temporarily shown");
+    await followed.getByRole("button", { name: `${side} view`, exact: true }).click();
+    await expect(page.getByRole("radio", { name: side, exact: true })).toBeChecked();
+    await expect(followed.locator("p").first()).toHaveText(lastEvent);
+    await expect(followed.getByRole("status")).toHaveCount(0);
   }
   await choosePerspective(page, "Both");
   await expect(followed).toContainText("Following EX-24112");
-  await expect(page.locator('[data-case="B"]').getByRole("button", { name: "Stop following this item", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(history(page).getByRole("button", { name: "Stop following this case", exact: true })).toHaveAttribute("aria-pressed", "true");
   await followed.getByRole("button", { name: "NHSBSA view", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(followed).toContainText("Following EX-24112");
