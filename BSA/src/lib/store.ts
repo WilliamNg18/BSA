@@ -490,7 +490,7 @@ export const useAppStore = create<AppState>((set, get) => {
         const cleared = pack.state === "cleared_by_rules";
         row = appendHistory(row, { at, actor: cleared ? "code" : "agent", from: "in_review", to: cleared ? "paid" : "in_review", revision,
           message: cleared ? "Released to existing pricing without an agent call (synthetic)." : pack.recommendation === "ABSTAIN" ? "Scripted agent abstained; manual evidence review required." : pack.gate.result === "FAIL" ? "Gate withheld recommendation; evidence only." : "Scripted case built; human decision required.",
-          recommendation: pack.recommendation });
+          recommendation: pack.recommendation, recommendationGate: pack.gate.result });
       }
       // F's historical decision remains in records, not as the new revision's decision.
       set({ lifecycles: immutable({ ...s.lifecycles, [id]: row }), caseStates: { ...s.caseStates, [id]: pack.state === "human_decision_recorded" ? "operator_review_required" : pack.state } });

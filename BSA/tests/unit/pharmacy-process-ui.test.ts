@@ -128,7 +128,7 @@ describe("process claim evidence", () => {
   it("does not describe human-reviewed Paid items as no-person pricing", () => {
     const store = useAppStore.getState();
     const caseId = "EX-24112";
-    store.submitItem({ caseId, channel: "eps", endorsementText: "NCSO RK" });
+    store.resubmitFromPharmacy(caseId, "NCSO RK 21/08/26");
     store.arriveInQueue(caseId);
     store.recordType2Decision({ caseId, decision: "ACCEPT", reason: "Human reviewed the supplied synthetic evidence." });
     const markup = renderClaim(caseId);

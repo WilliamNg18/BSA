@@ -45,7 +45,7 @@ afterEach(() => { vi.restoreAllMocks(); store().resetDemo(); });
 describe("Task 8 seeds and projections", () => {
   it.each(PHARMACIES)("requested first-load cycle at $name", (pharmacy) => {
     const rows = Object.values(store().lifecycles).filter((r) => r.pharmacyCode === pharmacy.contractorCode);
-    expect(rows).toHaveLength(8);
+    expect(rows).toHaveLength(10);
     expect(new Set(rows.map((r) => r.state))).toEqual(new Set(["paid", "in_review", "referred_back", "information_requested", "resubmitted"]));
     for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
       if (state !== "released_to_pricing") expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
@@ -214,19 +214,19 @@ describe("atomic human decisions and boundaries", () => {
     expect(() => store().recordDecision(input)).toThrow(/expected in_review/);
   });
 
-  it("operator ACCEPT is human Sufficient: referral advice cannot pay without a reasoned override", () => {
+  it("operator ACCEPT cannot override missing source requirements with a reason alone", () => {
     submit();
     const before = store();
     expect(() => store().recordOperatorDecision(B.id, "ACCEPT", "")).toThrow(/reason/i);
     expect(store()).toBe(before);
     expect(row().state).toBe("in_review");
-    store().recordOperatorDecision(B.id, "ACCEPT", reason);
-    expect(row().state).toBe("paid");
-    expect(store().records.at(-1)).toMatchObject({ isOverride: true, recommendation: "REFER_BACK", decision: "ACCEPT", overrideReason: reason });
+    expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow("Current source facts");
+    expect(store()).toBe(before);
   });
 
   it("manual NONE ACCEPT is reasoned human judgement, not an override", () => {
-    submit(B.id, B.extracted.endorsementText, false);
+    store().resubmitFromPharmacy(B.id, corrected);
+    store().arriveInQueue(B.id);
     const runs = vi.spyOn(agent, "runAgent");
     expect(() => store().recordDecision(legacy(B.id, "ACCEPT", null))).toThrow(/reason/i);
     const record = store().recordDecision(legacy(B.id));
@@ -281,13 +281,13 @@ describe("atomic human decisions and boundaries", () => {
   it.each([false, true])("E allows an empty endorsement and clears by code only, flag=%s", (on) => {
     const records = store().records;
     submit(E.id, "", on);
-    expect(row(E.id).state).toBe("paid");
+    expect(row(E.id).state).toBe(on ? "released_to_pricing" : "paid");
     expect(row(E.id).history.slice(-2).map((event) => event.actor)).toEqual(["pharmacy", "code"]);
     expect(runAgent(sessionCase(E.id)!).agentInvoked).toBe(false);
     expect(store().records).toBe(records);
   });
 
-  it("gate FAIL withholds advice and drafts, but permits a reasoned manual decision", () => {
+  it("gate FAIL withholds advice and drafts; a reason cannot supply missing code facts", () => {
     vi.spyOn(rules, "complianceGate").mockReturnValue({ result: "FAIL", checks: [{ name: "Injected failure", pass: false, detail: "Test gate failure" }] });
     submit(B.id, B.extracted.endorsementText);
     const pack = runAgent(sessionCase(B.id)!);
@@ -296,8 +296,8 @@ describe("atomic human decisions and boundaries", () => {
     expect(row(B.id).history.at(-1)?.message).toMatch(/withheld/);
     expect(() => store().recordDecision({ ...legacy(B.id), recommendation: "SUFFICIENT" })).toThrow(/Recommendation/);
     expect(() => store().recordOperatorDecision(B.id, "REFER_BACK", reason, "Draft")).toThrow(/No validated/);
-    store().recordOperatorDecision(B.id, "ACCEPT", reason);
-    expect(store().records.at(-1)).toMatchObject({ recommendation: "NONE", isOverride: false });
+    expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow("Current source facts");
+    expect(row(B.id).state).toBe("in_review");
   });
 
   it("flag and follow changes never append domain events; Reset replaces the original three slices", () => {

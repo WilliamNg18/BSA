@@ -29,7 +29,7 @@ describe("Tasks 31-36 desktop contracts", () => {
     expect(LIFECYCLE_LABELS.released_to_pricing.pharmacy).toBe("Verified and released to pricing (synthetic)");
     expect(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on).toBe("Verified, released to existing pricing, no operator action");
     const original = getDomainSnapshot();
-    expect(() => store().releaseToPricing("SYN-FQ123-TYPE2", "Human checked this item")).toThrow("Both verification gates");
+    expect(() => store().releaseToPricing("SYN-FQ123-TYPE2", "Human checked this item")).toThrow("Brand or manufacturer");
     expect(getDomainSnapshot()).toEqual(original);
   });
 

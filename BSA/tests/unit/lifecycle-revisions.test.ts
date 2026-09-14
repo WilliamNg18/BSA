@@ -18,11 +18,11 @@ it.each([false, true])("F's history never blocks a new complete EPS demonstratio
   store().arriveInQueue(F.id);
   expect(store().caseStates[F.id]).not.toBe("human_decision_recorded");
   expect(runAgent(sessionCase(F.id)!)).toMatchObject({ recommendation: "NONE", agentInvoked: false, state: "cleared_by_rules" });
-  expect(store().lifecycles[F.id].state).toBe("paid");
+  expect(store().lifecycles[F.id].state).toBe(on ? "released_to_pricing" : "paid");
   expect(store().records).toBe(records);
   expect(store().records[0]).toEqual(original);
   expect(store().lifecycles[F.id].history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
-  expect(() => store().recordOperatorDecision(F.id, "ACCEPT", "Human checked corrected evidence")).toThrow(/while paid/);
+  expect(() => store().recordOperatorDecision(F.id, "ACCEPT", "Human checked corrected evidence")).toThrow(/while paid|while released_to_pricing/);
 });
 
 it.each(["off", "pending", "unavailable"] as const)("retains an unperformed %s precheck without inventing results", (mode) => {

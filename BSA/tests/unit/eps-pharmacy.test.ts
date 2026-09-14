@@ -149,13 +149,14 @@ describe("visible EPS prescription", () => {
       items: original.items.map((item) => ({ ...item, prescribedCode: EPS_SUPPLY_RULE.productCode, dispensedCode: EPS_SUPPLY_RULE.productCode, product: "Amoxicillin 500mg capsules (generic synthetic)", dispensedName: "Amoxicillin 500mg capsules (generic synthetic)" })),
       supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: 21, form: "capsules" },
     };
-    const missing = checkEpsPharmacy(preview("EX-24101", generic), "");
+    const missing = checkEpsPharmacy(preview("SYN-FQ123-TYPE2", generic), "");
     expect(missing.status).toBe("missing");
     expect(missing.gap).toContain("Brand or manufacturer");
     const complete = { ...generic, supplyEvidence: { ...generic.supplyEvidence!, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer } };
-    expect(checkEpsPharmacy(preview("EX-24101", complete), "").status).toBe("ready");
+    expect(checkEpsPharmacy(preview("SYN-FQ123-TYPE2", complete), "").status).toBe("ready");
+    expect(checkEpsPharmacy(preview("EX-24101", complete), "").status).not.toBe("ready");
     const missingPrescriber = { ...complete, prescriber: { ...complete.prescriber, name: "" } };
-    const incomplete = checkEpsPharmacy(preview("EX-24101", missingPrescriber), "");
+    const incomplete = checkEpsPharmacy(preview("SYN-FQ123-TYPE2", missingPrescriber), "");
     expect(incomplete.status).toBe("missing");
     expect(incomplete.gap).not.toBe("None");
     expect(incomplete.gap.toLowerCase()).toContain("prescriber");
