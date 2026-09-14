@@ -14,7 +14,7 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "retain-on-failure",
-    screenshot: "only-on-failure",
+    screenshot: "off",
     reducedMotion: "reduce",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 } } }],

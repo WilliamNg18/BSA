@@ -27,8 +27,22 @@ export const LIVE_CHECKS = {
 export const LIVE_CYCLE_MODES = ["both", "switched"] as const;
 export const wholeCycleTitle = (enabled: boolean, mode: typeof LIVE_CYCLE_MODES[number]) =>
   `24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent ${enabled ? "On" : "Off"}, ${mode}`;
+export const fourCaseCycleTitle = (id: typeof PLAYABLE_CYCLES[number]["id"], enabled: boolean, mode: typeof LIVE_CYCLE_MODES[number]) =>
+  `33 Full ${id} shared cycle and both side buttons at every state, Agent ${enabled ? "On" : "Off"}, ${mode}`;
 export const LIVE_PERSPECTIVES = ["pharmacy", "nhsbsa", "both"] as const;
 export const headerCheckTitle = (perspective: typeof LIVE_PERSPECTIVES[number]) =>
   `15 Single header Agent toggle on every route in ${perspective}`;
+export const desktopStepTitle = (number: number, enabled: boolean) => {
+  const step = DEMO_STEPS.find((entry) => entry.number === number);
+  if (!step) throw new Error(`Unknown desktop checklist step ${number}.`);
+  return `31 Desktop step ${String(number).padStart(2, "0")}: ${step.title}, Agent ${enabled ? "On" : "Off"}, 1440 px, axe`;
+};
+export const desktopNavigationTitle = (width: typeof DESKTOP_WIDTHS[number], enabled: boolean) =>
+  `32 All eleven desktop steps Back and Next, Agent ${enabled ? "On" : "Off"}, ${width} px`;
 export const LIVE_CHECKLIST = [...Object.values(LIVE_CHECKS), ...LIVE_PERSPECTIVES.map(headerCheckTitle),
-  ...[false, true].flatMap((enabled) => LIVE_CYCLE_MODES.map((mode) => wholeCycleTitle(enabled, mode)))];
+  ...[false, true].flatMap((enabled) => LIVE_CYCLE_MODES.map((mode) => wholeCycleTitle(enabled, mode))),
+  ...DEMO_STEPS.flatMap((step) => DEMO_MODES.map((enabled) => desktopStepTitle(step.number, enabled))),
+  ...DESKTOP_WIDTHS.flatMap((width) => DEMO_MODES.map((enabled) => desktopNavigationTitle(width, enabled))),
+  ...PLAYABLE_CYCLES.flatMap((scenario) => DEMO_MODES.flatMap((enabled) => LIVE_CYCLE_MODES.map((mode) => fourCaseCycleTitle(scenario.id, enabled, mode))))];
+import { DEMO_STEPS } from "../../src/lib/domain/demo-steps";
+import { DEMO_MODES, DESKTOP_WIDTHS, PLAYABLE_CYCLES } from "../support/desktop-matrix";

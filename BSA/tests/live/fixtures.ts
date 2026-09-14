@@ -70,6 +70,7 @@ export async function captureView(page: Page, info: TestInfo, name: string) {
     ":(top)BSA/vite.config.ts", ":(top)hosting.config.json");
   const viewport = page.viewportSize();
   if (!viewport) throw new Error("Capture requires an explicit viewport.");
+  if (viewport.width !== 1440) throw new Error("New screenshot evidence is restricted to 1440 px; run other widths without capture.");
   const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
   expect(scrollWidth, "Captured views must not overflow the page horizontally").toBeLessThanOrEqual(viewport.width);
   const perspectiveGroup = page.getByRole("group", { name: "Perspective", exact: true });
