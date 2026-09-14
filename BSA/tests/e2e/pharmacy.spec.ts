@@ -148,7 +148,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await page.getByRole("button", { name: "Step timeline", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("[data-pharmacy-timeline] [role=status]")).toContainText("released to existing pricing, no operator action");
-  await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeEnabled();
+  await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
   await expect(page.getByRole("list", { name: "Submission timeline" }).locator("li")).toHaveCount(2);
   await page.getByRole("button", { name: "Restore draft", exact: true }).click();
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
@@ -185,7 +185,7 @@ for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
     await expect(receipt).toContainText(text);
     await expect(receipt).toContainText("unable");
     await expect(receipt).toContainText("Not retrieved / Not retrieved");
-    await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "Jump to end", exact: true })).toBeEnabled();
     const timeline = page.getByRole("list", { name: "Submission timeline" });
     await expect(timeline.getByText("Not needed", { exact: true })).toHaveCount(0);
     await expect(timeline.locator("li")).toHaveCount(2);

@@ -64,11 +64,11 @@ for (const enabled of [false, true]) {
     }
     if (enabled) await capture.getByRole("checkbox", { name: DECLARATION_RECONCILIATION, exact: true }).check();
     await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
-    await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
     const row = page.getByRole("region", { name: "Type 2 worklist", exact: true }).locator('[data-case-id="EX-24123"]');
     await expect(row).toBeVisible();
     await row.getByRole("link", { name: "Open EX-24123", exact: true }).click();
-    await page.getByRole("radio", { name: /^Accept the recommendation/ }).check();
+    await expect(page.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
+    await page.getByRole("radio", { name: enabled ? /^Accept the recommendation/ : /^Sufficient \(human choice\)/ }).check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human checked the captured product, quantity, endorsement and independently established prescriber.");
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page).toHaveURL(/\/record$/);
@@ -78,7 +78,10 @@ for (const enabled of [false, true]) {
     await expect(detail).not.toContainText("no person involved");
     await detail.getByText("History and attempts (2)", { exact: true }).click();
     await expect(detail.getByRole("region", { name: "Type 1 capture for attempt 2", exact: true })).toContainText("Dr Demo (synthetic)");
-    await expect(detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").last()).toContainText("operator");
+    const lifecycleEvents = detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    await expect(lifecycleEvents.filter({ hasText: "Human decision recorded (synthetic)." })).toContainText("operator");
+    await expect(lifecycleEvents.last()).toContainText("code");
+    await expect(lifecycleEvents.last()).toContainText("after human judgement");
     const audit = await new AxeBuilder({ page }).analyze();
     await captureJson(info, "four-case-paper-human-pricing-axe", audit);
     expect(audit.violations).toEqual([]);
