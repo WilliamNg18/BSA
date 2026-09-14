@@ -1,7 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
-import { automaticCaseIds, captureCheckpoint, captureJson, cases, confirmReset, expect, staticRoutes, test } from "./fixtures";
-import { startDemonstrationReview } from "./lifecycle-helpers";
-import { openAuditRecord, operatorAction, operatorDecision } from "./operator-action-helpers";
+import { captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
+import { automaticCaseIds, cases, startDemonstrationReview } from "./operator-action-helpers";
 
 const surfaces = [
   ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => ({ name: `overview-${chapter}`, path: `./#${chapter}` })),
@@ -23,7 +22,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           await flag.setChecked(enabled);
           await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
           await expect(page.locator("[data-assistance-host]")).toHaveAttribute("data-phase", enabled ? "assisted" : "manual");
-          if (enabled && /EX-.*-pack$/.test(surface.name)) {
+          if (enabled && surface.name.endsWith("-pack")) {
             if (automaticCaseIds.some((id) => surface.name === `${id}-pack`)) {
               await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
               await expect(page.locator("[data-pack-assembly]")).toHaveCount(0);
@@ -48,8 +47,8 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: "Refer back", exact: true }).check();
-  const record = operatorAction(page, "REFER_BACK");
+  await page.getByRole("radio", { name: /^Refer back / }).check();
+  const record = page.getByRole("button", { name: "Record decision", exact: true });
   await record.focus();
   await page.keyboard.press("Enter");
   const notices = page.getByRole("complementary", { name: "Decision notifications" });

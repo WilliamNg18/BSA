@@ -1,12 +1,11 @@
-import { cases, expect, test } from "./fixtures";
+import { expect, test } from "./fixtures";
 import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { REC_META } from "../../src/components/demo/label-meta";
 import { injectPrescriberFault } from "../support/prescriber-fault";
-import { startDemonstrationReview } from "./lifecycle-helpers";
-import { operatorAction, operatorDecision, performDecision } from "./operator-action-helpers";
+import { cases, startDemonstrationReview } from "./operator-action-helpers";
 
-for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id))) {
+for (const c of cases.filter((item) => item.id === "EX-24112")) {
   test(`gate FAIL withholds ${c.id} advice in queue, pack, trace, human record and replay`, async ({ page }) => {
     const original = CASES.find((item) => item.id === c.id)!;
     const baseline = runAgent(original);
@@ -27,16 +26,14 @@ for (const c of cases.filter((item) => ["EX-24112", "EX-24119"].includes(item.id
       await route.fulfill({ response, body: fault.source });
     });
 
-    await page.goto(`case/${c.id}`);
-    await page.getByRole("banner").getByRole("switch").setChecked(true);
     await startDemonstrationReview(page);
+    await page.getByRole("banner").getByRole("switch").setChecked(true);
     await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-    await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
     expect(injections).toBe(1);
     const row = page.locator(`[data-case-id="${c.id}"]`);
-    await expect(row).toContainText("Evidence assembled; unresolved facts remain");
     await page.getByRole("button", { name: /^Type 2 worklist\s+\d+$/ }).click();
     await expect(row).toBeVisible();
+    await expect(row).toContainText("Evidence assembled; unresolved facts remain");
     await row.getByRole("link", { name: `Open ${c.id}`, exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");

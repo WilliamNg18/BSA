@@ -1,8 +1,7 @@
-import { captureCheckpoint, cases, confirmReset, expect, openCaseFromQueueOrClaim, test } from "./fixtures";
-import { startDemonstrationReview } from "./lifecycle-helpers";
-import { openAuditRecord, operatorAction, operatorDecision, performDecision } from "./operator-action-helpers";
+import { captureCheckpoint, confirmReset, expect, test } from "./fixtures";
+import { cases, referMissingDate, selectEpsScenario, startDemonstrationReview } from "./operator-action-helpers";
 
-for (const caseId of ["EX-24112", "EX-24119"]) {
+for (const caseId of ["EX-24112"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
   await page.goto(`case/${caseId}/trace`);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -44,11 +43,10 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(status).toHaveText("Information missing");
   await field.fill("NCSO RK 21/08/26");
   await expect(status).toHaveText("Complete: will flow to automated pricing, no person involved");
-  await page.getByRole("radio", { name: "Complete endorsement", exact: true }).click();
+  await selectEpsScenario(page, "EX-24107");
   await expect(status).toHaveText("Complete: will flow to automated pricing, no person involved");
   await expect(page.getByRole("radio", { name: "EPS", exact: true })).toBeChecked();
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
   await expect(page.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("");
   await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
@@ -56,8 +54,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await page.getByRole("button", { name: "Post paper", exact: true }).click();
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24123:2");
-  await page.getByRole("radio", { name: "EPS", exact: true }).click();
-  await page.getByRole("radio", { name: "NCSO missing date", exact: true }).click();
+  await selectEpsScenario(page, "EX-24112");
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await expect(status).toHaveText("Not checked: manual submission");
   await expect(submit).toBeEnabled();
@@ -71,7 +68,7 @@ test("override requires eight trimmed characters then writes and preserves a hum
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Missing or insufficient information");
   await captureCheckpoint(page, testInfo, "b-pack");
-  await page.getByRole("radio", { name: "Escalate", exact: true }).click();
+  await page.getByRole("radio", { name: /^Escalate / }).click();
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
   await expect(reason).toHaveAttribute("aria-required", "true");
   for (const value of ["", "1234567", "   1234567   "]) {
@@ -90,18 +87,15 @@ test("override requires eight trimmed characters then writes and preserves a hum
   await captureCheckpoint(page, testInfo, "b-escalation-override-record");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
   await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Awaiting senior review");
-  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeEnabled();
 });
 
 test("recommended B decision replays under July; flag off applies to replay; Reset restores seed", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
-  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
-  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
-  await performDecision(page, "REFER_BACK");
-  await openAuditRecord(page);
+  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await referMissingDate(page, true);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-recommended-decision-record");
   await page.getByRole("combobox", { name: "Replay with", exact: true }).selectOption("2026-07");
@@ -121,14 +115,13 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Open the case pack", exact: true }).click();
   await startDemonstrationReview(page);
-  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
-  await page.getByRole("link", { name: "Back to queue", exact: true }).click();
-  await page.locator("a[href='/case/EX-24088']").first().click();
-  await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Record DR-000872", exact: true })).toBeVisible();
-  await page.locator("[data-original-records] > summary").click();
-  await expect(page.locator("[data-original-records]")).toContainText("DR-000871");
-  await expect(page.locator("[data-original-records]")).toContainText("Original rule: 2026-08");
+  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
+  const background = page.getByRole("region", { name: "Historical cases, background", exact: true });
+  await expect(background).toContainText("EX-24119");
+  await expect(background).toContainText("EX-24088");
+  await expect(background.getByRole("link")).toHaveCount(0);
+  await expect(background.getByRole("button")).toHaveCount(0);
 });
 
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {
@@ -142,7 +135,7 @@ test("agent flag hides recommendations on every case without changing case state
   expect(await ids()).toEqual(before);
   await captureCheckpoint(page, testInfo, "queue-assistance-off");
   for (const c of cases) {
-    await openCaseFromQueueOrClaim(page, c.id);
+    await page.goto(`case/${c.id}`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByText("No recommendation", { exact: true })).toBeVisible();
     await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
@@ -155,7 +148,7 @@ test("agent flag hides recommendations on every case without changing case state
   expect(await ids()).toEqual(before);
 });
 
-test("D shows its three abstention reasons; E has no agent trace", async ({ page }, testInfo) => {
+test("D shows its three abstention reasons; A retains E's no-agent clearance coverage", async ({ page }, testInfo) => {
   await page.goto("case/EX-24123");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   const abstention = page.getByRole("alert");
@@ -164,12 +157,12 @@ test("D shows its three abstention reasons; E has no agent trace", async ({ page
   await expect(abstention).toContainText("1/3 readings agree.");
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "d-abstention-not-run");
-  await page.goto("case/EX-24101/trace");
+  await page.goto("case/EX-24107/trace");
   await expect(page.getByRole("list", { name: "Manual gathering trace" })).toHaveCount(0);
   await expect(page.getByRole("list", { name: "Deterministic clearance trace" }).locator(":scope > li")).toHaveCount(2);
   await expect(page.getByRole("list", { name: "Agent trace", exact: true })).toHaveCount(0);
   await expect(page.getByText("Cleared by rules; agent not invoked", { exact: true })).toBeVisible();
-  await captureCheckpoint(page, testInfo, "e-cleared-no-agent");
+  await captureCheckpoint(page, testInfo, "a-cleared-no-agent");
 });
 
 test("product header retains working controls without presentation UI", async ({ page }, testInfo) => {
@@ -215,4 +208,17 @@ test("queue state filters are interactive", async ({ page }) => {
   }
   await page.getByRole("button", { name: /^All staff items/ }).click();
   await expect(rows).toHaveCount(initialCount);
+});
+
+test("wrong-but-complete EPS retains conflicting source facts without creating a human record", async ({ page }) => {
+  await startDemonstrationReview(page, "SYN-FQ123-MISMATCH");
+  const source = page.getByRole("main");
+  await expect(source.getByRole("heading", { name: "EPS claim message", exact: true })).toBeVisible();
+  await expect(source.locator("figure")).toHaveCount(0);
+  await expect(source).toContainText("SYN-AMOX500-GENERIC-21");
+  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await expect(source).toContainText("SYN-AMOX500-GENERIC-21");
+  await expect(source.locator("figure")).toHaveCount(0);
+  await page.getByRole("navigation", { name: "Case views", exact: true }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
+  await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
 });
