@@ -141,93 +141,121 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1, compact }: {
     }
   }
 
+  const declarationChecks = declaredCheck && <details className={compact
+    ? "space-y-2 border-t pt-1 text-xs"
+    : "space-y-2 rounded-md border p-3 text-sm"}>
+    <summary className="cursor-pointer font-medium focus-visible:outline-2">Declaration requirement checks</summary>
+    <BoundaryTag cls="agent" />
+    {declaredCheck.clause && <>
+      <p>Declared dispensing-month Tariff: {declaredCheck.version}. {declaredCheck.clause.title}</p>
+      <blockquote>{declaredCheck.clause.text}</blockquote>
+      <BoundaryTag cls="deterministic" />
+      <ul aria-label="Received declaration requirement checks">
+        {declaredCheck.checks.map((check) => <li key={check.id}>{check.met === true ? "Met" : "Missing"}: {check.label}</li>)}
+      </ul>
+    </>}
+  </details>;
+  const originalDeclaration = agentEnabled && revision.paperDeclaration && <section aria-label="Original pharmacy declaration"
+    data-capture-source={compact ? "declaration" : undefined}
+    className={compact ? "min-w-0 space-y-1.5 rounded-md border p-2 text-xs" : "space-y-2 rounded-md border p-3 text-sm"}>
+    <h4 className="font-semibold">Pharmacy declaration received with paper</h4>
+    <p>{PAPER_DECLARATION_PROVENANCE}</p>
+    <dl className={`grid grid-cols-2 ${compact ? "gap-x-2 gap-y-1" : "gap-2"}`}>
+      <div><dt className="font-medium">Declared product</dt><dd>{revision.paperDeclaration.typedProduct || "Not declared"}</dd></div>
+      <div><dt className="font-medium">Declared quantity</dt><dd>{revision.paperDeclaration.quantity ?? "Not declared"}</dd></div>
+      <div><dt className="font-medium">Declared endorsement</dt><dd>{revision.paperDeclaration.endorsementText || "Not declared"}</dd></div>
+      <div><dt className="font-medium">Declared dispensing date</dt><dd>{revision.paperDeclaration.dispensingDate || "Not declared"}</dd></div>
+      <div><dt className="font-medium">Prescriber evidence</dt><dd>{revision.declaration?.fields.prescriber || "Not supplied"}</dd></div>
+      <div><dt className="font-medium">Received revision</dt><dd>{revision.number}</dd></div>
+    </dl>
+    {compact && declarationChecks}
+  </section>;
+  const correctButton = <Button type="button" variant="outline" size={compact ? "sm" : "default"} aria-pressed={correcting} onClick={() => {
+    setCorrecting(true); setReconciled(false); setError(""); productRef.current?.focus();
+  }}>Correct</Button>;
+  const captureFields = (["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => {
+    const label = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field];
+    const fieldId = `${id}-${field}`;
+    const descriptionId = `${fieldId}-origin`;
+    const origin = <span id={descriptionId} className="text-xs text-muted-foreground">{field === "prescriber" && !revision.declaration?.fields.prescriber
+      ? "Separately established evidence" : assisted ? "Source: pharmacy declaration" : "Source: human capture"}</span>;
+    return <div key={field} className={compact ? "min-w-0 space-y-1" : "space-y-1.5"}>
+      {compact ? <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
+        <Label htmlFor={fieldId}>{label}</Label>{origin}
+      </div> : <Label htmlFor={fieldId}>{label}</Label>}
+      {field === "endorsementText" ? (
+        <Textarea id={fieldId} value={prepared.fields[field]} onChange={(event) => changeField(field, event.target.value)}
+          aria-describedby={`${id}-help ${descriptionId}`} rows={compact ? 2 : 3}
+          className={compact ? "min-h-12 [field-sizing:content]" : undefined} />
+      ) : (
+        <Input ref={field === "productCode" ? productRef : undefined} id={fieldId} value={prepared.fields[field]}
+          onChange={(event) => changeField(field, event.target.value)}
+          inputMode={field === "quantity" ? "numeric" : "text"} autoComplete="off"
+          aria-describedby={`${id}-help ${descriptionId}`} className={compact ? "h-8" : undefined} />
+      )}
+      {!compact && origin}
+    </div>;
+  });
+
   return (
-    <section aria-label={`Type 1 capture for ${c.id}`} data-type1-mode={correcting ? "correcting" : assisted ? "confirming" : "keying"} className="space-y-4 rounded-xl border bg-card p-5">
+    <section aria-label={`Type 1 capture for ${c.id}`} data-type1-mode={correcting ? "correcting" : assisted ? "confirming" : "keying"}
+      data-compact-capture={compact || undefined}
+      className={compact ? "space-y-2 rounded-xl border bg-card p-3" : "space-y-4 rounded-xl border bg-card p-5"}>
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="mr-auto font-semibold">Type 1: {assisted ? "confirm, not key" : "manual keying"}</h3>
         <BoundaryTag cls="human" />
         <span className="rounded-md border px-2 py-1 text-xs font-medium">Proposed: paper declaration support</span>
       </div>
       {agentEnabled ? (
-        <div className="space-y-2">
+        <div className={compact ? "flex flex-wrap items-center gap-x-2 gap-y-1" : "space-y-2"}>
           <BoundaryTag cls="agent" />
           {!error && <p className="text-sm">{poorScan ? "Image unreadable; agreement unknown." : "Human capture or confirmation is required."}</p>}
         </div>
       ) : <PainMarker resolved={false} pain="No guidance, experience only" resolution="Human confirmation" />}
-      <div className="grid min-w-0 gap-4 lg:grid-cols-2">
-        <div className="min-w-0 space-y-2">
+      <div className={compact ? "grid min-w-0 grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-start gap-3" : "grid min-w-0 gap-4 lg:grid-cols-2"}>
+        <div data-capture-source={compact ? "image" : undefined} className={compact ? "min-w-0 space-y-1" : "min-w-0 space-y-2"}>
           <h4 className="text-sm font-medium">{poorScan ? "Original poor paper image" : "Original paper image"}</h4>
           <BoundaryTag cls="existing" />
           <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} compact />
         </div>
-        <form onSubmit={submit} noValidate className="min-w-0 space-y-3">
-          {agentEnabled && revision.paperDeclaration && <section aria-label="Original pharmacy declaration" className="space-y-2 rounded-md border p-3 text-sm">
-            <h4 className="font-semibold">Pharmacy declaration received with paper</h4>
-            <p>{PAPER_DECLARATION_PROVENANCE}</p>
-            <dl className="grid grid-cols-2 gap-2">
-              <div><dt className="font-medium">Declared product</dt><dd>{revision.paperDeclaration.typedProduct || "Not declared"}</dd></div>
-              <div><dt className="font-medium">Declared quantity</dt><dd>{revision.paperDeclaration.quantity ?? "Not declared"}</dd></div>
-              <div><dt className="font-medium">Declared endorsement</dt><dd>{revision.paperDeclaration.endorsementText || "Not declared"}</dd></div>
-              <div><dt className="font-medium">Declared dispensing date</dt><dd>{revision.paperDeclaration.dispensingDate || "Not declared"}</dd></div>
-              <div><dt className="font-medium">Prescriber evidence</dt><dd>{revision.declaration?.fields.prescriber || "Not supplied"}</dd></div>
-              <div><dt className="font-medium">Received revision</dt><dd>{revision.number}</dd></div>
-            </dl>
-          </section>}
-          <h4 className="text-sm font-medium">{correcting ? "Human corrections" : assisted ? "Confirm declared fields" : "Key what you can establish"}</h4>
-          <p id={`${id}-help`} className="text-xs text-muted-foreground">{!error && "Unknown fields stay blank."}</p>
-          {declaredCheck && <details className="space-y-2 rounded-md border p-3 text-sm">
-            <summary className="cursor-pointer font-medium focus-visible:outline-2">Declaration requirement checks</summary>
-            <BoundaryTag cls="agent" />
-            {declaredCheck.clause && <>
-              <p>Declared dispensing-month Tariff: {declaredCheck.version}. {declaredCheck.clause.title}</p>
-              <blockquote>{declaredCheck.clause.text}</blockquote>
-              <BoundaryTag cls="deterministic" />
-              <ul aria-label="Received declaration requirement checks">
-                {declaredCheck.checks.map((check) => <li key={check.id}>{check.met === true ? "Met" : "Missing"}: {check.label}</li>)}
-              </ul>
-            </>}
-          </details>}
-          {(["productCode", "quantity", "endorsementText", "prescriber"] as const).map((field) => {
-            const label = { productCode: "Product code", quantity: "Quantity", endorsementText: "Endorsement", prescriber: "Prescriber" }[field];
-            const fieldId = `${id}-${field}`;
-            const descriptionId = `${fieldId}-origin`;
-            return (
-              <div key={field} className="space-y-1.5">
-                <Label htmlFor={fieldId}>{label}</Label>
-                {field === "endorsementText" ? (
-                  <Textarea id={fieldId} value={prepared.fields[field]} onChange={(event) => changeField(field, event.target.value)}
-                    aria-describedby={`${id}-help ${descriptionId}`} rows={3} />
-                ) : (
-                  <Input ref={field === "productCode" ? productRef : undefined} id={fieldId} value={prepared.fields[field]}
-                    onChange={(event) => changeField(field, event.target.value)}
-                    inputMode={field === "quantity" ? "numeric" : "text"} autoComplete="off"
-                    aria-describedby={`${id}-help ${descriptionId}`} />
-                )}
-                <span id={descriptionId} className="text-xs text-muted-foreground">{field === "prescriber" && !revision.declaration?.fields.prescriber
-                  ? "Separately established evidence" : assisted ? "Source: pharmacy declaration" : "Source: human capture"}</span>
-              </div>
-            );
-          })}
+        {compact && originalDeclaration}
+        <form data-capture-editor={compact || undefined} onSubmit={submit} noValidate className={compact ? "col-span-2 min-w-0 space-y-2" : "min-w-0 space-y-3"}>
+          {!compact && originalDeclaration}
+          {compact ? <div className="flex items-start justify-between gap-2">
+            <div>
+              <h4 className="text-sm font-medium">{correcting ? "Human corrections" : assisted ? "Confirm declared fields" : "Key what you can establish"}</h4>
+              <p id={`${id}-help`} className="text-xs text-muted-foreground">{!error && "Unknown fields stay blank."}</p>
+            </div>
+            {assisted && correctButton}
+          </div> : <>
+            <h4 className="text-sm font-medium">{correcting ? "Human corrections" : assisted ? "Confirm declared fields" : "Key what you can establish"}</h4>
+            <p id={`${id}-help`} className="text-xs text-muted-foreground">{!error && "Unknown fields stay blank."}</p>
+          </>}
+          {!compact && declarationChecks}
+          {compact ? <div className="grid grid-cols-2 items-start gap-x-3 gap-y-2">{captureFields}</div> : captureFields}
           {assisted && (
-            <div className="space-y-2 rounded-lg border p-3">
+            <div className={compact ? "space-y-1" : "space-y-2 rounded-lg border p-3"}>
               <label className="flex items-start gap-2 text-sm">
                 <input type="checkbox" checked={reconciled} onChange={(event) => { setReconciled(event.target.checked); setError(""); }}
                   className="mt-0.5 size-4 shrink-0 accent-primary focus-visible:outline-2 focus-visible:outline-offset-2" />
                 I have reconciled the declaration with the available evidence, including the dispensing date
               </label>
               {!error && <span className="text-xs text-muted-foreground">Attestation, not image agreement</span>}
-              <Button type="button" variant="outline" aria-pressed={correcting} onClick={() => {
-                setCorrecting(true); setReconciled(false); setError(""); productRef.current?.focus();
-              }}>Correct</Button>
-              <Button type="button" variant="outline" onClick={() => changeMode(false)}>Key fields manually</Button>
+              {!compact && <>{correctButton}
+                <Button type="button" variant="outline" onClick={() => changeMode(false)}>Key fields manually</Button>
+              </>}
             </div>
           )}
           {!assisted && agentEnabled && revision.declaration && (
             <Button type="button" variant="outline" onClick={() => changeMode(true)}>Review pharmacy declaration</Button>
           )}
           {error && <p ref={errorRef} tabIndex={-1} role="alert" className="text-sm font-medium text-destructive">{error}</p>}
-          <Button type="submit" className="h-auto min-h-10 whitespace-normal">{unreadableExample
-            ? "Confirm capture and continue to Type 2" : "Confirm capture and continue"}</Button>
+          {compact ? <div className="flex flex-wrap items-center justify-between gap-2">
+            {assisted && <Button type="button" variant="outline" size="sm" onClick={() => changeMode(false)}>Key fields manually</Button>}
+            <Button type="submit" size="sm" className="h-auto min-h-9 whitespace-normal">{unreadableExample
+              ? "Confirm capture and continue to Type 2" : "Confirm capture and continue"}</Button>
+          </div> : <Button type="submit" className="h-auto min-h-10 whitespace-normal">{unreadableExample
+            ? "Confirm capture and continue to Type 2" : "Confirm capture and continue"}</Button>}
         </form>
       </div>
       {!compact && <details className="space-y-2 border-t pt-3">
