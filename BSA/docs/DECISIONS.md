@@ -2209,3 +2209,8 @@ Question: should a pharmacy Follow visit retain queue controls? Choice: no.
 An explicit side visit shows only that item's side. Opening a normal step 8
 queue row instead updates the queue's case/channel query and keeps its one
 opened row. Both operations are presentation-only. Tie-breaker: one focus.
+
+Question: may a generic Follow comparison imply operator work for complete A?
+Choice: no. Reuse the existing case-specific scenario, with D's pharmacy or
+operator hand-off selected by side. A keeps its automatic/no-operator comparison.
+Tie-breaker: truthful attribution.

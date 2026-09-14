@@ -7,7 +7,7 @@ import { SceneEstimateNumber } from "@/components/demo/scene-estimate-number";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
-import { getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
+import { DEMO_STEPS, getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
 import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
 import type { ItemChannel } from "@/lib/domain/types";
@@ -145,14 +145,11 @@ function ScenarioProjection({ step, caseId, assisted }: { step: DemoStepDefiniti
   </div>;
 }
 
-function FollowProjection({ caseId, assisted }: { caseId: string; assisted: boolean }) {
-  return <div className="space-y-3" data-demo-projection>
-    <p className="text-sm font-semibold">{caseId} · Scenario, not history.</p>
-    <ol className="space-y-3">{(assisted
-      ? ["Evidence assembled for this item", "Supported corrections, then a human decision", "Shared history retained"]
-      : ["Human checks the item", "Manual correction and review", "No Reset between sides"]).map((line) =>
-      <li key={line} className="rounded-lg border bg-background p-3 text-sm">{line}</li>)}</ol>
-  </div>;
+function FollowProjection({ caseId, assisted, kind }: { caseId: string; assisted: boolean; kind: DemoTaskKind }) {
+  const scenario = DEMO_STEPS.find((step) => step.caseId === caseId && step.number >= 3 && step.number <= 7
+    && (step.number !== 6 || kind !== "operator"));
+  if (!scenario) return <p role="alert">No scenario comparison is defined for {caseId}.</p>;
+  return <ScenarioProjection step={scenario} caseId={caseId} assisted={assisted} />;
 }
 
 function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }) {
@@ -257,7 +254,7 @@ export function DemoStepLayout({ renderTask }: { renderTask: DemoTaskRenderer })
     const active = assisted === enabled;
     if (followOverride && caseId) return active
       ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} />
-      : <FollowProjection caseId={caseId} assisted={assisted} />;
+      : <FollowProjection caseId={caseId} assisted={assisted} kind={kind} />;
     if (step.number === 1) return <ProcessPanel assisted={assisted} />;
     if (step.number === 2) return <MonthPanel assisted={assisted} active={active} />;
     if (step.number === 11) return <ClosingPanel assisted={assisted} />;
