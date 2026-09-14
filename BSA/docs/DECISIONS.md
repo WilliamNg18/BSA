@@ -1975,3 +1975,38 @@ Tie-breakers: real controls before visual completeness, then simple merge order.
 - Question: can a precheck predict release? Chosen: receipts read the submitted revision's recorded verification and release origin, not the current toggle; unestablished work remains pending. Two-gate authority wins.
 - Question: what does the pharmacy monthly count measure? Chosen: distinct Hillcrest items with actual release events in the UTC month, separate from whole-service estimates and payment. Evidence clarity wins.
 - Question: how much UI does the demo reuse? Chosen: compact item-only submission/action exports; full operational pages retain source, history and manual paper paths. The simpler task-focused presentation wins.
+
+## 2026-09-14: Task 33 operator controls use one human draft
+
+Where should Apply write? Use revision-bound `operatorDrafts` for the actual
+visible outcome, RB code and note, not page-local decision copies; one state
+and explicit human authority take precedence over presentation convenience.
+
+Does Off discard an applied suggestion? Start empty before any human drafting,
+but preserve subsequent human edits and Apply history when toggling; the
+one-state rule takes precedence over a destructive interpretation of empty.
+Off renders no new suggestion card or agent call in the action panel.
+
+When is a drafted response approved? Apply only copies fields and records the
+operator attribution. The subsequent Refer back or Request information click
+approves the exact applied note through G's guarded action; no hidden approval,
+release or invented fallback reason. Manual reasons retain eight characters.
+
+How are controls shared with the demonstration? Export
+`OperatorActionPanel({ caseId, compact? })` and retain
+`Type1Capture({ caseId, compact? })`. Compact capture omits timing controls;
+it retains the same image, immutable declaration, fields and confirmation.
+Use G's `getReleaseEligibility` for source validity in both modes, never a
+second UI gate. The visible note remains the human input to final release.
+
+What does Correct do? Enter a visibly named correction mode, focus Product
+code and invalidate reconciliation. Any field edit also invalidates it.
+The original declaration remains read-only beside the original paper image;
+unknown prescriber evidence is never inferred from the scan. Attestation is
+not proof of image agreement. Capture remains separate from Type 2 decisions.
+
+Where are automatic cases inspected? A disclosed actual-session automated
+count links to read-only case records, independently of monthly estimates.
+Only a recorded code-origin two-gate release says no operator action.
+Human releases show after operator review; historical sources remain visible
+in either header mode. No payment is calculated or approved.

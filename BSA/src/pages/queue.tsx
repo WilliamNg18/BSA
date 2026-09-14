@@ -10,8 +10,9 @@ import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { BACKGROUND_PHARMACIES } from "@/lib/domain/reference";
 import { permitsProposal, recordHasRuleAndReason, staffLane, type StaffLane } from "@/lib/case-presentation";
-import { LIFECYCLE_LABELS } from "@/lib/domain/lifecycle";
+import { itemStateLabel } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
+import { AutomatedCaseRecords } from "@/components/demo/release-record";
 
 type WorkFilter = "all" | StaffLane | "new";
 
@@ -85,6 +86,7 @@ function QueueWorklist() {
         ? "Type 2 worklist: the agent verifies and advises; a person decides."
         : "Type 2 worklist: review captured evidence, look up the Tariff and record your judgement."}</p>
       <AutomaticPricingCount />
+      <AutomatedCaseRecords />
     </header>
     <section aria-label="Other pharmacies, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
       <h2 className="font-semibold">Other pharmacies, background</h2>
@@ -114,7 +116,7 @@ function QueueWorklist() {
       {type1.map((row) => <details key={row.id} open={row.id === "EX-24123"} className="rounded-xl border p-4" data-type1-case={row.id}
         onFocusCapture={() => { focusedCapture.current = row.id; }}
         onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
-        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · {LIFECYCLE_LABELS[row.lifecycle.state].pharmacy}</summary>
+        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · {itemStateLabel(row.lifecycle, "pharmacy")}</summary>
         <div className="mt-3 space-y-3">
           <Type1Capture caseId={row.id} />
           <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
@@ -131,7 +133,7 @@ function QueueWorklist() {
             <TableCell className="font-mono">{row.id}{row.fresh && <span className="block text-xs">New submission</span>}</TableCell>
             <TableCell className="whitespace-normal">{row.c.pharmacy.name}</TableCell>
             <TableCell><span className="inline-flex items-center gap-1">{row.process.channel === "eps" ? <Monitor aria-hidden="true" className="size-4" /> : <FileText aria-hidden="true" className="size-4" />}{row.process.channel === "eps" ? "EPS" : "Paper"}</span></TableCell>
-            <TableCell className="whitespace-normal" data-item-state>{LIFECYCLE_LABELS[row.lifecycle.state].pharmacy}</TableCell>
+            <TableCell className="whitespace-normal" data-item-state>{itemStateLabel(row.lifecycle, "pharmacy")}</TableCell>
             <TableCell className="max-w-72 whitespace-normal">{row.process.routing.reason}{row.process.rbCode && <span className="block font-semibold">{row.process.rbCode}</span>}</TableCell>
             <TableCell className="max-w-64 whitespace-normal">{row.agentWork}</TableCell>
             <TableCell><Button asChild variant="outline" size="sm"><Link to={`/case/${encodeURIComponent(row.id)}`} aria-label={`Open ${row.id}`}>Open</Link></Button></TableCell>
