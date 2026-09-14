@@ -14,7 +14,6 @@ import { ArchitecturePage } from "@/pages/architecture";
 import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
 import { CASES } from "@/lib/domain/cases";
-import { productionServiceLabel } from "@/lib/service-display";
 import { MANUAL_LOOP_MONTH_DEFAULTS, PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ManualLoopMonthInputs } from "@/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "@/lib/domain/manual-loop-presentation";
 import { useAppStore } from "@/lib/store";
@@ -30,6 +29,7 @@ vi.mock("@/lib/store", async (importOriginal) => {
 function render(Component: ComponentType, path = "/") {
   return renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, createElement(Component)));
 }
+
 function tourCard(markup: string, scenario: string) {
   const start = markup.search(new RegExp(`<li\\b[^>]*data-case="${scenario}"`));
   expect(start, `Tour card ${scenario}`).toBeGreaterThanOrEqual(0);
@@ -42,27 +42,35 @@ function tourCard(markup: string, scenario: string) {
   throw new Error(`Tour card ${scenario} has no closing list item`);
 }
 
-
 beforeEach(() => {
   useAppStore.getState().resetDemo();
   useAppStore.getState().setPerspective("both");
 });
 
 describe("whole-process presentation", () => {
-  it("renders provider-neutral architecture without rewriting tool contracts or stored source mappings", () => {
+  it("confines vendor examples to one labelled reference table without rewriting source contracts", () => {
     const source = JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS });
     const state = useAppStore.getState();
-    const markup = render(ArchitecturePage);
-    expect(markup).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
-    expect(markup).toContain("Production mappings are proposals");
+    const markup = render(ArchitecturePage, "/architecture");
+    const referenceTables = markup.match(/<table\b[^>]*\bdata-reference-mapping="true"[^>]*>[\s\S]*?<\/table>/g) ?? [];
+    expect(referenceTables).toHaveLength(1);
+    expect(markup.match(/\bdata-reference-mapping=/g)).toHaveLength(1);
+    const referenceTable = referenceTables[0];
+    if (!referenceTable) throw new Error("The reference mapping table is missing.");
+    expect(referenceTable).toMatch(/<caption\b[^>]*>Reference mapping, one example<\/caption>/);
+    expect(referenceTable).toContain("Azure OpenAI");
+    expect(referenceTable).toContain("Microsoft Foundry Agent Service");
+    expect(markup.replace(referenceTable, "")).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
+    expect(markup).toMatch(/<h1\b[^>]*>How it works and how it would scale<\/h1>/);
+    expect(markup).toContain("reusable foundations, not assurance that synthetic rules can ship unchanged against the real Tariff");
+    expect(markup).toContain("Equivalents exist on other platforms.");
+    expect(markup).toContain("Service names do not establish approved configuration or compliance.");
     expect(markup).toContain("NHSBSA");
     expect(markup).toContain("dm+d");
     expect(markup).toContain("Tariff");
-    for (const tool of TOOL_DEFINITIONS) {
-      expect(markup).toContain(tool.name);
-      const label = renderToStaticMarkup(createElement("span", null, productionServiceLabel(tool.production))).slice(6, -7);
-      expect(markup).toContain(label);
-    }
+    for (const capability of ["Read image region", "look up product/pack", "look up claim", "check history", "retrieve the effective-date Tariff clause"]) expect(markup).toContain(capability);
+    expect(markup).toContain("read-only evidence tools");
+    expect(markup).toContain("Recording is application-owned, not a model write tool.");
     expect(JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS })).toBe(source);
     expect(useAppStore.getState()).toBe(state);
   });
