@@ -15,6 +15,8 @@ export interface VerificationAssessment {
   readonly gate2Checks: readonly GateCheck[];
   readonly tariffVersion: string | null;
   readonly clauseId: string | null;
+  readonly sourceTariffVersion: string | null;
+  readonly sourceClauseId: string | null;
   readonly source: "received_eps" | "readable_scan" | "human_capture" | "unreadable_scan";
   readonly releaseEligible: boolean;
   readonly reason: string;
@@ -74,8 +76,17 @@ export function evaluateItemVerification(
   const source: VerificationAssessment["source"] = channel === "eps" ? "received_eps" : confirmed ? "human_capture" : readable ? "readable_scan" : "unreadable_scan";
   const arrived: ExtractedFields = channel === "eps" ? typed : confirmed ? {
     ...original.extracted, ...confirmed.fields, prescriber: confirmed.fields.prescriber?.trim() || original.extracted.prescriber,
+    productText: productByCode(confirmed.fields.productCode)?.name ?? original.extracted.productText,
     dispensingDate: typed.dispensingDate,
   } : original.extracted;
+  const sourceVersion = versionForDate(arrived.dispensingDate), sourceProduct = productByCode(arrived.productCode);
+  const arrivedFacts = interpretPharmacyText(arrived.endorsementText);
+  const sourceSupply = eps ? evaluateEpsSupply(eps) : arrived.productCode === EPS_SUPPLY_RULE.productCode && arrived.quantity !== null
+    ? evaluateEpsSupply(createEpsPrescription({ ...original, extracted: arrived })) : null;
+  const sourceRequired = endorsementRequired(sourceProduct, sourceVersion, original.claim.amountClaimed);
+  const sourceClause = sourceVersion?.clauses.find((entry) => entry.endorsementType === (sourceSupply ? "SUPPLY" : arrivedFacts.type)) ?? null;
+  const sourceNeedsClause = sourceSupply !== null || sourceRequired.required !== false || arrivedFacts.present;
+  const sourceCitation = Boolean(sourceVersion && (!sourceNeedsClause || validateCitation(sourceClause, sourceVersion, sourceClause?.text ?? "") === true));
   const knownSource = channel === "eps" || Boolean(confirmed) || readable;
   const declarationAgrees = channel === "eps" || Boolean(!declared && confirmed?.provenance === "human_capture") || Boolean(declared && arrived.productCode === declared.productCode &&
     arrived.quantity === declared.quantity && arrived.endorsementText.trim() === declared.endorsementText.trim() &&
@@ -84,33 +95,33 @@ export function evaluateItemVerification(
   // An EPS projection's claim copy is not independent evidence. Retain the original ledger.
   const ledgerAgrees = Boolean(productByCode(arrived.productCode)) && arrived.productCode === original.claim.productCode &&
     arrived.quantity === original.claim.quantity;
-  const concession = version?.concessions.find((entry) => entry.productCode === arrived.productCode);
+  const concession = sourceVersion?.concessions.find((entry) => entry.productCode === arrived.productCode);
   const sourceConflicts = reconcile(arrived, original.claim.quantity, original.claim.productCode,
-    original.claim.amountClaimed, productByCode(arrived.productCode), concession?.price ?? null);
-  const packAgrees = !supply || eps?.supplyEvidence?.packSize === product?.packSize &&
+    original.claim.amountClaimed, sourceProduct, concession?.price ?? null);
+  const packAgrees = !sourceSupply || eps?.supplyEvidence?.packSize === sourceProduct?.packSize &&
     eps?.supplyEvidence?.form.trim().toLowerCase() === EPS_SUPPLY_RULE.form;
   const amountAgrees = Number.isFinite(original.claim.amountClaimed) && original.claim.amountClaimed >= 0 &&
     !sourceConflicts.some((entry) => entry.material) &&
-    Boolean(product && Math.abs(original.claim.amountClaimed - (concession?.price ?? product.basicPrice)) <= 0.005);
+    Boolean(sourceProduct && Math.abs(original.claim.amountClaimed - (concession?.price ?? sourceProduct.basicPrice)) <= 0.005);
   const reconciled = knownSource && declarationAgrees && ledgerAgrees && packAgrees && amountAgrees;
-  const arrivedFacts = interpretPharmacyText(arrived.endorsementText);
-  const receivedRequirements = evaluateRequirements(clause, arrivedFacts, arrived, supply?.checks);
+  const receivedRequirements = evaluateRequirements(sourceClause, arrivedFacts, arrived, sourceSupply?.checks);
   const gate2Checks = [
     check("Received source is readable or human-confirmed", knownSource, source),
     check("Received source agrees with declaration", declarationAgrees, channel === "eps" ? "Received EPS fields compared with independent ledger below" : "Scan or explicit human capture compared with declaration"),
     check("Independent claim product and quantity agree", ledgerAgrees, "Retained claim ledger, not a projection of submitted fields"),
     check("Product pack and presentation agree", packAgrees, "Catalogue pack checked independently of format"),
     check("Claimed amount agrees with dated reference", amountAgrees, "Validation only; no payment calculated"),
-    check("Dated citation validated", citation, clause?.id ?? (citation ? "No endorsement required under dated rules" : "Missing provision")),
+    check("Dated citation validated", sourceCitation, sourceClause?.id ?? (sourceCitation ? "No endorsement required under dated rules" : "Missing provision")),
     ...mandatoryFieldsCheck(arrived),
     ...receivedRequirements.map((entry) => check(entry.requirement.label, entry.met === true, "Received-source requirement")),
   ];
-  if (needsClause) gate2Checks.push(check("Received requirements available", receivedRequirements.length > 0, clause?.id ?? "No clause"));
+  if (sourceNeedsClause) gate2Checks.push(check("Received requirements available", receivedRequirements.length > 0, sourceClause?.id ?? "No clause"));
   const pass1 = gate1Checks.every((entry) => entry.pass), pass2 = gate2Checks.every((entry) => entry.pass);
   const releaseEligible = pass2 && reconciled && (!enabled || pass1);
   return {
     verification: enabled ? { gate1: pass1 ? "pass" : "fail", gate2: pass2 ? "pass" : "fail", reconciled, released: false } : { ...NO_VERIFICATION },
     gate1Checks: enabled ? gate1Checks : [], gate2Checks, tariffVersion: version?.version ?? null, clauseId: clause?.id ?? null, source,
+    sourceTariffVersion: sourceVersion?.version ?? null, sourceClauseId: sourceClause?.id ?? null,
     releaseEligible,
     reason: releaseEligible ? "Current source facts validated for release to existing pricing." :
       [...(enabled ? gate1Checks : []), ...gate2Checks].filter((entry) => !entry.pass).map((entry) => entry.name).join("; "),

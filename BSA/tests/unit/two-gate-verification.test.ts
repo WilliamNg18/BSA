@@ -145,6 +145,21 @@ describe("authoritative two-gate source verification", () => {
     expect(store().records.at(-1)?.recommendation).toBe("NONE");
   });
 
+  it("keys an undeclared Off paper source manually and validates the captured provision independently", () => {
+    const original = caseById(d)!;
+    store().submitItem({ caseId: d, channel: "paper", endorsementText: original.extracted.endorsementText });
+    store().confirmType1({ caseId: d, revision: 2, provenance: "human_capture", declarationReconciled: false,
+      fields: { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)" } });
+    expect(store().caseRevisions[d].at(-1)?.declaration).toBeUndefined();
+    const assessment = evaluateItemVerification(original, store().caseRevisions[d].at(-1)!, false, store().itemProcesses[d].capture);
+    expect(assessment).toMatchObject({ clauseId: null, sourceClauseId: "P2-C9", sourceTariffVersion: "2026-08" });
+    expect(assessment.gate2Checks.find((entry) => entry.name === "Dated citation validated")?.pass).toBe(true);
+    expect(getReleaseEligibility(d).allowed).toBe(true);
+    store().recordType2Decision({ caseId: d, decision: "ACCEPT", reason: "Human checked the manually captured source facts." });
+    expect(store().lifecycles[d].state).toBe("paid");
+    expect(sessionCase(d)!.extracted).toEqual(original.extracted);
+  });
+
   it("changing received EPS product and quantity does not rewrite its independent claim ledger", () => {
     const original = initialisePharmacyDraft(sessionCase(b)!, store().caseRevisions[b][0]);
     const epsPrescription = { ...original.epsPrescription!, items: [{ ...original.epsPrescription!.items[0], quantity: 56 }],
