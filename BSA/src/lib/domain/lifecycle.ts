@@ -124,6 +124,8 @@ export interface Type1Capture {
   readonly fields: DeclaredItemFields;
   readonly provenance: FieldProvenance;
   readonly declarationReconciled: boolean;
+  /** Mode at the explicit human capture action, independent of the earlier Send. */
+  readonly assistanceEnabled?: boolean;
 }
 
 /** Routing metadata only. Lifecycle/history and attempts remain authoritative. */

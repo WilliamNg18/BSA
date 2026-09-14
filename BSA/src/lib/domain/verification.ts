@@ -79,7 +79,7 @@ export function evaluateItemVerification(
   const knownSource = channel === "eps" || Boolean(confirmed) || readable;
   const declarationAgrees = channel === "eps" || Boolean(!declared && confirmed?.provenance === "human_capture") || Boolean(declared && arrived.productCode === declared.productCode &&
     arrived.quantity === declared.quantity && arrived.endorsementText.trim() === declared.endorsementText.trim() &&
-    (confirmed ? confirmed.declarationReconciled || !enabled && confirmed.provenance === "human_capture"
+    (confirmed ? confirmed.declarationReconciled || confirmed.provenance === "human_capture" && (!enabled || confirmed.assistanceEnabled === false)
       : arrived.dispensingDate === typed.dispensingDate));
   // An EPS projection's claim copy is not independent evidence. Retain the original ledger.
   const ledgerAgrees = Boolean(productByCode(arrived.productCode)) && arrived.productCode === original.claim.productCode &&
