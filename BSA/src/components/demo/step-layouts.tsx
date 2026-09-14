@@ -13,6 +13,7 @@ import { itemStateLabel } from "@/lib/domain/lifecycle";
 import type { ItemChannel } from "@/lib/domain/types";
 import { staffLane } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
+import { demoRouteCaseId } from "@/lib/demo-navigation";
 import { cn } from "@/lib/utils";
 
 export type DemoTaskKind = "submission" | "claim" | "operator" | "type1";
@@ -144,6 +145,16 @@ function ScenarioProjection({ step, caseId, assisted }: { step: DemoStepDefiniti
   </div>;
 }
 
+function FollowProjection({ caseId, assisted }: { caseId: string; assisted: boolean }) {
+  return <div className="space-y-3" data-demo-projection>
+    <p className="text-sm font-semibold">{caseId} · Scenario, not history.</p>
+    <ol className="space-y-3">{(assisted
+      ? ["Evidence assembled for this item", "Supported corrections, then a human decision", "Shared history retained"]
+      : ["Human checks the item", "Manual correction and review", "No Reset between sides"]).map((line) =>
+      <li key={line} className="rounded-lg border bg-background p-3 text-sm">{line}</li>)}</ol>
+  </div>;
+}
+
 function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }) {
   const lifecycles = useAppStore((s) => s.lifecycles);
   const processes = useAppStore((s) => s.itemProcesses);
@@ -173,7 +184,8 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
           <td className="p-2 font-mono text-xs">{row.caseId}</td><td className="py-2">{itemStateLabel(row, "nhsbsa", enabled)}</td>
           <td className="p-2"><Button variant="outline" size="sm" data-demo-control="queue-row" aria-label={`Open ${row.caseId}`} aria-pressed={row.caseId === caseId} onClick={() => {
             useAppStore.getState().followCase(row.caseId);
-            navigate(`/case/${encodeURIComponent(row.caseId)}`);
+            const params = new URLSearchParams({ case: row.caseId, channel: processes[row.caseId].channel });
+            navigate(`/queue?${params}`);
           }}>Open</Button></td>
         </tr>)}</tbody>
         <tfoot className="border-t bg-muted text-xs">
@@ -187,7 +199,7 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
   </div>;
 }
 
-function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition; caseId: string; kind: DemoTaskKind; renderTask: DemoTaskRenderer }) {
+function LiveItem({ step, caseId, kind, renderTask, showQueue = false }: { step: DemoStepDefinition; caseId: string; kind: DemoTaskKind; renderTask: DemoTaskRenderer; showQueue?: boolean }) {
   const item = useLifecycleCase(caseId);
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]);
@@ -220,7 +232,7 @@ function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition
       </li>)}</ol>
     </details>}
   </div>;
-  return step.number === 8 ? <DemoQueue caseId={caseId}>{content}</DemoQueue> : content;
+  return showQueue ? <DemoQueue caseId={caseId}>{content}</DemoQueue> : content;
 }
 
 export function DemoStepLayout({ renderTask }: { renderTask: DemoTaskRenderer }) {
@@ -235,22 +247,30 @@ export function DemoStepLayout({ renderTask }: { renderTask: DemoTaskRenderer })
   }, [number, pathname, search, hash]);
   if (number === null) return null;
   const step = getDemoStep(number);
-  const routeCase = pathname.startsWith("/case/") ? decodeURIComponent(pathname.slice("/case/".length)) : new URLSearchParams(search).get("case");
+  const routeCase = demoRouteCaseId(pathname, search);
   const explicitSide = pathname.startsWith("/case/") ? "operator" : pathname === "/pharmacy/claims" ? "claim" : null;
   const caseId = routeCase && (step.number === 8 || step.number === 10 || routeCase === followedId) ? routeCase : step.caseId;
   const kind: DemoTaskKind = explicitSide ?? (step.number === 8 ? "operator" : step.number === 9 ? "claim" : "submission");
+  const followOverride = Boolean(explicitSide && routeCase === followedId
+    && (!step.caseId || routeCase !== step.caseId || pathname !== step.path.split("#")[0]));
   function panel(assisted: boolean) {
     const active = assisted === enabled;
+    if (followOverride && caseId) return active
+      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} />
+      : <FollowProjection caseId={caseId} assisted={assisted} />;
     if (step.number === 1) return <ProcessPanel assisted={assisted} />;
     if (step.number === 2) return <MonthPanel assisted={assisted} active={active} />;
     if (step.number === 11) return <ClosingPanel assisted={assisted} />;
     return active && caseId
-      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} />
+      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} showQueue={step.number === 8} />
       : <ScenarioProjection step={step} caseId={caseId} assisted={assisted} />;
   }
   return <div className="mx-auto w-full max-w-7xl space-y-5" data-testid="demo-step-screen" data-demo-step={step.number} data-demo-case={caseId ?? undefined}>
-    <h1 ref={heading} tabIndex={-1} className="rounded-sm text-3xl font-semibold tracking-tight focus-visible:outline-2">{step.number}. {step.title}</h1>
+    <h1 ref={heading} tabIndex={-1} className="rounded-sm text-3xl font-semibold tracking-tight focus-visible:outline-2">
+      {followOverride ? `Following ${caseId} from step ${step.number}` : `${step.number}. ${step.title}`}
+    </h1>
+    {followOverride && <p className="text-sm font-medium" data-demo-follow-context>{caseId} · {kind === "claim" ? "Pharmacy view" : "NHSBSA view"}</p>}
     <DemoComparison enabled={enabled} today={panel(false)} assisted={panel(true)}
-      activeLabel={step.caseId ? undefined : step.number === 2 ? "Current mode · Shared assumptions" : "Current mode · Process illustration"} />
+      activeLabel={caseId ? undefined : step.number === 2 ? "Current mode · Shared assumptions" : "Current mode · Process illustration"} />
   </div>;
 }

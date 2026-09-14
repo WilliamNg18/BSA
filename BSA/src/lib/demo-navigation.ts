@@ -1,5 +1,10 @@
 import { demoStepDestination, getDemoStep } from "@/lib/domain/demo-steps";
 import { useAppStore } from "@/lib/store";
+import { matchPath } from "react-router-dom";
+
+export function demoRouteCaseId(pathname: string, search: string): string | null {
+  return matchPath("/case/:caseId/*", pathname)?.params.caseId ?? new URLSearchParams(search).get("case");
+}
 
 export function navigateDemoStep(number: number, navigate: (path: string) => void) {
   const step = getDemoStep(number);

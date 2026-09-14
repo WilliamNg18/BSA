@@ -82,6 +82,28 @@ describe("focused desktop step layouts", () => {
     expect(html).not.toContain("Must not render");
   });
 
+  it.each(DEMO_STEPS.flatMap((step) => (["claim", "type1"] as const).map((kind) => ({ step, kind }))))(
+    "opens the followed item from step $step.number on its $kind side without losing the step",
+    ({ step, kind }) => {
+      useAppStore.getState().setDemoStep(step.number);
+      useAppStore.getState().setAgentEnabled(true);
+      useAppStore.getState().followCase("EX-24123");
+      const before = getDomainSnapshot();
+      const tasks: DemoTaskProps[] = [];
+      const html = render(kind === "claim" ? "/pharmacy/claims?case=EX-24123" : "/case/EX-24123", (props) => {
+        tasks.push(props);
+        return createElement("button", null, props.kind);
+      });
+      expect(tasks).toHaveLength(1);
+      expect(tasks[0]).toMatchObject({ kind, caseId: "EX-24123" });
+      expect(html).toContain(`data-demo-step="${step.number}"`);
+      expect(html).toContain('data-demo-live-case="EX-24123"');
+      expect(html).not.toContain("data-demo-month");
+      expect(html).not.toContain("data-demo-pipeline");
+      expect(html).not.toContain('data-demo-control="queue-filter"');
+      expect(getDomainSnapshot()).toEqual(before);
+    });
+
   it("keeps the entry visible in ordinary mode and the strip independent of perspective", () => {
     const strip = () => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(DemoStrip)));
     expect(strip()).toContain("Enter demo mode");

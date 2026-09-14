@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DEMO_STEPS, getDemoStep } from "@/lib/domain/demo-steps";
-import { navigateDemoStep } from "@/lib/demo-navigation";
+import { demoRouteCaseId, navigateDemoStep } from "@/lib/demo-navigation";
 import { isTourShortcut } from "@/lib/tour-navigation";
 import { useAppStore } from "@/lib/store";
 
@@ -12,6 +12,7 @@ export function DemoStrip() {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
   const processes = useAppStore((s) => s.itemProcesses);
+  const followedCaseId = useAppStore((s) => s.followedCaseId);
   const [error, setError] = useState("");
   function go(step: number) {
     try {
@@ -39,9 +40,8 @@ export function DemoStrip() {
     return () => window.removeEventListener("keydown", shortcut);
   }, [number, navigate]);
   const step = number === null ? null : getDemoStep(number);
-  const selectedCase = step?.number === 8 || step?.number === 10
-    ? (pathname.startsWith("/case/") ? pathname.slice("/case/".length) : new URLSearchParams(search).get("case")) ?? step.caseId
-    : step?.caseId;
+  const routeCase = demoRouteCaseId(pathname, search);
+  const selectedCase = routeCase && (step?.number === 8 || step?.number === 10 || routeCase === followedCaseId) ? routeCase : step?.caseId;
   const channel = selectedCase ? processes[selectedCase]?.channel ?? step?.channel : step?.channel;
   return <nav aria-label="Demo mode" data-testid="demo-strip" className="border-b bg-background px-6">
     <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-3 py-2">

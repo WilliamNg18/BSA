@@ -2196,3 +2196,16 @@ Question: which first test closes the demonstration? Choice: the latest vision's
 two weeks of operator-time data and fifty items, two operators, blind. The
 historical two-year referral-data request no longer substitutes for this test.
 Tie-breaker: latest explicit direction.
+
+## 2026-09-14: Follow links override every step's viewing surface
+
+Question: what should Follow do on the process, numbers or closing step?
+Choice: retain the demo step but show the selected item's real task surface,
+headed Following the item from that step. Its inactive comparison refers to
+the same item, never the displaced narrative or another fixture. Back/Next
+returns to the normal sequence. Tie-breakers: functional navigation and clarity.
+
+Question: should a pharmacy Follow visit retain queue controls? Choice: no.
+An explicit side visit shows only that item's side. Opening a normal step 8
+queue row instead updates the queue's case/channel query and keeps its one
+opened row. Both operations are presentation-only. Tie-breaker: one focus.
