@@ -6,6 +6,18 @@ import { PaperPharmacyCapture } from "@/components/demo/paper-pharmacy-capture";
 import { PharmacyModelStrip } from "@/components/demo/manual-loop-projection";
 import type { ItemChannel } from "@/lib/domain/types";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
+import { PharmacyReleasedCount } from "./pharmacy-submission-receipt";
+import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
+
+export function PharmacySubmissionPanel({ caseId, channel, controls = "correct-and-submit" }: {
+  caseId: string; channel?: ItemChannel; controls?: "submit" | "correct-and-submit";
+}) {
+  const c = useLifecycleCase(caseId);
+  if (!c) return <p role="alert">Unknown pharmacy submission.</p>;
+  return (channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper")) === "eps"
+    ? <EpsPharmacyCapture caseId={caseId} compact controls={controls} />
+    : <PaperPharmacyCapture caseId={caseId} compact controls={controls} />;
+}
 
 export function PharmacyPage() {
   const [channel, setChannel] = useState<ItemChannel>("eps");
@@ -31,9 +43,11 @@ export function PharmacyPage() {
       <NativeChoiceGroup value={paperCaseId} onValueChange={setPaperCaseId} aria-label="Choose a paper scenario" className="flex-wrap justify-start">
         <NativeChoiceItem value="EX-24123">Unreadable form</NativeChoiceItem>
         <NativeChoiceItem value="EX-24112">Complete paper</NativeChoiceItem>
+        <NativeChoiceItem value="SYN-FQ123-READABLE">Readable paper</NativeChoiceItem>
       </NativeChoiceGroup>
       <PaperPharmacyCapture key={paperCaseId} caseId={paperCaseId} />
     </div>}
+    <PharmacyReleasedCount />
     <PharmacyModelStrip />
   </div>;
 }

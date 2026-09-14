@@ -1952,3 +1952,11 @@ leave them unmounted until the separate integration commit imports real panels.
 No placeholder controls or unavailable imports ship. The existing ordinary
 routes remain usable; final eleven-step acceptance is explicitly pending.
 Tie-breakers: real controls before visual completeness, then simple merge order.
+
+## 2026-09-14: Task 34 pharmacy action panels
+
+- Question: where should unfinished pharmacy edits live? Chosen: G's single revision-bound pharmacy draft, including confirmation; one-state authority wins over page-local editors.
+- Question: can a seeded referral demonstrate a pre-send scenario? Chosen with D/G: explicit workbench Send/Post appends a same-ID demonstration attempt; claim detail only corrects/resubmits the current referral. Immutable history and the fixed step order win.
+- Question: can a precheck predict release? Chosen: receipts read the submitted revision's recorded verification and release origin, not the current toggle; unestablished work remains pending. Two-gate authority wins.
+- Question: what does the pharmacy monthly count measure? Chosen: distinct Hillcrest items with actual release events in the UTC month, separate from whole-service estimates and payment. Evidence clarity wins.
+- Question: how much UI does the demo reuse? Chosen: compact item-only submission/action exports; full operational pages retain source, history and manual paper paths. The simpler task-focused presentation wins.

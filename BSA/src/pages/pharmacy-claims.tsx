@@ -6,7 +6,8 @@ import { SyntheticTag } from "@/components/demo/labels";
 import { ClaimDetail } from "@/components/demo/claim-detail";
 import { PharmacyModelStrip } from "@/components/demo/manual-loop-projection";
 import { formatProcessItems } from "@/lib/domain/baseline";
-import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
+import { itemStateLabel, type CaseLifecycle } from "@/lib/domain/lifecycle";
+import { PharmacyReleasedCount } from "@/components/demo/pharmacy-submission-receipt";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { useAppStore } from "@/lib/store";
@@ -68,6 +69,7 @@ export function PharmacyClaimsPage() {
       </dl>
       {agentEnabled && <p className="text-sm">Catches count checked, human-applied corrections once per attempt.</p>}
       <PharmacyModelStrip />
+      <PharmacyReleasedCount />
     </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>
@@ -80,7 +82,6 @@ export function PharmacyClaimsPage() {
           className="rounded-xl border bg-card p-4 text-left focus-visible:outline-2 focus-visible:outline-ring aria-pressed:border-primary aria-pressed:ring-2 aria-pressed:ring-primary">
           <span className="block font-semibold">{name}</span>
           <span className="block">{matching.length} items</span>
-          <span className="block text-sm">{money(matching.reduce((sum, row) => sum + (row.c?.claim.amountClaimed ?? 0), 0))} claimed (synthetic)</span>
         </button>;
       })}
     </div>
@@ -92,7 +93,7 @@ export function PharmacyClaimsPage() {
           <th scope="row" className="break-words p-3 font-medium">{row.caseId}</th>
           <td className="p-3">{row.c?.extracted.dispensingDate ?? "Not recorded"}</td>
           <td className="p-3">{row.c ? money(row.c.claim.amountClaimed) : "Not recorded"}</td>
-          <td className="p-3">{LIFECYCLE_LABELS[row.state].pharmacy}</td>
+          <td className="p-3">{itemStateLabel(row, "pharmacy", agentEnabled)}</td>
           <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setParams({ caseId: row.caseId }); }}>
             {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
             <span className="sr-only"> {row.caseId}</span>

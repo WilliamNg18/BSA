@@ -72,12 +72,12 @@ describe("visible EPS prescription", () => {
     expect(html).not.toContain("<img");
   });
 
-  it("shows exactly three EPS scenarios, the source fields, manual pain and explicit Send", () => {
+  it("retains three EPS scenarios and adds wrong-pack evidence, manual pain and explicit Send", () => {
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(EpsPharmacyCapture)));
-    for (const label of ["Complete endorsement", "NCSO missing date", "Generic missing brand", "Dispenser endorsement", "Exemption status", "Send claim", "No check against this month", "If incomplete, problems may be found at NHSBSA weeks later"]) expect(html).toContain(label);
+    for (const label of ["Complete endorsement", "NCSO missing date", "Generic missing brand", "Wrong pack size", "Dispenser endorsement", "Exemption status", "Send claim", "No advisory check; later correction is possible"]) expect(html).toContain(label);
     expect(html).not.toContain("Unreadable form");
     expect(html).not.toContain("Apply correction");
-    expect(html).toContain("NOT RUN");
+    expect(html).not.toContain('aria-label="Claims precheck"');
   });
 
   it("only reports ready for deterministic automatic routing", () => {
