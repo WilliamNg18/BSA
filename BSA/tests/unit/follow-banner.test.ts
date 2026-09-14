@@ -70,6 +70,43 @@ describe("persistent followed item banner", () => {
     }
   });
 
+  it.each([false, true])("retains the question, confirmation and latest event through both views without Reset, Agent=%s", (enabled) => {
+    const id = "EX-24112";
+    store().setAgentEnabled(enabled);
+    store().setDemoStep(10);
+    store().followCase(id);
+    store().submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+    store().arriveInQueue(id);
+    const question = "Please confirm the dispensing details.";
+    const answer = "The pharmacy has confirmed the dispensing details.";
+    for (const action of [
+      { run: () => store().requestInformation(id, question), label: "Operator requested information", state: "information_requested" },
+      { run: () => store().sendConfirmation(id, answer), label: enabled ? "Verification recorded" : "Pharmacy sent confirmation", state: "resubmitted" },
+    ]) {
+      action.run();
+      const before = getDomainSnapshot();
+      expect(store().lifecycles[id].state).toBe(action.state);
+      for (const perspective of ["both", "pharmacy", "nhsbsa"] as const) {
+        store().setPerspective(perspective);
+        for (const side of ["pharmacy", "nhsbsa"] as const) {
+          expect(visitFollowedCase(side)).toBe(side === "pharmacy" ? `/pharmacy/claims?case=${id}` : `/case/${id}`);
+          const html = render();
+          expect(html).toContain(`Following ${id} | EPS`);
+          expect(html).toContain(action.label);
+          expect(html).toMatch(/<button[^>]*>Pharmacy view<\/button>/);
+          expect(html).toMatch(/<button[^>]*>NHSBSA view<\/button>/);
+          expect(store().demoStep).toBe(10);
+          expect(store().agentEnabled).toBe(enabled);
+          expect(getDomainSnapshot()).toEqual(before);
+        }
+      }
+    }
+    expect(store().lifecycles[id].history.some((event) => event.decision === "REQUEST_INFORMATION" && event.reason === question)).toBe(true);
+    expect(store().lifecycles[id].history.some((event) => event.actor === "pharmacy" &&
+      event.from === "information_requested" && event.to === "resubmitted")).toBe(true);
+    expect(store().caseRevisions[id].at(-1)?.confirmation).toBe(answer);
+  });
+
   it.each([false, true])("follows actual D submission, capture, referral, correction, resubmission and human release, Agent=%s", (enabled) => {
     const id = "EX-24123";
     store().setAgentEnabled(enabled);

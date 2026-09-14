@@ -12,6 +12,9 @@ describe("follow history and current location presentation", () => {
   it.each([
     [{ processStep: "referral", rbCode: "RB2B" }, "Referred back 4 September, RB2B (synthetic)"],
     [{ processStep: "suggestion_applied" }, "Operator applied suggestion 4 September (synthetic)"],
+    [{ processStep: "suggestion_applied", recommendation: "ABSTAIN", decision: "REQUEST_INFORMATION" }, "Operator applied suggestion 4 September (synthetic)"],
+    [{ processStep: "type2_judgement", decision: "REQUEST_INFORMATION", recommendation: "ABSTAIN" }, "Operator requested information 4 September (synthetic)"],
+    [{ processStep: "referral", decision: "REFER_BACK", recommendation: "ABSTAIN", rbCode: "RB2B" }, "Referred back 4 September, RB2B (synthetic)"],
     [{ processStep: "correction_applied", actor: "pharmacy" }, "Pharmacy applied correction 4 September (synthetic)"],
     [{ processStep: "type1_capture" }, "Operator confirmed capture 4 September (synthetic)"],
     [{ processStep: "release_to_pricing", releaseOrigin: "human_decision" }, "Released after operator review 4 September (synthetic)"],
