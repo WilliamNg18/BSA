@@ -73,6 +73,10 @@ export function PharmacyClaimsPage() {
       <PharmacyModelStrip />
       <PharmacyReleasedCount />
     </section>
+    <section aria-label="Historical cases, background" className="rounded-xl border p-4 text-sm">
+      <h2 className="font-semibold">Historical cases, background</h2>
+      <ul>{BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · Case {c.scenario} · Background only, not playable</li>)}</ul>
+    </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>
       <p>NHSmail prompts resubmission within 18 months; only affected items wait. Advance: 80%; balance when priced. Demonstration sends nothing and calculates no payments.</p>

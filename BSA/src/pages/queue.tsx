@@ -96,6 +96,10 @@ function QueueWorklist() {
         {BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · {c.title} · Background only</li>)}
       </ul>
     </section>
+    <section aria-label="Historical cases, background" className="rounded-xl border bg-muted/30 p-4 text-sm">
+      <h2 className="font-semibold">Historical cases, background</h2>
+      <ul>{BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · Case {c.scenario} · Background only, not playable</li>)}</ul>
+    </section>
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
     <section aria-label="Actual session work counts" className="space-y-3">
       <h2 className="font-semibold">Actual synthetic session items</h2>

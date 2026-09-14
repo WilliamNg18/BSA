@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { caseById, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { historicalLifecycleFixtures } from "../../src/lib/domain/lifecycle-seed";
 import { NO_VERIFICATION, itemStateLabel } from "../../src/lib/domain/lifecycle";
@@ -254,4 +254,71 @@ describe("authoritative two-gate source verification", () => {
     store().submitItem({ ...store().pharmacyDrafts[b], caseId: b, channel: "eps" });
     expect(store().lifecycles[b].state).toBe("released_to_pricing");
   });
+
+  it.each(PLAYABLE_CASE_IDS.flatMap((id) => [false, true].map((enabled) => ({ id, enabled }))))(
+    "runs the actual $id cycle with identical full snapshots across perspectives, enabled=$enabled", ({ id, enabled }) => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-09-14T12:00:00Z"));
+      try {
+        const run = (switching: boolean) => {
+          store().resetDemo();
+          store().setPerspective("both");
+          store().setAgentEnabled(enabled);
+          const snapshots: ReturnType<typeof getDomainSnapshot>[] = [];
+          const act = (side: "pharmacy" | "nhsbsa", action: () => void) => {
+            if (switching) store().setPerspective(side);
+            action();
+            snapshots.push(getDomainSnapshot());
+          };
+          act("pharmacy", () => {
+            if (id === d) {
+              const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB", prescriber: "Separately supplied synthetic prescriber" };
+              store().submitItem({ caseId: d, channel: "paper", endorsementText: fields.endorsementText,
+                paperDeclaration: { typedProduct: fields.productCode, quantity: 100, endorsementText: fields.endorsementText,
+                  dispensingDate: "2026-08-27", declaredByPharmacy: true },
+                declaration: { fields, declaredAt: "2026-09-14T12:00:00Z", provenance: "pharmacy_declaration" } });
+            } else send(id, enabled);
+          });
+          if (id === "EX-24107") {
+            expect(store().lifecycles[id].state).toBe(enabled ? "released_to_pricing" : "paid");
+            return snapshots;
+          }
+          const capture = () => {
+            const revision = store().caseRevisions[id].at(-1)!;
+            store().confirmType1({ caseId: id, revision: revision.number, fields: revision.declaration!.fields,
+              provenance: "pharmacy_declaration", declarationReconciled: true });
+          };
+          act("nhsbsa", id === d ? capture : () => store().arriveInQueue(id));
+          if (enabled) act("nhsbsa", () => store().applySuggestionToDecision(id));
+          act("nhsbsa", () => store().referBack(id, id === b ? "SYN-NCSO" : "RB2B",
+            enabled ? store().operatorDrafts[id].note : "Please correct the missing or mismatched source facts."));
+          expect(store().lifecycles[id].state).toBe("referred_back");
+          act("pharmacy", () => {
+            if (enabled) store().applySuggestedCorrection(id);
+            else {
+              const revision = store().caseRevisions[id].at(-1)!, draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+              const endorsementText = id === mismatch ? "" : id === b ? "NCSO RK 21/08/26" : "NCSO JB 27/08/26";
+              store().setPharmacyDraft(id, { ...draft, endorsementText,
+                ...(draft.epsPrescription ? { epsPrescription: { ...draft.epsPrescription, dispenserEndorsement: endorsementText,
+                  ...(id === mismatch ? { supplyEvidence: { ...draft.epsPrescription.supplyEvidence!, packSize: 21 } } : {}) } } : {}),
+                ...(draft.paperDeclaration ? { paperDeclaration: { ...draft.paperDeclaration, endorsementText } } : {}) });
+            }
+          });
+          expect(store().lifecycles[id].state).toBe("referred_back");
+          act("pharmacy", () => store().resubmit(id));
+          expect(store().itemVerification[id].released).toBe(false);
+          act("nhsbsa", id === d ? capture : () => store().arriveInQueue(id));
+          if (enabled) act("nhsbsa", () => store().applySuggestionToDecision(id));
+          act("nhsbsa", () => store().releaseToPricing(id, "Human checked the corrected source evidence."));
+          expect(store().lifecycles[id].state).toBe("released_to_pricing");
+          expect(store().itemProcesses[id].releaseOrigin).toBe("human_decision");
+          expect(itemStateLabel(store().lifecycles[id], "nhsbsa")).not.toContain("no operator action");
+          return snapshots;
+        };
+        expect(run(true)).toEqual(run(false));
+      } finally {
+        vi.useRealTimers();
+      }
+    },
+  );
 });
