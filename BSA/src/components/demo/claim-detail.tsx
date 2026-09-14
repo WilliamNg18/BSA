@@ -70,17 +70,21 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       </dl>}
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
-      <PharmacyDraftFields draft={draft} original={original} channel={channel} update={update} correction />
+      <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction />
       {enabled && <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
         apply={approved && canApply ? () => act(() => {
-          useAppStore.getState().applySuggestedCorrection(caseId);
+          const store = useAppStore.getState();
+          store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
+          store.applySuggestedCorrection(caseId);
           document.getElementById("claim-endorsement")?.focus();
         }) : undefined}
         recheck={() => act(() => { setMessage(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
       <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
       <Button data-pharmacy-action="resubmit" onClick={() => act(() => {
         const store = useAppStore.getState();
-        if (!store.pharmacyDrafts[caseId]) store.setPharmacyDraft(caseId, draft);
+        if (!store.pharmacyDrafts[caseId] || store.pharmacyDrafts[caseId].purpose === "new_submission") {
+          store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
+        }
         store.resubmit(caseId);
         setMessage("Resubmitted");
       })}>{enabled ? "Resubmit" : "Resubmit blind"}</Button>

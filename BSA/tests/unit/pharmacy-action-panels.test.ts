@@ -120,6 +120,24 @@ describe("pharmacy panel human controls", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
+  it("fixes the first B workbench draft after Reset without approving or replacing the historical referral", () => {
+    const id = "EX-24112";
+    useAppStore.getState().setAgentEnabled(true);
+    const before = structuredClone(useAppStore.getState().caseRevisions[id]);
+    render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
+    controls.get("apply-correction")!();
+    const after = useAppStore.getState();
+    expect(after.pharmacyDrafts[id]).toMatchObject({ purpose: "new_submission", appliedSuggestion: true });
+    expect(after.pharmacyDrafts[id].endorsementText).toContain("21/08/26");
+    expect(after.caseRevisions[id]).toEqual(before);
+    expect(after.lifecycles[id].state).toBe("referred_back");
+    expect(after.lifecycles[id].history.at(-1)?.approvedDraft).toBeUndefined();
+    render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
+    controls.get("submit")!();
+    expect(useAppStore.getState().caseRevisions[id].at(-1)?.kind).toBe("submission");
+    expect(useAppStore.getState().lifecycles[id].state).toBe("released_to_pricing");
+  });
+
   it("the EPS Send control records an explicit pharmacy attempt without hidden Off checks", () => {
     const id = "EX-24107", before = structuredClone(useAppStore.getState().caseRevisions[id]);
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));

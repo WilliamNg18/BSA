@@ -32,7 +32,7 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
       <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
         apply={controls === "correct-and-submit" && canApply ? () => act(() => {
           const store = useAppStore.getState();
-          store.setPharmacyDraft(caseId, draft);
+          store.setPharmacyDraft(caseId, { ...draft, purpose: "new_submission" });
           store.applySuggestedCorrection(caseId);
         }) : undefined} />
     </> : <p data-paper-narrative className="text-sm">{poorScan
