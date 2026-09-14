@@ -31,6 +31,11 @@ The user authorised one recovery reviewer, but an enforced image-view limit
 blocked completion. Its preserved report leaves all 58 verdicts NOT VERIFIED
 and establishes no new application defect. Further image attempts are stopped;
 supported capacity restoration or independent human review is needed.
+The same reviewer's subsequent technical clarification cannot substantiate
+a hard session-wide quota from retained tool messages. Original delivery
+refusal versus historical-image omission remains uncertain. The separate
+[addendum](screens/task30/review-34d7567-recovery/delivery-clarification.md)
+preserves this distinction without changing any verdict or resuming attempts.
 The ordinary build keeps its state observer absent; the separate 34-test
 instrumented matrix supplies exact-state equivalence, not hosted observations.
 Earlier local rehearsals cannot certify later changes.

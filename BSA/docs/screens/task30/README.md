@@ -28,6 +28,13 @@ not promoted to defects or passes. No further image attempts or quota
 workarounds are authorised. Supported image capacity or independent human
 review is required before final visual acceptance can proceed.
 
+**Technical clarification:** the same reviewer subsequently could not
+distinguish original delivery refusal from historical-image omission in the
+retained transcript. A hard session-wide quota is therefore not established;
+see the [separate addendum](review-34d7567-recovery/delivery-clarification.md).
+The original report remains unchanged. All verdicts are still NOT VERIFIED,
+and the coordinator's stop on further image attempts remains in force.
+
 [Direct keyboard and contrast observations](manual-34d7567/README.md) record
 actual mobile focus, error recovery and declaration guards on this source.
 They are bounded observations, not full WCAG certification. Final release

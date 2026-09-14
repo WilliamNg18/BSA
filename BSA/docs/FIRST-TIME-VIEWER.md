@@ -40,6 +40,11 @@ All 58 images remain NOT VERIFIED; this is a platform-blocked assessment,
 not an application FAIL or final PASS. Further attempts are stopped pending
 supported capacity restoration or independent human review.
 
+A subsequent [technical clarification](screens/task30/review-34d7567-recovery/delivery-clarification.md)
+does not substantiate an enforced session-wide quota: the retained transcript
+cannot distinguish delivery refusal from historical-image omission. This
+does not supply missing review coverage or change the stop on image attempts.
+
 The following Task 24 results remain historical, source-pinned and unchanged.
 
 ## Repaired Task 24 execution at d5832e0: bounded review PASS
