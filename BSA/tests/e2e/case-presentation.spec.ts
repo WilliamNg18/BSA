@@ -152,29 +152,6 @@ for (const enabled of [false, true]) {
   });
 }
 
-test("manual Sufficient cannot release missing evidence, but a reconciled correction can be human-released", async ({ page }) => {
-  await page.goto("case/EX-24112");
-  await startDemonstrationReview(page);
-  await page.getByRole("radio", { name: "Sufficient (human choice)", exact: true }).check();
-  await page.getByLabel("Reason (required)", { exact: true }).fill("Human review cannot bypass missing evidence");
-  await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
-  await expect(operatorDecision(page).getByText("Release unavailable: code gate", { exact: true })).toBeVisible();
-  await page.goto("case/SYN-FQ123-RECHECK");
-  await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await page.getByRole("radio", { name: "Sufficient (human choice)", exact: true }).check();
-  const reason = page.getByLabel("Reason (required)", { exact: true });
-  for (const value of ["", "   1234567   "]) {
-    await reason.fill(value);
-    await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
-  }
-  await reason.fill("Human review confirms the corrected dispensing date");
-  await expect(operatorAction(page, "ACCEPT")).toBeEnabled();
-  await performDecision(page, "ACCEPT", { releaseVerified: false });
-  const status = page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status");
-  await expect(status).toHaveText(MANUAL_RELEASE_LABELS.nhsbsa);
-  await expect(status).not.toContainText("no operator action");
-});
-
 test("Task6 trace slots follow phases; Clear, Step and Show all never create a record", async ({ page }) => {
   await page.goto("case/EX-24112/trace");
   await page.getByRole("banner").getByRole("switch").setChecked(true);

@@ -81,15 +81,13 @@ for (const kind of ["referral", "information request"] as const) {
       await page.getByRole("radio", { name: kind === "referral" ? /^Refer back / : /^Request information / }).check();
       if (kind === "referral") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
       let approvedText: string | undefined;
-      const note = operatorDecision(page).getByRole("textbox", {
-        name: id === "EX-24112" ? "Reason (required)" : "Question (required)", exact: true,
-      });
-      await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
-      await note.fill(`Internal operator rationale for ${id} ${mode}, not the pharmacy draft`);
-      if (mode === "approved") {
-        await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
-        approvedText = await note.inputValue();
-        expect(approvedText).not.toContain("Internal operator rationale");
+      if (enabled) {
+        const approval = page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true });
+        await expect(approval).not.toBeChecked();
+        if (mode === "approved") {
+          approvedText = await page.locator('[data-prose="pharmacy draft"] blockquote').innerText();
+          await approval.check();
+        }
       }
       const reason = `Internal operator rationale for ${id} ${kind} ${mode}, not the pharmacy draft`;
       await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);

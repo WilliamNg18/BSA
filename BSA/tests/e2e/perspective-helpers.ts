@@ -1,7 +1,6 @@
 import type { Page, TestInfo } from "@playwright/test";
 import { captureCheckpoint, captureJson, expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { operatorDecision, performDecision } from "./operator-action-helpers";
 
 export const perspectiveGuard = "This view belongs to the other side; switch perspective to see it";
 export const flag = (page: Page) => page.getByRole("banner").getByRole("switch");

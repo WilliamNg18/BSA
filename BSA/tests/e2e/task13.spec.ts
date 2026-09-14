@@ -3,7 +3,8 @@ import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { DEMONSTRABLE_LIFECYCLE_STATES } from "./lifecycle-helpers";
-import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS, operatorDecision, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { operatorDecision, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS } from "../support/release-labels";
 
 const B = "EX-24112";
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });

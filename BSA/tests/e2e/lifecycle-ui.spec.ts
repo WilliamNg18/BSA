@@ -3,7 +3,8 @@ import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS, operatorDecision, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { operatorDecision, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS } from "../support/release-labels";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -16,7 +17,7 @@ async function queueReview(page: Page, id = B) {
 }
 async function record(page: Page, outcome: OperatorOutcome, reason: string, releaseVerified?: boolean) {
   await operatorDecision(page).getByRole("textbox", { name: "Reason (required)", exact: true }).fill(reason);
-  await performDecision(page, outcome, { openAudit: true, releaseVerified });
+  await performDecision(page, outcome, { releaseVerified });
 }
 
 test("Task25 Off referral to approved On correction requires a human recheck before pricing", async ({ page }, info) => {
@@ -46,7 +47,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
   await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
-  await performDecision(page, "REFER_BACK", { openAudit: true });
+  await performDecision(page, "REFER_BACK");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
