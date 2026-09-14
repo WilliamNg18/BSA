@@ -1983,6 +1983,8 @@ visible outcome, RB code and note, not page-local decision copies; one state
 and explicit human authority take precedence over presentation convenience.
 
 - Question: what item appears after exiting a pharmacy demo step? Chosen: the ordinary form reads the retained case/channel query, and its selectors update that query; invalid combinations show no substitute item. Same-item continuity without operational mutations wins.
+- Question: should migrated browser tests discard changed-field focus or receipt evidence checks? Chosen: restore explicit Apply focus and collapsed immutable source disclosures plus ordinary queue navigation; compact demo panels remain unchanged. Preserving existing human controls wins.
+- Question: how are repeated EPS evidence regions distinguished? Chosen: use the shared renderer's meaningful `Recorded claim` context for the receipt copy, retaining default live-source names and all roles/data. Accessibility and source clarity win.
 
 Does Off discard an applied suggestion? Start empty before any human drafting,
 but preserve subsequent human edits and Apply history when toggling; the

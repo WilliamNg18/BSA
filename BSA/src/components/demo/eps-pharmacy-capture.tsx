@@ -8,6 +8,7 @@ import { PharmacyTimeline } from "./pharmacy-timeline";
 import { PharmacyDraftFields } from "./pharmacy-draft-fields";
 import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { PharmacySubmissionReceipt } from "./pharmacy-submission-receipt";
+import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { useAppStore } from "@/lib/store";
@@ -60,6 +61,7 @@ function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact
         const store = useAppStore.getState();
         store.setPharmacyDraft(caseId, { ...draft, purpose: "new_submission" });
         store.applySuggestedCorrection(caseId);
+        focusPharmacyCorrection(draft, useAppStore.getState().pharmacyDrafts[caseId]);
       }) : undefined} />
       : <PainMarker resolved={false} pain="No advisory check; later correction is possible" resolution="Requirements checked" />}
     <Button data-pharmacy-action="submit" onClick={() => act(() => {

@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PharmacyClaimActionPanel } from "@/components/demo/claim-detail";
 import { PharmacyPage, PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
+import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { PharmacyReleasedCount, PharmacySubmissionReceipt } from "@/components/demo/pharmacy-submission-receipt";
 import { useAppStore, getDomainSnapshot } from "@/lib/store";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
@@ -11,9 +12,9 @@ import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 
 const controls = vi.hoisted(() => new Map<string, () => void>());
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, onClick, ...props }: ComponentProps<"button"> & { "data-pharmacy-action"?: string }) => {
+  Button: ({ children, onClick, asChild, ...props }: ComponentProps<"button"> & { "data-pharmacy-action"?: string; asChild?: boolean }) => {
     if (props["data-pharmacy-action"] && onClick) controls.set(props["data-pharmacy-action"], () => onClick({} as Parameters<NonNullable<typeof onClick>>[0]));
-    return createElement("button", props, children);
+    return createElement(asChild ? "span" : "button", props, children);
   },
 }));
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -139,6 +140,34 @@ describe("pharmacy panel human controls", () => {
     expect(useAppStore.getState().lifecycles[id].state).toBe("released_to_pricing");
   });
 
+  it("counts a checked human correction before Send, once per attempt and across perspectives", () => {
+    const s = useAppStore.getState(), caseId = "EX-24112";
+    s.setAgentEnabled(true);
+    expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
+    const before = structuredClone(s.caseRevisions[caseId]);
+    render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+    controls.get("apply-correction")!();
+    for (const perspective of ["pharmacy", "nhsbsa", "both"] as const) {
+      s.setPerspective(perspective);
+      expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
+    }
+    expect(useAppStore.getState().caseRevisions[caseId]).toEqual(before);
+    s.setAgentEnabled(false);
+    s.setAgentEnabled(true);
+    expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
+    s.resetDemo();
+    s.setAgentEnabled(true);
+    expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
+  });
+
+  it("does not count an approved referral correction as upfront prevention", () => {
+    referB();
+    render(createElement(PharmacyClaimActionPanel, { caseId: "EX-24112" }));
+    controls.get("apply-correction")!();
+    expect(useAppStore.getState().pharmacyDrafts["EX-24112"].appliedSuggestion).toBe(true);
+    expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
+  });
+
   it("the EPS Send control records an explicit pharmacy attempt without hidden Off checks", () => {
     const id = "EX-24107", before = structuredClone(useAppStore.getState().caseRevisions[id]);
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
@@ -178,6 +207,21 @@ describe("pharmacy panel human controls", () => {
     expect(render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }))).toContain("Ready");
   });
 
+  it.each([
+    ["EX-24112", "endorsement"],
+    ["SYN-FQ123-MISMATCH", "eps-pack"],
+  ])("explicit Apply moves keyboard focus to the changed field for %s", (caseId, fieldId) => {
+    useAppStore.getState().setAgentEnabled(true);
+    const focus = vi.fn();
+    const getElementById = vi.fn(() => ({ focus }));
+    vi.stubGlobal("document", { getElementById });
+    render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+    controls.get("apply-correction")!();
+    expect(getElementById).toHaveBeenCalledWith(fieldId);
+    expect(focus).toHaveBeenCalledOnce();
+    expect(useAppStore.getState().lifecycles[caseId].history.at(-1)?.actor).toBe("pharmacy");
+  });
+
   it("keeps applied compact paper prose cumulatively below 25 words", () => {
     const id = "EX-24123", s = useAppStore.getState();
     s.setAgentEnabled(true);
@@ -202,6 +246,17 @@ describe("pharmacy panel human controls", () => {
 });
 
 describe("recorded receipt and release count", () => {
+  it("keeps original and recorded EPS landmarks distinct without changing either source", () => {
+    const caseId = "EX-24107", s = useAppStore.getState();
+    s.submitItem({ ...currentDraft(caseId, "eps"), caseId, channel: "eps" });
+    const before = getDomainSnapshot();
+    const html = render(createElement(PharmacyPage), `/pharmacy?case=${caseId}&channel=eps`);
+    expect(html.match(/aria-label="Submitted electronic prescription, synthetic"/g)).toHaveLength(1);
+    expect(html).toContain('aria-label="Recorded claim: Submitted electronic prescription, synthetic"');
+    expect(html).toContain('aria-label="Recorded claim: Recorded dispenser claim"');
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
   it("only labels actual code release no-operator, never a precheck or toggle", () => {
     const id = "EX-24107";
     const s = useAppStore.getState();

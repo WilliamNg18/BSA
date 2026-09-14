@@ -5,12 +5,14 @@ import { useAppStore } from "@/lib/store";
 import { NO_VERIFICATION, itemStateLabel } from "@/lib/domain/lifecycle";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { formatProcessItems } from "@/lib/domain/baseline";
+import { EpsPrescriptionMessage } from "./eps-prescription-message";
 
 export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = false }: {
   caseId: string; revisionNumber: number; compact?: boolean;
 }) {
   const row = useAppStore((s) => s.lifecycles[caseId]);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.find((r) => r.number === revisionNumber));
+  const perspective = useAppStore((s) => s.perspective);
   if (!row || !revision) return <p role="alert">Submission receipt unavailable.</p>;
   const events = row.history.filter((event) => event.revision === revisionNumber);
   const verification = events.filter((event) => event.verification).at(-1)?.verification ?? NO_VERIFICATION;
@@ -50,8 +52,25 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
           <KeyValue k="Version / clause" v={`${revision.precheck?.tariffVersion ?? "Not retrieved"} / ${revision.precheck?.clauseId ?? "Not retrieved"}`} />
           <KeyValue k="Current item" v={itemStateLabel(row, "pharmacy")} />
         </dl>
+        {revision.paperDeclaration && <section aria-label="Submitted pharmacy declaration" className="mt-3 space-y-2">
+          <h3 className="font-semibold">Submitted pharmacy declaration</h3>
+          <dl className="grid grid-cols-2 gap-3 text-sm">
+            <KeyValue k="Declared product" v={revision.paperDeclaration.typedProduct || "Not declared"} />
+            <KeyValue k="Declared quantity" v={revision.paperDeclaration.quantity?.toString() ?? "Not declared"} />
+            <KeyValue k="Declared endorsement" v={revision.paperDeclaration.endorsementText || "Not declared"} />
+            <KeyValue k="Declared dispensing date" v={revision.paperDeclaration.dispensingDate || "Not declared"} />
+          </dl>
+          <p className="text-xs">declared by the pharmacy, not read from the form</p>
+        </section>}
+        {revision.epsPrescription && <details className="mt-3">
+          <summary className="cursor-pointer">Recorded claim message</summary>
+          <EpsPrescriptionMessage prescription={revision.epsPrescription} contextLabel="Recorded claim" />
+        </details>}
       </details>
-      <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(caseId)}`}>View submitted claim</Link></Button>
+      <div className="flex flex-wrap gap-2">
+        <Button asChild variant="outline"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(caseId)}`}>View submitted claim</Link></Button>
+        {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}
+      </div>
     </>}
   </section>;
 }

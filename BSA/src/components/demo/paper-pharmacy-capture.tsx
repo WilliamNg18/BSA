@@ -5,6 +5,7 @@ import { PrescriptionForm } from "./prescription-form";
 import { PharmacyDraftFields } from "./pharmacy-draft-fields";
 import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { PharmacySubmissionReceipt } from "./pharmacy-submission-receipt";
+import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
 import { PharmacyTimeline } from "./pharmacy-timeline";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { useAppStore } from "@/lib/store";
@@ -34,6 +35,7 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, { ...draft, purpose: "new_submission" });
           store.applySuggestedCorrection(caseId);
+          focusPharmacyCorrection(draft, useAppStore.getState().pharmacyDrafts[caseId]);
         }) : undefined} />
     </> : <p data-paper-narrative className="text-sm">{poorScan
       ? "Type 1 keys; Type 2 judges. RB2B delays are illustrative, not inevitable."

@@ -5,6 +5,7 @@ import { ClaimsResubmissionComparison } from "./claims-resubmission-comparison";
 import { LifecycleHistory } from "./lifecycle-history";
 import { PharmacyDraftFields } from "./pharmacy-draft-fields";
 import { PharmacyDraftCheck } from "./pharmacy-draft-check";
+import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { useAppStore } from "@/lib/store";
 import { itemStateLabel, NO_VERIFICATION, type CaseLifecycle } from "@/lib/domain/lifecycle";
@@ -81,7 +82,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
           store.applySuggestedCorrection(caseId);
-          document.getElementById("claim-endorsement")?.focus();
+          focusPharmacyCorrection(draft, useAppStore.getState().pharmacyDrafts[caseId], "claim-endorsement");
         }) : undefined}
         recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
       <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
@@ -117,6 +118,6 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       }))}>Submit another demonstration attempt</Button>
     </details>}
     {error && <p role="alert">{error}</p>}
-    {message?.caseId === caseId && message.revision === revision.number && message.draft === draftSignature && <p role="status">{message.text}</p>}
+    {enabled && message?.caseId === caseId && message.revision === revision.number && message.draft === draftSignature && <p role="status">{message.text}</p>}
   </div>;
 }
