@@ -216,6 +216,22 @@ describe("pharmacy panel human controls", () => {
     expect(after.at(-1)?.declaration).toBeUndefined();
   });
 
+  it("Off paper posting does not borrow an unsent declaration's invalid dispensing date", () => {
+    const caseId = "EX-24123", s = useAppStore.getState();
+    s.setAgentEnabled(true);
+    const draft = currentDraft(caseId, "paper");
+    s.setPharmacyDraft(caseId, { ...draft, paperDeclaration: { ...draft.paperDeclaration!, dispensingDate: "" } });
+    s.setAgentEnabled(false);
+    const before = structuredClone(useAppStore.getState().caseRevisions[caseId]);
+    render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
+    controls.get("submit")!();
+    const after = useAppStore.getState().caseRevisions[caseId];
+    expect(after).toHaveLength(before.length + 1);
+    expect(after.slice(0, -1)).toEqual(before);
+    expect(after.at(-1)?.declaration).toBeUndefined();
+    expect(after.at(-1)?.precheck).toMatchObject({ mode: "off", dispensingDate: "2026-08-27", checkedAt: null, facts: null });
+  });
+
   it("generic Apply writes actual brand, pack and form without rewriting the EPS source", () => {
     const id = "SYN-FQ123-MISMATCH";
     useAppStore.getState().setAgentEnabled(true);

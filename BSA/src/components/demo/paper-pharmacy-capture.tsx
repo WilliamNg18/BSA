@@ -46,7 +46,7 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
       useAppStore.getState().submitItem({
         caseId, revision: revision.number, channel: "paper", endorsementText: text,
         ...(enabled ? { declaration: draft.paperDeclaration ? undefined : draft.declaration, paperDeclaration: draft.paperDeclaration } : {}),
-        precheck: pharmacySnapshot(text, draft.paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate,
+        precheck: pharmacySnapshot(text, enabled ? draft.paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate : c.extracted.dispensingDate,
           enabled ? "scripted" : "off", enabled ? result : null, enabled && result ? new Date().toISOString() : null),
       });
     })}>{enabled ? "Post paper with declaration" : "Post paper"}</Button>

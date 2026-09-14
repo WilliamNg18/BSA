@@ -68,6 +68,8 @@ for (const enabled of [false, true]) {
           await expect(page.getByLabel("Declared product", { exact: true })).toHaveCount(0);
           const submitted = await action("Submit the genuinely undeclared paper revision", "Pharmacy", async () => {
             await page.getByRole("button", { name: "Post paper", exact: true }).click();
+            await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText(`${D}:2`);
+            await expect(page.getByRole("alert")).toHaveCount(0);
           });
           expect(submitted.caseRevisions[D].at(-1)?.declaration).toBeUndefined();
           expect(submitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });
