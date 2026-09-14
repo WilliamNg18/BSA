@@ -11,7 +11,7 @@ import { EpsPrescriptionMessage } from "./eps-prescription-message";
 import { PainMarker } from "./pain-marker";
 import { PharmacyTimeline } from "./pharmacy-timeline";
 import { usePharmacyCheck } from "@/hooks/use-pharmacy-check";
-import { caseById } from "@/lib/domain/cases";
+import { caseById, PLAYABLE_CASES, playableCaseChannel } from "@/lib/domain/cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "@/lib/domain/eps-check";
 import { checkEpsPharmacy } from "@/lib/domain/eps-pharmacy-check";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
@@ -22,11 +22,9 @@ import type { EpsPrescription } from "@/lib/domain/types";
 import type { PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
 
-const SCENARIOS = [
-  { id: "EX-24107", label: "Complete endorsement" },
-  { id: "EX-24112", label: "NCSO missing date" },
-  { id: "SYN-FQ123-TYPE2", label: "Generic missing brand" },
-] as const;
+const SCENARIOS = PLAYABLE_CASES.filter((c) => playableCaseChannel(c.id) === "eps").map((c) => ({
+  id: c.id, label: c.id === "EX-24107" ? "Complete endorsement" : c.id === "EX-24112" ? "NCSO missing date" : "Wrong pack size",
+}));
 
 interface EditorState {
   initialDraft: EpsPrescription;

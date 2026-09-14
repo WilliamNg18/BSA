@@ -6,7 +6,8 @@ import { SyntheticTag } from "@/components/demo/labels";
 import { ClaimDetail } from "@/components/demo/claim-detail";
 import { PharmacyModelStrip } from "@/components/demo/manual-loop-projection";
 import { formatProcessItems } from "@/lib/domain/baseline";
-import { LIFECYCLE_LABELS, type CaseLifecycle } from "@/lib/domain/lifecycle";
+import { itemStateLabel, type CaseLifecycle } from "@/lib/domain/lifecycle";
+import { BACKGROUND_CASES } from "@/lib/domain/cases";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { useAppStore } from "@/lib/store";
@@ -18,7 +19,8 @@ const money = (amount: number) => new Intl.NumberFormat("en-GB", { style: "curre
 function matchesFilter(row: CaseLifecycle, filter: ClaimFilter, month: string) {
   if (filter === "Action needed") return row.state === "referred_back" || row.state === "information_requested";
   if (filter === "Waiting on NHSBSA") return ["submitted", "in_review", "resubmitted", "escalated"].includes(row.state);
-  if (filter === "Paid this month") return row.state === "paid" && row.history.some((event) => event.to === "paid" && event.at.startsWith(month));
+  if (filter === "Paid this month") return ["paid", "released_to_pricing"].includes(row.state) &&
+    row.history.some((event) => ["paid", "released_to_pricing"].includes(event.to) && event.at.startsWith(month));
   return true;
 }
 
@@ -44,7 +46,7 @@ export function PharmacyClaimsPage() {
     ["Submitted this month", rows.filter((row) => row.history.some((event) => event.to === "submitted" && event.at.startsWith(month))).length],
     ["Referred back", rows.filter((row) => row.history.some((event) => event.to === "referred_back" && event.at.startsWith(month))).length],
     ["Corrected/resubmitted", rows.filter((row) => revisions[row.caseId]?.some((revision) => revision.kind === "resubmission" && revision.at.startsWith(month))).length],
-    ["Paid", rows.filter((row) => row.history.some((event) => event.to === "paid" && event.at.startsWith(month))).length],
+    ["Paid", rows.filter((row) => row.history.some((event) => ["paid", "released_to_pricing"].includes(event.to) && event.at.startsWith(month))).length],
   ] as const;
   return <div className="mx-auto max-w-7xl space-y-6">
     <header className="space-y-2"><SyntheticTag /><h1 className="text-2xl font-semibold">Pharmacy claims</h1>
@@ -61,13 +63,17 @@ export function PharmacyClaimsPage() {
     <p data-pharmacy-identity>{HILLCREST_PHARMACY.name} ({pharmacy}) · Synthetic pharmacy</p>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
-      <p className="text-sm">Recorded UTC-month synthetic items; categories overlap. Paid requires recorded pricing; no payments calculated.</p>
+      <p className="text-sm">Paid on the normal schedule includes recorded release to existing pricing. Synthetic categories overlap; no payments calculated.</p>
       <dl className="grid gap-3 grid-cols-5">
         {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{formatProcessItems(total)}</dd></div>)}
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
       </dl>
       {agentEnabled && <p className="text-sm">Catches count checked, human-applied corrections once per attempt.</p>}
       <PharmacyModelStrip />
+    </section>
+    <section aria-label="Historical cases, background" className="rounded-xl border p-4 text-sm">
+      <h2 className="font-semibold">Historical cases, background</h2>
+      <ul>{BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · Case {c.scenario} · Background only, not playable</li>)}</ul>
     </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>
@@ -92,7 +98,7 @@ export function PharmacyClaimsPage() {
           <th scope="row" className="break-words p-3 font-medium">{row.caseId}</th>
           <td className="p-3">{row.c?.extracted.dispensingDate ?? "Not recorded"}</td>
           <td className="p-3">{row.c ? money(row.c.claim.amountClaimed) : "Not recorded"}</td>
-          <td className="p-3">{LIFECYCLE_LABELS[row.state].pharmacy}</td>
+          <td className="p-3">{itemStateLabel(row, "pharmacy")}</td>
           <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setParams({ caseId: row.caseId }); }}>
             {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
             <span className="sr-only"> {row.caseId}</span>

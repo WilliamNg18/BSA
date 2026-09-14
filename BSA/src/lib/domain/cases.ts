@@ -1,4 +1,4 @@
-import type { EndorsementFacts, ExceptionCase } from "./types";
+import type { EndorsementFacts, ExceptionCase, ItemChannel } from "./types";
 import { HILLCREST_PHARMACY } from "./reference";
 
 // SYNTHETIC demonstration cases. No real prescriptions, patients, pharmacies or
@@ -277,6 +277,13 @@ export const PLAYABLE_CASE_IDS = Object.freeze(["EX-24107", "EX-24112", "SYN-FQ1
 export function isPlayableCase(id: string | null | undefined): boolean {
   return typeof id === "string" && PLAYABLE_CASE_IDS.some((candidate) => candidate === id);
 }
+export const PLAYABLE_CASE_CHANNELS: Readonly<Record<typeof PLAYABLE_CASE_IDS[number], ItemChannel>> = Object.freeze({
+  "EX-24107": "eps", "EX-24112": "eps", "SYN-FQ123-MISMATCH": "eps", "EX-24123": "paper",
+});
+export function playableCaseChannel(id: string): ItemChannel | null {
+  const known = PLAYABLE_CASE_IDS.find((candidate) => candidate === id);
+  return known ? PLAYABLE_CASE_CHANNELS[known] : null;
+}
 export const BACKGROUND_CASES: readonly ExceptionCase[] = Object.freeze(CASES.filter((c) => c.scenario === "C" || c.scenario === "F"));
 
 export function caseById(id: string | undefined): ExceptionCase | null {
@@ -284,6 +291,11 @@ export function caseById(id: string | undefined): ExceptionCase | null {
   if (id === GENERIC_SUPPLY_CASE.id) return GENERIC_SUPPLY_CASE;
   return CASES.find((c) => c.id === id) ?? TWO_GATE_CASES.find((c) => c.id === id) ?? null;
 }
+export const PLAYABLE_CASES: readonly ExceptionCase[] = Object.freeze(PLAYABLE_CASE_IDS.map((id) => {
+  const c = caseById(id);
+  if (!c) throw new Error(`Missing playable synthetic case: ${id}`);
+  return c;
+}));
 
 /** Additional synthetic queue rows so the queue reads like a working day. */
 export const QUEUE_FILLER: {
