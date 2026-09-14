@@ -179,6 +179,19 @@ describe("pharmacy panel human controls", () => {
     expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
   });
 
+  it("retains a human prescriber correction field beside the modern paper declaration", () => {
+    const caseId = "EX-24123", s = useAppStore.getState();
+    s.confirmType1({ caseId, revision: 1, fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null },
+      provenance: "human_capture", declarationReconciled: false });
+    s.referBack(caseId, "RB2B", "Please supply the missing prescriber and product details.");
+    const before = getDomainSnapshot();
+    const html = render(createElement(PharmacyClaimActionPanel, { caseId }));
+    expect(html).toContain("Declared product");
+    expect(html).toContain("Declared prescriber (synthetic)");
+    expect(html).not.toContain("Dr Demo");
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
   it("the EPS Send control records an explicit pharmacy attempt without hidden Off checks", () => {
     const id = "EX-24107", before = structuredClone(useAppStore.getState().caseRevisions[id]);
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
