@@ -36,7 +36,7 @@ function historyAction(event: HistoryEvent): string {
     case "correction_applied": return "Pharmacy applied correction";
     case "type1_capture": return "Operator confirmed capture";
     case "release_to_pricing": return event.actor === "operator" || event.releaseOrigin === "human_decision"
-      ? "Released after operator review" : "Verified and released";
+      ? "Released after operator review" : "Released to existing pricing";
     case "verification": return "Verification recorded";
     case "automatic_pricing":
     case "existing_pricing": return "Existing rules engine priced item";
@@ -62,7 +62,7 @@ function historyAction(event: HistoryEvent): string {
     case "escalated": return "Operator escalated item";
     case "paid": return "Existing rules engine priced item";
     case "released_to_pricing": return event.actor === "operator" || event.releaseOrigin === "human_decision"
-      ? "Released after operator review" : "Verified and released";
+      ? "Released after operator review" : "Released to existing pricing";
   }
 }
 
