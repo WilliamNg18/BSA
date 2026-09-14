@@ -91,4 +91,32 @@ describe("mounted desktop demo with real compact panels", () => {
       expect(html).toContain("NHSBSA view");
     }
   });
+
+  it.each([false, true])("retains one editable assumptions instance when values are invalid, Agent %s", (enabled) => {
+    const state = useAppStore.getState();
+    state.setDemoStep(2);
+    state.setAgentEnabled(enabled);
+    state.setManualLoopInput("manualLoopItems", "invalid");
+    const html = shell("/#month");
+    expect(html).toContain("Estimate unavailable");
+    expect(html).toContain("Edit the monthly assumptions");
+    expect(html.match(/id="process-manualLoopItems"/g)).toHaveLength(1);
+    expect(html).toContain('aria-invalid="true"');
+    expect(html).not.toContain("Exit demo to correct");
+  });
+
+  it("demonstrates the mismatch before offering a real correction of the submitted attempt", () => {
+    const state = useAppStore.getState();
+    const caseId = "SYN-FQ123-MISMATCH";
+    state.setDemoStep(5);
+    state.setAgentEnabled(true);
+    const path = `/pharmacy?case=${caseId}&channel=eps`;
+    expect(shell(path)).not.toContain('data-pharmacy-action="apply-correction"');
+    const source = state.caseRevisions[caseId].at(-1)!;
+    state.submitItem({ caseId, channel: "eps", endorsementText: source.endorsementText, epsPrescription: source.epsPrescription });
+    expect(useAppStore.getState().itemVerification[caseId]).toMatchObject({ gate1: "pass", gate2: "fail", released: false });
+    const before = getDomainSnapshot();
+    expect(shell(path)).toContain('data-pharmacy-action="apply-correction"');
+    expect(getDomainSnapshot()).toEqual(before);
+  });
 });

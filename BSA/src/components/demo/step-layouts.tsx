@@ -2,11 +2,11 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
-import { ProcessFigure } from "@/components/demo/process-figure";
+import { ProcessAssumptions } from "@/components/demo/process-assumptions";
 import { SceneEstimateNumber } from "@/components/demo/scene-estimate-number";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
-import { formatProcessHours, formatProcessItems, PROCESS_PUBLIC_FACTS } from "@/lib/domain/baseline";
+import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
 import { getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
 import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
@@ -39,7 +39,7 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
   },
   6: {
     today: ["Unreadable paper posted", "Missing information returns weeks later (illustrative)"],
-    assisted: ["declared by the pharmacy, not read from the form", "Gate 1 checks the declaration", "Human posts; unreadable scan needs confirmation"],
+    assisted: ["declared by the pharmacy, not read from the form", "Gate 1 checks the declaration", "Unreadable scan needs confirmation"],
   },
   7: {
     today: ["Type 1 keys by eye", "Type 2 judges", "RB2B if evidence remains insufficient"],
@@ -67,9 +67,10 @@ export function DemoComparison({ enabled, today, assisted, activeLabel = "Curren
       {today}
     </section>
     <section key={enabled ? "on" : "off"} aria-labelledby="demo-assisted-heading" data-testid="demo-assisted" data-readonly={!enabled}
-      className={cn("min-w-0 space-y-4 rounded-xl border p-5", enabled
+      className={cn("relative isolate min-w-0 space-y-4 rounded-xl border p-5", enabled
         ? "border-teal-700 bg-card ring-1 ring-teal-700 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-[2000ms]"
         : "border-dashed bg-muted text-muted-foreground")}>
+      {enabled && <span aria-hidden="true" data-demo-motion="background" className="pointer-events-none absolute inset-0 -z-10 rounded-xl bg-teal-50 dark:bg-teal-950 motion-reduce:animate-in motion-reduce:fade-in-0 motion-reduce:duration-150" />}
       <div className="border-b pb-3"><h2 id="demo-assisted-heading" className="text-xl font-semibold">With the agent</h2>
         <p className="mt-1 text-xs font-medium">{enabled ? activeLabel : "Read-only scenario projection · Agent Off"}</p></div>
       {assisted}
@@ -108,32 +109,17 @@ function ProcessPanel({ assisted }: { assisted: boolean }) {
 
 function MonthPanel({ assisted, active }: { assisted: boolean; active: boolean }) {
   const { result } = useManualLoopMonth();
-  if (!result) return <p role="alert">Estimate unavailable. Exit demo to correct the monthly assumptions.</p>;
-  const column = assisted ? result.withAgent : result.today;
+  const column = result && (assisted ? result.withAgent : result.today);
   return <div className="space-y-4" data-demo-month>
-    <dl className="grid grid-cols-2 gap-3">{([
+    {result && column ? <dl className="grid grid-cols-2 gap-3">{([
       ["Referred-back items", column.referredBackItems, formatProcessItems],
       ["Referral-loop operator hours", column.operatorHours, formatProcessHours],
     ] as const).map(([label, value, format]) => <div key={label} className="rounded-lg border bg-background p-4">
       <dt className="text-sm font-medium">{label}{assisted && " (estimate)"}</dt>
       <dd className="mt-3 text-3xl font-semibold tabular-nums"><SceneEstimateNumber value={value} enabled={assisted && active} scenario={result} format={format} /></dd>
-    </div>)}</dl>
+    </div>)}</dl> : <p role="alert">Estimate unavailable. Correct the highlighted shared assumptions.</p>}
     <p className="text-sm">Synthetic assumptions, not measured savings. Judgement stays human; only evidence gathering and avoidable referrals change.</p>
-    {active ? <details data-demo-control="month-detail" className="rounded-lg border p-3">
-      <summary className="cursor-pointer font-medium">Estimate detail and assumptions</summary>
-      <MonthDetail />
-    </details> : <p className="text-xs">Same monthly assumptions. Detail is available in the current mode.</p>}
-  </div>;
-}
-
-function MonthDetail() {
-  const { input } = useManualLoopMonth();
-  return <div className="mt-3 space-y-3 text-sm">
-    <ProcessFigure source="Public" label="Monthly referral context" explanation="Owner-supplied public context, not independently verified.">
-      {formatProcessItems(PROCESS_PUBLIC_FACTS.monthlyReferrals)} monthly referrals
-    </ProcessFigure>
-    <p>Assumptions are editable in the ordinary monthly calculator after Exit demo.</p>
-    {input && <p>Pharmacy prevention assumption: {input.preventionPercent}%.</p>}
+    {active && <div data-demo-control="month-detail"><ProcessAssumptions /></div>}
   </div>;
 }
 
@@ -145,7 +131,7 @@ function ClosingPanel({ assisted }: { assisted: boolean }) {
     <section className="space-y-2 rounded-lg border p-4"><h3 className="font-semibold">{assisted ? "The central bet" : "The problem"}</h3>
       <p className="text-sm">{assisted ? input ? `Prevent ${input.preventionPercent}% of would-be referrals (assumption). This estimate fails if measured prevention is substantially lower.` : "Estimate unavailable. Correct the monthly assumptions outside demo mode." : "People gather uncertain evidence. Pharmacies correct referred items; only that item's payment is delayed."}</p></section>
     <section className="space-y-2 rounded-lg border p-4"><h3 className="font-semibold">First test</h3>
-      <p className="text-sm">{assisted ? "Test referral-reason concentration using two years of item-level history. Proceed, reshape or stop." : "Establish why items return, before proposing a change."}</p></section>
+      <p className="text-sm">{assisted ? "Two weeks of operator-time data; fifty items, two operators, blind. Establish the agreement ceiling before proceeding." : "Establish why items return, before proposing a change."}</p></section>
   </div>;
 }
 
@@ -153,7 +139,7 @@ function ScenarioProjection({ step, caseId, assisted }: { step: DemoStepDefiniti
   const content = CASE_COMPARISONS[step.number];
   if (!content) return <p role="alert">Scenario comparison unavailable.</p>;
   return <div className="space-y-3" data-demo-projection>
-    <p className="text-sm font-semibold">{caseId} · Synthetic scenario, not recorded history</p>
+    <p className="text-sm font-semibold">{caseId} · Scenario, not history.</p>
     <ol className="space-y-3">{(assisted ? content.assisted : content.today).map((line) => <li key={line} className="rounded-lg border bg-background p-3 text-sm">{line}</li>)}</ol>
   </div>;
 }
@@ -206,6 +192,7 @@ function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]);
   const process = useAppStore((s) => s.itemProcesses[caseId]);
+  const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const enabled = useAppStore((s) => s.agentEnabled);
   if (!item || !lifecycle || !process) return <p role="alert">Operational item unavailable: {caseId}. No replacement case has been selected.</p>;
   const task = kind === "operator" && process.routing.outcome === "type1_capture" && process.routing.requiresHuman ? "type1" : kind;
@@ -224,7 +211,7 @@ function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition
       <div><dt>Reconciliation</dt><dd>{verification.reconciled ? "Agrees" : "Not established"}</dd></div>
     </dl>}
     <div data-demo-control={task === "operator" ? "operator" : task === "type1" ? "type1-capture" : undefined}>
-      {renderTask({ kind: task, caseId, allowCorrection: step.number === 4 || step.number === 10, channel: kind === "submission" ? step.channel : process.channel })}
+      {renderTask({ kind: task, caseId, allowCorrection: step.number !== 5 || Boolean(revision && revision.kind !== "seed"), channel: kind === "submission" ? step.channel : process.channel })}
     </div>
     {step.number === 10 && <details data-demo-control="history" className="rounded-lg border p-3">
       <summary className="cursor-pointer font-medium">Same-item history</summary>

@@ -62,7 +62,7 @@ describe("eleven-step navigation, never a business action", () => {
     expect(DEMO_CASE_IDS).toEqual(PLAYABLE_CASE_IDS);
     expect(getDemoStep(6)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy" });
     expect(getDemoStep(7)).toMatchObject({ caseId: "EX-24123", path: "/case/EX-24123" });
-    expect(DEMO_ALLOWED_CONTROLS[6]).toEqual(["submission"]);
+    expect(DEMO_ALLOWED_CONTROLS[6]).toEqual(["submission", "correction"]);
     expect(DEMO_ALLOWED_CONTROLS[7]).not.toContain("submission");
   });
 });

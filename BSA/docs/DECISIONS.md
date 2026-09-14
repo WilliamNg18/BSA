@@ -2084,3 +2084,26 @@ operability and truthful source presentation.
 - Question: retain extra pharmacy scenarios? Chosen: only A/B/wrong-pack EPS and unreadable D paper are selectable; C/F are fixed unclickable background. The latest four-case instruction supersedes earlier extra-playable requirements.
 - Question: where do released items appear to a pharmacy? Chosen: Paid on the normal schedule, with the recorded release-to-existing-pricing qualifier and human-origin label; do not add a fake paid transition. The latest vision and immutable authority both hold.
 - Question: does Gate 1 Ready hide a valid correction? Chosen: separately evaluate supported correction availability, so an approved wrong-pack referral can apply real source fields despite passing format checks. Two-gate correctness wins.
+
+## 2026-09-14: Demonstration refinements after vision review
+
+Question: must assumption editing break the walkthrough? Choice: no. Reuse the
+real shared ProcessAssumptions once, inside the active month's collapsed detail.
+Keep that editor mounted when values are invalid; never retain stale figures
+or force Exit to recover. Tie-breakers: shared authority and simpler exploration.
+
+Question: how should reduced motion crossfade without harming contrast? Choice:
+crossfade only the decorative assisted background for 150 ms. Text remains
+opaque and stationary; normal presentation still uses the two-second movement.
+No timing implies a model call. Tie-breakers: accessibility and truthful motion.
+
+Question: when is correction relevant? Choice: expose P's real supported fix
+on submission steps, not an invented fix. Step 5 first submits the unchanged
+wrong-pack scenario to demonstrate Gate 2's rejection, then permits explicit
+correction of that real attempt. Unknown paper facts remain unknown.
+Tie-breakers: demonstrate the gate and retain meaningful human controls.
+
+Question: which first test closes the demonstration? Choice: the latest vision's
+two weeks of operator-time data and fifty items, two operators, blind. The
+historical two-year referral-data request no longer substitutes for this test.
+Tie-breaker: latest explicit direction.
