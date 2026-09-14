@@ -167,7 +167,7 @@ it("uses readable outcome labels and conditional manual EPS risk without prechec
   useAppStore.getState().setAgentEnabled(false);
   const before = getDomainSnapshot();
   const eps = render(EpsPharmacyCapture, "/pharmacy");
-  expect(eps).toContain("If incomplete, problems may be found at NHSBSA weeks later");
-  expect(eps).toContain("Not checked: manual submission");
+  expect(eps).toContain("No advisory check; later correction is possible");
+  expect(eps).not.toContain('aria-label="Claims precheck"');
   expect(getDomainSnapshot()).toEqual(before);
 });

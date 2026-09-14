@@ -24,7 +24,7 @@ function refer() {
   const source = store().caseRevisions[id][0].epsPrescription!;
   store().submitItem({ caseId: id, channel: "eps", endorsementText: source.dispenserEndorsement, epsPrescription: source });
   store().arriveInQueue(id);
-  store().recordType2Decision({ caseId: id, decision: "REFER_BACK", reason: "Correct the pack size against the claimed item.", rbCode: "RB2B" });
+  store().recordType2Decision({ caseId: id, decision: "REFER_BACK", reason: "Correct the pack against the original supply evidence.", rbCode: "RB2B" });
   return store().caseRevisions[id].at(-1)!;
 }
 
@@ -32,14 +32,14 @@ it("exposes the actual generic supply correction controls on the referred item's
   refer();
   const s = store(), c = caseForLifecycle(id, s.lifecycles, s.caseRevisions, s.itemProcesses)!;
   const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(ClaimDetail, { c, row: s.lifecycles[id] })));
-  for (const label of ["Correct the EPS supply evidence", "Brand or manufacturer dispensed", "Pack size dispensed", "Form dispensed", "Resubmit claim"]) expect(html).toContain(label);
+  for (const label of ["Brand or manufacturer dispensed", "Pack size dispensed", "Form dispensed", "Resubmit blind"]) expect(html).toContain(label);
   expect(html).not.toContain("will flow to automated pricing");
 });
 
 it.each([false, true])("corrects the same generic item through explicit human recheck, Agent %s", (enabled) => {
   const revision = refer(), original = store(), source = revision.epsPrescription!;
   store().setAgentEnabled(enabled);
-  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, packSize: 21 } };
+  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21 } };
   const projected = projectEpsResubmissionDraft(id, corrected, store().lifecycles, store().caseRevisions);
   expect(projected.requiresHumanRecheck).toBe(true);
   const checked = checkEpsFields(projected, corrected.dispenserEndorsement);
@@ -69,7 +69,7 @@ it.each([false, true])("corrects the same generic item through explicit human re
 
 it.each(["brandManufacturer", "packSize", "form"] as const)("does not approve an incomplete corrected supply field: %s", (field) => {
   const revision = refer(), source = revision.epsPrescription!;
-  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, packSize: 21, brandManufacturer: "Demo manufacturer (synthetic)", [field]: field === "packSize" ? null : "" } };
+  const corrected = { ...source, supplyEvidence: { ...source.supplyEvidence!, brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, [field]: field === "packSize" ? null : "" } };
   const projected = projectEpsResubmissionDraft(id, corrected, store().lifecycles, store().caseRevisions);
   expect(checkEpsFields(projected, corrected.dispenserEndorsement).status).toBe("missing");
   store().resubmitItem({ caseId: id, revision: revision.number, channel: "eps", endorsementText: corrected.dispenserEndorsement, epsPrescription: corrected });

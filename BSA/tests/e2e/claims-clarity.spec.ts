@@ -5,15 +5,18 @@ import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 const offGuide = "Today: referred-back items appear in MYS Unpaid items with an RB code and the operator's reason. The pharmacy corrects and resubmits.";
 const onGuide = "Read the operator-approved fix, correct the endorsement, then explicitly resubmit. The agent verifies the submission and advises; a person decides.";
 
-test("Task16 four counted synthetic amount tiles filter one five-column table", async ({ page }) => {
+test("Task16 four counted tiles filter live items while background stays unclickable", async ({ page }) => {
   await page.goto("pharmacy/claims");
   const tiles = page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button");
   const names = ["Action needed", "Waiting on NHSBSA", "Paid this month", "All"];
   const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
   await expect(tiles).toHaveCount(4);
   await expect(table.getByRole("columnheader")).toHaveText(["Item", "Dispensed", "Amount", "State", "Action"]);
-  await expect(page.getByRole("region", { name: "Historical cases, background", exact: true })).toContainText("EX-24119");
-  await expect(page.getByRole("region", { name: "Historical cases, background", exact: true })).toContainText("EX-24088");
+  const background = page.getByRole("rowgroup", { name: "Historical cases, background", exact: true });
+  await expect(background).toContainText("EX-24119");
+  await expect(background).toContainText("EX-24088");
+  await expect(background.getByRole("button")).toHaveCount(0);
+  await expect(background.getByRole("link")).toHaveCount(0);
   await expect(table).not.toContainText("SYN-FQ123-TYPE2");
   await expect(table).not.toContainText("SYN-FQ123-RECHECK");
   for (const [index, name] of names.entries()) {
@@ -22,11 +25,11 @@ test("Task16 four counted synthetic amount tiles filter one five-column table", 
     await tile.focus();
     await tile.press("Enter");
     await expect(tile).toHaveAttribute("aria-pressed", "true");
-    const rows = table.locator("tbody tr");
+    const rows = table.locator('tbody:not([aria-label="Historical cases, background"]) tr');
     await expect(tile).toContainText(`${await rows.count()} items`);
-    const amounts = await rows.locator("td:nth-child(3)").allTextContents();
-    const total = amounts.reduce((sum, amount) => sum + Number(amount.replace(/[£,]/g, "")), 0);
-    await expect(tile).toContainText(new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(total));
+    // The four-case brief retires money aggregation, not the immutable claimed-amount column.
+    for (const amount of await rows.locator("td:nth-child(3)").allTextContents()) expect(amount).toMatch(/^£\d+\.\d{2}$/);
+    await expect(tile).not.toContainText("£");
     const states = await rows.locator("td:nth-child(4)").allTextContents();
     const allowed = index === 0 ? [LIFECYCLE_LABELS.referred_back.pharmacy, LIFECYCLE_LABELS.information_requested.pharmacy]
       : index === 1 ? [LIFECYCLE_LABELS.submitted.pharmacy, LIFECYCLE_LABELS.in_review.pharmacy, LIFECYCLE_LABELS.resubmitted.pharmacy, LIFECYCLE_LABELS.escalated.pharmacy]
@@ -54,9 +57,8 @@ for (const enabled of [false, true]) {
     await page.keyboard.press("Escape");
     await expect(page.getByRole("tooltip")).toHaveCount(0);
     if (!enabled) {
-      await page.getByRole("button", { name: "How was this sent?", exact: true }).focus();
-      await expect(page.getByRole("tooltip")).toContainText("The operator text and code are recorded synthetic evidence.");
-      await expect(page.getByRole("tooltip")).toContainText("Weeks of delay are illustrative.");
+      await expect(page.getByRole("region", { name: "Operator response", exact: true })).toContainText("Endorsement initialled but not dated.");
+      await expect(page.getByRole("region", { name: "Operator response", exact: true })).toContainText("experience only");
     } else {
       await expect(page.getByRole("region", { name: "Operator response", exact: true })).toContainText("No operator-approved draft");
       await expect(page.getByRole("region", { name: "Operator-approved pharmacy note", exact: true })).toHaveCount(0);
@@ -76,7 +78,7 @@ test("Task16 monthly actual counts and action filters update on explicit resubmi
   const beforeActions = Number((await actionTile.innerText()).match(/(\d+) items/)![1]);
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO RK 21/08/26");
   await expect(corrected).toHaveText(String(before));
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit blind", exact: true }).click();
   await expect(corrected).toHaveText(String(before + 1), { timeout: 1000 });
   await expect(actionTile).toContainText(`${beforeActions - 1} items`, { timeout: 1000 });
   await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy, { timeout: 1000 });

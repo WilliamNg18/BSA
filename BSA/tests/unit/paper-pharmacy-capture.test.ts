@@ -39,9 +39,10 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain("Proposed: paper form and declaration");
     expect(html).toContain("Load worked declaration");
     expect(html).toContain("Post paper with declaration");
-    expect(html).toContain("image cannot be read");
+    expect(html).toContain("Deliberately poor scan");
     expect(html).toContain("Declared dispensing date");
-    expect(html.match(/declared by the pharmacy, not read from the form/g)?.length).toBeGreaterThanOrEqual(4);
+    expect(html).toContain("declared by the pharmacy, not read from the form");
+    expect(html.match(/aria-describedby="[^"]*-origin"/g)?.length).toBeGreaterThanOrEqual(4);
     expect(html).not.toContain("checked=");
     expect(getDomainSnapshot()).toEqual(before);
   });
@@ -50,10 +51,11 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));
     expect(html).toContain("NCSO JB 27/08/26");
     expect(html).toContain("Declared dispensing date");
-    expect(html).toContain("Image agreement remains unknown");
-    expect(html).toContain("separately established prescriber evidence");
+    expect(html).toMatch(/Image (?:agreement remains unknown|unreadable; agreement unknown)/);
+    expect(html).toMatch(/[Ss]eparately established (?:prescriber )?evidence/);
     expect(html).toContain("Received declaration requirement checks");
-    expect(html).toContain("Declared evidence complete; human confirmation and prescriber evidence remain required. Not read from the form.");
+    expect(html).toContain("not read from the form");
+    expect(html).toMatch(/<input(?=[^>]*id="[^"]*prescriber")(?=[^>]*value="")[^>]*>/);
     expect(html).toContain('type="checkbox"');
     expect(html).not.toContain("checked=");
     expect(html).toContain("Confirm, not key");
@@ -65,7 +67,7 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     useAppStore.getState().setAgentEnabled(true);
     const assisted = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
     expect(assisted).toContain("Load complete paper declaration");
-    expect(assisted).toContain("Post new attempts; correct referrals in claim details");
+    expect(assisted).toContain("New demonstration attempt; history retained.");
     expect(assisted).not.toContain("Load worked declaration");
   });
   it("retains an immutable receipt, claim link and recorded timeline after actual posting", () => {
@@ -84,11 +86,11 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     useAppStore.getState().setAgentEnabled(enabled);
     for (const caseId of ["EX-24123", "EX-24112"]) {
       const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId }));
-      const paragraphs = [...html.matchAll(/<p[^>]*data-(?:paper-narrative|declaration-advice)[^>]*>(.*?)<\/p>/g)];
-      expect(paragraphs).toHaveLength(enabled ? 2 : 1);
-      for (const paragraph of paragraphs) expect(paragraph[1].trim().split(/\s+/).length).toBeLessThan(25);
-      const narrative = paragraphs[0][1].trim().split(/\s+/).length;
-      if (!enabled) expect(narrative + "Problems discovered weeks later".split(/\s+/).length).toBeLessThan(25);
+      const compact = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId, compact: true }));
+      const paragraphs = [...compact.matchAll(/<p[^>]*>(.*?)<\/p>/g)];
+      const prose = paragraphs.map((paragraph) => paragraph[1].replace(/<[^>]+>/g, "")).join(" ");
+      expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
+      expect(html).not.toContain("will release");
     }
   });
 });

@@ -60,14 +60,14 @@ describe("process claim evidence", () => {
     const before = useAppStore.getState().lifecycles;
     const markup = renderClaim(c.id);
     expect(markup).toContain("Paid on the normal schedule");
-    expect(markup).toContain("priced by NHSBSA&#x27;s existing rules engine; no person involved");
+    expect(markup).toContain("priced by NHSBSA&#x27;s existing rules engine, no person involved");
     expect(markup).toContain("EPS typed message");
     expect(useAppStore.getState().lifecycles).toBe(before);
     expect(before[c.id].history.filter((entry) => entry.revision === 2).map((entry) => entry.actor)).toEqual(["pharmacy", "code"]);
   });
 
   for (const approve of [false, true]) {
-    it(`exposes only the actual approved referral note in On mode, approved=${approve}`, () => {
+    it(`distinguishes the recorded human reason from an approved referral note, approved=${approve}`, () => {
       const store = useAppStore.getState();
       const caseId = "EX-24112";
       store.submitItem({ caseId, channel: "eps", endorsementText: "NCSO RK" });
@@ -82,13 +82,16 @@ describe("process claim evidence", () => {
       const on = renderClaim(caseId);
       expect(on).toContain("RB code");
       expect(on).toContain("SYN-NCSO");
-      expect(on).not.toContain("Raw operator reason retained exactly.");
+      expect(on.includes("Raw operator reason retained exactly.")).toBe(!approve);
       expect(on.includes("Add the dispensing date beside the initials.")).toBe(approve);
       if (approve) {
         expect(on).toContain("Operator-approved note");
         expect(on).toContain("2026-08");
         expect(on).toContain("Exact fix");
-      } else expect(on).toContain("No operator-approved draft");
+      } else {
+        expect(on).toContain("No operator-approved draft");
+        expect(on).not.toContain('data-pharmacy-action="apply-correction"');
+      }
       store.setAgentEnabled(false);
       const off = renderClaim(caseId);
       expect(off).toContain("Raw operator reason retained exactly.");
@@ -128,7 +131,7 @@ describe("process claim evidence", () => {
   it("does not describe human-reviewed Paid items as no-person pricing", () => {
     const store = useAppStore.getState();
     const caseId = "EX-24112";
-    store.resubmitFromPharmacy(caseId, "NCSO RK 21/08/26");
+    store.resubmitItem({ caseId, channel: "eps", endorsementText: "NCSO RK 21/08/26" });
     store.arriveInQueue(caseId);
     store.recordType2Decision({ caseId, decision: "ACCEPT", reason: "Human reviewed the supplied synthetic evidence." });
     const markup = renderClaim(caseId);
