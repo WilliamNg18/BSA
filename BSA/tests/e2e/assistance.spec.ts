@@ -1,6 +1,5 @@
 import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
 import { startDemonstrationReview } from "./lifecycle-helpers";
-import { performDecision } from "./operator-action-helpers";
 
 test("actual worklist hides advice without changing evidence, routing or human decisions", async ({ page }) => {
   await page.goto("case/EX-24112");
@@ -8,13 +7,13 @@ test("actual worklist hides advice without changing evidence, routing or human d
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await performDecision(page, "REFER_BACK", { openAudit: true });
+  await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
   const rows = page.locator("[data-case-id]");
-  for (const id of ["EX-24112", "EX-24119", "EX-24088"]) await expect(page.locator(`[data-case-id="${id}"]`)).toBeVisible();
-  for (const id of ["EX-24107", "EX-24101", "EX-24123"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
+  for (const id of ["EX-24112", "SYN-FQ123-MISMATCH"]) await expect(page.locator(`[data-case-id="${id}"]`)).toBeVisible();
+  for (const id of ["EX-24107", "EX-24101", "EX-24123", "EX-24119", "EX-24088", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) await expect(page.locator(`[data-case-id="${id}"]`)).toHaveCount(0);
   await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
   const evidence = () => rows.evaluateAll((items) => items.map((row) => ({
     id: row.getAttribute("data-case-id"),
@@ -44,14 +43,15 @@ for (const scenario of [
   { name: "Complete endorsement", status: "Complete: will flow to automated pricing, no person involved", readable: true },
   { name: "NCSO missing date", status: "Information missing", readable: true },
   { name: "Unreadable form", status: "Declaration complete, not capture confirmed", readable: false },
-  { name: "Generic missing brand", status: "Information missing", readable: true },
+  { name: "Wrong pack size", status: "Information missing", readable: true },
 ]) {
   for (const globalEnabled of [true, false]) {
       test(`pharmacy ${scenario.name}: header=${globalEnabled} remains advisory`, async ({ page }, testInfo) => {
         await page.goto("pharmacy");
         await page.getByRole("banner").getByRole("switch").setChecked(true);
         await page.getByRole("radio", { name: scenario.readable ? "EPS" : "Paper", exact: true }).click();
-        await page.getByRole("radio", { name: scenario.name, exact: true }).click();
+        if (scenario.readable) await page.getByRole("radio", { name: scenario.name, exact: true }).click();
+        else await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
         await expect(page.getByRole("radio", { name: scenario.readable ? "EPS" : "Paper", exact: true })).toBeChecked();
         const status = page.locator("[data-pharmacy-status]");
         if (!scenario.readable) await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
@@ -91,7 +91,9 @@ for (const scenario of [
         const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
         await expect(receipt).toContainText(globalEnabled ? scenario.readable ? scenario.name === "Complete endorsement" ? "ready" : "missing" : "ready" : "not_checked");
         if (scenario.name === "Complete endorsement") {
-          await expect(receipt).toContainText("priced by NHSBSA's existing rules engine, no person involved");
+          await expect(receipt).toContainText(globalEnabled
+            ? "released to existing pricing, no operator action"
+            : "priced by NHSBSA's existing rules engine, no person involved");
         } else {
           await expect(receipt).not.toContainText("no person involved");
           await expect(receipt).not.toContainText("Operator-approved note");
