@@ -176,4 +176,32 @@ describe("authoritative two-gate source verification", () => {
     expect(store().caseRevisions[d][0]).toEqual(snapshot);
     expect(caseById(d)!.extracted.endorsementText).not.toBe(seed.declaration!.fields.endorsementText);
   });
+
+  it.each([false, true])("retains actual applied advice provenance on Release even after toggle Off=%s", (off) => {
+    store().setAgentEnabled(true);
+    store().resubmitFromPharmacy(b, "NCSO RK 21/08/26");
+    store().arriveInQueue(b);
+    store().applySuggestionToDecision(b);
+    const evidence = store().lifecycles[b].history.at(-1)!.appliedSuggestionEvidence!;
+    expect(evidence.recommendation).toBe("SUFFICIENT");
+    if (off) store().setAgentEnabled(false);
+    store().releaseToPricing(b, "Human checked the supplied corrected date.");
+    const record = store().records.at(-1)!;
+    expect(record.recommendation).toBe("SUFFICIENT");
+    expect(record.agentVersion).toBe(evidence.agentVersion);
+    expect(record.agentVersion).not.toBe("not invoked");
+    expect(record.sources).toEqual(expect.arrayContaining(evidence.sources));
+    expect(record.checks).toEqual(expect.arrayContaining(evidence.checks));
+    expect(record.isOverride).toBe(false);
+  });
+
+  it("paper draft edits synchronise only the derived declaration, retaining separately entered prescriber", () => {
+    const revision = store().caseRevisions[d][0], before = structuredClone(revision);
+    const draft = initialisePharmacyDraft(sessionCase(d)!, revision);
+    store().setPharmacyDraft(d, { ...draft, paperDeclaration: { ...draft.paperDeclaration!, quantity: 50 },
+      declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields, prescriber: "Human supplied synthetic prescriber" } } });
+    expect(store().pharmacyDrafts[d].declaration?.fields).toMatchObject({ quantity: 50, prescriber: "Human supplied synthetic prescriber" });
+    expect(store().caseRevisions[d][0]).toEqual(before);
+    expect(store().itemVerification[d]).toEqual(NO_VERIFICATION);
+  });
 });

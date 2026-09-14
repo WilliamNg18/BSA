@@ -51,7 +51,7 @@ import { createQueueState, type QueueState } from "./queue-store";
 import { capturedFields, capturedFieldsMatchSources, compatibleCapture, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
 import { mandatoryFieldsCheck } from "@/lib/domain/rules";
 import { evaluateItemVerification } from "@/lib/domain/verification";
-import { suggestedPharmacyCorrection } from "@/lib/domain/pharmacy-correction";
+import { suggestedPharmacyCorrection, synchronisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -347,7 +347,7 @@ export const useAppStore = create<AppState>((set, get) => {
       const s = get(), revision = s.caseRevisions[caseId].at(-1)!;
       if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale; reopen the current item.");
       set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
-        ...draft, revision: revision.number, appliedSuggestion: false,
+        ...synchronisePharmacyDraft(draft, revision), revision: revision.number, appliedSuggestion: false,
       } }) });
     },
     applySuggestionToDecision: (caseId) => {
@@ -362,6 +362,11 @@ export const useAppStore = create<AppState>((set, get) => {
       const rbCode = outcome === "REFER_BACK" ? c.scenario === "D" || c.epsPrescription?.supplyEvidence ? "RB2B" : "SYN-NCSO" : "";
       const event: HistoryEvent = { at: timestamp(caseId), actor: "operator", from: row.state, to: row.state,
         revision, processStep: "suggestion_applied", recommendation: pack.recommendation,
+        appliedSuggestionEvidence: {
+          recommendation: pack.recommendation, tariffVersion: pack.tariffVersion, agentVersion: pack.agentVersion,
+          inputs: pack.evidence.map((entry) => entry.value), sources: [...new Set(pack.evidence.map((entry) => entry.origin))],
+          checks: pack.gate.checks,
+        },
         message: "Applied by the operator from the agent's suggestion." };
       set({
         operatorDrafts: immutable({ ...s.operatorDrafts, [caseId]: {
@@ -380,17 +385,20 @@ export const useAppStore = create<AppState>((set, get) => {
       requireText(note, "Release reason", 8);
       const released = { ...assessment.verification, released: true };
       const at = timestamp(caseId);
+      const applied = row.history.filter((event) => event.revision === revision && event.actor === "operator" && event.appliedSuggestionEvidence).at(-1)?.appliedSuggestionEvidence;
+      const isOverride = Boolean(applied && applied.recommendation !== "SUFFICIENT");
       const record: LifecycleDecisionRecord = {
         id: `DR-${String(Math.max(872, ...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
-        caseId, timestamp: at, revision, decision: "ACCEPT", recommendation: "NONE", reason: note.trim(),
-        overrideReason: null, isOverride: false, operator: "Demo operator", synthetic: true,
-        tariffVersion: assessment.tariffVersion ?? "n/a", agentVersion: "not invoked",
-        inputs: ["Current received source and independent claim ledger"], sources: [assessment.source, "Retained claim ledger", "Dated synthetic rules"],
-        checks: [...assessment.gate2Checks], ...(assessment.clauseId ? { clauseId: assessment.clauseId } : {}),
+        caseId, timestamp: at, revision, decision: "ACCEPT", recommendation: applied?.recommendation ?? "NONE", reason: note.trim(),
+        overrideReason: isOverride ? note.trim() : null, isOverride, operator: "Demo operator", synthetic: true,
+        tariffVersion: assessment.tariffVersion ?? "n/a", agentVersion: applied?.agentVersion ?? "not invoked",
+        inputs: [...(applied?.inputs ?? []), "Current received source and independent claim ledger"],
+        sources: [...new Set([...(applied?.sources ?? []), assessment.source, "Retained claim ledger", "Dated synthetic rules"])],
+        checks: [...(applied?.checks ?? []), ...assessment.gate2Checks], ...(assessment.clauseId ? { clauseId: assessment.clauseId } : {}),
       };
       const event: HistoryEvent = { at, actor: "operator", from: row.state, to: "released_to_pricing",
         revision, processStep: "release_to_pricing", verification: released, releaseOrigin: "human_decision", reason: note,
-        decision: "ACCEPT", recordId: record.id, tariffVersion: record.tariffVersion, clauseId: record.clauseId,
+        decision: "ACCEPT", recommendation: record.recommendation, recordId: record.id, tariffVersion: record.tariffVersion, clauseId: record.clauseId,
         message: "Human review complete; released to existing pricing. No payment calculated." };
       set({
         records: immutable([...s.records, record]),

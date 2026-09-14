@@ -5,9 +5,21 @@ import { immutable, paperDeclarationFields, validateSubmissionSources } from "./
 import { caseById } from "./cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "./eps-check";
 import { interpretPharmacyText, type PharmacyCheck } from "./pharmacy-check";
-import { productByCode } from "./reference";
+import { productByCode, PRODUCTS } from "./reference";
 import { evaluateItemVerification } from "./verification";
 import { versionForDate } from "./tariff";
+
+/** Keep the paper form and its derived declaration copy in one draft, not two authorities. */
+export function synchronisePharmacyDraft(draft: Omit<PharmacyCorrectionDraft, "appliedSuggestion">, revision: CaseRevision): Omit<PharmacyCorrectionDraft, "appliedSuggestion"> {
+  const paper = draft.paperDeclaration;
+  if (!paper) return draft;
+  const text = paper.typedProduct.trim();
+  const product = PRODUCTS.find((entry) => entry.code === text || entry.name.toLowerCase() === text.toLowerCase());
+  return { ...draft, endorsementText: paper.endorsementText,
+    declaration: { fields: { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText,
+      ...(draft.declaration?.fields.prescriber !== undefined ? { prescriber: draft.declaration.fields.prescriber } : {}) },
+    declaredAt: draft.declaration?.declaredAt ?? revision.at, provenance: "pharmacy_declaration" } };
+}
 
 export function initialisePharmacyDraft(current: ExceptionCase, revision: CaseRevision, requestedChannel?: ItemChannel): PharmacyCorrectionDraft {
   const channel = requestedChannel ?? revision.channel ?? (current.claim.submittedVia === "EPS claim message" ? "eps" : "paper");
