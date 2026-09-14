@@ -52,10 +52,10 @@ export type DemoControl = keyof typeof DEMO_CONTROL_SELECTORS;
 export const DEMO_ALLOWED_CONTROLS: Readonly<Record<number, readonly DemoControl[]>> = Object.freeze({
   1: Object.freeze([]),
   2: Object.freeze(["month-detail"] as const),
-  3: Object.freeze(["submission"] as const),
+  3: Object.freeze(["submission", "correction"] as const),
   4: Object.freeze(["submission", "correction"] as const),
-  5: Object.freeze(["submission"] as const),
-  6: Object.freeze(["submission"] as const),
+  5: Object.freeze(["submission", "correction"] as const),
+  6: Object.freeze(["submission", "correction"] as const),
   7: Object.freeze(["operator", "type1-capture"] as const),
   8: Object.freeze(["queue-filter", "queue-row", "operator", "type1-capture"] as const),
   9: Object.freeze(["correction", "resubmission", "confirmation"] as const),

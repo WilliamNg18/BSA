@@ -2173,3 +2173,26 @@ the page, on step or route changes only. Header mode and perspective changes
 do not steal focus. Frozen submission channels are passed to P's renderer,
 without rewriting an item's latest recorded channel. Tie-breakers: keyboard
 operability and truthful source presentation.
+
+## 2026-09-14: Demonstration refinements after vision review
+
+Question: must assumption editing break the walkthrough? Choice: no. Reuse the
+real shared ProcessAssumptions once, inside the active month's collapsed detail.
+Keep that editor mounted when values are invalid; never retain stale figures
+or force Exit to recover. Tie-breakers: shared authority and simpler exploration.
+
+Question: how should reduced motion crossfade without harming contrast? Choice:
+crossfade only the decorative assisted background for 150 ms. Text remains
+opaque and stationary; normal presentation still uses the two-second movement.
+No timing implies a model call. Tie-breakers: accessibility and truthful motion.
+
+Question: when is correction relevant? Choice: expose P's real supported fix
+on submission steps, not an invented fix. Step 5 first submits the unchanged
+wrong-pack scenario to demonstrate Gate 2's rejection, then permits explicit
+correction of that real attempt. Unknown paper facts remain unknown.
+Tie-breakers: demonstrate the gate and retain meaningful human controls.
+
+Question: which first test closes the demonstration? Choice: the latest vision's
+two weeks of operator-time data and fifty items, two operators, blind. The
+historical two-year referral-data request no longer substitutes for this test.
+Tie-breaker: latest explicit direction.
