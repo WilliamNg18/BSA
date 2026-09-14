@@ -40,7 +40,7 @@ describe("focused desktop step layouts", () => {
       expect(html).toContain("Read-only scenario projection");
       expect(html.match(/data-readonly="true"/g)).toHaveLength(1);
       expect(html.match(/data-readonly="false"/g)).toHaveLength(1);
-      const taskStep = Boolean(step.caseId && useAppStore.getState().lifecycles[step.caseId]);
+      const taskStep = Boolean(step.caseId);
       expect(tasks).toHaveLength(taskStep ? 1 : 0);
       if (taskStep) {
         expect(tasks[0].caseId).toBe(step.caseId);
@@ -69,7 +69,7 @@ describe("focused desktop step layouts", () => {
     for (const [path, expected] of [["/pharmacy/claims?case=EX-24123", "claim"], ["/case/EX-24123", "type1"]] as const) {
       const tasks: DemoTaskProps[] = [];
       const html = render(path, (props) => { tasks.push(props); return createElement("span", null, props.kind); });
-      expect(tasks).toEqual([{ kind: expected, caseId: "EX-24123", allowCorrection: true }]);
+      expect(tasks).toEqual([{ kind: expected, caseId: "EX-24123", allowCorrection: true, channel: "paper" }]);
       expect(html).toContain('data-demo-step="10"');
       expect(getDomainSnapshot()).toEqual(before);
     }
