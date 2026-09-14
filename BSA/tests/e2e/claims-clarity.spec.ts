@@ -12,6 +12,10 @@ test("Task16 four counted synthetic amount tiles filter one five-column table", 
   const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
   await expect(tiles).toHaveCount(4);
   await expect(table.getByRole("columnheader")).toHaveText(["Item", "Dispensed", "Amount", "State", "Action"]);
+  await expect(page.getByRole("region", { name: "Historical cases, background", exact: true })).toContainText("EX-24119");
+  await expect(page.getByRole("region", { name: "Historical cases, background", exact: true })).toContainText("EX-24088");
+  await expect(table).not.toContainText("SYN-FQ123-TYPE2");
+  await expect(table).not.toContainText("SYN-FQ123-RECHECK");
   for (const [index, name] of names.entries()) {
     const tile = tiles.nth(index);
     await expect(tile).toContainText(name);
@@ -26,7 +30,7 @@ test("Task16 four counted synthetic amount tiles filter one five-column table", 
     const states = await rows.locator("td:nth-child(4)").allTextContents();
     const allowed = index === 0 ? [LIFECYCLE_LABELS.referred_back.pharmacy, LIFECYCLE_LABELS.information_requested.pharmacy]
       : index === 1 ? [LIFECYCLE_LABELS.submitted.pharmacy, LIFECYCLE_LABELS.in_review.pharmacy, LIFECYCLE_LABELS.resubmitted.pharmacy, LIFECYCLE_LABELS.escalated.pharmacy]
-      : index === 2 ? [LIFECYCLE_LABELS.paid.pharmacy] : Object.values(LIFECYCLE_LABELS).map((labels) => labels.pharmacy);
+      : index === 2 ? [LIFECYCLE_LABELS.paid.pharmacy, LIFECYCLE_LABELS.released_to_pricing.pharmacy] : Object.values(LIFECYCLE_LABELS).map((labels) => labels.pharmacy);
     for (const state of states) expect(allowed).toContain(state);
   }
   await expect(page.getByRole("combobox", { name: "Claim state" })).toHaveCount(0);
