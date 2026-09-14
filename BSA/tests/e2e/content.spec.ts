@@ -53,18 +53,21 @@ for (const enabled of [false, true]) {
     await page.goto("pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const audits = [];
-    for (const scenario of ["Complete endorsement", "NCSO missing date", "Unreadable form"]) {
+    for (const scenario of ["Complete endorsement", "NCSO missing date", "Wrong pack size", "Unreadable form"]) {
       const paper = scenario === "Unreadable form";
       await page.getByRole("radio", { name: paper ? "Paper" : "EPS", exact: true }).click();
-      await page.getByRole("radio", { name: scenario, exact: true }).click();
+      if (!paper) await page.getByRole("radio", { name: scenario, exact: true }).click();
+      else await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
       if (paper && enabled) await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
       if (!paper) await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
       audits.push({ scenario, phase: "check", ...await page.evaluate(auditProse) });
       await page.getByRole("button", { name: paper ? enabled ? "Post paper with declaration" : "Post paper" : "Send claim", exact: true }).click();
       const timeline = page.getByRole("list", { name: "Submission timeline", exact: true });
-      await expect(timeline.locator(":scope > li")).toHaveCount(scenario === "Complete endorsement" ? 2 : 1);
+      const recordedStages = enabled || scenario === "Complete endorsement" ? 2 : 1;
+      await expect(timeline.locator(":scope > li")).toHaveCount(recordedStages);
+      await expect(timeline.locator(":scope > li").first()).toContainText("pharmacy");
       const jump = page.getByRole("button", { name: "Jump to end", exact: true });
-      if (scenario === "Complete endorsement") await jump.click();
+      if (recordedStages === 2) await jump.click();
       await expect(jump).toBeDisabled();
       await page.locator("main details").evaluateAll((elements) => elements.forEach((element) => element.setAttribute("open", "")));
       await expect(page.getByLabel("Month end days · Assumption", { exact: true })).toHaveCount(0);
@@ -149,7 +152,7 @@ for (const enabled of [false, true]) {
       await prepareUnseededState(page, state);
       const labels = LIFECYCLE_LABELS[state];
       await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
-      const row = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell", { name: labels.pharmacy, exact: true }) }).first();
+      const row = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell").filter({ hasText: labels.pharmacy }) }).first();
       const id = await row.getByRole("rowheader").innerText();
       await row.getByRole("button").click();
       await expect(page.getByRole("heading", { name: `Claim detail: ${id}`, exact: true })).toBeVisible();
@@ -241,17 +244,18 @@ test("pain markers provide keyboard text and do not resolve abstention", async (
 });
 
 for (const enabled of [false, true]) {
-  test(`Task19 expanded queue and actual historical staff case copy report On=${enabled}`, async ({ page }, info) => {
+  test(`Task19 expanded queue and current mismatch case copy report On=${enabled}`, async ({ page }, info) => {
     await page.goto("queue"); await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     await page.locator("main details").evaluateAll((elements) => elements.forEach((el) => el.setAttribute("open", "")));
     const audits = [{ state: "expanded-queue", ...await page.evaluate(auditProse) }];
-    await page.locator('a[href="/case/EX-24088"]').first().click();
-    await expect(page).toHaveURL(/\/case\/EX-24088$/);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Human decision recorded");
+    await expect(page.locator('a[href="/case/EX-24088"]')).toHaveCount(0);
+    await page.locator('a[href="/case/SYN-FQ123-MISMATCH"]').first().click();
+    await expect(page).toHaveURL(/\/case\/SYN-FQ123-MISMATCH$/);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText("Complete format, wrong pack");
     audits.push({ state: "actual-staff-case", ...await page.evaluate(auditProse) });
     await captureJson(info, "task5-copy", audits);
     console.info("Advisory queue word counts", audits.flatMap((audit) => audit.failures));
     await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
   });
 }
