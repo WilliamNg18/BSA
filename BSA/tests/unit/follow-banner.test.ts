@@ -9,6 +9,7 @@ import { itemStateLabel } from "../../src/lib/domain/lifecycle";
 import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
 import { visitFollowedCase } from "../../src/lib/follow-navigation";
 import { followedLastEvent } from "../../src/lib/follow-presentation";
+import { BACKGROUND_CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -56,6 +57,17 @@ describe("persistent followed item banner", () => {
   it("renders no banner without Follow and no control for an unknown item", () => {
     expect(render()).toBe("");
     expect(renderToStaticMarkup(createElement(FollowItem, { id: "unknown" }))).toBe("");
+  });
+
+  it("offers Follow only for the shared four playable items, never background rows", () => {
+    for (const id of PLAYABLE_CASE_IDS) {
+      expect(renderToStaticMarkup(createElement(FollowItem, { id }))).toContain("Follow this item");
+    }
+    for (const { id } of BACKGROUND_CASES) {
+      expect(renderToStaticMarkup(createElement(FollowItem, { id }))).toBe("");
+      expect(() => store().followCase(id)).toThrow();
+      expect(store().followedCaseId).toBeNull();
+    }
   });
 
   it.each([false, true])("follows actual D submission, capture, referral, correction, resubmission and human release, Agent=%s", (enabled) => {
