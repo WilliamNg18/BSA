@@ -6,7 +6,9 @@ import { AppShell } from "../../src/components/app-shell";
 import { ConfirmDialogProvider } from "../../src/components/confirm-dialog";
 import { NotificationProvider } from "../../src/components/notification-provider";
 import { DEMO_STEPS, demoStepDestination } from "../../src/lib/domain/demo-steps";
-import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { navigateDemoStep } from "../../src/lib/demo-navigation";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -26,6 +28,42 @@ function shell(path: string) {
 }
 
 describe("mounted desktop demo with real compact panels", () => {
+  it("hands the actual operator referral to step 9 after B has already been released", () => {
+    const state = () => useAppStore.getState();
+    let path = "/";
+    const go = (step: number) => navigateDemoStep(step, (destination) => { path = destination; });
+    const b = "EX-24112", mismatch = "SYN-FQ123-MISMATCH";
+    state().setAgentEnabled(true);
+    go(4);
+    state().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, state().caseRevisions[b][0]), purpose: "new_submission" });
+    state().applySuggestedCorrection(b);
+    state().submitItem({ ...state().pharmacyDrafts[b], caseId: b, channel: "eps" });
+    expect(state().lifecycles[b].state).toBe("released_to_pricing");
+    go(5);
+    const source = state().caseRevisions[mismatch][0];
+    state().submitItem({ caseId: mismatch, channel: "eps", endorsementText: source.endorsementText, epsPrescription: source.epsPrescription });
+    expect(state().itemVerification[mismatch]).toMatchObject({ gate1: "pass", gate2: "fail", released: false });
+    go(8);
+    state().followCase(mismatch);
+    state().arriveInQueue(mismatch);
+    state().applySuggestionToDecision(mismatch);
+    const draft = state().operatorDrafts[mismatch];
+    state().referBack(mismatch, draft.rbCode, draft.note);
+    const before = getDomainSnapshot();
+    go(9);
+    expect(path).toBe(`/pharmacy/claims?case=${mismatch}&channel=eps`);
+    expect(state().followedCaseId).toBe(mismatch);
+    expect(getDomainSnapshot()).toEqual(before);
+    const html = shell(path);
+    expect(html).toContain(`data-demo-live-case="${mismatch}"`);
+    expect(html).toContain('data-pharmacy-action="apply-correction"');
+    expect(html).toContain('data-pharmacy-action="resubmit"');
+    expect(html).not.toContain(`data-demo-live-case="${b}"`);
+    const strip = html.slice(html.indexOf('data-testid="demo-strip"'), html.indexOf("</nav>", html.indexOf('data-testid="demo-strip"')));
+    expect(strip).toContain(mismatch);
+    expect(strip).toContain("EPS");
+  });
+
   it.each(DEMO_STEPS.flatMap((step) => [false, true].map((enabled) => ({ step, enabled }))))(
     "step $step.number, Agent $enabled, has one header and one actionful side",
     ({ step, enabled }) => {

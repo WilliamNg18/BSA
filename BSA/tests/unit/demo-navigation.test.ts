@@ -45,6 +45,25 @@ describe("eleven-step navigation, never a business action", () => {
     }
   });
 
+  it.each([1, 7, 10, null])("keeps step 9's default without an operator-step handoff, previous step %s", (previous) => {
+    const state = useAppStore.getState();
+    state.setDemoStep(previous);
+    state.followCase("EX-24123");
+    let path = "";
+    navigateDemoStep(9, (destination) => { path = destination; });
+    expect(path).toBe("/pharmacy/claims?case=EX-24112&channel=eps");
+    expect(useAppStore.getState().followedCaseId).toBe("EX-24112");
+  });
+
+  it("does not substitute an unreferred operator item into step 9", () => {
+    const state = useAppStore.getState();
+    state.setDemoStep(8);
+    state.followCase("SYN-FQ123-MISMATCH");
+    let path = "";
+    navigateDemoStep(9, (destination) => { path = destination; });
+    expect(path).toBe("/pharmacy/claims?case=EX-24112&channel=eps");
+  });
+
   it("reads the item identity, not a case subroute suffix", () => {
     expect(demoRouteCaseId("/case/EX-24123", "")).toBe("EX-24123");
     expect(demoRouteCaseId("/case/EX-24123/record", "")).toBe("EX-24123");

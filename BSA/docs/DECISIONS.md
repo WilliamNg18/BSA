@@ -2219,3 +2219,17 @@ Question: may the Off comparison use low-contrast muted text? Choice: no.
 The actual desktop axe run measured 4.34:1 on the muted background. Keep the
 grey panel and read-only label, but use darker light-theme text and lighter
 dark-theme text. Re-run the unchanged checks. Tie-breaker: accessibility.
+
+## 2026-09-14: Carry the actual operator response into step 9
+
+Question: should Next open fixed B after the operator refers a different item?
+Choice: on step 8 to 9 only, retain the followed playable item when it actually
+needs pharmacy action (referred back or information requested), with its recorded
+channel. Otherwise retain the frozen B default. The strip and live panel use
+that same destination; navigation appends no events and changes no drafts.
+Tie-breakers: a functional shared hand-off and preserved operational history.
+
+The regression explicitly corrects and sends B to automatic release, submits
+the wrong-pack EPS item, applies the operator suggestion and refers it back.
+Next must then open that actual referral with correction and resubmission
+controls, not B's completed record.
