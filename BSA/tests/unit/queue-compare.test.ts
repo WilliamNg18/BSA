@@ -6,7 +6,7 @@ import { QueueCompare, QueueComparison } from "../../src/components/demo/queue-c
 import { MONTH_MODEL_DEFAULTS, monthModel } from "../../src/lib/domain/baseline";
 import { projectQueueComparison, QUEUE_SEEDS, queueCitationAvailable, queueStatus, queueTableWindow, type QueuePreviewRow } from "../../src/lib/domain/queue-model";
 import * as agent from "../../src/lib/domain/agent";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, isPlayableCase } from "../../src/lib/domain/cases";
 import { useAppStore } from "../../src/lib/store";
 import { useQueueStore } from "../../src/lib/queue-store";
 import { QueuePage } from "../../src/pages/queue";
@@ -31,10 +31,11 @@ describe("current queue comparison", () => {
       expect(html).not.toContain("showing 1 to 50");
       expect(html).not.toContain("data-month-row=");
       for (const c of CASES) {
-        if (c.scenario === "A" || c.scenario === "E") expect(html).not.toContain(`data-case-id="${c.id}"`);
+        if (c.scenario === "A" || !isPlayableCase(c.id)) expect(html).not.toContain(`data-case-id="${c.id}"`);
         else if (c.scenario === "D") expect(html).toContain(`data-type1-case="${c.id}"`);
         else expect(html).toContain(`data-case-id="${c.id}"`);
       }
+      expect(html).toContain('data-case-id="SYN-FQ123-MISMATCH"');
     }
   });
   it("uses the new total Today12 and judging2, not legacy7", () => {

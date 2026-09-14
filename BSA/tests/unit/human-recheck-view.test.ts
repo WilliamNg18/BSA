@@ -34,30 +34,29 @@ describe("human re-check respects current recommendation authority", () => {
       ? { agentInvoked: true, recommendation: "SUFFICIENT", gate: { result: "PASS" } }
       : { agentInvoked: false, recommendation: "NONE" });
     const html = casePack("EX-24112");
-    expect(html).toContain(enabled ? "Accept the recommendation" : "Sufficient (human choice)");
+    expect(html).toContain("Sufficient (human choice)");
     expect(html).not.toContain("data-automatic-case");
     expect(html).not.toContain("Cleared by deterministic rules; the agent was not called");
-    const sufficient = html.match(/<input(?=[^>]*id="d-ACCEPT")[^>]*>/)?.[0];
+    const sufficient = html.match(/<input(?=[^>]*value="ACCEPT")[^>]*>/)?.[0];
     expect(sufficient).toBeTruthy();
     expect(sufficient).not.toMatch(/\sdisabled(?:=|\s|>)/);
     if (!enabled) {
       expect(sufficient).not.toMatch(/\schecked(?:=|\s|>)/);
       expect(html).not.toContain("Replay step by step");
     }
-    expect(() => store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT", reason: "" })).toThrow();
-    store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT", reason: "Human checked the corrected endorsement evidence" });
-    expect(useAppStore.getState().lifecycles["EX-24112"].state).toBe("paid");
-    expect(useAppStore.getState().records.at(-1)?.recommendation).toBe(enabled ? "SUFFICIENT" : "NONE");
+    expect(() => store.releaseToPricing("EX-24112", "")).toThrow();
+    store.releaseToPricing("EX-24112", "Human checked the corrected endorsement evidence");
+    expect(useAppStore.getState().lifecycles["EX-24112"].state).toBe("released_to_pricing");
+    expect(useAppStore.getState().records.at(-1)?.recommendation).toBe("NONE");
   });
 
-  it("does not enable acceptance of abstained evidence with assistance on", () => {
+  it("does not enable release of abstained evidence with assistance on", () => {
     const store = useAppStore.getState();
     store.confirmType1({ caseId: "EX-24123", revision: 1, provenance: "human_capture", declarationReconciled: false,
       fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
     store.setAgentEnabled(true);
     const html = casePack("EX-24123");
-    const sufficient = html.match(/<input(?=[^>]*id="d-ACCEPT")[^>]*>/)?.[0];
-    expect(sufficient).toMatch(/\sdisabled(?:=|\s|>)/);
+    expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Release to pricing<\/button>/);
     expect(html).toContain("The agent abstained");
   });
 });

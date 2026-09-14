@@ -103,6 +103,24 @@ describe("shared operator action panel", () => {
     expect(renderPanel()).not.toContain(">Refer back</button>");
   });
 
+  it.each([false, true])("preserves applied sufficient advice in the release record with final mode %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(true);
+    store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.arriveInQueue("EX-24112");
+    store.applySuggestionToDecision("EX-24112");
+    const note = useAppStore.getState().operatorDrafts["EX-24112"].note;
+    store.setAgentEnabled(enabled);
+    const spy = vi.spyOn(agent, "runAgent");
+    store.releaseToPricing("EX-24112", note);
+    const record = useAppStore.getState().records.at(-1)!;
+    expect(record.recommendation).toBe("SUFFICIENT");
+    expect(record.agentVersion).not.toBe("not invoked");
+    expect(record.reason).toBe(note);
+    expect(record.sources.length).toBeGreaterThan(0);
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it.each(["REQUEST_INFORMATION", "ESCALATE"] as const)("records %s as a distinct human action", (decision) => {
     openReview(false);
     const store = useAppStore.getState();

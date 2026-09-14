@@ -56,7 +56,9 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(table).not.toContain("EX-24107");
     expect(table).not.toContain("EX-24101");
     expect(table).not.toContain("EX-24123");
-    expect(table).toContain("EX-24119");
+    expect(table).toContain("SYN-FQ123-MISMATCH");
+    expect(table).not.toContain("EX-24119");
+    expect(table).not.toContain("EX-24088");
     for (const lifecycle of Object.values(before.lifecycles)) {
       const process = before.itemProcesses[lifecycle.caseId];
       if (staffLane(lifecycle, process) === "type2") expect(table).toContain(lifecycle.caseId);
@@ -121,7 +123,7 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it.each([false, true])("does not invent human gathering on automatic traces, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
-    for (const id of ["EX-24107", "EX-24101"]) {
+    for (const id of ["EX-24107"]) {
       const html = trace(id);
       expect(html).not.toContain("Manual gathering trace");
       expect(html).not.toContain("Replay step by step");
@@ -129,11 +131,21 @@ describe("Task 29 current-revision staff presentation", () => {
     }
   });
 
-  it.each([false, true])("retains F's original reason and cited history in mode %s", (enabled) => {
-    useAppStore.getState().setAgentEnabled(enabled);
+  it.each([false, true])("retains actual B decision reasons and cited history in mode %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(true);
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+    store.arriveInQueue("EX-24112");
+    store.applySuggestionToDecision("EX-24112");
+    const draft = useAppStore.getState().operatorDrafts["EX-24112"];
+    store.referBack("EX-24112", draft.rbCode, draft.note);
+    store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.arriveInQueue("EX-24112");
+    store.releaseToPricing("EX-24112", "Human checked the corrected endorsement.");
+    store.setAgentEnabled(enabled);
     const before = useAppStore.getState();
-    const original = before.records.find((entry) => entry.caseId === "EX-24088")!;
-    const html = record("EX-24088");
+    const original = before.records.find((entry) => entry.caseId === "EX-24112")!;
+    const html = record("EX-24112");
     expect(html).toContain("Original decision history");
     expect(html).toContain(original.tariffVersion);
     expect(html).toContain(original.reason || original.overrideReason || "Not recorded");
@@ -254,11 +266,11 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(useAppStore.getState()).toBe(before);
   });
 
-  it.each([false, true])("uses the current EPS revision rather than A's original paper claim, agent %s", (enabled) => {
+  it.each([false, true])("uses the current EPS revision rather than D's original paper claim, agent %s", (enabled) => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.submitItem({ caseId: "EX-24123", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
     store.setAgentEnabled(enabled);
-    const c = sessionCase("EX-24107")!;
+    const c = sessionCase("EX-24123")!;
     expect(c.channel).toBe("Electronic (EPS)");
     expect(c.claim.submittedVia).toBe("FP34C batch");
     const before = useAppStore.getState();
