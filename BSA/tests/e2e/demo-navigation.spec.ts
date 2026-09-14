@@ -56,6 +56,7 @@ test("demo keyboard navigation focuses headings and Exit retains the followed hi
   await strip.getByRole("button", { name: "Exit demo", exact: true }).click();
   await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
   await expect(page.getByRole("navigation", { name: "Primary", exact: true })).toBeVisible();
+  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24107");
   await expect(page.getByRole("region", { name: "Followed item", exact: true }).locator("p").first()).toHaveText(history);
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
 });
