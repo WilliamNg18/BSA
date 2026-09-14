@@ -232,6 +232,11 @@ describe("authoritative two-gate source verification", () => {
     expect(store().pharmacyDrafts[id].epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
     expect(store().lifecycles[id].state).toBe("in_review");
     expect(store().caseRevisions[id]).toHaveLength(1);
+    expect(store().pharmacyCorrections).toHaveLength(1);
+    expect(store().pharmacyCorrections[0]).toMatchObject({
+      caseId: id, revision: 2, basis: "source_gap",
+      sourceVerification: { before: { gate2: "fail" }, after: { gate2: "pass", released: false } },
+    });
   });
 
   it("keeps exactly four operational identities and blocks every background action", () => {
@@ -290,12 +295,52 @@ describe("authoritative two-gate source verification", () => {
     store().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, revision), purpose: "new_submission" });
     store().applySuggestedCorrection(b);
     expect(store().pharmacyDrafts[b].endorsementText).toContain("21/08/26");
+    expect(store().pharmacyCorrections).toHaveLength(1);
+    expect(store().pharmacyCorrections[0]).toMatchObject({ caseId: b, revision: 2, before: { status: "missing" }, after: { status: "ready" } });
     expect(store().records).toHaveLength(0);
     expect(store().lifecycles[b].state).toBe("referred_back");
     expect(store().caseRevisions[b][0]).toBe(revision);
     expect(() => store().resubmit(b)).toThrow("explicit new attempt");
     store().submitItem({ ...store().pharmacyDrafts[b], caseId: b, channel: "eps" });
     expect(store().lifecycles[b].state).toBe("released_to_pricing");
+  });
+
+  it("shared Apply and the legacy correction recorder count the same next attempt only once", () => {
+    store().setAgentEnabled(true);
+    const revision = store().caseRevisions[b][0];
+    store().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, revision), purpose: "new_submission" });
+    store().applySuggestedCorrection(b);
+    const caught = store().pharmacyCorrections[0];
+    store().recordPharmacyCorrection(b, caught.before, caught.after, 2, { channel: "eps" });
+    expect(store().pharmacyCorrections).toHaveLength(1);
+    expect(store().caseRevisions[b][0]).toBe(revision);
+    expect(store().itemVerification[b]).toEqual(NO_VERIFICATION);
+    store().setAgentEnabled(false);
+    store().setPerspective("pharmacy");
+    expect(store().pharmacyCorrections).toHaveLength(1);
+    store().resetDemo();
+    expect(store().pharmacyCorrections).toHaveLength(0);
+  });
+
+  it("does not count a date-only improvement while required source facts remain invalid", () => {
+    store().setAgentEnabled(true);
+    const revision = store().caseRevisions[b][0], draft = initialisePharmacyDraft(sessionCase(b)!, revision);
+    store().setPharmacyDraft(b, { ...draft, purpose: "new_submission",
+      epsPrescription: { ...draft.epsPrescription!, prescriber: { ...draft.epsPrescription!.prescriber, name: "" } } });
+    store().applySuggestedCorrection(b);
+    expect(store().pharmacyDrafts[b].endorsementText).toContain("21/08/26");
+    expect(store().pharmacyCorrections).toHaveLength(0);
+  });
+
+  it("does not count partial unreadable-paper corrections as ready", () => {
+    store().setAgentEnabled(true);
+    const revision = store().caseRevisions[d][0], draft = initialisePharmacyDraft(sessionCase(d)!, revision);
+    store().setPharmacyDraft(d, { ...draft, purpose: "new_submission", endorsementText: "NCSO JB",
+      paperDeclaration: { ...draft.paperDeclaration!, quantity: null, endorsementText: "NCSO JB" } });
+    store().applySuggestedCorrection(d);
+    expect(store().pharmacyDrafts[d].endorsementText).toContain("27/08/26");
+    expect(store().pharmacyCorrections).toHaveLength(0);
+    expect(store().caseRevisions[d][0]).toBe(revision);
   });
 
   it("same-state pharmacy preparation cannot erase a human release anchor", () => {

@@ -2166,3 +2166,6 @@ The regression explicitly corrects and sends B to automatic release, submits
 the wrong-pack EPS item, applies the operator suggestion and refers it back.
 Next must then open that actual referral with correction and resubmission
 controls, not B's completed record.
+
+- Question: why did a complete On EPS receipt incorrectly say Type 2 was pending? Choice: replace its legacy automatic-pricing-only check with the selected revision's recorded pricing/release event and attribution-aware label. Preserve Off pricing text and human review provenance; do not change the model outcome to fit the old receipt. Tie-breaker: truthful visible outcomes.
+- Question: does shared Apply count as a caught item automatically? Choice: append counter evidence atomically only after a checked format or source gap becomes ready on independent current facts; bind it to the next attempt and deduplicate legacy recorder events. Partial or still-invalid corrections remain uncounted, and applying still does not submit or release. Tie-breaker: an actual evidence-based count, not a click counter.
