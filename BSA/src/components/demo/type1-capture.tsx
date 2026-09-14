@@ -23,7 +23,11 @@ import {
 } from "@/lib/domain/paper-capture";
 
 /** Q embeds this same store-connected surface in the lane and case pack. */
-export function Type1Capture({ caseId, compact = false }: { caseId: string; compact?: boolean }) {
+export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline" }: {
+  caseId: string;
+  compact?: boolean;
+  evidencePlacement?: "inline" | "external";
+}) {
   const c = useLifecycleCase(caseId);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const process = useAppStore((s) => s.itemProcesses[caseId]);
@@ -76,16 +80,58 @@ export function Type1Capture({ caseId, compact = false }: { caseId: string; comp
       agentEnabled={agentEnabled}
       confirmType1={confirmType1}
       compact={compact}
+      externalEvidence={compact && evidencePlacement === "external"}
     />
   );
 }
 
-function CaptureForm({ c, revision, agentEnabled, confirmType1, compact }: {
+export function Type1CaptureEvidence({ caseId }: { caseId: string }) {
+  const c = useLifecycleCase(caseId);
+  const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
+  if (!c || !revision) return <p role="alert">Current capture evidence is unavailable. Reopen the item from the queue.</p>;
+  return <section aria-label={`Read-only Type 1 source evidence for ${caseId}`} className="space-y-3">
+    <h3 className="font-semibold">{caseId} · Read-only source comparison</h3>
+    <div className="grid grid-cols-2 items-start gap-3">
+      <OriginalCaptureImage c={c} revision={revision} compact />
+      <ReceivedDeclaration revision={revision} compact />
+    </div>
+  </section>;
+}
+
+function OriginalCaptureImage({ c, revision, compact }: { c: ExceptionCase; revision: CaseRevision; compact: boolean }) {
+  const poorScan = c.imageStyle === "handwritten_poor" || c.imageQuality < QUALITY_THRESHOLD;
+  return <div data-capture-source={compact ? "image" : undefined} className={compact ? "min-w-0 space-y-1" : "min-w-0 space-y-2"}>
+    <h4 className="text-sm font-medium">{poorScan ? "Original poor paper image" : "Original paper image"}</h4>
+    <BoundaryTag cls="existing" />
+    <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} compact />
+  </div>;
+}
+
+function ReceivedDeclaration({ revision, compact }: { revision: CaseRevision; compact: boolean }) {
+  const declaration = revision.paperDeclaration;
+  if (!declaration) return <p className="text-sm">No pharmacy declaration supplied.</p>;
+  return <section aria-label="Original pharmacy declaration" data-capture-source={compact ? "declaration" : undefined}
+    className={compact ? "min-w-0 space-y-1.5 rounded-md border p-2 text-xs" : "space-y-2 rounded-md border p-3 text-sm"}>
+    <h4 className="font-semibold">Pharmacy declaration received with paper</h4>
+    <p>{PAPER_DECLARATION_PROVENANCE}</p>
+    <dl className={`grid grid-cols-2 ${compact ? "gap-x-2 gap-y-1" : "gap-2"}`}>
+      <div><dt className="font-medium">Declared product</dt><dd>{declaration.typedProduct || "Not declared"}</dd></div>
+      <div><dt className="font-medium">Declared quantity</dt><dd>{declaration.quantity ?? "Not declared"}</dd></div>
+      <div><dt className="font-medium">Declared endorsement</dt><dd>{declaration.endorsementText || "Not declared"}</dd></div>
+      <div><dt className="font-medium">Declared dispensing date</dt><dd>{declaration.dispensingDate || "Not declared"}</dd></div>
+      <div><dt className="font-medium">Prescriber evidence</dt><dd>{revision.declaration?.fields.prescriber || "Not supplied"}</dd></div>
+      <div><dt className="font-medium">Received revision</dt><dd>{revision.number}</dd></div>
+    </dl>
+  </section>;
+}
+
+function CaptureForm({ c, revision, agentEnabled, confirmType1, compact, externalEvidence }: {
   c: ExceptionCase;
   revision: CaseRevision;
   agentEnabled: boolean;
   confirmType1: (input: ConfirmType1Input) => void;
   compact: boolean;
+  externalEvidence: boolean;
 }) {
   const id = useId();
   const [sourceRevision, setSourceRevision] = useState(revision);
@@ -155,21 +201,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1, compact }: {
       </ul>
     </>}
   </details>;
-  const originalDeclaration = agentEnabled && revision.paperDeclaration && <section aria-label="Original pharmacy declaration"
-    data-capture-source={compact ? "declaration" : undefined}
-    className={compact ? "min-w-0 space-y-1.5 rounded-md border p-2 text-xs" : "space-y-2 rounded-md border p-3 text-sm"}>
-    <h4 className="font-semibold">Pharmacy declaration received with paper</h4>
-    <p>{PAPER_DECLARATION_PROVENANCE}</p>
-    <dl className={`grid grid-cols-2 ${compact ? "gap-x-2 gap-y-1" : "gap-2"}`}>
-      <div><dt className="font-medium">Declared product</dt><dd>{revision.paperDeclaration.typedProduct || "Not declared"}</dd></div>
-      <div><dt className="font-medium">Declared quantity</dt><dd>{revision.paperDeclaration.quantity ?? "Not declared"}</dd></div>
-      <div><dt className="font-medium">Declared endorsement</dt><dd>{revision.paperDeclaration.endorsementText || "Not declared"}</dd></div>
-      <div><dt className="font-medium">Declared dispensing date</dt><dd>{revision.paperDeclaration.dispensingDate || "Not declared"}</dd></div>
-      <div><dt className="font-medium">Prescriber evidence</dt><dd>{revision.declaration?.fields.prescriber || "Not supplied"}</dd></div>
-      <div><dt className="font-medium">Received revision</dt><dd>{revision.number}</dd></div>
-    </dl>
-    {compact && declarationChecks}
-  </section>;
+  const originalDeclaration = agentEnabled && revision.paperDeclaration && <ReceivedDeclaration revision={revision} compact={compact} />;
   const correctButton = <Button type="button" variant="outline" size={compact ? "sm" : "default"} aria-pressed={correcting} onClick={() => {
     setCorrecting(true); setReconciled(false); setError(""); productRef.current?.focus();
   }}>Correct</Button>;
@@ -213,12 +245,8 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1, compact }: {
         </div>
       ) : <PainMarker resolved={false} pain="No guidance, experience only" resolution="Human confirmation" />}
       <div className={compact ? "grid min-w-0 grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-start gap-3" : "grid min-w-0 gap-4 lg:grid-cols-2"}>
-        <div data-capture-source={compact ? "image" : undefined} className={compact ? "min-w-0 space-y-1" : "min-w-0 space-y-2"}>
-          <h4 className="text-sm font-medium">{poorScan ? "Original poor paper image" : "Original paper image"}</h4>
-          <BoundaryTag cls="existing" />
-          <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} highlight={[]} compact />
-        </div>
-        {compact && originalDeclaration}
+        {!externalEvidence && <OriginalCaptureImage c={c} revision={revision} compact={compact} />}
+        {compact && !externalEvidence && originalDeclaration}
         <form data-capture-editor={compact || undefined} onSubmit={submit} noValidate className={compact ? "col-span-2 min-w-0 space-y-2" : "min-w-0 space-y-3"}>
           {!compact && originalDeclaration}
           {compact ? <div className="flex items-start justify-between gap-2">
@@ -231,7 +259,7 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1, compact }: {
             <h4 className="text-sm font-medium">{correcting ? "Human corrections" : assisted ? "Confirm declared fields" : "Key what you can establish"}</h4>
             <p id={`${id}-help`} className="text-xs text-muted-foreground">{!error && "Unknown fields stay blank."}</p>
           </>}
-          {!compact && declarationChecks}
+          {declarationChecks}
           {compact ? <div className="grid grid-cols-2 items-start gap-x-3 gap-y-2">{captureFields}</div> : captureFields}
           {assisted && (
             <div className={compact ? "space-y-1" : "space-y-2 rounded-lg border p-3"}>

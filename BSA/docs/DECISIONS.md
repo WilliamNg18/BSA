@@ -2132,3 +2132,9 @@ in either header mode. No payment is calculated or approved.
 - Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.
 - Question: what does an automatic item's audit show without a human record? Chosen: the recorded existing-pricing outcome, not a manual comparison or an impossible request for a human decision; truthful human authority wins.
 - Question: how should repeated EPS comparison landmarks differ? Chosen: a meaningful Manual comparison context prefixes their accessible names, preserving every landmark and source value; accessibility and truthful context win over deleting roles or evidence.
+
+## 2026-09-15: Compact Type 1 evidence and editor placement
+
+- Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
+- Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
+- Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
