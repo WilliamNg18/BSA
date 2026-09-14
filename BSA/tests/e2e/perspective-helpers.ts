@@ -19,7 +19,7 @@ export async function openHistory(page: Page) {
   if (await disclosure.getAttribute("open") === null) await disclosure.locator(":scope > summary").click();
 }
 
-async function historyIdentity(page: Page) {
+export async function historyIdentity(page: Page) {
   return history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").evaluateAll((items) => items.map((item) => ({
     fields: Array.from(item.querySelectorAll("dl > div"))
       .filter((field) => ["Time / actor", "Attempt / record"].includes(field.querySelector("dt")?.textContent ?? ""))
@@ -39,11 +39,13 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await navigatePrimary(page, "Pharmacy check");
     await flag(page).setChecked(enabled);
     await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+    if (enabled) await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
+    else await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
     const endorsement = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
     const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
     await expect(receipt).toContainText(`EX-24112:${enabled ? 3 : 2}`);
+    await receipt.getByText("Recorded submission", { exact: true }).click();
     await expect(receipt).toContainText(endorsement);
     const submitted = receipt.getByRole("link", { name: "View submitted claim", exact: true });
     const href = await submitted.getAttribute("href");
@@ -63,7 +65,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     if (previousDecision) {
       expect(events).toContain(previousDecision);
       expect(submittedIdentity.slice(0, previousIdentity.length)).toEqual(previousIdentity);
-      // G appends a code verification receipt as well as the explicit pharmacy submission.
+      // Verification is a code receipt, never an operator decision.
       expect(submittedIdentity).toHaveLength(previousEventCount + (enabled ? 2 : 1));
     }
     const submissionEvents = submittedIdentity.slice(enabled ? -2 : -1);
@@ -73,7 +75,9 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
       expect(submissionEvents[1].fields[0]).toContain("code");
       expect(submissionEvents[1].fields[1]).toContain("No decision record");
     }
-    await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
+    if (!enabled) await history(page).getByRole("button", { name: "Follow this case", exact: true }).click();
+    await expect(history(page).getByRole("button", { name: "Stop following this case", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toContainText(id);
     await choosePerspective(page, "NHSBSA");
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
     await expect(flag(page)).toBeChecked({ checked: enabled });
@@ -93,13 +97,24 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(reviewingIdentity.slice(submittedIdentity.length).map((event) => event.message)).toEqual(enabled
       ? ["Arrived for review.", "Scripted case built; human decision required."]
       : ["Arrived for review."]);
-    await page.getByRole("radio", { name: "Refer back", exact: true }).check();
-    await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-    const note = operatorDecision(page).getByRole("textbox", { name: "Reason (required)", exact: true });
-    await note.fill(`Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`);
-    if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
-    const reason = await note.inputValue();
-    await performDecision(page, "REFER_BACK", { openAudit: true });
+    const operator = page.getByRole("region", { name: "Operator decision", exact: true });
+    if (enabled) {
+      await operator.getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await expect(operator.locator("[data-suggestion-applied]")).toBeVisible();
+    } else {
+      await operator.getByRole("radio", { name: "Refer back", exact: true }).check();
+      await operator.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+      await operator.getByRole("textbox", { name: "Reason (required)", exact: true })
+        .fill("Perspective Off: add the dispensing date beside the initials");
+    }
+    const reason = await operator.getByRole("textbox", { name: "Reason (required)", exact: true }).inputValue();
+    await expect(operator.getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
+    const beforeDecision = await historyIdentity(page);
+    expect(beforeDecision.slice(0, reviewingIdentity.length)).toEqual(reviewingIdentity);
+    expect(beforeDecision).toHaveLength(reviewingIdentity.length + (enabled ? 1 : 0));
+    if (enabled) expect(beforeDecision.at(-1)!.message).toBe("Applied by the operator from the agent's suggestion.");
+    await operator.getByRole("button", { name: "Refer back", exact: true }).click();
+    await operator.getByRole("link", { name: "Open audit record", exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
@@ -110,8 +125,8 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(recordId).toMatch(/DR-\d+/);
     await expect(lastDecision).toContainText(reason);
     const stableEvents = await historyIdentity(page);
-    expect(stableEvents.slice(0, reviewingIdentity.length)).toEqual(reviewingIdentity);
-    expect(stableEvents).toHaveLength(reviewingIdentity.length + 1);
+    expect(stableEvents.slice(0, beforeDecision.length)).toEqual(beforeDecision);
+    expect(stableEvents).toHaveLength(beforeDecision.length + 1);
     expect(stableEvents.at(-1)!.fields[0]).toContain("operator");
     await expect(lastDecision).toContainText(`${LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]} → ${LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]}`);
     await choosePerspective(page, "Pharmacy");
@@ -134,8 +149,12 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     previousEventCount = eventCount;
     previousIdentity = stableEvents;
     await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
-    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toContainText(id);
+    await expect(history(page).getByRole("button", { name: "Stop following this case", exact: true })).toHaveAttribute("aria-pressed", "true");
+    for (const side of ["Pharmacy", "NHSBSA"]) {
+      await expect(page.getByRole("region", { name: "Followed item", exact: true })
+        .getByRole("button", { name: `${side} view`, exact: true })).toBeVisible();
+    }
     await captureJson(info, `perspective-${enabled ? "on" : "off"}`, { id, endorsement, attempts, recordId, eventCount, stableEvents, reason });
     await captureCheckpoint(page, info, `perspective-decision-${enabled ? "on" : "off"}`);
   }
