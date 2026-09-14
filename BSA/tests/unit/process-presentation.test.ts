@@ -197,13 +197,6 @@ describe("whole-process presentation", () => {
     expect(resubmitted).toContain("Open case A");
   });
 
-  it.each([
-    { name: "B EPS Off", id: "EX-24112", scenario: "B", paper: false, enabled: false, declared: false },
-    { name: "B readable paper Off", id: "EX-24112", scenario: "B", paper: true, enabled: false, declared: false },
-    { name: "B readable paper undeclared On", id: "EX-24112", scenario: "B", paper: true, enabled: true, declared: false },
-    { name: "D unreadable paper undeclared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: false },
-    { name: "D unreadable paper declared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: true },
-  ])("tour guidance reflects current source evidence: $name", ({ id, scenario, paper, enabled, declared }) => {
   it("renders all four playable tour items without treating background C as unavailable evidence", () => {
     const before = useAppStore.getState();
     const markup = render(HomePage, "/#cases");
@@ -216,6 +209,13 @@ describe("whole-process presentation", () => {
     expect(useAppStore.getState()).toBe(before);
   });
 
+  it.each([
+    { name: "B EPS Off", id: "EX-24112", scenario: "B", paper: false, enabled: false, declared: false },
+    { name: "B readable paper Off", id: "EX-24112", scenario: "B", paper: true, enabled: false, declared: false },
+    { name: "B readable paper undeclared On", id: "EX-24112", scenario: "B", paper: true, enabled: true, declared: false },
+    { name: "D unreadable paper undeclared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: false },
+    { name: "D unreadable paper declared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: true },
+  ])("tour guidance reflects current source evidence: $name", ({ id, scenario, paper, enabled, declared }) => {
     const store = useAppStore.getState();
     if (!declared) store.submitItem({
       caseId: id, channel: paper ? "paper" : "eps",
