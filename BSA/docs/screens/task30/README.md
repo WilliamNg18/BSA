@@ -11,6 +11,13 @@ incomplete findings. See the [immutable manifest](34d7567/manifest.json).
 The export was committed at `f64095a58cb38a8f9d0b4a9719c29cc63143bdd2`
 before the same independent reviewer's new full-height assessment began.
 
+After the overnight pause, that reviewer runtime was unavailable. Its
+[unchanged recovered ledger](review-34d7567-interrupted/README.md) marks
+120/202 tiles inspected, covering 40/58 images, but every final verdict remains
+NOT VERIFIED. The remaining 18 images have 82 uninspected tiles. No final
+report was recovered; no restart or replacement was performed. Visual
+acceptance is blocked pending the coordinator's explicit recovery decision.
+
 [Direct keyboard and contrast observations](manual-34d7567/README.md) record
 actual mobile focus, error recovery and declaration guards on this source.
 They are bounded observations, not full WCAG certification. Final release

@@ -23,6 +23,10 @@ Zero violations do not establish WCAG conformance.
 verify sampled mobile focus contrast, keyboard recovery and capture guards.
 The same independent reviewer's full-height assessment of all new images
 remains pending, followed by the documentation-only release gates.
+The reviewer runtime became unavailable overnight; its recovered partial
+ledger has no final verdict. Forty images have full inspection markers,
+18 remain uninspected, and all 58 remain NOT VERIFIED. Recovery requires
+explicit coordinator/user direction, not a silently restarted review.
 The ordinary build keeps its state observer absent; the separate 34-test
 instrumented matrix supplies exact-state equivalence, not hosted observations.
 Earlier local rehearsals cannot certify later changes.

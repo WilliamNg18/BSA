@@ -17,7 +17,7 @@ finding: three abstention reasons and five structural signals are distinct.
 After the bounded runtime repair and coordinator-approved deployment, the new
 complete hosted run at `34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e` passed all
 30 checks. The [new immutable export](screens/task30/34d7567/manifest.json)
-contains 58 new images. The same reviewer is assessing every image at full
+contains 58 new images. The same reviewer began assessing every image at full
 height, including unreadable paper, declaration and human-confirmation
 boundaries, visible EPS submission, estimates and human re-check after
 correction. Functional success is not a substitute for that review.
@@ -26,6 +26,12 @@ correction. Functional success is not a substitute for that review.
 remain separate from axe and image assessment. The
 [Task 30 evidence index](screens/task30/README.md) owns the pending final
 acceptance record. No final visual PASS is claimed before the actual verdict.
+
+Overnight recovery found that review incomplete and its runtime unavailable:
+40 images have full tile-inspection markers, 18 have none, and all 58 final
+verdicts remain NOT VERIFIED. The
+[unchanged partial ledger](screens/task30/review-34d7567-interrupted/README.md)
+is preserved separately. A final verdict cannot be inferred from these markers.
 
 The following Task 24 results remain historical, source-pinned and unchanged.
 

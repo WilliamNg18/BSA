@@ -1,0 +1,3010 @@
+[
+  {
+    "index": 1,
+    "relative_path": "check-01/04-audit-overview-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-01\\04-audit-overview-off.png",
+    "sha256": "03d3c00dfa0fe774ef14c264afa7b5946034fe6630b117fb4a4589b486c2054b",
+    "manifest_sha256": "03d3c00dfa0fe774ef14c264afa7b5946034fe6630b117fb4a4589b486c2054b",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1287
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+    "check": "01 Root Overview starts Agent Off and serves the approved build",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\01_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\01_00950-01287.png",
+        "span": [
+          950,
+          1287
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Scene readable; uncertain branch shortened; EPS/paper distinct and contextual source qualification. No overflow.",
+    "natural_panels": []
+  },
+  {
+    "index": 2,
+    "relative_path": "check-01/06-overview-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-01\\06-overview-off.png",
+    "sha256": "03d3c00dfa0fe774ef14c264afa7b5946034fe6630b117fb4a4589b486c2054b",
+    "manifest_sha256": "03d3c00dfa0fe774ef14c264afa7b5946034fe6630b117fb4a4589b486c2054b",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1287
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+    "check": "01 Root Overview starts Agent Off and serves the approved build",
+    "identical_to_image": 1,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\01_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\01_00950-01287.png",
+        "span": [
+          950,
+          1287
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Exact SHA256 duplicate of image 1; same native pixels fully covered through that actual inspection.",
+    "natural_panels": []
+  },
+  {
+    "index": 3,
+    "relative_path": "check-02/05-audit-overview-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-02\\05-audit-overview-on.png",
+    "sha256": "35dfc4a6b2edddab5123ad0ec7aa5e22d9a5712bc3cdd40822e3a258fc4fa21c",
+    "manifest_sha256": "35dfc4a6b2edddab5123ad0ec7aa5e22d9a5712bc3cdd40822e3a258fc4fa21c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1287
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+    "check": "02 Every current route toggles On and back Off without errors",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\03_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\03_00950-01287.png",
+        "span": [
+          950,
+          1287
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Scene On full-height independently viewed; same shortened branch; header tooltip does not cover scene body.",
+    "natural_panels": []
+  },
+  {
+    "index": 4,
+    "relative_path": "check-03/04-audit-edited-process-model-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-03\\04-audit-edited-process-model-off.png",
+    "sha256": "d9c1cb72feb1d7d30c74e1f528efaf906c30f5084e5b23e18104b8841d0c84b8",
+    "manifest_sha256": "d9c1cb72feb1d7d30c74e1f528efaf906c30f5084e5b23e18104b8841d0c84b8",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2998
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+    "check": "03 Shared monthly inputs update both process columns and Scene figures",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\04_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\04_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\04_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\04_02850-02998.png",
+        "span": [
+          2850,
+          2998
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Edited monthly Off with assumptions expanded. Prior hours explanation shortened. NEW cumulative-prose candidates: introductory two paragraphs, open assumptions help text, and four-paragraph calculation caveat footer. All actual inputs and result labels legible.",
+    "natural_panels": []
+  },
+  {
+    "index": 5,
+    "relative_path": "check-03/07-audit-edited-process-model-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-03\\07-audit-edited-process-model-on.png",
+    "sha256": "5617fcbdcd70fc8cf706cd0b5ecb6bf86a6c2e2c3d86531d49a70575f806e936",
+    "manifest_sha256": "5617fcbdcd70fc8cf706cd0b5ecb6bf86a6c2e2c3d86531d49a70575f806e936",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2002
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#month",
+    "check": "03 Shared monthly inputs update both process columns and Scene figures",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\05_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\05_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\05_01900-02002.png",
+        "span": [
+          1900,
+          2002
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Edited monthly On collapsed assumptions. Same intro/footer cumulative prose candidates; model figures match edited120 referrals,7queued,17.5Today versus0.4With, estimates explicit.",
+    "natural_panels": []
+  },
+  {
+    "index": 6,
+    "relative_path": "check-04/04-audit-canonical-case-cards-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-04\\04-audit-canonical-case-cards-on.png",
+    "sha256": "a3a0e0fc3b64994c7802aad185d4dab0dd1690732afd8ab60a73a864c475ce75",
+    "manifest_sha256": "a3a0e0fc3b64994c7802aad185d4dab0dd1690732afd8ab60a73a864c475ce75",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1061
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "check": "04 Four case cards retain automatic, Type 2 and unconfirmed Type 1 routes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\06_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\06_00950-01061.png",
+        "span": [
+          950,
+          1061
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Canonical cards A automatic, B referred,C conflict,D capture. Request information label now readable, no enum. D declaration uncertainty retained.",
+    "natural_panels": []
+  },
+  {
+    "index": 7,
+    "relative_path": "check-05/03-pharmacy-complete-endorsement-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\03-pharmacy-complete-endorsement-off.png",
+    "sha256": "359955ab7882e4b276bccfd547c50f92aaeae9fef36f4581c642ee000dde9365",
+    "manifest_sha256": "359955ab7882e4b276bccfd547c50f92aaeae9fef36f4581c642ee000dde9365",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1999
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\07_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\07_00950-01999.png",
+        "span": [
+          950,
+          1999
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Complete EPS Off visible prescription and literal dated NCSO. Risk now conditional rather than guaranteed. Manual submission panel cumulative helpers need final count.",
+    "natural_panels": []
+  },
+  {
+    "index": 8,
+    "relative_path": "check-05/05-pharmacy-ncso-missing-date-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\05-pharmacy-ncso-missing-date-off.png",
+    "sha256": "b2cfa8ee4628a3c93a2284abeb1abb7762a7de8d1de895317d434865722d79fd",
+    "manifest_sha256": "b2cfa8ee4628a3c93a2284abeb1abb7762a7de8d1de895317d434865722d79fd",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1999
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\08_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\08_00950-01999.png",
+        "span": [
+          950,
+          1999
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Missing-date EPS Off: literal initials without date and readable source; explicit Send remains.",
+    "natural_panels": []
+  },
+  {
+    "index": 9,
+    "relative_path": "check-05/07-pharmacy-generic-missing-brand-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\07-pharmacy-generic-missing-brand-off.png",
+    "sha256": "17f938b90368518493b45f16c58b19bc61013b499d07d6bd90f0ab0286050f7c",
+    "manifest_sha256": "17f938b90368518493b45f16c58b19bc61013b499d07d6bd90f0ab0286050f7c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\09_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\09_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\09_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Generic EPS Off: actual missing supply fields and literal snapshot; no fake EPS scan. Conditional risk.",
+    "natural_panels": []
+  },
+  {
+    "index": 10,
+    "relative_path": "check-05/10-audit-pharmacy-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\10-audit-pharmacy-off.png",
+    "sha256": "17f938b90368518493b45f16c58b19bc61013b499d07d6bd90f0ab0286050f7c",
+    "manifest_sha256": "17f938b90368518493b45f16c58b19bc61013b499d07d6bd90f0ab0286050f7c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": 9,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\09_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\09_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\09_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Exact SHA256 duplicate of image 9; same native pixels fully covered through that actual inspection.",
+    "natural_panels": []
+  },
+  {
+    "index": 11,
+    "relative_path": "check-05/12-pharmacy-complete-endorsement-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\12-pharmacy-complete-endorsement-on.png",
+    "sha256": "54f047ba829f06385d3c54b283fe94a71ec7f568ef20eafba130882c313d57a6",
+    "manifest_sha256": "54f047ba829f06385d3c54b283fe94a71ec7f568ef20eafba130882c313d57a6",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1999
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\11_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\11_00950-01999.png",
+        "span": [
+          950,
+          1999
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Complete EPS On check/quote/field status legible; assistant source and explicit Send separate. Natural subpanels distinguished from quoted rule and prescription fields.",
+    "natural_panels": []
+  },
+  {
+    "index": 12,
+    "relative_path": "check-05/14-pharmacy-ncso-missing-date-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\14-pharmacy-ncso-missing-date-on.png",
+    "sha256": "dd9bf293662b4578439d19ff0fd67d58886a41e3fa8580a79bf79a7d47025d9f",
+    "manifest_sha256": "dd9bf293662b4578439d19ff0fd67d58886a41e3fa8580a79bf79a7d47025d9f",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2128
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\12_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\12_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\12_01900-02128.png",
+        "span": [
+          1900,
+          2128
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "NCSO On unresolved date: rule selected and unmet date visible. Left No check against this months rule pain label may contradict performed right-side checks; include as operational clarity concern. Need cumulative advice/send panel count.",
+    "natural_panels": []
+  },
+  {
+    "index": 13,
+    "relative_path": "check-05/16-pharmacy-generic-missing-brand-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\16-pharmacy-generic-missing-brand-on.png",
+    "sha256": "754067f0e5814fd77f9c31ce94caf848ac283cbeef2378b226061e32d35ef313",
+    "manifest_sha256": "754067f0e5814fd77f9c31ce94caf848ac283cbeef2378b226061e32d35ef313",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2310
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\13_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\13_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\13_01900-02310.png",
+        "span": [
+          1900,
+          2310
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Generic On incomplete supply: requested actual brand/manufacturer, proper generic clause; Manual No check pain appears despite On checks. Right manual risk conditional, Send explicit. Projection default297.5estimate.",
+    "natural_panels": []
+  },
+  {
+    "index": 14,
+    "relative_path": "check-05/19-audit-pharmacy-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-05\\19-audit-pharmacy-on.png",
+    "sha256": "754067f0e5814fd77f9c31ce94caf848ac283cbeef2378b226061e32d35ef313",
+    "manifest_sha256": "754067f0e5814fd77f9c31ce94caf848ac283cbeef2378b226061e32d35ef313",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2310
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "05 Three pharmacy scenarios remain advisory in both modes",
+    "identical_to_image": 13,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\13_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\13_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\13_01900-02310.png",
+        "span": [
+          1900,
+          2310
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Exact SHA256 duplicate of image 13; same native pixels fully covered through that actual inspection.",
+    "natural_panels": []
+  },
+  {
+    "index": 15,
+    "relative_path": "check-06/04-audit-claims-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-06\\04-audit-claims-off.png",
+    "sha256": "8072e4e86b651237296a4c18eca7f232413b64341a34e35fea1914862666592d",
+    "manifest_sha256": "8072e4e86b651237296a4c18eca7f232413b64341a34e35fea1914862666592d",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2461
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24112",
+    "check": "06 Claims seed list opens a matching seeded claim and history",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\15_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\15_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\15_01900-02461.png",
+        "span": [
+          1900,
+          2461
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Claims Off: Hillcrest list/selected B correction, shortened MYS22-word context. NEW candidate: Check correction bordered area combines scripted-check disclaimer and bottom human-recheck explanation; cumulative count needed.",
+    "natural_panels": []
+  },
+  {
+    "index": 16,
+    "relative_path": "check-06/07-audit-claims-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-06\\07-audit-claims-on.png",
+    "sha256": "ec4dde44329c0764bbeb16635274c3832fa09ba0d34a603963b5b8f47662753d",
+    "manifest_sha256": "ec4dde44329c0764bbeb16635274c3832fa09ba0d34a603963b5b8f47662753d",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2542
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24112",
+    "check": "06 Claims seed list opens a matching seeded claim and history",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\16_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\16_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\16_01900-02542.png",
+        "span": [
+          1900,
+          2542
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Claims On: This pharmacy count explanation shortened; same Check correction prose candidate. No false approved draft.",
+    "natural_panels": []
+  },
+  {
+    "index": 17,
+    "relative_path": "check-07/04-audit-actual-worklist-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-07\\04-audit-actual-worklist-on.png",
+    "sha256": "b5ba3751e6b418e25a84b2a092c7e4788bece549b1aa53260eeaf7c0cccbbbb7",
+    "manifest_sha256": "b5ba3751e6b418e25a84b2a092c7e4788bece549b1aa53260eeaf7c0cccbbbb7",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3767
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "07 Actual staff work and separate monthly projections survive Agent changes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\17_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\17_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\17_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\17_02850-03767.png",
+        "span": [
+          2850,
+          3767
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Queue On: only Hillcrest operational work; fixed background unclickable labels. Proposed declaration incomplete/unconfirmed, prescriber empty; P04/P05/P06 shortened. Four failed signals not shown here; no count defect inferred. Defaults297.5 incl42.5/255 and19,479.2Today, referrals85000/5100 labelled estimates.",
+    "natural_panels": []
+  },
+  {
+    "index": 18,
+    "relative_path": "check-07/07-audit-actual-worklist-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-07\\07-audit-actual-worklist-off.png",
+    "sha256": "69b7dacee19fa9a5833edfbd33ab7db05082f8e7e2f4b70bed5d05af60457742",
+    "manifest_sha256": "69b7dacee19fa9a5833edfbd33ab7db05082f8e7e2f4b70bed5d05af60457742",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3050
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "07 Actual staff work and separate monthly projections survive Agent changes",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\18_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\18_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\18_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\18_02850-03050.png",
+        "span": [
+          2850,
+          3050
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Queue Off: same work, no model advice. NEW candidate manual input group combines leave-unknown instruction and explanatory prescriber-evidence instruction. Required human-origin provenance labels separately exempt. Footer now shortened.",
+    "natural_panels": []
+  },
+  {
+    "index": 19,
+    "relative_path": "check-08/04-audit-human-referral-record-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-08\\04-audit-human-referral-record-off.png",
+    "sha256": "416b6954ebf33f5ed03a98248d9eaa2c79f61d1185f5313bf416bed42a9e4226",
+    "manifest_sha256": "416b6954ebf33f5ed03a98248d9eaa2c79f61d1185f5313bf416bed42a9e4226",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2369
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\19_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\19_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\19_01900-02369.png",
+        "span": [
+          1900,
+          2369
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Off human referral record full-height: original decision fields/reason/history retained, no overlay obscuration; immutable data exempt, record explanatory limit clear.",
+    "natural_panels": []
+  },
+  {
+    "index": 20,
+    "relative_path": "check-08/07-audit-corrected-eps-paid-history-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-08\\07-audit-corrected-eps-paid-history-off.png",
+    "sha256": "401d40f0ef36388481d4344be449f57a15c87eb9b32b56c6991be32a114c4830",
+    "manifest_sha256": "401d40f0ef36388481d4344be449f57a15c87eb9b32b56c6991be32a114c4830",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4355
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?case=EX-24112",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\20_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\20_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\20_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\20_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\20_03800-04355.png",
+        "span": [
+          3800,
+          4355
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Off corrected EPS Paid history: explicit human sufficient decision after correction/recheck, no missing lower history or payment agency. Minor visible grammar: Action needed category says1 items. Paid explanatory block24words; MYS shortened.",
+    "natural_panels": []
+  },
+  {
+    "index": 21,
+    "relative_path": "check-08/11-audit-human-referral-record-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-08\\11-audit-human-referral-record-on.png",
+    "sha256": "494def3b9dc95963cb3bce3e486a15f5bad1dd979e3f30f436eb9bd11316a593",
+    "manifest_sha256": "494def3b9dc95963cb3bce3e486a15f5bad1dd979e3f30f436eb9bd11316a593",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2347
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\21_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\21_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\21_01900-02347.png",
+        "span": [
+          1900,
+          2347
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "On referral record complete, no overlay; exact original reasons/rules remain immutable and distinguish human approval.",
+    "natural_panels": []
+  },
+  {
+    "index": 22,
+    "relative_path": "check-08/14-audit-corrected-eps-paid-history-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-08\\14-audit-corrected-eps-paid-history-on.png",
+    "sha256": "d5186f4ac95e4966414cbe0a33c7ffbeb499cfea7c7b29c5568893f6571c5e03",
+    "manifest_sha256": "d5186f4ac95e4966414cbe0a33c7ffbeb499cfea7c7b29c5568893f6571c5e03",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4643
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?case=EX-24112",
+    "check": "08 Full Off then On round trips retain Follow and Switch side",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\22_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\22_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\22_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\22_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\22_03800-04643.png",
+        "span": [
+          3800,
+          4643
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "On corrected paid history complete; no transient toast obstruction; human re-check before sufficient preserved;1 items grammar remains.",
+    "natural_panels": []
+  },
+  {
+    "index": 23,
+    "relative_path": "check-09/04-audit-unconfirmed-capture-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-09\\04-audit-unconfirmed-capture-off.png",
+    "sha256": "6e60003ddaba84b08d14b53cb81ca6e93603d171f7f72fba6c43c3fd8fe5d5f7",
+    "manifest_sha256": "6e60003ddaba84b08d14b53cb81ca6e93603d171f7f72fba6c43c3fd8fe5d5f7",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2890
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\23_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\23_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\23_01900-02890.png",
+        "span": [
+          1900,
+          2890
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "D Off unconfirmed: no advice, manual inputs and original poor source retained; manual capture help cumulative prose candidate. No edits or confirmation inferred.",
+    "natural_panels": []
+  },
+  {
+    "index": 24,
+    "relative_path": "check-09/06-d-fresh-capture-after-referral-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-09\\06-d-fresh-capture-after-referral-off.png",
+    "sha256": "ee7a126baa44967a31f699e933caa593566f0b8adfa069eccf90513b74868b3e",
+    "manifest_sha256": "ee7a126baa44967a31f699e933caa593566f0b8adfa069eccf90513b74868b3e",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2910
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\24_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\24_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\24_01900-02910.png",
+        "span": [
+          1900,
+          2910
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "D Off after referral: fresh capture required and previous referral retained; same manual help candidate; no toast conceals fields.",
+    "natural_panels": []
+  },
+  {
+    "index": 25,
+    "relative_path": "check-09/09-audit-unconfirmed-capture-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-09\\09-audit-unconfirmed-capture-on.png",
+    "sha256": "386bf48ea56df2dc7d7664305c2f0acc7d20d3b00a78851a1df59192e4541935",
+    "manifest_sha256": "386bf48ea56df2dc7d7664305c2f0acc7d20d3b00a78851a1df59192e4541935",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5114
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\25_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\25_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\25_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\25_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\25_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\25_04750-05114.png",
+        "span": [
+          4750,
+          5114
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "D On unconfirmed: not built, poor source and per-field provenance retained. Received/consent/routing and top abstention display shortened. Correct FOUR failed ofFIVE signals, reconciliation neutral, NOT RUN. NEW confidence-panel prose candidate: three original explanatory reasons total26words; unlike immutable trace this is current explanatory panel. Source declaration labels retain camelCase.",
+    "natural_panels": []
+  },
+  {
+    "index": 26,
+    "relative_path": "check-09/11-d-fresh-capture-after-referral-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-09\\11-d-fresh-capture-after-referral-on.png",
+    "sha256": "45fa95a7fb45d60f7753051e9d8699fd8cfb45a2f3a7e757d2a6a7f591895159",
+    "manifest_sha256": "45fa95a7fb45d60f7753051e9d8699fd8cfb45a2f3a7e757d2a6a7f591895159",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5134
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "check": "09 D abstains until human capture and retains history through paper referral",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\26_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\26_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\26_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\26_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\26_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\26_04750-05134.png",
+        "span": [
+          4750,
+          5134
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "D On fresh after referral same correct four failed/neutral/NOT RUN; original history retained. Same26-word confidence explanation candidate; lower evidence and read-only operator region fully inspected.",
+    "natural_panels": []
+  },
+  {
+    "index": 27,
+    "relative_path": "check-10/04-audit-deterministic-e-trace-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-10\\04-audit-deterministic-e-trace-on.png",
+    "sha256": "9ba778ebe5d3a65f8eda9242954029e6f2a5746ac7aacf2011d5b686e4cb86a5",
+    "manifest_sha256": "9ba778ebe5d3a65f8eda9242954029e6f2a5746ac7aacf2011d5b686e4cb86a5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1642
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24101/trace",
+    "check": "10 Case E remains deterministic without an agent call",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\27_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\27_00950-01642.png",
+        "span": [
+          950,
+          1642
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "E deterministic trace: no agent invocation or human decision; existing rules HAND_OFF explicit. No screenshot obstruction.",
+    "natural_panels": []
+  },
+  {
+    "index": 28,
+    "relative_path": "check-11/03-b-july-replay.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-11\\03-b-july-replay.png",
+    "sha256": "2ed4b589bd32dd601d1c37ee2fb2049d01df6cdcce36dbf61cc503286d86f5cf",
+    "manifest_sha256": "2ed4b589bd32dd601d1c37ee2fb2049d01df6cdcce36dbf61cc503286d86f5cf",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "check": "11 Case B July replay is Sufficient while August refers back",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\28_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\28_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\28_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "July sufficient completely visible, toast removed without hiding content; July date not required and gatePASS. Original decision record remains.",
+    "natural_panels": []
+  },
+  {
+    "index": 29,
+    "relative_path": "check-11/05-b-august-replay.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-11\\05-b-august-replay.png",
+    "sha256": "3771b58f2e9cbbdd1c35cd677a2e29dedfd63f1d57875b0dc2e4dd44f4f717b2",
+    "manifest_sha256": "3771b58f2e9cbbdd1c35cd677a2e29dedfd63f1d57875b0dc2e4dd44f4f717b2",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2212
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24112/record",
+    "check": "11 Case B July replay is Sufficient while August refers back",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\29_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\29_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\29_01900-02212.png",
+        "span": [
+          1900,
+          2212
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "August refer back, date required, gatePASS; same record and no actual state change claimed by replay.",
+    "natural_panels": []
+  },
+  {
+    "index": 30,
+    "relative_path": "check-14/03-c-confirmation-still-conflicted-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-14\\03-c-confirmation-still-conflicted-off.png",
+    "sha256": "84855a579408e5dd6825de1624f73e5cbda71b7e5263535f44a2548edf205b95",
+    "manifest_sha256": "84855a579408e5dd6825de1624f73e5cbda71b7e5263535f44a2548edf205b95",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2781
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24119",
+    "check": "16 C confirmation returns to human review without resolving 56 versus 84",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\30_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\30_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\30_01900-02781.png",
+        "span": [
+          1900,
+          2781
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "C Off confirmed56versus84 remains unresolved; human choice explicit. Shortened operator helper and visible reason placeholder appear cumulative23words (verify).",
+    "natural_panels": []
+  },
+  {
+    "index": 31,
+    "relative_path": "check-14/05-c-confirmation-still-conflicted-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-14\\05-c-confirmation-still-conflicted-on.png",
+    "sha256": "7f5999738618d6171fbbbecda35a4320c2688edb34f2bcde31803b783d39f34c",
+    "manifest_sha256": "7f5999738618d6171fbbbecda35a4320c2688edb34f2bcde31803b783d39f34c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3034
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24119",
+    "check": "16 C confirmation returns to human review without resolving 56 versus 84",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\31_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\31_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\31_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\31_02850-03034.png",
+        "span": [
+          2850,
+          3034
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "C On conflict remains. NEW prose candidates: Reasons panel two narrative bullets; deterministic check result helper sentences cumulative; operator panel includes visible Explain your decision based on the evidence placeholder7words, so cumulative helper+optional approval exceeds24 despite reduced DOM text. No required-label/provenance exemption for this sentence.",
+    "natural_panels": []
+  },
+  {
+    "index": 32,
+    "relative_path": "check-15/05-audit-historical-f-record-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-15\\05-audit-historical-f-record-on.png",
+    "sha256": "f0c6372c4ef3c9a90d3d60c717b5a696f7ce767c4a946453c5738a6d3b30b775",
+    "manifest_sha256": "f0c6372c4ef3c9a90d3d60c717b5a696f7ce767c4a946453c5738a6d3b30b775",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2140
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24088/record",
+    "check": "17 F retains its original human record through mode changes and replay",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\32_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\32_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\32_01900-02140.png",
+        "span": [
+          1900,
+          2140
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Historical F originalDR000871 and laterDR000872 remain intact, no disabled-replay fiction; all record text accessible in fullheight.",
+    "natural_panels": []
+  },
+  {
+    "index": 33,
+    "relative_path": "check-16/04-audit-completed-type1-queue-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\04-audit-completed-type1-queue-off.png",
+    "sha256": "923986de2938124a44411133af5c6ba1dd1e8c516f832c90d3b182e05e4d7ba9",
+    "manifest_sha256": "923986de2938124a44411133af5c6ba1dd1e8c516f832c90d3b182e05e4d7ba9",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2526
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\33_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\33_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\33_01900-02526.png",
+        "span": [
+          1900,
+          2526
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Ordinary complete-paper Off queue retains Human capture complete and existing pricing, no invented Type2 judgement. Filter explains empty lanes; model default figures correct.",
+    "natural_panels": []
+  },
+  {
+    "index": 34,
+    "relative_path": "check-16/06-completed-type1-queue-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\06-completed-type1-queue-off.png",
+    "sha256": "2cbbfd5bfe0d8be311a1858c520125741996f4ba0fd27c94e3c49859c73dd1c9",
+    "manifest_sha256": "2cbbfd5bfe0d8be311a1858c520125741996f4ba0fd27c94e3c49859c73dd1c9",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2526
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\34_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\34_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\34_01900-02526.png",
+        "span": [
+          1900,
+          2526
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Different hash from33 independently viewed allthree tiles. Same human-origin capture and full lower queue/model; no assertion transferred merely from similarity.",
+    "natural_panels": []
+  },
+  {
+    "index": 35,
+    "relative_path": "check-16/09-audit-completed-type1-card-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\09-audit-completed-type1-card-off.png",
+    "sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "manifest_sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1000
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\35_00000-01000.png",
+        "span": [
+          0,
+          1000
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Off case cards: B preserves person-confirmed origin and existing pricing; D unknown/uncaptured route; no false untouched automatic claim.",
+    "natural_panels": []
+  },
+  {
+    "index": 36,
+    "relative_path": "check-16/11-completed-type1-card-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\11-completed-type1-card-off.png",
+    "sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "manifest_sha256": "d295d611ef84a60de146738450514cd05637c630ee7bfa7eb7baeb98817ccfa1",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1000
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": 35,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\35_00000-01000.png",
+        "span": [
+          0,
+          1000
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Exact SHA256 duplicate mapped to independently inspected image 35",
+    "natural_panels": []
+  },
+  {
+    "index": 37,
+    "relative_path": "check-16/15-audit-completed-type1-queue-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\15-audit-completed-type1-queue-on.png",
+    "sha256": "aab2de16f16e5eebd6ff6ddaabd12dc54aefa2b9f7d6daaf705cd923590ccb27",
+    "manifest_sha256": "aab2de16f16e5eebd6ff6ddaabd12dc54aefa2b9f7d6daaf705cd923590ccb27",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2594
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\37_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\37_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\37_01900-02594.png",
+        "span": [
+          1900,
+          2594
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Ordinary paper On queue retains human capture; summary now says human attested reconciliation, source agreement assessed separately. Declaration present in this actual scenario, no false claim.",
+    "natural_panels": []
+  },
+  {
+    "index": 38,
+    "relative_path": "check-16/17-completed-type1-queue-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\17-completed-type1-queue-on.png",
+    "sha256": "6080cfa7a3c793eb559852d96eb998c793d6c18d33715fcdc1453f289459651a",
+    "manifest_sha256": "6080cfa7a3c793eb559852d96eb998c793d6c18d33715fcdc1453f289459651a",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      2594
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\38_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\38_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\38_01900-02594.png",
+        "span": [
+          1900,
+          2594
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Different hash from37 independently viewed allthree tiles; same human origin and explicitly qualified attestation; lower model accessible.",
+    "natural_panels": []
+  },
+  {
+    "index": 39,
+    "relative_path": "check-16/20-audit-completed-type1-card-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\20-audit-completed-type1-card-on.png",
+    "sha256": "738df48594d2ec20c8c84ac2398c8ac5e2cde1b538c312f919850f66ff23a7c5",
+    "manifest_sha256": "738df48594d2ec20c8c84ac2398c8ac5e2cde1b538c312f919850f66ff23a7c5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1061
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\39_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\39_00950-01061.png",
+        "span": [
+          950,
+          1061
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "On case cards: readable Request information wording; B human origin retained; D caveat22words and still notbuilt.",
+    "natural_panels": []
+  },
+  {
+    "index": 40,
+    "relative_path": "check-16/22-completed-type1-card-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-16\\22-completed-type1-card-on.png",
+    "sha256": "738df48594d2ec20c8c84ac2398c8ac5e2cde1b538c312f919850f66ff23a7c5",
+    "manifest_sha256": "738df48594d2ec20c8c84ac2398c8ac5e2cde1b538c312f919850f66ff23a7c5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1061
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#cases",
+    "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+    "identical_to_image": 39,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\39_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": true
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\39_00950-01061.png",
+        "span": [
+          950,
+          1061
+        ],
+        "inspected": true
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "Exact SHA256 duplicate mapped to independently inspected image 39",
+    "natural_panels": []
+  },
+  {
+    "index": 41,
+    "relative_path": "check-17/03-same-d-completed-off-both.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-17\\03-same-d-completed-off-both.png",
+    "sha256": "c617513fe18fd107c3fd3d85d94e647cd411eba45ec2623a22f5ec0918a4eba9",
+    "manifest_sha256": "c617513fe18fd107c3fd3d85d94e647cd411eba45ec2623a22f5ec0918a4eba9",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5227
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, both",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\41_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\41_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\41_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\41_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\41_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\41_04750-05227.png",
+        "span": [
+          4750,
+          5227
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 42,
+    "relative_path": "check-18/03-same-d-completed-off-switched.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-18\\03-same-d-completed-off-switched.png",
+    "sha256": "71e9cd275a2d060be0cbbdeb3e415d43d5c20f1b3ab80133ec876dea00011f0d",
+    "manifest_sha256": "71e9cd275a2d060be0cbbdeb3e415d43d5c20f1b3ab80133ec876dea00011f0d",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5046
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, switched",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\42_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\42_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\42_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\42_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\42_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\42_04750-05046.png",
+        "span": [
+          4750,
+          5046
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 43,
+    "relative_path": "check-19/03-same-d-completed-on-both.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-19\\03-same-d-completed-on-both.png",
+    "sha256": "884ff3517aaf7191e0fd9b853173efd579e1b51a4d98f911371ffc7ed3ea8c47",
+    "manifest_sha256": "884ff3517aaf7191e0fd9b853173efd579e1b51a4d98f911371ffc7ed3ea8c47",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      5167
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, both",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\43_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\43_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\43_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\43_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\43_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\43_04750-05167.png",
+        "span": [
+          4750,
+          5167
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 44,
+    "relative_path": "check-20/03-same-d-completed-on-switched.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-20\\03-same-d-completed-on-switched.png",
+    "sha256": "b8a33a2af16bdd246398edfdacb48aeb8d505df26318125870e2949684872821",
+    "manifest_sha256": "b8a33a2af16bdd246398edfdacb48aeb8d505df26318125870e2949684872821",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4986
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24123",
+    "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, switched",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\44_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\44_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\44_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\44_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\44_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\44_04750-04986.png",
+        "span": [
+          4750,
+          4986
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 45,
+    "relative_path": "check-21/03-generic-correction-awaiting-human-recheck.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-21\\03-generic-correction-awaiting-human-recheck.png",
+    "sha256": "005ccb28e041226835d5c1a460cc3a7e015cb2d661c1ac96a4d7201fafc564b0",
+    "manifest_sha256": "005ccb28e041226835d5c1a460cc3a7e015cb2d661c1ac96a4d7201fafc564b0",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3584
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=SYN-FQ123-TYPE2",
+    "check": "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\45_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\45_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\45_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\45_02850-03584.png",
+        "span": [
+          2850,
+          3584
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 46,
+    "relative_path": "check-21/05-generic-correction-human-decided-paid.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-21\\05-generic-correction-human-decided-paid.png",
+    "sha256": "95dadbe8ed37ae995bf90fc4610a86a13129f90c1e5696b639e8c64ca517cd39",
+    "manifest_sha256": "95dadbe8ed37ae995bf90fc4610a86a13129f90c1e5696b639e8c64ca517cd39",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4391
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=SYN-FQ123-TYPE2",
+    "check": "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\46_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\46_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\46_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\46_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\46_03800-04391.png",
+        "span": [
+          3800,
+          4391
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 47,
+    "relative_path": "check-25/08-audit-perspective-round-trip-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-25\\08-audit-perspective-round-trip-on.png",
+    "sha256": "8a0050a9a6f2aae5fd243774318bc571b6a4e4ca9090570b8a8c96bf28487223",
+    "manifest_sha256": "8a0050a9a6f2aae5fd243774318bc571b6a4e4ca9090570b8a8c96bf28487223",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4721
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy/claims?caseId=EX-24112",
+    "check": "14 Perspectives preserve the same submitted item and human decision Off then On without Reset",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\47_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\47_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\47_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\47_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\47_03800-04721.png",
+        "span": [
+          3800,
+          4721
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 48,
+    "relative_path": "check-26/03-hillcrest-only-operational-work.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-26\\03-hillcrest-only-operational-work.png",
+    "sha256": "e78b8dbdbc5a4721f7755f00bcb1e047d77f9ac429c35d81949d646130c3e1e5",
+    "manifest_sha256": "e78b8dbdbc5a4721f7755f00bcb1e047d77f9ac429c35d81949d646130c3e1e5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3050
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "19 Hillcrest is the only operational pharmacy and background entries are unclickable",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\48_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\48_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\48_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\48_02850-03050.png",
+        "span": [
+          2850,
+          3050
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 49,
+    "relative_path": "check-27/03-visible-eps-ex-24107-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-27\\03-visible-eps-ex-24107-off.png",
+    "sha256": "2688c4cff082a33db57c62079b3d980f7235aba26bfdce0288a6da8efba3d4c6",
+    "manifest_sha256": "2688c4cff082a33db57c62079b3d980f7235aba26bfdce0288a6da8efba3d4c6",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3101
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\49_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\49_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\49_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\49_02850-03101.png",
+        "span": [
+          2850,
+          3101
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 50,
+    "relative_path": "check-27/05-visible-eps-ex-24107-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-27\\05-visible-eps-ex-24107-on.png",
+    "sha256": "09f0083651486993a1698d5fc76f12f30cec8fed2b22dc5da144715d0fdc7e1c",
+    "manifest_sha256": "09f0083651486993a1698d5fc76f12f30cec8fed2b22dc5da144715d0fdc7e1c",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3101
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\50_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\50_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\50_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\50_02850-03101.png",
+        "span": [
+          2850,
+          3101
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 51,
+    "relative_path": "check-27/07-visible-eps-ex-24112-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-27\\07-visible-eps-ex-24112-off.png",
+    "sha256": "6c3acbda9ba75dd029f05b6c410d580f30bd8e31ede240a0b0cb03bfdc4e0018",
+    "manifest_sha256": "6c3acbda9ba75dd029f05b6c410d580f30bd8e31ede240a0b0cb03bfdc4e0018",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3081
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\51_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\51_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\51_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\51_02850-03081.png",
+        "span": [
+          2850,
+          3081
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 52,
+    "relative_path": "check-27/09-visible-eps-ex-24112-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-27\\09-visible-eps-ex-24112-on.png",
+    "sha256": "4d6057d9e51b202cc1f5734e7ff56f7e953eda3e4ede6bb9bb35bebfe258f020",
+    "manifest_sha256": "4d6057d9e51b202cc1f5734e7ff56f7e953eda3e4ede6bb9bb35bebfe258f020",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3101
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\52_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\52_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\52_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\52_02850-03101.png",
+        "span": [
+          2850,
+          3101
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 53,
+    "relative_path": "check-27/11-visible-eps-syn-fq123-type2-off.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-27\\11-visible-eps-syn-fq123-type2-off.png",
+    "sha256": "b698515eefdbbc0bf28c08ea93b55f05f480618fa3d9713f909695f0d94d7491",
+    "manifest_sha256": "b698515eefdbbc0bf28c08ea93b55f05f480618fa3d9713f909695f0d94d7491",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3294
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\53_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\53_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\53_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\53_02850-03294.png",
+        "span": [
+          2850,
+          3294
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 54,
+    "relative_path": "check-27/13-visible-eps-syn-fq123-type2-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-27\\13-visible-eps-syn-fq123-type2-on.png",
+    "sha256": "af53182851cd77297aa348ae5be073daddc98ad50e523fbd3a46f70476454d48",
+    "manifest_sha256": "af53182851cd77297aa348ae5be073daddc98ad50e523fbd3a46f70476454d48",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3314
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/pharmacy",
+    "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\54_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\54_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\54_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\54_02850-03314.png",
+        "span": [
+          2850,
+          3314
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 55,
+    "relative_path": "check-28/04-audit-worked-declaration-unconfirmed-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-28\\04-audit-worked-declaration-unconfirmed-on.png",
+    "sha256": "68166b1100377258cb32f00f38c6c35d67a6104a2e79d9b8f95a479934683be5",
+    "manifest_sha256": "68166b1100377258cb32f00f38c6c35d67a6104a2e79d9b8f95a479934683be5",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      3799
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/queue",
+    "check": "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\55_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\55_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\55_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\55_02850-03799.png",
+        "span": [
+          2850,
+          3799
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 56,
+    "relative_path": "check-28/07-audit-worked-declaration-human-confirmed-on.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-28\\07-audit-worked-declaration-human-confirmed-on.png",
+    "sha256": "6ae9bfbb831a6abb9bb150fe5d9b16fa3f48975bfbc2f2978aba77e6b1805a60",
+    "manifest_sha256": "6ae9bfbb831a6abb9bb150fe5d9b16fa3f48975bfbc2f2978aba77e6b1805a60",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4785
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "check": "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\56_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\56_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\56_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\56_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\56_03800-04785.png",
+        "span": [
+          3800,
+          4785
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 57,
+    "relative_path": "check-29/03-declared-paper-unreconciled-evidence-abstains.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-29\\03-declared-paper-unreconciled-evidence-abstains.png",
+    "sha256": "5189dc48bef2af194282d58f7aa25e836961a485847ca942e8b3933761011d6f",
+    "manifest_sha256": "5189dc48bef2af194282d58f7aa25e836961a485847ca942e8b3933761011d6f",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      4994
+    ],
+    "agent": "On",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/case/EX-24123",
+    "check": "22 Contradictory capture of a complete declaration still abstains without invented agreement",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\57_00000-01050.png",
+        "span": [
+          0,
+          1050
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\57_00950-02000.png",
+        "span": [
+          950,
+          2000
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\57_01900-02950.png",
+        "span": [
+          1900,
+          2950
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\57_02850-03900.png",
+        "span": [
+          2850,
+          3900
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\57_03800-04850.png",
+        "span": [
+          3800,
+          4850
+        ],
+        "inspected": false
+      },
+      {
+        "path": "C:\\Temp\\task30qa-34\\57_04750-04994.png",
+        "span": [
+          4750,
+          4994
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  },
+  {
+    "index": 58,
+    "relative_path": "check-30/03-central-bet-follows-edited-assumption.png",
+    "path": "C:\\Users\\williamng\\OneDrive - Microsoft\\GitHub\\copilot-worktrees\\BSA\\williamng18-scaling-fiesta\\BSA\\docs\\screens\\task30\\34d7567\\check-30\\03-central-bet-follows-edited-assumption.png",
+    "sha256": "c461aacf7fff30742be17a339ff3b30374795139a4294bfe37fcce017392d8e3",
+    "manifest_sha256": "c461aacf7fff30742be17a339ff3b30374795139a4294bfe37fcce017392d8e3",
+    "hash_match": true,
+    "dimensions": [
+      1440,
+      1002
+    ],
+    "agent": "Off",
+    "url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/#close",
+    "check": "23 Six stakeholder chapters retain all nine stops and the editable central bet",
+    "identical_to_image": null,
+    "tiles": [
+      {
+        "path": "C:\\Temp\\task30qa-34\\58_00000-01002.png",
+        "span": [
+          0,
+          1002
+        ],
+        "inspected": false
+      }
+    ],
+    "novice_verdict": "NOT VERIFIED",
+    "functional_truth_verdict": "NOT VERIFIED",
+    "prose_verdict": "NOT VERIFIED",
+    "overall_verdict": "NOT VERIFIED",
+    "observation": "",
+    "natural_panels": []
+  }
+]
