@@ -435,7 +435,8 @@ export const useAppStore = create<AppState>((set, get) => {
       if (input.provenance === "pharmacy_declaration" && !revision.declaration) throw new Error("No pharmacy declaration on this revision.");
       if (input.provenance === "pharmacy_declaration" && !sameDeclaredFields(fields, revision.declaration!.fields)) throw new Error("Corrected fields require human_capture provenance.");
       const at = timestamp(c.id);
-      const capture = { revision: revision.number, confirmedAt: at, operator: "Demo operator", fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled };
+      const capture = { revision: revision.number, confirmedAt: at, operator: "Demo operator", fields, provenance: input.provenance,
+        declarationReconciled: input.declarationReconciled, assistanceEnabled: s.agentEnabled };
       const confirmedCase = { ...c, capturedEvidence: { fields, provenance: input.provenance, declarationReconciled: input.declarationReconciled, revision: revision.number } };
       const facts = routingFactsForCase({ ...confirmedCase, extracted: capturedFields(confirmedCase) }, process.channel, true);
       const captureCompatible = input.provenance === "human_capture" && c.scenario !== "D"

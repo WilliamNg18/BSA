@@ -125,6 +125,26 @@ describe("authoritative two-gate source verification", () => {
     }
   });
 
+  it("On submission can finish through actual Off manual capture without a hidden attestation requirement", () => {
+    const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Manually established synthetic prescriber" };
+    store().setAgentEnabled(true);
+    store().submitItem({ caseId: d, channel: "paper", endorsementText: fields.endorsementText,
+      declaration: { fields, declaredAt: "2026-09-14T12:00:00Z", provenance: "pharmacy_declaration" } });
+    const history = structuredClone(store().lifecycles[d].history), beforeToggle = getDomainSnapshot();
+    expect(store().itemVerification[d]).toMatchObject({ gate1: "pass", gate2: "fail", released: false });
+    store().setAgentEnabled(false);
+    expect(getDomainSnapshot()).toEqual(beforeToggle);
+    store().confirmType1({ caseId: d, revision: 2, fields, provenance: "human_capture", declarationReconciled: false });
+    expect(store().itemProcesses[d].capture?.assistanceEnabled).toBe(false);
+    expect(getReleaseEligibility(d).allowed).toBe(true);
+    store().releaseToPricing(d, "Manually captured fields match the independent claim.");
+    expect(store().lifecycles[d].history.slice(0, history.length)).toEqual(history);
+    expect(store().caseRevisions[d].at(-1)?.verificationEnabled).toBe(true);
+    expect(store().itemProcesses[d].releaseOrigin).toBe("human_decision");
+    expect(itemStateLabel(store().lifecycles[d], "nhsbsa")).not.toContain("no operator action");
+    expect(store().records.at(-1)?.recommendation).toBe("NONE");
+  });
+
   it("changing received EPS product and quantity does not rewrite its independent claim ledger", () => {
     const original = initialisePharmacyDraft(sessionCase(b)!, store().caseRevisions[b][0]);
     const epsPrescription = { ...original.epsPrescription!, items: [{ ...original.epsPrescription!.items[0], quantity: 56 }],
