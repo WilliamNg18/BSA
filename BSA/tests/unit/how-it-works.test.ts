@@ -50,6 +50,7 @@ describe("Task 37 system design reference", () => {
     if (!reference) throw new Error("The reference mapping table is missing");
     expect(reference).toContain(REFERENCE_MAPPING.caption);
     expect(reference).toContain("Azure OpenAI");
+    expect(html).toContain('aria-label="Reference mapping, one example table"');
     expect(html.replace(reference, "")).not.toMatch(/\b(Azure|Microsoft|OpenAI|Foundry|Cosmos|Entra)\b/u);
   });
 
@@ -59,7 +60,7 @@ describe("Task 37 system design reference", () => {
     expect(html).toContain('aria-labelledby="components-title components-description"');
     expect(html).toContain('aria-labelledby="sequence-title sequence-description"');
     expect(COMPONENT_FLOW).toHaveLength(6);
-    expect(CASE_B_SEQUENCE).toHaveLength(9);
+    expect(CASE_B_SEQUENCE).toHaveLength(11);
     expect(html).not.toMatch(/<script|<iframe|https?:\/\//u);
     for (const text of [...COMPONENT_FLOW, ...CASE_B_SEQUENCE]) {
       expect(html).toContain(text.replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("'", "&#x27;").replaceAll('"', "&quot;"));

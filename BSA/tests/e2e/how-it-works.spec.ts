@@ -7,7 +7,8 @@ for (const width of [1280, 1440]) {
     test(`Task37 reference sections, labels, diagrams and axe ${width} ${theme}`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 1000 });
       await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
-      await page.goto("/architecture");
+      const response = await page.goto("/architecture");
+      expect(response?.headers()["content-security-policy"]).toContain("script-src 'self'");
       await expect(page.getByRole("heading", { level: 1, name: DESIGN_TITLE })).toBeVisible();
       const reference = page.locator("[data-system-design]");
       await expect(reference.locator("[data-design-section]")).toHaveCount(10);
@@ -44,6 +45,9 @@ for (const width of [1280, 1440]) {
       await expect(page).toHaveURL(new RegExp(`/architecture#${id}$`));
       await expect(page.locator(`h2#${id}`)).toBeFocused();
       await expect(page.locator(`h2#${id}`)).toBeInViewport();
+      const headingTop = await page.locator(`h2#${id}`).evaluate((node) => node.getBoundingClientRect().top);
+      const chromeHeight = await page.evaluate(() => Number.parseFloat(document.documentElement.style.scrollPaddingTop) || 0);
+      expect(headingTop, "Anchor heading must remain below the sticky application chrome").toBeGreaterThanOrEqual(chromeHeight);
     }
   });
 }

@@ -148,8 +148,10 @@ Identity, least privilege, secrets management, private networking and approved U
 5. Case builder → Code gate: reconcile facts, validate citation and requirements; missing date fails the sufficiency checks.
 6. Code gate → Operator: record evidence, clause/version, recommendation and draft; never automatically release the deficient item.
 7. Operator → Pharmacy: human Apply suggestion, then explicit Refer back with RB code and approved note, or a justified permitted disposition.
-8. Pharmacy → Ingress: human Apply suggested correction, then Resubmit; retain prior attempts and any required human re-check.
-9. Operator → Existing pricing: after satisfied checks and required review, explicit Release to pricing; pharmacy sees normal-schedule attribution, no agent payment.
+8. Pharmacy → Ingress: human Apply suggested correction, then Resubmit; retain prior attempts.
+9. Ingress → Case builder: revalidate the resubmitted revision against source, claim and effective-date clause; recompute independent gate evidence.
+10. Case builder → Operator: append the new evidence and checks to the record; perform the required human re-check. Missing or disputed evidence still withholds release.
+11. Operator → Existing pricing: after satisfied checks and required review, explicit Release to pricing; pharmacy sees normal-schedule attribution, no agent payment.
 
 ## Work with NHSBSA's existing systems
 

@@ -189,7 +189,9 @@ export const CASE_B_SEQUENCE = [
   "Case builder → Code gate: reconcile facts, validate citation and requirements; missing date fails the sufficiency checks.",
   "Code gate → Operator: record evidence, clause/version, recommendation and draft; never automatically release the deficient item.",
   "Operator → Pharmacy: human Apply suggestion, then explicit Refer back with RB code and approved note, or a justified permitted disposition.",
-  "Pharmacy → Ingress: human Apply suggested correction, then Resubmit; retain prior attempts and any required human re-check.",
+  "Pharmacy → Ingress: human Apply suggested correction, then Resubmit; retain prior attempts.",
+  "Ingress → Case builder: revalidate the resubmitted revision against source, claim and effective-date clause; recompute independent gate evidence.",
+  "Case builder → Operator: append the new evidence and checks to the record; perform the required human re-check. Missing or disputed evidence still withholds release.",
   "Operator → Existing pricing: after satisfied checks and required review, explicit Release to pricing; pharmacy sees normal-schedule attribution, no agent payment.",
 ] as const;
 
