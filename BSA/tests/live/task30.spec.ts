@@ -11,8 +11,8 @@ test(LIVE_CHECKS.hillcrest, async ({ page }, info) => {
   await navigatePrimary(page, "Pharmacy claims");
   await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^All / }).click();
   const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("tbody tr");
-  await expect(rows).toHaveCount(10);
-  for (const id of ["EX-24107", "EX-24101", "EX-24112", "EX-24119", "EX-24123", "EX-24088", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK", "SYN-FQ123-MISMATCH", "SYN-FQ123-READABLE"]) {
+  await expect(rows).toHaveCount(4);
+  for (const id of ["EX-24107", "EX-24112", "EX-24123", "SYN-FQ123-MISMATCH"]) {
     await expect(rows.filter({ hasText: id })).toHaveCount(1);
   }
   await navigatePrimary(page, "NHSBSA queue");
@@ -23,7 +23,7 @@ test(LIVE_CHECKS.hillcrest, async ({ page }, info) => {
   for (const row of await page.locator("[data-case-id], [data-type1-case]").all()) {
     await expect(row).toContainText("Hillcrest Pharmacy");
   }
-  for (const id of ["EX-24107", "EX-24101", "SYN-FQ123-READABLE"]) {
+  for (const id of ["EX-24107", "EX-24101", "EX-24119", "EX-24088", "SYN-FQ123-READABLE", "SYN-FQ123-RECHECK", "SYN-FQ123-TYPE2"]) {
     await expect(page.locator(`[data-case-id="${id}"], [data-type1-case="${id}"]`)).toHaveCount(0);
   }
   await captureView(page, info, "hillcrest-only-operational-work");
