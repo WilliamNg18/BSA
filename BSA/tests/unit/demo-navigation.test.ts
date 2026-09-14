@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { DEMO_ALLOWED_CONTROLS, DEMO_CASE_IDS, DEMO_CONTROL_SELECTORS, DEMO_STEPS, demoStepDestination, getDemoStep } from "../../src/lib/domain/demo-steps";
-import { navigateDemoStep } from "../../src/lib/demo-navigation";
+import { demoRouteCaseId, navigateDemoStep } from "../../src/lib/demo-navigation";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
 import { PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 
@@ -43,6 +43,13 @@ describe("eleven-step navigation, never a business action", () => {
       expect(() => navigateDemoStep(value, () => { throw new Error("Must not navigate"); })).toThrow("Unknown demo step");
       expect(useAppStore.getState()).toBe(before);
     }
+  });
+
+  it("reads the item identity, not a case subroute suffix", () => {
+    expect(demoRouteCaseId("/case/EX-24123", "")).toBe("EX-24123");
+    expect(demoRouteCaseId("/case/EX-24123/record", "")).toBe("EX-24123");
+    expect(demoRouteCaseId("/queue", "?case=SYN-FQ123-MISMATCH&channel=eps")).toBe("SYN-FQ123-MISMATCH");
+    expect(demoRouteCaseId("/", "")).toBeNull();
   });
 
   it("exports an immutable positive and absence contract for all eleven screens", () => {
