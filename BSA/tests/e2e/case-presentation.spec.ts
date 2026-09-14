@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, confirmReset, expect, test } from "./fixtures";
 import { GATHERING_STEPS, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
-import { automaticCaseIds, cases, prepareCorrectedBReview, startDemonstrationReview } from "./operator-action-helpers";
+import { automaticCaseIds, cases, decisionNote, operatorAction, operatorDecision, operatorRadio, performDecision, prepareCorrectedBReview, startDemonstrationReview } from "./operator-action-helpers";
 
 for (const c of cases) {
   test(`Task6 ${c.id} manual trace and raw pack are not agent evidence`, async ({ page }) => {
@@ -50,12 +50,12 @@ for (const c of cases) {
     if (c.id !== "EX-24123" && !automaticCaseIds.includes(c.id)) {
       await startDemonstrationReview(page, c.id);
       await expect(page.getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(1);
-      await expect(page.getByRole("radio", { name: /^Escalate / })).toBeChecked();
-      await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).not.toBeChecked();
+      await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
+      await expect(operatorRadio(page, "ACCEPT")).not.toBeChecked();
       await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveAttribute("aria-required", "true");
     }
     if (automaticCaseIds.includes(c.id)) {
-      await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+      await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
       await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toContainText("existing rules engine");
     }
   });
@@ -77,28 +77,30 @@ for (const id of automaticCaseIds) for (const enabled of [false, true]) {
       await expect(page.getByRole("button", { name, exact: true })).toHaveCount(0);
     }
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
-    await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Existing automatic pricing record", exact: true })).toBeVisible();
+    await expect(page.getByText("No human decision recorded yet", { exact: true })).toHaveCount(0);
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(operatorAction(page, "ACCEPT")).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
   });
 }
 
-for (const label of ["Refer back", "Request information", "Escalate"]) {
+for (const [label, outcome] of [["Refer back", "REFER_BACK"], ["Request information", "REQUEST_INFORMATION"], ["Escalate", "ESCALATE"]] as const) {
   test(`Task6 manual ${label} requires reason and records NONE through valid lifecycle review`, async ({ page }) => {
     await page.goto("case/EX-24112");
     await startDemonstrationReview(page);
-    await page.getByRole("radio", { name: new RegExp(`^${label.replace(/[()]/g, "\\$&")} `) }).check();
-    const reason = page.getByLabel("Reason (required)", { exact: true });
+    await operatorRadio(page, outcome).check();
+    const reason = decisionNote(page, outcome);
     for (const value of ["", "   1234567   "]) {
       await reason.fill(value);
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await operatorAction(page, outcome).click();
       await expect(page).toHaveURL(/\/case\/EX-24112$/);
-      await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
+      await expect(operatorDecision(page).getByRole("alert")).toHaveText(outcome === "REQUEST_INFORMATION"
+        ? "Enter a question of at least eight characters." : "Enter a reason of at least eight characters.");
     }
     await reason.fill("Human review of captured evidence");
     if (label === "Refer back") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await performDecision(page, outcome);
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     await expect(page.getByText("No. Note: Human review of captured evidence", { exact: true })).toBeVisible();
     await expect(page.getByText("No recorded rule version to replay in this manual comparison", { exact: true })).toBeVisible();
@@ -113,11 +115,12 @@ for (const label of ["Refer back", "Request information", "Escalate"]) {
 for (const id of ["EX-24112", "SYN-FQ123-MISMATCH"]) {
   test(`manual sufficient cannot release unresolved source facts for ${id}`, async ({ page }) => {
     await startDemonstrationReview(page, id);
-    await page.getByRole("radio", { name: /^Sufficient \(human choice\)/ }).check();
+    await operatorRadio(page, "ACCEPT").check();
     await page.getByLabel("Reason (required)", { exact: true }).fill("Human choice cannot replace missing or conflicting source facts");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
     await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
-    await expect(page.getByRole("alert").filter({ hasText: "Current source facts do not satisfy the release gate." })).toBeVisible();
+    await expect(operatorDecision(page).getByText("Release unavailable: code gate", { exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
     await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
     await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   });
@@ -126,23 +129,26 @@ for (const id of ["EX-24112", "SYN-FQ123-MISMATCH"]) {
 for (const enabled of [false, true]) {
   test(`corrected B requires a fresh human recheck before pricing, Agent ${enabled}`, async ({ page }) => {
     await prepareCorrectedBReview(page, enabled);
-    await page.getByRole("radio", { name: enabled ? /^Accept the recommendation / : /^Sufficient \(human choice\)/ }).check();
+    if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    await operatorRadio(page, "ACCEPT").check();
     const reason = page.getByLabel("Reason (required)", { exact: true });
     for (const value of ["", "1234567", "   1234567   "]) {
       await reason.fill(value);
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
-      await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
+      await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+      await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
     }
     await reason.fill("Human reviewed the corrected endorsement date against the source");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await expect(operatorAction(page, "ACCEPT")).toBeEnabled();
+    await performDecision(page, "ACCEPT", { releaseVerified: enabled });
     await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
     await expect(page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).locator("dd")).toContainText("ACCEPT by Demo operator");
     await expect(page.getByRole("main")).toContainText("Human reviewed the corrected endorsement date against the source");
+    await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
+    await expect(operatorAction(page, "ACCEPT")).toHaveCount(0);
+    await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
     await page.locator("[data-original-records] > summary").click();
     await expect(page.locator("[data-original-records]")).toContainText("DR-000873: REFER BACK");
     await expect(page.locator("[data-original-records]")).toContainText("DR-000874: ACCEPT");
-    await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
   });
 }
 
@@ -169,7 +175,7 @@ test("Task6 trace slots follow phases; Clear, Step and Show all never create a r
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
 });
 
-test("Task6 full pack assembles in two seconds, with no decision pane before completion", async ({ page }) => {
+test("Task6 pack assembles in two seconds while explicit controls remain fail-closed", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
@@ -177,7 +183,8 @@ test("Task6 full pack assembles in two seconds, with no decision pane before com
   await page.clock.pauseAt(new Date("2026-09-11T12:00:10Z"));
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "0");
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
+  await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
   await page.clock.runFor(333);
   await expect(page.getByRole("heading", { name: "EPS claim message", exact: true })).toBeVisible();
   await expect(page.getByRole("main").locator("figure")).toHaveCount(0);
@@ -188,9 +195,13 @@ test("Task6 full pack assembles in two seconds, with no decision pane before com
   await expect(page.getByRole("heading", { name: "Applicable Drug Tariff provision", exact: true })).toBeVisible();
   await page.clock.runFor(999);
   await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "5");
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
   await page.clock.runFor(1);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(1);
+  await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "6");
+  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
+  await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+  await page.getByRole("navigation", { name: "Case views", exact: true }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
+  await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
 });
 
 test("Task6 live reduced motion cancels timers; Pause, Step, flag and route exit do not write history", async ({ page }) => {
@@ -225,25 +236,36 @@ test("Task6 live reduced motion cancels timers; Pause, Step, flag and route exit
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
 });
 
-test("Task6 decision draft survives toggle and comparison; route exit and Reset clear it", async ({ page }) => {
+test("Task6 shared decision draft survives toggle, comparison and navigation; Reset clears it", async ({ page }) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   const flag = page.getByRole("banner").getByRole("switch");
-  await page.getByRole("radio", { name: /^Request information / }).check();
-  await page.getByLabel("Reason (required)", { exact: true }).fill("Keep this human decision draft");
+  await operatorRadio(page, "REQUEST_INFORMATION").check();
+  await decisionNote(page, "REQUEST_INFORMATION").fill("Keep this human decision draft");
   await flag.setChecked(true);
   await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
   await expect(page.getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(1);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(1);
+  await expect(operatorAction(page, "REQUEST_INFORMATION")).toHaveCount(1);
   await expect(page.getByRole("complementary", { name: "Read-only manual comparison" }).getByRole("textbox")).toHaveCount(0);
-  await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveValue("Keep this human decision draft");
+  await expect(decisionNote(page, "REQUEST_INFORMATION")).toHaveValue("Keep this human decision draft");
   await flag.setChecked(false);
-  await expect(page.getByRole("radio", { name: /^Request information / })).toBeChecked();
-  await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveValue("Keep this human decision draft");
+  await expect(operatorRadio(page, "REQUEST_INFORMATION")).toBeChecked();
+  await expect(decisionNote(page, "REQUEST_INFORMATION")).toHaveValue("Keep this human decision draft");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Case-building trace", exact: true }).click();
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
-  await expect(page.getByLabel("Reason (required)", { exact: true })).toHaveValue("");
-  await page.getByLabel("Reason (required)", { exact: true }).fill("Reset this local draft");
+  await expect(decisionNote(page, "REQUEST_INFORMATION")).toHaveValue("Keep this human decision draft");
+  await flag.setChecked(true);
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  const note = await decisionNote(page).inputValue();
+  expect(note.trim().length).toBeGreaterThanOrEqual(8);
+  for (const enabled of [false, true]) {
+    await flag.setChecked(enabled);
+    await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+    await expect(decisionNote(page)).toHaveValue(note);
+    await expect(page.getByLabel("RB code (required)", { exact: true })).toHaveValue("SYN-NCSO");
+    await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toBeVisible();
+    await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+  }
   await confirmReset(page);
   await expect(flag).not.toBeChecked();
   await startDemonstrationReview(page);
@@ -266,7 +288,7 @@ test("Task6 D keeps failed signals and unestablished reconciliation; A remains n
   await expect(page.getByText("Case built, awaiting operator", { exact: true })).toHaveCount(0);
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await expect(page.getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorAction(page, "ACCEPT")).toHaveCount(0);
   await page.goto("case/EX-24107/trace");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true }).locator(":scope > li")).toHaveCount(2);
