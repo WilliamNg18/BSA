@@ -7,6 +7,43 @@ test("Pharmacy submit to NHSBSA decision to Pharmacy same decision, Off then On 
   await perspectiveRoundTrips(page, info);
 });
 
+test("caught-before-submission records only a completed human-applied correction", async ({ page }) => {
+  await page.goto("/pharmacy");
+  await choosePerspective(page, "Pharmacy");
+  await flag(page).setChecked(true);
+  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
+  const metric = page.getByRole("region", { name: "Selected pharmacy this month", exact: true })
+    .locator(":scope > dl > div").filter({ has: page.getByText("Caught before submission", { exact: true }) })
+    .getByRole("definition");
+  await navigatePrimary(page, "Pharmacy claims");
+  await expect(metric).toHaveText("0");
+  await navigatePrimary(page, "Pharmacy check");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
+  await page.locator('[data-pharmacy-action="apply-correction"]').click();
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
+  await navigatePrimary(page, "Pharmacy claims");
+  await expect(metric).toHaveText("1");
+  await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
+    .filter({ hasText: "EX-24112" }).getByRole("button").click();
+  await openHistory(page);
+  await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li")).toHaveCount(1);
+  for (let visit = 0; visit < 2; visit++) {
+    await navigatePrimary(page, "Pharmacy check");
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+    await expect(page.locator('[data-pharmacy-action="apply-correction"]')).toHaveCount(0);
+    await navigatePrimary(page, "Pharmacy claims");
+    await expect(metric).toHaveText("1");
+    await flag(page).setChecked(false);
+    await expect(metric).toHaveCount(0);
+    await flag(page).setChecked(true);
+    await expect(metric).toHaveText("1");
+  }
+  await confirmReset(page);
+  await flag(page).setChecked(true);
+  await expect(metric).toHaveText("0");
+});
+
 test("shared human edits persist; recorded releases count only explicit verified submissions", async ({ page }) => {
   await page.goto("/pharmacy");
   await choosePerspective(page, "Pharmacy");
