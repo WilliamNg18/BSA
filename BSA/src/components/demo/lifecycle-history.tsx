@@ -18,7 +18,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
     <p role="status">{pharmacy ? LIFECYCLE_LABELS[row.state].pharmacy : LIFECYCLE_LABELS[row.state].nhsbsa[enabled ? "on" : "off"]}</p>
     <div className="flex flex-wrap items-center gap-2">
       <BoundaryTag cls={actor === "code" ? "deterministic" : actor === "agent" ? "agent" : "human"} />
-      {perspective === "both" && <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>}
+      <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>
       {(pharmacy ? perspective !== "pharmacy" : perspective !== "nhsbsa") && <Button asChild variant="outline"><Link to={pharmacy ? `/case/${id}` : `/pharmacy/claims?caseId=${encodeURIComponent(id)}`}>{pharmacy ? "View NHSBSA case" : "View pharmacy claim"}</Link></Button>}
       {perspective !== "pharmacy" && <Button asChild variant="outline"><Link to="/queue">Open shared queue</Link></Button>}
     </div>
