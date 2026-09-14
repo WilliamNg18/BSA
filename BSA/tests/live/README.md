@@ -1,197 +1,131 @@
-# Explicit live acceptance
+# Explicit desktop live acceptance
 
-This opt-in checklist is outside `tests/e2e`. Its named inventory currently
-contains 30 checks, including the historical process coverage, Hillcrest-only
-work, visible EPS scenarios, worked paper declaration, contradictory evidence
-six-chapter navigation, the same-D cycle in Both/switched views, Off/On, and
-generic EPS referral correction through explicit human re-check.
-Default production CI does
-not discover it. It starts no server, uses one Chromium worker, and only changes
-synthetic browser-memory state. Do not execute until the coordinator confirms
-the deployed artifact is ready and supplies its full expected commit.
+The current named inventory contains **55 checks**: eight core application
+checks, two system-design widths, three header-perspective checks, 22 individual
+step/mode audits, four complete Back/Next walks and sixteen four-case cycles.
+This is an inventory, not an executed passing result.
 
-From the `BSA` application directory:
+Only A, B, wrong-pack EPS and unreadable D are playable. The six canonical
+domain fixtures remain semantic evidence; they do not make C/F/E, readable
+paper or old recheck fixtures operational. The former live files and their
+30-name inventory are superseded by the current four-case scope. Historical
+reports, captures and failures retain their original identities.
+
+## Readiness and invocation
+
+This opt-in suite is separate from ordinary browser CI. It uses one Chromium
+worker, starts no hosted server and changes only synthetic browser-memory
+state. **Do not execute hosted capture until the coordinator confirms the
+last functional runtime is deployed and supplies its full expected commit.**
+
+From `BSA`, after that confirmation:
 
 ```powershell
 $env:LIVE_BASE_URL = 'https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/'
-$env:EXPECTED_BUILD_COMMIT = '<coordinator-provided 40-character deployed commit>'
-$env:LIVE_OUTPUT_DIR = '<absolute session artifact directory outside the repository>'
-npx playwright test --config tests/live/playwright.config.ts --list
-# Only after explicit readiness approval:
-npx playwright test --config tests/live/playwright.config.ts
+$env:EXPECTED_BUILD_COMMIT = '<approved full 40-character deployed commit>'
+$env:LIVE_OUTPUT_DIR = '<new absolute artifact directory outside the repository>'
+npx playwright test --config tests\live\playwright.config.ts --list
+npx playwright test --config tests\live\playwright.config.ts
 ```
 
-`--list` performs discovery only. Every executed checklist item verifies
-`/build-info.json` before and after its browser work: HTTP 200, JSON, no-store,
-exact expected commit, valid UTC build time and `dirty: false`. A changed,
-malformed or stale identity fails acceptance. `checklist.json` reports all
-executed items, PASS/FAIL/NOT_RUN, symptoms, timestamps, duration, URL, identity
-attachments and evidence paths. Timing is informational, not a performance
-budget. No skipped item counts as a pass.
+`--list` is discovery only. Every executed check validates `/build-info.json`
+before and after its browser work: HTTP 200, JSON, no-store, the exact expected
+commit, valid UTC build time and `dirty: false`.
 
-The test declarations and reporter share the named inventory in `inventory.ts`.
-Only a complete, unique inventory with one passing attempt per check can report
-full `PASS`. A passing `--grep` selection retains its passing rows but reports
-`selection: partial` and overall `FAIL`, with the missing checks listed.
-Skipped, unrun, duplicate, unexpected and retried checks cannot imply clean full
-acceptance. All retry attempts and their original symptoms remain in the report.
+The declarations and reporter share `inventory.ts`. A full PASS requires every
+expected name exactly once, one passing attempt per check, no runner errors,
+and valid matching clean before/after identities on every row. Partial,
+unexpected, duplicate, skipped, missing, malformed, dirty and retried evidence
+cannot establish clean full acceptance. All attempts and original symptoms
+remain in `checklist.json`; a passing subset still has an overall FAIL.
 
-Audited views also produce full-page PNGs and `view-*` evidence with PNG SHA-256,
-runner and application source revisions, viewport, selected perspective/Agent,
-URL, timestamp, visible main text and accessibility snapshot. The runner requires
-a clean checkout, the expected release as an ancestor, and identical runtime
-source paths. It rejects root overflow. Local HTTP rehearsals remain labelled
-local; these checks do not relax the committed HTTPS/live identity requirements.
-The report links every image and retains its capture-time `visualReview: pending`.
-A separate source-pinned review records the subsequent verdict without modifying
-the captured evidence. Automated capture is not novice
-comprehension or complete manual accessibility acceptance.
+## What the checks establish
 
-The six explicit root deep links are `/pharmacy`, `/pharmacy/claims`, `/queue`,
-`/case/EX-24112`, `/case/EX-24112/trace` and `/case/EX-24112/record`. Route toggling
-also visits every current static route, tour stop and canonical case view.
-The header-only checks count hidden switches too and verify that the single
-header state controls each permitted page while opposite-side guards remain.
-Default-rule axe is run for Overview, pharmacy, claims, actual staff work and
-unconfirmed Type 1 capture in both modes; each audit has its own URL, mode,
-timestamp and violation report.
-Those checks do not claim universal accessibility conformance.
+The step checks visit all eleven steps in order, Off and On, with a separate
+named audit for each step/mode at 1440 px. Complete Back/Next walks exercise
+both 1280 and 1440 px, one header row and the absence of forbidden controls,
+including hidden controls. Inactive comparisons have no action controls.
+The guided operator-to-pharmacy hand-off also needs the actual selected item,
+not a static illustration or a silently substituted B.
 
-The checklist targets the integrated Tasks 25-30 C/N/E/U/Q/V interface: shared
-manual-loop inputs and both outcome columns, truthful case-card routing, actual
-Type 1 and Type 2 work rather than a virtual queue, and explicit referral RB
-codes. Canonical A/E traces and initial complete EPS require automatic pricing without
-operator approval. Actual referral corrections require an explicit human recheck.
-D's Off/On flow retains initial
-uncertainty, explicit human capture, the RB2B referral, original history and
-fresh capture required by a new paper revision.
-C's pharmacy confirmation retains both conflicting quantities for another human
-review. F's original record survives mode changes and rule replay. An edited
-monthly scenario is checked across Chapter 2, the scene, queue and pharmacy
-projection rather than checking unrelated defaults on each page.
+Four-case cycles use actual Send/Post, human capture where needed, operator
+Apply/referral, pharmacy correction/resubmission and human release. Complete
+A follows its automatic path without manufactured operator work. Wrong-pack
+EPS never releases while wrong. Both side buttons, temporary Both and return
+behaviour retain the current item, Agent mode and demo step.
 
-Do not run this version against an earlier incomplete deployment. Select only
-checks compatible with the coordinator's exact deployed stage; omitted checks
-remain NOT_RUN, and a partial smoke run is not full live acceptance. Local
-rehearsal verifies test compatibility only, never deployed acceptance; the
-committed live configuration continues to require HTTPS and a clean exact
-coordinator-provided build identity.
+The system-design checks cover every section, contents navigation, the three
+built/proposed/assumption labels, and the sole table captioned **Reference
+mapping, one example**, at both desktop widths. Vendor names are rejected
+outside that exact table. CI also scans current production source; it does not
+mistake package imports for displayed copy or exempt an entire source file.
 
-Screenshots, traces and JSON first live beneath `LIVE_OUTPUT_DIR`; do not
-overwrite those runs. For the requested durable release record,
-`node tests\live\export-evidence.mjs <checklist.json> <new-directory>` copies
-validated hosted evidence with portable paths and hashes, preserving the original
-report and pending visual-review status. Keep failed evidence separately labelled.
-Existing crash/console/network guards and navigation/reset
-helpers are reused without altering the production suite. The deployed
-build-info contract comes from the App Service strict static server; the
-harness does not load or change hosting policy files.
+Browser exceptions, console errors and failed requests remain failures.
+Unrestricted axe results retain violations and incomplete findings. Zero axe
+violations are not a manual WCAG certificate or proof that every image was
+reviewed.
 
-## Separate local rehearsal
+## Captures and evidence export
 
-`local-rehearsal.config.ts` uses the same named checks and strict packaged server
-only at `localhost`, matching the packaged server's loopback binding, with a
-distinct project name, report kind and output variable.
-It cannot accept a hosted target. The normal live entrypoint still requires an
-HTTPS root and has no allow-HTTP flag. Build the clean expected commit first:
+New PNG evidence is **1440 px only**. The 1280 px checks still run functional
+and accessibility assertions but do not create PNGs. Enriched capture records
+include image SHA-256, runner/application revisions, viewport, mode,
+perspective, URL, timestamp, visible text and accessibility snapshot.
+Source-pinned capture requires a clean checkout, an expected deployment that
+is its ancestor, and runtime-identical application files.
+
+Each image initially records `visualReview: pending`. Never infer a visual
+pass from capture or axe. If image inspection is tool-blocked, record that
+limitation without bypassing the restriction.
+
+Outputs first live beneath the new external `LIVE_OUTPUT_DIR`. Do not
+overwrite earlier attempts. When a durable hosted record is requested:
+
+```powershell
+node tests\live\export-evidence.mjs <checklist.json> <new-directory>
+```
+
+The exporter validates hosted evidence, preserves original reports and pending
+review status, and copies portable paths and hashes. Local rehearsal is
+rejected as hosted evidence. Historical references to withdrawn mobile files
+remain historical; do not rehash them as new desktop acceptance.
+
+## Strict local rehearsal
+
+The separate rehearsal configuration runs the same inventory against the
+packaged localhost server. It has a distinct project, report kind and output
+variable. It cannot select a hosted URL, and the live entrypoint has no
+allow-HTTP switch.
+
+Commit the candidate first, coordinate one available local browser worker,
+then build that clean expected source:
 
 ```powershell
 $env:EXPECTED_BUILD_COMMIT = git rev-parse HEAD
 $env:REHEARSAL_OUTPUT_DIR = '<new absolute directory outside the repository>'
-$env:PLAYWRIGHT_PORT = '4193'
+$env:PLAYWRIGHT_PORT = '<coordinator-allocated port>'
 npm run build
 npx playwright test --config tests\live\local-rehearsal.config.ts
 ```
 
-A complete local PASS is rehearsal only. The evidence exporter rejects its
-HTTP loopback identity, even when every check passes. Do not publish its images
-as hosted acceptance or overwrite the original rehearsal failures.
+Even a complete local PASS is rehearsal, not deployment acceptance. A dirty
+development run is weaker again and must retain its actual dirty identity.
+The final latest-main URL check must be less than ten minutes old.
 
-## Instrumented one-state checks are not live acceptance
+## Full-state equivalence is separate
 
-`npm run verify` also runs a blocking, shard-aware `one-state.config.ts` suite
-after the ordinary production browser checks. It builds a separate
-`test-results/one-state-site` artifact with `VITE_E2E_STATE_OBSERVER=true` and
-serves it with the packaged strict-policy server. The builder fingerprints
-every ordinary `dist` file before and after and fails if any file changes.
-After building, the launcher resolves the packaged server's real filesystem
-path before starting Node. Output-directory junctions therefore retain the
-server's strict entry-point identity check rather than bypassing it.
-The ordinary artifact test separately requires the observer to be absent.
-Never deploy or label the instrumented artifact as the live release.
+`one-state.config.ts` builds a separate instrumented artifact with a read-only
+observer. The builder fingerprints the ordinary `dist` before and after and
+refuses to change it. The normal production artifact must not expose the
+observer, and the instrumented artifact must never be deployed.
 
-The observer returns complete domain snapshots, never actions. Tests use only
-UI actions to submit or edit, fix the clock rather than erase timestamps, and
-retain deterministic IDs, actors, revisions, approvals and entire histories.
-Each flow runs in Both and again with opposite-side/back perspective switches
-before every action, separately with Agent Off and On. Snapshots are compared
-after every action and every presentation switch; failure attachments retain
-the snapshots collected before the failure. The first M-stage coverage is
-complete EPS automatic pricing using B's explicit typed correction, and
-incomplete EPS draft/submission. B retains its recorded EPS channel; these
-checks do not reinterpret A's paper seed as EPS.
+The four-case matrix runs Off/On in Both and switched perspectives. Every
+actual UI action is compared with complete domain snapshots, controlled
+clocks and deterministic IDs. Verification, operator/pharmacy drafts, capture
+metadata, records, all revisions and full histories remain in the evidence.
+No timestamp, ID or inconvenient field is stripped. Navigation and temporary
+perspective context are presentation, not business transitions.
 
-The integrated U/Q stage additionally covers D's explicit Type 1 confirmation:
-blank manual capture Off and the prior pharmacy declaration On, including a
-rejected unreconciled confirmation. Stopwatch actions, opening work and reading
-the resulting Type 2 case cannot change domain state. Capture must retain every
-original pharmacy attempt and append capture evidence without a Type 2 decision.
-These cases require the integrated capture/worklist UI; they are not an M-only
-compatibility patch or evidence for the full referral-cycle and capture-edit flows.
-
-`one-state-capture.spec.ts` expands that integrated contract in both Agent modes:
-new paper with no declaration, corrected fields and renewed reconciliation,
-missing-prescriber withholding, invalid quantities, manual/declaration mode
-changes, and uncommitted draft clearing on Reset. It retains all original
-attempts and capture history, checks unrelated cases exactly, and audits the
-capture surface with default axe rules at desktop/light and phone/dark sizes.
-Missing mandatory evidence must fail the compliance gate even if other fields
-support an interpretation; this is distinct from abstention before interpretation.
-
-A blocking Reset dialog is one explicit confirmation transaction: perspective
-switches happen before opening it, the complete state is checked unchanged while
-it is open, and the confirmed result is compared afterward. The harness never
-forces interaction with the inert header behind the modal.
-
-`one-state-lifecycle.spec.ts` covers explicit B referral reasons and RB codes,
-manual/unchecked/approved draft authority, immutable July/August record replay,
-and corrected EPS pricing without a second human decision. It also checks an
-explicit A EPS channel choice and keeps human-released items in decided staff
-work rather than misclassifying them as no-human automatic items.
-
-`one-state-handoff.spec.ts` covers C's human information request and pharmacy
-confirmation without resolving its 56/84 conflict, plus D capture followed by
-an RB2B referral and a new paper revision. The new revision requires fresh
-capture; the old capture, declaration, human record and history remain intact.
-Each case is exercised in both Agent modes and both perspective sequences.
-`one-state-completed-type1.spec.ts` adds complete paper B through manual or
-declaration-confirmed capture to existing pricing without Type 2 judgement.
-The card and queue must retain completed human-capture provenance, never an
-awaiting-capture or no-person label; reading and switching leave state unchanged.
-The historical instrumented family contained 32 tests. C adds a same-D continuous
-cycle pair: replay, capture, human RB2B referral, correction, resubmission,
-fresh capture, human acceptance, existing pricing and Reset. All snapshots
-remain complete and separate from this uninstrumented hosted inventory.
-Live check 18 covers the same
-completed-only path in both Agent modes without using a domain observer.
-All `one-state*.spec.ts` files are excluded from ordinary production discovery
-and included only by the blocking instrumented configuration.
-
-To repeat only these checks locally after an ordinary build:
-
-```powershell
-npm run build
-$env:PLAYWRIGHT_PORT = '4206'
-npm run test:e2e -- --config tests/e2e/one-state.config.ts --workers=1
-```
-
-Offline readiness checks, with no browsers or live requests:
-
-The standard `npm test` also discovers the offline `*.test.ts` contracts here,
-but never the live `checklist.spec.ts` browser suite.
-
-```powershell
-npm run typecheck
-npx eslint tests/live --max-warnings 0
-npx vitest run --config tests/live/unit.config.ts
-```
+Keep failures, later repairs and source identities distinct. A later pass does
+not turn a previous failed or unexecuted run into a pass, and exact local state
+proof does not substitute for the named hosted checklist.

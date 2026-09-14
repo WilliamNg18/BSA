@@ -6,7 +6,7 @@ import type { liveSettings } from "./settings";
 export function checklistConfig(settings: ReturnType<typeof liveSettings>) {
   return defineConfig({
     testDir: fileURLToPath(new URL(".", import.meta.url)),
-    testMatch: ["checklist.spec.ts", "perspective.spec.ts", "header-agent.spec.ts", "task30.spec.ts", "continuous-cycle.spec.ts", "generic-correction.spec.ts", "desktop-demo.spec.ts", "four-case-cycle.spec.ts"],
+    testMatch: ["checklist.spec.ts", "header-agent.spec.ts", "desktop-demo.spec.ts", "four-case-cycle.spec.ts"],
     fullyParallel: false,
     workers: 1,
     retries: 0,

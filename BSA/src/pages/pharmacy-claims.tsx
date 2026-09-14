@@ -73,10 +73,6 @@ export function PharmacyClaimsPage() {
       <PharmacyModelStrip />
       <PharmacyReleasedCount />
     </section>
-    <section aria-label="Historical cases, background" className="rounded-xl border p-4 text-sm">
-      <h2 className="font-semibold">Historical cases, background</h2>
-      <ul>{BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · Case {c.scenario} · Background only, not playable</li>)}</ul>
-    </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>
       <p>NHSmail prompts resubmission within 18 months; only affected items wait. Advance: 80%; balance when priced. Demonstration sends nothing and calculates no payments.</p>
@@ -104,7 +100,8 @@ export function PharmacyClaimsPage() {
             {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
             <span className="sr-only"> {row.caseId}</span>
           </Button></td>
-        </tr>)}
+        </tr>)}</tbody>
+        <tbody aria-label="Historical cases, background">
         {BACKGROUND_CASES.map((c) => <tr key={c.id} data-background-case className="border-b bg-muted/30">
           <th scope="row" className="p-3 font-medium">{c.id}</th>
           <td className="p-3">{c.extracted.dispensingDate}</td><td className="p-3">Background</td>

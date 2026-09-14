@@ -3,10 +3,10 @@ import { expect } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
 import { EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
 import { DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
-import type { PlayableCycle } from "../support/desktop-matrix";
+import type { CycleActionOptions, PlayableCycle } from "../support/desktop-matrix";
 
 export type CycleSide = "Pharmacy" | "NHSBSA";
-export type CycleAction = (label: string, side: CycleSide, perform: () => Promise<void>) => Promise<unknown>;
+export type CycleAction = (label: string, side: CycleSide, perform: () => Promise<void>, options?: CycleActionOptions) => Promise<unknown>;
 
 export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enabled: boolean, action: CycleAction) {
   const id = scenario.id;
@@ -22,8 +22,14 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
   };
   async function sides(label: string, state: LifecycleState, human = false) {
     for (const side of ["Pharmacy", "NHSBSA"] as const) {
-      await action(`${label}: ${side} view`, side, async () => {
+      const origin = side === "Pharmacy" ? "NHSBSA" : "Pharmacy";
+      let restricted = false;
+      await action(`${label}: ${side} view`, origin, async () => {
+        restricted = await page.getByRole("banner").getByRole("radio", { name: origin, exact: true }).isChecked();
         await followed.getByRole("button", { name: `${side} view`, exact: true }).click();
+        await expect(page.getByRole("banner").getByRole("radio", { name: "Both", exact: true })).toBeChecked();
+        if (restricted) await expect(followed.getByRole("status")).toHaveText(
+          `Both temporarily shown. ${origin} view restores your perspective; choosing a perspective keeps your choice.`);
         await expect(followed).toContainText(`Following ${id}`);
         await expect(followed).toContainText(scenario.channel === "eps" ? "EPS" : "Paper");
         await expect(followed.getByText(stateLabel(state, side, human), { exact: true }).first()).toBeVisible();
@@ -34,7 +40,23 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
         if (side === "Pharmacy") expect(new URL(page.url()).searchParams.get("case")).toBe(id);
         if (human) await expect(followed).not.toContainText("no operator action");
       });
+      await action(`${label}: explicit return to ${origin}`, origin, async () => {
+        await followed.getByRole("button", { name: `${origin} view`, exact: true }).click();
+        await expect(page.getByRole("banner").getByRole("radio", { name: restricted ? origin : "Both", exact: true })).toBeChecked();
+        await expect(followed.getByRole("status")).toHaveCount(0);
+        await expect(followed).toContainText(`Following ${id}`);
+        await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", String(scenario.step));
+        await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
+      }, { preservePerspective: true });
     }
+    await action(`${label}: retain NHSBSA item for the next action`, "NHSBSA", async () => {
+      await followed.getByRole("button", { name: "NHSBSA view", exact: true }).click();
+      await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-case", id);
+      await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", String(scenario.step));
+      await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
+      await expect(followed).toContainText(`Following ${id}`);
+      await expect(followed.getByText(stateLabel(state, "NHSBSA", human), { exact: true }).first()).toBeVisible();
+    }, { preservePerspective: true });
   }
   async function capture(label: string, endorsement: string) {
     const region = active().getByRole("region", { name: `Type 1 capture for ${id}`, exact: true });
@@ -60,7 +82,11 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
     await expect(followed).toContainText(`Following ${id}`);
   });
   if (scenario.kind === "unreadable") await action("Prepare D's declared missing-date evidence without submitting", "Pharmacy", async () => {
-    await active().getByRole("textbox", { name: "Declared endorsement", exact: true }).fill("NCSO JB");
+    if (enabled) await active().getByRole("textbox", { name: "Declared endorsement", exact: true }).fill("NCSO JB");
+    else {
+      await expect(active().getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveCount(0);
+      await expect(active().getByRole("button", { name: "Post paper", exact: true })).toBeVisible();
+    }
   });
   await action("Pharmacy explicitly submits the same item", "Pharmacy", async () => {
     await active().locator('[data-pharmacy-action="submit"]').click();
@@ -132,6 +158,14 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
       await expect(active().getByRole("button", { name: "Resubmit", exact: true })).toBeVisible();
     });
   } else {
+    if (scenario.kind === "unreadable") {
+      await action("Pharmacy supplies the known paper product without image inference", "Pharmacy", async () => {
+        await active().getByRole("textbox", { name: "Declared product", exact: true }).fill("Co-codamol 30/500 tablets");
+      });
+      await action("Pharmacy supplies the known paper quantity", "Pharmacy", async () => {
+        await active().getByRole("spinbutton", { name: "Declared quantity", exact: true }).fill("100");
+      });
+    }
     await action("Pharmacy enters the source-supported correction unaided", "Pharmacy", async () => {
       await field.fill(scenario.kind === "wrong-pack" ? String(EPS_SUPPLY_RULE.packSize)
         : scenario.kind === "unreadable" ? "NCSO JB 27/08/26" : "NCSO RK 21/08/26");

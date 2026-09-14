@@ -27,8 +27,10 @@ for (const colorScheme of ["light", "dark"] as const) {
           await page.evaluate(() => document.fonts.ready);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
           expect(overflow, "Page must not overflow horizontally").toBeLessThanOrEqual(1);
-          await page.screenshot({ path: testInfo.outputPath("after.png"), fullPage: true });
-          await testInfo.attach("after", { path: testInfo.outputPath("after.png"), contentType: "image/png" });
+          if (width === 1440) {
+            await page.screenshot({ path: testInfo.outputPath("after.png"), fullPage: true });
+            await testInfo.attach("after", { path: testInfo.outputPath("after.png"), contentType: "image/png" });
+          }
         });
       }
     });

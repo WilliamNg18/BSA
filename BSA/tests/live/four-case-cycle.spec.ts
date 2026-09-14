@@ -13,8 +13,8 @@ for (const scenario of PLAYABLE_CYCLES) for (const enabled of DEMO_MODES) for (c
     await choosePerspective(page, "Both");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     const actions: { label: string; side: string; at: string; url: string; visibleState: string; follow: string }[] = [];
-    const action: CycleAction = async (label, side, perform) => {
-      if (mode === "switched") {
+    const action: CycleAction = async (label, side, perform, options) => {
+      if (mode === "switched" && !options?.preservePerspective) {
         await choosePerspective(page, side === "Pharmacy" ? "NHSBSA" : "Pharmacy");
         await choosePerspective(page, side);
       }

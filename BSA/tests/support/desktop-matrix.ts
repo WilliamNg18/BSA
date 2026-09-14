@@ -7,3 +7,4 @@ export const PLAYABLE_CYCLES = [
   { id: "EX-24123", step: 6, channel: "paper", kind: "unreadable" },
 ] as const;
 export type PlayableCycle = typeof PLAYABLE_CYCLES[number];
+export interface CycleActionOptions { preservePerspective?: boolean }

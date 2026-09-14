@@ -3,6 +3,7 @@ import { DEMO_STEPS } from "../../src/lib/domain/demo-steps";
 import { assertDesktopHeader, assertDesktopStep, enterDesktopDemo, walkDesktopSteps } from "../e2e/desktop-step-helpers";
 import { DEMO_MODES, DESKTOP_WIDTHS } from "../support/desktop-matrix";
 import { desktopNavigationTitle, desktopStepTitle } from "./inventory";
+import { runGuidedReferralHandoff } from "../e2e/demo-story-helpers";
 
 for (const step of DEMO_STEPS) for (const enabled of DEMO_MODES) {
   test(desktopStepTitle(step.number, enabled), async ({ page }, info) => {
@@ -30,5 +31,9 @@ for (const width of DESKTOP_WIDTHS) for (const enabled of DEMO_MODES) {
     expect(visited.filter((entry) => entry.direction === "next").map((entry) => entry.number)).toEqual(DEMO_STEPS.map((entry) => entry.number));
     expect(visited.filter((entry) => entry.direction === "back").map((entry) => entry.number)).toEqual([...DEMO_STEPS].reverse().slice(1).map((entry) => entry.number));
     await captureJson(info, "ordered-desktop-navigation", { width, enabled, visited, screenshots: "Step images are captured separately at 1440 px only." });
+    if (width === 1440 && enabled) {
+      await runGuidedReferralHandoff(page);
+      await audit(page, info, "guided-operator-to-pharmacy-handoff", true);
+    }
   });
 }

@@ -87,9 +87,9 @@ test("Task22 an explicit incomplete submission becomes New and opens the same ca
   await row.getByRole("link", { name: "Open EX-24112", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("radiogroup", { name: "Decision", exact: true })).toBeVisible();
 });
 
 for (const width of [1280, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {

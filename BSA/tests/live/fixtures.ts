@@ -45,7 +45,7 @@ async function dismissDecisionNotice(page: Page) {
   return text;
 }
 
-export async function audit(page: Page, info: TestInfo, name: string, enabled: boolean) {
+export async function audit(page: Page, info: TestInfo, name: string, enabled: boolean, capture = true) {
   const dismissedNotification = await dismissDecisionNotice(page);
   const result = await new AxeBuilder({ page }).analyze();
   await captureJson(info, `axe-${name}-${enabled ? "on" : "off"}`, {
@@ -53,7 +53,7 @@ export async function audit(page: Page, info: TestInfo, name: string, enabled: b
     violations: result.violations, passes: result.passes.length, incomplete: result.incomplete, dismissedNotification,
   });
   expect(result.violations).toEqual([]);
-  await captureView(page, info, `audit-${name}-${enabled ? "on" : "off"}`);
+  if (capture) await captureView(page, info, `audit-${name}-${enabled ? "on" : "off"}`);
 }
 
 export async function captureView(page: Page, info: TestInfo, name: string) {
