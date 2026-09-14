@@ -128,21 +128,23 @@ test("native perspective keyboard, Reset retention and suspended tour shortcuts"
   await expect(page.getByRole("button", { name: "Choose tour chapter", exact: true })).toBeFocused();
 });
 
-test("single perspectives suspend Follow without forgetting the followed item", async ({ page }) => {
+test("single perspectives retain Follow and explicit same-item side controls", async ({ page }) => {
   await page.goto("/#cases");
   await page.locator('[data-case="B"]').getByRole("button", { name: "Follow this item", exact: true }).click();
   const followed = page.getByRole("region", { name: "Followed item", exact: true });
   await expect(followed).toContainText("Following EX-24112");
   for (const side of ["Pharmacy", "NHSBSA"] as const) {
     await choosePerspective(page, side);
-    await expect(followed).toHaveCount(0);
+    await expect(followed).toBeVisible();
+    await expect(followed).toContainText("Following EX-24112");
+    await expect(followed.getByRole("button", { name: "Pharmacy view", exact: true })).toBeVisible();
+    await expect(followed.getByRole("button", { name: "NHSBSA view", exact: true })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "Switch side", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: /following this item|Follow this item/ })).toHaveCount(0);
   }
   await choosePerspective(page, "Both");
   await expect(followed).toContainText("Following EX-24112");
   await expect(page.locator('[data-case="B"]').getByRole("button", { name: "Stop following this item", exact: true })).toHaveAttribute("aria-pressed", "true");
-  await followed.getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
+  await followed.getByRole("button", { name: "NHSBSA view", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(followed).toContainText("Following EX-24112");
 });

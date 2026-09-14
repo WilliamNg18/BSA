@@ -476,7 +476,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           await expect(page.locator("[data-principle]")).toBeVisible();
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
         }
-        await banner.getByRole("link", { name: "Switch side: NHSBSA", exact: true }).press("Enter");
+        await banner.getByRole("button", { name: "NHSBSA view", exact: true }).press("Enter");
         await expect(page).toHaveURL(/\/case\/EX-24123$/);
         const pharmacyView = page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Pharmacy view", exact: true });
         await expect(pharmacyView).toHaveAttribute("href", "/pharmacy/claims?case=EX-24123");
@@ -523,8 +523,9 @@ test("@tour-follow following does not silently switch to another viewed case", a
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   const banner = page.getByRole("region", { name: "Followed item", exact: true });
   await expect(banner).toContainText("Following EX-24123");
-  await expect(banner.getByRole("link", { name: "Switch side: Pharmacy", exact: true })).toHaveAttribute("href", "/pharmacy/claims?case=EX-24123");
+  await expect(banner.getByRole("button", { name: "Pharmacy view", exact: true })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Pharmacy view", exact: true })).toHaveAttribute("href", "/pharmacy/claims?case=EX-24112");
-  await banner.getByRole("link", { name: "Switch side: Pharmacy", exact: true }).press("Enter");
+  await banner.getByRole("button", { name: "Pharmacy view", exact: true }).press("Enter");
+  await expect(page).toHaveURL(/\/pharmacy\/claims\?case=EX-24123$/);
   await expect(page.getByRole("heading", { name: "Claim detail: EX-24123", exact: true })).toBeFocused();
 });
