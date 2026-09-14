@@ -5,6 +5,7 @@ import { NO_VERIFICATION, itemStateLabel } from "../../src/lib/domain/lifecycle"
 import { evaluateItemVerification } from "../../src/lib/domain/verification";
 import { checkPharmacyCorrection, initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
 import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
+import * as agent from "../../src/lib/domain/agent";
 
 const store = () => useAppStore.getState();
 const mismatch = "SYN-FQ123-MISMATCH", readable = "SYN-FQ123-READABLE", b = "EX-24112", d = "EX-24123";
@@ -97,6 +98,28 @@ describe("authoritative two-gate source verification", () => {
     store().submitItem({ caseId: b, channel: "eps", endorsementText: epsPrescription.dispenserEndorsement, epsPrescription });
     expect(sessionCase(b)!.claim.quantity).toBe(28);
     expect(store().itemVerification[b]).toMatchObject({ gate1: "pass", gate2: "fail", reconciled: false, released: false });
+  });
+
+  it.each([0, 0.5, 2])("does not verify a generic claimed amount %s against a different known pack reference", (amountClaimed) => {
+    const original = caseById(mismatch)!, revision = store().caseRevisions[mismatch][0];
+    const epsPrescription = { ...revision.epsPrescription!, supplyEvidence: { ...revision.epsPrescription!.supplyEvidence!, packSize: 21 } };
+    const result = evaluateItemVerification({ ...original, claim: { ...original.claim, amountClaimed } }, { ...revision, epsPrescription }, true);
+    expect(result.verification).toMatchObject({ gate1: "pass", gate2: "fail", reconciled: false, released: false });
+  });
+
+  it("a forged advice state cannot turn queue arrival into pricing or release", () => {
+    send(b, true);
+    const pack = agent.runAgent(sessionCase(b)!);
+    const spy = vi.spyOn(agent, "runAgent").mockReturnValue({ ...pack, state: "cleared_by_rules", agentInvoked: true });
+    try {
+      store().arriveInQueue(b);
+      expect(store().lifecycles[b].state).toBe("in_review");
+      expect(store().caseStates[b]).toBe("operator_review_required");
+      expect(store().itemVerification[b].released).toBe(false);
+      expect(store().lifecycles[b].history.at(-1)).toMatchObject({ actor: "agent", from: "in_review", to: "in_review" });
+    } finally {
+      spy.mockRestore();
+    }
   });
 
   it("retains exact operational snapshots through toggles, perspectives and all demo steps", () => {
@@ -218,6 +241,21 @@ describe("authoritative two-gate source verification", () => {
     expect(() => store().resubmit(b)).toThrow("explicit new attempt");
     store().submitItem({ ...store().pharmacyDrafts[b], caseId: b, channel: "eps" });
     expect(store().lifecycles[b].state).toBe("released_to_pricing");
+  });
+
+  it("same-state pharmacy preparation cannot erase a human release anchor", () => {
+    store().setAgentEnabled(true);
+    store().resubmitFromPharmacy(b, "NCSO RK 21/08/26");
+    store().arriveInQueue(b);
+    store().releaseToPricing(b, "Human checked the current source facts.");
+    const revision = store().caseRevisions[b].at(-1)!, draft = initialisePharmacyDraft(sessionCase(b)!, revision);
+    store().setPharmacyDraft(b, { ...draft, purpose: "new_submission", endorsementText: "NCSO RK",
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO RK" } });
+    store().applySuggestedCorrection(b);
+    expect(store().lifecycles[b].history.at(-1)?.processStep).toBe("correction_applied");
+    expect(itemStateLabel(store().lifecycles[b], "nhsbsa")).toContain("after operator review");
+    expect(itemStateLabel(store().lifecycles[b], "nhsbsa")).not.toContain("no operator action");
+    expect(itemStateLabel({ ...store().lifecycles[b], history: [] }, "nhsbsa")).toContain("provenance unavailable");
   });
 
   it.each(PLAYABLE_CASE_IDS.flatMap((id) => [false, true].map((enabled) => ({ id, enabled }))))(

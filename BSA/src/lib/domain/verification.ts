@@ -90,7 +90,7 @@ export function evaluateItemVerification(
     eps?.supplyEvidence?.form.trim().toLowerCase() === EPS_SUPPLY_RULE.form;
   const amountAgrees = Number.isFinite(original.claim.amountClaimed) && original.claim.amountClaimed >= 0 &&
     !sourceConflicts.some((entry) => entry.material) &&
-    Boolean(concession || product && original.claim.amountClaimed <= product.basicPrice + 0.005);
+    Boolean(product && Math.abs(original.claim.amountClaimed - (concession?.price ?? product.basicPrice)) <= 0.005);
   const reconciled = knownSource && declarationAgrees && ledgerAgrees && packAgrees && amountAgrees;
   const arrivedFacts = interpretPharmacyText(arrived.endorsementText);
   const receivedRequirements = evaluateRequirements(clause, arrivedFacts, arrived, supply?.checks);
