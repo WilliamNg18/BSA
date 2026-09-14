@@ -1,128 +1,68 @@
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PageSection } from "@/components/page-section";
-import { BoundaryTag } from "@/components/demo/labels";
-import { ARCHITECTURE, NOT_BUILT } from "@/lib/domain/content";
-import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
-import { cn } from "@/lib/utils";
-import { productionServiceLabel } from "@/lib/service-display";
+import { useLocation } from "react-router-dom";
+import { DESIGN_DATE, DESIGN_LABELS, DESIGN_PRINCIPLE, DESIGN_SECTIONS, DESIGN_TITLE, REFERENCE_EXPLANATION, type DesignTable } from "@/components/how-it-works/content";
+import { CaseBSequenceDiagram, ComponentDiagram } from "@/components/how-it-works/diagrams";
+import { REFERENCE_MAPPING } from "@/components/how-it-works/reference-mapping";
 
-const BUILT: Record<string, string> = {
-  "Built for real": "bg-emerald-700 text-white",
-  Mocked: "bg-amber-700 text-white",
-  "Not built": "bg-slate-600 text-white",
-};
+function ReferenceTable({ table, reference = false }: { table: DesignTable; reference?: boolean }) {
+  return (
+    <div className="overflow-x-auto rounded-lg border" role="region" tabIndex={0} aria-label={table.caption}>
+      <table className="w-full table-fixed text-left text-sm" data-reference-mapping={reference || undefined}>
+        <caption className="p-4 text-left font-semibold text-foreground">{table.caption}</caption>
+        <thead className="border-y bg-muted/40"><tr>{table.headers.map((header) => <th key={header} scope="col" className="p-3 align-top">{header}</th>)}</tr></thead>
+        <tbody>{table.rows.map((row) => <tr key={row[0]} className="border-b last:border-0">
+          {row.map((cell, index) => index === 0
+            ? <th key={index} scope="row" className="break-words p-3 align-top font-medium">{cell}</th>
+            : <td key={index} className="break-words p-3 align-top">{cell}</td>)}
+        </tr>)}</tbody>
+      </table>
+    </div>
+  );
+}
 
 export function ArchitecturePage() {
+  const { hash } = useLocation();
+  const contents = [...DESIGN_SECTIONS.map(({ id, title }) => ({ id, title })), { id: "reference-mapping", title: REFERENCE_MAPPING.caption }];
   return (
-    <div className="mx-auto max-w-7xl space-y-8">
-      <div className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight">Technical architecture and the path to production</h1>
-        <p className="max-w-3xl text-muted-foreground">
-          Offline synthetic prototype. Production mappings are proposals, not verified estate capabilities; integration, security and operational reliability need validation.
-        </p>
-      </div>
-
-      <PageSection title="The flow, once" description="Read-only against every existing system. Nothing the new component does can block an item.">
-        <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-4 font-mono text-xs leading-relaxed" role="region" tabIndex={0} aria-label="Architecture flow">
-{`EXISTING (unchanged; read-only from the new component)
-  scanners + capture  -->  extracted fields + image store  -->  pricing (straightforward items)  -->  exception routing to operators
-                                                                                                          |  exception event
-NEW: EXCEPTION CASE BUILDER (proposed deployment boundary, UK region)                                       v
-  [ingress]   Event messaging topic .................... { item_id, image_ref, fields, routing_reason }
-  [tier 0]    Deterministic workflow functions ......... pre-checks: required? mandatory fields? quality? coverage?
-  [agent]     Governed agent orchestration ............. PLAN -> GATHER -> RETRIEVE -> RECONCILE -> ASSESS -> RECOMMEND | ABSTAIN
-                 tools: read_image_region (document layout analysis), lookup_product_pack, lookup_claim,
-                        check_history, retrieve_tariff (versioned search, effective-date filter), run_endorsement_checks, validate_citation
-                 model: constrained call, structured output, three samples, cites retrieved passages only
-  [gate]      Deterministic function ................... compliance gate: pure code the model cannot influence
-  [record]    Append-only record store ................. versions pinned: Tariff, model, prompt; replayable
-  [surface]   operator case pack ....................... inside the queue tool if extensible; else a thin web app
-  [human]     operator decides ......................... accept | amend | request information | refer back | escalate, with reason
-
-  [pharmacy]  Manage Your Service on claim submission ... same kernel, advisory, never blocks; later: supplier API into dispensing systems
-  [evals]     golden set in CI ......................... gates every prompt, model, corpus-version or code change
-  [observe]   Application telemetry + service monitoring + agent tracing; data lineage; workload identity; secret storage; private network access
-  PRICING never enters this picture. PATIENT IDENTITY is redacted before any model call.`}
-        </pre>
-      </PageSection>
-
-      <PageSection title="Prototype to production, component by component" description="What is built for real, what is mocked, what is deliberately not built, and what NHSBSA owns.">
-        <div className="overflow-x-auto rounded-lg border" role="region" aria-label="Architecture mapping" tabIndex={0}>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Component</TableHead>
-                <TableHead>In this prototype</TableHead>
-                <TableHead>In production</TableHead>
-                <TableHead>NHSBSA owns</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {ARCHITECTURE.map((r) => (
-                <TableRow key={r.component}>
-                  <TableCell className="whitespace-normal align-top font-medium">{r.component}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{productionServiceLabel(r.prototype)}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{productionServiceLabel(r.production)}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm text-muted-foreground">{r.owns}</TableCell>
-                  <TableCell className="align-top"><Badge className={cn("whitespace-normal border-transparent", BUILT[r.built])}>{r.built}</Badge></TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+    <div className="mx-auto max-w-7xl space-y-6" data-system-design>
+      <header className="space-y-3">
+        <p className="text-sm text-muted-foreground">Technical reference · {DESIGN_DATE} · Synthetic demonstration</p>
+        <h1 className="text-2xl font-semibold tracking-tight">{DESIGN_TITLE}</h1>
+        <p className="max-w-4xl text-sm">{DESIGN_PRINCIPLE}</p>
+      </header>
+      <div className="grid grid-cols-[13rem_minmax(0,1fr)] items-start gap-8">
+        <nav aria-label="How it works contents" className="sticky top-4 max-h-[calc(100vh-2rem)] space-y-3 overflow-y-auto rounded-lg border p-3">
+          <h2 className="font-semibold">On this page</h2>
+          <ol className="space-y-1">{contents.map(({ id, title }) => <li key={id}>
+            <a href={`#${id}`} aria-current={hash === `#${id}` ? "location" : undefined}
+              onClick={() => document.getElementById(id)?.focus({ preventScroll: true })}
+              className="block rounded p-2 text-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current aria-[current=location]:bg-muted">
+              {title}
+            </a>
+          </li>)}</ol>
+        </nav>
+        <div className="min-w-0 space-y-10">
+          {DESIGN_SECTIONS.map((section) => <section key={section.id} aria-labelledby={section.id} className="space-y-4" data-design-section={section.id}>
+            <div className="space-y-2">
+              <h2 id={section.id} tabIndex={-1} className="scroll-mt-6 text-xl font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{section.title}</h2>
+              <p className="text-sm font-medium">{DESIGN_LABELS[section.status]}</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {section.panels.map((panel) => <article key={panel.title} className="space-y-2 rounded-lg border bg-card p-4" data-design-panel>
+                <h3 className="font-semibold">{panel.title}</h3>
+                <p className="text-xs font-medium text-muted-foreground">{DESIGN_LABELS[panel.status]}</p>
+                <p className="text-sm leading-relaxed" data-design-prose>{panel.text}</p>
+              </article>)}
+            </div>
+            {section.table && <ReferenceTable table={section.table} />}
+            {section.id === "architecture" && <><ComponentDiagram /><CaseBSequenceDiagram /></>}
+          </section>)}
+          <section aria-labelledby="reference-mapping" className="space-y-4" data-design-section="reference-mapping">
+            <h2 id="reference-mapping" tabIndex={-1} className="scroll-mt-6 text-xl font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{REFERENCE_MAPPING.caption}</h2>
+            <p className="text-sm font-medium">{DESIGN_LABELS.proposed}</p>
+            <p className="text-sm">{REFERENCE_EXPLANATION}</p>
+            <ReferenceTable table={REFERENCE_MAPPING} reference />
+          </section>
         </div>
-      </PageSection>
-
-      <PageSection title="Tool contracts" description="The interface between the agent and NHSBSA's systems. Every tool is read-only; none can write to a payment.">
-        <div className="overflow-x-auto rounded-lg border" role="region" aria-label="Tool definitions" tabIndex={0}>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Tool</TableHead>
-                <TableHead>Purpose</TableHead>
-                <TableHead>Input</TableHead>
-                <TableHead>Output</TableHead>
-                <TableHead>Mocked with</TableHead>
-                <TableHead>Production</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {TOOL_DEFINITIONS.map((t) => (
-                <TableRow key={t.name}>
-                  <TableCell className="whitespace-normal align-top">
-                    <div className="flex flex-col gap-1">
-                      <code className="font-mono text-xs">{t.name}</code>
-                      <BoundaryTag cls={t.cls} short className="w-fit" />
-                    </div>
-                  </TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{t.purpose}</TableCell>
-                  <TableCell className="whitespace-normal align-top font-mono text-xs">{t.input}</TableCell>
-                  <TableCell className="whitespace-normal align-top font-mono text-xs">{t.output}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm text-muted-foreground">{t.mock}</TableCell>
-                  <TableCell className="whitespace-normal align-top text-sm">{productionServiceLabel(t.production)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </PageSection>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <PageSection title="Deliberately not built" description="Each is well-understood integration work. None was the risk.">
-          <ul className="space-y-1.5">
-            {NOT_BUILT.map((n) => <li key={n} className="rounded-md border p-2.5 text-sm">{n}</li>)}
-          </ul>
-        </PageSection>
-        <PageSection title="Why the prototype is shaped this way" description="Speed from testing the highest-risk assumption early.">
-          <ul className="space-y-1.5 text-sm">
-            <li className="rounded-md border p-2.5"><h3 className="font-medium">Offline and deterministic</h3><p>Scripted interpretation; no runtime data leaves the browser. Production model integration requires separate validation.</p></li>
-            <li className="rounded-md border p-2.5"><h3 className="font-medium">Executable controls</h3><p>Synthetic rules, gate and composite are code. Production requirements still need independent review.</p></li>
-            <li className="rounded-md border p-2.5"><h3 className="font-medium">Feature flag</h3><p>Off withholds assistance, not evidence or human authority. Case state and records remain unchanged.</p></li>
-            <li className="rounded-md border p-2.5"><h3 className="font-medium">Versioned corpus</h3><p>Three synthetic monthly versions support counterfactual replay without rewriting history.</p></li>
-            <li className="rounded-md border p-2.5"><h3 className="font-medium">Visible contracts</h3><p>Review tool contracts and access constraints before planning integration.</p></li>
-          </ul>
-        </PageSection>
       </div>
     </div>
   );

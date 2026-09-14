@@ -39,5 +39,5 @@ export const routes: AppRoute[] = [
   { path: "/evaluation", element: <EvaluationPage />, label: "Evaluation", icon: BookOpenCheck, group: "How it works" },
   { path: "/boundary", element: <BoundaryPage />, label: "Boundary", icon: Layers, group: "How it works" },
   { path: "/assumptions", element: <AssumptionsPage />, label: "Assumptions", icon: ListChecks, group: "How it works" },
-  { path: "/architecture", element: <ArchitecturePage />, label: "Architecture", icon: ClipboardList, group: "How it works" },
+  { path: "/architecture", element: <ArchitecturePage />, label: "System design", icon: ClipboardList, group: "How it works" },
 ];
