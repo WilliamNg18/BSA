@@ -222,6 +222,12 @@ test("native perspective keyboard, Reset retention and explicit demo shortcuts",
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
   await choosePerspective(page, "NHSBSA");
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
+  await expect(page.getByRole("radio", { name: "NHSBSA", exact: true })).toBeFocused();
+  await page.keyboard.press("Alt+ArrowRight");
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
+  await expect(page.getByRole("radio", { name: "NHSBSA", exact: true })).toBeFocused();
+  await page.getByRole("main").getByRole("heading", { level: 1 }).focus();
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
   await page.keyboard.press("Alt+ArrowRight");
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "2");
   await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
