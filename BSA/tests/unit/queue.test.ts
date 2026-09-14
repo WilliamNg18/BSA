@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { BASELINE_DEFAULTS, calculateBaseline, manualGatheringMinutes } from "../../src/lib/domain/baseline";
-import { CASES, QUEUE_FILLER } from "../../src/lib/domain/cases";
+import { BACKGROUND_CASES, CASES, PLAYABLE_CASES, QUEUE_FILLER } from "../../src/lib/domain/cases";
 import * as agent from "../../src/lib/domain/agent";
 import { DAY_MINUTES, QUEUE_ROW_HEIGHT, QUEUE_SEGMENT_SIZE, QUEUE_WINDOW_LIMIT, QUEUE_SEEDS, SWEEP_PHASES, clampDay, dayClock, projectQueueDay, projectSeedDay, queueCohort, queueWindow, sweepCounts } from "../../src/lib/domain/queue-model";
 import { useAppStore } from "../../src/lib/store";
@@ -91,9 +91,11 @@ describe("one budget and the same twelve examples", () => {
     expect(dayClock(Infinity)).toBe("08:00"); expect(clampDay(-1)).toBe(0);
     for (const enabled of [false, true]) {
       const day = projectSeedDay(BASELINE_DEFAULTS, 540, enabled);
-      expect(day.map((s) => s.id)).toEqual([...CASES, ...QUEUE_FILLER].map((s) => s.id));
+      expect(day.map((s) => s.id)).toEqual([...PLAYABLE_CASES, ...BACKGROUND_CASES, ...QUEUE_FILLER].map((s) => s.id));
+      expect(day.filter((row) => row.canonical).map((row) => row.id)).toEqual(PLAYABLE_CASES.map((c) => c.id));
       expect(day[3]).toMatchObject({ kind: "abstained", gather: 5, judge: 2 });
-      expect(day[4]).toMatchObject({ kind: "cleared", gather: 0, judge: 0, done: false, phase: "Existing code; no agent" });
+      expect(day[0]).toMatchObject({ kind: "cleared", gather: 0, judge: 0, done: false, phase: "Existing code; no agent" });
+      expect(day[4]).toMatchObject({ canonical: false });
       expect(day[5]).toMatchObject({ recorded: true, gather: 0, judge: 0, done: false });
       expect(day[1].gather).toBe(enabled ? BASELINE_DEFAULTS.builtReviewMinutes : 5);
     }
