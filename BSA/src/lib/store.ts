@@ -366,10 +366,10 @@ export const useAppStore = create<AppState>((set, get) => {
         id: `DR-${String(Math.max(872, ...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
         caseId, timestamp: at, revision, decision: "ACCEPT", recommendation: applied?.recommendation ?? "NONE", reason: note.trim(),
         overrideReason: isOverride ? note.trim() : null, isOverride, operator: "Demo operator", synthetic: true,
-        tariffVersion: assessment.tariffVersion ?? "n/a", agentVersion: applied?.agentVersion ?? "not invoked",
+        tariffVersion: assessment.sourceTariffVersion ?? "n/a", agentVersion: applied?.agentVersion ?? "not invoked",
         inputs: [...(applied?.inputs ?? []), "Current received source and independent claim ledger"],
         sources: [...new Set([...(applied?.sources ?? []), assessment.source, "Retained claim ledger", "Dated synthetic rules"])],
-        checks: [...(applied?.checks ?? []), ...assessment.gate2Checks], ...(assessment.clauseId ? { clauseId: assessment.clauseId } : {}),
+        checks: [...(applied?.checks ?? []), ...assessment.gate2Checks], ...(assessment.sourceClauseId ? { clauseId: assessment.sourceClauseId } : {}),
       };
       const event: HistoryEvent = { at, actor: "operator", from: row.state, to: "released_to_pricing",
         revision, processStep: "release_to_pricing", verification: released, releaseOrigin: "human_decision", reason: note,
