@@ -68,10 +68,10 @@ export function ManualTariffLookup() {
   </section>;
 }
 
-export function CaseSourceEvidence({ c }: { c: ExceptionCase }) {
+export function CaseSourceEvidence({ c, contextLabel }: { c: ExceptionCase; contextLabel?: string }) {
   const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
   if (c.channel === "Electronic (EPS)") return <PageSection title="EPS claim message" description="Synthetic claim evidence. EPS has no image and no Type 1 capture.">
-    {c.epsPrescription ? <EpsPrescriptionMessage prescription={c.epsPrescription} /> : <>
+    {c.epsPrescription ? <EpsPrescriptionMessage prescription={c.epsPrescription} contextLabel={contextLabel} /> : <>
     <p className="mb-3 text-sm text-muted-foreground">Original digital prescription not recorded. Retained claim fields only.</p>
     <dl className="grid gap-2">
       <KeyValue k="Product code in claim" v={c.claim.productCode ?? "Not recorded"} />
@@ -120,11 +120,11 @@ export function OriginalPaperDeclaration({ declaration }: { declaration: PaperDe
   </PageSection>;
 }
 
-export function RawCaseFields({ c, compact = false }: { c: ExceptionCase; compact?: boolean }) {
+export function RawCaseFields({ c, compact = false, contextLabel }: { c: ExceptionCase; compact?: boolean; contextLabel?: string }) {
   const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
   const original = paperImageEvidence(c, templateCaseId).extracted;
   return <div className={`grid gap-4 ${compact ? "grid-cols-1" : "grid-cols-2"}`} data-manual-pack>
-    <CaseSourceEvidence c={c} />
+    <CaseSourceEvidence c={c} contextLabel={contextLabel} />
     <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">
         <KeyValue k="Product (capture)" v={original.productText} />

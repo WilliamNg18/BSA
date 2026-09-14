@@ -137,7 +137,7 @@ function CasePackContent() {
           {compare && <aside className="space-y-4 rounded-xl border p-4" aria-label="Read-only manual comparison">
             <h2 className="font-semibold">Manual comparison · Read-only</h2>
             <p className="text-sm text-muted-foreground">Synthetic assumptions. Shared decision controls remain below; this comparison writes nothing.</p>
-            <RawCaseFields c={c} /><MissingAssistedSlots markers />
+            <RawCaseFields c={c} contextLabel="Manual comparison" /><MissingAssistedSlots markers />
           </aside>}
       <div className={compare ? "space-y-6" : "grid gap-6 xl:grid-cols-5"} data-pack-assembly={clock.revealed}>
         <div className="space-y-6 xl:col-span-3">

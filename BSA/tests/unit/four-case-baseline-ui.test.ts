@@ -3,11 +3,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { EpsPharmacyCapture } from "../../src/components/demo/eps-pharmacy-capture";
+import { RawCaseFields } from "../../src/components/demo/case-presentation";
 import { HomePage } from "../../src/pages/home";
 import { QueuePage } from "../../src/pages/queue";
 import { PharmacyClaimsPage } from "../../src/pages/pharmacy-claims";
 import { PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
-import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("../../src/lib/store")>();
@@ -58,5 +59,19 @@ describe("four-case compatibility with operator and pharmacy panels", () => {
     expect(html).toContain("Background only, not playable");
     expect(html).not.toContain("Corrected endorsement");
     expect(useAppStore.getState().lifecycles["EX-24119"]).toBeUndefined();
+  });
+
+  it("retains both evidence views with unique contextual EPS landmarks", () => {
+    const c = sessionCase("EX-24112")!, before = getDomainSnapshot();
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null,
+      createElement("div", null, createElement(RawCaseFields, { c }),
+        createElement(RawCaseFields, { c, contextLabel: "Manual comparison" }))));
+    const names = [...html.matchAll(/<section aria-label="([^"]+)"/g)].map((match) => match[1]);
+    expect(names.length).toBeGreaterThanOrEqual(6);
+    expect(new Set(names).size).toBe(names.length);
+    expect(names).toContain("Submitted electronic prescription, synthetic");
+    expect(names).toContain("Manual comparison: Submitted electronic prescription, synthetic");
+    expect(names).toContain("Manual comparison: Recorded dispenser claim");
+    expect(getDomainSnapshot()).toEqual(before);
   });
 });
