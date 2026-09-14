@@ -59,7 +59,18 @@ not manual accessibility certification.
 
 All 43 PNG attachments were checked against their recorded SHA-256 and actual
 PNG dimensions: every width is 1440 px. This validates artifact identity and
-capture scope, not visual quality. Image review is still pending.
+capture scope, not visual quality.
+
+A bounded inspection of the step 7 On image succeeded through the normal
+image tool. It found a real compact-layout clarity defect: a two-column form
+nested inside the half-width comparison pane leaves narrow fields and puts
+Confirm near the bottom of a 2,045 px document. The recorded viewport is
+1440 by 1000 px; the approximate field width and control position are visual
+observations, not bounding-box measurements. O owns the compact-only repair.
+The image hash is
+`2d08cbd8bf048e9645376f7573049a4f5caa0a0ee4cf7de2f561b00cb83385d9`.
+It remains pre-fix evidence, not an overall visual PASS. Other captures have
+not received an image-review verdict.
 Artifacts remain in the session's `task36-clean-bdb-state`,
 `task36-clean-bdb-rehearsal` and `task36-clean-357-rehearsal` directories.
 The last candidate includes G's later received-source verification fix;
@@ -67,6 +78,23 @@ the earlier eight-check source identity is not silently changed to match it.
 
 These local results do not satisfy the remaining latest-main CI, deployment,
 hosted checklist and fresh-URL gates. No hosted capture has been authorised.
+
+## Combined operator/pharmacy browser phase
+
+The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
+Nine current-surface assertions needed repair: D's unreadability wording and
+routed confirmation location, plus the P owner's already established
+end-of-timeline and current BB/XP citation expectations.
+
+A fresh entire run at clean
+`454c0412353f9bdf927bb087db5362b187d0e732` passed **53/53 in 4.0 minutes,
+without retries**, using one worker. All nine human-response cases remain,
+including the negative case where applying referral advice and then changing
+to an information request must not manufacture an approved generated note.
+Twenty-five axe audits have zero violations; twenty retain incomplete findings.
+Both runs remain in session artifacts as `task36-po-4efa-tests` and
+`task36-po-454-tests`. This post-O proof does not replace the separate P-only
+phase, whose operator controls intentionally remained on the earlier contract.
 
 The intermediate baseline test split `e799b37` also misplaced a new test
 inside an existing parameterised test. `a208ffe` restores suite-level
