@@ -1945,3 +1945,12 @@ rollback/archive references remain unchanged.
 - What does a finished stream take next? Claim the next unowned Not started SCOPE row through the coordinator; currently all six new rows are owned and In progress, so finish integration and proof rather than duplicate a stream or invent work; decided by (d), simpler ownership.
 - Are any issue or pull-request questions waiting? The open GitHub issue and pull-request inventories were both empty on 14 September; all six active sessions were building with no pending input or plan approval; no owner decision was required.
 - What about the Step 0 CI failure after deployment? Preserve run 34870106295 as failed, repair its tour click and pipeline keyboard failures through the existing owners, and continue independent streams; deployment success is not acceptance; decided by (a), honest evidence and working controls.
+## 2026-09-14: Header help cannot block navigation
+
+Question: retain the Agent switch's focus-triggered floating help? Choice:
+remove only this redundant custom tooltip, keep the persistent `agent-help`
+accessible description and native hover title. The current On/Off label stays
+visible. Tie-breakers: reachable human controls and the smallest fix. The shared
+hoverable, Escape-dismissible tooltip remains unchanged for evidence figures.
+The bottom-flipped header tooltip demonstrably intercepted the tour Next button;
+no forced clicks, longer timeouts or pointer-event suppression are used.
