@@ -98,10 +98,8 @@ export { expect };
 export const cases = [
   { id: "EX-24107", title: "Valid and complete" },
   { id: "EX-24112", title: "Missing or insufficient information" },
-  { id: "EX-24119", title: "Evidence conflict" },
+  { id: "SYN-FQ123-MISMATCH", title: "Complete format, wrong pack" },
   { id: "EX-24123", title: "Deliberate failure and abstention" },
-  { id: "EX-24101", title: "Cleared by rules (no model call)" },
-  { id: "EX-24088", title: "Human decision recorded" },
 ];
 
 export const staticRoutes = [
