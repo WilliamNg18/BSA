@@ -75,7 +75,11 @@ export async function assertDesktopStep(page: Page, number: number, enabled: boo
   if ([1, 11].includes(number)) {
     await expect(screen.locator("button, input, select, textarea, a[href], summary, [role=button]")).toHaveCount(0);
   }
-  if (number === 2) await expect(screen.locator('details[data-demo-control="month-detail"]')).not.toHaveAttribute("open");
+  if (number === 2) {
+    const detail = screen.locator('[data-demo-control="month-detail"] details').first();
+    await expect(detail).toHaveCount(1);
+    await expect(detail).not.toHaveAttribute("open");
+  }
   await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
   const location = new URL(page.url());
   const expected = new URL(step.path, location);
