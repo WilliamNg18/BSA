@@ -12,12 +12,11 @@ import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { useAppStore } from "@/lib/store";
+import { PLAYABLE_CASES, playableCaseChannel } from "@/lib/domain/cases";
 
-const SCENARIOS = [
-  { id: "EX-24107", label: "Complete endorsement" },
-  { id: "EX-24112", label: "NCSO missing date" },
-  { id: "SYN-FQ123-MISMATCH", label: "Wrong pack size" },
-] as const;
+const SCENARIOS = PLAYABLE_CASES.filter((c) => playableCaseChannel(c.id) === "eps").map((c) => ({
+  id: c.id, label: c.id === "EX-24107" ? "Complete endorsement" : c.id === "EX-24112" ? "NCSO missing date" : "Wrong pack size",
+}));
 
 export function EpsPharmacyCapture({ caseId: fixedCaseId, onCaseChange, compact = false, controls = "correct-and-submit" }: {
   caseId?: string; onCaseChange?: (caseId: string) => void; compact?: boolean; controls?: "submit" | "correct-and-submit";
