@@ -169,7 +169,9 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
       <div className="space-y-1.5">
         <Label htmlFor={compact ? `${id}-reason` : "reason"}>{draft.outcome === "REQUEST_INFORMATION" ? "Question (required)" : "Reason (required)"}</Label>
         <Textarea ref={noteRef} id={compact ? `${id}-reason` : "reason"} name="reason" value={draft.note} minLength={8}
-          aria-required="true" autoComplete="off" onChange={(event) => change({ note: event.target.value })} />
+          aria-required="true" aria-describedby={error ? undefined : `${id}-note-help`} autoComplete="off"
+          onChange={(event) => change({ note: event.target.value })} />
+        {!error && <p id={`${id}-note-help`} className="text-xs text-muted-foreground">At least eight characters.</p>}
       </div>
       {error && <p ref={errorRef} tabIndex={-1} role="alert" className="rounded-md border border-destructive p-2 text-sm focus-visible:outline-2">{error}</p>}
       <div className="flex flex-wrap gap-2">

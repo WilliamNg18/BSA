@@ -38,6 +38,7 @@ describe("shared operator action panel", () => {
     const html = renderPanel();
     for (const label of ["Release to pricing", "Refer back", "Request information", "Escalate"]) expect(html).toContain(label);
     expect(html).toContain("experience only");
+    expect(html).toContain("At least eight characters.");
     expect(html).not.toContain('aria-label="Suggestion"');
     expect(html).not.toContain("Apply suggestion");
     expect(html).not.toContain("checked=");

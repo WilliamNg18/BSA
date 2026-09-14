@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { expect, test } from "./fixtures";
+import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 async function openReview(page: Page, enabled: boolean) {
@@ -56,6 +56,7 @@ for (const width of [1280, 1440]) {
     await page.keyboard.press("Enter");
     await expect(panel.getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
     await expect(panel.getByRole("alert")).toBeFocused();
+    await expect(panel.getByText("At least eight characters.", { exact: true })).toHaveCount(0);
     await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("The dispensing date is missing.");
     await panel.getByRole("button", { name: "Refer back", exact: true }).click();
     await expect(panel.getByRole("alert")).toHaveText("Choose an RB code.");
@@ -111,6 +112,26 @@ for (const outcome of ["Request information", "Escalate"] as const) {
 }
 
 for (const enabled of [false, true]) {
+  test(`automated count opens a read-only audit with no human decision prompt, Agent ${enabled}`, async ({ page }) => {
+    await page.goto("/pharmacy");
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    await navigatePrimary(page, "NHSBSA queue");
+    const records = page.locator("[data-automated-records]");
+    await records.locator("summary").focus();
+    await page.keyboard.press("Enter");
+    await records.getByRole("link", { name: "EX-24107: read-only record", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Release to pricing", exact: true })).toHaveCount(0);
+    await page.getByRole("link", { name: "Decision and audit record", exact: true }).click();
+    await expect(page.getByRole("main")).not.toContainText("No human decision recorded yet");
+    await expect(page.locator("[data-manual-record-comparison]")).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: enabled
+      ? "Verified and released to existing pricing, no operator action"
+      : "Existing automatic pricing record", exact: true })).toBeVisible();
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  });
+
   test(`valid recheck releases only after the operator action, Agent ${enabled}`, async ({ page }) => {
     await openReview(page, enabled);
     const panel = page.getByRole("region", { name: "Operator decision", exact: true });
