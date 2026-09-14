@@ -38,12 +38,12 @@ import type { ManualLoopModelSlice } from "@/lib/domain/baseline";
 import { baselineDraft, type BaselineDraft, type BaselineField } from "@/lib/domain/baseline";
 import { BASELINE_DEFAULTS, MONTH_TIME_ASSUMPTIONS, PHARMACY_ASSUMPTION_DEFAULTS, PROCESS_MONTH_DEFAULTS, type ProcessModelSlice, type ProcessMonthDraft } from "@/lib/domain/baseline";
 import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@/lib/domain/types";
-import { NO_VERIFICATION, type HumanActionSlice, type CaseRevision, type HistoryEvent, type LifecycleDecisionRecord, type LifecycleSlice, type LifecycleState, type PharmacyPrecheckSnapshot, type ProcessSlice, type ProcessSubmission, type ItemProcess } from "@/lib/domain/lifecycle";
+import { NO_VERIFICATION, type HumanActionSlice, type CaseRevision, type HistoryEvent, type LifecycleDecisionRecord, type LifecycleSlice, type LifecycleState, type PharmacyPrecheckSnapshot, type ProcessSlice, type ProcessSubmission, type ItemProcess, type ItemVerification, type PharmacyCorrectionDraft } from "@/lib/domain/lifecycle";
 import { DEMO_STEPS, type DemoModeSlice } from "@/lib/domain/demo-steps";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
 import { appendHistory, captureForRevision, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
-import { checkPharmacy, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
+import { checkPharmacy, pharmacySnapshot, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
 import { validateEpsCorrection, type EpsCorrectionSources } from "@/lib/domain/eps-correction";
 import { routeSubmission, routingFactsForCase, RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { createPharmacyState, type PharmacyState } from "./pharmacy-store";
@@ -51,7 +51,7 @@ import { createQueueState, type QueueState } from "./queue-store";
 import { capturedFields, capturedFieldsMatchSources, compatibleCapture, sameDeclaredFields, validateDeclaredFields } from "@/lib/domain/capture-evidence";
 import { mandatoryFieldsCheck } from "@/lib/domain/rules";
 import { evaluateItemVerification } from "@/lib/domain/verification";
-import { suggestedPharmacyCorrection, synchronisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
+import { checkPharmacyCorrection, initialisePharmacyDraft, suggestedPharmacyCorrection, synchronisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { HISTORICAL_DECISION_RECORDS } from "../../data/archive/decision-records";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
@@ -73,6 +73,8 @@ export interface PharmacyCorrectionEvent {
   readonly revision: number;
   readonly before: PharmacyPrecheckSnapshot;
   readonly after: PharmacyPrecheckSnapshot;
+  readonly basis?: "format_gap" | "source_gap";
+  readonly sourceVerification?: { readonly before: ItemVerification; readonly after: ItemVerification };
 }
 
 interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, ManualLoopModelSlice, DemoModeSlice, HumanActionSlice {
@@ -399,12 +401,38 @@ export const useAppStore = create<AppState>((set, get) => {
       const approval = s.records.filter((record) => record.caseId === caseId && (record.revision ?? 1) === revision.number).at(-1)?.approvedDraft;
       const newAttempt = s.pharmacyDrafts[caseId]?.purpose === "new_submission";
       if (row.state === "referred_back" && !approval && !newAttempt) throw new Error("No operator-approved correction is available for this revision.");
-      const correction = suggestedPharmacyCorrection(currentCase(caseId), revision, s.pharmacyDrafts[caseId]);
-      const event: HistoryEvent = { at: timestamp(caseId), actor: "pharmacy", from: row.state, to: row.state,
+      const c = currentCase(caseId), beforeDraft = s.pharmacyDrafts[caseId] ?? initialisePharmacyDraft(c, revision);
+      const correction = suggestedPharmacyCorrection(c, revision, beforeDraft), at = timestamp(caseId);
+      const before = checkPharmacyCorrection(c, revision, beforeDraft), after = checkPharmacyCorrection(c, revision, correction);
+      const original = caseById(caseId) ?? caseById(revision.templateCaseId);
+      if (!original) throw new Error("Original source evidence is unavailable.");
+      const targetRevision = revision.number + 1;
+      const assessDraft = (draft: PharmacyCorrectionDraft) => evaluateItemVerification(original, {
+        ...revision, number: targetRevision, kind: "submission", channel: draft.channel ?? revision.channel,
+        endorsementText: draft.endorsementText, epsPrescription: draft.epsPrescription,
+        paperDeclaration: draft.paperDeclaration, declaration: draft.declaration,
+      }, true);
+      const beforeSource = assessDraft(beforeDraft), afterSource = assessDraft(correction);
+      const improved = after.status === "ready" && afterSource.releaseEligible &&
+        (before.status === "missing" || !beforeSource.releaseEligible);
+      const date = (draft: PharmacyCorrectionDraft) => draft.epsPrescription?.dispensingDate ??
+        draft.paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate;
+      const caught: PharmacyCorrectionEvent | null = improved &&
+        !s.pharmacyCorrections.some((entry) => entry.caseId === caseId && entry.revision === targetRevision) ? {
+          caseId, pharmacyCode: row.pharmacyCode, at, revision: targetRevision,
+          before: pharmacySnapshot(beforeDraft.endorsementText, date(beforeDraft), "scripted", before, at),
+          after: pharmacySnapshot(correction.endorsementText, date(correction), "scripted", after, at),
+          basis: before.status === "missing" ? "format_gap" : "source_gap",
+          sourceVerification: { before: beforeSource.verification, after: afterSource.verification },
+          ...(beforeDraft.epsPrescription && correction.epsPrescription
+            ? { epsSources: { before: beforeDraft.epsPrescription, after: correction.epsPrescription } } : {}),
+        } : null;
+      const event: HistoryEvent = { at, actor: "pharmacy", from: row.state, to: row.state,
         revision: revision.number, processStep: "correction_applied", message: newAttempt
           ? "Suggested correction applied by the pharmacy to a new submission draft; not sent."
           : "Suggested correction applied by the pharmacy; not resubmitted." };
       set({
+        pharmacyCorrections: caught ? immutable([...s.pharmacyCorrections, caught]) : s.pharmacyCorrections,
         pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: correction }),
         lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
       });
