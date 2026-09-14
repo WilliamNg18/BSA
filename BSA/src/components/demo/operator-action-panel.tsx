@@ -10,6 +10,7 @@ import { RawCaseFields } from "@/components/demo/case-presentation";
 import { ReleaseRecord } from "@/components/demo/release-record";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { permitsProposal } from "@/lib/case-presentation";
+import { abstentionReasonLabel } from "@/lib/abstention-display";
 import { runAgent } from "@/lib/domain/agent";
 import { itemStateLabel, type OperatorDecisionDraft } from "@/lib/domain/lifecycle";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
@@ -125,7 +126,9 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
           <div><dt className="font-medium">Exact gap</dt><dd>{pack.conflicts.map((conflict) => `${conflict.field}: ${conflict.values.map((value) => `${value.origin} ${value.value}`).join(", ")}`).join("; ")
             || pack.requirementResults.filter((result) => result.met !== true)
             .map((result) => `${result.requirement.label}: ${result.met === false ? "missing" : "unknown"}`).join("; ")
-            || (suggestion ? "None detected" : "Evidence unresolved")}</dd></div>
+            || (pack.abstainReasons.length
+              ? <ul aria-label="Unresolved source gaps">{pack.abstainReasons.map((reason) => <li key={reason}>{abstentionReasonLabel(reason)}</li>)}</ul>
+              : suggestion ? "None detected" : "Evidence unresolved")}</dd></div>
           <div><dt className="font-medium">Drafted note</dt><dd>{suggestion ? pack.draftToPharmacy || "No drafted note" : "Withheld"}</dd></div>
         </dl>
         <SignalList signals={pack.signals} compact={compact} />
