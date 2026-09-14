@@ -147,10 +147,10 @@ it.each([
 
 it.each([
   { id: "EX-24112", enabled: false }, { id: "EX-24112", enabled: true },
-  { id: "EX-24119", enabled: false }, { id: "EX-24119", enabled: true },
+  { id: "SYN-FQ123-MISMATCH", enabled: false }, { id: "SYN-FQ123-MISMATCH", enabled: true },
 ])("keeps every operator choice and optional approval within one concise explanation: $id Agent $enabled", ({ id, enabled }) => {
   const store = useAppStore.getState();
-  store.submitItem({ caseId: id, channel: "eps", endorsementText: id === "EX-24112" ? "NCSO RK" : "NCSO MS 19/08/26" });
+  store.submitItem({ caseId: id, channel: "eps", endorsementText: id === "EX-24112" ? "NCSO RK" : sessionCase(id)!.extracted.endorsementText });
   store.arriveInQueue(id);
   store.setAgentEnabled(enabled);
   const html = expectOperatorProse(render(CasePackPage, `/case/${id}`));
@@ -162,7 +162,7 @@ it.each([
 it("uses readable outcome labels and conditional manual EPS risk without prechecking Off", () => {
   useAppStore.getState().setAgentEnabled(true);
   const home = render(HomePage, "/#cases");
-  expect(home).toContain("Request information from the pharmacy");
+  expect(home).toContain("Complete format, wrong pack");
   expect(home).not.toContain(">REQUEST_INFORMATION<");
   useAppStore.getState().setAgentEnabled(false);
   const before = getDomainSnapshot();
