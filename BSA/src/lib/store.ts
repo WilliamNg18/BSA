@@ -417,7 +417,7 @@ export const useAppStore = create<AppState>((set, get) => {
         (before.status === "missing" || !beforeSource.releaseEligible);
       const date = (draft: PharmacyCorrectionDraft) => draft.epsPrescription?.dispensingDate ??
         draft.paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate;
-      const caught: PharmacyCorrectionEvent | null = improved &&
+      const caught: PharmacyCorrectionEvent | null = newAttempt && improved &&
         !s.pharmacyCorrections.some((entry) => entry.caseId === caseId && entry.revision === targetRevision) ? {
           caseId, pharmacyCode: row.pharmacyCode, at, revision: targetRevision,
           before: pharmacySnapshot(beforeDraft.endorsementText, date(beforeDraft), "scripted", before, at),
