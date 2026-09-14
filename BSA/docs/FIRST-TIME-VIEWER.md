@@ -33,6 +33,13 @@ verdicts remain NOT VERIFIED. The
 [unchanged partial ledger](screens/task30/review-34d7567-interrupted/README.md)
 is preserved separately. A final verdict cannot be inferred from these markers.
 
+One user-authorised recovery reviewer then encountered an enforced image-view
+limit. Its [unchanged report](screens/task30/review-34d7567-recovery/review-result.md)
+records one accepted newly inspected tile and no final image verdicts.
+All 58 images remain NOT VERIFIED; this is a platform-blocked assessment,
+not an application FAIL or final PASS. Further attempts are stopped pending
+supported capacity restoration or independent human review.
+
 The following Task 24 results remain historical, source-pinned and unchanged.
 
 ## Repaired Task 24 execution at d5832e0: bounded review PASS

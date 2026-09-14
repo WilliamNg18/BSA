@@ -1,0 +1,332 @@
+{
+  "status": "NOT VERIFIED",
+  "completion": "BLOCKED / INCOMPLETE",
+  "release_recommendation": "Do not approve on this review. Required 58-image bounded review was not completed.",
+  "reviewed_application_source": "34d7567917a4c2fcdb447e2a9a0239d2c8cebe0e",
+  "review_workspace_head": "c9ae36e6c22aae828d3c73614b5d6ccb2c4c5736",
+  "export_commit": "f64095a58cb38a8f9d0b4a9719c29cc63143bdd2",
+  "deployment_url": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/",
+  "fresh_deployment_verified": false,
+  "counts": {
+    "images": 58,
+    "unique_original_sha256": 53,
+    "agent_off_images": 25,
+    "agent_on_images": 33,
+    "inherited_inspected_tile_references": 120,
+    "total_tile_references": 202,
+    "unique_tile_paths": 191,
+    "accepted_newly_inspected_tiles": 1,
+    "accepted_reinspections": 0,
+    "remaining_originally_uninspected_tile_references": 81,
+    "fully_finalised_images": 0,
+    "PASS": 0,
+    "FAIL": 0,
+    "NOT VERIFIED": 58,
+    "unreviewed_final_verdicts": 58
+  },
+  "integrity_status": "PASS",
+  "original_report_sha_match": true,
+  "recorded_hosted_counts": {
+    "checks": 30,
+    "identities": 60,
+    "images": 58,
+    "offImages": 25,
+    "onImages": 33,
+    "audits": 26,
+    "offAudits": 10,
+    "onAudits": 16,
+    "violations": 0,
+    "incompleteAudits": 18
+  },
+  "recorded_hosted_period": [
+    "2026-09-13T22:46:41.922Z",
+    "2026-09-13T22:52:52.227Z"
+  ],
+  "recorded_checks_have_zero_retries": true,
+  "checks": [
+    {
+      "check": "01 Root Overview starts Agent Off and serves the approved build",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "02 Every current route toggles On and back Off without errors",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "03 Shared monthly inputs update both process columns and Scene figures",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "04 Four case cards retain automatic, Type 2 and unconfirmed Type 1 routes",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "05 Three pharmacy scenarios remain advisory in both modes",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "06 Claims seed list opens a matching seeded claim and history",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "07 Actual staff work and separate monthly projections survive Agent changes",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "08 Full Off then On round trips retain Follow and Switch side",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "09 D abstains until human capture and retains history through paper referral",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "10 Case E remains deterministic without an agent call",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "11 Case B July replay is Sufficient while August refers back",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "12 Six root deep links return the application with strict headers",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "13 Reset restores seeded claims, calculator and Agent Off",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "16 C confirmation returns to human review without resolving 56 versus 84",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "17 F retains its original human record through mode changes and replay",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "18 Complete paper retains human capture and existing pricing without Type 2 judgement",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, both",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent Off, switched",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, both",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "24 Same D paper item completes submission, referral, correction, recheck and payment state: Agent On, switched",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "25 Generic EPS referral is corrected, explicitly resubmitted and human-rechecked on the same item",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "15 Single header Agent toggle on every route in pharmacy",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "15 Single header Agent toggle on every route in nhsbsa",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "15 Single header Agent toggle on every route in both",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "14 Perspectives preserve the same submitted item and human decision Off then On without Reset",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "19 Hillcrest is the only operational pharmacy and background entries are unclickable",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "20 Visible EPS complete, missing-date and generic-brand scenarios send only explicit claims",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "21 Worked August paper declaration reaches a Sufficient recommendation after human confirmation",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "22 Contradictory capture of a complete declaration still abstains without invented agreement",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    },
+    {
+      "check": "23 Six stakeholder chapters retain all nine stops and the editable central bet",
+      "recorded_hosted_status": "PASS",
+      "recovery_execution": "NOT VERIFIED",
+      "visual_novice_prose_acceptance": "NOT VERIFIED"
+    }
+  ],
+  "manual_records": [
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-capture-invalidation.json",
+      "sha256": "afbd85b0974dbd02186fb3fd42149918661af8f85dddb0bf150751360463f9b5",
+      "checkedAt": "2026-09-13T22:57:09.774Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-capture-pending.json",
+      "sha256": "0b9078514007ea5f001203ce7e2e6bc4f8f091e7d5bcf9b39eef86dd079e8276",
+      "checkedAt": "2026-09-13T22:56:41.453Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-capture-rejection.json",
+      "sha256": "6d79221406db41b0a7836effcec2cd92093e1184c514583e614c3b277643ceb6",
+      "checkedAt": "2026-09-13T22:56:52.616Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-escape-dark.json",
+      "sha256": "ef929ca715d41bd1851db1e5eeefc3f46d6e09701970495afc915e727098f74f",
+      "checkedAt": "2026-09-13T22:55:20.009Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-escape-light.json",
+      "sha256": "58ac81a36148c607174bd546c0a3d949a5d9e3ddd92f93cd14cc8d4912e26dfd",
+      "checkedAt": "2026-09-13T22:55:31.200Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-focus-dark.json",
+      "sha256": "5eb67d181cb9415cdf14382527f96325840b93b867a8e86b9df937188e1c3acb",
+      "checkedAt": "2026-09-13T22:55:09.113Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-focus-light.json",
+      "sha256": "1cd3f7004d5401c666fffd75e2bc957b836751f801c2de700171193e2a23cf26",
+      "checkedAt": "2026-09-13T22:54:48.999Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-identity-before.json",
+      "sha256": "075fb61722f2010757901e7f15f3f1f5f3545e753d98a0f1645c0e0a80718c5b",
+      "checkedAt": "2026-09-13T22:54:31.447Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-keyboard-recovered-record.json",
+      "sha256": "e92eeaeb5ebd7f3928d2f02247c150ee3b8ed789c5ac294bcd7d579e81877520",
+      "checkedAt": "2026-09-13T22:56:24.449Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-missing-prescriber-identity-after.json",
+      "sha256": "2d65770d85a4fc591d892ccf7ee40d361af79dea29a73582428649553e261639",
+      "checkedAt": "2026-09-13T22:57:24.452Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-native-radio-count-correction.json",
+      "sha256": "7b7d4697710c316e58e866e986ea2ba088ab8ec0a29b2368cf1bf1716a9a8f15",
+      "checkedAt": "2026-09-13T22:59:28.825Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-operator-error.json",
+      "sha256": "736034948d2b70f05a57c2e5c7c94810d6974f93fea8c794aca6d904b899d399",
+      "checkedAt": "2026-09-13T22:55:47.696Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    },
+    {
+      "file": "BSA\\docs\\screens\\task30\\manual-34d7567\\manual-34d7567-rb-error-values.json",
+      "sha256": "aa0aa40ab16b8cd5891b024824f196dfd3710bd38291ccac24bb2187531ce9be",
+      "checkedAt": "2026-09-13T22:56:14.002Z",
+      "disposition": "Reviewed as recorded observations, not independently re-executed or pixel-verified."
+    }
+  ],
+  "accepted_application_defects": [],
+  "blockers": [
+    {
+      "id": "QA-BLOCK-01",
+      "status": "NOT VERIFIED",
+      "description": "Image view responses report maximum number of images (1), preventing reliable full-native pixel coverage. Earlier provisional recovery tile markers and observations withdrawn conservatively. Only row 49 y=2850\u20133101 accepted."
+    }
+  ],
+  "fixes_independently_visually_verified": [],
+  "commands_not_run": [
+    "npm ci",
+    "npm run check",
+    "npm test",
+    "npm run test:e2e -- --project=chromium"
+  ],
+  "limits": [
+    "No new browser, capture, runtime modification or delegation.",
+    "No complete cumulative natural-panel word audit.",
+    "No external participant test.",
+    "18 axe incomplete audits remain unresolved; no WCAG certification.",
+    "Current deployment not visited in a new unauthenticated context.",
+    "SPEC, complete PR diff and complete current demo walkthrough not fully reviewed before blocker."
+  ],
+  "preservation": "Only this owned review directory written; no commit, source/test/authentication/archive/cowork-v1 changes."
+}

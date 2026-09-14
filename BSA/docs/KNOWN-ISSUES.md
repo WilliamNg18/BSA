@@ -27,6 +27,10 @@ The reviewer runtime became unavailable overnight; its recovered partial
 ledger has no final verdict. Forty images have full inspection markers,
 18 remain uninspected, and all 58 remain NOT VERIFIED. Recovery requires
 explicit coordinator/user direction, not a silently restarted review.
+The user authorised one recovery reviewer, but an enforced image-view limit
+blocked completion. Its preserved report leaves all 58 verdicts NOT VERIFIED
+and establishes no new application defect. Further image attempts are stopped;
+supported capacity restoration or independent human review is needed.
 The ordinary build keeps its state observer absent; the separate 34-test
 instrumented matrix supplies exact-state equivalence, not hosted observations.
 Earlier local rehearsals cannot certify later changes.

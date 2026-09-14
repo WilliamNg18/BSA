@@ -18,6 +18,16 @@ NOT VERIFIED. The remaining 18 images have 82 uninspected tiles. No final
 report was recovered; no restart or replacement was performed. Visual
 acceptance is blocked pending the coordinator's explicit recovery decision.
 
+The user subsequently authorised one bounded recovery reviewer,
+`17e49f6d-93ba-404d-b112-4dc52a232671`. Its
+[preserved recovery report](review-34d7567-recovery/review-result.md) is also
+blocked: the image tool reported a maximum-one-image viewing limit. It retains
+one accepted new tile, 120 inherited markers, no accepted reinspections and
+all 58 final verdicts NOT VERIFIED. Provisional observations were withdrawn,
+not promoted to defects or passes. No further image attempts or quota
+workarounds are authorised. Supported image capacity or independent human
+review is required before final visual acceptance can proceed.
+
 [Direct keyboard and contrast observations](manual-34d7567/README.md) record
 actual mobile focus, error recovery and declaration guards on this source.
 They are bounded observations, not full WCAG certification. Final release
