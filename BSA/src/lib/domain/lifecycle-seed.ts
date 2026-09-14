@@ -1,5 +1,5 @@
 /** Synthetic month for the single operational pharmacy. */
-import { CASES } from "./cases";
+import { CASES, TWO_GATE_CASES } from "./cases";
 import { HILLCREST_PHARMACY, productByCode } from "./reference";
 import { type CaseLifecycle, type CaseRevision, type HistoryEvent, type LifecycleState } from "./lifecycle";
 import { immutable } from "./lifecycle-model";
@@ -58,6 +58,16 @@ export function seededLifecycleSession(): {
     supplyEvidence: { ruleId: "SYN-EPS-SUPPLY", brandManufacturer: "", packSize: 21, form: "capsules" },
   } }];
   add("SYN-FQ123-RECHECK", HILLCREST_PHARMACY.contractorCode, "referred_back", 1);
+  for (const c of TWO_GATE_CASES) {
+    add(c.id, HILLCREST_PHARMACY.contractorCode, c.epsPrescription ? "in_review" : "paid", c.epsPrescription ? 4 : 0);
+    const revision = caseRevisions[c.id][0];
+    caseRevisions[c.id] = [{ ...revision, templateCaseId: c.id,
+      ...(c.epsPrescription ? { epsPrescription: c.epsPrescription, channel: "eps" as const } : {}),
+      ...(c.paperDeclaration ? { paperDeclaration: c.paperDeclaration, channel: "paper" as const,
+        declaration: { fields: { productCode: c.extracted.productCode, quantity: c.extracted.quantity, endorsementText: c.extracted.endorsementText },
+          declaredAt: revision.at, provenance: "pharmacy_declaration" as const } } : {}),
+    }];
+  }
   const appendCorrection = (id: string, text: string, at: string) => {
     const previous = caseRevisions[id][0], row = lifecycles[id];
     caseRevisions[id] = [...caseRevisions[id], { ...previous, number: 2, at, kind: "resubmission", endorsementText: text }];

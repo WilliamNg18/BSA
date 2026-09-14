@@ -125,8 +125,7 @@ export function caseForLifecycle(
     c.extracted = { ...c.extracted, productCode: item.dispensedCode, productText: item.dispensedName,
       quantity: item.quantity, endorsementText: eps.dispenserEndorsement, dispensingDate: eps.dispensingDate,
       prescriber: eps.prescriber.name, productConfidence: 1, quantityConfidence: 1, endorsementConfidence: 1 };
-    c.claim = { ...c.claim, productCode: item.dispensedCode, quantity: item.quantity,
-      endorsementText: eps.dispenserEndorsement, submittedVia: "EPS claim message" };
+    c.claim = { ...c.claim, submittedVia: "EPS claim message" };
     c.regions = [];
     const facts = interpretPharmacyText(eps.dispenserEndorsement);
     c.readings = [facts, { ...facts }, { ...facts }];

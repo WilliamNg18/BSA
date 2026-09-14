@@ -27,11 +27,13 @@ export interface OperatorDecisionDraft {
 
 export interface PharmacyCorrectionDraft {
   readonly revision: number;
+  readonly channel?: ItemChannel;
   readonly endorsementText: string;
   readonly declaration?: PharmacyDeclaration;
   readonly paperDeclaration?: PaperDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly appliedSuggestion: boolean;
+  readonly confirmation?: string;
 }
 
 /** Human-invoked controls. The agent must never invoke these actions. */
@@ -107,6 +109,8 @@ export interface CaseRevision {
   readonly declaration?: PharmacyDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly paperDeclaration?: PaperDeclaration;
+  /** Captured at explicit Send/Post, never inferred from a later header toggle. */
+  readonly verificationEnabled?: boolean;
 }
 
 export interface Type1Capture {
@@ -221,6 +225,9 @@ export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nh
   const release = row.state === "released_to_pricing"
     ? row.history.filter((event) => event.to === "released_to_pricing").at(-1) : undefined;
   if (release?.releaseOrigin === "human_decision" || release?.actor === "operator") {
+    if (release.verification?.gate1 === "none" && release.verification.gate2 === "none") return perspective === "pharmacy"
+      ? "Released to pricing after operator review (synthetic)"
+      : "Released to existing pricing after operator review";
     return perspective === "pharmacy"
       ? "Verified and released to pricing after operator review (synthetic)"
       : "Verified and released to existing pricing after operator review";
