@@ -1914,3 +1914,19 @@ All streams keep check, units, desktop functional browser coverage and axe
 blocking. No tool quota is bypassed, and no CI result is called a manual
 WCAG certification. The existing hosting, billing, visibility and protected
 rollback/archive references remain unchanged.
+
+## 2026-09-14: Standing decision authority and immediate resolutions
+
+- Routine questions or owner approval? Decide autonomously using the ordered tie-breakers in MEMORY; ask only the three explicit exceptions, with unaffected streams continuing; decided by (e), the latest standing instruction.
+- Human Release with Agent Off and no proposed gates? Validate existing deterministic source/claim checks and explicit human judgement, keep both proposed gates `none`, and record a human-attributed release; explicitly selected by the owner, preserving (a), human authority, and (b), automatic two-gate safety.
+- Does Off erase an already applied or edited operator draft? No: Off starts unaided but retains subsequent human-entered fields and history while hiding the suggestion; decided by (a), one authoritative human decision record.
+- Does Apply approve the proposed note or release an item? No: it fills revision-bound fields and records the human action; only a separate valid final decision can approve a matching note or release; decided by (a), explicit human authority.
+- How does the demo begin? Keep ordinary navigation at `demoStep = null`; explicit Enter demo mode selects step 1 without changing the Agent switch or domain history; decided by (a), navigation cannot perform business actions.
+- Where do Follow and the step strip live? D mounts F's existing named FollowBanner below the header and outside page, perspective and demo guards, with the step strip separate; decided by (c), visible same-case continuity.
+- When does temporary Both end? Return to the original restricted side restores its perspective; any explicit perspective choice cancels restoration, and dismiss, Reset or item change clears temporary context; decided by (c), predictable visible navigation without overriding user choice.
+- How can D merge before its O/P compact exports exist? Deliver a buildable core with existing real components, gating unfinished demo entry if necessary, then an isolated integration after O/P and before V; never introduce fake controls or duplicated actions; decided by (a), real human controls, then (d), the smallest dependency split.
+- Which tests block? Keep check, Vitest, crash/dead-control/six-outcome Playwright and axe blocking; other checks are informational with their actual failures retained, while the expressly requested latest-main live checklist remains a final acceptance gate; decided by (e), the latest explicit test policy.
+- Does the interrupted old visual review block or become a pass? Preserve it as unverified historical evidence; accept Tasks 25-36 only against the new desktop scope and latest live checklist, never relabel old captures; decided by (e), the new scope, constrained by (a), truthful evidence.
+- What does a finished stream take next? Claim the next unowned Not started SCOPE row through the coordinator; currently all six new rows are owned and In progress, so finish integration and proof rather than duplicate a stream or invent work; decided by (d), simpler ownership.
+- Are any issue or pull-request questions waiting? The open GitHub issue and pull-request inventories were both empty on 14 September; all six active sessions were building with no pending input or plan approval; no owner decision was required.
+- What about the Step 0 CI failure after deployment? Preserve run 34870106295 as failed, repair its tour click and pipeline keyboard failures through the existing owners, and continue independent streams; deployment success is not acceptance; decided by (a), honest evidence and working controls.

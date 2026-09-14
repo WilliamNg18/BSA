@@ -12,6 +12,28 @@ gates. Verify at 1280 and 1440 px; capture new screenshots at 1440 px only.
 The owner explicitly removed mobile/tablet layouts, navigation and test/capture
 coverage. Follow the 14 September contracts in DECISIONS before any older rule.
 
+## Decision authority
+
+1. For any question about how to implement, interpret, name, lay out, order, style, test, or resolve a conflict between two instructions, choose the option that best fits these tie-breakers, in this order, and continue without asking: (a) keeps the governing principle intact (the agent gathers evidence and recommends; deterministic code validates and calculates; a human decides; nothing here calculates or approves a payment); (b) keeps the six case outcomes and the two-gate rule intact; (c) makes the difference between Today and With the agent more visible to a first-time viewer; (d) is simpler and faster to build; (e) matches the most recent instruction over an older one. Record the choice in docs/DECISIONS.md in one line: the question, the option chosen, the tie-breaker that decided it.
+2. Ask me only if: (i) a decision would change the governing principle or one of the six case outcomes; (ii) an action needs a credential, permission or payment only I hold (an Azure or GitHub setting, a token, billing); or (iii) an instruction I gave says in so many words "check with me before" or "double check". Nothing else qualifies. If unsure whether a question qualifies, it does not; decide and record.
+3. When you post a question that does qualify, post it as STATUS with the exact steps or the exact choice, and keep every other stream building while you wait. Never pause a stream that is not blocked by that question.
+4. Default answers for questions that have already come up, so they are never asked again: naming and labels, use the words in docs/MEMORY.md "Words that must and must not appear" and the lifecycle label table; layout, desktop only at 1280 and 1440 px, side by side Today left and With the agent right; copy, under 25 words per panel, UK English, no em dashes; figures, every With figure tagged "estimate", every assumption editable and tagged; time model, the defaults in Task 28; ordering, the eleven demo steps in Task 31; scope, if a request is ambiguous build the smaller version that still shows the Today versus With difference and log the larger version as a follow-up issue; tests, keep only the blocking checks (npm run check, Vitest, crash and dead-control and six-outcome Playwright, axe) and make everything else informational; data, one pharmacy, Hillcrest, other pharmacies as unclickable background; motion, two-second sequence with reduced-motion crossfade; anything about mobile or tablet, out of scope, do not build or test.
+
+## Words that must and must not appear
+
+Required interface wording: "released to existing pricing, no operator action";
+"priced by NHSBSA's existing rules engine, no person involved";
+"the agent verifies and advises; a person decides";
+"applied by the operator from the agent's suggestion";
+"declared by the pharmacy, not read from the form"; "rule and reason recorded";
+"experience only"; and "estimate" on every With figure.
+The no-operator phrases apply only to actual automatic paths, never human releases.
+Do not use "approved by the agent", "paid by the agent", implementation vendor,
+product or documentary names, or em dashes. Required process names and synthetic
+prescription content remain permitted, as recorded in DECISIONS.
+
+## Current desktop contracts
+
 Gate 1 checks typed EPS or declared paper against the dispensing-month provision.
 Gate 2 independently reconciles what arrived with source evidence and the claim.
 Only both passing and reconciled can produce automatic `released_to_pricing`.
@@ -20,6 +42,9 @@ the proposal for a human-initiated attempt; toggling never rewrites old release
 history. The user explicitly approved distinct labels for human releases:
 "no operator action" applies only to code-only verification, never an actual
 operator Release button. No release here calculates or approves a payment.
+The owner also explicitly approved Off human release after the existing
+deterministic checks and explicit human judgement; both proposed gates remain
+`none`. Only the automatic path requires both proposed gates to pass.
 
 One store also holds revision-bound operator and pharmacy drafts, current
 `itemVerification`, and presentation-only `demoStep`. `DEMO_STEPS` is the frozen
@@ -69,8 +94,9 @@ separate 30-check hosted runs, each with 60 clean identities, 58 images and
 gate; that report, capture set and manual record stay immutable. Repair #87
 corrects source wording, cumulative prose, capture obstruction and mobile focus
 without changing domain outcomes or historical records. Independent review of
-the new `34d7567` capture remains a gate before the runtime-identical evidence/docs
-PR and latest-main repeat close the release. Do not infer acceptance from CI.
+the new `34d7567` capture remained unverified. That historical release checklist
+is superseded by the current desktop acceptance, not retrospectively passed.
+Do not infer acceptance from CI.
 
 ## Process model
 
