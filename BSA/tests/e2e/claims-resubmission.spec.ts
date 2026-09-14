@@ -1,7 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
-import { startDemonstrationReview } from "./lifecycle-helpers";
-import { operatorDecision, performDecision } from "./operator-action-helpers";
+import { startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
 
 for (const [width, colorScheme] of [[1440, "light"]] as const) {
   test.describe(`claims resubmission comparison ${width} ${colorScheme}`, () => {
@@ -15,10 +14,9 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       const marker = comparison.getByRole("button");
       await history.locator("summary").first().click();
       const originalHistory = await history.innerText();
-      await expect(comparison).toContainText("Synthetic assumption");
-      await expect(comparison).toContainText("Real pharmacy checks are unknown");
+      await expect(comparison).toContainText("Hypothetical repeat correction, not a prediction");
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
-      await expect(marker).toHaveText("Manual: No advisory sufficiency check · Assumption");
+      await expect(marker).toHaveText("Manual: Hypothetical repeat correction, not a prediction");
       await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
       await flag.setChecked(true);
@@ -31,7 +29,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await field.focus();
       await page.keyboard.press("Tab");
       await expect(marker).toBeFocused();
-      await expect(page.getByRole("tooltip")).toHaveText("No advisory sufficiency check · Assumption");
+      await expect(page.getByRole("tooltip")).toHaveText("Hypothetical repeat correction, not a prediction");
       const audit = await new AxeBuilder({ page }).analyze();
       await captureJson(info, "manual-resubmission-axe", audit);
       expect(audit.violations).toEqual([]);
@@ -58,7 +56,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
 
     test("On resolves only a current approved correction; keyboard edits invalidate it without changing lifecycle", async ({ page }, info) => {
       await page.goto("case/EX-24112");
-      await startDemonstrationReview(page);
+      await startBReviewFromPharmacy(page);
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
       await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
@@ -83,16 +81,19 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       const apply = page.getByRole("button", { name: "Apply suggested correction", exact: true });
       await apply.focus();
       await page.keyboard.press("Enter");
-      await expect(marker).toHaveAttribute("data-pain-marker", "open");
-      await expect(marker).toContainText("Current correction not verified");
-      await expect(page.getByRole("region", { name: "Claims precheck" })).toContainText("Not checked for this edit");
+      await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toBeFocused();
+      await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO RK 21/08/26");
+      await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
+      await expect(page.getByRole("region", { name: "Claims precheck" })).toContainText("Ready");
       await recheck.focus();
       await page.keyboard.press("Enter");
       await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
-      await expect(marker).toHaveText("Assisted: Current correction checked · Explicit resubmission required");
-      await expect(comparison).toContainText("not payment");
+      await expect(marker).toHaveText("Assisted: Ready; explicit resubmission required");
+      await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Changed fields highlighted; not sent.");
       await flag.setChecked(false);
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
+      await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
+      await expect(page.getByText("Ready", { exact: true })).toHaveCount(0);
       await flag.setChecked(true);
       await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
       const field = page.getByRole("textbox", { name: "Corrected endorsement", exact: true });
@@ -100,12 +101,13 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await field.press("End");
       await field.press("Backspace");
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
-      await expect(page.getByRole("region", { name: "Claims precheck" })).toContainText("Not checked for this edit");
+      await expect(page.getByRole("region", { name: "Claims precheck" })).toContainText("Information missing");
       await expect(history.getByRole("status")).toHaveText(state);
       await expect(attempts).toHaveText(originalAttempts, { useInnerText: true });
       await expect(events).toHaveCount(originalEvents.length + 1);
       expect((await events.allTextContents()).slice(0, originalEvents.length)).toEqual(originalEvents);
       await expect(events.last()).toContainText("Suggested correction applied by the pharmacy; not resubmitted.");
+      await expect(events.last()).toContainText("pharmacy");
       const audit = await new AxeBuilder({ page }).analyze();
       await captureJson(info, "assisted-resubmission-axe", audit);
       expect(audit.violations).toEqual([]);

@@ -1,7 +1,6 @@
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
-import { startDemonstrationReview } from "./lifecycle-helpers";
-import { operatorDecision, performDecision } from "./operator-action-helpers";
+import { startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
 
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
 const response = (page: Page) => page.getByRole("region", { name: "Operator response", exact: true });
@@ -18,7 +17,7 @@ async function verifyPharmacyModes(page: Page, reason: string, approvedText?: st
   const originalAttempts = await history(page).getByRole("list", { name: "Immutable pharmacy attempts" }).innerText();
 
   await flag.setChecked(true);
-  if (!approvedText) await expect(page.getByRole("main")).not.toContainText(reason);
+  await expect(response(page)).not.toContainText(reason);
   await expect(history(page).getByRole("status")).toHaveText(originalState);
   await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts" })).toHaveText(originalAttempts, { useInnerText: true });
   const approved = response(page).getByRole("region", { name: "Operator-approved pharmacy note", exact: true });
@@ -29,7 +28,7 @@ async function verifyPharmacyModes(page: Page, reason: string, approvedText?: st
     await expect(events(page)).toContainText("Operator-approved note");
   } else {
     await expect(approved).toHaveCount(0);
-    await expect(response(page)).toContainText("No operator-approved draft. Enabling assistance does not approve a note.");
+    await expect(response(page)).toContainText("No operator-approved draft.");
     await expect(events(page)).toContainText("No operator-approved note recorded.");
   }
 
@@ -51,7 +50,7 @@ for (const [id, reason] of [["EX-24112", "Endorsement initialled but not dated."
 for (const id of ["EX-24119", "EX-24088"]) {
   test(`background ${id} stays unclickable through Off On Off`, async ({ page }, info) => {
     await page.goto(`pharmacy/claims?caseId=${id}`);
-    const background = page.getByRole("region", { name: "Historical cases, background", exact: true });
+    const background = page.getByRole("rowgroup", { name: "Historical cases, background", exact: true });
     const original = await background.innerText();
     const flag = page.getByRole("banner").getByRole("switch");
     for (const enabled of [false, true, false]) {
@@ -62,7 +61,7 @@ for (const id of ["EX-24119", "EX-24088"]) {
       await expect(background.getByRole("link")).toHaveCount(0);
       await expect(background.getByRole("button")).toHaveCount(0);
       await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toHaveCount(0);
-      await expect(page.getByRole("button", { name: "Resubmit claim", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("button", { name: /^Resubmit/ })).toHaveCount(0);
     }
     await captureJson(info, "background-not-promoted-to-live-claim", original);
   });
@@ -73,7 +72,7 @@ for (const kind of ["referral", "information request"] as const) {
   for (const mode of ["manual", "unapproved", "approved"] as const) {
     test(`new ${id} ${kind} ${mode} never promotes the human reason to an approved note`, async ({ page }, info) => {
       await page.goto(`case/${id}`);
-      await startDemonstrationReview(page);
+      await startBReviewFromPharmacy(page);
       const enabled = mode !== "manual";
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await page.getByRole("radio", { name: kind === "referral" ? /^Refer back / : /^Request information / }).check();

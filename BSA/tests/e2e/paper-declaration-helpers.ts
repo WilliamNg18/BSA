@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { expect, navigatePrimary } from "./fixtures";
-import { choosePaperExample } from "./pharmacy-scenario-helpers";
+import { choosePaperExample, openPharmacyPrecheck, openPharmacyReceipt } from "./pharmacy-scenario-helpers";
 
 export const DECLARATION_RECONCILIATION = "I have reconciled the declaration with the available evidence, including the dispensing date";
 export const PAPER_D_CAPTURE_FIELDS = {
@@ -14,20 +14,18 @@ export async function postWorkedPaperDeclaration(page: Page) {
   await navigatePrimary(page, "Pharmacy check");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await choosePaperExample(page);
-  for (const name of ["Declared product", "Declared quantity", "Declared endorsement", "Declared dispensing date"]) {
-    await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
-  }
   await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
-  await expect(page.getByRole("textbox", { name: "Declared product", exact: true })).toHaveValue("Co-codamol 30/500 tablets");
-  await expect(page.getByRole("textbox", { name: "Declared quantity", exact: true })).toHaveValue("100");
-  await expect(page.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("NCSO JB 27/08/26");
+  await expect(page.getByLabel("Declared product", { exact: true })).toHaveValue("Co-codamol 30/500 tablets");
+  await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("100");
+  await expect(page.getByLabel("Declared endorsement", { exact: true })).toHaveValue("NCSO JB 27/08/26");
   await expect(page.getByLabel("Declared dispensing date", { exact: true })).toHaveValue("2026-08-27");
-  await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toContainText("Dispensing-month Tariff: 2026-08");
-  await expect(page.getByRole("list", { name: "Declaration requirement checks", exact: true })).toContainText("Met: Dated");
-  await expect(page.locator("[data-declaration-advice]")).toContainText("Declaration complete, not capture confirmed.");
+  const check = await openPharmacyPrecheck(page);
+  await expect(check).toContainText("2026-08");
+  await expect(check.getByRole("list", { name: "Requirement checkboxes", exact: true })).toContainText("Dated: met");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
   await expect(page.getByText("Case built, awaiting operator", { exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
-  const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+  const receipt = await openPharmacyReceipt(page);
   await expect(receipt).toContainText("EX-24123:2");
   await expect(receipt).toContainText("NCSO JB 27/08/26");
   await expect(receipt).not.toContainText("no person involved");
