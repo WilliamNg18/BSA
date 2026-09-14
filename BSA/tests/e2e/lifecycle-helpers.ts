@@ -56,6 +56,9 @@ export async function prepareUnseededState(page: Page, state: LifecycleState) {
     await page.getByRole("banner").getByRole("switch").setChecked(true);
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+    await expect(receipt).toContainText("released to existing pricing, no operator action");
+    await expect(receipt).not.toContainText("Awaiting Type 2 judgement");
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
     await expect(page.getByRole("region", { name: "Claim detail", exact: true }).getByRole("status").first())
       .toHaveText(LIFECYCLE_LABELS.released_to_pricing.pharmacy);

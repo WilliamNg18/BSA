@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { caseById, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { historicalLifecycleFixtures } from "../../src/lib/domain/lifecycle-seed";
-import { NO_VERIFICATION, itemStateLabel } from "../../src/lib/domain/lifecycle";
+import { NO_VERIFICATION, itemStateLabel, receiptPricingLabel } from "../../src/lib/domain/lifecycle";
 import { evaluateItemVerification } from "../../src/lib/domain/verification";
 import { checkPharmacyCorrection, initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
 import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
@@ -39,6 +39,22 @@ describe("authoritative two-gate source verification", () => {
     expect(store().lifecycles[id].state).toBe("released_to_pricing");
     expect(store().lifecycles[id].history.at(-1)).toMatchObject({ actor: "code", releaseOrigin: "automatic_verification", revision: 2 });
     expect(itemStateLabel(store().lifecycles[id], "nhsbsa")).toContain("no operator action");
+  });
+
+  it("complete EPS receipts distinguish recorded On release from Off pricing and retain each attempt", () => {
+    const id = "EX-24107";
+    send(id, true);
+    const verified = receiptPricingLabel(store().lifecycles[id], 2);
+    expect(verified).toContain("released to existing pricing, no operator action");
+    expect(verified).not.toContain("Awaiting Type 2");
+    store().setAgentEnabled(false);
+    expect(receiptPricingLabel(store().lifecycles[id], 2)).toBe(verified);
+    send(id, false);
+    expect(receiptPricingLabel(store().lifecycles[id], 3)).toContain("priced by NHSBSA's existing rules engine, no person involved");
+    expect(receiptPricingLabel(store().lifecycles[id], 2)).toBe(verified);
+    expect(receiptPricingLabel(store().lifecycles[id], 999)).toBeNull();
+    send(mismatch, true);
+    expect(receiptPricingLabel(store().lifecycles[mismatch], 2)).toBeNull();
   });
 
   it("missing date fails format and actual received requirements", () => {
@@ -223,6 +239,8 @@ describe("authoritative two-gate source verification", () => {
     store().arriveInQueue(b);
     store().releaseToPricing(b, "Corrected date checked by the operator.");
     expect(itemStateLabel(store().lifecycles[b], "nhsbsa")).toContain("after operator review");
+    expect(receiptPricingLabel(store().lifecycles[b], 3)).toContain("after operator review");
+    expect(receiptPricingLabel(store().lifecycles[b], 3)).not.toContain("no operator action");
   });
 
   it("generic correction fills actual source fields and never approves or submits from Apply", () => {

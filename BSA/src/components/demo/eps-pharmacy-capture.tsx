@@ -19,7 +19,7 @@ import { projectEpsSubmissionDraft } from "@/lib/domain/eps-submission-draft";
 import { PHARMACY_STEPS, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { productByCode } from "@/lib/domain/reference";
 import type { EpsPrescription } from "@/lib/domain/types";
-import type { PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
+import { receiptPricingLabel, type PharmacyPrecheckSnapshot } from "@/lib/domain/lifecycle";
 import { useAppStore } from "@/lib/store";
 
 const SCENARIOS = PLAYABLE_CASES.filter((c) => playableCaseChannel(c.id) === "eps").map((c) => ({
@@ -74,7 +74,7 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
   const missing = new Set(result?.checks.filter((check) => check.met !== true).map((check) => check.id));
   const supply = draft.supplyEvidence;
   const receipt = revisions[caseId].find((revision) => revision.number === receiptNumber);
-  const automatic = lifecycles[caseId].history.some((event) => event.revision === receiptNumber && event.processStep === "automatic_pricing");
+  const pricingLabel = receiptNumber === null ? null : receiptPricingLabel(lifecycles[caseId], receiptNumber);
   const update = (next: EpsPrescription) => { pendingCorrection.current = null; updateEditor({ draft: next }); setApplied(""); setError(""); };
   const supplyUpdate = (patch: Partial<NonNullable<EpsPrescription["supplyEvidence"]>>) => update({
     ...draft, supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: null, form: "", ...supply, ...patch },
@@ -223,8 +223,8 @@ function EpsClaimEditor({ caseId, editor, updateEditor }: { caseId: string; edit
     {receipt && <section aria-label="Submission receipt" className="space-y-4 rounded-xl border p-4">
       <h2 className="font-semibold">Submission receipt</h2>
       <p role="status">Submitted (synthetic). Original attempts are retained.</p>
-      <p className="text-sm">{automatic ? "Paid on the normal schedule: priced by NHSBSA's existing rules engine, no person involved."
-        : receipt.kind === "resubmission" ? "Resubmitted: awaiting human re-check." : "Awaiting Type 2 judgement. No referral or operator decision has been made by the agent."}</p>
+      <p className="text-sm">{pricingLabel ?? (receipt.kind === "resubmission"
+        ? "Resubmitted: awaiting human re-check." : "Awaiting Type 2 judgement. No referral or operator decision has been made by the agent.")}</p>
       <dl className="grid gap-3 text-sm grid-cols-2"><KeyValue k="Receipt" v={`${caseId}:${receipt.number}`} /><KeyValue k="Submitted at" v={receipt.at} />
         <KeyValue k="Typed text snapshot" v={receipt.endorsementText || "Empty"} /><KeyValue k="Check result" v={receipt.precheck?.status ?? "not_checked"} />
         <KeyValue k="Check timestamp" v={receipt.precheck?.checkedAt ?? "No checks performed"} />

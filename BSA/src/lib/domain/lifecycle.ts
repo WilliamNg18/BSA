@@ -226,6 +226,11 @@ export const LIFECYCLE_LABELS = {
   },
 } as const satisfies Record<LifecycleState, { pharmacy: string; nhsbsa: { on: string; off: string } }>;
 
+function automaticReleaseVerified(event: HistoryEvent | undefined): boolean {
+  return Boolean(event?.actor === "code" && event.releaseOrigin === "automatic_verification" &&
+    event.verification?.gate1 === "pass" && event.verification.gate2 === "pass" && event.verification.reconciled && event.verification.released);
+}
+
 /** The no-operator label must never erase an actual operator release. */
 export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nhsbsa" | "both", enabled = false): string {
   const release = row.state === "released_to_pricing"
@@ -239,10 +244,27 @@ export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nh
       ? "Verified and released to pricing after operator review (synthetic)"
       : "Verified and released to existing pricing after operator review";
   }
-  if (row.state === "released_to_pricing" && !(release?.actor === "code" && release.releaseOrigin === "automatic_verification" &&
-    release.verification?.gate1 === "pass" && release.verification.gate2 === "pass" && release.verification.reconciled && release.verification.released)) {
+  if (row.state === "released_to_pricing" && !automaticReleaseVerified(release)) {
     return "Release recorded; verification provenance unavailable (synthetic)";
   }
   const labels = LIFECYCLE_LABELS[row.state];
   return perspective === "pharmacy" ? labels.pharmacy : labels.nhsbsa[enabled ? "on" : "off"];
+}
+
+/** Receipt status comes from the selected attempt's recorded pricing event, never today's toggle. */
+export function receiptPricingLabel(row: CaseLifecycle, revision: number): string | null {
+  const history = row.history.filter((event) => event.revision === revision);
+  const pricing = history.filter((event) => event.processStep === "release_to_pricing" ||
+    event.processStep === "automatic_pricing" || event.processStep === "existing_pricing").at(-1);
+  if (pricing?.to === "released_to_pricing") {
+    const label = itemStateLabel({ ...row, state: pricing.to, history }, "nhsbsa");
+    return pricing.releaseOrigin === "human_decision" || pricing.actor === "operator" || automaticReleaseVerified(pricing)
+      ? `Paid on the normal schedule (synthetic). ${label}.` : label;
+  }
+  if (pricing?.actor === "code" && pricing.to === "paid") {
+    return pricing.processStep === "automatic_pricing"
+      ? "Paid on the normal schedule: priced by NHSBSA's existing rules engine, no person involved."
+      : "Paid on the normal schedule after human review through NHSBSA's existing rules engine (synthetic).";
+  }
+  return null;
 }
