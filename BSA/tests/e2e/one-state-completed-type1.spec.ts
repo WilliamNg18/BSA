@@ -1,6 +1,7 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
 import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS } from "./paper-declaration-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 const D = "EX-24123";
 
@@ -9,7 +10,7 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Select the only playable paper item", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "Paper", exact: true }).check();
+        await choosePharmacyRadio(page, "Paper");
         await expect(page.getByRole("radio", { name: "Complete paper", exact: true })).toHaveCount(0);
       });
       if (enabled) await action("Load the explicit synthetic pharmacy declaration", "Pharmacy", async () => {

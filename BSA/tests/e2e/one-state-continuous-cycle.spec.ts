@@ -81,14 +81,22 @@ for (const enabled of [false, true]) {
         await expect(claim(page)).toContainText("RB2B");
       });
       await action("Pharmacy explicitly corrects and confirms the declared fields", "Pharmacy", async () => {
-        await page.getByRole("textbox", { name: "Declared product code", exact: true }).fill("SYN-COCOD-100");
+        await page.getByRole("textbox", { name: "Declared product", exact: true }).fill("Co-codamol 30/500 tablets");
         await page.getByRole("spinbutton", { name: "Declared quantity", exact: true }).fill("100");
         await page.getByRole("textbox", { name: "Declared prescriber (synthetic)", exact: true }).fill("Dr Demo (synthetic)");
         await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO JB 27/08/26");
       });
-      expect(await readDomainState(page)).toEqual(referred);
+      const edited = await readDomainState(page);
+      expect(edited.pharmacyDrafts[D]).toMatchObject({
+        revision: referred.caseRevisions[D].at(-1)!.number, channel: "paper", purpose: "correction", appliedSuggestion: false,
+        endorsementText: "NCSO JB 27/08/26",
+        declaration: { fields: { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)" } },
+      });
+      expect(edited, "Only the shared pharmacy draft changes before resubmission").toEqual({
+        ...referred, pharmacyDrafts: { ...referred.pharmacyDrafts, [D]: edited.pharmacyDrafts[D] },
+      });
       const resubmitted = await action("Explicitly resubmit the corrected D paper", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+        await page.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
         await expect(claim(page).getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
       });
       expect(resubmitted.records).toEqual(referred.records);

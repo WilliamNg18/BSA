@@ -2,6 +2,7 @@ import type { Page } from "@playwright/test";
 import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -29,7 +30,8 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
   test(`one state: B referral, correction and explicit human recheck with ${approval} draft`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+      if (enabled) await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
+      else await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
       const submitted = await action("Submit B with the missing dispensing date", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Send claim", exact: true }).click();
       });
@@ -114,9 +116,25 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
         });
       }
       await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
-      expect(await readDomainState(page), "Correcting a draft does not send it").toEqual(referred);
+      const corrected = await readDomainState(page);
+      expect(corrected.pharmacyDrafts[B]).toMatchObject({
+        revision: referred.caseRevisions[B].at(-1)!.number, channel: "eps", purpose: "correction",
+        endorsementText: "NCSO  RK 21/08/26", appliedSuggestion: approval === "approved",
+        epsPrescription: { dispenserEndorsement: "NCSO  RK 21/08/26" },
+      });
+      const correctionEvent = corrected.lifecycles[B].history.at(-1)!;
+      if (approval === "approved") expect(correctionEvent).toMatchObject({
+        actor: "pharmacy", processStep: "correction_applied", from: "referred_back", to: "referred_back",
+        revision: referred.caseRevisions[B].at(-1)!.number,
+      });
+      expect(corrected, "Apply may record its human event; neither Apply nor editing submits").toEqual({
+        ...referred, pharmacyDrafts: { ...referred.pharmacyDrafts, [B]: corrected.pharmacyDrafts[B] },
+        lifecycles: approval === "approved" ? { ...referred.lifecycles, [B]: {
+          ...referred.lifecycles[B], history: [...referred.lifecycles[B].history, correctionEvent],
+        } } : referred.lifecycles,
+      });
       const resubmitted = await action("Explicitly resubmit the complete EPS correction", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+        await page.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
         await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
       });
       expect(resubmitted.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement", requiresHuman: true } });
@@ -162,12 +180,13 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Choose the complete A submission example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+        await choosePharmacyRadio(page, "Complete endorsement");
       });
       await action("Explicitly select the EPS channel", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "EPS", exact: true }).check();
+        await choosePharmacyRadio(page, "EPS");
       });
-      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Complete: will flow to automated pricing, no person involved" : "Not checked: manual submission");
+      if (enabled) await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+      else await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
       const paid = await action("Submit complete A EPS for existing pricing", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Send claim", exact: true }).click();
         await expect(page.getByRole("region", { name: "Submission receipt", exact: true }))
@@ -197,10 +216,10 @@ for (const enabled of [false, true]) {
       });
       if (enabled) await action("Check the corrected source rather than override missing facts", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-        await expect(detail(page)).toContainText("Ready to resubmit");
+        await expect(detail(page)).toContainText("Ready");
       });
       const resubmitted = await action("Resubmit complete B evidence for explicit human recheck", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+        await page.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
       });
       expect(resubmitted.lifecycles[B].state).toBe("resubmitted");
       expect(resubmitted.itemProcesses[B].routing.requiresHuman).toBe(true);
