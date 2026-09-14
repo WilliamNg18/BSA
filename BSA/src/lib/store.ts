@@ -57,7 +57,7 @@ import { suggestedPharmacyCorrection } from "@/lib/domain/pharmacy-correction";
 // a sandboxed frame, so nothing is written to storage and Reset returns the
 // demonstration to its starting point.
 
-function seededRecords(): LifecycleDecisionRecord[] {
+export function historicalDecisionRecords(): LifecycleDecisionRecord[] {
   return immutable([
     {
       id: "DR-000871",
@@ -292,7 +292,7 @@ export const useAppStore = create<AppState>((set, get) => {
     const s = get(), at = timestamp(c.id), revision = s.caseRevisions[c.id].at(-1)!.number;
     const clauseId = input.tariffVersion === pack.tariffVersion && input.recommendation !== "NONE" ? pack.clause?.id : undefined;
     const approvedDraft = draft === undefined ? undefined : { text: draft, approvedAt: at, approvedBy: "Demo operator", decision: input.decision, tariffVersion: pack.tariffVersion, clauseId: pack.clause!.id };
-    const record = immutable<LifecycleDecisionRecord>({ ...input, id: `DR-${String(Math.max(...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
+    const record = immutable<LifecycleDecisionRecord>({ ...input, id: `DR-${String(Math.max(872, ...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
       timestamp: at, operator: "Demo operator", synthetic: true, isOverride, overrideReason: reason.trim() || null,
       reason: reason.trim(), revision, clauseId, ...(rbCode ? { rbCode } : {}), ...(approvedDraft ? { approvedDraft } : {}) });
     const event: HistoryEvent = { at, actor: "operator", from: current.state, to, message: "Human decision recorded (synthetic).",
@@ -381,7 +381,7 @@ export const useAppStore = create<AppState>((set, get) => {
       const released = { ...assessment.verification, released: true };
       const at = timestamp(caseId);
       const record: LifecycleDecisionRecord = {
-        id: `DR-${String(Math.max(...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
+        id: `DR-${String(Math.max(872, ...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
         caseId, timestamp: at, revision, decision: "ACCEPT", recommendation: "NONE", reason: note.trim(),
         overrideReason: null, isOverride: false, operator: "Demo operator", synthetic: true,
         tariffVersion: assessment.tariffVersion ?? "n/a", agentVersion: "not invoked",
@@ -506,7 +506,7 @@ export const useAppStore = create<AppState>((set, get) => {
       if (id !== null) requireLifecycle(id, get().lifecycles);
       set((s) => ({ followedCaseId: id, temporaryFollowVisit: s.temporaryFollowVisit?.caseId === id ? s.temporaryFollowVisit : null }));
     },
-    caseStates: initialStates(), records: seededRecords(), agentEnabled: false,
+    caseStates: initialStates(), records: immutable([]), agentEnabled: false,
     perspective: "both",
     setPerspective: (perspective) => set({ perspective }),
     baselineInputs: baselineDraft(BASELINE_DEFAULTS),
@@ -542,7 +542,7 @@ export const useAppStore = create<AppState>((set, get) => {
     setAgentEnabled: (agentEnabled) => set((s) => ({ agentEnabled, queue: { ...s.queue, sweep: [], phase: -1, sweeping: false, playing: false } })),
     // Preserve all three replacement identities used by existing reset subscribers.
     resetDemo: () => {
-      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), itemVerification: seededVerification(), operatorDrafts: {}, pharmacyDrafts: {}, demoStep: null, temporaryFollowVisit: null, processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), followedCaseId: null, caseStates: initialStates(), records: seededRecords(), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
+      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), itemVerification: seededVerification(), operatorDrafts: {}, pharmacyDrafts: {}, demoStep: null, temporaryFollowVisit: null, processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), followedCaseId: null, caseStates: initialStates(), records: immutable([]), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
         pharmacy: { ...s.pharmacy, assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS }, receipts: [] },
         queue: { ...s.queue, position: 0, day: 0, playing: false, sweep: [], phase: -1, sweeping: false, revision: s.queue.revision + 1 },
       }));

@@ -27,7 +27,10 @@ export function evaluateItemVerification(
   original: ExceptionCase, revision: CaseRevision, enabled: boolean, capture?: Type1Capture | null,
 ): VerificationAssessment {
   const channel = revision.channel ?? (original.claim.submittedVia === "EPS claim message" ? "eps" : "paper");
-  validateSubmissionSources({ caseId: original.id, channel, endorsementText: revision.endorsementText,
+  const typedText = revision.kind === "seed" && channel === "paper"
+    ? revision.paperDeclaration?.endorsementText ?? revision.declaration?.fields.endorsementText ?? revision.endorsementText
+    : revision.endorsementText;
+  validateSubmissionSources({ caseId: original.id, channel, endorsementText: typedText,
     epsPrescription: revision.epsPrescription, paperDeclaration: revision.paperDeclaration, declaration: revision.declaration }, revision.number);
   const eps = revision.epsPrescription, paper = revision.paperDeclaration;
   const declared = paper ? paperDeclarationFields(paper) : revision.declaration?.fields;
@@ -38,7 +41,7 @@ export function evaluateItemVerification(
       prescriber: eps!.prescriber.name } : {}),
     ...(channel === "paper" && declared ? { productCode: declared.productCode, quantity: declared.quantity,
       prescriber: revision.declaration?.fields.prescriber?.trim() || original.extracted.prescriber } : {}),
-    endorsementText: revision.endorsementText,
+    endorsementText: typedText,
     dispensingDate: eps?.dispensingDate ?? paper?.dispensingDate ?? original.extracted.dispensingDate,
   };
   const version = versionForDate(typed.dispensingDate), product = productByCode(typed.productCode);
