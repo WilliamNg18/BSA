@@ -22,7 +22,7 @@ for (const enabled of [false, true]) {
     for (const id of [...automaticCaseIds, "EX-24098"]) {
       await expect(page.locator(`[data-case-id="${id}"], [data-type1-case="${id}"]`)).toHaveCount(0);
     }
-    for (const id of ["EX-24119", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) await expect(worklist(page).locator(`[data-case-id="${id}"]`)).toBeVisible();
+    for (const id of ["EX-24119", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK", "SYN-FQ123-MISMATCH"]) await expect(worklist(page).locator(`[data-case-id="${id}"]`)).toBeVisible();
     await expect(page.getByRole("region", { name: "Referred back", exact: true }).locator('[data-case-id="EX-24112"]')).toBeVisible();
     await expect(page.getByRole("region", { name: "Decided", exact: true }).locator('[data-case-id="EX-24088"]')).toBeVisible();
     await expect(captureLane(page).locator('[data-type1-case="EX-24123"]')).toBeVisible();
