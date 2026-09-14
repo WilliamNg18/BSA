@@ -11,7 +11,8 @@ export function usePharmacyDraft(caseId: string, channel?: ItemChannel) {
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const saved = useAppStore((s) => s.pharmacyDrafts[caseId]);
   const enabled = useAppStore((s) => s.agentEnabled);
-  const [error, setError] = useState("");
+  const [failure, setFailure] = useState<{ caseId: string; revision: number | undefined; message: string } | null>(null);
+  const error = failure?.caseId === caseId && failure.revision === revision?.number ? failure.message : "";
   const original = c && revision ? initialisePharmacyDraft(c, revision, channel) : null;
   const draft = original && saved?.revision === revision?.number && (!channel || saved.channel === channel) ? saved : original;
   let result: PharmacyCheck | null = null;
@@ -25,8 +26,9 @@ export function usePharmacyDraft(caseId: string, channel?: ItemChannel) {
     catch (cause) { suggestionError = cause instanceof Error ? cause.message : "No supported correction. Enter the required facts."; }
   }
   function act(action: () => void) {
-    try { action(); setError(""); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Action unavailable. Review this item."); }
+    try { action(); setFailure(null); }
+    catch (cause) { setFailure({ caseId, revision: revision?.number,
+      message: cause instanceof Error ? cause.message : "Action unavailable. Review this item." }); }
   }
   function update(next: PharmacyCorrectionDraft) {
     act(() => useAppStore.getState().setPharmacyDraft(caseId, next));

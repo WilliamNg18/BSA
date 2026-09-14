@@ -22,7 +22,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
   const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId);
   const row = useAppStore((s) => s.lifecycles[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]) ?? NO_VERIFICATION;
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<{ caseId: string; revision: number; draft: string; text: string } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (!compact) heading.current?.focus(); }, [caseId, compact]);
   if (!isPlayableCase(caseId)) return <p role="status">Background only, not playable.</p>;
@@ -34,6 +34,11 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
     (event.to === "referred_back" || event.to === "information_requested")).at(-1);
   const approved = response?.approvedDraft;
   const replayText = revision.declaration?.fields.endorsementText ?? revision.endorsementText;
+  const draftSignature = JSON.stringify(draft);
+  const revisionNumber = revision.number;
+  function notify(text: string) {
+    setMessage({ caseId, revision: revisionNumber, draft: draftSignature, text });
+  }
   return <div data-pharmacy-case={caseId} className="space-y-3">
     <h2 ref={heading} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {caseId}</h2>
     <p role="status">{itemStateLabel(row, "pharmacy", enabled)}</p>
@@ -66,7 +71,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
         </dl>
       </section> : <p>No operator-approved draft.</p> : <dl>
         <dt>Human decision reason</dt><dd>{response?.reason ?? "No reason recorded."}</dd>
-        <dt>Basis</dt><dd>experience only</dd>
+        <dt>Current assistance</dt><dd>experience only</dd>
       </dl>}
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
@@ -78,7 +83,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
           store.applySuggestedCorrection(caseId);
           document.getElementById("claim-endorsement")?.focus();
         }) : undefined}
-        recheck={() => act(() => { setMessage(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
+        recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
       <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
       <Button data-pharmacy-action="resubmit" onClick={() => act(() => {
         const store = useAppStore.getState();
@@ -86,7 +91,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
         }
         store.resubmit(caseId);
-        setMessage("Resubmitted");
+        notify("Resubmitted");
       })}>{enabled ? "Resubmit" : "Resubmit blind"}</Button>
     </section>}
     {requested && <section aria-label="Requested confirmation" className="space-y-3">
@@ -99,7 +104,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       </label>
       <Button data-pharmacy-action="confirmation" onClick={() => act(() => {
         useAppStore.getState().sendConfirmation(caseId, draft.confirmation ?? "");
-        setMessage("Confirmation sent; human re-check required.");
+        notify("Confirmation sent; human re-check required.");
       })}>Send confirmation</Button>
     </section>}
     {!editable && !requested && !compact && <details><summary className="cursor-pointer">Demonstration replay</summary>
@@ -112,6 +117,6 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       }))}>Submit another demonstration attempt</Button>
     </details>}
     {error && <p role="alert">{error}</p>}
-    {message && <p role="status">{message}</p>}
+    {message?.caseId === caseId && message.revision === revision.number && message.draft === draftSignature && <p role="status">{message.text}</p>}
   </div>;
 }
