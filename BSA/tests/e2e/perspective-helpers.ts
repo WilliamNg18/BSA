@@ -99,6 +99,10 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
+    const notice = page.getByRole("complementary", { name: "Decision notifications", exact: true });
+    await expect(notice.locator('[data-decision-notice="success"]')).toContainText("Decision recorded");
+    await notice.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+    await expect(notice.locator("[data-decision-notice]")).toHaveCount(0);
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
     const decisionEvents = history(page).getByRole("list", { name: "Lifecycle events", exact: true });

@@ -269,7 +269,9 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await navigatePrimary(page, "Pharmacy check");
   await page.getByRole("radio", { name: "Paper", exact: true }).check();
-  await page.getByRole("radio", { name: "Unreadable form", exact: true }).check();
+  const paper = page.getByRole("region", { name: "Paper pharmacy submission", exact: true });
+  await expect(paper.getByRole("img", { name: /^Synthetic scanned prescription form for case EX-24123\./ })).toBeVisible();
+  await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
   const source = CASES.find((item) => item.scenario === "D")!;
   await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
   await page.getByLabel("Declared quantity", { exact: true }).fill(String(source.claim.quantity));
