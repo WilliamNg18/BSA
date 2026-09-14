@@ -70,7 +70,10 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
           <dt>Approved by operator</dt><dd>{approved.approvedBy} / {approved.approvedAt}</dd>
           <dt>Exact fix</dt><dd>{response?.exactFix ?? "No exact fix recorded"}</dd>
         </dl>
-      </section> : <p>No operator-approved draft.</p> : <dl>
+      </section> : <>
+        <dl><dt>Human decision reason</dt><dd>{response?.reason ?? "No reason recorded."}</dd></dl>
+        <p>No operator-approved draft.</p>
+      </> : <dl>
         <dt>Human decision reason</dt><dd>{response?.reason ?? "No reason recorded."}</dd>
         <dt>Current assistance</dt><dd>experience only</dd>
       </dl>}

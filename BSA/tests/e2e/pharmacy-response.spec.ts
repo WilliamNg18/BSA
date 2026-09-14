@@ -17,16 +17,19 @@ async function verifyPharmacyModes(page: Page, reason: string, approvedText?: st
   const originalAttempts = await history(page).getByRole("list", { name: "Immutable pharmacy attempts" }).innerText();
 
   await flag.setChecked(true);
-  await expect(response(page)).not.toContainText(reason);
   await expect(history(page).getByRole("status")).toHaveText(originalState);
   await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts" })).toHaveText(originalAttempts, { useInnerText: true });
   const approved = response(page).getByRole("region", { name: "Operator-approved pharmacy note", exact: true });
   if (approvedText) {
+    await expect(response(page)).not.toContainText(reason);
     await expect(approved).toContainText(approvedText);
     await expect(approved).toContainText("Operator-approved note");
     await expect(events(page)).toContainText(approvedText);
     await expect(events(page)).toContainText("Operator-approved note");
   } else {
+    await expect(response(page)).toContainText(reason);
+    await expect(response(page)).toContainText("Human decision reason");
+    await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
     await expect(approved).toHaveCount(0);
     await expect(response(page)).toContainText("No operator-approved draft.");
     await expect(events(page)).toContainText("No operator-approved note recorded.");
