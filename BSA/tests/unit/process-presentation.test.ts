@@ -14,7 +14,6 @@ import { ArchitecturePage } from "@/pages/architecture";
 import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
 import { CASES } from "@/lib/domain/cases";
-import { productionServiceLabel } from "@/lib/service-display";
 import { MANUAL_LOOP_MONTH_DEFAULTS, PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ManualLoopMonthInputs } from "@/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "@/lib/domain/manual-loop-presentation";
 import { useAppStore } from "@/lib/store";
@@ -49,20 +48,27 @@ beforeEach(() => {
 });
 
 describe("whole-process presentation", () => {
-  it("renders provider-neutral architecture without rewriting tool contracts or stored source mappings", () => {
+  it("confines architecture branding to the reference table without rewriting contracts or stored sources", () => {
     const source = JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS });
     const state = useAppStore.getState();
     const markup = render(ArchitecturePage);
-    expect(markup).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
-    expect(markup).toContain("Production mappings are proposals");
+    const mappings = markup.match(/<table\b[^>]*data-reference-mapping="true"[^>]*>[\s\S]*?<\/table>/g) ?? [];
+    expect(mappings).toHaveLength(1);
+    const mapping = mappings[0];
+    if (!mapping) throw new Error("The reference mapping table is missing");
+    expect(mapping).toContain("Reference mapping, one example");
+    expect(mapping).toContain("Azure OpenAI");
+    expect(markup.replace(mapping, "")).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
+    expect(markup).toContain("Proposed for production");
+    expect(markup).toContain("not assurance that synthetic rules can ship unchanged");
     expect(markup).toContain("NHSBSA");
     expect(markup).toContain("dm+d");
     expect(markup).toContain("Tariff");
-    for (const tool of TOOL_DEFINITIONS) {
-      expect(markup).toContain(tool.name);
-      const label = renderToStaticMarkup(createElement("span", null, productionServiceLabel(tool.production))).slice(6, -7);
-      expect(markup).toContain(label);
-    }
+    for (const capability of ["Read image region", "look up product/pack", "look up claim", "check history", "retrieve the effective-date Tariff clause"]) expect(markup).toContain(capability);
+    expect(markup).toContain("Recording is application-owned, not a model write tool.");
+    expect(markup).toContain("Five read-only sources:");
+    expect(markup).toContain("effective-date Tariff corpus.");
+    expect(markup).toContain("Captured fields are a source representation, not independent corroboration.");
     expect(JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS })).toBe(source);
     expect(useAppStore.getState()).toBe(state);
   });

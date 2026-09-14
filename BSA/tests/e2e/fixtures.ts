@@ -23,6 +23,7 @@ export async function captureCheckpoint(page: Page, testInfo: TestInfo, name: st
 export async function navigatePrimary(page: Page, label: string) {
   // Older workload tests use the original name; activate the current UI label.
   if (label === "Exception queue") label = "NHSBSA queue";
+  if (label === "Architecture") label = "System design";
   const nav = page.getByRole("navigation", { name: "Primary", exact: true });
   await expect(nav).toBeVisible();
   let destination: string;
@@ -109,5 +110,5 @@ export const staticRoutes = [
   { path: "evaluation", title: "Evaluation and guardrails" },
   { path: "boundary", title: "Agent, deterministic code, human decision" },
   { path: "assumptions", title: "The assumptions that decide whether an agent is needed" },
-  { path: "architecture", title: "Technical architecture and the path to production" },
+  { path: "architecture", title: "How it works and how it would scale" },
 ];
