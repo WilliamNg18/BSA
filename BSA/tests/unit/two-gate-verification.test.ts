@@ -204,4 +204,19 @@ describe("authoritative two-gate source verification", () => {
     expect(store().caseRevisions[d][0]).toEqual(before);
     expect(store().itemVerification[d]).toEqual(NO_VERIFICATION);
   });
+
+  it("explicit new-attempt Apply works on seeded B without approving its historical referral", () => {
+    store().setAgentEnabled(true);
+    expect(() => store().applySuggestedCorrection(b)).toThrow("operator-approved");
+    const revision = store().caseRevisions[b][0];
+    store().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, revision), purpose: "new_submission" });
+    store().applySuggestedCorrection(b);
+    expect(store().pharmacyDrafts[b].endorsementText).toContain("21/08/26");
+    expect(store().records).toHaveLength(0);
+    expect(store().lifecycles[b].state).toBe("referred_back");
+    expect(store().caseRevisions[b][0]).toBe(revision);
+    expect(() => store().resubmit(b)).toThrow("explicit new attempt");
+    store().submitItem({ ...store().pharmacyDrafts[b], caseId: b, channel: "eps" });
+    expect(store().lifecycles[b].state).toBe("released_to_pricing");
+  });
 });

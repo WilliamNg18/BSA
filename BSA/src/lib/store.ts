@@ -344,6 +344,7 @@ export const useAppStore = create<AppState>((set, get) => {
       if (typeof draft.endorsementText !== "string") throw new Error("Correction endorsement must contain text.");
       if (draft.confirmation !== undefined && typeof draft.confirmation !== "string") throw new Error("Confirmation must contain text.");
       if (draft.channel !== undefined && !["eps", "paper"].includes(draft.channel)) throw new Error("Choose a supported correction channel.");
+      if (draft.purpose !== undefined && !["new_submission", "correction"].includes(draft.purpose)) throw new Error("Choose a supported draft purpose.");
       const s = get(), revision = s.caseRevisions[caseId].at(-1)!;
       if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale; reopen the current item.");
       set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
@@ -424,10 +425,13 @@ export const useAppStore = create<AppState>((set, get) => {
       const s = get(), row = requireLifecycle(caseId, s.lifecycles), revision = s.caseRevisions[caseId].at(-1)!;
       if (!s.agentEnabled) throw new Error("Agent assistance is off; enter your correction manually.");
       const approval = s.records.filter((record) => record.caseId === caseId && (record.revision ?? 1) === revision.number).at(-1)?.approvedDraft;
-      if (row.state === "referred_back" && !approval) throw new Error("No operator-approved correction is available for this revision.");
+      const newAttempt = s.pharmacyDrafts[caseId]?.purpose === "new_submission";
+      if (row.state === "referred_back" && !approval && !newAttempt) throw new Error("No operator-approved correction is available for this revision.");
       const correction = suggestedPharmacyCorrection(currentCase(caseId), revision, s.pharmacyDrafts[caseId]);
       const event: HistoryEvent = { at: timestamp(caseId), actor: "pharmacy", from: row.state, to: row.state,
-        revision: revision.number, processStep: "correction_applied", message: "Suggested correction applied by the pharmacy; not resubmitted." };
+        revision: revision.number, processStep: "correction_applied", message: newAttempt
+          ? "Suggested correction applied by the pharmacy to a new submission draft; not sent."
+          : "Suggested correction applied by the pharmacy; not resubmitted." };
       set({
         pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: correction }),
         lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
@@ -436,6 +440,7 @@ export const useAppStore = create<AppState>((set, get) => {
     resubmit: (caseId) => {
       const s = get(), revision = s.caseRevisions[caseId]?.at(-1), draft = s.pharmacyDrafts[caseId];
       if (!revision || !draft || draft.revision !== revision.number) throw new Error("A current pharmacy correction draft is required.");
+      if (draft.purpose === "new_submission") throw new Error("Send the explicit new attempt, or prepare a correction before resubmitting.");
       get().resubmitItem({ ...draft, caseId, revision: revision.number, channel: draft.channel ?? revision.channel ?? s.itemProcesses[caseId].channel });
     },
     pharmacy: createPharmacyState((update) => set((s) => ({ pharmacy: { ...s.pharmacy, ...(typeof update === "function" ? update(s.pharmacy) : update) } })), () => get().pharmacy),

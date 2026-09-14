@@ -28,6 +28,7 @@ export interface OperatorDecisionDraft {
 export interface PharmacyCorrectionDraft {
   readonly revision: number;
   readonly channel?: ItemChannel;
+  readonly purpose?: "new_submission" | "correction";
   readonly endorsementText: string;
   readonly declaration?: PharmacyDeclaration;
   readonly paperDeclaration?: PaperDeclaration;
