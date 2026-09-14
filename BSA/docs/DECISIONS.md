@@ -2056,3 +2056,25 @@ Tie-breakers: preserved history and human decisions.
 - Question: does Release erase an earlier applied suggestion after toggling Off? Choice: retain the real current-revision applied recommendation, agent version and source/check snapshot in its human decision record without invoking the agent again. Separate production model/prompt identifiers remain proposed because the scripted kernel has none. Tie-breaker: truthful audit provenance.
 - Question: can paper draft copies drift? Choice: the shared setter derives the declaration copy from edited paper form fields while preserving explicitly entered prescriber evidence; no submitted source, verification result or history is rewritten. Tie-breaker: one draft authority.
 - Question: what source does a legacy EPS text action retain? Choice: A and B now seed explicit EPS payloads so subsequent submissions retain actual message fields beside the independent claim ledger. Tie-breaker: source-bound reconciliation rather than projection self-corroboration.
+
+## 2026-09-14: Mount the real compact tasks, not hidden operational pages
+
+Question: how should the shell enter the new walkthrough? Choice: replace the
+chapter rail with Demo mode after the actual O/P task exports are available.
+The shell mounts exactly one compact submission, claim, Type 1 or operator
+panel in the current comparison column. Ordinary Outlet content is not mounted
+behind it. Exit returns that Outlet without changing operational state.
+Tie-breakers: one action authority and honest focused presentation.
+
+Question: can a perspective change hide the current step? Choice: no. The
+Follow banner remains directly under the header, followed by the separate demo
+strip. Demo layouts sit outside the ordinary opposite-side guard. Explicit
+follow links choose the same item's task surface; the step persists. Header
+Primary navigation and Reset return only after Exit, while the one Agent switch
+and perspective switch remain. Tie-breaker: a continuous shared demonstration.
+
+Question: what should Next focus? Choice: the new step heading, at the top of
+the page, on step or route changes only. Header mode and perspective changes
+do not steal focus. Frozen submission channels are passed to P's renderer,
+without rewriting an item's latest recorded channel. Tie-breakers: keyboard
+operability and truthful source presentation.
