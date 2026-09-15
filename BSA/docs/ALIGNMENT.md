@@ -82,6 +82,47 @@ image delivery for the other requested image was blocked. No image limitation
 is converted to Pass. Live acceptance remains open.
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
+
+B final bounded proof is pinned to G
+`99abdd467d7885b387248d11bccc8c5c647e9fb2` and actual main
+`5b75e5f7711bf599b02ff9fab752781fa0685b00`: 111 selected tests and
+typecheck pass, with check passed on the unchanged canonical runtime.
+The 27-case actual-store matrix preserves full submissions, revision scans/OCR,
+all human history, channel-specific release and source-linked capture in every
+required perspective/mode. C8 seeds have recorded code checks/current gate
+results and accurate pharmacy acknowledgement, not view-created completion.
+A genuinely new Post invalidates old capture; information-only responses do not.
+
+All B-owned negative regressions are resolved. C1/C2/C5/C6/C8 have bounded
+canonical-branch state evidence, not current-main live proof. C3/C4 screen
+adoption, C7 actual UI one-second matrix and C9 screenshots/release documentation
+remain assigned to their existing owners. No branch result is a local backup
+or an ALL DONE declaration.
+
+Exact G `99abdd467d7885b387248d11bccc8c5c647e9fb2` includes source-link
+repair `c03ab21` and Part A/main. B first reran the unchanged source-linked
+capture assertion (pass), then all eight selected files (110/110) and check
+(pass). C1 capture retention, C4 actual amendment source and C5 all final-note
+negative checks now have passing canonical-branch evidence. Earlier failures
+remain historical evidence. No C7 browser/live or global consumer acceptance
+is inferred; actual main still lacks this G integration.
+
+Actual main advanced to `5b75e5f7711bf599b02ff9fab752781fa0685b00` with
+Part A and master requirement documentation. B inspected that diff and safely
+merged it, preserving G's canonical domain and main's exact header code.
+The 72 new notice-policy unit cases and typecheck pass. The full demo-shell
+file reports 102/104: two old B revision/Gate 1 expectations remain known
+consumer migration work, not a passing whole-file result. C1-C9 runtime/live
+classification is unchanged by the header-only implementation on main.
+
+Repair verification at exact G `cdd436b906f397a1d210603e4cef3794812c0a59`:
+all eight form-value communication guards now reject atomically, in both
+modes and all four APIs; the actual amendment scan now contains its supplier
+fields. The nine original negative assertions are unchanged and pass. The
+combined selection is 107 passed, one failed: unchanged paper capture is still
+rerouted to Type 1 after an information-only response. Check passes. Original
+failed results above/below remain source-pinned history, not relabelled passes.
+
 C1 information-response refinement on `4765770`: the facade already preserves
 the exact submission, OCR and human-confirmed basis, but actual routing re-enters
 Type 1 after `sendConfirmation`. A new G-requested negative test reproduces
