@@ -121,6 +121,31 @@ describe("mounted desktop demo with real compact panels", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
+  it.each((["both", "pharmacy", "nhsbsa"] as const).flatMap((perspective) =>
+    [null, ...DEMO_STEPS.map((step) => step.number)].flatMap((step) =>
+      [false, true].map((enabled) => ({ perspective, step, enabled }))))
+  )("keeps one exact global notice policy in $perspective, step $step, Agent $enabled", ({ perspective, step, enabled }) => {
+    const state = useAppStore.getState();
+    state.setPerspective(perspective);
+    state.setDemoStep(step);
+    state.setAgentEnabled(enabled);
+    const before = getDomainSnapshot();
+    const html = shell("/");
+    const outcome = "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides.";
+    expect(html.split(outcome).length - 1).toBe(enabled ? 1 : 0);
+    expect(html.split("All data is synthetic").length - 1).toBe(1);
+    expect(html.slice(html.indexOf("<footer"))).toContain("All data is synthetic");
+    expect(html).toContain("Session only");
+    expect(html).toContain("No payments calculated or approved");
+    expect(html).not.toMatch(/data-disclaimer|synthetic-disclaimer|data-principle|Synthetic cases|Synthetic demonstration data throughout/);
+    expect(html.match(/role="switch"/g)).toHaveLength(1);
+    if (enabled) {
+      expect(html.indexOf("data-agent-outcome")).toBeGreaterThan(html.indexOf("</header>"));
+      expect(html.indexOf("data-agent-outcome")).toBeLessThan(html.indexOf("<main "));
+    }
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
   it.each(["both", "pharmacy", "nhsbsa"] as const)("shows same D on either follow route without a perspective guard in %s", (perspective) => {
     const state = useAppStore.getState();
     state.setPerspective(perspective);

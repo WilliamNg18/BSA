@@ -54,11 +54,13 @@ the raw assessment's proposal on the operator side.
 
 ## Purpose and principle
 
-Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit
+Current scope is Tasks 25-40: a desktop-only eleven-step demonstration, explicit
 operator/pharmacy action panels, a persistent followed item and two verification
 gates. Verify at 1280 and 1440 px; capture new screenshots at 1440 px only.
 The owner explicitly removed mobile/tablet layouts, navigation and test/capture
-coverage. Follow the 14 September contracts in DECISIONS before any older rule.
+coverage. The 15 September Parts A-C addition explicitly authorises the new
+wrong-strength and paper-incomplete cases and supersedes older case, header,
+referral and re-check contracts below. Decision authority and Live first remain.
 
 ## Vision
 
@@ -67,17 +69,33 @@ This is a proof of concept showing the art of the possible with agentic AI on on
 The header toggle is the story. Off is Today: what NHSBSA and the pharmacy have now. On is With the agent: the same step, solved. Every step shows both, side by side.
 Both perspective is the guided walkthrough: the problem in numbers (over 100 million items a month; most priced with no person; roughly four per cent touched by staff; 85,000 a month referred back), what they have now, what they are trying to achieve, then the agentic outcome step by step.
 Wherever the agent is On and the item is not automatic, a case is built, the agent advises, and one button acts on the advice: at the pharmacy, Apply suggested correction then Send or Resubmit; at NHSBSA, Apply suggestion then Release to pricing or Refer back. The agent never presses the final button.
-The cycle is live and shared: submit from the pharmacy and the item appears in NHSBSA's queue; satisfied at both gates means completed with no operator action and the pharmacy sees Paid on the normal schedule (released to existing pricing; the agent pays nothing); not satisfied means NHSBSA is notified, the operator opens a case with image, extracted fields, evidence and recommendation, applies the fix or refers back, and the pharmacy sees exactly why. Following a case shows the same item at every point; switching perspective shows exactly what that side sees, without Reset.
+The cycle is live and shared: submit from the pharmacy and the item reaches NHSBSA; EPS satisfied at both gates is released to existing pricing with no operator action and the pharmacy sees Paid on the normal schedule (the agent pays nothing); paper always needs the operator's release press. Not satisfied means NHSBSA is notified, the operator opens a case with image where applicable, extracted fields, evidence and recommendation, prepares a decision or refers back, and the pharmacy sees exactly why. Following a case shows the same item at every point; switching perspective shows exactly what that side sees, without Reset.
 Four real cases only, playable end to end and re-playable; everything else is labelled background.
 
-The four playable examples are synthetic: EPS complete `EX-24107`, EPS missing
-date `EX-24112`, wrong-but-complete-looking EPS `SYN-FQ123-MISMATCH`, and unreadable
-paper `EX-24123`. C and F are fixed unclickable background; E's rule-only behaviour
-is illustrated within complete EPS Today. All other playable seeds are removed.
+The four required playable examples are synthetic: complete EPS `EX-24107`,
+wrong-strength EPS `SYN-FQ123-MISMATCH`, unreadable paper with a declaration
+`EX-24123`, and paper with an incomplete endorsement `EX-24112`. The last case
+uses a missing brand/manufacturer for a generic with several suppliers, with
+NCSO correctly initialled and dated. All underlying scenario, image,
+declaration and claim dates are correct. A missing-date headline is retired;
+initialled-and-dated remains a Tariff requirement check, not a headline case.
+C and F are fixed unclickable background; E's rule-only behaviour is
+illustrated within complete EPS Today. No fifth playable case is introduced.
 Historic six-case records and domain regression evidence are not rewritten.
-The latest four-case instruction supersedes the earlier ten-item seed proposal.
+The latest four-case instruction supersedes the earlier four- and ten-item sets.
 Paid means the existing pricing path and normal schedule, not a payment performed
 or approved by this prototype. Failed gates never imply automatic completion.
+ALIGNMENT distinguishes these requirements from what is actually on main and
+live; a published model or interface contract is not deployed acceptance.
+
+For the wrong-strength example, the prescription and independent supply record
+are Amlodipine 10mg tablets, 28; the selected EPS pack is 5mg tablets, 28.
+Today can price the known selected pack automatically as endorsed, with no
+processing-team review; discovery needs a later audit or query. With the agent,
+Gate 1 names the strength mismatch and the pharmacy's card proposes the actual
+10mg pack with an exact preview. If sent uncorrected, Gate 2 prevents automatic
+release. Keep "this is the proof the agent does not rubber-stamp" on the step.
+No proposed price or payment calculation is invented when changing the pack.
 
 The eleven-step order remains. The former readable-paper step becomes the
 unreadable paper's pharmacy declaration/submission; the next step shows that
@@ -88,6 +106,22 @@ there only, with built/proposed/assumption labels. Vendor names are permitted
 only in its single "Reference mapping, one example" table; all other interface
 copy stays capability-based. ALIGNMENT tracks drift against actual main and
 in-flight commits; a contract decision alone is not deployed acceptance.
+
+### Header and footer
+
+Part A removes the global synthetic notice bar, its collapse control and its
+presentation state. "All data is synthetic" appears once in the footer, small
+and muted; factual per-item synthetic-source labels remain.
+Replace the old global principle bar with the following exact line only when
+Agent is On:
+
+> Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides.
+
+It is one line directly below the header, identical on every route, perspective
+and demo step, with its bounding-box centre within 2 CSS pixels of the content
+column centre at 1280 and 1440 px. Off removes the line and reserved space.
+Use toggle fading and reduced-motion crossfade without clipping, tiny text or
+another Agent control. These requirements supersede the older global notice.
 
 ### Recommendation always visible and concrete
 
@@ -100,11 +134,16 @@ Complete items say what is complete and that nothing needs adding. A missing
 provision or unknown value is disclosed, never fabricated. Non-item reference,
 pipeline and monthly screens do not invent a selected prescription.
 
-Preview and Apply use one shared, source-bound patch. Dates come from the
+Preview and Apply use one shared, source-bound patch. Correct dates come from the
 dispensing date; manufacturer, pack and form suggestions cite actual product
 evidence. An unknown invoice price remains a required human input with a
 placeholder, not a value inferred from the claim or an invented invoice.
 Applying a suggestion remains distinct from sending, resubmitting or deciding.
+The exact proposed value and corrected preview are pharmacy-only, labelled
+"your agent's suggestion from your records". The NHSBSA card and outbound note
+name the field, rule and request for accurate information, never the proposed
+correct value. Factual as-submitted, prescribed, supplied, scan and extraction
+evidence is not redacted or replaced by that note-wording restriction.
 
 The unreadable-paper demonstration has explicit scanner-preview and complete/
 missing-declaration preparation controls. They prepare a synthetic draft, never
@@ -161,11 +200,41 @@ product or documentary names, or em dashes. Task 37 permits concrete services
 only in its single labelled reference-mapping table. Required process names and
 synthetic prescription content remain permitted, as recorded in DECISIONS.
 
+## EPS error evidence
+
+Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
+review and meta-analysis*. Research in Social and Administrative Pharmacy
+2024;20(1):1-9. DOI: https://doi.org/10.1016/j.sapharm.2023.10.003;
+PubMed: https://pubmed.ncbi.nlm.nih.gov/37848350/.
+Stream W verified the original abstract's 62 studies, search from January 2010
+to September 2023, and pooled dispensing-error prevalence of 1.6 per cent
+(95 per cent CI 1.2 to 2.1). Required label:
+"study on dispensing errors, used to make the scenario realistic; not an NHSBSA claim statistic".
+The owner's supplied subtype counts (wrong strength 39, wrong medication 44,
+wrong quantity 34) and ranking remain pending independent full-text verification;
+the abstract's 44 hospital studies do not verify the wrong-medication count.
+Do not present an unverified subtype claim as independently verified evidence.
+
+NHSBSA, *Endorsing correctly in EPS: actual medicinal product pack*:
+https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack.
+W verified its public explanation that an endorsed pack with a dm+d price can
+be processed automatically without processing-team review and reimbursed as
+endorsed rather than as supplied, including an incorrect pick-list selection.
+Use its verified short quotation with the label "public, NHSBSA".
+This supports the synthetic mechanism, not an NHSBSA error prevalence estimate.
+
+The separate optional pack/strength-mismatch assumption defaults to one per
+cent of total submitted claim volume, not the 85,000 referral subset and not
+the study's 1.6 per cent. Its With row is labelled estimate and is non-additive
+to the existing referral model until overlap is defined. Existing cohort and
+297.5-hour defaults remain unchanged.
+
 ## Current desktop contracts
 
 Gate 1 checks typed EPS or declared paper against the dispensing-month provision.
 Gate 2 independently reconciles what arrived with source evidence and the claim.
-Only both passing and reconciled can produce automatic `released_to_pricing`.
+Assisted EPS requires both passing and reconciled for automatic
+`released_to_pricing`. Paper never takes that automatic release path.
 Unreadable or mismatched source evidence still needs people. The header selects
 the proposal for a human-initiated attempt; toggling never rewrites old release
 history. The user explicitly approved distinct labels for human releases:
@@ -173,7 +242,9 @@ history. The user explicitly approved distinct labels for human releases:
 operator Release button. No release here calculates or approves a payment.
 The owner also explicitly approved Off human release after the existing
 deterministic checks and explicit human judgement; both proposed gates remain
-`none`. Only the automatic path requires both proposed gates to pass.
+`none`. Today EPS automatic pricing follows the known selected priced pack,
+without claiming the proposed gates passed or detected a strength mismatch.
+An explicit later audit/query, not navigation or toggling, can reopen that item.
 
 One store also holds revision-bound operator and pharmacy drafts, current
 `itemVerification`, and presentation-only `demoStep`. `DEMO_STEPS` is the frozen
@@ -229,39 +300,56 @@ Do not infer acceptance from CI.
 
 ## Process model
 
-### Task 40 fidelity, scanner and corrected recheck contract
+### Tasks 39-40: fidelity, scanner evidence and re-check release
 
-The latest Part C contract supersedes the older manual-EPS-recheck rule below.
-NHSBSA displays the exact last pharmacy submission read-only under **As submitted
-by the pharmacy**. EPS retains every sent message field; paper retains the typed
-declaration and its revision-pinned synthetic scan. Human capture is separate
-derived evidence and never edits that submission. Only an explicit pharmacy
-resubmission supplies a new corrected revision.
+These are the latest required contracts; ALIGNMENT records implementation and
+live-verification gaps rather than assuming they are already deployed.
 
-Paper's three columns are **Pharmacy's declaration (as typed)**, **Scan as the
-high-speed scanner sees it**, and **Extracted by character recognition
-(hypothetical)**. Per-field extraction values/confidence carry **synthetic;
-illustrates what NHSBSA's capture would produce**. Unreadable capture requires
-Type 1 confirmation before Type 2. Matching fields do not replace deterministic
-Tariff checks. Any scanned-paper release still requires the operator's press.
-
-Outbound NHSBSA notes name the field and rule and request accuracy, never the
-proposed corrected value. Exact source facts remain visible as evidence.
-Concrete correction/preview belongs only in the pharmacy's own suggestion card.
-Manual as well as generated outbound notes are checked at the final action;
-unsafe text produces a clear error, never a silent rewrite.
-
-Corrected resubmission requires **I confirm the corrected information is
-accurate**, bound to the current revision and exact corrected payload in both
-toggle modes. Off uses manual corrections, not hidden assistance. Editing or
-Apply invalidates acknowledgement. Satisfied corrected EPS proceeds to existing
-pricing without an operator; satisfied corrected paper is ready for one human
-Release. Every submission, referral reason, acknowledgement, resubmission and
-release remains append-only with its actual human or code actor.
-
-These are required contracts, not claims that the old runtime or live site
-already satisfies them. G owns canonical integration and historical seed states;
-the screen owners adopt the shared contracts before V's exact live verification.
+- The operator's "As submitted by the pharmacy" block is a read-only exact
+  replica of the last submission object. EPS includes all fields actually sent;
+  paper includes the exact typed declaration and its scan. NHSBSA capture and
+  interpretation are separate evidence, never edits to that submission.
+- Paper always reaches NHSBSA. "Declaration complete" and "Declaration missing
+  information" prepare a full declaration or two missing non-date fields.
+  They never Post implicitly. Post remains enabled despite incomplete advice;
+  its receipt explains scanning and the required operator press.
+- Paper evidence is shown in three labelled columns: "Pharmacy's declaration
+  (as typed)", "Scan as the high-speed scanner sees it", and "Extracted by
+  character recognition (hypothetical)". Per-field recognition values and
+  confidence are labelled "synthetic; illustrates what NHSBSA's capture would
+  produce". Unknown OCR is uncertainty, not an invented incorrect source date.
+- Unreadable capture requires Type 1 confirmation before Type 2. Preserve the
+  raw scan/OCR and label separate human-confirmed effective evidence; do not
+  describe an unreadable source as independently machine-reconciled.
+  Readable high-confidence blanks are missing requirements, not unreadability.
+- NHSBSA referral notes name a field, cite its rule and request accuracy, never
+  give the proposed correct value. For the chosen paper case: "Brand or
+  manufacturer required for a generic with more than one supplier; please
+  state the product supplied". Pharmacy suggestions come from pharmacy records
+  independently of whether NHSBSA used an agent-authored note.
+  Manual as well as generated outbound notes are checked at the final action;
+  unsafe text produces a clear error, never a silent rewrite.
+- Referred pharmacy items show that note, the pharmacy's own concrete suggestion
+  and preview, Apply, and "I confirm the corrected information is accurate".
+  This acknowledgement is required in both modes, bound to the revision and
+  complete correction payload, and invalidated by any later edit or Apply.
+  Off uses manual correction, not a hidden agent action.
+- A resubmission creates a new immutable pharmacy source revision and triggers
+  a real re-check. Compatible EPS is released automatically to existing pricing;
+  compatible paper is "Resubmitted, ready to release" until the operator presses
+  Release once. Prefilled decision fields are not a decision.
+- A corrected paper revision may contain an explicitly labelled synthetic
+  acknowledged pharmacy amendment. It does not rewrite an earlier unreadable
+  scan, recycle an old capture as a new human action, or claim that old OCR read
+  newly supplied information.
+- An Off wrong-strength item first follows Today automatic pricing as endorsed.
+  A real, explicitly recorded later audit/query can reopen it for the requested
+  correction cycle; toggling or navigation cannot manufacture that discovery.
+- Both and single perspectives use the same actual state and Follow history.
+  Pharmacy Paid, Action needed and Waiting on NHSBSA tiles show simultaneous
+  plausible states from truthful seeded history and subsequent store actions,
+  not Reset or narrative navigation. Human actions and code releases have
+  distinct, accurate actors; no payment is calculated or approved here.
 
 The owner's 13 September process brief supersedes the earlier referral-only
 workload model for Tasks 19-24. Treat the following supplied public figures as
@@ -285,14 +373,12 @@ fixed project context, not as a claim of fresh external source verification:
   around GBP 150 per pharmacy. Payment context is 80% advance and a balance
   when priced. The demo calculates or approves no payment.
 
-The new code outcomes are `auto_priced`, `type1_capture`, `type2_endorsement`
-and `referred_back`; channels are `eps` or `paper`. Auto-priced items never
-appear in an operator queue. Case A becomes automatically priced; B retains
-referral/July sufficiency; C retains unresolved conflict; E remains no-model
-clearance; F retains its original record. D deliberately changes: paper capture
-stays unreadable, but a human-confirmed compatible pharmacy declaration can
-support a proposed built-case path. Unreconciled declarations still abstain.
-Never present declared fields as read from the poor image.
+The code outcomes include `auto_priced`, `type1_capture`, `type2_endorsement`
+and `referred_back`; channels are `eps` or `paper`. Automatic items appear in
+automated counts/records, never as operator work rows. The latest four-case,
+audit, acknowledgement and re-check contracts above supersede the older
+case-specific routing rules. Unreconciled evidence still prevents verified
+automatic release. Never present declared fields as read from a poor image.
 
 ## One state
 
@@ -364,19 +450,24 @@ NHSBSA evidence assembly after an exception. Neither is a live model service.
   Generic legacy submissions preserve the recorded channel. Only explicit
   channel-bearing submissions change it. Seed channels derive from the claim
   message rather than contradictory legacy display text.
-  Corrected human referrals require explicit recheck, including after escalation
-  or a further information request. Only a current-revision human-paid outcome
-  clears that authority. Do not recompute a pending recheck as untouched pricing.
+  Corrected referrals require an actual re-check, including after escalation
+  or a further information request. A compatible EPS re-check can release by
+  code; paper still requires the operator's press. Do not turn a pending
+  re-check into untouched pricing or erase the earlier human referral.
   New EPS draft previews use a prospective submission revision, never old
   capture, recheck or human-paid evidence.
 * Lifecycle contracts: submitted, in_review, information_requested,
   referred_back, resubmitted, paid, escalated. Distinct from existing case states.
-  Eight Hillcrest seed items cover the requested cycle. Submitted and Escalated
+  The four current Hillcrest items cover the requested cycle. Submitted and Escalated
   remain supported states created through explicit actions, not extra seed rows.
   F's original decision remains alongside its later human-confirmed correction.
   Paid is synthetic, attributed to existing pricing.
 
-## Six canonical cases
+## Historical six-case contract
+
+This table records the earlier contract, not the active Tasks 39-40 scenario
+set. The owner explicitly replaced its date-headline and re-check outcomes
+above. Preserve old Git evidence without displaying it as a current scenario.
 
 | Case | ID | Fixed behaviour |
 | --- | --- | --- |
