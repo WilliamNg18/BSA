@@ -2248,3 +2248,23 @@ the canonical shared correction helper for strength and paper values. Current
 four-case, audience and G runtime selection passes 29 tests plus typecheck.
 P's isolated explicit pharmacy audience prop is included; wider consumer
 migration and full CI/live acceptance remain pending.
+
+## Task 40 O mounted-source checkpoint
+
+O now mounts G's immutable submitted-revision facade in the case pack and U's
+three-column paper comparison in full-width case packs/ordinary Type1 views.
+The complete submitted revision remains available in a real read-only record
+disclosure; visible EPS fields distinguish endorsed products from actual supply.
+Operator cards explicitly use R's operator audience. The duplicate legacy
+outbound draft is removed, not the source evidence or historical records.
+
+Explicit later-audit controls call G with the current revision and a human
+reason. Actual corrected-paper resubmissions expose the canonical prefilled
+Release action; choosing another disposition requires Start review first.
+Current CaseHeader/queue labels receive G's process metadata.
+
+Typecheck, targeted source lint and 42 new fidelity/scanner tests pass.
+Existing O unit-fixture migration is still in progress; no full suite or
+browser pass is claimed. G's reported seeded-ready draft and final-note
+guard follow-ups remain integration dependencies. Compact demo evidence
+still needs D's full-width placement; no half-width three-column claim.

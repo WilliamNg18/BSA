@@ -2521,3 +2521,11 @@ Question: how should callback integrity remain exact across Linux and Windows ch
 - Question: may the Card compute a different operator note from the one Apply writes? Choice: verify equality between the audience projection and the canonical operator draft actually copied by the store; tie-breaker: exact human preview/application contract.
 - Question: which paper evidence does a recorded card reconcile? Choice: G's pure facade receives the selected revision and its recorded capture, never the latest mutable process; tie-breaker: pinned source fidelity.
 - Question: can readable paper imply automatic release? Choice: no; all paper recommendations require the operator's press, while a resubmitted ready item uses its existing prepared decision rather than inventing another Apply; tie-breaker: C4/C6 channel authority.
+
+## Task 40 operator mounting
+
+Question: how is full submission fidelity inspectable without changing the source? Choice: render the canonical submitted fields and an exact read-only revision disclosure, with U's paper comparison separate from human effective capture; tie-breaker: immutable source fidelity.
+
+Question: can a ready paper item's alternative decision buttons call actions that require an active review? Choice: allow the existing one-press Release directly and expose Start review for another disposition, rather than silently entering a review or calling an invalid action; tie-breaker: every human action remains explicit and real.
+
+Question: should a legacy case-pack draft remain beside the new safe operator note? Choice: remove that duplicate proposed outbound draft and keep R/G's exact safe preview/application path; read-only source facts and historical records remain unchanged; tie-breaker: C5 and one decision authority.
