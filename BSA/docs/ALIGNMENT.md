@@ -110,6 +110,14 @@ main actions or updated four-case historical seeds.
 
 ### Canonical action integration
 
+Functional G checkpoint now provides `getAsSubmitted`, `getPaperReconciliation`,
+`evaluatePaperSubmission`, `getCorrectionAcknowledgementValid` and paper-ready
+state metadata. Exact source snapshots remain separate from capture; acknowledged
+resubmission creates a separately labelled synthetic amendment. Twelve actual
+runtime tests pass, including Off audit, both-mode EPS recheck, paper release,
+safe-note rejection and no navigation mutation. Consumer and live alignment
+are not inferred from these unit results.
+
 ACK enforcement now checks revision, exact payload, current draft and an actual
 pharmacy acknowledgement event. Withdrawal and edits invalidate authority;
 history remains append-only. Explicit EPS audit reopening is a recorded human

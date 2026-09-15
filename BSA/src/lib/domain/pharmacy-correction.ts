@@ -8,6 +8,7 @@ import { interpretPharmacyText, PHARMACY_STEPS, type PharmacyCheck } from "./pha
 import { productByCode, PRODUCTS } from "./reference";
 import { evaluateItemVerification } from "./verification";
 import { versionForDate } from "./tariff";
+import { applyEpsStrengthCorrection, evaluateEpsStrength } from "./eps-strength";
 
 /** Keep the paper form and its derived declaration copy in one draft, not two authorities. */
 export function synchronisePharmacyDraft(draft: Omit<PharmacyCorrectionDraft, "appliedSuggestion">, revision: CaseRevision): Omit<PharmacyCorrectionDraft, "appliedSuggestion"> {
@@ -37,7 +38,8 @@ export function initialisePharmacyDraft(current: ExceptionCase, revision: CaseRe
   };
   return immutable({ revision: revision.number, channel, endorsementText: paperDeclaration.endorsementText, paperDeclaration,
     declaration: { fields: { ...paperDeclarationFields(paperDeclaration),
-      ...(revision.declaration?.fields.prescriber ? { prescriber: revision.declaration.fields.prescriber } : {}) },
+      ...(revision.declaration?.fields.prescriber ? { prescriber: revision.declaration.fields.prescriber } :
+        current.extracted.prescriber && current.extracted.prescriber.toLowerCase() !== "illegible" ? { prescriber: current.extracted.prescriber } : {}) },
     declaredAt: revision.declaration?.declaredAt ?? revision.at, provenance: "pharmacy_declaration" }, appliedSuggestion: false });
 }
 
@@ -72,6 +74,10 @@ export function previewPharmacyCorrection(current: ExceptionCase, revision: Case
   const next: { -readonly [K in keyof PharmacyCorrectionDraft]: PharmacyCorrectionDraft[K] } = structuredClone(draft);
   const eps = next.epsPrescription, paper = next.paperDeclaration;
   let changed = false;
+  if (eps?.supplyRecord && evaluateEpsStrength(eps)?.suggestion) {
+    next.epsPrescription = applyEpsStrengthCorrection(eps);
+    changed = true;
+  }
   if (eps?.items[0].dispensedCode === EPS_SUPPLY_RULE.productCode) {
     const evidence = { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer,
       packSize: EPS_SUPPLY_RULE.packSize, form: EPS_SUPPLY_RULE.form };
@@ -86,21 +92,38 @@ export function previewPharmacyCorrection(current: ExceptionCase, revision: Case
     next.endorsementText = `${next.endorsementText.trim().replace(/[ \t]+/g, " ")} ${day}/${month}/${year.slice(2)}`;
     changed = true;
   }
+  const ownRecord = current.pharmacySupplyRecord;
+  if (paper && ownRecord) {
+    const patched = { ...paper };
+    if (!paperDeclarationFields(paper).productCode && ownRecord.productCode) {
+      patched.typedProduct = ownRecord.productCode; changed = true;
+    }
+    if (paper.quantity === null && ownRecord.quantity !== null) { patched.quantity = ownRecord.quantity; changed = true; }
+    if (paper.brandManufacturer !== undefined && !paper.brandManufacturer.trim() && ownRecord.brandManufacturer) {
+      patched.brandManufacturer = ownRecord.brandManufacturer; changed = true;
+    }
+    next.paperDeclaration = patched;
+  }
   if (!changed) return null;
   if (next.epsPrescription) next.epsPrescription = { ...next.epsPrescription, dispenserEndorsement: next.endorsementText, claimMessageState: "submitted" };
-  if (paper) next.paperDeclaration = { ...paper, endorsementText: next.endorsementText };
+  if (next.paperDeclaration) next.paperDeclaration = { ...next.paperDeclaration, endorsementText: next.endorsementText };
   if (next.declaration) next.declaration = { ...next.declaration, fields: { ...next.declaration.fields, endorsementText: next.endorsementText,
     ...(next.paperDeclaration ? { productCode: paperDeclarationFields(next.paperDeclaration).productCode, quantity: next.paperDeclaration.quantity } : {}) } };
   if (next.declaration?.fields.productCode && !productByCode(next.declaration.fields.productCode)) throw new Error("Unknown corrected product.");
-  validateSubmissionSources({ ...next, caseId: current.id, channel: next.channel ?? revision.channel ?? "paper" }, revision.number);
-  return immutable({ ...next, appliedSuggestion: true, appliedFields: getChangedPharmacyFields(draft, next) });
+  const synchronised = { ...next, ...synchronisePharmacyDraft(next, revision) };
+  validateSubmissionSources({ ...synchronised, caseId: current.id, channel: next.channel ?? revision.channel ?? "paper" }, revision.number);
+  return immutable({ ...synchronised, appliedSuggestion: true, correctionAcknowledgement: undefined, appliedFields: getChangedPharmacyFields(draft, synchronised) });
 }
 
 export function getChangedPharmacyFields(before: PharmacyCorrectionDraft, after: PharmacyCorrectionDraft): NonNullable<PharmacyCorrectionDraft["appliedFields"]> {
-  const fields: ("endorsementText" | "brandManufacturer" | "packSize" | "form")[] = [];
+  const fields: NonNullable<PharmacyCorrectionDraft["appliedFields"]>[number][] = [];
+  if (before.paperDeclaration?.typedProduct !== after.paperDeclaration?.typedProduct) fields.push("typedProduct");
+  if (before.paperDeclaration?.quantity !== after.paperDeclaration?.quantity) fields.push("quantity");
+  if (before.epsPrescription?.items[0].dispensedCode !== after.epsPrescription?.items[0].dispensedCode) fields.push("dispensedCode");
   if (before.endorsementText !== after.endorsementText) fields.push("endorsementText");
   for (const field of ["brandManufacturer", "packSize", "form"] as const) {
-    if (before.epsPrescription?.supplyEvidence?.[field] !== after.epsPrescription?.supplyEvidence?.[field]) fields.push(field);
+    if ((before.epsPrescription?.supplyEvidence?.[field] ?? before.paperDeclaration?.[field]) !==
+      (after.epsPrescription?.supplyEvidence?.[field] ?? after.paperDeclaration?.[field])) fields.push(field);
   }
   return fields;
 }
@@ -113,22 +136,25 @@ export function suggestedPharmacyCorrection(current: ExceptionCase, revision: Ca
 
 /** Explicit human-selected synthetic prefill, not an interpretation of the retained scan. */
 export function preparePaperDemoDraft(current: ExceptionCase, revision: CaseRevision, variant: "complete" | "missing"): PharmacyCorrectionDraft {
-  if (current.id !== "EX-24123" || !["complete", "missing"].includes(variant)) throw new Error("Choose a supported unreadable-paper demo declaration.");
+  if (!["EX-24123", "EX-24112"].includes(current.id) || !["complete", "missing"].includes(variant)) throw new Error("Choose a supported paper demo declaration.");
   const original = caseById(current.id);
   if (!original) throw new Error("Original paper demo evidence is unavailable.");
   const date = original.extracted.dispensingDate;
   const [year, month, day] = date.split("-");
-  const endorsementText = variant === "complete" ? `NCSO JB ${day}/${month}/${year.slice(2)}` : "NCSO JB";
+  const own = original.pharmacySupplyRecord;
+  if (!own) throw new Error("The pharmacy's source record is unavailable.");
+  const endorsementText = own.endorsementText || `NCSO JB ${day}/${month}/${year.slice(2)}`;
   const draft = {
     revision: revision.number, channel: "paper" as const, purpose: "new_submission" as const,
     endorsementText, paperDeclaration: {
-      typedProduct: original.claim.productCode, quantity: original.claim.quantity, endorsementText,
+      typedProduct: variant === "missing" ? "" : own.productCode ?? "", quantity: variant === "missing" ? null : own.quantity, endorsementText,
       dispensingDate: date, declaredByPharmacy: true as const,
+      ...(own.brandManufacturer !== undefined ? { brandManufacturer: own.brandManufacturer, packSize: own.packSize, form: own.form } : {}),
     },
   };
   const prepared = synchronisePharmacyDraft(draft, revision);
   return immutable({ ...prepared, declaration: {
     ...prepared.declaration!,
-    fields: { ...prepared.declaration!.fields, prescriber: "Dr Example (synthetic demo declaration)" },
+    fields: { ...prepared.declaration!.fields, prescriber: own.prescriber },
   }, appliedSuggestion: false });
 }

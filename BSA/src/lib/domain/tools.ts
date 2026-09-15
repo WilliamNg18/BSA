@@ -94,9 +94,10 @@ export function toolRetrieveTariff(
   endorsementType: EndorsementType,
   dispensingDate: string,
   versionOverride?: string,
+  clauseId?: string,
 ): { version: TariffVersion | null; clause: TariffClause | null; call: ToolCall } {
   const version = versionOverride ? versionById(versionOverride) : versionForDate(dispensingDate);
-  const clause = version?.clauses.find((cl) => cl.endorsementType === endorsementType) ?? null;
+  const clause = version?.clauses.find((cl) => cl.endorsementType === endorsementType && (!clauseId || cl.id === clauseId)) ?? null;
   return {
     version,
     clause,

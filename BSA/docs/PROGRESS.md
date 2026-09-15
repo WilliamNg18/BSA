@@ -44,6 +44,14 @@ edits cannot forge one. Explicit audit preserves prior code-pricing history.
 Typecheck and 38 focused contract/module/action tests pass. Legacy UI consumers
 and the new channel-specific seeds/recheck behaviour remain integration work.
 
+The first functional Tasks 39/40 runtime checkpoint now passes typecheck and
+12 actual-store integration tests. It includes four correctly dated active
+cases, independent strength checks, explicit Today audit, exact ACK enforcement,
+automatic eligible EPS rechecks, paper amendment snapshots and human-only paper
+release. The shared source facades and optional mismatch store input are
+callable. Existing consumer tests still require migration; this is published
+WIP, not main/live completion.
+
 W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
 headline checker and 33 focused units from base main `6418151`. `npm run check`
 and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`

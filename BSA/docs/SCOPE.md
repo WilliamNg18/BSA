@@ -24,6 +24,12 @@ for R/G foundation integration; no shared Card edit or store fallback is used.
 
 ### G39/40 explicit-action checkpoint
 
+Functional checkpoint: the four new cases and channel-specific actual actions
+are wired. `EX-24112` has an acknowledged historical paper amendment awaiting
+human release, while complete EPS is Paid and wrong-strength EPS awaits pharmacy
+action. No navigation creates these states. Twelve targeted actual-store tests
+pass; complete current-consumer and live verification remain required.
+
 W/B pure foundations and revision-bound ACK/audit store controls are integrated
 as published WIP. Every corrected resubmission now requires accurate-current-
 payload acknowledgement in both modes. A human may explicitly reopen priced

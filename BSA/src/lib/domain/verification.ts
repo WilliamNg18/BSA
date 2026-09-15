@@ -8,6 +8,14 @@ import { EPS_SUPPLY_RULE, evaluateEpsSupply, createEpsPrescription } from "./eps
 import { interpretPharmacyText } from "./pharmacy-check";
 import { endorsementRequired, evaluateRequirements, mandatoryFieldsCheck, QUALITY_THRESHOLD, reconcile, validateCitation } from "./rules";
 import { versionForDate } from "./tariff";
+import { evaluateEpsStrength } from "./eps-strength";
+
+function paperSupply(original: ExceptionCase, fields: ExtractedFields, declared: typeof original.pharmacySupplyRecord) {
+  if (fields.productCode !== EPS_SUPPLY_RULE.productCode || fields.quantity === null) return null;
+  return evaluateEpsSupply({ ...createEpsPrescription({ ...original, extracted: fields }),
+    supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: declared?.brandManufacturer ?? "",
+      packSize: declared?.packSize ?? null, form: declared?.form ?? "" } });
+}
 
 export interface VerificationAssessment {
   readonly verification: ItemVerification;
@@ -35,6 +43,7 @@ export function evaluateItemVerification(
   validateSubmissionSources({ caseId: original.id, channel, endorsementText: typedText,
     epsPrescription: revision.epsPrescription, paperDeclaration: revision.paperDeclaration, declaration: revision.declaration }, revision.number);
   const eps = revision.epsPrescription, paper = revision.paperDeclaration;
+  const strength = eps?.supplyRecord ? evaluateEpsStrength(eps) : null;
   const declared = paper ? paperDeclarationFields(paper) : revision.declaration?.fields;
   const item = eps?.items[0];
   const typed: ExtractedFields = {
@@ -48,17 +57,17 @@ export function evaluateItemVerification(
   };
   const version = versionForDate(typed.dispensingDate), product = productByCode(typed.productCode);
   const facts = interpretPharmacyText(typed.endorsementText);
-  const supply = eps ? evaluateEpsSupply(eps) : typed.productCode === EPS_SUPPLY_RULE.productCode && typed.quantity !== null
-    ? evaluateEpsSupply(createEpsPrescription({ ...original, extracted: typed })) : null;
+  const supply = eps ? evaluateEpsSupply(eps) : paperSupply(original, typed, declared);
   const required = endorsementRequired(product, version, original.claim.amountClaimed);
-  const clause = version?.clauses.find((entry) => entry.endorsementType === (supply ? "SUPPLY" : facts.type)) ?? null;
+  const clause = version?.clauses.find((entry) => strength ? entry.id === "SYN-EPS-STRENGTH" : supply
+    ? entry.id === EPS_SUPPLY_RULE.id : entry.endorsementType === facts.type) ?? null;
   const formatSupply = supply ? [
-    { id: "brand_manufacturer", met: Boolean(eps?.supplyEvidence?.brandManufacturer.trim()) },
-    { id: "pack_size", met: Number.isSafeInteger(eps?.supplyEvidence?.packSize) && (eps?.supplyEvidence?.packSize ?? 0) > 0 },
-    { id: "presentation", met: Boolean(eps?.supplyEvidence?.form.trim()) },
+    { id: "brand_manufacturer", met: Boolean((eps?.supplyEvidence?.brandManufacturer ?? declared?.brandManufacturer)?.trim()) },
+    { id: "pack_size", met: Number.isSafeInteger(eps?.supplyEvidence?.packSize ?? declared?.packSize) && (eps?.supplyEvidence?.packSize ?? declared?.packSize ?? 0) > 0 },
+    { id: "presentation", met: Boolean((eps?.supplyEvidence?.form ?? declared?.form)?.trim()) },
   ] : undefined;
-  const requirements = evaluateRequirements(clause, facts, typed, formatSupply);
-  const needsClause = supply !== null || required.required !== false || facts.present;
+  const requirements = evaluateRequirements(clause, facts, typed, strength ? [{ id: "selected_pack_matches", met: strength.complete }] : formatSupply);
+  const needsClause = strength !== null || supply !== null || required.required !== false || facts.present;
   const citation = Boolean(version && (!needsClause || validateCitation(clause, version, clause?.text ?? "") === true));
   const gate1Checks = [
     check("Typed product identified", Boolean(product), "Typed fields are declarations, not independent source readings."),
@@ -67,25 +76,28 @@ export function evaluateItemVerification(
     check("Paper declaration supplied", channel !== "paper" || Boolean(declared), "Declared by the pharmacy, not read from the form."),
     check("Supported typed endorsement", supply !== null || !facts.present || facts.type === "NCSO", "Other endorsement types require human interpretation."),
     ...requirements.map((entry) => check(entry.requirement.label, entry.met === true, entry.met === true ? "Format requirement met" : "Missing or unknown")),
+    ...(strength?.checks ?? []),
   ];
-  if (needsClause) gate1Checks.push(check("Applicable requirements available", requirements.length > 0, clause?.id ?? "No clause"));
+  if (needsClause && !strength) gate1Checks.push(check("Applicable requirements available", requirements.length > 0, clause?.id ?? "No clause"));
 
   const confirmed = capture?.revision === revision.number ? capture : null;
-  const readable = original.imageQuality >= QUALITY_THRESHOLD &&
-    Math.min(original.extracted.productConfidence, original.extracted.quantityConfidence, original.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
+  const scan = revision.paperSource?.scan ?? original;
+  const readable = scan.imageQuality >= QUALITY_THRESHOLD &&
+    Math.min(scan.extracted.productConfidence, scan.extracted.quantityConfidence, scan.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
   const source: VerificationAssessment["source"] = channel === "eps" ? "received_eps" : confirmed ? "human_capture" : readable ? "readable_scan" : "unreadable_scan";
   const arrived: ExtractedFields = channel === "eps" ? typed : confirmed ? {
     ...original.extracted, ...confirmed.fields, prescriber: confirmed.fields.prescriber?.trim() || original.extracted.prescriber,
     productText: productByCode(confirmed.fields.productCode)?.name ?? original.extracted.productText,
     dispensingDate: typed.dispensingDate,
-  } : original.extracted;
+  } : scan.extracted;
   const sourceVersion = versionForDate(arrived.dispensingDate), sourceProduct = productByCode(arrived.productCode);
   const arrivedFacts = interpretPharmacyText(arrived.endorsementText);
-  const sourceSupply = eps ? evaluateEpsSupply(eps) : arrived.productCode === EPS_SUPPLY_RULE.productCode && arrived.quantity !== null
-    ? evaluateEpsSupply(createEpsPrescription({ ...original, extracted: arrived })) : null;
+  const sourceStrength = eps?.supplyRecord ? evaluateEpsStrength(eps) : null;
+  const sourceSupply = eps ? evaluateEpsSupply(eps) : paperSupply(original, arrived, confirmed?.fields ?? revision.paperSource?.fields);
   const sourceRequired = endorsementRequired(sourceProduct, sourceVersion, original.claim.amountClaimed);
-  const sourceClause = sourceVersion?.clauses.find((entry) => entry.endorsementType === (sourceSupply ? "SUPPLY" : arrivedFacts.type)) ?? null;
-  const sourceNeedsClause = sourceSupply !== null || sourceRequired.required !== false || arrivedFacts.present;
+  const sourceClause = sourceVersion?.clauses.find((entry) => sourceStrength ? entry.id === "SYN-EPS-STRENGTH" :
+    sourceSupply ? entry.id === EPS_SUPPLY_RULE.id : entry.endorsementType === arrivedFacts.type) ?? null;
+  const sourceNeedsClause = sourceStrength !== null || sourceSupply !== null || sourceRequired.required !== false || arrivedFacts.present;
   const sourceCitation = Boolean(sourceVersion && (!sourceNeedsClause || validateCitation(sourceClause, sourceVersion, sourceClause?.text ?? "") === true));
   const knownSource = channel === "eps" || Boolean(confirmed) || readable;
   const declarationAgrees = channel === "eps" || Boolean(!declared && confirmed?.provenance === "human_capture") || Boolean(declared && arrived.productCode === declared.productCode &&
@@ -93,29 +105,33 @@ export function evaluateItemVerification(
     (confirmed ? confirmed.declarationReconciled || confirmed.provenance === "human_capture" && (!enabled || confirmed.assistanceEnabled === false)
       : arrived.dispensingDate === typed.dispensingDate));
   // An EPS projection's claim copy is not independent evidence. Retain the original ledger.
-  const ledgerAgrees = Boolean(productByCode(arrived.productCode)) && arrived.productCode === original.claim.productCode &&
-    arrived.quantity === original.claim.quantity;
+  const ledgerAgrees = sourceStrength ? sourceStrength.complete : Boolean(productByCode(arrived.productCode)) &&
+    arrived.productCode === original.claim.productCode && arrived.quantity === original.claim.quantity;
   const concession = sourceVersion?.concessions.find((entry) => entry.productCode === arrived.productCode);
   const sourceConflicts = reconcile(arrived, original.claim.quantity, original.claim.productCode,
     original.claim.amountClaimed, sourceProduct, concession?.price ?? null);
-  const packAgrees = !sourceSupply || eps?.supplyEvidence?.packSize === sourceProduct?.packSize &&
-    eps?.supplyEvidence?.form.trim().toLowerCase() === EPS_SUPPLY_RULE.form;
-  const amountAgrees = Number.isFinite(original.claim.amountClaimed) && original.claim.amountClaimed >= 0 &&
+  const receivedSupply = eps?.supplyEvidence ?? confirmed?.fields ?? revision.paperSource?.fields;
+  const packAgrees = !sourceSupply || receivedSupply?.packSize === sourceProduct?.packSize &&
+    receivedSupply?.form?.trim().toLowerCase() === EPS_SUPPLY_RULE.form;
+  const amountAgrees = sourceStrength ? Boolean(sourceProduct && Number.isFinite(sourceProduct.basicPrice) && sourceProduct.basicPrice >= 0) :
+    Number.isFinite(original.claim.amountClaimed) && original.claim.amountClaimed >= 0 &&
     !sourceConflicts.some((entry) => entry.material) &&
     Boolean(sourceProduct && Math.abs(original.claim.amountClaimed - (concession?.price ?? sourceProduct.basicPrice)) <= 0.005);
   const reconciled = knownSource && declarationAgrees && ledgerAgrees && packAgrees && amountAgrees;
-  const receivedRequirements = evaluateRequirements(sourceClause, arrivedFacts, arrived, sourceSupply?.checks);
+  const receivedRequirements = evaluateRequirements(sourceClause, arrivedFacts, arrived,
+    sourceStrength ? [{ id: "selected_pack_matches", met: sourceStrength.complete }] : sourceSupply?.checks);
   const gate2Checks = [
     check("Received source is readable or human-confirmed", knownSource, source),
     check("Received source agrees with declaration", declarationAgrees, channel === "eps" ? "Received EPS fields compared with independent ledger below" : "Scan or explicit human capture compared with declaration"),
     check("Independent claim product and quantity agree", ledgerAgrees, "Retained claim ledger, not a projection of submitted fields"),
     check("Product pack and presentation agree", packAgrees, "Catalogue pack checked independently of format"),
-    check("Claimed amount agrees with dated reference", amountAgrees, "Validation only; no payment calculated"),
+    check(sourceStrength ? "Selected pack has a catalogue price" : "Claimed amount agrees with dated reference", amountAgrees, "Validation only; no payment calculated"),
     check("Dated citation validated", sourceCitation, sourceClause?.id ?? (sourceCitation ? "No endorsement required under dated rules" : "Missing provision")),
     ...mandatoryFieldsCheck(arrived),
     ...receivedRequirements.map((entry) => check(entry.requirement.label, entry.met === true, "Received-source requirement")),
+    ...(sourceStrength?.checks ?? []),
   ];
-  if (sourceNeedsClause) gate2Checks.push(check("Received requirements available", receivedRequirements.length > 0, sourceClause?.id ?? "No clause"));
+  if (sourceNeedsClause && !sourceStrength) gate2Checks.push(check("Received requirements available", receivedRequirements.length > 0, sourceClause?.id ?? "No clause"));
   const pass1 = gate1Checks.every((entry) => entry.pass), pass2 = gate2Checks.every((entry) => entry.pass);
   const releaseEligible = pass2 && reconciled && (!enabled || pass1);
   return {
