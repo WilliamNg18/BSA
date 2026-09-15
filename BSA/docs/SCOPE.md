@@ -6,6 +6,19 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Reopened Part A scope: final-state audit/fade compatibility
+
+Own only test synchronization for the existing 150ms Outcome fade and 100ms
+reduced-motion crossfade. Extract the established computed-opacity/unmounted
+assertions and reuse them at final-state audit boundaries. No arbitrary delay,
+timeout increase, audit exclusion, hidden text or animation suppression is
+permitted. Route entrance frame assertions and domain/demo migration work stay
+unchanged. Controlled holds of real native animations are diagnostic negatives;
+they cannot replace an ordinary unmodified-animation audit result.
+The exact #109 failure and initial incorrect On hypothesis are preserved;
+the downloaded failing artifact is actually light-Off. Bounded verification
+and publication handoff are pending, not another full-suite or live verdict.
+
 ## Part A candidate acceptance boundary
 
 The complete 176-test header/Outcome route, perspective, width, eleven-step

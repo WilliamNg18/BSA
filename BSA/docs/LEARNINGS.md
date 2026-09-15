@@ -4,6 +4,26 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Reopened header fade audit diagnosis
+
+The inventory #109 failure at `6a238bc` initially looked like an entering On
+fade. Downloading exact `browser-test-results-1` from CI `35024931351` corrects
+that hypothesis: `light-on-axe.json` passed and `light-off-axe.json` failed on
+the Outcome text, ratio 1.03, `#fbfbfb` on `#ffffff`. Its trace confirms an
+Off toggle, a demo-panel-only opacity assertion, then axe while the header
+still exists for its exit animation. A serialized `style="opacity: 1"` is
+not sufficient evidence of computed opacity while a Web Animation overrides it.
+
+The frontend and failing test are byte-identical between `6a238bc` and main
+`5b75e5f`. Existing accessibility/header tests already wait for computed
+opacity 1 On and node removal Off. Extract that prior art rather than change
+production CSS, disable fades or weaken axe. The proposed native-animation
+hold/resume regression is explicitly diagnostic: expect its held-frame
+contrast finding and rejected settlement, then prove a clean ordinary audit
+separately. Initial trace and failed audit artifacts are preserved in session
+`files/outcome-audit-6a238bc`; no earlier release result is retrospectively
+changed. Browser proof for the new test-only correction is still pending.
+
 ## 2026-09-15: Part A complete hosted proof and bounded local follow-up
 
 Exact `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four CI shards

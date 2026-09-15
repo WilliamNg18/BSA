@@ -3,6 +3,7 @@ import type { Page, TestInfo } from "@playwright/test";
 import { captureCheckpoint, captureJson, confirmReset, expect, test } from "./fixtures";
 import { agentRoutes, perspectiveNames } from "./header-agent-helpers";
 import { DEMO_STEPS } from "../../src/lib/domain/demo-steps";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 
 const outcomeText = "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides.";
 const ordinaryRoutes = [...new Set([...agentRoutes, "/pharmacy/claims", "/missing-page"])];
@@ -18,7 +19,7 @@ async function assertNoticePolicy(page: Page, enabled: boolean) {
   await expect(page.getByRole("contentinfo")).not.toContainText("Synthetic cases");
   await expect(page.getByRole("contentinfo")).toContainText("No payments calculated or approved");
   await expect(page.getByRole("switch", { includeHidden: true })).toHaveCount(1);
-  await expect(line).toHaveCount(enabled ? 1 : 0);
+  await expectHeaderOutcomeSettled(page, enabled);
   if (!enabled) {
     const height = await page.getByRole("banner").evaluate((header) => {
       const next = header.nextElementSibling;
@@ -29,7 +30,6 @@ async function assertNoticePolicy(page: Page, enabled: boolean) {
     return;
   }
   await expect(line).toHaveText(outcomeText);
-  await expect(line).toHaveCSS("opacity", "1");
   const geometry = await page.locator("[data-outcome-text]").evaluate((text) => {
     const heading = [...document.querySelectorAll("main h1")].find((element) => element.getClientRects().length > 0);
     const content = heading?.closest(".mx-auto") ?? heading?.parentElement;

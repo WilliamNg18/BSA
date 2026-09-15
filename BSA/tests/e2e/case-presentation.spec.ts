@@ -1,4 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 import { captureJson, confirmReset, expect, test } from "./fixtures";
 import { GATHERING_STEPS, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { automaticCaseIds, cases, decisionNote, operatorAction, operatorDecision, operatorRadio, performDecision, prepareCorrectedBReview, startDemonstrationReview } from "./operator-action-helpers";
@@ -308,6 +309,7 @@ for (const screen of [{ name: "desktop", width: 1440, height: 1000, colorScheme:
         await page.getByRole("banner").getByRole("switch").setChecked(enabled);
         if (enabled && view === "pack") await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
         await page.evaluate(() => document.fonts.ready);
+        await expectHeaderOutcomeSettled(page, enabled);
         const axe = await new AxeBuilder({ page }).analyze();
         await captureJson(info, "task6-axe", axe);
         expect(axe.violations).toEqual([]);

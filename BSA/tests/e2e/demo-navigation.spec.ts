@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { enterDesktopDemo } from "./desktop-step-helpers";
 import { runGuidedReferralHandoff } from "./demo-story-helpers";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 
 test("demo Next hands the operator's actual referral to pharmacy Action needed", async ({ page }, info) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -88,6 +89,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
         expect(style.opacity).toBe("1");
         if (reducedMotion === "reduce") expect(style.transform).toBe("none");
         if (enabled && reducedMotion === "no-preference") expect(style.duration).toBe("2s");
+        await expectHeaderOutcomeSettled(page, enabled);
         const result = await new AxeBuilder({ page }).analyze();
         await captureJson(info, `${dark ? "dark" : "light"}-${enabled ? "on" : "off"}-axe`, { violations: result.violations, incomplete: result.incomplete });
         expect(result.violations).toEqual([]);

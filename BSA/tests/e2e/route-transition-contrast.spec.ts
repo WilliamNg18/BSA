@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import { captureJson, expect, test } from "./fixtures";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -73,6 +74,7 @@ for (const colorScheme of ["light", "dark"] as const) {
                 if (time < 150) expect(frame.transform).not.toBe("none");
                 else expect(frame.transform).toBe("none");
               }
+              await expectHeaderOutcomeSettled(page, enabled);
               const audit = await new AxeBuilder({ page }).analyze();
               await captureJson(info, `${route}-${time}-axe`, audit);
               frames.push({ route, ...frame });

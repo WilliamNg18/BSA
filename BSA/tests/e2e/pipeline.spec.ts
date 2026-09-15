@@ -1,4 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 import { captureCheckpoint, captureJson, confirmReset, expect, test } from "./fixtures";
 import { formatProcessItems } from "../../src/lib/domain/baseline";
 import {
@@ -151,6 +152,7 @@ for (const { width, colorScheme } of [{ width: 1440, colorScheme: "light" }] as 
       await expect(page.getByRole("region", { name: "Prescription processing paths", exact: true })).toBeVisible();
       await expect(page.locator("[data-pipeline-stage]")).toHaveCount(7);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+      await expectHeaderOutcomeSettled(page, enabled);
       const axe = await new AxeBuilder({ page }).analyze();
       await captureJson(testInfo, "axe-pipeline", axe);
       expect(axe.violations).toEqual([]);
