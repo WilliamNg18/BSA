@@ -128,11 +128,11 @@ describe("always-visible operator recommendations", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
-  it("shows a received Type 1 answer without treating free text as captured prescriber evidence", () => {
+  it.each([false, true])("shows a Type 1 answer without treating free text as captured prescriber evidence, new submission %s", (submitFirst) => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
     const source = store.caseRevisions["EX-24123"].at(-1)!;
-    store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: source.paperDeclaration!.endorsementText,
+    if (submitFirst) store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: source.paperDeclaration!.endorsementText,
       paperDeclaration: source.paperDeclaration, declaration: source.declaration });
     const revision = useAppStore.getState().caseRevisions["EX-24123"].at(-1)!.number;
     store.confirmType1({ caseId: "EX-24123", revision, provenance: "human_capture", declarationReconciled: false,
