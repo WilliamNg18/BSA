@@ -4,6 +4,29 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Task 39 source-backed wrong-strength contract
+
+- Question: why replace the date headline? Choice: the owner's explicit new wrong-strength scenario makes a plausible, complete-looking pick-list error visible while keeping all current dates correct. Tie-breaker: newest instruction; historical audit evidence remains unchanged.
+- Question: which four cases remain? Choice: preserve A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123`; repurpose `EX-24112` as brand-missing paper, not a fifth item. G/B/W agreed; G alone changes canonical shared definitions.
+- Question: what does Apply correct? Choice: only selected `dispensedCode/dispensedName`, from the known catalogue pack corroborated by immutable prescription and actual supply records. Missing or disagreeing records yield no proposed value. Tie-breaker: source authority and no medicine advice.
+- Question: is the matching rule a retrieved Tariff clause? Choice: label it a proposed cross-record matching check informed by public NHSBSA endorsement guidance; do not invent a provision or claim that the source describes this proposed gate.
+- Question: may unconfirmed study counts appear as facts? Choice: publish confirmed 62 studies and pooled 1.6% (95% CI 1.2-2.1) only; disclose that 39/44/34 and the ranking were not verified. Tie-breaker: truthful primary-source evidence.
+- Question: what feeds the mismatch estimate? Choice: a separate editable 1% assumption over total submitted claims, not the 1.6% dispensing-study prevalence or the 85,000 referral subset. Today none is a synthetic comparison, not a measured zero.
+- Question: how can W supply the CI guard without breaking other owners' work? Choice: publish the strict standalone checker and its negative tests; V hooks it into the existing root check after coordinated active-source migration. No broad whitelist and no historic record rewrite.
+## 2026-09-15: B40 fidelity and communication contract choices
+
+- G integration: correction acknowledgement requires both exact current payload metadata and its explicit pharmacy event, preventing a fabricated fingerprint from substituting for the checkbox action; tie-breaker: real human authority.
+- G integration: Off wrong-strength audit is an explicit operator reopening that preserves previous pricing history, never an automatic mismatch check or navigation side effect; tie-breaker: the owner's specified Today behaviour.
+- G integration: pharmacy suggestions come from the pharmacy's own source records, not from an operator-approved value-containing note; communication approval remains separate provenance; tie-breaker: C5/C6 separation.
+
+- Question: who edits common state? Choice: G alone integrates types/store/lifecycle/seeds; B supplies new pure modules/tests and owners adapt their screens. Tie-breaker: one authoritative state and no parallel overwrite.
+- Question: how does Off acknowledge corrections? Choice: the same explicit accuracy checkbox is required after manual editing, with no hidden agent call. Tie-breaker: human accuracy responsibility is independent of assistance.
+- Question: how is acknowledgement bound? Choice: exact canonical payload JSON plus current revision, invalidated by edits and Apply, excluding assistance/acknowledgement metadata. Tie-breaker: avoid stale approval and lossy hash collisions.
+- Question: how are outbound notes protected? Choice: structured field/rule identifiers generate notes; final actions reject protected proposed-value aliases with an explicit error, never rewrite a human note. Original evidence facts remain read-only and unchanged. Tie-breaker: preserve both fidelity and pharmacy correction authority.
+- Question: may a paper recheck auto-release? Choice: never; successful paper reconciliation only recommends a human press, while corrected EPS with both gates passing may auto-release. Tie-breaker: newest explicit channel-specific instruction.
+- Question: how can a missing readable-paper field later agree? Choice: G records a new acknowledged pharmacy amendment/source snapshot on the new revision; earlier submission/scan evidence remains immutable. Tie-breaker: corrections originate only at the pharmacy, not NHSBSA.
+- Question: does passing the new foundation mean Task 40 is complete? Choice: report its 48 passing units and check separately; actual store actions, screens and live identity remain integration gates. Tie-breaker: exact evidence rather than proxy acceptance.
+
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.
@@ -2422,6 +2445,18 @@ worker option is used. This changes optional artifact collection, not runtime
 behaviour, and does not relabel any prior deadline failure.
 
 ## 2026-09-15: Stream V adopts live-first publication
+
+Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits canonical types, store, lifecycle, references and seeds; W and B contribute isolated typed domain modules, then UI owners consume the merged contracts after the header change; tie-breaker: one store and the newest explicit ownership instruction.
+
+Question: how are the wrong-strength sources separated? Choice: keep prescribed item fields immutable, add an independent `supplyRecord`, and treat `dispensedCode`/`dispensedName` as the claim selection; derive selected strength from the catalogue, never overwrite the prescribed strength during Apply; tie-breaker: faithful source reconciliation.
+
+Question: should submission shape validation reject a known wrong-strength selection before the demo gates see it? Choice: permit known independently selected products only when a separate supply record exists, while validating each product copy and guarding retained original fields against edits; tie-breaker: show the real mismatch without allowing source fabrication.
+
+Question: what binds correction acknowledgement? Choice: the current revision and canonical exact-payload fingerprint, excluding acknowledgement and presentation metadata; any payload edit or Apply invalidates acknowledgement; tie-breaker: explicit informed human action.
+
+Question: can a draft temporarily replace immutable prescription or supply evidence? Choice: validate retained sources on draft writes as well as submission, using fixed field ordering and leaving the claim selection editable; tie-breaker: recommendations must not corroborate a forged source.
+
+Question: should the new fourth scenario introduce a fifth playable identity? Choice: preserve the four IDs and repurpose `EX-24112` as correctly dated paper with missing brand evidence; retain historical fixtures independently; tie-breaker: the authorised four-case scope.
 
 Question: how should V publish verified but incomplete work under the standing rule? Choice: push draft #94 at STATUS and at least every thirty minutes, update all five registers in the same commit, and keep completion blocked until merged green-deployed work is observed live; tie-breaker: the latest explicit instruction and truthful evidence.
 

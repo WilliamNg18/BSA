@@ -4,6 +4,81 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: EPS error evidence, primary-source verification
+
+Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
+review and meta-analysis.* Research in Social and Administrative Pharmacy.
+2024;20(1):1-9. DOI
+<https://doi.org/10.1016/j.sapharm.2023.10.003>; PMID 37848350.
+The original indexed abstract/bibliography was acquired as HTTP 200 XML:
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>.
+It confirms 62 included studies and pooled dispensing-error prevalence 1.6%
+(95% CI 1.2-2.1). January 2010 to September 2023 is the database-search
+period, not the dates of every underlying dispensing event. Settings and
+denominators differ; reported heterogeneity is I-squared 100%.
+
+Wrong-strength 39/62, wrong-medication 44 and wrong-quantity 34 are **unverified**,
+not established by the accessible abstract. The abstract's 44 is hospital-
+setting studies, not a verified wrong-medication count. Publisher full text at
+<https://www.sciencedirect.com/science/article/pii/S1551741123004552> returned
+403; public publisher API returned metadata only, and full-text view returned
+401. No access barrier was bypassed and no third-party snippet was accepted
+as source verification. The requested error-type ranking is therefore not
+asserted on screen. These proposed counts would be studies reporting types,
+not prevalence rates, even if later confirmed.
+
+Exact study label: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic".
+
+NHS Business Services Authority, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d., verified 15 September 2026:
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Direct HTTP 200 HTML. This is an unpaginated page, not a PDF. The opening
+paragraph confirms incorrect product/pack endorsements causing referred backs
+and payment delays. **Reimbursement**, paragraphs 1-2, explains that a selected
+AMPP with a dm+d price is processed automatically without processing-team
+review, and reimbursement follows what was endorsed, including an incorrect
+first pick-list selection, rather than what was supplied.
+
+Short verified quotations: "our processing team will not need to review your
+submission"; "what you have endorsed and not what you have supplied".
+Exact source label: "public, NHSBSA". The source does not provide a wrong-
+strength rate or describe this prototype's proposed two-gate matching check.
+
+W's implementation keeps the actual prescription/supply record separate from
+the selected claim. Its 33 focused units and `npm run check` pass. The missing
+TypeScript baseline was resolved by restoring the existing lockfile. No live,
+browser or backup result is inferred from these branch checks.
+## 2026-09-15: B40 actual-source audit and foundation boundary
+
+G's canonical ACK/audit checkpoint passes typecheck and 38 focused tests,
+including fabricated/stale/withdrawn acknowledgements, mode/perspective parity
+and explicit later audit reopening. The previous full source-foundation suite
+passed 1,630 tests in 93 files; that earlier pass predates new mandatory ACK
+enforcement and must not be reused as final consumer compatibility evidence.
+
+At main `641815137b36ab3e925dcc98c4738d0b150a75d1`, the existing revision
+and capture history already preserve useful evidence, but the operator view
+does not expose an exact full submission replica. `store.ts` restricts automatic
+verification release to a new submission, and explicitly routes every correction
+to human recheck. `recommendations.ts` composes outbound notes from factual
+disagreement findings, including source values. Those findings must remain as
+evidence, not be silently stripped or reused as a value-bearing outbound note.
+
+The paper preparation buttons exist and Post has no disabled prop, but current
+paper advice is NCSO-only and the source UI lacks a three-column field-confidence
+reconciliation. Seeds show Paid/referred/in-review, not an actual corrected
+recheck alongside the other states. Older passing checks therefore cannot
+establish C1-C8. The pinned branch classification is in ALIGNMENT.
+
+This worktree initially lacked TypeScript; the failed typecheck was a
+missing-dependency result. Restoring the existing lockfile added no dependency
+change. All 48 units in the five new files passed, then check passed source-copy,
+all TypeScript projects, lint and the production build. These tests cover
+exact replica equality, stale/payload ACK rejection, value-leak guards,
+paper three-source conflicts/Type 1 ordering and all 36 channel/gate/reconciliation
+combinations. They do not claim actual store-action or browser completion.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
@@ -1142,6 +1217,27 @@ deployment files remain outside V's ownership, and no recovery or equality
 result is claimed before the assigned implementation and independent proof.
 
 ## 2026-09-15: Token fingerprints must use the parser's template boundaries
+
+Tasks 39/40 integration checkpoint: an existing field named `dispensedCode`
+cannot safely serve both the immutable pharmacy supply record and the selected
+claim product when demonstrating a wrong-strength claim. Freeze explicit source
+and claim-selection semantics before wiring advice, Apply or reconciliation.
+Likewise, a revision number alone does not bind an accuracy acknowledgement to
+edited draft contents; acknowledgement must be invalidated on actual edits.
+These are contract findings, not implemented or deployed acceptance.
+
+The additive field contract passes the existing consumer typecheck. This is
+useful for parallel module work but is not runtime enforcement: an optional
+acknowledgement type alone cannot prevent a stale or unacknowledged resubmission.
+
+Source preparation passes 43 targeted tests. Shape validity and reconciliation
+are different: a known 5mg selection may be structurally valid while disagreeing
+with a retained 10mg prescription and supply record. Reject malformed copies,
+but leave the genuine supported mismatch visible to the independent gates.
+
+A source-identity guard must compare semantic fields in a fixed order, not the
+caller's object-key insertion order. Legitimate reserialisation passes while
+changed prescribed quantity, source product or supply record still fails.
 
 CI `35006154532` found one callback-integrity unit failure in all four jobs.
 The unchanged original callback produced scanner hash `4542a736...` under
