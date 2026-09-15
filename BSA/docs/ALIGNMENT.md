@@ -23,6 +23,25 @@ public/private hashes, traversal/symlink boundaries and explicit failures are
 checked; root CSP is unchanged. Canonical production backup equality and
 clean offline recovery remain unaligned until D/O's actual artifact/job proof.
 Tasks 39-40 still require their integrated consumer and live acceptance.
+## Part A audit follow-up: exact failing source and contract
+
+`6a238bc86e6f8e9d49110cad9ae5b95cc18ee26d` in #109 has no frontend source
+or failing-test delta from actual main `5b75e5f`. CI `35024931351` shard 1
+failed the no-preference demo final-state audit; other shards passed.
+Downloaded `light-on-axe.json` has zero violations, `light-off-axe.json` has
+one Outcome contrast violation, foreground `#fbfbfb` on white, ratio 1.03.
+The trace unchecks at 263381.817ms, asserts demo opacity 1 at 263487.794ms,
+starts axe injection at 263488.502ms and runs partial axe at 263571.783ms.
+No header exit completion was required. Serialized inline opacity is not
+the computed opacity of an element under a native animation.
+
+The missing contract is now explicit through the existing On computed-opacity
+1 / Off unmounted assertions. Reuse covers the failing demo audit, existing
+header/accessibility prior art, final accessibility helper, case/pipeline
+audits and route-frame audits; the route's deliberately held CSS frames remain
+untouched. Other lifecycle/migration tests remain with their existing owners.
+No runtime change is justified by this evidence. Native-animation diagnostic
+negatives and ordinary final-state proof are pending under the bounded lease.
 
 ## Part A candidate verification, exact source
 

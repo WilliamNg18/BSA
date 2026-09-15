@@ -29,6 +29,27 @@ F now owns the bounded D Home/eleven-step case-context compatibility and its
 direct legacy assertions, coordinated with G/N/S/V; D's backup work continues.
 
 ## Earlier Part A release candidate: full hosted matrix green, live pending
+## Part A follow-up: settle the header before final-state axe
+
+Reopened from inventory #109 source `6a238bc`, CI `35024931351`: its frontend
+is identical to main/live `5b75e5f`, but the demo final-state audit sampled the
+Outcome exit fade. Exact downloaded artifacts show `light-off-axe.json` failed
+contrast while `light-on-axe.json` passed; the initial On hypothesis was wrong.
+The test waited for the demo panel, not the independent header transition.
+
+This test-only change extracts the existing header/accessibility settlement
+contract: On requires computed opacity 1; Off requires no Outcome node. It
+adds that explicit wait to the failing final-state audit and directly related
+screen/route/pipeline audits, without changing their assertions or axe rules.
+Four controlled native-animation hold/resume regressions are authored as
+diagnostic negative controls, not ordinary visual acceptance. The sole port
+4332 lease is granted for one-worker, zero-retry bounded verification only.
+Ordinary unmodified-animation proof is pending. No runtime, source, case,
+domain, package, workflow or payment/clinical authority changes are included.
+Prior Part A release proof stays historical and is not relabelled by this
+newly open audit-compatibility finding. Owner actions for me: none.
+
+## Part A release candidate: full hosted matrix green, live pending
 
 Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four
 CI shards in [35015057336](https://github.com/WilliamNg18/BSA/actions/runs/35015057336),
