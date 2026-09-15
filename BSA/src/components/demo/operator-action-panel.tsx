@@ -147,7 +147,7 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
     </div>
     {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
     {recommendationError && <p role="alert" className="text-sm text-destructive">{recommendationError}</p>}
-    {readyPaper && <p role="status">{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}. Paper still requires your Release press.</p>}
+    {readyPaper && <p role="status">{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}. Press Release.</p>}
     {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} applyLabel="Apply suggestion"
       onApply={reviewing && recommendation.operatorApplyAllowed
         ? () => perform(() => { apply(caseId); noteRef.current?.focus(); }) : undefined} />}

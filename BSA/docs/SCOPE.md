@@ -878,3 +878,9 @@ findings remain explicit. Full Task 39/40 release acceptance is still pending.
 Ready-paper provenance now describes the completed reconciliation basis rather
 than promising a future check. This is a phase-copy repair only, not a new
 verification event, operator approval or release.
+
+O's executed four-test browser scope covers explicit later EPS audit and
+seeded paper one-press Release at1280/1440, with unrestricted axe. It does
+not replace U's scanner proof, V's strict timing/full-cycle procedure,
+latest-main hosted acceptance or clean offline recovery. Subsequent copy
+edits are not relabelled as the tested9d5502 artifact.
