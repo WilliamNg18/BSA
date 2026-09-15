@@ -4,6 +4,24 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Actual runtime inventory and scoped live closeout
+
+- Question: how to unblock backup work without fabricating a producer result? Choice: the coordinator takes only the static-server inventory endpoint and direct tests; D retains packaging/workflows and O independent verification. Tie-breaker: bounded parallel progress with explicit ownership, no duplicate store or infrastructure work.
+- Question: may a stored manifest stand in for actual deployed bytes? Choice: enumerate and hash actual regular files on each request; include private-file hashes but keep their content routes private. Reject symlinks, hidden/reserved entries and invalid or dirty build provenance rather than returning partial success. Tie-breaker: the exact-backup contract.
+- Question: when is a file snapshot authoritative? Choice: validate path-to-handle identity, then take the content snapshot from the opened handle; retain byte-count, during-read and final file/directory consistency checks. Tie-breaker: reliable actual-byte evidence rather than an overstrict pre-open metadata comparison.
+- Question: does live verification of the header complete the programme? Choice: close only Part A at live main `5b75e5f`; retain all Tasks 39-40 integration, live-cycle, visual and backup gates. Tie-breaker: evidence matches the claimed scope.
+- Question: how to avoid leaving G blocked on unpublished D demo compatibility? Choice: transfer only Home/eleven-step current-case bindings/copy and directly related legacy assertions to F, with an announced G/N/S/V file boundary. D retains backup packaging/workflows; the header, canonical state and source authority remain with their owners. Tie-breaker: bounded ownership-safe progress, not a gate waiver.
+## 2026-09-15: Outcome fades and final-state accessibility audits
+
+- Question: does held-animation diagnostic success establish ordinary acceptance? Choice: no; report four diagnostic negatives separately from fourteen unmodified-animation tests and their unrestricted audits, retain all initial diagnostic failures and incompletes, then hand the isolated test-only series to the coordinator for exact #109 CI. Tie-breaker: scoped evidence and no blind global rerun.
+- Question: may axe's 1:1 incomplete at an almost transparent 95%-exit frame count as a contrast negative? Choice: no; retain the failed diagnostic and sample 90% of the same native exit animation so the intended low-contrast violation is measurable. Tie-breaker: explicit evidence, not relabelling incomplete findings.
+
+- Question: why did the first held-frame negative not stay held? Choice: Motion sets native `startTime` after `animate()` returns, which resumes WAAPI; pause in the next microtask and assert `playState === "paused"`. Tie-breaker: test the actual native animation without changing production initialization or timing.
+
+- Question: remove the required fade to fix #109's audit failure? Choice: no; the downloaded failing light-Off result sampled a still-exiting header after only the demo panel settled. Require the header's actual final state before final-state axe. Tie-breaker: preserve the user's fade and truthful audit semantics.
+- Question: invent a sleep or global animation bypass? Choice: extract the existing `toHaveCSS("opacity", "1")` On and `toHaveCount(0)` Off checks into a named header helper; reuse explicitly at the directly coupled audit boundaries without increasing timeouts or filtering axe. Tie-breaker: smallest shared, observable condition.
+- Question: how to prove the helper is not an early success? Choice: diagnostically hold and resume the real native animation, assert the transitional axe contrast finding and that the helper rejects the held frame, then separately run ordinary unmodified-animation final-state audits. Tie-breaker: exact measurable proof without production hooks or changed duration.
+
 ## 2026-09-15: Part A replaces the global notice, not source evidence
 
 - Question: must the complete hosted matrix be duplicated on a contended local machine? Choice: by explicit coordinator instruction, use all-green exact-source CI `35015057336` as the authoritative complete 176-test matrix; stop the duplicate local run by its owned handle, retain interruption and the Task 13 timeout, and run that exact failed control once plus bounded 1440px motion/captures. Tie-breaker: first-merge priority with unchanged coverage and timing budgets, not a failure waiver.

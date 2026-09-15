@@ -4,6 +4,94 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Actual Part A live observation and inventory implementation
+
+Part A main `5b75e5f7711bf599b02ff9fab752781fa0685b00` deployed successfully
+in workflow `35019037216`, with green main CI `35019036998`. The coordinator
+opened the actual live root at 1440px and case trace at 1280px at
+20:30-20:34 UTC. Both modes, footer-only notice, exact 16px single-line Outcome,
+centre differences below 0.006px and zero Off gap were observed. The trace's
+Outcome had cumulative opacity 1 and no clipping. No browser console messages
+were recorded. The earlier dark reduced-motion 1440px overview was also
+actually viewed by the coordinator; A's light review is separately attributed.
+This is bounded header verification, not full-site manual visual acceptance.
+
+The first live diagnostic mistakenly read `aria-checked` from the native
+checkbox and selected an inner source footer; inspection corrected it to
+native `checked` and the global footer. The browser tool also rejected an
+artifact path outside its allowed roots. Those are retained probe/tool issues,
+not application failures. Successful JSON records are in the coordinator's
+`.playwright-mcp/part-a-live-5b75-*.json`; #104 comment 5687884022 records closeout.
+
+The new inventory endpoint's first two positive tests returned 500 at the
+pre-read path/handle metadata comparison on Windows. The implementation now
+checks file identity before reading and uses the opened handle for its content
+snapshot, retaining byte-count/during-read/final consistency guards. All 41
+static-server tests and the full source-policy/type/lint/build check pass, including the 29 existing delivery
+regressions. Fresh content/membership, private hashes, HEAD parity, strict
+headers and explicit rejection of unsafe entries/invalid provenance are covered.
+No actual production inventory, backup parity or clean offline recovery is
+claimed before this change and the producer reach main and are exercised.
+The provenance checks also reject a non-string commit rather than letting
+regular-expression coercion accept an array containing a SHA.
+## 2026-09-15: Reopened header fade audit diagnosis
+
+Final clean source `0d0837aa8a425372a8c4be6835935777a3de166a` passes check
+and 106 targeted shell/header units. The 8/8 bounded run consists of four
+controlled native-animation negatives and four ordinary demo/header tests.
+Each paused negative produces exactly one Outcome contrast violation, rejects
+the settlement helper while held, and resumes to a zero-violation final audit.
+Native durations remain 100ms reduced / 150ms normal; no hook ships in src/.
+The exact failed demo audit passes with actual, unmodified animation in both
+motion modes. A further 10/10 representative audit-consumer run passed.
+
+The fourteen ordinary tests produced 27 unrestricted axe results, zero
+violations, and eleven incomplete rule occurrences (`color-contrast` and
+`aria-prohibited-attr`). Separately, four held diagnostics intentionally have
+four contrast violations and four incomplete occurrences; four resumed
+diagnostic audits have zero violations and four incomplete occurrences.
+Neither deliberate negative violations nor incompletes are silently waived.
+Final artifacts are `files/outcome-settlement-final` and
+`files/outcome-settlement-related`; the earlier failed diagnostic directories
+remain preserved. The sole 4332 browser lease was explicitly released.
+No global/timed matrix was rerun. The final handoff changes no production,
+script, package, workflow, domain or case source from actual main `5b75e5f`;
+the parent owns #109 integration and its exact-head CI.
+
+The microtask hold works: both entry negatives passed, and exit frames were
+genuinely paused. However, a 95%-exit frame has opacity 0.00447462, which axe
+rounds to 1:1 and marks incomplete rather than violating. The exact diagnostics
+are retained in `files/outcome-settlement-corrected`. Sample 90% of the same
+native exit instead to produce a measurable contrast negative without changing
+runtime duration, weakening the negative expectation or clearing incompletes.
+
+The first clean `e3df041` bounded run passed both ordinary final-state tests
+but failed its four new diagnostic controls. Recorded `playState` was running:
+Motion's `NativeAnimationExtended` sets `startTime` after `Element.animate`
+returns, and its own source notes that this unpauses WAAPI. An immediate
+intercepted pause is therefore not a controlled frame. Queue the pause in the
+next microtask after that initialization and explicitly require paused state.
+No diagnostic failure is relabelled; `files/outcome-settlement-e3df041` retains
+the original output and both genuine ordinary passes.
+
+The inventory #109 failure at `6a238bc` initially looked like an entering On
+fade. Downloading exact `browser-test-results-1` from CI `35024931351` corrects
+that hypothesis: `light-on-axe.json` passed and `light-off-axe.json` failed on
+the Outcome text, ratio 1.03, `#fbfbfb` on `#ffffff`. Its trace confirms an
+Off toggle, a demo-panel-only opacity assertion, then axe while the header
+still exists for its exit animation. A serialized `style="opacity: 1"` is
+not sufficient evidence of computed opacity while a Web Animation overrides it.
+
+The frontend and failing test are byte-identical between `6a238bc` and main
+`5b75e5f`. Existing accessibility/header tests already wait for computed
+opacity 1 On and node removal Off. Extract that prior art rather than change
+production CSS, disable fades or weaken axe. The proposed native-animation
+hold/resume regression is explicitly diagnostic: expect its held-frame
+contrast finding and rejected settlement, then prove a clean ordinary audit
+separately. Initial trace and failed audit artifacts are preserved in session
+`files/outcome-audit-6a238bc`; no earlier release result is retrospectively
+changed. Browser proof for the new test-only correction is still pending.
+
 ## 2026-09-15: Part A complete hosted proof and bounded local follow-up
 
 Exact `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four CI shards

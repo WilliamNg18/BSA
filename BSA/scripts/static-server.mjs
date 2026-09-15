@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
-import { readFile, realpath, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { lstat, open, readFile, readdir, realpath, stat } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,11 +13,87 @@ const types = {
   ".ttf": "font/ttf", ".otf": "font/otf", ".txt": "text/plain; charset=utf-8",
 };
 
+const sameFileState = (left, right) => ["dev", "ino", "size", "mtimeNs", "ctimeNs"]
+  .every((key) => left[key] === right[key]);
+
+async function releaseManifest(root, protectedPaths) {
+  const files = [], fileStates = [], directories = [];
+  let buildBytes;
+  const visit = async (directory, prefix = "") => {
+    const state = await lstat(directory, { bigint: true });
+    if (!state.isDirectory() || state.isSymbolicLink()) throw new Error("Runtime directory must not be a symlink");
+    const names = (await readdir(directory)).sort();
+    directories.push({ directory, state, names });
+    for (const name of names) {
+      const path = `${prefix}${name}`;
+      if (name.startsWith(".") || /[\\:\0]/.test(name) || path === "release-manifest.json") {
+        throw new Error(`Unsupported runtime inventory path: ${path}`);
+      }
+      const full = resolve(directory, name);
+      const before = await lstat(full, { bigint: true });
+      if (before.isSymbolicLink()) throw new Error(`Runtime symlink is not permitted: ${path}`);
+      if (before.isDirectory()) {
+        await visit(full, `${path}/`);
+        continue;
+      }
+      if (!before.isFile() || !(await realpath(full)).startsWith(`${root}${sep}`)) {
+        throw new Error(`Runtime file escapes the regular-file boundary: ${path}`);
+      }
+      const handle = await open(full, "r");
+      try {
+        const opened = await handle.stat({ bigint: true });
+        if (!opened.isFile() || before.dev !== opened.dev || before.ino !== opened.ino) {
+          throw new Error(`Runtime file identity changed before reading: ${path}`);
+        }
+        const body = await handle.readFile();
+        if (BigInt(body.length) !== opened.size || !sameFileState(opened, await handle.stat({ bigint: true }))) {
+          throw new Error(`Runtime file changed while reading: ${path}`);
+        }
+        if (path === "build-info.json") buildBytes = body;
+        files.push({
+          path,
+          bytes: body.length,
+          sha256: createHash("sha256").update(body).digest("hex"),
+          public: !protectedPaths.has(full) && Boolean(types[extname(full)]),
+        });
+        fileStates.push({ full, state: opened });
+      } finally {
+        await handle.close();
+      }
+    }
+  };
+  await visit(root);
+  if (!buildBytes) throw new Error("Runtime build provenance is missing");
+  const build = JSON.parse(buildBytes.toString("utf8"));
+  if (!build || typeof build.commit !== "string" || !/^[a-f0-9]{40}$/.test(build.commit) || build.dirty !== false
+    || typeof build.builtAt !== "string" || !Number.isFinite(Date.parse(build.builtAt))
+    || new Date(build.builtAt).toISOString() !== build.builtAt) {
+    throw new Error("Runtime build provenance must identify a clean commit and UTC build time");
+  }
+  // Refuse a mixed deployment rather than returning a cached or partial inventory.
+  for (const { directory, state, names } of directories) {
+    const current = await lstat(directory, { bigint: true });
+    if (!current.isDirectory() || current.isSymbolicLink() || !sameFileState(state, current)
+      || JSON.stringify((await readdir(directory)).sort()) !== JSON.stringify(names)) {
+      throw new Error("Runtime directory changed during inventory");
+    }
+  }
+  for (const { full, state } of fileStates) {
+    const current = await lstat(full, { bigint: true });
+    if (!current.isFile() || current.isSymbolicLink() || !sameFileState(state, current)) {
+      throw new Error("Runtime file changed during inventory");
+    }
+  }
+  files.sort((left, right) => left.path < right.path ? -1 : left.path > right.path ? 1 : 0);
+  return { schemaVersion: 1, commit: build.commit, builtAt: build.builtAt, files };
+}
+
 export async function startStaticServer(directory) {
   const root = await realpath(directory);
   const policy = JSON.parse(await readFile(resolve(root, "hosting.config.json"), "utf8"));
   const protectedPaths = new Set([
     resolve(root, "hosting.config.json"), resolve(root, "server.mjs"), resolve(root, "staticwebapp.config.json"),
+    resolve(root, "release-manifest.json"),
     await realpath(resolve(root, "hosting.config.json")), await realpath(resolve(root, "server.mjs")),
   ]);
   const port = Number(process.env.PLAYWRIGHT_PORT ?? process.env.PORT ?? process.env.SERVER_PORT ?? 8080);
@@ -40,6 +117,13 @@ export async function startStaticServer(directory) {
       catch { response.writeHead(400).end("Malformed URL"); return; }
       if (!pathname.startsWith("/") || /[\\\0]/.test(pathname) || pathname.split("/").some((part) => part.startsWith("."))) {
         response.writeHead(400).end("Invalid path");
+        return;
+      }
+      if (pathname === "/release-manifest.json") {
+        const body = Buffer.from(`${JSON.stringify(await releaseManifest(root, protectedPaths))}\n`);
+        response.setHeader("Content-Type", types[".json"]);
+        response.setHeader("Content-Length", body.length);
+        response.writeHead(200).end(request.method === "HEAD" ? undefined : body);
         return;
       }
       // Server source and deployment policy are not public application assets.

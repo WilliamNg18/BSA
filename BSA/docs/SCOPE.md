@@ -6,6 +6,51 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Current release and bounded inventory scope
+
+Part A is delivered on live main `5b75e5f` after green candidate/main CI and
+deployment, with actual coordinator root/deep-link On/Off/footer observation.
+The older candidate records below retain their original evidence boundaries.
+
+The coordinator's inventory change is delivery metadata only, not a
+business/model API. `GET`/`HEAD /release-manifest.json` returns
+`{schemaVersion: 1, commit, builtAt, files: [{path, bytes, sha256, public}]}`.
+Paths are relative, slash-separated and sorted. Actual private runtime files
+are hashed without exposing their contents; the virtual endpoint is not a
+file entry. No dependencies, CSP changes, scenario changes or infrastructure
+changes are added. Producer/backup commands, parity CI and clean recovery
+remain D/O work and are not satisfied by this endpoint's unit tests.
+## Reopened Part A scope: final-state audit/fade compatibility
+
+Verification is now bounded and complete for this test-only handoff: check,
+106 targeted units, four controlled native-frame negative regressions and
+four ordinary demo/header motion tests pass; ten representative related audits
+also pass at exact `0d0837a`. Ordinary proof stays separate from held-animation
+diagnostics. All production source, durations, case/domain state, packages,
+workflow and original audit rules/timeouts are unchanged. Parent integration
+and exact #109 CI are still pending; no full local/global matrix was repeated.
+
+Own only test synchronization for the existing 150ms Outcome fade and 100ms
+reduced-motion crossfade. Extract the established computed-opacity/unmounted
+assertions and reuse them at final-state audit boundaries. No arbitrary delay,
+timeout increase, audit exclusion, hidden text or animation suppression is
+permitted. Route entrance frame assertions and domain/demo migration work stay
+unchanged. Controlled holds of real native animations are diagnostic negatives;
+they cannot replace an ordinary unmodified-animation audit result.
+The exact #109 failure and initial incorrect On hypothesis are preserved;
+the downloaded failing artifact is actually light-Off. Bounded verification
+and publication handoff are pending, not another full-suite or live verdict.
+
+The first bounded run passed the two ordinary final-state tests but failed
+all four diagnostic holds. It exposed a diagnostic initialization error, not
+an ordinary audit failure: Motion sets native `startTime` after `animate()`
+returns, undoing an immediate pause. The hold now runs in the next microtask
+and requires actual paused state; production motion remains untouched.
+The second diagnostic's 95%-exit frame rounded to axe's 1:1 incomplete case,
+so its expected violation did not occur. Keep that failed result and sample
+90% of the real exit animation for the low-contrast negative control; no
+ordinary audit filter, assertion or timeout is relaxed.
+
 ## Part A candidate acceptance boundary
 
 The complete 176-test header/Outcome route, perspective, width, eleven-step

@@ -4,6 +4,75 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## Current delivery: Part A live, backup inventory in progress
+
+Part A #104 merged first at `5b75e5f7711bf599b02ff9fab752781fa0685b00`.
+Exact-candidate CI `35017383272`, main CI `35019036998` and normal deployment
+`35019037216` are green. The coordinator actually opened
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ at 1440px and
+`/case/EX-24112/trace` at 1280px, checking On/Off and the global footer.
+Observations at 20:30-20:34 UTC served that clean SHA: one readable 16px line,
+centre differences 0.00521/0.00525px, no old notice, one footer notice and
+zero reserved Off height. Browser console had no errors or warnings.
+This closes Part A only, not Tasks 39-40 or backup acceptance.
+
+The coordinator now owns the bounded virtual `/release-manifest.json` server
+endpoint and its direct tests. It reports actual runtime paths, byte counts,
+SHA-256 hashes and public/private classification, with clean build provenance,
+strict headers and no-store. Forty-one static-server tests and the full
+source-policy/type/lint/build check pass, including the 29 retained delivery
+checks. This implementation is not yet on main or live.
+D retains the canonical producer, launcher, build seeds, workflow and recovery
+guide; O retains independent offline verification. No backup parity or clean
+offline recovery has been demonstrated.
+F now owns the bounded D Home/eleven-step case-context compatibility and its
+direct legacy assertions, coordinated with G/N/S/V; D's backup work continues.
+
+## Earlier Part A release candidate: full hosted matrix green, live pending
+## Part A follow-up: settle the header before final-state axe
+
+Published test/source identity `0d0837aa8a425372a8c4be6835935777a3de166a`
+passed check and 106 targeted shell/header units. Bounded browsers passed
+8/8 (four held-native diagnostic regressions plus four ordinary demo/header
+motion tests), then 10/10 representative directly coupled audits, one worker,
+zero retries. The exact previously failing no-preference final-state audit
+passes with unmodified runtime animation. The four held negatives each produce
+one expected Outcome contrast finding, reject early settlement, then pass
+after the real animation resumes. They are diagnostics, not ordinary acceptance.
+The fourteen ordinary tests contain 27 unrestricted zero-violation axe audits;
+eleven incomplete rule occurrences remain explicit. The port 4332 lease is
+released. Parent integration into #109 and exact integrated CI remain pending;
+no new product, backup or live-completion claim is made.
+
+Reopened from inventory #109 source `6a238bc`, CI `35024931351`: its frontend
+is identical to main/live `5b75e5f`, but the demo final-state audit sampled the
+Outcome exit fade. Exact downloaded artifacts show `light-off-axe.json` failed
+contrast while `light-on-axe.json` passed; the initial On hypothesis was wrong.
+The test waited for the demo panel, not the independent header transition.
+
+This test-only change extracts the existing header/accessibility settlement
+contract: On requires computed opacity 1; Off requires no Outcome node. It
+adds that explicit wait to the failing final-state audit and directly related
+screen/route/pipeline audits, without changing their assertions or axe rules.
+Four controlled native-animation hold/resume regressions are authored as
+diagnostic negative controls, not ordinary visual acceptance. The sole port
+4332 lease is granted for one-worker, zero-retry bounded verification only.
+On clean `e3df041`, both ordinary unmodified-animation final-state tests passed.
+The four new diagnostic tests failed because their initial native pause was
+overwritten by Motion's subsequent `startTime` assignment; recorded animations
+were still running. The diagnostic now pauses in the next microtask after that
+same initialization stack and explicitly asserts paused state. Those failures
+remain recorded; corrected diagnostic proof is pending. No runtime, source, case,
+domain, package, workflow or payment/clinical authority changes are included.
+Prior Part A release proof stays historical and is not relabelled by this
+newly open audit-compatibility finding. Owner actions for me: none.
+
+The corrected hold passed both entry negatives. At 95% of the exit fade,
+computed opacity 0.00447462 made axe classify the text as a 1:1 incomplete,
+not a violation; both exit diagnostic expectations failed and are retained.
+Sample 90% of the same real exit fade instead, without changing its duration
+or accepting incomplete as a pass. Final bounded proof remains pending.
+
 ## Part A release candidate: full hosted matrix green, live pending
 
 Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four

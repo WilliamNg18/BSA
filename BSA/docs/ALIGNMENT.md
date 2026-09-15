@@ -6,6 +6,63 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Current live and delivery alignment
+
+Main/live `5b75e5f7711bf599b02ff9fab752781fa0685b00` contains Part A.
+Its final candidate and main four-shard CI and normal deployment are green.
+Actual live root at 1440px and case trace at 1280px satisfy exact On text,
+one line, 16px text, centre within 2px, Off absence/no gap and one global
+footer notice. The coordinator observed both modes and zero browser errors.
+The full 176-test route/perspective/step matrix remains CI evidence, not a
+claim that every live page was manually inspected.
+
+The virtual runtime inventory is implemented and covered by 41 static-server
+tests plus the full check on the coordinator branch, but is not yet deployed. Its response is
+computed from actual files, not a pre-written manifest. Build identity,
+public/private hashes, traversal/symlink boundaries and explicit failures are
+checked; root CSP is unchanged. Canonical production backup equality and
+clean offline recovery remain unaligned until D/O's actual artifact/job proof.
+Tasks 39-40 still require their integrated consumer and live acceptance.
+## Part A audit follow-up: exact failing source and contract
+
+Exact `0d0837a` bounded verification passed: four native-animation diagnostic
+negatives plus fourteen ordinary tests, covering the failing normal/reduced
+demo final-state audits, retained header fade/reset checks and representative
+shared-accessibility/case/pipeline/route-frame consumers. Twenty-seven ordinary
+axe reports have zero violations with eleven incomplete rule occurrences
+retained. The four paused negatives each reproduce the Outcome contrast
+finding and reject the waiter; after resuming, all four audits have zero
+violations. No production bytes differ from `5b75e5f`. Parent #109 integration
+and integrated CI, not earlier unrelated passing shards, establish its release.
+
+`6a238bc86e6f8e9d49110cad9ae5b95cc18ee26d` in #109 has no frontend source
+or failing-test delta from actual main `5b75e5f`. CI `35024931351` shard 1
+failed the no-preference demo final-state audit; other shards passed.
+Downloaded `light-on-axe.json` has zero violations, `light-off-axe.json` has
+one Outcome contrast violation, foreground `#fbfbfb` on white, ratio 1.03.
+The trace unchecks at 263381.817ms, asserts demo opacity 1 at 263487.794ms,
+starts axe injection at 263488.502ms and runs partial axe at 263571.783ms.
+No header exit completion was required. Serialized inline opacity is not
+the computed opacity of an element under a native animation.
+
+The missing contract is now explicit through the existing On computed-opacity
+1 / Off unmounted assertions. Reuse covers the failing demo audit, existing
+header/accessibility prior art, final accessibility helper, case/pipeline
+audits and route-frame audits; the route's deliberately held CSS frames remain
+untouched. Other lifecycle/migration tests remain with their existing owners.
+No runtime change is justified by this evidence. Native-animation diagnostic
+negatives and ordinary final-state proof are pending under the bounded lease.
+
+Bounded clean `e3df041` passed both ordinary demo final-state tests (normal
+and reduced motion). Its four hold regressions failed because Motion's
+initialization overwrote their pause. Correct the hold after initialization
+and assert native paused state; retain the original failed diagnostics rather
+than presenting them as proof of settlement or changing the product.
+Actual paused exit at 95% has opacity 0.00447462; axe reports the Outcome as
+a 1:1 incomplete rather than a violation. Both entry diagnostics passed.
+The exit diagnostic now samples 90%, preserving a real low-contrast frame
+above that rounding boundary; the two failed diagnostic expectations remain.
+
 ## Part A candidate verification, exact source
 
 Full all-route/three-perspective/eleven-step On/Off, 1280/1440, actual-bounds
