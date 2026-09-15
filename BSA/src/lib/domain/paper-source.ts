@@ -30,6 +30,12 @@ export function createPaperSubmissionSource(original: ExceptionCase, revision: C
         text: `${productByCode(fields.productCode)?.name ?? "Not supplied"} ${fields.quantity ?? "Not supplied"}`, confidence: 0.99 },
       { id: "endorsement", label: "Resubmitted endorsement", x: 68, y: 34, w: 28, h: 9,
         text: fields.endorsementText, confidence: 0.99 },
+      ...(fields.brandManufacturer !== undefined ? [{ id: "brand", label: "Brand or manufacturer", x: 6, y: 48, w: 90, h: 7,
+        text: fields.brandManufacturer || "Brand or manufacturer not supplied", confidence: 0.99 }] : []),
+      ...(fields.packSize !== undefined ? [{ id: "pack", label: "Pack size", x: 6, y: 57, w: 42, h: 7,
+        text: fields.packSize === null ? "Pack size not supplied" : `Pack size ${fields.packSize}`, confidence: 0.99 }] : []),
+      ...(fields.form !== undefined ? [{ id: "form", label: "Presentation", x: 52, y: 57, w: 44, h: 7,
+        text: fields.form || "Presentation not supplied", confidence: 0.99 }] : []),
     ],
   } : { ...original, capturedEvidence: undefined };
   const fieldEntries: readonly (readonly [ReferralField, string | number | null | undefined])[] = [

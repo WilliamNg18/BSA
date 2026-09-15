@@ -43,6 +43,17 @@ export function initialisePharmacyDraft(current: ExceptionCase, revision: CaseRe
     declaredAt: revision.declaration?.declaredAt ?? revision.at, provenance: "pharmacy_declaration" }, appliedSuggestion: false });
 }
 
+/** A human-selected replay draft uses the scenario's original source, not its latest corrected claim. */
+export function initialisePharmacySubmissionDraft(current: ExceptionCase, revision: CaseRevision, requestedChannel?: ItemChannel): PharmacyCorrectionDraft {
+  const original = caseById(current.id) ?? caseById(revision.templateCaseId);
+  if (!original) throw new Error("Original demonstration source is unavailable.");
+  const draft = initialisePharmacyDraft(original, {
+    ...revision, endorsementText: original.paperDeclaration?.endorsementText ?? original.epsPrescription?.dispenserEndorsement ?? original.extracted.endorsementText,
+    epsPrescription: original.epsPrescription, paperDeclaration: original.paperDeclaration, declaration: undefined,
+  }, requestedChannel);
+  return immutable({ ...draft, purpose: "new_submission", correctionAcknowledgement: undefined });
+}
+
 export function checkPharmacyCorrection(current: ExceptionCase, revision: CaseRevision, draft: PharmacyCorrectionDraft): PharmacyCheck {
   if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale.");
   const original = caseById(current.id) ?? caseById(revision.templateCaseId);
@@ -102,6 +113,10 @@ export function previewPharmacyCorrection(current: ExceptionCase, revision: Case
     if (paper.brandManufacturer !== undefined && !paper.brandManufacturer.trim() && ownRecord.brandManufacturer) {
       patched.brandManufacturer = ownRecord.brandManufacturer; changed = true;
     }
+    if ((paper.packSize === null || paper.packSize === undefined) && ownRecord.packSize !== null && ownRecord.packSize !== undefined) {
+      patched.packSize = ownRecord.packSize; changed = true;
+    }
+    if (!paper.form?.trim() && ownRecord.form) { patched.form = ownRecord.form; changed = true; }
     next.paperDeclaration = patched;
   }
   if (!changed) return null;

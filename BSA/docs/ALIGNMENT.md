@@ -169,6 +169,12 @@ whole-application or live acceptance gate.
 
 ### Canonical action integration
 
+Reported C4/C5 defects are fixed by source-level amendment regions and protected
+form/pack aliases, not by renderer backfill or silently rewriting notes. The
+workbench initializer now separates an original scenario draft from a seeded
+ready-to-release amendment. Nineteen targeted tests pass. W's reported false
+strength-agreement trace and Tariff authority remain explicit merge blockers.
+
 Functional G checkpoint now provides `getAsSubmitted`, `getPaperReconciliation`,
 `evaluatePaperSubmission`, `getCorrectionAcknowledgementValid` and paper-ready
 state metadata. Exact source snapshots remain separate from capture; acknowledged

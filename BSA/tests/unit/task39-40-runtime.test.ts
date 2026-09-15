@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { caseById, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { getAsSubmitted, getPaperReconciliation, isPaperReadyToRelease } from "../../src/lib/domain/submission-views";
 import { getCorrectionAcknowledgementValid, getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
-import { initialisePharmacyDraft, preparePaperDemoDraft } from "../../src/lib/domain/pharmacy-correction";
+import { initialisePharmacyDraft, initialisePharmacySubmissionDraft, preparePaperDemoDraft, previewPharmacyCorrection } from "../../src/lib/domain/pharmacy-correction";
 import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 
 const s = () => useAppStore.getState();
@@ -23,6 +23,8 @@ describe("Task 39/40 actual shared domain integration", () => {
     expect(s().lifecycles[paper].state).toBe("resubmitted");
     expect(s().itemProcesses[paper].readyToRelease).toBe(true);
     expect(isPaperReadyToRelease(s().lifecycles[paper], s().itemProcesses[paper])).toBe(true);
+    expect(isPaperReadyToRelease({ ...s().lifecycles[paper], history: [...s().lifecycles[paper].history,
+      { ...s().lifecycles[paper].history.at(-1)!, revision: 3 }] }, s().itemProcesses[paper])).toBe(false);
     const before = getDomainSnapshot();
     s().setPerspective("pharmacy"); s().setAgentEnabled(true); s().setDemoStep(5);
     expect(getDomainSnapshot()).toEqual(before);
@@ -153,5 +155,47 @@ describe("Task 39/40 actual shared domain integration", () => {
     expect(s().manualLoopInputs).toBe(before);
     s().resetDemo();
     expect(s().mismatchSharePercent).toBe("1");
+  });
+
+  it("opens the original missing-brand submission scenario without changing the ready recheck seed", () => {
+    const revision = s().caseRevisions[paper].at(-1)!, before = getDomainSnapshot();
+    const draft = initialisePharmacySubmissionDraft(sessionCase(paper)!, revision, "paper");
+    expect(draft.paperDeclaration?.brandManufacturer).toBe("");
+    expect(revision.paperDeclaration?.brandManufacturer).toBe("Demo manufacturer (synthetic)");
+    expect(draft.revision).toBe(revision.number);
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it("fills missing paper pack and form only from the pharmacy record", () => {
+    const revision = s().caseRevisions[paper].at(-1)!;
+    const draft = initialisePharmacySubmissionDraft(sessionCase(paper)!, revision, "paper");
+    const source = { ...draft, paperDeclaration: { ...draft.paperDeclaration!, packSize: null, form: "" } };
+    const preview = previewPharmacyCorrection(sessionCase(paper)!, revision, source)!;
+    expect(preview.paperDeclaration).toMatchObject({ packSize: 21, form: "capsules" });
+    expect(preview.appliedFields).toEqual(expect.arrayContaining(["packSize", "form"]));
+    expect(source.paperDeclaration).toMatchObject({ packSize: null, form: "" });
+  });
+
+  it.each(["referBack", "requestInformation", "recordType2Decision", "recordOperatorDecision"] as const)("rejects proposed presentation leakage through %s", (action) => {
+    s().setAgentEnabled(false);
+    const original = caseById(paper)!;
+    s().submitItem({ caseId: paper, channel: "paper", endorsementText: original.paperDeclaration!.endorsementText, paperDeclaration: original.paperDeclaration });
+    s().arriveInQueue(paper);
+    const before = getDomainSnapshot(), note = "Please provide capsules as the accurate presentation.";
+    expect(() => {
+      if (action === "referBack") s().referBack(paper, "RB2B", note);
+      else if (action === "requestInformation") s().requestInformation(paper, note);
+      else if (action === "recordType2Decision") s().recordType2Decision({ caseId: paper, decision: "REFER_BACK", rbCode: "RB2B", reason: note });
+      else s().recordOperatorDecision(paper, "REFER_BACK", note);
+    }).toThrow("proposed corrected value");
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it("renders the actual amendment's supplied brand, pack and form in its scan source", () => {
+    const replica = getAsSubmitted(s(), paper);
+    const imageText = replica.paperScan!.regions.map((region) => region.text).join("\n");
+    expect(imageText).toContain("Demo manufacturer (synthetic)");
+    expect(imageText).toContain("Pack size 21");
+    expect(imageText).toContain("capsules");
   });
 });
