@@ -4,10 +4,9 @@ import { Label } from "@/components/ui/label";
 import { useMismatchEstimate } from "@/hooks/use-mismatch-estimate";
 import { formatBaselineNumber, formatProcessItems } from "@/lib/domain/baseline";
 import { EPS_MISMATCH_ESTIMATE } from "@/lib/domain/eps-error-evidence";
+import { formatMismatchEstimate } from "@/lib/domain/mismatch-estimate";
 import { useAppStore } from "@/lib/store";
 import { MonthlyNumber } from "./monthly-number";
-
-const formatEstimate = (value: number) => formatBaselineNumber(value, 4);
 
 export function MismatchEstimatePanel() {
   const id = useId();
@@ -33,7 +32,7 @@ export function MismatchEstimatePanel() {
           <dl className="grid grid-cols-2 gap-4">
             <div><dt className="text-sm font-medium">Today (synthetic comparison)</dt><dd data-mismatch-today>{EPS_MISMATCH_ESTIMATE.todayLabel}</dd></div>
             <div><dt className="text-sm font-medium">With the agent (estimate)</dt><dd data-mismatch-with>
-              <MonthlyNumber value={result.withAgent} format={formatEstimate} replayKey={enabled ? "on" : "off"} /> (estimate)
+              <MonthlyNumber value={result.withAgent} format={formatMismatchEstimate} replayKey={enabled ? "on" : "off"} /> (estimate)
             </dd></div>
           </dl>
         </section>
