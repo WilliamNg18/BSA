@@ -150,5 +150,11 @@ describe("shared recommendation contract", () => {
       ["brand_manufacturer", "Demo manufacturer (synthetic)"], ["pack_size", 21], ["presentation", "capsules"],
     ]);
     expect(r.preview?.epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
+    expect(r.preview?.appliedFields).toEqual(["brandManufacturer", "packSize", "form"]);
+    store().setAgentEnabled(true);
+    store().applySuggestedCorrection(id);
+    expect(store().pharmacyDrafts[id].appliedFields).toEqual(["brandManufacturer", "packSize", "form"]);
+    store().setPharmacyDraft(id, { ...store().pharmacyDrafts[id], endorsementText: "" });
+    expect(store().pharmacyDrafts[id].appliedFields).toBeUndefined();
   });
 });

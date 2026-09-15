@@ -81,7 +81,16 @@ export function previewPharmacyCorrection(current: ExceptionCase, revision: Case
     ...(next.paperDeclaration ? { productCode: paperDeclarationFields(next.paperDeclaration).productCode, quantity: next.paperDeclaration.quantity } : {}) } };
   if (next.declaration?.fields.productCode && !productByCode(next.declaration.fields.productCode)) throw new Error("Unknown corrected product.");
   validateSubmissionSources({ ...next, caseId: current.id, channel: next.channel ?? revision.channel ?? "paper" }, revision.number);
-  return immutable({ ...next, appliedSuggestion: true });
+  return immutable({ ...next, appliedSuggestion: true, appliedFields: getChangedPharmacyFields(draft, next) });
+}
+
+export function getChangedPharmacyFields(before: PharmacyCorrectionDraft, after: PharmacyCorrectionDraft): NonNullable<PharmacyCorrectionDraft["appliedFields"]> {
+  const fields: ("endorsementText" | "brandManufacturer" | "packSize" | "form")[] = [];
+  if (before.endorsementText !== after.endorsementText) fields.push("endorsementText");
+  for (const field of ["brandManufacturer", "packSize", "form"] as const) {
+    if (before.epsPrescription?.supplyEvidence?.[field] !== after.epsPrescription?.supplyEvidence?.[field]) fields.push(field);
+  }
+  return fields;
 }
 
 export function suggestedPharmacyCorrection(current: ExceptionCase, revision: CaseRevision, draft = initialisePharmacyDraft(current, revision)): PharmacyCorrectionDraft {
