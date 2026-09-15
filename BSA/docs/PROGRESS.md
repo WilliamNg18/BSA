@@ -59,6 +59,13 @@ The complete Off wrong-strength cycle requires a real later audit/query
 reopening after automatic pricing; an On failure followed by Off is not a
 substitute. G owns the explicit action, P/O/V its presentation and proof.
 
+G requested and W now implements `epsStrengthForAudience(assessment, audience)`.
+Both audiences receive copied source facts and checks; only the pharmacy
+receives the proposed patch/preview. Operator `suggestion` is strictly null.
+Four new authority tests bring W's focused total to 37; 120 combined new and
+existing EPS/correction/recommendation/gate regressions and check pass.
+This pure adapter still requires G/P/O wiring and live verification.
+
 ## Current release gate: live first, exact local backup
 
 ### Tasks 39/40: shared domain integration reactivated

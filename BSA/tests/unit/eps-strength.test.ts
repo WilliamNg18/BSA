@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyEpsStrengthCorrection, EPS_STRENGTH_CORRECT_CODE, EPS_STRENGTH_SELECTED_CODE,
-  evaluateEpsStrength, type EpsStrengthPrescription,
+  epsStrengthForAudience, evaluateEpsStrength, type EpsStrengthPrescription,
 } from "../../src/lib/domain/eps-strength";
 import { productByCode } from "../../src/lib/domain/reference";
 import type { Product } from "../../src/lib/domain/types";
@@ -135,5 +135,42 @@ describe("source-backed EPS wrong strength", () => {
   it("does not manufacture another correction after the source-backed selection is applied", () => {
     const corrected = applyEpsStrengthCorrection(message(), lookup);
     expect(() => applyEpsStrengthCorrection(corrected, lookup)).toThrow("No source-backed");
+  });
+
+  it("shows the exact proposed pack and preview only to the pharmacy", () => {
+    const assessment = evaluateEpsStrength(message(), lookup)!;
+    const pharmacy = epsStrengthForAudience(assessment, "pharmacy");
+    const operator = epsStrengthForAudience(assessment, "operator");
+    expect(pharmacy.suggestion).toEqual(assessment.suggestion);
+    expect(pharmacy.suggestion?.source).toBe("your agent's suggestion from your records");
+    expect(operator.suggestion).toBeNull();
+    expect(JSON.stringify(operator)).not.toMatch(/claimLinePreview|dispensedCode|dispensedName|Select Amlodipine|your agent's suggestion/);
+    expect(operator.rule).not.toMatch(/10mg|5mg|28/);
+    expect(operator.ruleLabel).toContain("Proposed matching check");
+    expect(operator.authorityLabel).toBe("the agent verifies and advises; a person decides");
+  });
+
+  it("retains identical source facts and failed checks on both sides without sharing mutable data", () => {
+    const assessment = evaluateEpsStrength(message(), lookup)!;
+    const before = structuredClone(assessment);
+    const pharmacy = epsStrengthForAudience(assessment, "pharmacy");
+    const operator = epsStrengthForAudience(assessment, "operator");
+    for (const field of ["prescribed", "selected", "supplied", "checks", "complete", "gap"] as const) {
+      expect(pharmacy[field]).toEqual(operator[field]);
+      expect(operator[field]).toEqual(assessment[field]);
+    }
+    expect(operator.prescribed?.strength).toBe("10mg");
+    expect(operator.selected?.strength).toBe("5mg");
+    expect(operator.complete).toBe(false);
+    expect(pharmacy.checks).not.toBe(assessment.checks);
+    expect(operator.prescribed).not.toBe(assessment.prescribed);
+    expect(assessment).toEqual(before);
+  });
+
+  it.each(["pharmacy", "operator"] as const)("does not invent a proposal for missing sources or a corrected selection: %s", (audience) => {
+    const incomplete = evaluateEpsStrength({ ...message(), supplyRecord: undefined }, lookup)!;
+    const corrected = evaluateEpsStrength(applyEpsStrengthCorrection(message(), lookup), lookup)!;
+    expect(epsStrengthForAudience(incomplete, audience)).toMatchObject({ complete: false, suggestion: null });
+    expect(epsStrengthForAudience(corrected, audience)).toMatchObject({ complete: true, suggestion: null });
   });
 });

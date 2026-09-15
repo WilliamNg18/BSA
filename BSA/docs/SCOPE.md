@@ -80,6 +80,12 @@ the correct value. Required Off round-trip coverage must start with actual
 Today pricing and a later explicit human audit/query reopening, not an invented
 queue row or a toggle-generated transition.
 
+W additionally supplies the G-requested pure audience adapter, preserving
+the existing evaluation/correction API. Source facts remain identical across
+the pharmacy/operator projections; a typed operator projection contains no
+proposed patch or preview. Four new authority regressions pass; consumer
+mounting and whole-flow live evidence are not claimed by these unit results.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

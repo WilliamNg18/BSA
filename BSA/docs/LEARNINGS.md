@@ -90,6 +90,15 @@ an actual human audit/query must reopen it. A mixed-mode response test does
 not establish that separate path. These are handoffs, not implemented or
 observed-live claims.
 
+W's implemented audience adapter now tests that distinction directly. The
+operator projection keeps prescribed 10mg/selected 5mg as factual evidence
+but serialises no correction patch, claim-line preview or suggested-selection
+label. Projection data is copied so it cannot mutate the source assessment.
+Four added cases pass, as do all 120 combined strength/evidence/headline and
+existing EPS/correction/recommendation/two-gate regressions and check. These
+existing gate regressions protect the current base, not the unmerged new
+mode-specific routing that G is implementing.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
