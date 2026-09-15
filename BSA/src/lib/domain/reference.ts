@@ -6,6 +6,7 @@ import type { HistoryRecord, Product } from "./types";
 export const PRODUCTS: Product[] = [
   { code: "SYN-SERT50-28", name: "Sertraline 50mg tablets", packSize: 28, category: "M", basicPrice: 1.27 },
   { code: "SYN-AMLO10-28", name: "Amlodipine 10mg tablets", packSize: 28, category: "M", basicPrice: 0.98 },
+  { code: "SYN-AMLO5-28", name: "Amlodipine 5mg tablets", packSize: 28, category: "M", basicPrice: 0.82 },
   { code: "SYN-METF500-56", name: "Metformin 500mg tablets", packSize: 56, category: "M", basicPrice: 1.53 },
   { code: "SYN-COCOD-100", name: "Co-codamol 30/500 tablets", packSize: 100, category: "M", basicPrice: 3.86 },
   { code: "SYN-AMOX500-21", name: "Amoxicillin 500mg capsules", packSize: 21, category: "M", basicPrice: 1.02 },

@@ -40,6 +40,13 @@ export function routeSubmission(facts: RoutingFacts): RoutingResult {
 }
 
 export function routingFactsForCase(c: ExceptionCase, channel: RoutingFacts["channel"], captureConfirmed = false): RoutingFacts {
+  if (channel === "eps" && c.epsPrescription?.supplyRecord) {
+    const selected = productByCode(c.epsPrescription.items[0]?.dispensedCode ?? null);
+    const mandatory = Boolean(selected && Number.isFinite(selected.basicPrice)) && mandatoryFieldsCheck(c.extracted).every((entry) => entry.pass);
+    return { channel, readable: true, handwritten: false, captureConfirmed: false, mandatoryFieldsComplete: mandatory,
+      endorsementRequired: false, endorsementPresent: Boolean(c.extracted.endorsementText.trim()), endorsementComplete: true,
+      interpretationRequired: Boolean(c.requiresHumanRecheck), hasConflict: false, type2Decision: "not_decided" };
+  }
   const version = versionForDate(c.extracted.dispensingDate);
   const product = productByCode(c.extracted.productCode);
   const required = endorsementRequired(product, version, c.claim.amountClaimed);
