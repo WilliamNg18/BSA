@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,7 @@ import type { HumanDecision } from "@/lib/domain/types";
 import { getReleaseEligibility, useAppStore } from "@/lib/store";
 import { isPaperReadyToRelease } from "@/lib/domain/submission-views";
 import { operatorErrorMessage } from "@/lib/operator-error-message";
+import { revealOperatorNote } from "@/lib/operator-focus";
 
 const OUTCOMES: { value: HumanDecision; label: string }[] = [
   { value: "ACCEPT", label: "Sufficient (human choice)" },
@@ -88,6 +89,9 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
   const errorRef = useRef<HTMLParagraphElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
+  useLayoutEffect(() => {
+    if (noteRef.current && document.activeElement === noteRef.current) revealOperatorNote(noteRef.current);
+  }, [storedDraft?.note]);
 
   if (!c || !revision || !process || !lifecycle || process.revision !== revision.number) {
     return <p role="alert">Current routing unavailable. Reopen the item.</p>;
@@ -189,6 +193,7 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
         <Label htmlFor={compact ? `${id}-reason` : "reason"}>{draft.outcome === "REQUEST_INFORMATION" ? "Question (required)" : "Reason (required)"}</Label>
         <Textarea ref={noteRef} id={compact ? `${id}-reason` : "reason"} name="reason" value={draft.note} minLength={8}
           aria-required="true" aria-describedby={error ? undefined : `${id}-note-help`} autoComplete="off"
+          onFocus={(event) => revealOperatorNote(event.currentTarget)}
           onChange={(event) => change({ note: event.target.value })} />
         {!error && <p id={`${id}-note-help`} className="text-xs text-muted-foreground">At least eight characters.</p>}
       </div>

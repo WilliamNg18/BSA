@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
 import { test, expect, captureCheckpoint } from "./fixtures";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 
 async function panelProse(panel: Locator) {
   return panel.evaluate((element) => [...element.querySelectorAll("p, span.text-xs.text-muted-foreground")]
@@ -63,6 +64,7 @@ for (const width of [1280, 1440]) {
     await expect(source.locator("pre")).toHaveText(original);
     await expect(page.getByRole("region", { name: "Shared case history", exact: true }))
       .toContainText("Operator opened a later audit or query");
+    await expectHeaderOutcomeSettled(page, false);
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   });
 
@@ -88,6 +90,7 @@ for (const width of [1280, 1440]) {
     await expect(record).not.toHaveAttribute("data-automatic-case");
     await expect(page.getByRole("button", { name: "Release to pricing", exact: true })).toHaveCount(0);
     await expect(source.locator("pre")).toHaveText(original);
+    await expectHeaderOutcomeSettled(page, enabled);
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   });
 
@@ -126,6 +129,7 @@ for (const width of [1280, 1440]) {
     await expect(source.locator("pre")).toHaveText(original);
     await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
     await captureCheckpoint(page, info, `operator40-D-confirmed-${enabled ? "On" : "Off"}-focused`);
+    await expectHeaderOutcomeSettled(page, enabled);
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   });
   }

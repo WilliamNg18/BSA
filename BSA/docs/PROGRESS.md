@@ -2799,3 +2799,19 @@ O corrected a local dependency-import merge artifact by restoring
 `review-repair.test.ts` exactly to V's published e004383 content. Typecheck
 passes again. This is not an O-owned assertion change and is not needed
 by G's already-correct composed test file.
+
+## O repair after G491's genuine D focus failures
+
+G's single assembled ten-test run at
+`491a808e0007b865050674c595a1cad3830a6398` finished 6-pass/4-fail in
+67.160748 seconds. A audit and B ready-release passed; all D cases stopped
+before their final axe/checkpoint. On lost note focus after Apply; Off
+reported full-note viewport ratios0.80078125/0.81201171875. Those failures
+remain unchanged evidence.
+
+O replaces capture-object reference comparison with a stable confirmation
+identity, so cloning unchanged history cannot refocus the earlier capture
+heading. The focused note is revealed wholly on focus and after its value
+changes, using instant nearest scrolling and the existing viewport-margin
+pattern, without resizing or hiding controls. Check and 52 targeted tests
+pass. The fresh full-ten browser run still requires allocation.

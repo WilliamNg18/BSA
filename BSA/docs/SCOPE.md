@@ -706,3 +706,9 @@ No new scenario, action, predicate, retry or browser run is introduced.
 
 V retains ownership of review-repair assertions; O's local merge repair
 restores the exact published owner file rather than changing test semantics.
+
+The D repair changes only operator presentation focus/scroll behaviour and
+adds targeted regressions. All ten browser identities, focus assertions,
+viewport ratio1 and unrestricted axe remain. A's exact final-state helper
+is reused before final audits; it observes native completion, not an
+animation override or a change to any one-second business deadline.
