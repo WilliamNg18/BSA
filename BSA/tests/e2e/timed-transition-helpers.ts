@@ -45,6 +45,7 @@ export async function assertVisibleHandoffWithinOneSecond(
   const priorEvent = await followed.locator("p").first().innerText();
   const deadline = new TransitionDeadline();
   const milestones: { label: string; elapsedMs: number }[] = [];
+  let observedElapsedMs: number | null = null;
   try {
     await input.action.click({ timeout: deadline.remainingMs() });
     milestones.push({ label: "actual human action completed", elapsedMs: deadline.elapsedMs() });
@@ -78,11 +79,14 @@ export async function assertVisibleHandoffWithinOneSecond(
       await expect(requirement.locator).toContainText(requirement.text, { timeout: deadline.remainingMs() });
     }
     await expect(followed).toContainText(input.followedId, { timeout: deadline.remainingMs() });
-    milestones.push({ label: "actual destination and required reason visible", elapsedMs: deadline.finish() });
+    observedElapsedMs = deadline.finish();
+    milestones.push({ label: "actual destination and required reason visible", elapsedMs: observedElapsedMs });
   } finally {
     await captureJson(info, `timing-${input.name}`, {
       name: input.name, caseId: input.followedId, budgetMs: 1000,
-      elapsedMs: deadline.elapsedMs(), milestones, url: page.url(),
+      elapsedMs: observedElapsedMs ?? deadline.elapsedMs(),
+      status: observedElapsedMs === null ? "FAIL" : "PASS",
+      milestones, url: page.url(),
       clock: "Node monotonic wall-clock, independent of the controlled domain timestamp",
       startsBefore: "Actual human button click; includes visible origin and destination assertions and Follow navigation",
       visibility: "Viewport intersection and cumulative ancestor opacity, not DOM text alone",
