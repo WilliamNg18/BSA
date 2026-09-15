@@ -2276,3 +2276,18 @@ current main's stronger P/O counter, source, approval and state assertions when
 combining the mounted tests. The numerical counter patch is already covered by
 main and is not duplicated. Adopt only V's immutable navigation helper and its
 small data dependency, not the full foreign proof branch.
+
+## 2026-09-15: Focus only the committed demo route
+
+Question: why can Jump lose focus immediately after entering demo? Choice:
+preserve the main CI failure and the read-only diagnostic showing two calls
+to the same heading-focus effect. The synchronous demo-step store update can
+mount the screen before BrowserRouter commits the new location; the later
+route commit ran that effect again after the user moved focus.
+
+Gate only that effect until its rendered pathname, search and hash match the
+browser's current location, using the same Vite basename as the router. Then
+the committed route owns one heading-focus action. Keep intentional step,
+Back/Next and Follow navigation focus, all motion and the single store unchanged.
+No forced synchronous rendering, delay, retry or weakened focus assertion.
+Tie-breakers: preserve user focus and fix the demonstrated duplicate side effect.

@@ -14,6 +14,7 @@ import type { ItemChannel } from "@/lib/domain/types";
 import { staffLane } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
 import { demoRouteCaseId } from "@/lib/demo-navigation";
+import { isCommittedDemoLocation } from "@/lib/demo-focus";
 import { cn } from "@/lib/utils";
 
 export type DemoTaskKind = "submission" | "claim" | "operator" | "type1";
@@ -247,6 +248,7 @@ export function DemoStepLayout({ renderTask, renderType1Evidence }: { renderTask
   const { pathname, search, hash } = useLocation();
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
+    if (!isCommittedDemoLocation({ pathname, search, hash }, window.location)) return;
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [number, pathname, search, hash]);
