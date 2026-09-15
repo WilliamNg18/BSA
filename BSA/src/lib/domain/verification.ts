@@ -18,6 +18,7 @@ function paperSupply(original: ExceptionCase, fields: ExtractedFields, declared:
 }
 
 export interface VerificationAssessment {
+  readonly ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check";
   readonly verification: ItemVerification;
   readonly gate1Checks: readonly GateCheck[];
   readonly gate2Checks: readonly GateCheck[];
@@ -59,19 +60,19 @@ export function evaluateItemVerification(
   const facts = interpretPharmacyText(typed.endorsementText);
   const supply = eps ? evaluateEpsSupply(eps) : paperSupply(original, typed, declared);
   const required = endorsementRequired(product, version, original.claim.amountClaimed);
-  const clause = version?.clauses.find((entry) => strength ? entry.id === "SYN-EPS-STRENGTH" : supply
-    ? entry.id === EPS_SUPPLY_RULE.id : entry.endorsementType === facts.type) ?? null;
+  const clause = version?.clauses.find((entry) => supply ? entry.id === EPS_SUPPLY_RULE.id : entry.endorsementType === facts.type) ?? null;
   const formatSupply = supply ? [
     { id: "brand_manufacturer", met: Boolean((eps?.supplyEvidence?.brandManufacturer ?? declared?.brandManufacturer)?.trim()) },
     { id: "pack_size", met: Number.isSafeInteger(eps?.supplyEvidence?.packSize ?? declared?.packSize) && (eps?.supplyEvidence?.packSize ?? declared?.packSize ?? 0) > 0 },
     { id: "presentation", met: Boolean((eps?.supplyEvidence?.form ?? declared?.form)?.trim()) },
   ] : undefined;
   const requirements = evaluateRequirements(clause, facts, typed, strength ? [{ id: "selected_pack_matches", met: strength.complete }] : formatSupply);
-  const needsClause = strength !== null || supply !== null || required.required !== false || facts.present;
+  const needsClause = supply !== null || !strength && required.required !== false || facts.present;
   const citation = Boolean(version && (!needsClause || validateCitation(clause, version, clause?.text ?? "") === true));
   const gate1Checks = [
     check("Typed product identified", Boolean(product), "Typed fields are declarations, not independent source readings."),
-    check("Dispensing-date provision validated", citation, version?.version ?? "No dated provision"),
+    check(strength && !needsClause ? "Proposed cross-record matching check available" : "Dispensing-date provision validated",
+      strength && !needsClause ? true : citation, strength && !needsClause ? "Public NHSBSA guidance informs this proposed check; no monthly Tariff clause is claimed." : version?.version ?? "No dated provision"),
     check("Typed quantity present", Number.isSafeInteger(typed.quantity) && (typed.quantity ?? 0) > 0, String(typed.quantity)),
     check("Paper declaration supplied", channel !== "paper" || Boolean(declared), "Declared by the pharmacy, not read from the form."),
     check("Supported typed endorsement", supply !== null || !facts.present || facts.type === "NCSO", "Other endorsement types require human interpretation."),
@@ -80,7 +81,8 @@ export function evaluateItemVerification(
   ];
   if (needsClause && !strength) gate1Checks.push(check("Applicable requirements available", requirements.length > 0, clause?.id ?? "No clause"));
 
-  const confirmed = capture?.revision === revision.number ? capture : null;
+  const confirmed = capture && capture.revision <= revision.number &&
+    (capture.sourceRevision ?? capture.revision) === (revision.sourceRevision ?? revision.number) ? capture : null;
   const scan = revision.paperSource?.scan ?? original;
   const readable = scan.imageQuality >= QUALITY_THRESHOLD &&
     Math.min(scan.extracted.productConfidence, scan.extracted.quantityConfidence, scan.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
@@ -95,9 +97,8 @@ export function evaluateItemVerification(
   const sourceStrength = eps?.supplyRecord ? evaluateEpsStrength(eps) : null;
   const sourceSupply = eps ? evaluateEpsSupply(eps) : paperSupply(original, arrived, confirmed?.fields ?? revision.paperSource?.fields);
   const sourceRequired = endorsementRequired(sourceProduct, sourceVersion, original.claim.amountClaimed);
-  const sourceClause = sourceVersion?.clauses.find((entry) => sourceStrength ? entry.id === "SYN-EPS-STRENGTH" :
-    sourceSupply ? entry.id === EPS_SUPPLY_RULE.id : entry.endorsementType === arrivedFacts.type) ?? null;
-  const sourceNeedsClause = sourceStrength !== null || sourceSupply !== null || sourceRequired.required !== false || arrivedFacts.present;
+  const sourceClause = sourceVersion?.clauses.find((entry) => sourceSupply ? entry.id === EPS_SUPPLY_RULE.id : entry.endorsementType === arrivedFacts.type) ?? null;
+  const sourceNeedsClause = sourceSupply !== null || !sourceStrength && sourceRequired.required !== false || arrivedFacts.present;
   const sourceCitation = Boolean(sourceVersion && (!sourceNeedsClause || validateCitation(sourceClause, sourceVersion, sourceClause?.text ?? "") === true));
   const knownSource = channel === "eps" || Boolean(confirmed) || readable;
   const declarationAgrees = channel === "eps" || Boolean(!declared && confirmed?.provenance === "human_capture") || Boolean(declared && arrived.productCode === declared.productCode &&
@@ -126,7 +127,9 @@ export function evaluateItemVerification(
     check("Independent claim product and quantity agree", ledgerAgrees, "Retained claim ledger, not a projection of submitted fields"),
     check("Product pack and presentation agree", packAgrees, "Catalogue pack checked independently of format"),
     check(sourceStrength ? "Selected pack has a catalogue price" : "Claimed amount agrees with dated reference", amountAgrees, "Validation only; no payment calculated"),
-    check("Dated citation validated", sourceCitation, sourceClause?.id ?? (sourceCitation ? "No endorsement required under dated rules" : "Missing provision")),
+    check(sourceStrength && !sourceNeedsClause ? "Independent proposed matching check performed" : "Dated citation validated",
+      sourceStrength && !sourceNeedsClause ? true : sourceCitation,
+      sourceStrength && !sourceNeedsClause ? "Compared actual records without a claimed Tariff citation." : sourceClause?.id ?? (sourceCitation ? "No endorsement required under dated rules" : "Missing provision")),
     ...mandatoryFieldsCheck(arrived),
     ...receivedRequirements.map((entry) => check(entry.requirement.label, entry.met === true, "Received-source requirement")),
     ...(sourceStrength?.checks ?? []),
@@ -136,8 +139,10 @@ export function evaluateItemVerification(
   const releaseEligible = pass2 && reconciled && (!enabled || pass1);
   return {
     verification: enabled ? { gate1: pass1 ? "pass" : "fail", gate2: pass2 ? "pass" : "fail", reconciled, released: false } : { ...NO_VERIFICATION },
-    gate1Checks: enabled ? gate1Checks : [], gate2Checks, tariffVersion: version?.version ?? null, clauseId: clause?.id ?? null, source,
-    sourceTariffVersion: sourceVersion?.version ?? null, sourceClauseId: sourceClause?.id ?? null,
+    gate1Checks: enabled ? gate1Checks : [], gate2Checks,
+    ruleAuthority: strength ? "proposed_cross_record_check" : "retrieved_tariff",
+    tariffVersion: strength && !clause ? null : version?.version ?? null, clauseId: clause?.id ?? null, source,
+    sourceTariffVersion: sourceStrength && !sourceClause ? null : sourceVersion?.version ?? null, sourceClauseId: sourceClause?.id ?? null,
     releaseEligible,
     reason: releaseEligible ? "Current source facts validated for release to existing pricing." :
       [...(enabled ? gate1Checks : []), ...gate2Checks].filter((entry) => !entry.pass).map((entry) => entry.name).join("; "),

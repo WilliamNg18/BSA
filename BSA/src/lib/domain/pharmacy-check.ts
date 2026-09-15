@@ -10,6 +10,7 @@ export const PHARMACY_CHECK_MS = 2000;
 export const PHARMACY_STEPS = ["Captured", "Endorsement type", "Dispensing-date version", "Clause", "Requirements"] as const;
 export type PharmacyStepStatus = "PASS" | "MISSING" | "STOPPED" | "NOT RUN";
 export interface PharmacyCheck {
+  ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check";
   status: "ready" | "missing" | "unable";
   facts: EndorsementFacts | null;
   version: string | null;
@@ -95,6 +96,7 @@ export function checkPharmacy(original: ExceptionCase, text: string, options?: P
 export function pharmacySnapshot(text: string, dispensingDate: string, mode: PharmacyPrecheckSnapshot["mode"], result: PharmacyCheck | null, checkedAt: string | null): PharmacyPrecheckSnapshot {
   const completed = mode === "scripted" && result !== null && checkedAt !== null;
   return { typedText: text, dispensingDate, mode, facts: completed ? result.facts : null,
+    ...(completed && result.ruleAuthority ? { ruleAuthority: result.ruleAuthority } : {}),
     tariffVersion: completed ? result.version : null, clauseId: completed ? result.clause?.id ?? null : null,
     checkedAt: completed ? checkedAt : null, status: completed ? result.status : "not_checked", checks: completed ? result.checks : [] };
 }

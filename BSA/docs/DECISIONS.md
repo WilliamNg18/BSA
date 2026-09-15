@@ -14,6 +14,7 @@ ms.date: 2026-09-15
 - Question: may an information-only answer force recapture of unchanged paper? Choice: retain human capture by explicit submission-source identity, with no new human capture event; a genuinely new submission still invalidates it. Tie-breaker: truthful human history and no unnecessary repeat work.
 - Question: how is the C4/C5 repair accepted? Choice: rerun the original nine assertions unchanged against exact G `cdd436b`, record their pass separately from the still-failing source-link test and master release gates. Tie-breaker: reproducible evidence and no silent waiver.
 - Question: how is newly merged main adopted while G owns the domain? Choice: preserve main's header and master Process model, retain B's explicit final-note error rule and both streams' historical records, with no canonical runtime edits. Tie-breaker: latest authority and ownership-safe integration.
+- Question: how does the final source-link repair gain acceptance? Choice: require the exact previously failing capture assertion to pass, then rerun the full bounded matrix and check; do not invent a new capture event or weaken the source equality assertion. Tie-breaker: original symptom verified against changed canonical code.
 
 ## 2026-09-15: B40 readable-blank decision
 
@@ -38,6 +39,9 @@ ms.date: 2026-09-15
 - G integration: keep N's optional mismatch input in the same store and exact domain snapshot, separate from the unchanged manual-loop defaults; tie-breaker: one state and non-additive assumptions.
 - G correction: emit brand/pack/form from the acknowledged amendment into its actual synthetic scan regions, and reject those proposed aliases in all outbound note paths; tie-breaker: the reproduced C4/C5 source and communication failures.
 - G correction: initialise a new workbench attempt from the original scenario source but keep its current revision binding; never rewrite the current ready amendment merely by opening a page; tie-breaker: C8 fidelity and explicit human submission.
+- G correction: strength matching uses proposed cross-record authority informed by the verified public guidance, never a fabricated monthly Tariff provision. Real 10mg/5mg disagreements stay visible and structured reading/image signals are not applicable; tie-breaker: W's reproduced source/provenance failures.
+- G correction: information-only responses link the original submission revision and retain its actual capture event; no new scan or human confirmation is manufactured. New submissions and acknowledged amendments invalidate that link; tie-breaker: C1 fidelity and B's reproduced duplicate-Type-1 failure.
+- G correction: simultaneous ready/referral seeds include actual historical verification events and the same ready-decision draft as a real recheck, not status flags alone; tie-breaker: C8 truthful history and O's one-press release requirement.
 - Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.

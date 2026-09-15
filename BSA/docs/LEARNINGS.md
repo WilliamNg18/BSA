@@ -56,6 +56,13 @@ Part A policy selection then passed 72 tests, and typecheck passed. D and the
 coordinator received those separate outcomes; no test expectations were changed
 or whole-file/browser/live acceptance inferred by B.
 
+The final canonical source-link repair passed the exact previously failing
+assertion on its first rerun. All 110 tests in the eight-file B/runtime
+selection then passed, followed by check. The retained capture keeps its
+original revision, timestamp and human actor while information responses link
+to that source; no capture is replayed as a new event. This resolves the tenth
+negative without altering its expectation or the original failure record.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
@@ -156,6 +163,18 @@ that failure remains recorded, not replaced by the 19 targeted runtime passes.
 Concrete review found missing amendment-image supplier regions and unprotected
 form aliases in outbound notes. Repairing the source data and final guards,
 rather than changing presentation evidence, closes those focused regressions.
+
+The first strength integration passed store outcome checks but still displayed
+a false equality and implied a made-up Tariff clause. The exact W probe exposed
+that gap. Separate authority metadata, actual conflict values and a dedicated
+structured-record trace repair it; 47 targeted tests now cover those surfaces.
+Passing state transitions alone was not sufficient evidence of truthful advice.
+
+The C1 response test exposed redundant capture routing despite an unchanged
+source. Explicit source-revision links keep the original capture's real
+revision/time rather than relabelling it. C8 review also found ready status
+without a shared decision draft or recorded recheck; seed events and draft
+initialisation now agree, with 21 targeted runtime tests passing.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

@@ -200,35 +200,6 @@ product or documentary names, or em dashes. Task 37 permits concrete services
 only in its single labelled reference-mapping table. Required process names and
 synthetic prescription content remain permitted, as recorded in DECISIONS.
 
-## EPS error evidence
-
-Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
-review and meta-analysis*. Research in Social and Administrative Pharmacy
-2024;20(1):1-9. DOI: https://doi.org/10.1016/j.sapharm.2023.10.003;
-PubMed: https://pubmed.ncbi.nlm.nih.gov/37848350/.
-Stream W verified the original abstract's 62 studies, search from January 2010
-to September 2023, and pooled dispensing-error prevalence of 1.6 per cent
-(95 per cent CI 1.2 to 2.1). Required label:
-"study on dispensing errors, used to make the scenario realistic; not an NHSBSA claim statistic".
-The owner's supplied subtype counts (wrong strength 39, wrong medication 44,
-wrong quantity 34) and ranking remain pending independent full-text verification;
-the abstract's 44 hospital studies do not verify the wrong-medication count.
-Do not present an unverified subtype claim as independently verified evidence.
-
-NHSBSA, *Endorsing correctly in EPS: actual medicinal product pack*:
-https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack.
-W verified its public explanation that an endorsed pack with a dm+d price can
-be processed automatically without processing-team review and reimbursed as
-endorsed rather than as supplied, including an incorrect pick-list selection.
-Use its verified short quotation with the label "public, NHSBSA".
-This supports the synthetic mechanism, not an NHSBSA error prevalence estimate.
-
-The separate optional pack/strength-mismatch assumption defaults to one per
-cent of total submitted claim volume, not the 85,000 referral subset and not
-the study's 1.6 per cent. Its With row is labelled estimate and is non-additive
-to the existing referral model until overlap is defined. Existing cohort and
-297.5-hour defaults remain unchanged.
-
 ## Current desktop contracts
 
 Gate 1 checks typed EPS or declared paper against the dispensing-month provision.

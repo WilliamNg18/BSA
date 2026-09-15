@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+Exact G `99abdd467d7885b387248d11bccc8c5c647e9fb2` includes source-link
+repair `c03ab21` and Part A/main. B first reran the unchanged source-linked
+capture assertion (pass), then all eight selected files (110/110) and check
+(pass). C1 capture retention, C4 actual amendment source and C5 all final-note
+negative checks now have passing canonical-branch evidence. Earlier failures
+remain historical evidence. No C7 browser/live or global consumer acceptance
+is inferred; actual main still lacks this G integration.
+
 Actual main advanced to `5b75e5f7711bf599b02ff9fab752781fa0685b00` with
 Part A and master requirement documentation. B inspected that diff and safely
 merged it, preserving G's canonical domain and main's exact header code.
@@ -187,6 +195,18 @@ main actions or updated four-case historical seeds.
 # Vision alignment
 
 ### Canonical action integration
+
+C1/C8 follow-up: a confirmation revision now explicitly links its unchanged
+source revision, retaining the existing human capture instead of routing back
+to Type 1. Seeded failed strength checks and successful paper rechecks are
+recorded code events, reflected in current verification and shared ready drafts.
+Twenty-one runtime tests pass, including one-press seeded paper release.
+
+W's exact failed 476 trace probe is addressed by a distinct structured
+cross-record path: no `retrieve_tariff` call, no synthetic strength clause in
+the corpus, factual prescription/selection/supply conflicts and not-applicable
+image/readings/provision statuses. The existing EPS field helper no longer
+reports the wrong-strength source as ready. Forty-seven targeted tests pass.
 
 Reported C4/C5 defects are fixed by source-level amendment regions and protected
 form/pack aliases, not by renderer backfill or silently rewriting notes. The

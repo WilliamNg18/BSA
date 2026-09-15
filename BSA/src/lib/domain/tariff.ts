@@ -62,12 +62,6 @@ function clauseSet(withDate: boolean): TariffClause[] {
       text: "Synthetic generic supply: state the brand or manufacturer dispensed, pack size and form. These demonstration requirements are not clinical guidance.",
       requirements: [R.manufacturer, R.pack, R.presentation],
     },
-    {
-      id: "SYN-EPS-STRENGTH", part: "Synthetic EPS rules", title: "Endorsed pack matches prescription and supply",
-      endorsementType: "SUPPLY",
-      text: "Reimbursement follows the endorsed pack; the selected product and strength must match the prescription and the product supplied.",
-      requirements: [{ id: "selected_pack_matches", label: "Selected product and strength match prescription and supply" }],
-    },
   ];
 }
 

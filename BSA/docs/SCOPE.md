@@ -6,6 +6,11 @@ ms.date: 2026-09-15
 
 # Scope register
 
+G's explicit source-revision repair now passes B's original capture-retention
+assertion unchanged. All 110 selected B/runtime tests and check pass on
+`99abdd4`, including the ten formerly failing assertions. This completes the
+bounded canonical defect verification, not the overall Task 40 live release.
+
 B now inherits merged main `5b75e5f`, including the master Tasks 25-40 rules
 and Part A. Its 72 header-policy units and typecheck pass. Two older demo-shell
 expectations require D's new seed/gate migration; B did not edit those tests.
@@ -61,6 +66,17 @@ retain Type 1 ordering. This 54-unit/check result does not establish the owning
 scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
+
+Current-source linking and seeded readiness provenance are implemented:
+information responses retain the same actual submission/capture, and seeded
+ready paper supports one real operator Release after Reset. These targeted
+repairs do not replace legacy consumer migration or current-main live proof.
+
+Strength matching now has explicit proposed/public-guidance authority, not an
+invented monthly Tariff clause. Current trace and both gates retain genuine
+disagreement; no self-corroborating equality or fabricated readings remain in
+the strength-specific path. The supporting check is a targeted result, not a
+blanket merge or live acceptance claim.
 
 The first full integration inventory is not green: 210 failed / 1,575 passed
 tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.

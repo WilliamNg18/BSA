@@ -6,6 +6,13 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+B verified G source-link repair `c03ab213d97392e0769c3de1546c1c224563c6f8`
+through integrated `99abdd467d7885b387248d11bccc8c5c647e9fb2`.
+The exact remaining negative passes unchanged, then all 110 selected tests
+and check pass. All ten previously reproduced source/note/capture failures
+are now resolved on the canonical branch. Browser timing, consumer-wide
+migration, main merge/deployment and live acceptance remain separate gates.
+
 B safely incorporates actual main `5b75e5f7711bf599b02ff9fab752781fa0685b00`
 (Part A and the master requirements). G's domain and main's header remain
 unchanged. All 72 new global notice-policy assertions and typecheck pass.
@@ -100,6 +107,20 @@ automatic eligible EPS rechecks, paper amendment snapshots and human-only paper
 release. The shared source facades and optional mismatch store input are
 callable. Existing consumer tests still require migration; this is published
 WIP, not main/live completion.
+
+W's reproduced strength-trace blockers are repaired in the canonical layer:
+actual 10mg/5mg/supply disagreement is retained, conflict is explicit, repeated
+readings and image/provision signals are not applicable, and no matching rule
+is inserted into the monthly Tariff corpus. The legacy EPS field checker uses
+the same independent check. Typecheck and 47 targeted tests pass; full legacy
+consumer migration and live acceptance remain incomplete.
+
+The next canonical checkpoint retains actual source-linked Type 1 capture
+across information-only responses without inventing a new capture event.
+Ready paper seeds now contain their recorded code recheck and a real shared
+decision draft; the wrong-strength referral seed records its original failed
+On checks. Typecheck and 21 targeted runtime tests pass. A's header merge is
+now available on main `5b75e5f`; it will be incorporated before candidate CI.
 
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
