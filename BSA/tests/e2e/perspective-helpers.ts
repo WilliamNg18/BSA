@@ -1,7 +1,7 @@
 import type { Page, TestInfo } from "@playwright/test";
 import { captureCheckpoint, captureJson, expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { decisionNote, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { decisionNote, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
 
 export const perspectiveGuard = "This view belongs to the other side; switch perspective to see it";
 export const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
@@ -28,10 +28,12 @@ export async function historyIdentity(page: Page) {
   })));
 }
 
-export async function dismissDecisionNotification(page: Page) {
+export async function assertInlineDecisionRecorded(page: Page, outcome: OperatorOutcome) {
+  await expect(page).toHaveURL(/\/record$/);
+  await expect(page.getByRole("heading", { name: /^Record DR-/ })).toBeVisible();
+  const decision = page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).getByRole("definition");
+  await expect(decision).toContainText(`${outcome} by Demo operator`);
   const notice = page.getByRole("complementary", { name: "Decision notifications", exact: true });
-  await expect(notice.locator('[data-decision-notice="success"]')).toContainText("Decision recorded");
-  await notice.getByRole("button", { name: "Dismiss notification", exact: true }).click();
   await expect(notice.locator("[data-decision-notice]")).toHaveCount(0);
 }
 
@@ -120,7 +122,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     }
     await performDecision(page, "REFER_BACK");
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
-    await dismissDecisionNotification(page);
+    await assertInlineDecisionRecorded(page, "REFER_BACK");
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
     const decisionEvents = history(page).getByRole("list", { name: "Lifecycle events", exact: true });

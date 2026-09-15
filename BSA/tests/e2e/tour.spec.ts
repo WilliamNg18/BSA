@@ -7,7 +7,7 @@ import { runAgent } from "../../src/lib/domain/agent";
 import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "../../src/lib/domain/baseline";
 import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { dismissDecisionNotification } from "./perspective-helpers";
+import { assertInlineDecisionRecorded } from "./perspective-helpers";
 import { REC_META } from "../../src/components/demo/label-meta";
 import { decisionNote, operatorAction, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
@@ -374,7 +374,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await performDecision(page, "REFER_BACK");
   await expect(page.getByRole("main")).toContainText(approvedReason);
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
-  await dismissDecisionNotification(page);
+  await assertInlineDecisionRecorded(page, "REFER_BACK");
   await navigatePrimary(page, "Pharmacy check");
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   const seed = await field.inputValue();

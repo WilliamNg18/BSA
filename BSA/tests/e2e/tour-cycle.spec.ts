@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { PLAYABLE_CASES } from "../../src/lib/domain/cases";
-import { dismissDecisionNotification, openHistory } from "./perspective-helpers";
+import { assertInlineDecisionRecorded, openHistory } from "./perspective-helpers";
 import { humanReleaseLabel, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 const stops = [
@@ -116,7 +116,7 @@ for (const enabled of [false, true]) {
     }
     await performDecision(page, "REFER_BACK");
     await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
-    await dismissDecisionNotification(page);
+    await assertInlineDecisionRecorded(page, "REFER_BACK");
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
     if (enabled) {
@@ -146,7 +146,7 @@ for (const enabled of [false, true]) {
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human recheck confirms the corrected dispensing date");
     await performDecision(page, "ACCEPT", { releaseVerified: enabled });
     await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
-    await dismissDecisionNotification(page);
+    await assertInlineDecisionRecorded(page, "ACCEPT");
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(humanReleaseLabel(enabled, "pharmacy"));
     await openHistory(page);

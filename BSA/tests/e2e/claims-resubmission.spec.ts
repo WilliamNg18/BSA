@@ -64,7 +64,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
       await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
       expect((await decisionNote(page).inputValue()).trim().length).toBeGreaterThanOrEqual(8);
-      await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toContainText("awaiting operator");
+      await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Awaiting operator");
       await performDecision(page, "REFER_BACK");
       await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
       await expect(page.getByRole("heading", { name: "Claim detail: EX-24112", exact: true })).toBeVisible();
