@@ -38,7 +38,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO RK 21/08/26");
   await expect(status).toHaveText("Ready");
-  await expect(page.getByRole("status").filter({ hasText: "Pharmacy applied correction. Changed fields highlighted; not submitted." })).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "Highlighted; not sent." })).toBeVisible();
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "pharmacy-after-date");
   await field.fill("NCSO  RK");

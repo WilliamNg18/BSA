@@ -1,6 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { automaticCaseIds, captureJson, confirmReset, expect, test } from "./fixtures";
+import { openQueueCapture } from "./paper-declaration-helpers";
+import { operatorDecision } from "./operator-action-helpers";
 
 const worklist = (page: Page) => page.getByRole("region", { name: "Type 2 worklist", exact: true });
 const captureLane = (page: Page) => page.getByRole("region", { name: "Type 1 capture lane", exact: true });
@@ -87,9 +89,9 @@ test("Task22 an explicit incomplete submission becomes New and opens the same ca
   await row.getByRole("link", { name: "Open EX-24112", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toBeVisible();
 });
 
 for (const width of [1280, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {
@@ -101,12 +103,12 @@ for (const width of [1280, 1440]) for (const colorScheme of ["light", "dark"] as
     await expect(worklist(page).getByRole("heading", { name: "Type 2 worklist", exact: true })).toBeVisible();
     await expect(captureLane(page).getByRole("heading", { name: "Type 1 capture lane", exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+    const capture = await openQueueCapture(page);
     const audit = await new AxeBuilder({ page }).analyze();
     await captureJson(info, "staff-lanes-axe", audit);
     expect(audit.violations).toEqual([]);
-    const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
     await capture.getByRole("textbox", { name: "Product code", exact: true }).focus();
     await expect(capture.getByRole("textbox", { name: "Product code", exact: true })).toBeFocused();
-    await page.screenshot({ path: info.outputPath(`staff-lanes-${width}-${colorScheme}-${enabled}.png`), fullPage: true });
+    if (width === 1440) await page.screenshot({ path: info.outputPath(`staff-lanes-${width}-${colorScheme}-${enabled}.png`), fullPage: true });
   });
 }

@@ -66,7 +66,12 @@ export const automaticCaseIds = ["EX-24107"];
 
 export async function openCaseFromQueueOrClaim(page: Page, id: string) {
   if (!automaticCaseIds.includes(id)) {
-    await page.locator(`a[href='/case/${id}']`).first().click();
+    await page.getByRole("button", { name: /^All staff items \(/ }).click();
+    if (id === "EX-24123") {
+      const capture = page.locator(`[data-type1-case="${id}"]`);
+      if (await capture.getAttribute("open") === null) await capture.locator(":scope > summary").click();
+      await capture.getByRole("link", { name: `Open ${id}`, exact: true }).click();
+    } else await page.locator(`[data-case-id="${id}"]`).getByRole("link", { name: `Open ${id}`, exact: true }).click();
     return;
   }
   await navigatePrimary(page, "Pharmacy claims");

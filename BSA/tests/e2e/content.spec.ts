@@ -1,5 +1,6 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
+import { operatorDecision, performDecision } from "./operator-action-helpers";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
@@ -113,7 +114,7 @@ for (const enabled of [false, true]) {
       await page.getByRole("radio", { name: /^Refer back/ }).check();
       await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     } else await page.getByRole("radio", { name: /^Escalate/ }).check();
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await performDecision(page, enabled ? "REFER_BACK" : "ESCALATE");
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
     if (enabled) {
@@ -264,6 +265,6 @@ for (const enabled of [false, true]) {
     await captureJson(info, "task5-copy", audits);
     console.info("Advisory queue word counts", audits.flatMap((audit) => audit.failures));
     await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+    await expect(operatorDecision(page).getByRole("button", { name: "Refer back", exact: true })).toBeVisible();
   });
 }
