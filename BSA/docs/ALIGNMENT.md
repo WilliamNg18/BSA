@@ -396,6 +396,12 @@ These guards preserve source identity without treating an edit as attestation.
 | Correct denominator and unchanged totals | Uses total submitted-claim volume; separate non-additive result does not alter the existing referral-loop shape, cohorts or hours |
 | Completion authority | Consumer/browser integration and merged, green-deployed live observation pending; no branch artifact is a product or backup |
 
+N's authored chapter 1/2 consumers now follow these contracts. The browser
+inventory covers default and edited submitted volume, zero/100%, invalid
+decimals, all perspectives, both toggle states, unchanged core totals and Reset.
+Only 30 pure units and affected-file lint have run at this checkpoint; the new
+same-store handoff is still pending. This is not a browser or live pass.
+
 ## 2026-09-15: Task 39 W source comparison and integration boundary
 
 W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
