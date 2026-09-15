@@ -4,6 +4,24 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: U40 scanner comparison WIP, not live acceptance
+
+U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
+full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
+owns immutable revision sources and the state facade. No O/P screens, store
+actions, routing or source fixtures are edited by U.
+
+The three columns retain typed declaration, source scan and hypothetical
+character-recognition values/confidences independently. Human capture appears
+separately and cannot rewrite an original column. The portrait image renderer
+wraps source strings without completing unknown characters or truncating lines.
+Eighteen focused render tests and typecheck pass. The reusable desktop browser
+contract is authored but not executed: no browser lease or hosted check is claimed.
+
+Base main is `6418151`. This branch is incomplete work, not a backup or live
+product. G integration, O mounting, 1280/1440 verification, main merge and an
+observed green deployment remain required.
+
 ## 2026-09-15: B40 domain foundation, published incomplete
 
 Foundation `c433f4546f50d9ecb09d3da5699ef5fd48365234` is pushed and handed to

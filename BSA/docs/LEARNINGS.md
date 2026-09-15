@@ -6,6 +6,13 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 actual-source audit and foundation boundary
 
+U's scoped rendering tests prove that later human capture leaves all three
+original columns identical, unknown OCR dates never acquire the declaration's
+date, and stale/source-mismatched projections produce explicit errors. The
+portrait adapter retains uncertain source glyphs and wraps long values without
+ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
+1280/1440 legibility or replace the pending mounted browser and live checks.
+
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
 operator projection. A poor source supported by human confirmation must disclose

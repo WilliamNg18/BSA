@@ -8,6 +8,13 @@ ms.date: 2026-09-15
 
 ## B40 bounded foundation scope, 15 September
 
+U's reactivated Task 40 scope is the new read-only three-column scanner
+comparison, original-source image adapter, rendered units and desktop browser
+assertion helper. Historical Task 27 is not restarted. O owns full-width
+Type 1/case-pack insertion and G supplies the canonical source facade.
+Eighteen units and typecheck pass; actual desktop legibility, accessibility and
+observed deployed-main acceptance remain pending.
+
 The follow-up preserves unreadable raw scan/OCR evidence even when a current
 human capture supports effective reconciliation. Its result explicitly names
 that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
