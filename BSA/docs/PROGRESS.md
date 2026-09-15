@@ -4,6 +4,23 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## G repaired operator browser proof
+
+The newly authorised run on clean published `f9c1fc3dff97d34bb5da30b903b0329b4ff58a30`
+passes all ten operator cases in 52.313 seconds, one worker, zero retries,
+skips or flaky results. Both widths pass the unchanged D focus/full-viewport
+assertions and all ten cases complete unrestricted axe. The production
+build returned HTTP 200 with that exact commit and `dirty: false`.
+Four named 1440 px B/D On/Off checkpoints and their byte-identical reporter
+copies are verified. The old `491a808` six-pass/four-fail run remains intact.
+Port 4335 is released.
+
+Artifacts are retained under `operator40-f9c1fc3-*` in G session files.
+After unfreezing, V's canonical-channel helper was integrated as `ce23995`;
+typecheck and seven catalog tests pass, without changing runtime source.
+Remaining legacy-scenario CI migrations and coordinator-owned main,
+deployment and live acceptance are not covered by this bounded proof.
+
 ## G repaired candidate after current-main integration
 
 G merged coordinator-confirmed main `a10b000a4aff97aafb17663479cc97583ec28bab`

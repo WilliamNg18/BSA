@@ -4,6 +4,14 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The real focus/visibility repair resolves all four recorded counterexamples:
+the unchanged full ten-case run passes on clean served `f9c1fc3` with full
+axe, no retries and both desktop widths. Artifact validation distinguishes
+four logical named captures from four identical reporter attachment copies;
+all are 1440 px wide. Windows long-path-safe reads verify those copies.
+The earlier six/four result remains evidence of the actual defect, not
+something overwritten by the passing rerun.
+
 The composed main-plus-repair candidate passes full checking and 2,018 units
 on `6acb195`. O addresses actual capture identity rather than cloned history
 object identity, and reveals the focused note after its value/layout changes.

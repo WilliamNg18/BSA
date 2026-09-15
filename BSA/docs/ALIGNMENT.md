@@ -4,6 +4,14 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+All ten repaired operator cases pass on exact clean served `f9c1fc3`,
+52.313 seconds, one worker and no retries/skips/flaky outcomes. Every D
+counterexample is resolved under the original focus/ratio assertions and
+all ten axe checks run. Named 1440 px evidence and build identity are retained;
+4335 is released. Subsequent `ce23995` is a test-only canonical-channel
+migration with typecheck/seven catalog tests passing, not a new browser run.
+Global CI and coordinator-owned delivery acceptance remain open.
+
 G now includes actual main `a10b000`, V's canonical case-title expectations
 and O's concrete focus/whole-note repair. The composed `6acb195` passes the
 full check and 2,018 units across 120 files. The old six-pass/four-fail

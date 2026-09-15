@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: what does the repaired ten-case pass establish? Choice: only the source-pinned `f9c1fc3` operator workflows, focus/visibility, full axe and four named 1440 px checkpoints. Preserve the previous failing run and keep subsequent test-only migrations, global CI and live delivery as separate gates. Tie-breaker: exact, bounded evidence without promotion.
+
 - Question: how should the repaired candidate adopt newly verified main? Choice: merge the actual `a10b000` main history, retain existing A/V migrations, and integrate only the offered V catalog and O focus commits. Keep the original browser failures and require a fresh leased run on a clean published build. Tie-breaker: one main product and exact evidence, not an alternative branch artifact.
 
 - Question: how are overlapping A/V test handoffs composed? Choice: apply their explicitly offered chronological commits, preserve prior test migrations and union only the five tracking histories; stop for any substantive code conflict. Validate combined types, lint and harness tests without treating discovery or owner-only results as fresh G browser acceptance. Tie-breaker: narrow integration with retained evidence.

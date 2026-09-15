@@ -4,6 +4,13 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+G's repaired-layout proof is exactly O's ten existing browser cases on clean
+served `f9c1fc3`: 1280/1440, full axe, unchanged focus and viewport ratio 1,
+one worker and zero retries. All pass. Four named 1440 px checkpoints are
+retained, with earlier failures preserved. This does not include V's timing
+matrix, whole-site acceptance or live-backup parity. The later `ce23995`
+changes only canonical-channel test setup and its unit contracts.
+
 The current G candidate includes actual main `a10b000` and the narrowly
 offered V catalog/O focus repairs. G did not independently alter the
 runtime-inventory implementation imported from main. O's stable capture
