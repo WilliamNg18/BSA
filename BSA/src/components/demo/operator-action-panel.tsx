@@ -4,13 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { NativeRadioGroup, NativeRadioItem } from "@/components/ui/native-radio-group";
-import { BoundaryTag, RecommendationBadge } from "@/components/demo/labels";
-import { SignalList } from "@/components/demo/signals";
+import { BoundaryTag } from "@/components/demo/labels";
+import { RecommendationCard } from "@/components/demo/recommendation-card";
 import { RawCaseFields } from "@/components/demo/case-presentation";
 import { ReleaseRecord } from "@/components/demo/release-record";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
-import { permitsProposal } from "@/lib/case-presentation";
-import { abstentionReasonLabel } from "@/lib/abstention-display";
+import { useItemRecommendation } from "@/hooks/use-item-recommendation";
 import { runAgent } from "@/lib/domain/agent";
 import { itemStateLabel, type OperatorDecisionDraft } from "@/lib/domain/lifecycle";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
@@ -40,7 +39,6 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const records = useAppStore((s) => s.records);
   const storedDraft = useAppStore((s) => s.operatorDrafts[caseId]);
-  const verification = useAppStore((s) => s.itemVerification[caseId]);
   const setDraft = useAppStore((s) => s.setOperatorDraft);
   const apply = useAppStore((s) => s.applySuggestionToDecision);
   const release = useAppStore((s) => s.releaseToPricing);
@@ -49,6 +47,11 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
   const recordDecision = useAppStore((s) => s.recordType2Decision);
   const arrive = useAppStore((s) => s.arriveInQueue);
   const pack = useMemo(() => c && agentEnabled ? runAgent(c, { agentEnabled: true }) : null, [c, agentEnabled]);
+  const record = records.filter((entry) => entry.caseId === caseId && (entry.revision ?? 1) === revision?.number).at(-1);
+  const openReview = process?.routing.outcome === "type2_endorsement" && process.routing.requiresHuman
+    && (lifecycle?.state === "in_review" || lifecycle?.state === "escalated");
+  const { recommendation, error: recommendationError } = useItemRecommendation(caseId,
+    record && !openReview ? { kind: "recorded", revision: record.revision ?? 1, recordId: record.id } : { kind: "current" });
   const [error, setError] = useState("");
   const errorRef = useRef<HTMLParagraphElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
@@ -59,10 +62,11 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
   }
   const active = process.routing.outcome === "type2_endorsement" && process.routing.requiresHuman;
   if (!active || !["in_review", "escalated", "submitted", "resubmitted"].includes(lifecycle.state)) {
-    const record = records.filter((entry) => entry.caseId === caseId && (entry.revision ?? 1) === revision.number).at(-1);
     const event = lifecycle.history.filter((entry) => entry.actor === "operator" && entry.revision === revision.number).at(-1);
     return <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
+      {recommendationError && <p role="alert">{recommendationError}</p>}
+      {recommendation && <RecommendationCard recommendation={recommendation} compact={compact} />}
       {compact ? lifecycle.state === "released_to_pricing" ? <ReleaseRecord caseId={caseId} /> : <>
         <p>{itemStateLabel(lifecycle, "nhsbsa", agentEnabled)}</p>
         <dl className="grid gap-2 text-sm">
@@ -77,7 +81,6 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
   const reviewing = lifecycle.state === "in_review" || lifecycle.state === "escalated";
   const draft: OperatorDecisionDraft = storedDraft?.revision === revision.number ? storedDraft
     : { revision: revision.number, outcome: null, rbCode: "", note: "", appliedSuggestion: false };
-  const suggestion = pack && permitsProposal(pack);
   const eligibility = getReleaseEligibility(caseId);
   const appliedEvent = lifecycle.history.some((event) => event.revision === revision.number && event.processStep === "suggestion_applied" && event.actor === "operator");
 
@@ -107,6 +110,11 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
     <div className="flex items-center justify-between gap-2">
       <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
     </div>
+    {recommendationError && <p role="alert" className="text-sm text-destructive">{recommendationError}</p>}
+    {recommendation && <RecommendationCard recommendation={recommendation} compact={compact} applyLabel="Apply suggestion"
+      onApply={reviewing && recommendation.operatorApplyAllowed
+        ? () => perform(() => { apply(caseId); noteRef.current?.focus(); }) : undefined} />}
+    {!agentEnabled && <p className="text-sm">experience only</p>}
     {compact && <details open className="space-y-3 rounded-lg border p-3">
       <summary className="cursor-pointer font-medium focus-visible:outline-2">Evidence and received source</summary>
       <RawCaseFields c={c} compact />
@@ -118,36 +126,6 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
       <Button onClick={() => perform(() => arrive(caseId))}>Start review</Button>
       {error && <p ref={errorRef} tabIndex={-1} role="alert">{error}</p>}
     </> : <>
-      {pack ? <section aria-label="Suggestion" className="space-y-3 rounded-lg border p-3">
-        <div className="flex items-center justify-between gap-2"><h3 className="font-semibold">Suggestion</h3><BoundaryTag cls="agent" /></div>
-        <RecommendationBadge rec={pack.gate.result === "FAIL" ? "NONE" : pack.recommendation} />
-        <dl className="grid gap-2 text-sm">
-          <div><dt className="font-medium">Dated clause</dt><dd>{pack.clause ? `${pack.clause.part}, ${pack.clause.title} · ${pack.tariffLabel}` : "Not retrieved"}</dd></div>
-          <div><dt className="font-medium">Exact gap</dt><dd>{pack.conflicts.map((conflict) => `${conflict.field}: ${conflict.values.map((value) => `${value.origin} ${value.value}`).join(", ")}`).join("; ")
-            || pack.requirementResults.filter((result) => result.met !== true)
-            .map((result) => `${result.requirement.label}: ${result.met === false ? "missing" : "unknown"}`).join("; ")
-            || (pack.abstainReasons.length
-              ? <ul aria-label="Unresolved source gaps">{pack.abstainReasons.map((reason) => <li key={reason}>{abstentionReasonLabel(reason)}</li>)}</ul>
-              : suggestion ? "None detected" : "Evidence unresolved")}</dd></div>
-          <div><dt className="font-medium">Drafted note</dt><dd>{suggestion ? pack.draftToPharmacy || "No drafted note" : "Withheld"}</dd></div>
-        </dl>
-        <SignalList signals={pack.signals} compact={compact} />
-        <dl className="grid grid-cols-2 gap-2 text-sm">
-          <div><dt>Gate 1</dt><dd>{verification?.gate1 ?? "none"}</dd></div>
-          <div><dt>Gate 2</dt><dd>{verification?.gate2 ?? "none"}</dd></div>
-          <div><dt>Code gate</dt><dd>{pack.gate.result}</dd></div>
-          <div><dt>Reconciled</dt><dd>{verification?.reconciled ? "Yes" : "Not established"}</dd></div>
-        </dl>
-        <details>
-          <summary className="cursor-pointer font-medium focus-visible:outline-2">Clause and code check details</summary>
-          <div className="mt-3 space-y-3">
-            {pack.clause && <blockquote className="border-l-4 border-sky-600 pl-3 text-sm">{pack.clause.text}</blockquote>}
-            <ul aria-label="Code gate checks" className="space-y-1 text-sm">{pack.gate.checks.map((check) =>
-              <li key={check.name}>{check.pass ? "Pass" : "Fail"}: {check.name}. {check.detail}</li>)}</ul>
-          </div>
-        </details>
-        <Button type="button" disabled={!suggestion} onClick={() => perform(() => { apply(caseId); noteRef.current?.focus(); })}>Apply suggestion</Button>
-      </section> : <p className="text-sm">experience only</p>}
       {appliedEvent && <p className="text-sm" data-suggestion-applied>applied by the operator from the agent&apos;s suggestion</p>}
       <NativeRadioGroup aria-label="Decision" value={draft.outcome ?? ""} onValueChange={(value) => {
         const outcome = OUTCOMES.find((option) => option.value === value)?.value;

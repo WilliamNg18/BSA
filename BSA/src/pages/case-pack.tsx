@@ -24,6 +24,7 @@ import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import { abstentionReasonLabel } from "@/lib/abstention-display";
 import { OperatorActionPanel } from "@/components/demo/operator-action-panel";
 import { ReleaseRecord } from "@/components/demo/release-record";
+import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
 
 export function CasePackPage() {
   const { id } = useParams();
@@ -72,12 +73,13 @@ function CasePackContent() {
       />
       <LifecycleHistory id={c.id} />
       {released && <ReleaseRecord caseId={c.id} />}
+      {(automatic || released || captureCompleted) && <ItemRecommendationPanel caseId={c.id} />}
       {!awaitingCapture && c.paperDeclaration && (agentEnabled || currentProcess?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
         Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
       </p>}
       {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
-      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} />}
+      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} showRecommendation={awaitingCapture} />}
       {automatic && !released && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
         <BoundaryTag cls="deterministic" />
         <p>priced by NHSBSA's existing rules engine, no person involved</p>
@@ -142,7 +144,7 @@ function CasePackContent() {
       <div className={compare ? "space-y-6" : "grid gap-6 xl:grid-cols-5"} data-pack-assembly={clock.revealed}>
         <div className="space-y-6 xl:col-span-3">
           {clock.revealed >= 5 && <>
-          <PageSection title="Recommendation" description={showRecommendation ? "Prepared by the agent, permitted by the gate, decided by a person." : "No recommendation to show."}>
+          <PageSection title="Assessment details" description={showRecommendation ? "Prepared by the agent, permitted by the gate, decided by a person." : "No recommendation to show."}>
             <Card className="border-teal-600">
               <CardHeader>
                 <div className="flex flex-wrap items-center gap-2">

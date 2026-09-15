@@ -16,6 +16,7 @@ import { agentVersionLabel } from "@/lib/service-display";
 import { MissingAssistedSlots } from "@/components/demo/case-presentation";
 import { caseViewState, recordHasRule, recordHasRuleAndReason } from "@/lib/case-presentation";
 import { ReleaseRecord } from "@/components/demo/release-record";
+import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -66,6 +67,9 @@ function DecisionRecordContent() {
       />
       <LifecycleHistory id={c.id} />
       <ReleaseRecord caseId={c.id} />
+      <ItemRecommendationPanel caseId={c.id} context={latest
+        ? { kind: "recorded", revision: latest.revision ?? 1, recordId: latest.id }
+        : { kind: "current" }} />
 
       {!agentEnabled && !automaticRecord && <><section className="rounded-xl border p-4" data-manual-record-comparison>
         <h2 className="font-semibold">Synthetic Today comparison: experience only, no rule recorded</h2>

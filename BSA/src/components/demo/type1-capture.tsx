@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { BoundaryTag } from "@/components/demo/labels";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { PainMarker } from "@/components/demo/pain-marker";
+import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
@@ -23,10 +24,11 @@ import {
 } from "@/lib/domain/paper-capture";
 
 /** Q embeds this same store-connected surface in the lane and case pack. */
-export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline" }: {
+export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline", showRecommendation = true }: {
   caseId: string;
   compact?: boolean;
   evidencePlacement?: "inline" | "external";
+  showRecommendation?: boolean;
 }) {
   const c = useLifecycleCase(caseId);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
@@ -48,6 +50,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
     return (
       <section aria-label={`Type 1 capture for ${caseId}`} className="space-y-3 rounded-xl border p-4">
         <h3 ref={heading} tabIndex={-1} className="font-semibold">Human capture confirmed</h3>
+        {showRecommendation && <ItemRecommendationPanel caseId={caseId} compact={compact} />}
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
         <p className="text-sm">Capture recorded; follow current routing.</p>
@@ -72,7 +75,8 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
   if (process.routing.outcome !== "type1_capture" || !process.routing.requiresHuman) {
     return <p className="text-sm">This item is not awaiting Type 1 capture.</p>;
   }
-  return (
+  return <>
+    {showRecommendation && <ItemRecommendationPanel caseId={caseId} compact={compact} />}
     <CaptureForm
       key={`${caseId}:${revision.number}:${revision.at}:${agentEnabled}`}
       c={c}
@@ -82,7 +86,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
       compact={compact}
       externalEvidence={compact && evidencePlacement === "external"}
     />
-  );
+  </>;
 }
 
 export function Type1CaptureEvidence({ caseId }: { caseId: string }) {

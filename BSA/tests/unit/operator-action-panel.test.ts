@@ -96,9 +96,9 @@ describe("shared operator action panel", () => {
       fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
     store.setAgentEnabled(true);
     const html = renderPanel("EX-24123");
-    expect(html).toContain("Exact gap");
-    expect(html).toContain("Missing product.");
-    expect(html).toContain("Missing prescriber.");
+    expect(html).toContain("Missing or unresolved");
+    expect(html).toContain("Product identified");
+    expect(html).toContain("Prescriber present");
     expect(html).toMatch(/<button[^>]*disabled=""[^>]*>Release to pricing<\/button>/);
   });
 
