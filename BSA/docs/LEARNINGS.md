@@ -1726,3 +1726,13 @@ object-key count is no longer the signal count. Updated tests assert the five
 underlying facts and exactly five rendered rows, plus canonical non-applicability
 for typed strength records and the unchanged unreadable-paper quality threshold.
 The full owned/current-runtime selection passes 85 tests with check.
+## Task 40 O first compiled mount
+
+New canonical-source tests caught an initial omission of the comparison in
+the ordinary pending-Type1 return path; it was corrected before publication.
+A test also initially mistook CSS `disabled:` classes for a disabled HTML
+attribute; it now checks the actual attribute. The resulting 15 O fidelity
+tests and 27 U scanner/store tests pass, with typecheck and targeted lint.
+These checks do not establish browser geometry, full accessibility or live
+completion. Existing fixtures based on retired missing-date/EPS-paper seeds
+and pre-acknowledgement resubmission APIs are being migrated separately.
