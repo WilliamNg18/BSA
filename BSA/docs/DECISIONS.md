@@ -6,6 +6,8 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Outcome fades and final-state accessibility audits
 
+- Question: why did the first held-frame negative not stay held? Choice: Motion sets native `startTime` after `animate()` returns, which resumes WAAPI; pause in the next microtask and assert `playState === "paused"`. Tie-breaker: test the actual native animation without changing production initialization or timing.
+
 - Question: remove the required fade to fix #109's audit failure? Choice: no; the downloaded failing light-Off result sampled a still-exiting header after only the demo panel settled. Require the header's actual final state before final-state axe. Tie-breaker: preserve the user's fade and truthful audit semantics.
 - Question: invent a sleep or global animation bypass? Choice: extract the existing `toHaveCSS("opacity", "1")` On and `toHaveCount(0)` Off checks into a named header helper; reuse explicitly at the directly coupled audit boundaries without increasing timeouts or filtering axe. Tie-breaker: smallest shared, observable condition.
 - Question: how to prove the helper is not an early success? Choice: diagnostically hold and resume the real native animation, assert the transitional axe contrast finding and that the helper rejects the held frame, then separately run ordinary unmodified-animation final-state audits. Tie-breaker: exact measurable proof without production hooks or changed duration.
