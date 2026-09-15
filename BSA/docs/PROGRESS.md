@@ -506,6 +506,13 @@ and Reset integration; chapter views and browser coverage are in progress.
 This branch is incomplete work, not a product or backup. No browser, deployment
 or live acceptance is claimed. Owner actions for me: none.
 
+Chapter 1 now consumes W's verified study statement and non-NHSBSA label.
+Chapter 2 has a separate optional percentage editor/comparison with explicit
+Today provenance and unchanged core figures. Thirty pure-model units and the
+affected-file lint pass. Rendered-state units and four desktop browser contracts
+are authored, but cannot establish acceptance until G's isolated store addition
+is integrated; no browser lease or execution is claimed.
+
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
 main and the live build identity were verified as

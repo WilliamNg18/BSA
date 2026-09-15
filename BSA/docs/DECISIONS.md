@@ -113,6 +113,8 @@ ms.date: 2026-09-15
 - Question: which volume and units drive mismatches? Choice: total submitted claims times a fractional share; UI 1% converts to 0.01, independently of the study's 1.6%. Tie-breaker: explicit latest denominator and evidence authority.
 - Question: should the new assumption change the frozen referral estimate? Choice: use a separate optional result and independently validated draft in the same store, leaving all existing cohorts and hours unchanged until overlap is defined. Tie-breaker: preserve truthful accounting.
 - Question: what does Today none mean? Choice: no catch modelled in this synthetic comparison, never observed absence of real NHSBSA detection. Tie-breaker: governing principle and truthful provenance.
+- Question: how is the new optional estimate presented? Choice: a separate chapter 2 disclosure, explicit all-modelled-mismatches catch assumption and no additions to existing cohorts/hours; chapter 1 imports only W's verified study text. Tie-breaker: smaller scope and clear Today/With provenance.
+- Question: may authored browser contracts count as acceptance? Choice: no; publish them as WIP while the G store handoff and coordinator browser lease are pending. Tie-breaker: live-first verification authority.
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.
 
