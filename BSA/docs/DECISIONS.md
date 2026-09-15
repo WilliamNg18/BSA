@@ -5,6 +5,24 @@ ms.date: 2026-09-15
 ---
 
 ## 2026-09-15: B40 fidelity and communication contract choices
+- Question: how can V distinguish stale dependency failures from test defects without resolving others' source conflicts? Choice: run the identical six owned tests on an isolated exact published P checkout, with source/package diffs empty and no browser/build; tie-breaker: source-pinned evidence and no duplicate source writer.
+- Question: should a correctly dated B satisfy an old Home date-correction assertion? Choice: assert absence of that false instruction and keep the failure assigned to D; tie-breaker: current source truth, not a green legacy fixture.
+- Question: how is the discovered P/V four-case unit overlap resolved? Choice: retain P's two EPS labels, all retired-case negatives and actual-M landmarks, then add the explicit unavailable-EPS negative; tie-breaker: union meaningful assertions rather than overwrite owner work.
+
+- Question: which legacy unit failures may V migrate? Choice: the six files explicitly assigned by G after O confirmed no overlap, preserving historical pure-domain cases while replacing active retired-fixture setup with canonical actions; tie-breaker: precise ownership and truthful current behaviour.
+
+- Question: how should legacy B review setup adopt the new case? Choice: select the real brand-missing paper control and press Post, preserving the canonical factory's data instead of clearing fields or relabelling the old EPS fixture; tie-breaker: actual submission fidelity.
+- Question: may V resolve conflicting canonical P/G recommendation and paper source while importing controls? Choice: abort the clean-start merge and prepare only owned test adapters against published controls; tie-breaker: one source owner and no speculative integration repairs.
+
+- Question: should Type 1 capture affect the mismatch assumption? Choice: assert exact before/after equality for its actual string draft in V's existing unrelated-global loop; tie-breaker: capture changes only its own operational evidence, without duplicate N or store edits.
+
+- Question: how should V strengthen capture preservation for the new assumption? Choice: import G's exact published `cdd436b` dependency rather than cast around the old snapshot type, duplicate the producer or fabricate the property; tie-breaker: real source compatibility and one owner per implementation.
+
+## 2026-09-15: V canonical handoff and fresh-scenario fidelity
+
+- Question: may verification create missing brand data by mutating the ready-to-release C8 seed? Choice: use only the real original-scenario factory and visible preparation controls when published; retain the dependency meanwhile. Tie-breaker: exact source fidelity and no fabricated operational state.
+- Question: who adds the new assumption to state verification? Choice: preserve N's `15f9562` exact-key hunk and separately strengthen V's capture preservation list in its next source-compatible patch. Tie-breaker: one writer per hunk and complete observer coverage.
+- Question: do canonical store and handler passes establish C7 or current-live acceptance? Choice: retain them as bounded evidence only; require real UI cycles and the original timing assertions after coherent integration. Tie-breaker: truthful evidence and live-first authority.
 
 - Question: should a later information response bypass the scanner revision guard? Choice: keep the guard strict and use G's facade pinned to the last actual submission, proving it with real request/response actions; tie-breaker: exact source identity without inferred replacement evidence.
 - Question: does green CI on the first scanner WIP validate G's later integrated runtime? Choice: retain exact source hashes and test the new facades separately; do not transfer earlier CI or live acceptance; tie-breaker: source-pinned evidence.
