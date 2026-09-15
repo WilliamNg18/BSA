@@ -2176,3 +2176,23 @@ controls, not B's completed record.
 - Question: does preparing an agent case pack imply a saved decision record? Choice: no; the current trace says prepared in memory and awaiting human decision, not appended. Historical records and actual human writes remain unchanged. Tie-breaker: truthful mock and authority boundaries.
 - Question: should shared resubmission display a seed placeholder? Choice: record an explicit unperformed Off snapshot or the actual current On check at the human resubmit action, retaining existing source data for text-only corrections. Tie-breaker: truthful revision-bound audit evidence.
 - Question: which provision validates manually keyed, undeclared paper? Choice: Gate 2 resolves the received or human-captured product, date and endorsement independently; it must not reuse Gate 1's unreadable input or missing clause. Preserve the original scan and validate all actual captured facts. Tie-breaker: independent code validation and the supported Off manual path.
+
+## 2026-09-15: Integrated P recommendation decisions
+
+- Question: where do unfinished pharmacy edits live? Choice: one revision-bound pharmacy draft, retained across perspectives; explicit Apply records human attribution without submitting. One-state authority wins.
+- Question: how does an old referral demonstrate pre-send checking? Choice: the workbench explicitly labels a new attempt; claim detail retains correction-only actions. History is never replaced by navigation.
+- Question: what proves the receipt and monthly counts? Choice: recorded gates, release origin and validated correction events; actual Hillcrest counts stay separate from estimates and payment calculations.
+- Question: what if no generated note was approved? Choice: keep the recorded human reason visible without inventing a citation or an approved suggestion. Human authority wins.
+- Question: can an absent check be called Seed? Choice: only seed revisions use that label; later absent snapshots say Check not recorded. Actual resubmissions preserve current On/Off evidence.
+- Question: what survives demo exit? Choice: the selected URL case/channel and shared drafts; invalid combinations do not silently open another item.
+- Question: how are P's state tests updated? Choice: retain the full 34-test family and exact Both/switched snapshots, explicitly asserting draft-only edits and same-state pharmacy Apply events. No field is removed from the observer.
+- Question: may the retained paper prescriber be corrected? Choice: restore its human input alongside modern declaration fields in referred-back detail; initial declaration entry still does not invent prescriber evidence.
+
+## 2026-09-15: Concrete pharmacy recommendations extension
+
+- Question: which recommendation drives the pharmacy Apply button? Choice: render R's shared draft projection and use the same shared correction action, so the visible preview is exactly what the human applies. The header alone never applies or submits.
+- Question: how do complete and missing paper examples begin? Choice: explicit human buttons prepare R's labelled synthetic declaration fixture, including its declared demo prescriber; the scan, submitted revisions and Type 1 capture remain unchanged until separate actions.
+- Question: does scanner presentation change evidence? Choice: the scanner-view button reveals the retained unreadable synthetic form and its uncertainty, without writing lifecycle or capture evidence.
+- Question: what does an unknown invoice suggestion fill? Choice: nothing; its control focuses the existing authoritative endorsement input for human entry. No claimed amount is copied into invoice evidence.
+- Question: how are restored values highlighted? Choice: use R's applied-field metadata comparing the actual before/after draft, including fields restored to their original values; manual edits clear that metadata.
+- Question: can unreadable paper receipts promise automatic release? Choice: no; preserve recorded gate results and state explicitly that an operator compares the declaration with the scan. A pending item is not labelled as already built or released.

@@ -9,6 +9,7 @@ import { PharmacyDraftFields } from "./pharmacy-draft-fields";
 import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { PharmacySubmissionReceipt } from "./pharmacy-submission-receipt";
 import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
+import { PharmacyRecommendationPanel } from "./pharmacy-recommendation-panel";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { useAppStore } from "@/lib/store";
@@ -37,17 +38,18 @@ function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact
   const eps = draft.epsPrescription;
   const receipt = revision.kind !== "seed";
   return <section data-pharmacy-case={caseId} aria-label="EPS pharmacy submission" className="space-y-4">
+    {compact && <h2 className="text-lg font-semibold">Pharmacy check</h2>}
     {!compact && <section aria-label="Original EPS prescription">
       <h2 className="text-lg font-semibold">Prescription and dispenser&apos;s claim</h2>
       <EpsPrescriptionMessage prescription={revision.epsPrescription ?? c.epsPrescription ?? eps} dispenser={false} />
     </section>}
     <BoundaryTag cls="human" />
-    <p className="text-sm">New demonstration attempt; history retained.</p>
+    <dl className="text-sm"><dt>Submission purpose</dt><dd>New demonstration attempt; history retained.</dd></dl>
     {!compact && <label className="grid gap-1">Dispensing date
       <input id="eps-dispensing-date" type="date" className="rounded-md border bg-background p-2" value={eps.dispensingDate}
         onChange={(e) => update({ ...draft, epsPrescription: { ...eps, dispensingDate: e.target.value } })} />
     </label>}
-    <PharmacyDraftFields draft={draft} original={original} channel="eps" update={update} />
+    <PharmacyDraftFields draft={draft} original={original} channel="eps" update={update} recommendationVisible={enabled} />
     {!compact && <fieldset><legend className="mb-2 text-sm font-medium">Exemption status</legend>
       <NativeChoiceGroup value={eps.exemptionStatus} onValueChange={(value) => {
         if (value === "exempt" || value === "chargeable" || value === "not_recorded") update({ ...draft, epsPrescription: { ...eps, exemptionStatus: value } });
@@ -55,13 +57,16 @@ function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact
         <NativeChoiceItem value="exempt">Exempt</NativeChoiceItem><NativeChoiceItem value="chargeable">Chargeable</NativeChoiceItem><NativeChoiceItem value="not_recorded">Not recorded</NativeChoiceItem>
       </NativeChoiceGroup>
     </fieldset>}
-    {enabled ? <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
-      apply={controls === "correct-and-submit" && canApply ? () => act(() => {
+    {enabled ? <>
+      <PharmacyRecommendationPanel caseId={caseId} draft={draft} compact={compact}
+        onApply={controls === "correct-and-submit" && canApply ? () => act(() => {
         const store = useAppStore.getState();
         store.setPharmacyDraft(caseId, { ...draft, purpose: "new_submission" });
         store.applySuggestedCorrection(caseId);
         focusPharmacyCorrection(draft, useAppStore.getState().pharmacyDrafts[caseId]);
       }) : undefined} />
+      <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")} />
+    </>
       : <PainMarker resolved={false} pain="No advisory check; later correction is possible" resolution="Requirements checked" />}
     <Button data-pharmacy-action="submit" onClick={() => act(() => {
       useAppStore.getState().submitItem({
