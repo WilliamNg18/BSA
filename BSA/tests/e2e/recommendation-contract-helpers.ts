@@ -12,8 +12,11 @@ export async function assertVisibleRecommendation(page: Page, caseId: string, en
   await expect(card).toBeVisible();
   await expect(card).toHaveAttribute("data-recommendation-case", caseId);
   await expect(card.getByRole("heading", { name: "Recommendation", exact: true })).toBeVisible();
-  for (const name of ["Requirement results", "Suggested values", "Corrected preview", "Recommended outcome", "Confidence signals"]) {
+  for (const name of ["Clause", "Tariff version", "Dispensing date", "Evidence", "Suggested values", "Corrected preview", "Recommended outcome"]) {
     await expect(card.getByText(name, { exact: true }).first(), `${name} must be visible without opening a disclosure`).toBeVisible();
+  }
+  for (const name of ["Requirement results", "Confidence signals"]) {
+    await expect(card.getByRole("list", { name, exact: true })).toBeVisible();
   }
   await expect(card).toContainText("the agent verifies and advises; a person decides");
   const collapsedContent = card.locator("details:not([open])").filter({
