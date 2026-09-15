@@ -2256,3 +2256,23 @@ inline for Type 1. Preserve all facts and normal-size text, the full task render
 and its recommendation card. No clipping, internal scrolling or hidden card.
 Keep ordinary operations unchanged. Tie-breaker: required content before a height
 proxy; measure the complete R/O integration before claiming viewport acceptance.
+
+## 2026-09-15: Preserve ordinary overview navigation after mounting the demo
+
+Question: how are ordinary overview sections reachable after the chapter rail
+is replaced? Choice: a Home-only section navigation reuses the six existing
+chapter destinations as real router links. It is absent from the active demo
+because the ordinary Outlet is unmounted. No second tour state or Agent control
+is added. Tie-breakers: retain existing reachable views and use the smallest fix.
+
+Question: how should chapter tests navigate? Choice: exit demo when necessary,
+open Overview through the existing primary navigation, then activate its real
+section link and await both URL and heading focus. No reload, history injection,
+forced click or operational-state writes. All six links are tested against the
+complete read-only domain snapshot in both modes.
+
+Question: which old compatibility patches should replay? Choice: preserve
+current main's stronger P/O counter, source, approval and state assertions when
+combining the mounted tests. The numerical counter patch is already covered by
+main and is not duplicated. Adopt only V's immutable navigation helper and its
+small data dependency, not the full foreign proof branch.
