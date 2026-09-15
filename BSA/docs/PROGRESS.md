@@ -94,6 +94,14 @@ release. The shared source facades and optional mismatch store input are
 callable. Existing consumer tests still require migration; this is published
 WIP, not main/live completion.
 
+Reported paper/consumer defects are repaired in the next checkpoint: outbound
+notes protect presentation and pack aliases, amendment scans visibly contain
+their recorded supplier fields, submission workbenches can initialise the
+original scenario without overwriting the latest recheck, and paper Apply
+uses known pack/form records. Typecheck and 19 targeted runtime regressions pass.
+The first full changed-scope inventory remains failed: 210 failures, 1,575
+passes across 106 files. No legacy gate is waived; owner migrations are pending.
+
 W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
 headline checker and 33 focused units from base main `6418151`. `npm run check`
 and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
