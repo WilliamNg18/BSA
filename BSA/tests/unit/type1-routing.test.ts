@@ -1,19 +1,19 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, caseById } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { capturedFieldsMatchSources, compatibleCapture } from "../../src/lib/domain/capture-evidence";
 import { prepareCaptureConfirmation, preparePaperCapture } from "../../src/lib/domain/paper-capture";
-import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
 import type { PaperCaptureDraft } from "../../src/lib/domain/paper-capture";
 import type { PharmacyDeclaration } from "../../src/lib/domain/types";
 
-const [, B, C, D] = CASES;
+const C = CASES[2], D = caseById("EX-24123")!, B = caseById("EX-24112")!;
 const store = () => useAppStore.getState();
-const completeB: PaperCaptureDraft = {
-  productCode: B.claim.productCode,
-  quantity: String(B.claim.quantity),
-  endorsementText: "NCSO RK 21/08/26",
-  prescriber: B.extracted.prescriber,
+const completeD: PaperCaptureDraft = {
+  productCode: D.claim.productCode,
+  quantity: String(D.claim.quantity),
+  endorsementText: "NCSO JB 27/08/26",
+  prescriber: "Dr Example (synthetic)",
 };
 
 beforeEach(() => store().resetDemo());
@@ -28,66 +28,69 @@ function manualConfirmation(caseId: string, fields: PaperCaptureDraft) {
   return prepared.input;
 }
 
-describe("Type 1 manual capture routes as read without declaration reconciliation", () => {
-  it.each([false, true])("completes fully keyed B with Agent=%s and no declaration or checkbox", (agentEnabled) => {
+describe("Type 1 manual capture retains a separate human release", () => {
+  it.each([false, true])("fully keyed D never auto-prices with Agent=%s and no declaration or checkbox", (agentEnabled) => {
     store().setAgentEnabled(agentEnabled);
-    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: completeB.endorsementText });
-    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
-    const revisions = store().caseRevisions[B.id];
-    const history = structuredClone(store().lifecycles[B.id].history);
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: completeD.endorsementText });
+    expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
+    const revisions = store().caseRevisions[D.id];
+    const history = structuredClone(store().lifecycles[D.id].history);
     const records = store().records;
-    const input = manualConfirmation(B.id, completeB);
+    const input = manualConfirmation(D.id, completeD);
 
     store().confirmType1(input);
 
-    expect(store().itemProcesses[B.id].routing).toMatchObject({
-      outcome: "type1_capture", requiresHuman: false, pricingAuthority: "existing_rules_engine",
+    expect(store().itemProcesses[D.id].routing).toMatchObject({
+      outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null,
     });
-    expect(store().lifecycles[B.id].state).toBe("paid");
-    expect(store().caseStates[B.id]).toBe("cleared_by_rules");
-    expect(capturedFieldsMatchSources(sessionCase(B.id)!)).toBe(true);
-    expect(compatibleCapture(sessionCase(B.id)!)).toBe(false);
+    expect(store().lifecycles[D.id].state).toBe("in_review");
+    expect(store().caseStates[D.id]).not.toBe("cleared_by_rules");
+    expect(capturedFieldsMatchSources(sessionCase(D.id)!)).toBe(true);
+    expect(compatibleCapture(sessionCase(D.id)!)).toBe(false);
+    expect(getReleaseEligibility(D.id).allowed).toBe(!agentEnabled);
     expect(store().records).toBe(records);
-    expect(store().caseRevisions[B.id]).toBe(revisions);
-    expect(store().lifecycles[B.id].history.slice(0, history.length)).toEqual(history);
-    expect(store().lifecycles[B.id].history.slice(-2).map((event) => event.actor)).toEqual(["operator", "code"]);
-    expect(store().lifecycles[B.id].history.at(-2)?.capture).toMatchObject({
+    expect(store().caseRevisions[D.id]).toBe(revisions);
+    expect(store().lifecycles[D.id].history.slice(0, history.length)).toEqual(history);
+    expect(store().lifecycles[D.id].history.findLast((event) => event.capture)?.capture).toMatchObject({
       revision: input.revision, fields: input.fields, provenance: "human_capture", declarationReconciled: false,
     });
-    expect(store().lifecycles[B.id].history.at(-1)?.message).not.toContain("no person involved");
+    expect(store().lifecycles[D.id].history.at(-1)?.message).not.toContain("no person involved");
   });
 
-  it("routes explicitly reconciled B declaration to the same completed Type 1 outcome", () => {
+  it("routes explicitly reconciled D declaration to human release, not automatic pricing", () => {
     store().setAgentEnabled(true);
     const declaration: PharmacyDeclaration = {
-      fields: { ...completeB, quantity: B.claim.quantity },
+      fields: { ...completeD, quantity: D.claim.quantity },
       declaredAt: "2026-09-13T10:00:00Z", provenance: "pharmacy_declaration",
     };
-    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: completeB.endorsementText, declaration });
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: completeD.endorsementText, declaration });
     const prepared = preparePaperCapture(true, declaration);
-    const context = { caseId: B.id, revision: store().itemProcesses[B.id].revision, ...prepared, declaration };
+    const context = { caseId: D.id, revision: store().itemProcesses[D.id].revision, ...prepared, declaration };
     expect(prepareCaptureConfirmation({ ...context, declarationReconciled: false }).input).toBeNull();
     const confirmed = prepareCaptureConfirmation({ ...context, declarationReconciled: true });
     if (!confirmed.input) throw new Error("Expected reconciled declaration preparation.");
     store().confirmType1(confirmed.input);
-    expect(store().itemProcesses[B.id].routing).toMatchObject({
-      outcome: "type1_capture", requiresHuman: false, pricingAuthority: "existing_rules_engine",
+    expect(store().itemProcesses[D.id].routing).toMatchObject({
+      outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null,
     });
-    expect(store().lifecycles[B.id].state).toBe("paid");
+    expect(store().lifecycles[D.id].state).toBe("in_review");
+    store().releaseToPricing(D.id, "Human checked the reconciled paper declaration.");
+    expect(store().lifecycles[D.id].state).toBe("released_to_pricing");
+    expect(store().itemProcesses[D.id].releaseOrigin).toBe("human_decision");
   });
 
   it("does not permit an unreconciled pharmacy declaration to use the manual path", () => {
     const declaration: PharmacyDeclaration = {
-      fields: { ...completeB, quantity: B.claim.quantity },
+      fields: { ...completeD, quantity: D.claim.quantity },
       declaredAt: "2026-09-13T10:00:00Z", provenance: "pharmacy_declaration",
     };
-    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: completeB.endorsementText, declaration });
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: completeD.endorsementText, declaration });
     store().confirmType1({
-      caseId: B.id, revision: store().itemProcesses[B.id].revision,
+      caseId: D.id, revision: store().itemProcesses[D.id].revision,
       fields: declaration.fields, provenance: "pharmacy_declaration", declarationReconciled: false,
     });
-    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
-    expect(store().lifecycles[B.id].state).toBe("in_review");
+    expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
+    expect(store().lifecycles[D.id].state).toBe("in_review");
   });
 
   it.each([
@@ -99,13 +102,14 @@ describe("Type 1 manual capture routes as read without declaration reconciliatio
     { productCode: "SYN-UNKNOWN" },
     { prescriber: "Illegible" },
   ])("keeps unresolved manually keyed evidence in Type 2: %j", (patch) => {
-    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: completeB.endorsementText });
-    store().confirmType1(manualConfirmation(B.id, { ...completeB, ...patch }));
-    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
-    expect(store().lifecycles[B.id].state).toBe("in_review");
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: completeD.endorsementText });
+    store().confirmType1(manualConfirmation(D.id, { ...completeD, ...patch }));
+    expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
+    expect(store().lifecycles[D.id].state).toBe("in_review");
   });
 
   it("keeps complete manual D in Type 2 and preserves its unreconciled agent abstention", () => {
+    store().setAgentEnabled(true);
     const original = structuredClone(D);
     const fields = {
       productCode: D.claim.productCode, quantity: String(D.claim.quantity),
@@ -120,10 +124,10 @@ describe("Type 1 manual capture routes as read without declaration reconciliatio
 
   it("preserves C's conflict and rejects capture outside the Type 1 lane", () => {
     const original = structuredClone(C);
-    store().submitItem({ caseId: B.id, channel: "eps", endorsementText: B.extracted.endorsementText });
+    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: B.paperDeclaration!.endorsementText, paperDeclaration: B.paperDeclaration });
     expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
     const before = getDomainSnapshot();
-    expect(() => store().confirmType1(manualConfirmation(B.id, completeB))).toThrow("current awaiting Type 1 revision");
+    expect(() => store().confirmType1(manualConfirmation(B.id, completeD))).toThrow("current awaiting Type 1 revision");
     expect(getDomainSnapshot()).toEqual(before);
     expect(runAgent(C)).toMatchObject({ recommendation: "REQUEST_INFORMATION", conflicts: [
       expect.objectContaining({ field: "Quantity", material: true }),

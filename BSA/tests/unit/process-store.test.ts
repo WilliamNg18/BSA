@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
+import { CASES, PLAYABLE_CASE_IDS, caseById } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routing";
 import { getDomainSnapshot, historicalDecisionRecords, sessionCase, useAppStore } from "../../src/lib/store";
@@ -7,8 +7,11 @@ import { usePharmacyStore } from "../../src/lib/pharmacy-store";
 import { useQueueStore } from "../../src/lib/queue-store";
 import { caseForLifecycle } from "../../src/lib/domain/lifecycle-model";
 import type { DeclaredItemFields, RoutingFacts } from "../../src/lib/domain/types";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 
-const [A, B, C, D, E, F] = CASES;
+const [A, B, C, , E, F] = CASES;
+const D = caseById("EX-24123")!;
 const store = () => useAppStore.getState();
 const fields: DeclaredItemFields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" };
 beforeEach(() => store().resetDemo());
@@ -81,8 +84,9 @@ describe("explicit captured authority", () => {
   it("seeds D with a proposed declaration but never preconfirms or repairs the scan", () => {
     expect(store().caseRevisions[D.id][0].declaration?.fields).toEqual({
       productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26",
+      prescriber: D.pharmacySupplyRecord!.prescriber,
     });
-    expect(store().caseRevisions[D.id][0].declaration?.fields.prescriber).toBeUndefined();
+    expect(store().caseRevisions[D.id][0].declaration?.fields.prescriber).toBe(D.pharmacySupplyRecord!.prescriber);
     expect(store().itemProcesses[D.id].capture).toBeNull();
     expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
     store().setAgentEnabled(true);
@@ -136,15 +140,25 @@ describe("explicit captured authority", () => {
     expect(runAgent(historical!).recommendation).toBe("SUFFICIENT");
   });
 
-  it.each(["submitFromPharmacy", "resubmitFromPharmacy"] as const)("retains a paper channel across %s and requires capture again", (action) => {
-    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: B.extracted.endorsementText });
-    store().confirmType1({ caseId: B.id, revision: 2, fields: { productCode: B.extracted.productCode, quantity: B.extracted.quantity, endorsementText: B.extracted.endorsementText },
+  it.each(["submitFromPharmacy", "resubmitFromPharmacy"] as const)("retains a paper channel and clears prior capture across %s", (action) => {
+    store().submitItem({ caseId: D.id, channel: "paper", endorsementText: "NCSO JB",
+      paperDeclaration: { ...D.paperDeclaration!, endorsementText: "NCSO JB" } });
+    store().confirmType1({ caseId: D.id, revision: 2, fields: { productCode: D.claim.productCode, quantity: D.claim.quantity, endorsementText: "NCSO JB" },
       provenance: "human_capture", declarationReconciled: true });
-    store().recordType2Decision({ caseId: B.id, decision: "REFER_BACK", reason: "Date missing from the endorsement", rbCode: "SYN-NCSO" });
-    store()[action](B.id, "NCSO RK 21/08/26");
-    expect(store().caseRevisions[B.id].at(-1)?.channel).toBe("paper");
-    expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true });
-    expect(store().lifecycles[B.id].state).toBe(action === "submitFromPharmacy" ? "submitted" : "resubmitted");
+    store().recordType2Decision({ caseId: D.id, decision: "REFER_BACK", reason: buildReferralNote([{ rule: "endorsement_initialled_and_dated" }]), rbCode: "RB2B" });
+    if (action === "resubmitFromPharmacy") {
+      const revision = store().caseRevisions[D.id].at(-1)!;
+      const draft = initialisePharmacyDraft(sessionCase(D.id)!, revision);
+      store().setPharmacyDraft(D.id, { ...draft, purpose: "correction", paperDeclaration: { ...draft.paperDeclaration!, endorsementText: "NCSO JB 27/08/26" } });
+      store().setCorrectionAcknowledgement(D.id, revision.number, true);
+    }
+    store()[action](D.id, "NCSO JB 27/08/26");
+    expect(store().caseRevisions[D.id].at(-1)?.channel).toBe("paper");
+    expect(store().itemProcesses[D.id].routing).toMatchObject({
+      outcome: action === "submitFromPharmacy" ? "type1_capture" : "type2_endorsement", requiresHuman: true, pricingAuthority: null,
+    });
+    expect(store().itemProcesses[D.id].capture).toBeNull();
+    expect(store().lifecycles[D.id].state).toBe(action === "submitFromPharmacy" ? "submitted" : "resubmitted");
   });
 
   it("seeds automatic items as paid and never leaves them in a staff pending state", () => {
@@ -154,7 +168,7 @@ describe("explicit captured authority", () => {
   });
 
   it("takes machine channels from actual claim metadata, not legacy image labels", () => {
-    expect(PLAYABLE_CASE_IDS.map((id) => store().caseRevisions[id][0].channel)).toEqual(["eps", "eps", "eps", "paper"]);
+    expect(PLAYABLE_CASE_IDS.map((id) => store().caseRevisions[id][0].channel)).toEqual(["eps", "paper", "eps", "paper"]);
     for (const id of PLAYABLE_CASE_IDS) {
       expect(sessionCase(id)?.channel).toBe(store().caseRevisions[id][0].channel === "eps" ? "Electronic (EPS)" : "Paper FP10");
     }

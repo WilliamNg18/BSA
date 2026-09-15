@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDomainSnapshot, historicalDecisionRecords, useAppStore, sessionCase } from "../../src/lib/store";
-import { CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
+import { CASES, PLAYABLE_CASE_IDS, caseById } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import * as agent from "../../src/lib/domain/agent";
 import * as rules from "../../src/lib/domain/rules";
@@ -8,21 +8,39 @@ import { PHARMACIES } from "../../src/lib/domain/reference";
 import { LIFECYCLE_LABELS, type PharmacyPrecheckSnapshot } from "../../src/lib/domain/lifecycle";
 import { appendHistory, caseForLifecycle } from "../../src/lib/domain/lifecycle-model";
 import { historicalLifecycleFixtures, seededLifecycleSession } from "../../src/lib/domain/lifecycle-seed";
-import { checkPharmacy, pharmacyDateCorrection, pharmacySnapshot } from "../../src/lib/domain/pharmacy-check";
+import { checkPharmacy, pharmacySnapshot } from "../../src/lib/domain/pharmacy-check";
 import { usePharmacyStore } from "../../src/lib/pharmacy-store";
 import type { HumanDecision } from "../../src/lib/domain/types";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { getAsSubmitted } from "../../src/lib/domain/submission-views";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 
-const [A, B, C, D, E, F] = CASES;
+const [A, historicalB, C, , E, F] = CASES;
+const B = caseById("EX-24112")!, D = caseById("EX-24123")!;
 const store = () => useAppStore.getState();
 const row = (id = B.id) => store().lifecycles[id];
 const revisions = (id = B.id) => store().caseRevisions[id];
-const corrected = pharmacyDateCorrection(B, B.extracted.endorsementText);
+const corrected = B.paperDeclaration!.endorsementText;
 const reason = "Human reviewed the synthetic evidence";
 
 function submit(id = B.id, text = B.extracted.endorsementText, on = true) {
   store().setAgentEnabled(on);
-  store().submitItem({ caseId: id, channel: id === D.id ? "paper" : "eps", endorsementText: text });
+  store().submitItem({ caseId: id, channel: id === D.id || id === B.id ? "paper" : "eps", endorsementText: text,
+    ...(id === B.id ? { paperDeclaration: { ...B.paperDeclaration!, endorsementText: text } } : {}) });
   store().arriveInQueue(id);
+}
+
+function prepareCorrection(text = corrected) {
+  if (row().state !== "referred_back") {
+    submit(B.id, B.extracted.endorsementText, store().agentEnabled);
+    store().referBack(B.id, "RB2B", buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }]));
+  }
+  const revision = revisions().at(-1)!;
+  const draft = initialisePharmacyDraft(sessionCase(B.id)!, revision);
+  store().setPharmacyDraft(B.id, { ...draft, purpose: "correction",
+    paperDeclaration: { ...draft.paperDeclaration!, endorsementText: text, brandManufacturer: B.pharmacySupplyRecord!.brandManufacturer } });
+  store().setCorrectionAcknowledgement(B.id, revision.number, true);
+  return revision;
 }
 
 function legacy(id = B.id, decision: HumanDecision = "ACCEPT", why: string | null = reason) {
@@ -46,7 +64,7 @@ describe("Task 8 seeds and projections", () => {
   it.each(PHARMACIES)("requested first-load cycle at $name", (pharmacy) => {
     const rows = Object.values(store().lifecycles).filter((r) => r.pharmacyCode === pharmacy.contractorCode);
     expect(rows).toHaveLength(4);
-    expect(new Set(rows.map((r) => r.state))).toEqual(new Set(["paid", "in_review", "referred_back"]));
+    expect(new Set(rows.map((r) => r.state))).toEqual(new Set(["paid", "in_review", "referred_back", "resubmitted"]));
     for (const [state, labels] of Object.entries(LIFECYCLE_LABELS)) {
       if (state !== "released_to_pricing") expect(labels.nhsbsa).toEqual({ on: labels.pharmacy, off: labels.pharmacy });
     }
@@ -60,11 +78,9 @@ describe("Task 8 seeds and projections", () => {
     const records = historicalDecisionRecords();
     expect(Object.keys(store().lifecycles)).toEqual(PLAYABLE_CASE_IDS);
     expect(new Set(Object.values(store().lifecycles).map((item) => item.pharmacyCode))).toEqual(new Set(["FQ123"]));
-    for (const [c, state] of [[A, "paid"], [B, "referred_back"], [C, "information_requested"], [D, "in_review"], [E, "paid"], [F, "paid"]] as const) {
+    for (const [c, state] of [[A, "paid"], [historicalB, "referred_back"], [C, "information_requested"], [CASES[3], "in_review"], [E, "paid"], [F, "paid"]] as const) {
       expect(historical.lifecycles[c.id]).toMatchObject({ caseId: c.id, pharmacyCode: c.pharmacy.contractorCode, state });
-      const projected = caseForLifecycle(c.id, historical.lifecycles, historical.caseRevisions);
-      if (c !== F && c !== D) expect(projected).toEqual({ ...c, channel: c.claim.submittedVia === "EPS claim message" ? "Electronic (EPS)" : "Paper FP10" });
-      if (c === D) expect(projected?.extracted).toEqual(c.extracted);
+      expect(historical.caseRevisions[c.id][0]).toMatchObject({ templateCaseId: c.id, endorsementText: c.extracted.endorsementText });
     }
     expect(records).toHaveLength(2);
     expect(records[0]).toMatchObject({ id: "DR-000871", caseId: F.id, recommendation: "REFER_BACK", decision: "REFER_BACK" });
@@ -99,30 +115,31 @@ describe("Task 8 seeds and projections", () => {
     expect(another.lifecycles).not.toBe(store().lifecycles);
   });
 
-  it("keeps B's initial referral and July replay independent of explicit corrections", () => {
-    const original = structuredClone(CASES), pending = structuredClone(row().history);
-    const initialRevision = revisions()[0], initialSource = structuredClone(initialRevision.epsPrescription);
+  it("keeps historical B's July replay independent of active paper amendments and immutable source evidence", () => {
+    const original = structuredClone(CASES);
+    expect(runAgent(historicalB).recommendation).toBe("REFER_BACK");
+    expect(runAgent(historicalB, { tariffVersion: "2026-07" }).recommendation).toBe("SUFFICIENT");
+    submit();
+    const initialRevision = revisions().at(-1)!, initialSource = getAsSubmitted(store(), B.id);
     const initialClaim = structuredClone(sessionCase(B.id)!.claim);
-    expect(initialSource?.dispenserEndorsement).toBe(B.extracted.endorsementText);
-    expect(sessionCase(B.id)?.regions).toEqual([]);
     expect(runAgent(sessionCase(B.id)!).recommendation).toBe("REFER_BACK");
-    expect(runAgent(sessionCase(B.id)!, { tariffVersion: "2026-07" }).recommendation).toBe("SUFFICIENT");
-    store().resubmitFromPharmacy(B.id, corrected);
+    store().referBack(B.id, "RB2B", buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }]));
+    prepareCorrection();
+    const pending = structuredClone(row().history);
+    store().resubmit(B.id);
     const c = sessionCase(B.id)!;
     expect(c.extracted.endorsementText).toBe(corrected);
     expect(c.claim.endorsementText).toBe(corrected);
-    expect(c.epsPrescription?.dispenserEndorsement).toBe(corrected);
-    expect(c.epsPrescription).toEqual({ ...initialSource, dispenserEndorsement: corrected });
-    expect(c.claim).toEqual({ ...initialClaim, endorsementText: corrected });
-    expect(revisions()[0]).toEqual(initialRevision);
-    expect(initialRevision.epsPrescription).toEqual(initialSource);
+    expect(c.paperDeclaration?.brandManufacturer).toBe(B.pharmacySupplyRecord!.brandManufacturer);
+    expect(c.claim).toEqual(initialClaim);
+    expect(revisions().at(-2)).toEqual(initialRevision);
+    expect(getAsSubmitted({ lifecycles: store().lifecycles, caseRevisions: { [B.id]: [initialRevision] } }, B.id)).toEqual(initialSource);
     deeplyFrozen(initialRevision);
-    expect(c.regions).toEqual([]);
     expect(c.readings.every((r) => r.dated)).toBe(true);
     expect(runAgent(c)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true, state: "agent_review_complete" });
     expect(store().itemProcesses[B.id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
     expect(row().state).toBe("resubmitted");
-    expect(revisions().at(-1)?.channel).toBe("eps");
+    expect(revisions().at(-1)?.channel).toBe("paper");
     expect(row().history.slice(0, pending.length)).toEqual(pending);
     expect(CASES).toEqual(original);
     expect(runAgent(B).recommendation).toBe("REFER_BACK");
@@ -132,11 +149,11 @@ describe("Task 8 seeds and projections", () => {
 });
 
 describe("immutable pharmacy revisions", () => {
-  it("routes a blank typed EPS endorsement for review without inventing evidence or a decision", () => {
+  it("routes a blank typed paper endorsement for review without inventing evidence or a decision", () => {
     const records = store().records;
     submit(B.id, "  ");
     expect(sessionCase(B.id)?.extracted.endorsementText).toBe("  ");
-    expect(store().itemProcesses[B.id]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement" } });
+    expect(store().itemProcesses[B.id]).toMatchObject({ channel: "paper", routing: { outcome: "type2_endorsement" } });
     expect(row().state).toBe("in_review");
     expect(store().records).toBe(records);
   });
@@ -145,18 +162,19 @@ describe("immutable pharmacy revisions", () => {
     const text = `  ${corrected}  `;
     const snapshot = pharmacySnapshot(text, B.extracted.dispensingDate, "scripted", checkPharmacy(B, text), "2026-09-10T10:00:00Z");
     const expected = structuredClone(snapshot);
-    store().resubmitFromPharmacy(B.id, text, snapshot);
+    const previous = prepareCorrection(text);
+    store().resubmitItem({ ...store().pharmacyDrafts[B.id], caseId: B.id, channel: "paper", precheck: snapshot });
     const saved = revisions().at(-1)!;
-    expect(saved).toMatchObject({ kind: "resubmission", number: 2, endorsementText: text, precheck: expected });
+    expect(saved).toMatchObject({ kind: "resubmission", number: previous.number + 1, endorsementText: text, precheck: expected });
     expect(saved.precheck).not.toBe(snapshot);
     deeplyFrozen(saved);
     expect(() => { (snapshot.facts as { note: string }).note = "caller changed"; }).not.toThrow();
     expect(saved.precheck).toEqual(expected);
     expect(() => { (saved.precheck!.facts as { note: string }).note = "mutated"; }).toThrow();
     expect(() => { (saved.precheck!.checks as unknown as { met: boolean | null }[])[0].met = false; }).toThrow();
-    store().submitFromPharmacy(B.id, B.extracted.endorsementText);
-    expect(revisions()[1]).toEqual(saved);
-    expect(revisions().at(-1)?.number).toBe(3);
+    submit(B.id, B.extracted.endorsementText, false);
+    expect(revisions().at(-2)).toEqual(saved);
+    expect(revisions().at(-1)?.number).toBe(saved.number + 1);
     expect(runAgent(sessionCase(B.id)!).recommendation).toBe("REFER_BACK");
   });
 
@@ -166,7 +184,7 @@ describe("immutable pharmacy revisions", () => {
     expect(row().state).toBe("submitted");
     expect(row().history).toHaveLength(before.length + 3);
     expect(row().history.slice(0, before.length)).toEqual(before);
-    expect(revisions()).toHaveLength(4);
+    expect(revisions()).toHaveLength(5);
     expect(store().records).toBe(records);
     expect(row().history.at(-1)?.actor).toBe("pharmacy");
   });
@@ -181,7 +199,7 @@ describe("immutable pharmacy revisions", () => {
     expect(store().records.at(-1)?.reason).toBe(question);
     const before = structuredClone(sessionCase(B.id)), history = row().history;
     expect(() => store().sendConfirmation(B.id, "  ")).toThrow();
-    const confirmation = "Quantity 28 confirmed by pharmacy; the endorsement date still needs correction.";
+    const confirmation = "Quantity 21 confirmed by pharmacy; the brand still needs confirmation.";
     store().sendConfirmation(B.id, confirmation);
     expect(row().state).toBe("resubmitted");
     expect(revisions().at(-1)).toMatchObject({ kind: "confirmation", confirmation });
@@ -202,18 +220,19 @@ describe("immutable pharmacy revisions", () => {
     expect(row().state).toBe("referred_back");
     expect(Boolean(store().records.at(-1)?.approvedDraft)).toBe(on);
     const records = store().records;
-    store().resubmitFromPharmacy(B.id, corrected);
+    prepareCorrection();
+    store().resubmit(B.id);
     store().arriveInQueue(B.id);
     expect(row().state).toBe("in_review");
     expect(store().records).toBe(records);
-    store().recordOperatorDecision(B.id, "ACCEPT", reason);
-    expect(row().state).toBe("paid");
+    store().releaseToPricing(B.id, reason);
+    expect(row().state).toBe("released_to_pricing");
     expect(row().history.slice(0, referral.length)).toEqual(referral);
     expect(store().records.slice(0, records.length)).toEqual(records);
     expect(store().records).toHaveLength(records.length + 1);
-    expect(row().history.at(-1)).toMatchObject({ actor: "code", revision: 3 });
+    expect(row().history.at(-1)).toMatchObject({ actor: "operator", revision: 4, releaseOrigin: "human_decision" });
     expect(runAgent(sessionCase(B.id)!)).toMatchObject({ recommendation: "SUFFICIENT", agentInvoked: true });
-    expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow(/while paid/);
+    expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow(/while released_to_pricing/);
     expect(CASES).toEqual(fixtures);
     for (const event of row().history.filter((event) => event.actor === "agent")) expect(event.to).toBe(event.from);
     expect(row().history.filter((event) => event.actor === "agent")).toHaveLength(on ? 2 : 0);
@@ -242,7 +261,7 @@ describe("atomic human decisions and boundaries", () => {
     expect(record.inputs).not.toContain("caller mutation");
     expect(record.checks[0].detail).not.toBe("caller mutation");
     deeplyFrozen(store().records);
-    expect(row(c.id).history.at(-1)).toMatchObject({ recordId: record.id, tariffVersion: record.tariffVersion, clauseId: "P2-C9", decision });
+    expect(row(c.id).history.at(-1)).toMatchObject({ recordId: record.id, tariffVersion: record.tariffVersion, clauseId: "SYN-EPS-SUPPLY", decision });
     expect(() => store().recordDecision(input)).toThrow(/expected in_review/);
   });
 
@@ -256,14 +275,16 @@ describe("atomic human decisions and boundaries", () => {
     expect(store()).toBe(before);
   });
 
-  it("manual NONE ACCEPT is reasoned human judgement, not an override", () => {
-    store().resubmitFromPharmacy(B.id, corrected);
+  it("manual NONE release is reasoned human judgement, not an override", () => {
+    prepareCorrection();
+    store().resubmit(B.id);
     store().arriveInQueue(B.id);
     const runs = vi.spyOn(agent, "runAgent");
-    expect(() => store().recordDecision(legacy(B.id, "ACCEPT", null))).toThrow(/reason/i);
-    const record = store().recordDecision(legacy(B.id));
-    expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, tariffVersion: "n/a", checks: [] });
-    expect(row(B.id).state).toBe("paid");
+    expect(() => store().releaseToPricing(B.id, "")).toThrow(/reason/i);
+    store().releaseToPricing(B.id, reason);
+    const record = store().records.at(-1)!;
+    expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, tariffVersion: "2026-08", agentVersion: "not invoked" });
+    expect(row(B.id).state).toBe("released_to_pricing");
     expect(runs.mock.calls.every(([, options]) => options?.agentEnabled === false)).toBe(true);
   });
 
@@ -281,7 +302,7 @@ describe("atomic human decisions and boundaries", () => {
     expect(observed).toEqual([true]);
     expect(store().records).toHaveLength(before.records.length + 1);
     const record = store().records.at(-1)!;
-    expect(record.approvedDraft).toEqual({ text: draft, approvedAt: record.timestamp, approvedBy: "Demo operator", decision: "REFER_BACK", tariffVersion: "2026-08", clauseId: "P2-C9" });
+    expect(record.approvedDraft).toMatchObject({ text: draft, approvedAt: record.timestamp, approvedBy: "Demo operator", decision: "REFER_BACK", tariffVersion: "2026-08", clauseId: "SYN-EPS-SUPPLY" });
     expect(row().history.at(-1)?.approvedDraft).toEqual(record.approvedDraft);
     deeplyFrozen(record);
     store().setAgentEnabled(false);
@@ -328,7 +349,7 @@ describe("atomic human decisions and boundaries", () => {
     expect(row(B.id).state).toBe("in_review");
     expect(row(B.id).history.at(-1)?.message).toMatch(/withheld/);
     expect(() => store().recordDecision({ ...legacy(B.id), recommendation: "SUFFICIENT" })).toThrow(/Recommendation/);
-    expect(() => store().recordOperatorDecision(B.id, "REFER_BACK", reason, "Draft")).toThrow(/No validated/);
+    expect(() => store().recordOperatorDecision(B.id, "REFER_BACK", reason, "Unvalidated pharmacy draft")).toThrow(/No validated/);
     expect(() => store().recordOperatorDecision(B.id, "ACCEPT", reason)).toThrow("Current source facts");
     expect(row(B.id).state).toBe("in_review");
   });
@@ -359,7 +380,7 @@ describe("rejected inputs leave the complete store untouched", () => {
     () => store().followCase("unknown"),
     () => store().submitFromPharmacy("unknown", "text"),
     () => store().submitFromPharmacy(B.id, null as unknown as string),
-    () => store().arriveInQueue(B.id),
+    () => store().arriveInQueue("SYN-FQ123-MISMATCH"),
     () => store().resubmitFromPharmacy(A.id, corrected),
     () => store().sendConfirmation(B.id, reason),
     () => store().sendConfirmation(B.id, "  "),
@@ -376,6 +397,7 @@ describe("rejected inputs leave the complete store untouched", () => {
     { tariffVersion: "2026-07" }, { clauseId: "invented" }, { checkedAt: "1" },
   ])("malformed or stale precheck %j", (patch) => {
     const snapshot = pharmacySnapshot(corrected, B.extracted.dispensingDate, "scripted", checkPharmacy(B, corrected), "2026-09-10T09:00:00Z");
+    prepareCorrection();
     const before = store();
     expect(() => store().resubmitFromPharmacy(B.id, corrected, { ...snapshot, ...patch } as PharmacyPrecheckSnapshot)).toThrow(/snapshot/);
     expect(store()).toBe(before);

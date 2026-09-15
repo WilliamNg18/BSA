@@ -34,6 +34,11 @@ O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
 
 # Scope register
 
+G's twelve canonical regression files now pass 194 scoped tests with the
+authorised new outcomes. This completes that bounded migration, not Tasks
+39/40 release acceptance. The next gate is the exact assembled full suite and
+current-main deployment/live verification; no legacy source state was restored.
+
 ## Temporary F ownership: Home and eleven-step case compatibility
 
 The coordinator assigned F the Home case-only slice, `step-layouts.tsx` case
