@@ -53,6 +53,10 @@ the prerequisite U scanner commits. P imports those unchanged for coherent
 staging; their ownership and final acceptance remain separate. The only new P
 compatibility assertion follows the actual as-submitted Type 1 evidence block.
 
+Current pharmacy readiness labels now consume F/G's canonical ItemProcess;
+old receipt status never borrows readiness from a later revision. No new
+readiness rule or operational state is introduced in the view.
+
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
 and both modes. The combined seven-file selection passes 91 units and check.

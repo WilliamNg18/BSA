@@ -110,6 +110,7 @@ it("shows all three real pharmacy state cohorts concurrently without navigation 
   }
   expect(workload).toContain("EX-24107");
   expect(workload).toContain("EX-24112");
+  expect(workload).toContain("Resubmitted, ready to release");
   expect(workload).not.toContain("EX-24116");
   expect(getDomainSnapshot()).toEqual(before);
 });

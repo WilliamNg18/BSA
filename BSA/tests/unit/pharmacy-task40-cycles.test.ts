@@ -5,6 +5,7 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
 import { PharmacyClaimActionPanel } from "@/components/demo/claim-detail";
 import { PharmacyCorrectionAcknowledgement } from "@/components/demo/pharmacy-correction-acknowledgement";
+import { PharmacySubmissionReceipt } from "@/components/demo/pharmacy-submission-receipt";
 import { getDomainSnapshot, sessionCase, useAppStore } from "@/lib/store";
 import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { deriveRecommendation } from "@/lib/domain/recommendations";
@@ -185,6 +186,11 @@ it.each([false, true])("readable paper uses own records, ACK and real Resubmit b
   expect(s().lifecycles[paper].state).toBe("resubmitted");
   expect(s().itemProcesses[paper].readyToRelease).toBe(true);
   expect(s().itemVerification[paper].released).toBe(false);
+  expect(claim(paper)).toContain("Resubmitted, ready to release");
+  expect(render(createElement(PharmacySubmissionReceipt, { caseId: paper, revisionNumber: s().caseRevisions[paper].at(-1)!.number, compact: true })))
+    .toContain("Resubmitted, ready to release");
+  expect(render(createElement(PharmacySubmissionReceipt, { caseId: paper, revisionNumber: before.asSubmitted.number, compact: true })))
+    .not.toContain("Resubmitted, ready to release");
   expect(s().caseRevisions[paper].find((entry) => entry.number === before.asSubmitted.number)).toEqual(before.asSubmitted);
   s().releaseToPricing(paper, "Human reviewed the acknowledged paper correction.");
   const html = claim(paper);
