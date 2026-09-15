@@ -36,21 +36,6 @@ export async function verifyConcretePreviews(page: Page, width: number, enabled:
   } else await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
 
-  await page.goto("/pharmacy?case=EX-24112&channel=eps");
-  await flag().setChecked(enabled);
-  const endorsement = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
-  await endorsement.fill("BB RK");
-  if (enabled) {
-    await expect(card()).toContainText("invoice price required; enter £x.xx");
-    await expect(card()).toContainText("claim amount is not invoice evidence");
-    const suggested = card().getByRole("heading", { name: "Suggested values", exact: true }).locator("..");
-    await expect(suggested).not.toContainText(/£\s*\d/);
-    await card().getByRole("button", { name: "Enter invoice price", exact: true }).click();
-    await expect(endorsement).toBeFocused();
-    await expect(endorsement).toHaveValue("BB RK");
-  } else await expect(page.getByRole("button", { name: "Enter invoice price", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
-
   await startDemonstrationReview(page, "EX-24112", enabled);
   const history = page.getByRole("region", { name: "Shared case history", exact: true });
   const before = await history.getByRole("status").innerText();
@@ -73,4 +58,20 @@ export async function verifyConcretePreviews(page: Page, width: number, enabled:
     await expect(page.getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     await expect(history.getByRole("status")).toHaveText(before);
   }
+
+  await page.goto("/pharmacy?case=EX-24112&channel=eps");
+  await flag().setChecked(enabled);
+  const invoiceEndorsement = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
+  await invoiceEndorsement.fill("SP RK");
+  if (enabled) {
+    await assertVisibleRecommendation(page, "EX-24112", true);
+    await expect(card()).toContainText(/unsupported|outside.*coverage/i);
+    await expect(card()).toContainText("invoice price required; enter £x.xx");
+    const suggestions = card().getByRole("heading", { name: "Suggested values", exact: true }).locator("..");
+    await expect(suggestions).not.toContainText(/£\s*\d/);
+    await card().getByRole("button", { name: "Enter invoice price", exact: true }).click();
+    await expect(invoiceEndorsement).toBeFocused();
+    await expect(invoiceEndorsement).toHaveValue("SP RK");
+  } else await expect(page.getByRole("button", { name: "Enter invoice price", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
 }

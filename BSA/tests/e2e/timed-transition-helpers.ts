@@ -11,9 +11,11 @@ export async function assertVisibleHandoffWithinOneSecond(
     followedId: string;
     destination: "Pharmacy" | "NHSBSA";
     originState: string;
+    originRequiredText?: { locator: Locator; text: string }[];
     destinationState: Locator;
     destinationText: string;
-    queue?: { link: Locator; tile: Locator; expectedTileText: string };
+    stateMatch?: "exact" | "contains";
+    queue?: { link: Locator; tile: Locator; expectedTileText: string; expand?: Locator };
     requiredText?: { locator: Locator; text: string }[];
     lastEventText: string;
   },
@@ -30,6 +32,9 @@ export async function assertVisibleHandoffWithinOneSecond(
     milestones.push({ label: "actual human action completed", elapsedMs: deadline.elapsedMs() });
     await expect(followed).toContainText(input.originState, { timeout: deadline.remainingMs() });
     await expect(followed.locator("p").first()).toContainText(input.lastEventText, { timeout: deadline.remainingMs() });
+    for (const requirement of input.originRequiredText ?? []) {
+      await expect(requirement.locator).toContainText(requirement.text, { timeout: deadline.remainingMs() });
+    }
     await followed.getByRole("button", { name: `${input.destination} view`, exact: true })
       .click({ timeout: deadline.remainingMs() });
     await expect(page).toHaveURL((url) => input.destination === "Pharmacy"
@@ -39,8 +44,10 @@ export async function assertVisibleHandoffWithinOneSecond(
       await input.queue.link.click({ timeout: deadline.remainingMs() });
       await expect(page).toHaveURL((url) => url.pathname === "/queue", { timeout: deadline.remainingMs() });
       await expect(input.queue.tile).toContainText(input.queue.expectedTileText, { timeout: deadline.remainingMs() });
+      if (input.queue.expand) await input.queue.expand.click({ timeout: deadline.remainingMs() });
     }
-    await expect(input.destinationState).toHaveText(input.destinationText, { timeout: deadline.remainingMs() });
+    if (input.stateMatch === "contains") await expect(input.destinationState).toContainText(input.destinationText, { timeout: deadline.remainingMs() });
+    else await expect(input.destinationState).toHaveText(input.destinationText, { timeout: deadline.remainingMs() });
     for (const requirement of input.requiredText ?? []) {
       await expect(requirement.locator).toContainText(requirement.text, { timeout: deadline.remainingMs() });
     }

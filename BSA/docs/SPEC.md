@@ -257,6 +257,11 @@ preview into the visible field and highlights the change without sending.
 Manufacturer, pack and presentation suggestions come from the synthetic
 product/reference facts. A missing invoice price is a focused manual-entry
 request, **invoice price required; enter £x.xx**, not an invented amount.
+The four base scenarios do not reach an invoice-price provision. The required
+manual-focus UI remains pending: use a clearly labelled unsupported-input
+variant on an existing item and the existing applicable provision, without
+widening supported interpretation or release. BB does not require invoice
+price. The null-value unit contract alone cannot close this requirement.
 The pharmacy check, referred-back detail and operator controls use the same
 validated proposal rather than separate approximations of it.
 

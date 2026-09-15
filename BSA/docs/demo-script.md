@@ -50,6 +50,9 @@ including current and recorded case views. Read its clause/version,
 requirements, missing facts, suggested values, preview, outcome and confidence
 signals before acting. A complete card says nothing needs adding; an unknown
 invoice price requests manual entry of **£x.xx**, never a fabricated amount.
+That invoice UI is still required, not waived by its unit contract. Its
+safe unsupported-input variant must use an existing item and provision;
+do not claim it was demonstrated before that view and focus action work.
 
 For B's missing date, show **21/08/2026** and preview **NCSO RK 21/08/26**.
 Apply must write exactly the preview; it must not send. Other cases use their
