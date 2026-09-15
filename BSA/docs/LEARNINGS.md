@@ -1877,3 +1877,11 @@ nested card with operator help still measures34 On-mode words. This is a
 different scope from the D fixture and is not called a pass or concealed by
 markup changes. The local browser evidence does not settle that copy
 interpretation or the outstanding deployed/offline acceptance gates.
+
+The aggregate copy failures were not resolved by dropping text or raising
+the threshold. The parent required real sibling panels; source tests now
+check both structural separation and cumulative prose/help within each.
+They also verify that the full mandatory copy remains in the workspace.
+Check and 53 targeted tests pass, with V's original two D cases passing
+separately. The ten changed-layout browser cases are inventory only, not
+an execution result; prior four-test9d5502 proof is not promoted.
