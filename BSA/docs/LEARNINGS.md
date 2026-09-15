@@ -1387,3 +1387,9 @@ template before testing referral advice, and use the real wrong-strength item
 for source-backed correction. Re-evaluating clause requirements without G's
 specialised strength/paper checks falsely marked them unmet; R now projects
 the exact canonical check results and G's paper reconciliation facade.
+
+The first current-seed regression run failed 22 of 47 old tests: most still
+treated paper B as EPS or expected the former date-gap preset. The migrated
+run passes all 47, preserving invalid-input, unsupported-SP receipt, original
+history and source-bound preview assertions. The original failed log remains
+a diagnostic artifact, not a passing result or release backup.

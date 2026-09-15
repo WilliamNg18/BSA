@@ -2239,3 +2239,10 @@ the canonical shared correction helper for strength and paper values. Current
 four-case, audience and G runtime selection passes 29 tests plus typecheck.
 P's isolated explicit pharmacy audience prop is included; wider consumer
 migration and full CI/live acceptance remain pending.
+
+The R-owned legacy regression migration now passes 47 tests across the four
+existing recommendation files. Date-sensitive validation remains tested as an
+explicit edited EPS input, not a playable date-gap headline. Wrong-strength
+and paper-brand corrections replace the retired seed expectations. The
+canonical strength rule-authority/trace-signal defects reported by W remain
+G-owned blockers; R will not conceal them only in Card presentation.
