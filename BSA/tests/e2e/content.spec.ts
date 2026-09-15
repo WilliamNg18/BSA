@@ -81,8 +81,11 @@ for (const enabled of [false, true]) {
         }
         await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
         await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
+        const receiptBefore = await page.getByRole("region", { name: "Submission receipt", exact: true }).innerText();
         await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
-        await expect(page.getByRole("alert")).toContainText("quantity");
+        await expect(page.getByRole("alert")).toHaveText("Invalid paper declaration.");
+        await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("-1");
+        await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveText(receiptBefore, { useInnerText: true });
         audits.push({ scenario, phase: "invalid-declaration", ...await page.evaluate(auditProse) });
         await page.getByLabel("Declared quantity", { exact: true }).fill("");
         if (!enabled) await page.getByRole("banner").getByRole("switch").setChecked(false);

@@ -71,7 +71,7 @@ export async function prepareCorrectedBReview(page: Page, enabled: boolean) {
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   const detail = page.getByRole("region", { name: "Claim detail", exact: true });
   await detail.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO RK 21/08/26");
-  await detail.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await detail.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status"))
