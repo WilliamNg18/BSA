@@ -3,7 +3,7 @@ import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { expectHumanRelease, readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
-import { decisionNote, operatorAction, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { decisionNote, operatorAction, operatorAdvice, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 import { assertInlineDecisionRecorded } from "./perspective-helpers";
 
 const B = "EX-24112";
@@ -71,11 +71,11 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
       expect(selected).toEqual({
         ...reasoned, operatorDrafts: { ...reasoned.operatorDrafts, [B]: { ...reasoned.operatorDrafts[B], rbCode: "SYN-NCSO" } },
       });
-      const apply = operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true });
+      const apply = operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true });
       await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
       await expect(apply).toHaveCount(enabled ? 1 : 0);
       if (approval === "approved") {
-        const generated = await operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true })
+        const generated = await operatorAdvice(page)
           .getByRole("term").filter({ hasText: /^Note$/ }).locator("+ dd").innerText();
         const applied = await action("Apply only this generated pharmacy draft", "NHSBSA", async () => { await apply.click(); });
         const appliedEvent = applied.lifecycles[B].history.at(-1)!;
@@ -177,7 +177,7 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
         await page.getByRole("button", { name: "Start review", exact: true }).click();
       });
       await action("Judge the corrected endorsement sufficient", "NHSBSA", async () => {
-        if (enabled) await expect(operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true }).getByText("Sufficient recommended", { exact: true })).toBeVisible();
+        if (enabled) await expect(operatorAdvice(page).getByText("Sufficient recommended", { exact: true })).toBeVisible();
         await operatorRadio(page, "ACCEPT").check();
         await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human recheck confirms the date beside the initials");
       });

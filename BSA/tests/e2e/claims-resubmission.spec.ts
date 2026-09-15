@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
-import { decisionNote, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { decisionNote, operatorAdvice, operatorRadio, performDecision } from "./operator-action-helpers";
 import { caseById } from "../../src/lib/domain/cases";
 
 function paperSupply() {
@@ -94,7 +94,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await startBReviewFromPharmacy(page);
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
-      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
       await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
       await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("RB2B");
       expect((await decisionNote(page).inputValue()).trim().length).toBeGreaterThanOrEqual(8);

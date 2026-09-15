@@ -4,6 +4,12 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The advice-locator patch changes only test lookup scope, not action order,
+expectations, deadlines or source. It preserves native ordinary/state/live
+identities across the patch and excludes A's settlement hunk, O's new
+operator40 tests and R's trace file. Remaining old case/channel/ACK semantics
+are not marked repaired by this locator-only change.
+
 V's sibling-panel assertion migration changes only its review-repair unit
 file and these tracking records. Apply belongs to advice; all human choice,
 reason and release assertions remain in the actual human panel. Both panel

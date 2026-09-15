@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS, postWorkedPaperDeclaration, openQueueCapture } from "./paper-declaration-helpers";
 import { choosePaperExample } from "./pharmacy-scenario-helpers";
-import { humanReleaseLabel, operatorAction, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { humanReleaseLabel, operatorAction, operatorAdvice, operatorRadio, performDecision } from "./operator-action-helpers";
 
 test("worked paper declaration reaches Sufficient only after explicit human evidence and confirmation", async ({ page }, info) => {
   await page.goto("/pharmacy");
@@ -17,7 +17,7 @@ test("worked paper declaration reaches Sufficient only after explicit human evid
   await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
   await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
   await expect(operatorRadio(page, "ACCEPT")).not.toBeChecked();
-  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   await expect(operatorRadio(page, "ACCEPT")).toBeChecked();
   await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
   await expect(page.getByRole("main")).toContainText("declared by the pharmacy, not read from the form");

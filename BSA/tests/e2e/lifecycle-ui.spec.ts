@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { decisionNote, humanReleaseLabel, operatorActionButtons, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { decisionNote, humanReleaseLabel, operatorActionButtons, operatorAdvice, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -46,7 +46,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await queueReview(page);
   await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
   await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
-  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
   await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);
@@ -64,7 +64,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.on);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true }).getByText("Sufficient recommended", { exact: true })).toBeVisible();
+  await expect(operatorAdvice(page).getByText("Sufficient recommended", { exact: true })).toBeVisible();
   await operatorRadio(page, "ACCEPT").check();
   await record(page, "ACCEPT", "Human recheck confirms the corrected date before existing pricing", true);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();

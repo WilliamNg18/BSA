@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState } from "./lifecycle-helpers";
-import { humanReleaseLabel, operatorAction, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { humanReleaseLabel, operatorAction, operatorAdvice, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
 
 const B = "EX-24112";
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -40,7 +40,7 @@ for (const enabled of [false, true]) {
     await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
     if (enabled) {
       await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
-      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
       await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
       await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);
       await performDecision(page, "REFER_BACK");
@@ -65,7 +65,7 @@ for (const enabled of [false, true]) {
     await followed(page).getByRole("button", { name: "NHSBSA view", exact: true }).click();
     await expect(operatorAction(page, "REFER_BACK")).toHaveCount(0);
     await page.getByRole("button", { name: "Start review", exact: true }).click();
-    if (enabled) await expect(operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true }).getByText("Sufficient recommended", { exact: true })).toBeVisible();
+    if (enabled) await expect(operatorAdvice(page).getByText("Sufficient recommended", { exact: true })).toBeVisible();
     await operatorRadio(page, "ACCEPT").check();
     await decide(page, "ACCEPT", "Human reviewed the corrected date before existing pricing", enabled);
     await expect(history(page).getByRole("status")).toHaveText(humanReleaseLabel(enabled, "nhsbsa"));

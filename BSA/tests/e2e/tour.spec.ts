@@ -9,7 +9,7 @@ import { PROCESS_FIELDS, PROCESS_MONTH_DEFAULTS, calculateProcessMonth, choosePr
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { assertInlineDecisionRecorded, historyIdentity, openHistory } from "./perspective-helpers";
 import { REC_META } from "../../src/components/demo/label-meta";
-import { decisionNote, operatorAction, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { decisionNote, operatorAction, operatorActionButtons, operatorAdvice, operatorRadio, performDecision } from "./operator-action-helpers";
 import { assertDesktopStep, enterDesktopDemo } from "./desktop-step-helpers";
 
 async function navigatePrimary(page: Page, label: string) {
@@ -388,7 +388,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
   await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
   const approvedReason = await decisionNote(page).inputValue();

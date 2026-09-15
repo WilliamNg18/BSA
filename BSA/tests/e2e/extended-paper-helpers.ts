@@ -4,7 +4,7 @@ import { choosePerspective } from "./perspective-helpers";
 import { choosePaperExample } from "./pharmacy-scenario-helpers";
 import { DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
 import { assertVisibleRecommendation } from "./recommendation-contract-helpers";
-import { operatorDecision, operatorRadio, decisionNote } from "./operator-action-helpers";
+import { operatorAdvice, operatorDecision, operatorRadio, decisionNote } from "./operator-action-helpers";
 import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS } from "../support/release-labels";
 import { enterDesktopDemo } from "./desktop-step-helpers";
 
@@ -111,7 +111,7 @@ export async function runExtendedPaperBranch(
       if (enabled) {
         await assertVisibleRecommendation(page, id, true);
         if (branch !== "missing") await expect(card()).toContainText("ABSTAIN");
-        await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+        await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
         await expect(operatorRadio(page, outcome)).toBeChecked();
         await expect(state()).toHaveText(priorState);
         await expect(operatorDecision(page).getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
@@ -153,7 +153,7 @@ export async function runExtendedPaperBranch(
     }
     if (enabled) {
       await assertVisibleRecommendation(page, id, true);
-      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
       await expect(operatorRadio(page, "ACCEPT")).toBeChecked();
     } else await operatorRadio(page, "ACCEPT").check();
     await decisionNote(page).fill("The operator confirms the current source facts and releases this synthetic item to existing pricing.");

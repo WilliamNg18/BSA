@@ -1,7 +1,7 @@
 import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
-import { decisionNote, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { decisionNote, operatorAdvice, operatorRadio, performDecision } from "./operator-action-helpers";
 import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 
 const history = (page: Page) => page.getByRole("region", { name: "Shared case history", exact: true });
@@ -109,7 +109,7 @@ for (const kind of ["referral", "information request"] as const) {
       const internalReason = `Internal operator rationale for ${id} ${kind} ${mode}, not the pharmacy draft`;
       await decisionNote(page, outcome).fill(internalReason);
       if (mode === "approved") {
-        await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+        await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
         await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
         if (kind === "referral") approvedText = await decisionNote(page).inputValue();
         else {

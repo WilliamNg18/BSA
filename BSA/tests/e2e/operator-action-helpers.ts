@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 import { expect } from "./fixtures";
 
 export const cases = [
@@ -18,6 +18,8 @@ const labels = {
 
 // O-phase contract: exact current controls; never detect or fall back to the old panel.
 export const operatorDecision = (page: Page) => page.getByRole("region", { name: "Operator decision", exact: true });
+export const operatorAdvice = (scope: Page | Locator) =>
+  scope.locator('[data-operator-workspace] > [data-recommendation-case][data-recommendation-audience="operator"]');
 export const operatorActionButtons = (page: Page) => operatorDecision(page).getByRole("button", {
   name: /^(Release to pricing|Refer back|Request information|Escalate)$/,
 });
@@ -93,7 +95,7 @@ export async function referMissingDate(page: Page, enabled: boolean) {
   if (enabled) {
     const status = page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status");
     const before = await status.innerText();
-    await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
     await expect(page.getByLabel("RB code (required)", { exact: true })).toHaveValue("SYN-NCSO");
     appliedNote = await decisionNote(page).inputValue();

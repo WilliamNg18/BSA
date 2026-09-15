@@ -4,6 +4,12 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Operator advice is now selected through its actual sibling workspace in
+existing V browser consumers. Static action/assertion signatures and native
+IDs/titles remain identical before/after (1,068 / 44 / 75). These checks
+establish migration integrity, not browser success. Historical shard-three
+failures remain classified separately from the new O focus/viewport findings.
+
 The actual sibling layout now satisfies V's migrated review assertions:
 40 focused tests, typecheck and targeted lint pass. This uses O's implemented
 structure, not a nested-content exclusion. Whole-suite, focus/geometry and

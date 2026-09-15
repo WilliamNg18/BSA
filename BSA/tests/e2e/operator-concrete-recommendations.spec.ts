@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "./fixtures";
+import { operatorAdvice } from "./operator-action-helpers";
 
 test.use({ screenshot: "off" });
 
@@ -63,7 +64,7 @@ for (const width of [1280, 1440]) {
     await capture.getByRole("button", { name: "Key fields manually", exact: true }).click();
     await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
     const operator = page.getByRole("region", { name: "Operator decision", exact: true });
-    const card = operator.getByRole("region", { name: "Recommendation", exact: true });
+    const card = operatorAdvice(page);
     await expect(card).toContainText("ABSTAIN");
     await expect(card).toContainText("Safe human follow-up");
     await card.getByRole("button", { name: "Apply suggestion", exact: true }).click();
