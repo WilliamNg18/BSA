@@ -39,6 +39,13 @@ be additional coverage only, not proof of the required complete Off path.
 Both obligations were relayed to G/S/V. No new source API or lifecycle action
 is introduced by this documentation-only clarification.
 
+The next W source increment implements that audience projection rather than
+leaving it as a documentation-only promise. `epsStrengthForAudience` returns
+an operator card with `suggestion: null` and no serialised patch/preview, while
+retaining the identical factual records/checks. Its four new tests pass;
+the combined 120-regression run and check pass. G explicitly requested the
+helper and retains responsibility for integrating it into the canonical card.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

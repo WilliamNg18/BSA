@@ -1,4 +1,5 @@
 import { productByCode } from "./reference";
+import { EPS_STRENGTH_COPY } from "./eps-error-evidence";
 import type { EpsPrescription, GateCheck, Product } from "./types";
 
 export const EPS_STRENGTH_CASE_ID = "SYN-FQ123-MISMATCH";
@@ -34,6 +35,17 @@ export interface EpsStrengthAssessment {
   readonly supplied: EpsStrengthPack | null;
   readonly suggestion: EpsStrengthSuggestion | null;
 }
+
+type EpsStrengthCardFacts = Omit<EpsStrengthAssessment, "suggestion"> & {
+  readonly rule: string;
+  readonly ruleLabel: string;
+  readonly authorityLabel: string;
+};
+
+export type EpsStrengthCard = EpsStrengthCardFacts & (
+  | { readonly audience: "pharmacy"; readonly suggestion: EpsStrengthSuggestion | null }
+  | { readonly audience: "operator"; readonly suggestion: null }
+);
 
 type ProductLookup = (code: string | null) => Product | null;
 
@@ -96,15 +108,29 @@ export function evaluateEpsStrength(
   };
 }
 
+/** Audience changes the displayed advice, never the source assessment or routing. */
+export function epsStrengthForAudience(
+  assessment: EpsStrengthAssessment, audience: "pharmacy" | "operator",
+): EpsStrengthCard {
+  const { suggestion, ...facts } = structuredClone(assessment);
+  const common = {
+    ...facts, rule: EPS_STRENGTH_COPY.rule, ruleLabel: EPS_STRENGTH_COPY.ruleLabel,
+    authorityLabel: EPS_STRENGTH_COPY.authorityLabel,
+  };
+  return audience === "pharmacy"
+    ? { ...common, audience, suggestion }
+    : { ...common, audience, suggestion: null };
+}
+
 /** Prepare a claim-only correction. This never sends, acknowledges, releases or rewrites source records. */
 export function applyEpsStrengthCorrection(
   prescription: EpsStrengthPrescription, lookup: ProductLookup = productByCode,
 ): EpsStrengthPrescription {
-  const assessment = evaluateEpsStrength(prescription, lookup);
-  if (!assessment?.suggestion) throw new Error("No source-backed EPS strength correction is available.");
+  const suggestion = evaluateEpsStrength(prescription, lookup)?.suggestion;
+  if (!suggestion) throw new Error("No source-backed EPS strength correction is available.");
   const corrected = structuredClone(prescription);
   return {
     ...corrected,
-    items: corrected.items.map((item) => ({ ...item, ...assessment.suggestion!.patch })),
+    items: corrected.items.map((item) => ({ ...item, ...suggestion.patch })),
   };
 }
