@@ -1,5 +1,6 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 /** Executes in the rendered page: no source-code word counting or truncation. */
@@ -55,11 +56,12 @@ for (const enabled of [false, true]) {
     const audits = [];
     for (const scenario of ["Complete endorsement", "NCSO missing date", "Wrong pack size", "Unreadable form"]) {
       const paper = scenario === "Unreadable form";
-      await page.getByRole("radio", { name: paper ? "Paper" : "EPS", exact: true }).click();
-      if (!paper) await page.getByRole("radio", { name: scenario, exact: true }).click();
+      await choosePharmacyRadio(page, paper ? "Paper" : "EPS");
+      if (!paper) await choosePharmacyRadio(page, scenario);
       else await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
       if (paper && enabled) await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
-      if (!paper) await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
+      await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(enabled ? 1 : 0);
+      if (enabled) await expect(page.locator("[data-pharmacy-status]")).not.toHaveText("Scripted check in progress");
       audits.push({ scenario, phase: "check", ...await page.evaluate(auditProse) });
       await page.getByRole("button", { name: paper ? enabled ? "Post paper with declaration" : "Post paper" : "Send claim", exact: true }).click();
       const timeline = page.getByRole("list", { name: "Submission timeline", exact: true });
@@ -86,8 +88,8 @@ for (const enabled of [false, true]) {
         if (!enabled) await page.getByRole("banner").getByRole("switch").setChecked(false);
       }
       if (enabled && scenario === "NCSO missing date") {
-        await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+        await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
+        await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
         audits.push({ scenario, phase: "corrected", ...await page.evaluate(auditProse) });
       }
     }
@@ -104,7 +106,10 @@ for (const enabled of [false, true]) {
     if (enabled) await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
     const audits = [{ state: "pack-comparison", ...await page.evaluate(auditProse) }];
     await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
-    if (enabled) await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+    if (enabled) {
+      await page.getByRole("radio", { name: /^Refer back/ }).check();
+      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+    } else await page.getByRole("radio", { name: /^Escalate/ }).check();
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });
@@ -177,7 +182,7 @@ for (const enabled of [false, true]) {
       await expect(page.locator("body")).not.toContainText(/\.pdf\b|\.docx?\b|William Ng|Embrace the Change|complete-pack/i);
       if (enabled && route === "case/EX-24123") {
         await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true }))
-          .toContainText("Original source: declared by the pharmacy, not read from the form");
+          .toContainText("declared by the pharmacy, not read from the form");
       }
       const result = await page.evaluate(auditProse);
       results.push({ route, ...result });
