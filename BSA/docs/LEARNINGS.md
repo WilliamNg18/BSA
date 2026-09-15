@@ -4,6 +4,16 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The exact schema assertion and unrelated-global preservation assertion have
+different purposes. N owns the first; V added the new mismatch input to the
+second so a capture-induced change cannot pass simply because the field is
+present. The source type is G's actual snapshot, with no cast or shim.
+
+The six-file compatibility patch passed typecheck, targeted lint and 49
+canonical-runtime/mismatch units with two workers. Playwright discovery
+retained all 44 state names in eight files without launching a browser.
+This verifies source compatibility, not the unrun capture matrix.
+
 V's `cdd436b` dependency merge conflicted only in the five tracking documents.
 Both sides' records were retained; no owner source was changed during
 resolution. This permits typed verification of the real new assumption

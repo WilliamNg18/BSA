@@ -4,6 +4,10 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+V's capture preservation list now protects `mismatchSharePercent`, closing
+the identified assertion omission without changing the producer or N's
+exact-key-list file. Execution of the migrated state matrix remains pending.
+
 V integrates exact published G `cdd436b` without modifying owner source.
 The earlier failure records below retain their original source boundaries.
 Dependency integration alone does not close those gates or verify the UI.

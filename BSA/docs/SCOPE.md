@@ -6,6 +6,10 @@ ms.date: 2026-09-15
 
 # Scope register
 
+The capture unrelated-global assertion now includes the actual
+`mismatchSharePercent` string draft. No new seed, snapshot filtering or
+domain mutation is introduced; N's schema-assertion hunk is untouched.
+
 V's verification branch now imports G `cdd436b` as a development dependency,
 not a release or backup. Source remains G/consumer-owned; V may strengthen
 existing capture preservation against the actual new snapshot shape.

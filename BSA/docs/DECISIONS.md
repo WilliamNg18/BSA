@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: should Type 1 capture affect the mismatch assumption? Choice: assert exact before/after equality for its actual string draft in V's existing unrelated-global loop; tie-breaker: capture changes only its own operational evidence, without duplicate N or store edits.
+
 - Question: how should V strengthen capture preservation for the new assumption? Choice: import G's exact published `cdd436b` dependency rather than cast around the old snapshot type, duplicate the producer or fabricate the property; tie-breaker: real source compatibility and one owner per implementation.
 
 ## 2026-09-15: V canonical handoff and fresh-scenario fidelity

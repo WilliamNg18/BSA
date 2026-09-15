@@ -6,6 +6,16 @@ ms.date: 2026-09-15
 
 ## V canonical dependency integration
 
+The V-owned Type 1 capture preservation check now compares
+`mismatchSharePercent` before and after capture, alongside the existing global
+inputs. N's exact-key assertion file, observer producer and complete snapshot
+machinery remain unchanged. This is a source-compatible assertion addition;
+the migrated browser matrix has not run.
+
+Typecheck, targeted capture-spec lint and 49 canonical-runtime/mismatch units
+passed with at most two workers. State discovery remains 44 tests in eight
+files; discovery is not execution. No browser or server was started.
+
 V imports exact G `cdd436b906f397a1d210603e4cef3794812c0a59` for
 source-compatible verification work, preserving owner source and unioning
 both streams' tracking records. Its published fixes supersede the earlier
