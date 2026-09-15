@@ -234,6 +234,12 @@ automatic eligible EPS rechecks and exclusively human paper releases.
 No task in this new scope is complete until merged, green-deployed and seen live.
 ## Task 39 N optional numbers addition: WIP
 
+Canonical G `4765770` is now integrated temporarily for N validation:
+required check and 70 targeted tests pass. The new draft uses the real
+application store; Reset and exact snapshot-key coverage are included.
+This remains dependency-qualified WIP, not a merged/live release or backup.
+Browser execution and actual canonical-main reduction remain pending.
+
 The independent mismatch helper uses all submitted claims, not the referral
 subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
 With share times volume labelled estimate, unchanged existing totals, verified

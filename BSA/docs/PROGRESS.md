@@ -498,6 +498,14 @@ https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observati
 does not establish deployment or live acceptance of Tasks 39/40.
 ### Task 39 N numbers: published WIP, not live completion
 
+Latest N checkpoint temporarily integrates canonical G `4765770`.
+`npm run check` passes, including source-copy policy, typechecking, lint and
+build; 70 targeted real-store/model/presentation tests pass. The actual shared
+mismatch field, setter, Reset and snapshot are verified, and the exact observer
+inventory now includes `mismatchSharePercent`. No N store edits were made.
+Browser lease is requested but no browser run or live acceptance is claimed.
+Final N scope must be reduced against actual canonical main after A/G merges.
+
 N reactivated on main `6418151` for the additive mismatch estimate, not a rerun
 of Task 28. The pure helper consumes W's evidence constants, converts UI 1%
 to numeric share 0.01, and multiplies total submitted claims. Existing monthly
