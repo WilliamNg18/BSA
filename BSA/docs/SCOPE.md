@@ -7,6 +7,16 @@ ms.date: 2026-09-15
 # Scope register
 
 ## B40 bounded foundation scope, 15 September
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
 
 U's reactivated Task 40 scope is the new read-only three-column scanner
 comparison, original-source image adapter, rendered units and desktop browser

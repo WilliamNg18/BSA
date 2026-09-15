@@ -12,6 +12,21 @@ date, and stale/source-mismatched projections produce explicit errors. The
 portrait adapter retains uncertain source glyphs and wraps long values without
 ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
 1280/1440 legibility or replace the pending mounted browser and live checks.
+The real-store fidelity tests now pass alongside the domain/action suites:
+67 tests in eight files, followed by check. The assertions compare the entire
+last submission object after actual actions, retain prior revision arrays and
+scan evidence, and do not use test-only state replacement or navigation-created
+history. The source still uses G's pre-new-seed `9b41cc2` runtime; this limitation
+is explicit rather than assuming old four-case coverage proves new scenarios.
+
+U's raw scanner representation exposed ambiguity in B's earlier null-blank
+test: null denotes Unknown, not a positively observed omission. The refined
+regression uses empty string for a known blank, retains null as Type 1
+uncertainty even with a high confidence figure, and leaves typed declaration
+null distinct from extraction evidence. The earlier two-failure reproduction
+and subsequent results remain historical rather than being rewritten.
+
+## 2026-09-15: B40 readable-blank regression
 
 U/B coordination identified that null and an empty OCR string must not be
 interchangeable. Null remains Unknown; an empty string is a known Blank and

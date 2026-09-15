@@ -5,6 +5,13 @@ ms.date: 2026-09-15
 ---
 
 ## 2026-09-15: B40 fidelity and communication contract choices
+- Question: how can B test real actions without a duplicate store? Choice: merge G's exact published canonical lineage into B's verification branch, preserve its shared files byte-for-byte and add only new B tests/helpers. Tie-breaker: one authoritative implementation and executable fidelity rather than simulation.
+- Question: does null OCR mean a known blank? Choice: no; null is Unknown and empty string is Blank, matching the scanner component. Type 1 remains required for unknown extraction, while a confidently known blank is missing information for Type 2. Tie-breaker: do not claim to have read absent source evidence.
+- Question: can current action tests establish the new four-case baseline? Choice: source-pin them to G `9b41cc2` and rerun/adapt after canonical new seed/source publication. Tie-breaker: exact requirement verification, not proxy coverage.
+
+## 2026-09-15: B40 readable-blank decision
+
+- Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 
 - Question: how should U render three paper sources without a second state authority? Choice: a pure component consuming B's replica/reconciliation through G's facade, mounted by O; tie-breaker: one state and source fidelity.
 - Question: can confirmed values improve the scanner column? Choice: draw only immutable source-region strings and original source date; display current human evidence below the three columns; tie-breaker: provenance and human authority.

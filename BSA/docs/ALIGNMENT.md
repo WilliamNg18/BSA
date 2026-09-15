@@ -38,6 +38,15 @@ required before browser or deployed alignment can be assessed.
 
 ### Refreshed published-source snapshot after the B foundation
 
+C1 foundation evidence now includes actual-store rather than only pure-replica
+tests: four current IDs with Send/arrival/three perspectives/Follow, paper
+capture/referral/ACK/resubmission/human release in both modes, and an explicit
+EPS audit. All eight selected files pass 67 tests and check passes. This
+improves C1's branch evidence at G `9b41cc2` but does not certify the not-yet-
+published new four-case seeds or revised paper-source storage. C7 browser timing
+and actual current-main/live evidence are still unverified.
+
+
 ### Refreshed published-source snapshot after the B foundation
 
 G `6054408f5573bf975089d81e9300d66ec656a0f2` was inspected at its exact
