@@ -1,7 +1,7 @@
 import type { Page, TestInfo } from "@playwright/test";
 import { captureCheckpoint, captureJson, expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { decisionNote, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { decisionNote, operatorAdvice, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
 
 export const perspectiveGuard = "This view belongs to the other side; switch perspective to see it";
 export const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
@@ -117,7 +117,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await decisionNote(page).fill(reason);
     if (enabled) {
       await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
-      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
       reason = await decisionNote(page).inputValue();
       await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
       await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);

@@ -3,6 +3,7 @@ import { expect } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
 import { EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
 import { DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
+import { operatorAdvice } from "./operator-action-helpers";
 import type { CycleActionOptions, PlayableCycle } from "../support/desktop-matrix";
 
 export type CycleSide = "Pharmacy" | "NHSBSA";
@@ -100,7 +101,7 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
   });
   if (scenario.kind === "complete") {
     await sides("Automatic completion", enabled ? "released_to_pricing" : "paid");
-    await expect(panel().getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
+    await expect(operatorAdvice(active()).getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     await expect(panel().getByRole("button", { name: "Release to pricing", exact: true })).toHaveCount(0);
     return;
   }
@@ -114,10 +115,10 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
   }
   await expect(panel().getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
   if (enabled) {
-    const suggestion = panel().getByRole("region", { name: "Recommendation", exact: true });
+    const suggestion = operatorAdvice(active());
     const draftedNote = await suggestion.getByText("Note", { exact: true }).locator("xpath=following-sibling::dd[1]").innerText();
     await action("Operator applies the suggestion into visible fields only", "NHSBSA", async () => {
-      await panel().getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await operatorAdvice(active()).getByRole("button", { name: "Apply suggestion", exact: true }).click();
       await expect(panel().getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
       await expect(panel().getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue(scenario.kind === "missing-date" ? "SYN-NCSO" : "RB2B");
       await expect(panel().getByRole("textbox", { name: "Reason (required)", exact: true })).toHaveValue(draftedNote);
@@ -126,7 +127,7 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
     });
     await sides("Suggestion applied, still awaiting decision", "in_review");
   } else {
-    await expect(panel().getByRole("region", { name: "Recommendation", exact: true })).toHaveCount(0);
+    await expect(operatorAdvice(active())).toHaveCount(0);
     await action("Operator chooses referral without assistance", "NHSBSA", async () => {
       await panel().getByRole("radio", { name: "Refer back", exact: true }).check();
     });
@@ -189,7 +190,7 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
     await sides("Corrected item in review", "in_review");
   }
   if (enabled) await action("Operator applies the checked sufficient recommendation without releasing", "NHSBSA", async () => {
-    await panel().getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    await operatorAdvice(active()).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     await expect(panel().getByRole("radio", { name: "Sufficient (human choice)", exact: true })).toBeChecked();
     await expect(panel().getByRole("textbox", { name: "Reason (required)", exact: true })).not.toHaveValue("");
   });

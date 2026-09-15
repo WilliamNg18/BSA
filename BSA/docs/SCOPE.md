@@ -16,6 +16,11 @@ failures. O receives the exact traces for source repair; G does not relax
 focus, full-viewport or accessibility assertions. The four D axe checks and
 named screenshots were not reached. Any repaired-candidate rerun needs a
 new coordinated lease; 4335 is released.
+The advice-locator patch changes only test lookup scope, not action order,
+expectations, deadlines or source. It preserves native ordinary/state/live
+identities across the patch and excludes A's settlement hunk, O's new
+operator40 tests and R's trace file. Remaining old case/channel/ACK semantics
+are not marked repaired by this locator-only change.
 
 V's sibling-panel assertion migration changes only its review-repair unit
 file and these tracking records. Apply belongs to advice; all human choice,

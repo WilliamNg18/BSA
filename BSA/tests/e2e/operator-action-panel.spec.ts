@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { operatorAdvice } from "./operator-action-helpers";
 
 async function openReview(page: Page, enabled: boolean) {
   await page.goto("/pharmacy");
@@ -21,7 +22,7 @@ for (const width of [1280, 1440]) {
     const panel = page.getByRole("region", { name: "Operator decision", exact: true });
     const history = page.getByRole("region", { name: "Shared case history", exact: true });
     const initialStatus = await history.getByRole("status").textContent();
-    await panel.getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     await expect(panel.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
     await expect(panel.getByLabel("RB code (required)", { exact: true })).toHaveValue("SYN-NCSO");
     const note = panel.getByRole("textbox", { name: "Reason (required)", exact: true });
@@ -31,7 +32,7 @@ for (const width of [1280, 1440]) {
     await expect(history.getByRole("status")).toHaveText(initialStatus!);
     await expect(panel.getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
     await page.getByRole("banner").getByRole("switch").setChecked(false);
-    await expect(panel.getByRole("region", { name: "Suggestion", exact: true })).toHaveCount(0);
+    await expect(operatorAdvice(page)).toHaveCount(0);
     await expect(note).toHaveValue(appliedNote);
     await expect(panel).toContainText("applied by the operator from the agent's suggestion");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -138,7 +139,7 @@ for (const enabled of [false, true]) {
   test(`valid recheck releases only after the operator action, Agent ${enabled}`, async ({ page }) => {
     await openReview(page, enabled);
     const panel = page.getByRole("region", { name: "Operator decision", exact: true });
-    if (enabled) await panel.getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    if (enabled) await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     else {
       await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("The dispensing date is missing.");
       await panel.getByLabel("RB code (required)", { exact: true }).selectOption("SYN-NCSO");
@@ -151,7 +152,7 @@ for (const enabled of [false, true]) {
     await detail.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
     await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await panel.getByRole("button", { name: "Start review", exact: true }).click();
-    if (enabled) await panel.getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    if (enabled) await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     else await panel.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human reviewed the corrected endorsement date.");
     await expect(panel.getByRole("button", { name: "Release to pricing", exact: true })).toBeEnabled();
     await panel.getByRole("button", { name: "Release to pricing", exact: true }).click();

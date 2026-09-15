@@ -20,6 +20,18 @@ widths. Six other cases pass with unrestricted axe. These four failures
 occur before D's axe/checkpoint calls, so neither a ten-case accessibility
 pass nor D screenshot acceptance exists. The exact served clean SHA, JSON
 and failure traces were retained before releasing the leased port.
+Moving advice out of the human panel requires changing both action locators
+and advice-presence assertions. V's 19-file receiver migration retains all
+action/assertion arguments, order and registrations; native before/after
+IDs and titles match for 1,068 ordinary, 44 state and 75 live entries.
+Typecheck, lint and 11 static/trace-policy units pass. No browser was run.
+
+The retained df22 shard-three log contains 50 failures: 25 stale B/M route
+headings, 16 retired Task13 radio selections plus two wrong default-case
+expectations, three retired review controls, and four recommendation checks.
+Two recommendation failures are heading-order axe violations at
+`Today: referral-loop projection` while visiting the now-invalid B/EPS
+combination; they remain failures, not waived accessibility evidence.
 
 The last two G unit failures were caused by searching for Apply inside the
 new human panel. V now asserts the real adjacent advice/human structure,

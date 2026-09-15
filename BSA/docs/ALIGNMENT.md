@@ -18,6 +18,11 @@ single ten-case 4335 run requires coordinator clearance and a clean published
 build. Previous CI and owner browser artifacts do not certify this layout.
 PR #110 remains WIP until exact candidate verification and coordinator-owned
 main/deployment/live acceptance.
+Operator advice is now selected through its actual sibling workspace in
+existing V browser consumers. Static action/assertion signatures and native
+IDs/titles remain identical before/after (1,068 / 44 / 75). These checks
+establish migration integrity, not browser success. Historical shard-three
+failures remain classified separately from the new O focus/viewport findings.
 
 The actual sibling layout now satisfies V's migrated review assertions:
 40 focused tests, typecheck and targeted lint pass. This uses O's implemented

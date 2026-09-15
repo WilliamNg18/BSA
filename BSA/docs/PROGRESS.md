@@ -33,6 +33,21 @@ claimed yet. PR #110 remains draft; main, deployment and observed live SHA
 are still release gates. The last coordinator-confirmed live baseline is
 `5b75e5f7711bf599b02ff9fab752781fa0685b00` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, not this candidate.
+V migrated operator-advice lookups in 19 existing browser/helper files to the
+actual direct sibling under `data-operator-workspace`, retaining the human
+decision scope for fields and release actions. No legacy-layout fallback was
+added. Static parser proof preserves action arguments/order, assertion
+arguments/negation/order and registrations in all 19 files. Native before/
+after IDs and titles are identical: 1,068 ordinary, 44 state and 75 live
+entries, all unexecuted. Typecheck/lint and 11 targeted harness/trace-policy
+units pass. A/O/R protected files and timing primitives are unchanged.
+
+Retained old-layout CI `35027291297` shard 3 ended 50 failed / 215 passed:
+25 route-heading failures, 18 Task13 setup/selection failures, three retired
+review controls and four recommendation-view failures. The latter include
+two real heading-order axe findings on the obsolete B/EPS route and two
+missing B cards. Other shards were canceled; this is not an aggregate or a
+current-source verdict. Further canonical-case migration remains necessary.
 
 The two V Apply assertions now target the actual advice sibling on G
 `4ac77a5`. The helper requires the real workspace, case-bound human panel,

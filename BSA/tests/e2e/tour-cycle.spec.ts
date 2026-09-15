@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { assertInlineDecisionRecorded, historyIdentity, openHistory } from "./perspective-helpers";
-import { humanReleaseLabel, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { humanReleaseLabel, operatorActionButtons, operatorAdvice, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 import { enterDesktopDemo } from "./desktop-step-helpers";
 
 for (const enabled of [false, true]) {
@@ -64,7 +64,7 @@ for (const enabled of [false, true]) {
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Please add the dispensing date beside the initials");
     if (enabled) {
       await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
-      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
       await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
       await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);
     }
@@ -96,7 +96,7 @@ for (const enabled of [false, true]) {
     expect((await recorded.getByRole("list", { name: "Immutable pharmacy attempts" }).locator(":scope > li").allTextContents()).slice(0, priorAttempts.length)).toEqual(priorAttempts);
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
-    if (enabled) await expect(operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true }).getByText("Sufficient recommended", { exact: true })).toBeVisible();
+    if (enabled) await expect(operatorAdvice(page).getByText("Sufficient recommended", { exact: true })).toBeVisible();
     await operatorRadio(page, "ACCEPT").check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human recheck confirms the corrected dispensing date");
     await performDecision(page, "ACCEPT", { releaseVerified: enabled });
@@ -125,7 +125,7 @@ for (const enabled of [false, true]) {
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
     await expect(operatorActionButtons(page)).toHaveCount(0);
-    await expect(operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
+    await expect(operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(humanReleaseLabel(enabled, "pharmacy"));
     await openHistory(page);
