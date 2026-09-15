@@ -88,10 +88,18 @@ describe("eleven-step navigation, never a business action", () => {
     expect(DEMO_CASE_IDS).toEqual(PLAYABLE_CASE_IDS);
     expect(getDemoStep(6)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy" });
     expect(getDemoStep(7)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy" });
-    expect(DEMO_ALLOWED_CONTROLS[6]).toEqual(["submission", "correction"]);
-    expect(DEMO_ALLOWED_CONTROLS[7]).toEqual(["submission", "correction", "operator", "type1-capture"]);
+    expect(DEMO_ALLOWED_CONTROLS[6]).toEqual(["submission", "correction", "paper-scanner", "declaration-complete", "declaration-missing"]);
+    expect(DEMO_ALLOWED_CONTROLS[7]).toEqual(["submission", "correction", "paper-scanner", "declaration-complete", "declaration-missing", "operator", "type1-capture"]);
     expect(getDemoStep(8)).toMatchObject({ caseId: "EX-24123", path: "/queue", channel: "paper" });
     expect(getDemoStep(9)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy/claims", channel: "paper" });
     expect(getDemoStep(10)).toMatchObject({ caseId: "EX-24123", path: "/case/EX-24123", channel: "paper" });
+  });
+
+  it("restricts explicit paper preparation to paper workbench steps without losing correction controls", () => {
+    for (const number of [3, 4, 5, 6, 7, 9]) expect(DEMO_ALLOWED_CONTROLS[number]).toContain("correction");
+    for (const control of ["paper-scanner", "declaration-complete", "declaration-missing"] as const) {
+      expect(DEMO_CONTROL_SELECTORS[control]).toMatch(/^\[data-pharmacy-demo="/);
+      expect(DEMO_STEPS.filter((step) => DEMO_ALLOWED_CONTROLS[step.number].includes(control)).map((step) => step.number)).toEqual([6, 7]);
+    }
   });
 });
