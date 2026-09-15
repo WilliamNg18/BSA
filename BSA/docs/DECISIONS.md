@@ -2357,3 +2357,19 @@ clock, timeout, state proxy or overhead subtraction is introduced.
 This is protocol read-scheduling efficiency, not a proven runtime fix.
 The prior standard D 1,008.3189 ms failure and diagnostic A 1,006.67 ms failure
 remain failed evidence; the changed procedure requires fresh verification.
+
+## 2026-09-15: Profile runtime costs without changing acceptance
+
+Question: what follows the failed serial and concurrent-read procedures?
+Choice: stop further harness adjustments and prepare one explicitly labelled
+local CPU/timeline profile of the existing full 1280 On matrix. Preserve
+all actions, ordering, strong automatic-state checks and the one-second
+deadline. Profiling starts before the test and is collected after its
+original outcome, without route DOM observers or application instrumentation.
+
+Require a new output directory, exclusive files, complete chunk writes,
+actual CPU/trace hashes, exact build/entry-asset identity and explicit
+duration/buffer/output caps. Errors, caps or lost data make capture incomplete
+and are surfaced separately from the original functional result. No repeated
+run, overhead subtraction, guessed source mapping or speculative runtime
+patch follows from incomplete samples.

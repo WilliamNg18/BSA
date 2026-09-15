@@ -149,6 +149,34 @@ Observers add overhead that is never subtracted from a failed deadline.
 Collection errors are attached separately and rethrown, not converted into
 functional success. A diagnostic pass is not uninstrumented acceptance.
 
+## Separate Chromium CPU and timeline profile
+
+`runtime-profile.config.ts` selects one existing complete 1280 px Agent-On
+matrix. It requires the same local variables and an explicit allocation.
+Normal live/rehearsal runs leave its fixture inactive; profiling cannot be
+combined with the route DOM observer.
+
+The fixture starts a CDP session before the first navigation and collects
+after the original outcome. No profiling calls are awaited inside timed
+actions. CPU sampling uses 2 ms intervals; the trace uses a 32 MiB
+record-until-full buffer. Collection stops at 180 seconds. Output caps are
+64 MiB for the trace and 32 MiB for the CPU file, with errors/caps/data loss
+recorded as incomplete diagnostics. There is no automatic rerun.
+
+Each run requires a new profile directory and uses exclusive file creation.
+Trace writes handle partial writes, and retained CPU/trace bytes receive
+SHA-256 hashes. The manifest records the original outcome separately from
+capture completeness, setup/teardown metric anchors, the exact clean build
+identity and entry-module URL/hash. Available files are attached even if
+capture is incomplete; incompleteness is then surfaced as a fixture error.
+No alternate sourcemap build or guessed source mapping is used.
+
+CPU coverage is limited to the page target; inspect process/thread and
+navigation coverage before attributing sampled costs. Timeline/CPU overhead
+is never subtracted from the original deadline. The JSON report is explicitly
+**chromium runtime profile, not acceptance**; a profile does not satisfy the
+standard 75-check gate.
+
 ## Full-state equivalence is separate
 
 `one-state.config.ts` builds a separate instrumented artifact with a read-only
