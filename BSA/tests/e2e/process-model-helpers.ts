@@ -78,7 +78,12 @@ export async function chooseProcessChapter(page: Page, chapter: 1 | 2 | 3 | 4) {
   if (!section) throw new Error(`No overview section is defined for chapter ${chapter}.`);
   const exit = page.getByRole("button", { name: "Exit demo", exact: true });
   if (await exit.count()) await exit.click();
+  const beforeOverview = page.url();
   await navigatePrimary(page, "Overview");
+  await expect(page.locator('[data-tour-chapter="1"]')).toBeVisible();
+  if (page.url() !== beforeOverview) {
+    await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
+  }
   const item = page.getByRole("navigation", { name: "Overview sections", exact: true })
     .getByRole("link", { name: section.label, exact: true });
   await item.focus();

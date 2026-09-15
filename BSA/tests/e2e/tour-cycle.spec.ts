@@ -10,18 +10,29 @@ for (const enabled of [false, true]) {
     await enterDesktopDemo(page, enabled);
     const strip = page.getByTestId("demo-strip");
     await strip.getByRole("combobox", { name: "Jump to demo step" }).selectOption("8");
-    await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-case", "EX-24112");
+    await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-case", "EX-24123");
     await expect(page.getByTestId("demo-step-screen").getByRole("table")).toHaveCount(1);
+    const followed = page.getByRole("region", { name: "Followed item", exact: true });
+    await expect(followed).toContainText("EX-24123");
+    const lastEvent = await followed.locator("p").first().innerText();
     await strip.getByRole("button", { name: "Exit demo", exact: true }).click();
     await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
-    await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
+    await expect(page).toHaveURL((url) => url.pathname === "/queue"
+      && url.searchParams.get("case") === "EX-24123" && url.searchParams.get("channel") === "paper");
+    await expect(page.locator('[data-type1-case="EX-24123"]')).toBeVisible();
+    await expect(followed.locator("p").first()).toHaveText(lastEvent);
     for (const [name, path] of [["Pharmacy check", "/pharmacy"], ["NHSBSA queue", "/queue"], ["Pharmacy claims", "/pharmacy/claims"]] as const) {
       await navigatePrimary(page, name);
       await expect(page).toHaveURL((url) => url.pathname === path && !url.search);
       await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
+      await expect(followed).toContainText("EX-24123");
+      await expect(followed.locator("p").first()).toHaveText(lastEvent);
     }
     await navigatePrimary(page, "Overview");
-    await page.goto("./#two-places");
+    await page.getByRole("navigation", { name: "Overview sections", exact: true })
+      .getByRole("link", { name: "One continuous cycle", exact: true }).click();
+    await expect(page).toHaveURL(/#two-places$/);
+    await expect(followed.locator("p").first()).toHaveText(lastEvent);
     for (const name of ["Pharmacy · Before submission flow", "NHSBSA · After exception routing flow"]) {
       await expect(page.getByRole("list", { name }).locator(":scope > li")).toHaveCount(enabled ? 5 : 7);
     }
