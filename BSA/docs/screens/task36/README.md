@@ -147,6 +147,20 @@ the exact failing B journey, then a fresh whole four-probe run once that
 journey completes. Neither these partial runs nor individual transition
 passes establish whole 75-check or hosted acceptance.
 
+The next allocated run selected only the unchanged B journey, not the three
+stable probes, at clean `27984c85b7e1e4b7d1fb6a7cd0477142a9eca07d`.
+P's communication-placement repair passed check and all 1,554 units in
+84 files. In the browser, Send passed at 791.4052 ms and Request information,
+including the actual question, passed at 497.6738 ms. The next action, Send
+confirmation, failed at 1,017.4464 ms: on the actual NHSBSA case route, the
+shared-history state and pharmacy answer were both above the viewport.
+Post-verdict geometry recorded state y-366/height24 and answer y-172/height20,
+with document scrollTop941. These measurements diagnose placement, not a
+passing latency. The one selected test failed, with one worker and no retries.
+Artifacts remain in `req38-b-2798`; port 4336 was released. Later referral,
+resubmission and release timing assertions were not reached. The coordinator
+owns the next case-entry repair assignment; all earlier failures remain.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
