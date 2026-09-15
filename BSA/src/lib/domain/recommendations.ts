@@ -1,4 +1,4 @@
-import type { CaseLifecycle, CaseRevision, LifecycleDecisionRecord, OperatorDecisionDraft, PharmacyCorrectionDraft, Type1Capture } from "./lifecycle";
+import type { CaseLifecycle, CaseRevision, ItemVerification, LifecycleDecisionRecord, OperatorDecisionDraft, PharmacyCorrectionDraft, Type1Capture } from "./lifecycle";
 import type { CasePack, ExceptionCase, RequirementId, Signals, TariffClause } from "./types";
 import { caseById } from "./cases";
 import { captureForRevision, caseForLifecycle, immutable, paperDeclarationFields, validateSubmissionSources } from "./lifecycle-model";
@@ -82,6 +82,8 @@ export interface ItemRecommendation {
   readonly requiresOperatorRelease: boolean;
   readonly operatorApplyAllowed: boolean;
   readonly operatorPreview: Omit<OperatorDecisionDraft, "appliedSuggestion"> | null;
+  readonly verification: ItemVerification | null;
+  readonly sourceAssessment: ItemVerification | null;
   readonly authorityLabel: typeof RECOMMENDATION_AUTHORITY;
 }
 
@@ -143,7 +145,7 @@ export function deriveRecommendation(
         sourceGap: error.message, nextStep: "Correct the invalid draft fields; no verification or approval has occurred.",
         provenance: "Unvalidated human draft", operatorApproved: false,
         requiresOperatorRelease: candidate.channel === "paper" && original.imageQuality < QUALITY_THRESHOLD,
-        operatorApplyAllowed: false, operatorPreview: null, authorityLabel: RECOMMENDATION_AUTHORITY,
+        operatorApplyAllowed: false, operatorPreview: null, verification: null, sourceAssessment: null, authorityLabel: RECOMMENDATION_AUTHORITY,
       });
     }
   }
@@ -199,7 +201,7 @@ export function deriveRecommendation(
   const baseDraft = draft ?? initialisePharmacyDraft(current, revision);
   const preview = previewPharmacyCorrection(current, revision, baseDraft);
   const suggestions = concreteSuggestions(requirements, baseDraft, preview, date);
-  const ordinary = pack.gate.result === "PASS";
+  const ordinary = pack.gate.result === "PASS" && (pack.recommendation !== "SUFFICIENT" || assessment.releaseEligible);
   const fieldDisagreement = findings.some((finding) => finding.includes('"; '));
   const diagnostic: DiagnosticFollowUp | null = !ordinary && findings.length ? {
     kind: "safe_human_follow_up", caseId, revision: revision.number,
@@ -243,6 +245,8 @@ export function deriveRecommendation(
       rbCode: pack.recommendation === "REFER_BACK" ? current.scenario === "D" || current.epsPrescription?.supplyEvidence ? "RB2B" : "SYN-NCSO" : "",
       note: pack.draftToPharmacy ?? pack.composite.reasons.join("; "),
     } : null,
+    verification: context.kind === "draft" ? null : history.filter((event) => event.revision === revision.number && event.verification).at(-1)?.verification ?? null,
+    sourceAssessment: context.kind === "draft" ? null : assessment.verification,
     authorityLabel: RECOMMENDATION_AUTHORITY,
   });
 }

@@ -69,7 +69,7 @@ export function CaseTracePage() {
         title={`How the case was built: ${c.title}`}
         intro="Inspect evidence, rule checks and human confirmation. The agent verifies and advises; a person decides."
       />
-      {recommendation && <RecommendationCard recommendation={recommendation} />}
+      {recommendation && <RecommendationCard recommendation={recommendation} headingLevel={2} />}
       <LifecycleHistory id={c.id} />
       {c.paperDeclaration && (agentEnabled || process?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {process?.capture && process.capture.revision === revision && <ConfirmedCaptureEvidence capture={process.capture} />}

@@ -10,17 +10,20 @@ export interface RecommendationCardProps {
   onFocusField?: (target: ConcreteSuggestion["focusTarget"]) => void;
   applyLabel?: string;
   compact?: boolean;
+  headingLevel?: 2 | 3 | 4;
   className?: string;
 }
 
 /** Presentation only: the containing human control owns Apply and error reporting. */
 export function RecommendationCard({
-  recommendation: r, onApply, onFocusField, applyLabel = "Apply suggested correction", compact = false, className,
+  recommendation: r, onApply, onFocusField, applyLabel = "Apply suggested correction", compact = false, headingLevel = 3, className,
 }: RecommendationCardProps) {
   const headingId = useId();
+  const Heading = headingLevel === 2 ? "h2" : headingLevel === 3 ? "h3" : "h4";
+  const Subheading = headingLevel === 2 ? "h3" : headingLevel === 3 ? "h4" : "h5";
   return (
     <section aria-labelledby={headingId} className={cn("space-y-3 rounded-lg border p-4", compact && "p-3", className)} data-recommendation-case={r.caseId}>
-      <h3 id={headingId} className="font-semibold">Recommendation</h3>
+      <Heading id={headingId} className="font-semibold">Recommendation</Heading>
       <p className="text-sm">{r.authorityLabel}</p>
       <dl className="grid grid-cols-2 gap-2 text-sm">
         <div><dt className="text-muted-foreground">Clause</dt><dd>{r.clause?.title ?? "Unavailable"}</dd></div>
@@ -30,7 +33,7 @@ export function RecommendationCard({
         {r.context === "recorded" && <div><dt>Assessment basis</dt><dd>Read-only reassessment of recorded sources, not a historical agent action.</dd></div>}
       </dl>
       <div className="text-sm">
-        {r.missing.length > 0 && <h4 className="font-medium">Missing or unresolved</h4>}
+        {r.missing.length > 0 && <Subheading className="font-medium">Missing or unresolved</Subheading>}
         <ul aria-label="Requirement results" className="space-y-1">
           {r.requirements.map((entry) => <li key={entry.id}>
             {entry.basis === "declared_format" ? "Declared format: " : entry.basis === "received_source" ? "Received source: " : ""}
@@ -40,7 +43,7 @@ export function RecommendationCard({
       </div>
       <p className="text-sm font-medium">{r.summary}</p>
       {r.suggestions.length > 0 && <div className="space-y-2 text-sm">
-        <h4 className="font-medium">Suggested values</h4>
+        <Subheading className="font-medium">Suggested values</Subheading>
         {r.suggestions.map((entry) => <div key={entry.field}>
           <dl><dt>{entry.label}</dt><dd>{entry.value !== null ? <strong>{entry.value}</strong> : "Needs human input"}</dd>
             <dt className="text-muted-foreground">Source</dt><dd>{entry.source}</dd></dl>
@@ -48,7 +51,7 @@ export function RecommendationCard({
         </div>)}
       </div>}
       {r.preview && <div className="space-y-1 text-sm">
-        <h4 className="font-medium">Corrected preview</h4>
+        <Subheading className="font-medium">Corrected preview</Subheading>
         <p className="whitespace-pre-wrap break-words font-mono">{r.preview.endorsementText || "No free-text endorsement"}</p>
         {r.preview.epsPrescription?.supplyEvidence && <dl className="grid grid-cols-3 gap-2">
           <div><dt>Brand or manufacturer</dt><dd>{r.preview.epsPrescription.supplyEvidence.brandManufacturer}</dd></div>
@@ -67,6 +70,10 @@ export function RecommendationCard({
         <dd>{r.outcome === "COMPLETE" ? r.operatorApplyAllowed ? "Sufficient recommended" : "Complete" : r.outcome === "REFER_BACK" ? "Refer back" : r.outcome === "REQUEST_INFORMATION" ? "Request information" : "Abstain"}</dd>
         {r.diagnostic && <><dt className="font-medium">Safe human follow-up</dt><dd>{r.diagnostic.provenance === "reconciliation_failed" ? "Reconciliation failed" : "Unverified evidence"}</dd></>}
         <dt>Kernel outcome and gate retained</dt><dd>{r.kernelRecommendation}; {r.kernelGate}</dd>
+        <dt>Recorded verification</dt><dd>{r.verification?.gate1 === "pass" && r.verification.gate2 === "pass" && r.verification.reconciled
+          ? "Both gates satisfied" : r.verification ? `Gate 1 ${r.verification.gate1}; Gate 2 ${r.verification.gate2}` : "Not established"}</dd>
+        {r.sourceAssessment && <><dt>{r.context === "recorded" ? "Recorded-source reassessment" : "Current source checks"}</dt>
+          <dd>Gate 1 {r.sourceAssessment.gate1}; Gate 2 {r.sourceAssessment.gate2}; reconciliation {r.sourceAssessment.reconciled ? "established" : "not established"}</dd></>}
         <dt>Next step</dt><dd>{r.nextStep}</dd>
         <dt>Source provenance</dt><dd>{r.provenance}</dd>
       </dl>
