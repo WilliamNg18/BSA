@@ -2052,3 +2052,7 @@ Tie-breakers: preserved history and human decisions.
 - Question: what survives demo exit? Choice: the selected URL case/channel and shared drafts; invalid combinations do not silently open another item.
 - Question: how are P's state tests updated? Choice: retain the full 34-test family and exact Both/switched snapshots, explicitly asserting draft-only edits and same-state pharmacy Apply events. No field is removed from the observer.
 - Question: may the retained paper prescriber be corrected? Choice: restore its human input alongside modern declaration fields in referred-back detail; initial declaration entry still does not invent prescriber evidence.
+
+## 2026-09-15: Requirement 4 Follow scope extension
+
+- Question: does synchronous Follow navigation prove the new one-second cross-side requirement? Choice: retain the existing one-store navigation and neutral action labels, add request/confirmation and unchanged diagnostic-event contract coverage, and leave all-four-case browser deadlines to V after R integration; no timing or new-paper-path pass is claimed from unit tests. Tie-breakers: truthful evidence, explicit human decisions and no duplicated operational state.

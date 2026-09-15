@@ -43,7 +43,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           const frames = [];
           for (const route of ["claim", "case"] as const) {
             if (route === "case") {
-              await page.getByRole("link", { name: "Switch side: NHSBSA", exact: true }).press("Enter");
+              await page.getByRole("button", { name: "NHSBSA view", exact: true }).press("Enter");
               await expect(page).toHaveURL(/\/case\/EX-24112$/);
               await expect(page.getByRole("heading", { level: 1 })).toContainText("Operator case pack");
             }

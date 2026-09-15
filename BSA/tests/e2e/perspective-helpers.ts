@@ -86,7 +86,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
       expect(submissionEvents[1].fields[0]).toContain("code");
       expect(submissionEvents[1].fields[1]).toContain("No decision record");
     }
-    await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Follow this case", exact: true })).toBeVisible();
     await choosePerspective(page, "NHSBSA");
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
     await expect(flag(page)).toBeChecked({ checked: enabled });
@@ -148,7 +148,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     previousIdentity = stableEvents;
     await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Follow this case", exact: true })).toBeVisible();
     await captureJson(info, `perspective-${enabled ? "on" : "off"}`, { id, endorsement, attempts, recordId, eventCount, stableEvents, reason });
     await captureCheckpoint(page, info, `perspective-decision-${enabled ? "on" : "off"}`);
   }

@@ -29,10 +29,10 @@ for (const enabled of [false, true]) {
     await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.submitted.pharmacy);
     await history(page).getByRole("button", { name: "Follow this case", exact: true }).click();
-    await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
+    await followed(page).getByRole("button", { name: "NHSBSA view", exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${B}$`));
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
-    await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
+    await followed(page).getByRole("button", { name: "Pharmacy view", exact: true }).click();
     await expect(detail(page)).toContainText(B);
     await openReview(page);
     await page.getByRole("radio", { name: /^Refer back / }).check();
@@ -43,7 +43,7 @@ for (const enabled of [false, true]) {
       await approval.check();
     }
     await decide(page, "Please add the dispensing date beside the initials");
-    await followed(page).getByRole("link", { name: "Switch side: Pharmacy", exact: true }).click();
+    await followed(page).getByRole("button", { name: "Pharmacy view", exact: true }).click();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.referred_back.pharmacy);
     if (enabled) {
       await expect(detail(page)).not.toContainText("Please add the dispensing date beside the initials");
@@ -60,7 +60,7 @@ for (const enabled of [false, true]) {
     }
     await page.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
-    await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
+    await followed(page).getByRole("button", { name: "NHSBSA view", exact: true }).click();
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
     await page.getByRole("button", { name: "Start review", exact: true }).click();
     if (enabled) await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
@@ -68,7 +68,7 @@ for (const enabled of [false, true]) {
     await decide(page, "Human reviewed the corrected date before existing pricing");
     await expect(history(page)).toContainText(LIFECYCLE_LABELS.paid.nhsbsa.on);
     for (const side of ["Pharmacy", "NHSBSA"] as const) {
-      await followed(page).getByRole("link", { name: `Switch side: ${side}`, exact: true }).click();
+      await followed(page).getByRole("button", { name: `${side} view`, exact: true }).click();
       await history(page).locator("summary").first().click();
       const attempts = history(page).getByRole("list", { name: "Immutable pharmacy attempts" }).locator(":scope > li");
       await expect(attempts).toHaveCount(3);

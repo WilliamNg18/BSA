@@ -1,0 +1,94 @@
+import { describe, expect, it } from "vitest";
+import { followedChannel, followedLastEvent, followedLocation, historyStateLabel } from "../../src/lib/follow-presentation";
+import type { CaseLifecycle, HistoryEvent } from "../../src/lib/domain/lifecycle";
+import { useAppStore } from "../../src/lib/store";
+
+const row = (event?: Partial<HistoryEvent>): CaseLifecycle => ({
+  caseId: "SYN-TEST", pharmacyCode: "FQ123", state: "in_review",
+  history: event ? [{ at: "2026-09-04T23:50:00Z", actor: "operator", from: "in_review", to: "in_review", message: "Test event", ...event }] : [],
+});
+
+describe("follow history and current location presentation", () => {
+  it.each([
+    [{ processStep: "referral", rbCode: "RB2B" }, "Referred back 4 September, RB2B (synthetic)"],
+    [{ processStep: "suggestion_applied" }, "Operator applied suggestion 4 September (synthetic)"],
+    [{ processStep: "suggestion_applied", recommendation: "ABSTAIN", decision: "REQUEST_INFORMATION" }, "Operator applied suggestion 4 September (synthetic)"],
+    [{ processStep: "type2_judgement", decision: "REQUEST_INFORMATION", recommendation: "ABSTAIN" }, "Operator requested information 4 September (synthetic)"],
+    [{ processStep: "referral", decision: "REFER_BACK", recommendation: "ABSTAIN", rbCode: "RB2B" }, "Referred back 4 September, RB2B (synthetic)"],
+    [{ processStep: "correction_applied", actor: "pharmacy" }, "Pharmacy applied correction 4 September (synthetic)"],
+    [{ processStep: "type1_capture" }, "Operator confirmed capture 4 September (synthetic)"],
+    [{ processStep: "release_to_pricing", releaseOrigin: "human_decision" }, "Released after operator review 4 September (synthetic)"],
+    [{ processStep: "release_to_pricing", actor: "code", releaseOrigin: "automatic_verification" }, "Released to existing pricing 4 September (synthetic)"],
+    [{ processStep: "resubmission", actor: "pharmacy" }, "Pharmacy resubmitted item 4 September (synthetic)"],
+    [{ decision: "REQUEST_INFORMATION" }, "Operator requested information 4 September (synthetic)"],
+    [{ decision: "ESCALATE" }, "Operator escalated item 4 September (synthetic)"],
+    [{ actor: "pharmacy", from: "information_requested", to: "resubmitted" }, "Pharmacy sent confirmation 4 September (synthetic)"],
+    [{ actor: "agent", recommendation: "ABSTAIN" }, "Agent abstained 4 September (synthetic)"],
+  ] satisfies [Partial<HistoryEvent>, string][])("renders explicit action %j without raw enums", (event, expected) => {
+    expect(followedLastEvent(row(event))).toBe(expected);
+  });
+
+  it("uses the latest appended event, not the event with the newest wall-clock date", () => {
+    const item = row({ processStep: "referral", rbCode: "RB2B" });
+    item.history.push({ ...item.history[0], at: "2026-09-01T09:00:00", actor: "pharmacy", processStep: "correction_applied", rbCode: undefined });
+    expect(followedLastEvent(item)).toBe("Pharmacy applied correction 1 September (synthetic)");
+  });
+
+  it("makes absent history, source and invalid dates explicit instead of inventing them", () => {
+    expect(followedLastEvent(row())).toBe("No history event recorded");
+    expect(followedChannel(row())).toBe("Channel not recorded");
+    expect(followedLocation(row())).toBe("Location not recorded");
+    expect(followedLastEvent(row({ at: "invalid", processStep: "submission" }))).toContain("date unavailable");
+  });
+
+  it("takes channel and capture/review location from real submitted routing regardless of the current Agent toggle", () => {
+    const store = useAppStore.getState();
+    store.resetDemo();
+    store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: "NCSO JB 27/08/26" });
+    const current = useAppStore.getState();
+    const item = current.lifecycles["EX-24123"];
+    const process = current.itemProcesses[item.caseId];
+    expect(followedChannel(item, process)).toBe("Paper");
+    expect(followedLocation(item, process)).toBe("Type 1: capture");
+    store.setAgentEnabled(true);
+    expect(followedLocation(item, process)).toBe("Type 1: capture");
+    store.resetDemo();
+  });
+
+  it("prioritises recorded referral and release over an earlier process route", () => {
+    const item = row();
+    expect(followedLocation({ ...item, state: "referred_back" })).toBe("Referred back to pharmacy");
+    expect(followedLocation({ ...item, state: "released_to_pricing" })).toBe("Released to existing pricing");
+    expect(followedLocation({ ...item, state: "information_requested" })).toBe("Pharmacy: confirmation requested");
+  });
+
+  it("names a real pharmacy confirmation rather than the shared resubmission process code", () => {
+    const store = useAppStore.getState();
+    store.resetDemo();
+    try {
+      store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+      store.arriveInQueue("EX-24112");
+      store.requestInformation("EX-24112", "Please confirm the dispensing details.");
+      store.sendConfirmation("EX-24112", "The pharmacy has confirmed the dispensing details.");
+      const item = useAppStore.getState().lifecycles["EX-24112"];
+      expect(item.history.at(-1)).toMatchObject({
+        actor: "pharmacy", from: "information_requested", to: "resubmitted", processStep: "resubmission",
+      });
+      expect(followedLastEvent(item)).toMatch(/^Pharmacy sent confirmation \d+ \w+ \(synthetic\)$/);
+    } finally {
+      store.resetDemo();
+    }
+  });
+
+  it("does not let a later automatic release erase an earlier operator's involvement", () => {
+    const item = row({ to: "released_to_pricing", releaseOrigin: "human_decision" });
+    item.history.push({ ...item.history[0], actor: "code", from: "released_to_pricing", releaseOrigin: "automatic_verification",
+      verification: { gate1: "pass", gate2: "pass", reconciled: true, released: true } });
+    for (const enabled of [false, true]) {
+      expect(historyStateLabel(item, 0, "nhsbsa", enabled)).toContain("after operator review");
+      expect(historyStateLabel(item, 1, "nhsbsa", enabled, true)).toContain("after operator review");
+      expect(historyStateLabel(item, 1, "nhsbsa", enabled)).toContain("no operator action");
+      expect(historyStateLabel(item, 0, "pharmacy", enabled)).toContain("after operator review");
+    }
+  });
+});
