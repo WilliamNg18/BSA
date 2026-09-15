@@ -2433,3 +2433,7 @@ The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
+
+Question: can the merged Task 25-38 verifier certify the new Task 39/40 scenarios? Choice: retain its source-pinned results as historical evidence and migrate the same-item tests only against the owners' exact wrong-strength, paper-incomplete, fidelity, note and acknowledgement/re-check contracts; tie-breaker: the latest instruction and truthful evidence.
+
+Question: when should the new EPS headline guard become part of root checking? Choice: after the owner source/copy migrations are coherent, with only the declared AST Tariff-text exemption and no whole-file waiver; tie-breaker: preserve strict source authority without breaking an earlier-phase foundation.

@@ -1152,3 +1152,20 @@ Using actual parsed token leaves gives the same immutable-original hash,
 on both platforms. Tests also reject changed numeric and template tokens.
 This repairs the integrity test, not application behaviour, and preserves
 the failed CI record until a new exact-head run succeeds.
+
+## 2026-09-15: A merged verifier does not certify a changed scenario contract
+
+V #94's exact CI passed 1,627 units, 877 ordinary checks and 44 state checks;
+the merged commit `641815137b36ab3e925dcc98c4738d0b150a75d1` was subsequently
+observed clean on the live root/build endpoint at
+`2026-09-15T18:59:23.9424369Z`. Keep that integration result distinct from
+Tasks 39/40, which replace headline scenarios and add submission fidelity,
+scanner comparisons, value-free operator notes, acknowledgement and different
+EPS/paper re-check release behaviour.
+
+A test must preserve the new action's actual state and actor semantics, not
+merely replace old wording or expected gate strings. Wait for exact shared
+model contracts before wiring those assertions; continue unrelated owned
+work and record each remaining dependency explicitly. All prior failures and
+partial developer evidence remain historical, not a live backup or a final
+Tasks 25-40 pass.

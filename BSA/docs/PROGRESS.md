@@ -6,6 +6,27 @@ ms.date: 2026-09-15
 
 ## Current release gate: live first, exact local backup
 
+### Task 39/40 verification extension
+
+V #94 merged as `641815137b36ab3e925dcc98c4738d0b150a75d1`; deployment
+`35009957918` succeeded. At `2026-09-15T18:59:23.9424369Z`, the live root
+and build identity returned HTTP 200 and served that clean commit. Its
+pre-merge CI passed 1,627 units, 877 ordinary checks and 44 state checks.
+This records the completed integration gate, not ALL DONE or final acceptance.
+
+The new Tasks 39/40 brief changes the four-case and action contracts. V's
+verification migration must follow the shared G/W/B model and screen-owner
+exports: wrong-strength EPS, paper-incomplete evidence, read-only submission
+fidelity, scanner comparison, field/rule-only referral notes, required
+pharmacy acknowledgement and channel-specific re-check release. Existing
+wrong-pack/missing-date checks and old 75-name results remain historical
+until their intended replacements are wired and exercised on current live.
+
+W owns the standalone EPS headline guard; V activates root/package checking
+only after source migrations are coherent. D retains exclusive deployment
+and backup implementation, O independent offline proof. No branch artifact
+is an alternative product or backup, and no new-scope live pass is claimed.
+
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
 main and the live build identity were verified as

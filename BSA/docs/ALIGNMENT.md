@@ -6,6 +6,27 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Latest Task 39/40 verification gaps
+
+The live baseline observed at `2026-09-15T18:59:23.9424369Z` served clean
+`641815137b36ab3e925dcc98c4738d0b150a75d1` after V #94's successful
+deployment. This does not align the subsequent requirements merely because
+earlier verification is merged.
+
+| New contract | Verification dependency |
+| --- | --- |
+| Wrong-strength EPS and correct active dates | G/W source API and P/D/S scenario migration; exact two-gate and Today outcomes |
+| Paper-incomplete replacement case | G/B/P shared evidence and routing, without extra playable seeds |
+| As-submitted fidelity and scanner columns | B/G/O/U read-only submission contract and actual scan/OCR presentation |
+| Field/rule-only NHSBSA notes | Shared note contract and negative value-leak tests; pharmacy suggestions remain explicit |
+| Acknowledgement and channel-specific re-check release | G/B/P/O real shared actions, not renamed historical expectations |
+| Footer/centred On Outcome line | Part A's actual merged header contract |
+| Current-live full-cycle acceptance | V after coherent owner integration; earlier 75-name runs remain historical |
+
+No row is marked verified by this tracking update. The standalone headline
+guard must not gain whole-file exemptions or activate against an unmigrated
+runtime merely to create red foundation CI.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

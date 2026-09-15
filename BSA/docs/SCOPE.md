@@ -6,6 +6,27 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Tasks 39/40 extension: verification pending
+
+The latest brief supersedes the prior missing-date and wrong-pack headline
+scenarios. The same mismatch ID becomes prescribed/supplied 10 mg versus
+selected 5 mg EPS; Today follows endorsed-pack automatic pricing, while
+uncorrected On evidence fails the two gates. EX-24112 becomes paper-incomplete
+evidence and all active dates remain correct. Exact model and UI contracts
+are owned by G/W/B and their assigned screen streams, not invented by tests.
+
+V must cover exact submitted-object fidelity, the three-column paper scanner
+view, referral notes without proposed values, pharmacy-side concrete
+suggestions and required acknowledgement, automatic eligible EPS re-check
+release, and explicit paper release. The full cycles must retain same-item
+state, timestamps, actors, both perspectives and the one-second requirement.
+The new footer/Outcome header contract also needs current-owner verification.
+
+The observed live baseline is clean `641815137b36ab3e925dcc98c4738d0b150a75d1`
+at `2026-09-15T18:59:23.9424369Z`; #94's green CI does not establish these
+new contracts. Final completion requires Tasks 25-40 on main, green deployment,
+actual current-live acceptance and the assigned exact-backup evidence.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release
