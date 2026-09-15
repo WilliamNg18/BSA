@@ -29,7 +29,6 @@ vi.mock("@/lib/store", async (importOriginal) => {
 function render(Component: ComponentType, path = "/") {
   return renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, createElement(Component)));
 }
-
 function tourCard(markup: string, scenario: string) {
   const start = markup.search(new RegExp(`<li\\b[^>]*data-case="${scenario}"`));
   expect(start, `Tour card ${scenario}`).toBeGreaterThanOrEqual(0);
@@ -42,35 +41,34 @@ function tourCard(markup: string, scenario: string) {
   throw new Error(`Tour card ${scenario} has no closing list item`);
 }
 
+
 beforeEach(() => {
   useAppStore.getState().resetDemo();
   useAppStore.getState().setPerspective("both");
 });
 
 describe("whole-process presentation", () => {
-  it("confines vendor examples to one labelled reference table without rewriting source contracts", () => {
+  it("confines architecture branding to the reference table without rewriting contracts or stored sources", () => {
     const source = JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS });
     const state = useAppStore.getState();
-    const markup = render(ArchitecturePage, "/architecture");
-    const referenceTables = markup.match(/<table\b[^>]*\bdata-reference-mapping="true"[^>]*>[\s\S]*?<\/table>/g) ?? [];
-    expect(referenceTables).toHaveLength(1);
-    expect(markup.match(/\bdata-reference-mapping=/g)).toHaveLength(1);
-    const referenceTable = referenceTables[0];
-    if (!referenceTable) throw new Error("The reference mapping table is missing.");
-    expect(referenceTable).toMatch(/<caption\b[^>]*>Reference mapping, one example<\/caption>/);
-    expect(referenceTable).toContain("Azure OpenAI");
-    expect(referenceTable).toContain("Microsoft Foundry Agent Service");
-    expect(markup.replace(referenceTable, "")).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
-    expect(markup).toMatch(/<h1\b[^>]*>How it works and how it would scale<\/h1>/);
-    expect(markup).toContain("reusable foundations, not assurance that synthetic rules can ship unchanged against the real Tariff");
-    expect(markup).toContain("Equivalents exist on other platforms.");
-    expect(markup).toContain("Service names do not establish approved configuration or compliance.");
+    const markup = render(ArchitecturePage);
+    const mappings = markup.match(/<table\b[^>]*data-reference-mapping="true"[^>]*>[\s\S]*?<\/table>/g) ?? [];
+    expect(mappings).toHaveLength(1);
+    const mapping = mappings[0];
+    if (!mapping) throw new Error("The reference mapping table is missing");
+    expect(mapping).toContain("Reference mapping, one example");
+    expect(mapping).toContain("Azure OpenAI");
+    expect(markup.replace(mapping, "")).not.toMatch(/Azure|Microsoft|Foundry|OpenAI|Cosmos|Purview|Entra|Key Vault|Private Link|Application Insights|GitHub Actions|Bicep|Terraform|TypeScript/);
+    expect(markup).toContain("Proposed for production");
+    expect(markup).toContain("not assurance that synthetic rules can ship unchanged");
     expect(markup).toContain("NHSBSA");
     expect(markup).toContain("dm+d");
     expect(markup).toContain("Tariff");
     for (const capability of ["Read image region", "look up product/pack", "look up claim", "check history", "retrieve the effective-date Tariff clause"]) expect(markup).toContain(capability);
-    expect(markup).toContain("read-only evidence tools");
     expect(markup).toContain("Recording is application-owned, not a model write tool.");
+    expect(markup).toContain("Five read-only sources:");
+    expect(markup).toContain("effective-date Tariff corpus.");
+    expect(markup).toContain("Captured fields are a source representation, not independent corroboration.");
     expect(JSON.stringify({ ARCHITECTURE, TOOL_DEFINITIONS })).toBe(source);
     expect(useAppStore.getState()).toBe(state);
   });

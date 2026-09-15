@@ -1,7 +1,7 @@
 ---
 title: Eleven desktop steps, one shared case
 description: Synthetic Today and With the agent walkthrough with explicit human actions and two verification gates.
-ms.date: 2026-09-14
+ms.date: 2026-09-15
 ---
 
 ## Preparation
@@ -25,22 +25,22 @@ calculates or approves a payment. Never use this demonstration as medicine advic
 
 ## Eleven steps
 
-Use **Next** once to enter each successive row; **Back** revisits the same
-shared state. The click column names the principal control on that screen,
-not permission to skip the explicit actions needed by an operational case.
+Use **Next** between successive rows; **Back** revisits the same shared state.
+The click column names one principal control, not permission to skip the
+explicit prerequisites or later human actions of an operational case.
 
 | Step | What to click | What to say |
 | --- | --- | --- |
-| 1. The real process | Enter demo mode; toggle Agent On | Most items need no person; Type 1 captures paper, Type 2 judges, and 85,000 monthly referrals are a subset of staff work. |
-| 2. A month in numbers | Next; expand the detail only if needed | Today and With use one model; every With figure is an estimate, and 297.5 operator hours includes abstention gathering. |
-| 3. EPS: complete item | Next; Send claim | Today is priced by NHSBSA's existing rules engine, no person involved; On verifies both gates and releases without operator action. |
-| 4. EPS: missing date | Next; Apply suggested correction | The date is missing; applying the supported fix fills the actual endorsement, but sending remains a separate pharmacy action. |
-| 5. EPS: plausible but wrong | Next; Send claim | Complete-looking fields pass Gate 1; independent pack reconciliation fails Gate 2, so this item is never automatically released. |
-| 6. Paper: declaration before posting | Next; Post paper | This is declared by the pharmacy, not read from the form; check the declaration before posting the same unreadable D item. |
-| 7. Paper: unreadable, fully playable | Next; Show the form as NHSBSA's scanner will see it | Compare complete and missing declarations; the card proposes actual values, but unreadable paper always needs human confirmation and operator release. |
-| 8. What NHSBSA sees | Next; Apply suggestion on the paper case | Read the always-visible Recommendation card; Apply fills the actual decision fields, then a person separately releases, refers back or requests information. |
-| 9. What the pharmacy sees | Next; Apply suggested correction, then Resubmit | Read the operator-approved reason and proposed date, inspect the exact preview and highlighted field, then explicitly resubmit the same item. |
-| 10. Follow one case | Next; Pharmacy view and NHSBSA view | Follow D through submission, human capture, referral, correction, resubmission and human release; switching sides never changes its identity or evidence. |
+| 1. The real process | Enter demo mode | Most items need no person; Type 1 captures paper, Type 2 judges, and 85,000 monthly referrals are a subset of staff work. |
+| 2. A month in numbers | Edit the monthly assumptions | Today and With use one model; every With figure is an estimate, and 297.5 operator hours includes abstention gathering. |
+| 3. EPS: complete item | Send claim | Today is priced by NHSBSA's existing rules engine, no person involved; On verifies both gates and releases without operator action. |
+| 4. EPS: missing date | Apply suggested correction | The date is missing; applying the supported fix fills the actual endorsement, but sending remains a separate pharmacy action. |
+| 5. EPS: plausible but wrong | Send claim | Complete-looking fields pass Gate 1; independent pack reconciliation fails Gate 2, so this item is never automatically released. |
+| 6. Paper: declaration before posting | Post paper with declaration | This is declared by the pharmacy, not read from the form; check the declaration before posting the same unreadable D item. |
+| 7. Paper: unreadable, pharmacy to NHSBSA | Show the form as NHSBSA's scanner will see it | Compare complete and missing declarations; the card proposes actual values, but unreadable paper always needs human confirmation and operator release. |
+| 8. What NHSBSA sees | Apply suggestion | Read the always-visible Recommendation card; Apply fills the actual decision fields, then a person separately releases, refers back or requests information. |
+| 9. What the pharmacy sees | Apply suggested correction | Read the operator-approved reason and proposed date, inspect the exact preview and highlighted field, then explicitly resubmit the same item. |
+| 10. Follow one case | Pharmacy view | Follow D through submission, human capture, referral, correction, resubmission and human release; switching sides never changes its identity or evidence. |
 | 11. Where it ends | Next | The agent verifies and advises; a person decides. Test prevention and evidence quality before promising savings; existing pricing stays unchanged. |
 
 ## Operational demonstrations
@@ -53,6 +53,11 @@ invoice price requests manual entry of **£x.xx**, never a fabricated amount.
 That invoice UI is still required, not waived by its unit contract. Its
 safe unsupported-input variant must use an existing item and provision;
 do not claim it was demonstrated before that view and focus action work.
+
+Outside the focused demo, **Overview sections** provides the six ordinary
+process, model, pipeline, cases, cycle and closing views through real links.
+Exit demo before using these links; they preserve the current operational
+state rather than restarting the demonstration.
 
 For B's missing date, show **21/08/2026** and preview **NCSO RK 21/08/26**.
 Apply must write exactly the preview; it must not send. Other cases use their

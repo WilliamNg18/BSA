@@ -56,6 +56,7 @@ it.each([false, true])("corrects the same generic item through explicit human re
   expect(resubmitted.lifecycles[id].history.slice(0, original.lifecycles[id].history.length)).toEqual(original.lifecycles[id].history);
   expect(resubmitted.records).toEqual(original.records);
   expect(resubmitted.caseRevisions[id].at(-1)?.epsPrescription?.supplyEvidence?.brandManufacturer).toBe("Demo manufacturer (synthetic)");
+  expect(resubmitted.caseRevisions[id].at(-1)?.epsPrescription?.supplyEvidence?.packSize).toBe(21);
   expect(source.supplyEvidence?.packSize).toBe(28);
   expect(() => store().resubmitItem(payload)).toThrow();
   store().arriveInQueue(id);

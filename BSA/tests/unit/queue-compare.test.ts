@@ -6,7 +6,7 @@ import { QueueCompare, QueueComparison } from "../../src/components/demo/queue-c
 import { MONTH_MODEL_DEFAULTS, monthModel } from "../../src/lib/domain/baseline";
 import { projectQueueComparison, QUEUE_SEEDS, queueCitationAvailable, queueStatus, queueTableWindow, type QueuePreviewRow } from "../../src/lib/domain/queue-model";
 import * as agent from "../../src/lib/domain/agent";
-import { CASES, PLAYABLE_CASES, isPlayableCase } from "../../src/lib/domain/cases";
+import { CASES, PLAYABLE_CASES } from "../../src/lib/domain/cases";
 import { useAppStore } from "../../src/lib/store";
 import { useQueueStore } from "../../src/lib/queue-store";
 import { QueuePage } from "../../src/pages/queue";
@@ -30,12 +30,12 @@ describe("current queue comparison", () => {
       expect(html).toContain("data-type2-worklist");
       expect(html).not.toContain("showing 1 to 50");
       expect(html).not.toContain("data-month-row=");
-      for (const c of CASES) {
-        if (c.scenario === "A" || !isPlayableCase(c.id)) expect(html).not.toContain(`data-case-id="${c.id}"`);
+      for (const c of PLAYABLE_CASES) {
+        if (c.scenario === "A") expect(html).not.toContain(`data-case-id="${c.id}"`);
         else if (c.scenario === "D") expect(html).toContain(`data-type1-case="${c.id}"`);
         else expect(html).toContain(`data-case-id="${c.id}"`);
       }
-      expect(html).toContain('data-case-id="SYN-FQ123-MISMATCH"');
+      for (const id of ["EX-24119", "EX-24088", "EX-24101"]) expect(html).not.toContain(`data-case-id="${id}"`);
     }
   });
   it("uses the new total Today12 and judging2, not legacy7", () => {
@@ -70,17 +70,15 @@ describe("current queue comparison", () => {
       expect(engine).not.toHaveBeenCalled();
     } finally { engine.mockRestore(); }
   });
-  it.each([0, 3, 60, 360])("is bounded, citation-safe and protects automatic, abstained and historical examples at minute%s", (elapsed) => {
+  it.each([0, 3, 60, 360])("protects automatic, abstained and historical examples at minute%s", (elapsed) => {
     for (const assisted of [false, true]) {
       const p = projectQueueComparison(result, elapsed, assisted, [], QUEUE_SEEDS.map((s) => s.id));
       expect(p.rows.map((s) => s.id)).toEqual(QUEUE_SEEDS.map((s) => s.id));
       expect(p.operatorMinutes).toBeLessThanOrEqual(elapsed);
       expect(p.rows.find((row) => row.id === "EX-24123")).toMatchObject({ gathering: 10, judging: 2, cited: false });
-      for (const id of ["EX-24107", "EX-24088"]) {
-        expect(p.rows.find((row) => row.id === id)).toMatchObject({ gathering: 0, judging: 0, done: false, cited: false });
-      }
+      for (const id of ["EX-24107", "EX-24088"]) expect(p.rows.find((row) => row.id === id)).toMatchObject({ gathering: 0, judging: 0, done: false, cited: false });
       expect(p.rows.some((row) => row.id === "EX-24101")).toBe(false);
-      expect(p.rows.filter((row) => !row.canonical).every((row) => !row.cited)).toBe(true);
+      expect(p.rows.filter((row) => !row.canonical).every((s) => !s.cited)).toBe(true);
     }
   });
   it("uses edited shared costs and excludes actual human records", () => {

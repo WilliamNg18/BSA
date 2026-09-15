@@ -35,9 +35,10 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(status).toHaveText("Information missing");
   await captureCheckpoint(page, testInfo, "pharmacy-before-date");
   await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
-  await expect(field).toHaveValue("NCSO  RK 21/08/26");
+  await expect(field).toBeFocused();
+  await expect(field).toHaveValue("NCSO RK 21/08/26");
   await expect(status).toHaveText("Ready");
-  await expect(page.getByRole("status").filter({ hasText: "Pharmacy applied correction. Changed fields highlighted; not submitted." })).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "Highlighted; not sent." })).toBeVisible();
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "pharmacy-after-date");
   await field.fill("NCSO  RK");
@@ -50,9 +51,16 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
   await expect(page).toHaveURL(/case=EX-24123&channel=paper$/);
-  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24123");
-  await expect(page.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("NCSO JB 27/08/26");
-  await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toContainText("declared by the pharmacy, not read from the form");
+  const paper = page.getByRole("region", { name: "Paper pharmacy submission", exact: true });
+  await expect(paper).toHaveAttribute("data-pharmacy-case", "EX-24123");
+  await expect(paper.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("NCSO JB 27/08/26");
+  await paper.getByText("Precheck evidence", { exact: true }).click();
+  await expect(paper).toContainText("2026-08 / P2-C9");
+  await paper.getByLabel("Declared dispensing date", { exact: true }).fill("");
+  await expect(status).toContainText(/date/i);
+  await expect(status).not.toHaveText("Ready");
+  await expect(page.getByRole("button", { name: "Post paper with declaration", exact: true })).toBeEnabled();
+  await expect(paper).toContainText("declared by the pharmacy, not read from the form");
   await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
   const submit = page.getByRole("button", { name: "Send claim" });
   await page.getByRole("banner").getByRole("switch").setChecked(false);
@@ -60,11 +68,12 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24123:2");
   await selectEpsScenario(page, "EX-24112");
   await page.getByRole("banner").getByRole("switch").setChecked(false);
-  await field.fill("NCSO RK");
   await expect(status).toHaveCount(0);
+  await field.fill("NCSO RK");
   await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
   await expect(submit).toBeEnabled();
   await submit.click();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24112:2");
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("Human review pending.");
 });
 
@@ -123,12 +132,12 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await startDemonstrationReview(page);
   await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  const background = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("[data-background-case]");
+  const background = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("tr[data-background-case]");
   await expect(background).toHaveCount(2);
   for (const id of ["EX-24119", "EX-24088"]) {
     const row = background.filter({ has: page.getByRole("rowheader", { name: id, exact: true }) });
     await expect(row).toBeVisible();
-    await expect(row).toContainText("Background only, not playable");
+    await expect(row).toContainText(/not playable/i);
     await expect(row.getByRole("link")).toHaveCount(0);
     await expect(row.getByRole("button")).toHaveCount(0);
   }
@@ -198,7 +207,7 @@ test("product header retains working controls without presentation UI", async ({
   await confirmReset(page);
   await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByRole("alertdialog")).toHaveCount(0);
-  if (page.viewportSize()?.width === 1440) await header.screenshot({ path: testInfo.outputPath("after-header.png") });
+  await header.screenshot({ path: testInfo.outputPath("after-header.png") });
 });
 
 test("queue state filters are interactive", async ({ page }) => {

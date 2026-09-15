@@ -1930,6 +1930,21 @@ rollback/archive references remain unchanged.
 - Question: does a pending receipt claim a built case? Choice: only an actually recorded agent recommendation with its recorded passing recommendation gate supports that label; otherwise show pending human review. Tie-breaker: honest evidence.
 - Question: does Follow need another store? Choice: temporary visit metadata lives in the same Zustand store and is excluded from the operational snapshot, like `demoStep`. Tie-breaker: literal one-store requirement.
 
+## 2026-09-14: Standing decision authority and immediate resolutions
+
+- Routine questions or owner approval? Decide autonomously using the ordered tie-breakers in MEMORY; ask only the three explicit exceptions, with unaffected streams continuing; decided by (e), the latest standing instruction.
+- Human Release with Agent Off and no proposed gates? Validate existing deterministic source/claim checks and explicit human judgement, keep both proposed gates `none`, and record a human-attributed release; explicitly selected by the owner, preserving (a), human authority, and (b), automatic two-gate safety.
+- Does Off erase an already applied or edited operator draft? No: Off starts unaided but retains subsequent human-entered fields and history while hiding the suggestion; decided by (a), one authoritative human decision record.
+- Does Apply approve the proposed note or release an item? No: it fills revision-bound fields and records the human action; only a separate valid final decision can approve a matching note or release; decided by (a), explicit human authority.
+- How does the demo begin? Keep ordinary navigation at `demoStep = null`; explicit Enter demo mode selects step 1 without changing the Agent switch or domain history; decided by (a), navigation cannot perform business actions.
+- Where do Follow and the step strip live? D mounts F's existing named FollowBanner below the header and outside page, perspective and demo guards, with the step strip separate; decided by (c), visible same-case continuity.
+- When does temporary Both end? Return to the original restricted side restores its perspective; any explicit perspective choice cancels restoration, and dismiss, Reset or item change clears temporary context; decided by (c), predictable visible navigation without overriding user choice.
+- How can D merge before its O/P compact exports exist? Deliver a buildable core with existing real components, gating unfinished demo entry if necessary, then an isolated integration after O/P and before V; never introduce fake controls or duplicated actions; decided by (a), real human controls, then (d), the smallest dependency split.
+- Which tests block? Keep check, Vitest, crash/dead-control/six-outcome Playwright and axe blocking; other checks are informational with their actual failures retained, while the expressly requested latest-main live checklist remains a final acceptance gate; decided by (e), the latest explicit test policy.
+- Does the interrupted old visual review block or become a pass? Preserve it as unverified historical evidence; accept Tasks 25-36 only against the new desktop scope and latest live checklist, never relabel old captures; decided by (e), the new scope, constrained by (a), truthful evidence.
+- What does a finished stream take next? Claim the next unowned Not started SCOPE row through the coordinator; currently all six new rows are owned and In progress, so finish integration and proof rather than duplicate a stream or invent work; decided by (d), simpler ownership.
+- Are any issue or pull-request questions waiting? The open GitHub issue and pull-request inventories were both empty on 14 September; all six active sessions were building with no pending input or plan approval; no owner decision was required.
+- What about the Step 0 CI failure after deployment? Preserve run 34870106295 as failed, repair its tour click and pipeline keyboard failures through the existing owners, and continue independent streams; deployment success is not acceptance; decided by (a), honest evidence and working controls.
 ## 2026-09-14: Header help cannot block navigation
 
 Question: retain the Agent switch's focus-triggered floating help? Choice:
@@ -1939,6 +1954,61 @@ visible. Tie-breakers: reachable human controls and the smallest fix. The shared
 hoverable, Escape-dismissible tooltip remains unchanged for evidence figures.
 The bottom-flipped header tooltip demonstrably intercepted the tour Next button;
 no forced clicks, longer timeouts or pointer-event suppression are used.
+
+## 2026-09-14: Four-case vision and the system-design stream
+
+- Ten seeded items or four playable cases? Keep only complete EPS, missing-date EPS, wrong-information EPS and unreadable paper playable; C/F are fixed unclickable background and E's rule-only behaviour is shown within complete EPS Today; decided by (e), the explicit latest four-case instruction.
+- Does the four-case cut erase old six-case evidence? No: preserve historical records and pure regression fixtures, but remove their live actions, list links and deep-link reachability; decided by (a), truthful records, then (e), the new playable scope.
+- Eleven steps after removing readable paper? Replace step 6 with unreadable-paper pharmacy declaration/submission and retain step 7 for that same item's Type 1 capture/confirmation; decided by (c), two distinct visible hand-offs, while satisfying the latest eleven-step and four-case requirements.
+- Does pharmacy Paid mean this prototype paid? No: present actually released items in the normal-schedule Paid grouping with explicit release-to-existing-pricing wording and preserved code/human provenance; no new payment calculation or synthetic approval transition; decided by (a), the governing principle.
+- Can temporary Follow context create another Zustand store? No: put that UI-only context in the existing store, exclude it from the domain snapshot and clear it on Reset/item change; decided by (a), one authoritative store.
+- Which prose limit applies to system design? Under 60 words per How it works panel only; all other meaningful panels remain under 25; decided by (e), the explicit reference-page exception.
+- Where are concrete platform names allowed? Only the labelled Reference mapping, one example table, sourced from one dedicated module; CI scans first-party displayed source copy without treating package imports as interface claims; decided by (e), the precise platform-neutrality exception, then (d), a narrow enforceable boundary.
+- Do supplied scale and cost figures prove capacity or pricing? No: expose arithmetic, working-day/peak assumptions, token/sample/rate inputs and operator-touch comparison; label latency and production costs assumptions rather than measured guarantees; decided by (a), honest evidence.
+- How does S integrate without blocking the existing streams? Keep the existing `/architecture` route and ArchitecturePage export, add its owned design content/document/tests, coordinate navigation with D and global source checks with V; merge after G/D alongside O/P/F, before V; decided by (d), the smallest isolated integration.
+- What closes the new alignment register? Actual reviewed, integrated source and the latest main's required live results, not an owner's promise or an old capture; decided by (a), evidence integrity.
+
+## 2026-09-14: Four-case source authority follow-through
+
+- Question: do historical fixtures remain playable? Choice: only the frozen four IDs appear in operational maps; C/F evidence and other old fixtures remain pure archival inputs, not a hidden store mode. Tie-breaker: newest four-case Vision.
+- Question: how does seed D validate after human capture? Choice: check its retained declaration as declared, not against the seed's deliberately different scan-text field; independently compare the actual capture and claim. Tie-breaker: no false image reading and no success fallback.
+- Question: does Release erase an earlier applied suggestion after toggling Off? Choice: retain the real current-revision applied recommendation, agent version and source/check snapshot in its human decision record without invoking the agent again. Separate production model/prompt identifiers remain proposed because the scripted kernel has none. Tie-breaker: truthful audit provenance.
+- Question: can paper draft copies drift? Choice: the shared setter derives the declaration copy from edited paper form fields while preserving explicitly entered prescriber evidence; no submitted source, verification result or history is rewritten. Tie-breaker: one draft authority.
+- Question: what source does a legacy EPS text action retain? Choice: A and B now seed explicit EPS payloads so subsequent submissions retain actual message fields beside the independent claim ledger. Tie-breaker: source-bound reconciliation rather than projection self-corroboration.
+- Question: can the seeded referral's workbench apply a fix before a new Send? Choice: an explicit `new_submission` draft purpose permits preparation without approving the historical referral; Resubmit rejects that purpose. Tie-breaker: working pre-send flow without hidden submission or approval.
+- Question: how does G remain deployable before new panels merge? Choice: the coordinator authorised minimal existing selector, overview, background and completed-bucket compatibility; no new O/P panels or D mounting are included. Tie-breaker: no dead controls and the smallest dependency cut.
+- Question: can a later same-state Apply change a release label? Choice: labels anchor to the actual release transition/provenance, not the latest event whose destination happens to be released. Missing automatic evidence is labelled unavailable. Tie-breaker: truthful human attribution.
+- Question: can advice metadata clear an item on queue arrival? Choice: agent events remain same-state; only the independent submission/release paths can advance to pricing. Tie-breaker: no agent state authority.
+- Question: does an arbitrary lower claimed amount count as reconciliation? Choice: compare against the known dated synthetic pack reference, not merely an upper bound; unsupported differences require review. Tie-breaker: actual reconciliation without calculating a payment.
+- Question: how are four-case equivalence tests proved? Choice: run all four real cycles in both modes, in Both and switched perspectives, comparing full snapshots after every actual action with a controlled clock. No timestamps, IDs or operational fields are erased. Tie-breaker: exact one-state evidence.
+- Question: how does current domain metadata satisfy the single reference-mapping rule? Choice: current tool and trace service metadata use neutral capabilities, with agent definition `prototype-0.6`; the original F records retain all values in a frozen archival fixture outside production `src`. No current configuration is hidden there. Tie-breaker: newest platform-neutrality rule and immutable historical evidence.
+- Question: can an On submission finish through later Off manual capture? Choice: record mode at the actual human capture event and accept independently matching manual facts without a hidden proposed checkbox; retain the original submission's mode and gate history. On capture still requires attestation, and any release remains human-attributed. Tie-breaker: a working existing-process fallback and immutable provenance.
+- Question: why did a complete On EPS receipt incorrectly say Type 2 was pending? Choice: replace its legacy automatic-pricing-only check with the selected revision's recorded pricing/release event and attribution-aware label. Preserve Off pricing text and human review provenance; do not change the model outcome to fit the old receipt. Tie-breaker: truthful visible outcomes.
+- Question: does shared Apply count as a caught item automatically? Choice: append counter evidence atomically only after a checked format or source gap becomes ready on independent current facts; bind it to the next attempt and deduplicate legacy recorder events. Partial or still-invalid corrections remain uncounted, and applying still does not submit or release. Tie-breaker: an actual evidence-based count, not a click counter.
+- Question: does correcting a referred-back item count as upfront prevention? Choice: no; the new shared recorder requires explicit `new_submission` intent. A post-referral correction remains recorded human work but does not increment the upfront caught collection. Tie-breaker: preserve the prevention versus rework distinction.
+- Question: can both comparison panes retain their EPS evidence landmarks? Choice: yes; label the manual comparison's root, item and dispenser regions with meaningful context rather than deleting regions or excluding axe rules. Tie-breaker: the reproduced landmark-unique violation and accessible evidence.
+- Question: does preparing an agent case pack imply a saved decision record? Choice: no; the current trace says prepared in memory and awaiting human decision, not appended. Historical records and actual human writes remain unchanged. Tie-breaker: truthful mock and authority boundaries.
+- Question: should shared resubmission display a seed placeholder? Choice: record an explicit unperformed Off snapshot or the actual current On check at the human resubmit action, retaining existing source data for text-only corrections. Tie-breaker: truthful revision-bound audit evidence.
+- Question: which provision validates manually keyed, undeclared paper? Choice: Gate 2 resolves the received or human-captured product, date and endorsement independently; it must not reuse Gate 1's unreadable input or missing clause. Preserve the original scan and validate all actual captured facts. Tie-breaker: independent code validation and the supported Off manual path.
+- Question: how do legacy state-browser tests respect four playable cases? Choice: retain all 34 tests, replace retired C confirmation with actual B information-request/confirmation evidence preservation, and replace readable B paper with D capture followed by its required human Type 2 decision; historical C conflict and readable-paper evidence remain historical, not injected into the store. Tie-breaker: the newest four-case scope without weakening one-state or human-authority checks.
+- Question: may a human-release test price an unresolved B claim? Choice: supply a real pharmacy correction, resubmit and explicitly recheck before acceptance; invalid-source rejection remains covered by the code-gate tests. Tie-breaker: mandatory deterministic validation, not an override that bypasses missing facts.
+- Question: does complete EPS still end in the same label in both modes? Choice: assert code-only verified release with recorded passing gates On, and existing automatic pricing with proposed gates none Off; both must create no human decision record. Tie-breaker: accurate outcome and provenance.
+- Question: may state tests click through a persistent decision notification? Choice: assert its successful record message and use the normal Dismiss control before later navigation, verifying the domain snapshot is unchanged. Tie-breaker: real accessible controls, not forced clicks or hidden UI.
+
+## 2026-09-15: Always-visible concrete recommendations and Task 38
+
+- Question: is the new recommendation/paper brief a replacement? Choice: extend Tasks 25-37 and their current owners; create R/Task 38 only for the missing shared recommendation contract, card and safe suggestion adapters. Tie-breaker: (e), the explicit addition, and (d), one shared implementation.
+- Question: who owns the former U paper responsibilities now? Choice: P owns pharmacy preparation/receipts, O owns Type 1/Type 2 UI, and R owns shared recommendation/model extensions; do not restart the completed historical U stream. Tie-breaker: (d), existing ownership without duplication.
+- Question: must a reference-only screen invent an item to show a card? Choice: no; every actual Agent-On item view gets its expanded card, while item-free process, month and technical-reference screens remain truthful. Tie-breaker: (a), no fabricated case context.
+- Question: how does an unreconciled item receive actionable advice without a false pass? Choice: retain kernel abstention/failed verification and add a separately code-validated safe human Refer back/Request information diagnostic draft; Apply fills fields, a separate human action approves/disposes, and release stays blocked. Tie-breaker: (a), authority and evidence integrity.
+- Question: may an unknown invoice price be proposed as a number? Choice: never infer it from the claim or invent it; require human entry with the stated currency placeholder and focus, while known date/product/pack/form values cite their source. Tie-breaker: (a), source truth.
+- Question: how can previews remain exact? Choice: derive displayed preview and applied field patch from the same helper and current revision/draft, not separately formatted strings. Tie-breaker: (a), exact evidence, then (d), shared code.
+- Question: do scanner/declaration demo controls change authoritative source or submit? Choice: they reveal the unchanged unreadable scan and explicitly prepare synthetic complete/missing drafts; no implicit Post, capture confirmation, reset or source-quality rewrite. Tie-breaker: (a), human-only transitions and immutable evidence.
+- Question: how do steps 7-10 form one usable paper story? Choice: make the missing-declaration branch the canonical walkthrough through Post/capture, operator referral, concrete correction/resubmission and final human release; keep the complete branch fully playable and preserve its actual outcome rather than recreating a referral on navigation. Tie-breaker: (c), visible continuity without violating (a).
+- Question: does the new card override the earlier compact-layout shortcut? Choice: mandatory evidence/card/controls remain visible and readable; improve shared layout and remove duplicate presentation rather than hide the card, shrink text or suppress required fields to satisfy an old height proxy. Tie-breaker: (a), complete truthful information, then (e), the latest addition.
+- Question: when may a pharmacy label a communication operator-approved? Choice: only after an actual human final action recorded that approval; a toggle or Apply alone never supplies it, and failed source verification remains explicit. Tie-breaker: (a), recorded authority.
+- Question: how are the new one-second claims established? Choice: use actual UI actions, current item/revision and timed destination assertions for all four cases and perspectives; no delayed assertion start or sleep-based proxy, and record any unmeasured surface as pending. Tie-breaker: (a), measurable evidence.
+- Question: do new requirements stop completed integration work? Choice: continue the existing merge/check sequence, publish R's foundation early and integrate owned extensions alongside O/P/F/S before final V acceptance; prior local passes remain source-pinned earlier evidence, not proof of the addition. Tie-breaker: (d), parallel progress, and (e), the explicit running instruction.
 
 ## 2026-09-14: Explicit eleven-step entry and one live comparison
 
@@ -1968,23 +2038,63 @@ No placeholder controls or unavailable imports ship. The existing ordinary
 routes remain usable; final eleven-step acceptance is explicitly pending.
 Tie-breakers: real controls before visual completeness, then simple merge order.
 
-## 2026-09-14: Task 34 pharmacy action panels
+## 2026-09-14: Four playable cases, eleven distinct demonstration steps
 
-- Question: where should unfinished pharmacy edits live? Chosen: G's single revision-bound pharmacy draft, including confirmation; one-state authority wins over page-local editors.
-- Question: can a seeded referral demonstrate a pre-send scenario? Chosen with D/G: explicit workbench Send/Post appends a same-ID demonstration attempt; claim detail only corrects/resubmits the current referral. Immutable history and the fixed step order win.
-- Question: can a precheck predict release? Chosen: receipts read the submitted revision's recorded verification and release origin, not the current toggle; unestablished work remains pending. Two-gate authority wins.
-- Question: what does the pharmacy monthly count measure? Chosen: distinct Hillcrest items with actual release events in the UTC month, separate from whole-service estimates and payment. Evidence clarity wins.
-- Question: how much UI does the demo reuse? Chosen: compact item-only submission/action exports; full operational pages retain source, history and manual paper paths. The simpler task-focused presentation wins.
+Question: keep readable paper as a fifth playable case? Choice: no. The latest
+vision supersedes the original step 6 fixture. Step 6 is D's pharmacy declaration
+and explicit Post; step 7 is that same D's human Type 1 confirmation and case.
+Their different hand-offs retain eleven steps without duplicate controls.
+Tie-breakers: latest four-case scope and a clearer Today/With comparison.
+
+Question: which rows may the focused queue open? Choice: use G's authoritative
+`isPlayableCase` helper; only A, B, the mismatch and D are operational. Render
+G's C/F background records without controls or staff counts. The presentation
+case-ID set is tested against G's inventory, not used as another authority.
+Tie-breaker: one state.
+
+Question: should entering step 8 make historical B actionable? Choice: no.
+Show its actual state and let the audience open a genuine waiting row. Never
+submit, reset, release or fabricate review work merely to enter a step.
+Tie-breakers: preserved history and human decisions.
+
+## 2026-09-15: Pharmacy action panels over merged model and demo core
+
+- Question: where do unfinished pharmacy edits live? Choice: one revision-bound pharmacy draft, retained across perspectives; explicit Apply records human attribution without submitting. One-state authority wins.
+- Question: how does an old referral demonstrate pre-send checking? Choice: the workbench explicitly labels a new attempt; claim detail retains correction-only actions. History is never replaced by navigation.
+- Question: what proves the receipt and monthly counts? Choice: recorded gates, release origin and validated correction events; actual Hillcrest counts stay separate from estimates and payment calculations.
+- Question: what if no generated note was approved? Choice: keep the recorded human reason visible without inventing a citation or an approved suggestion. Human authority wins.
+- Question: can an absent check be called Seed? Choice: only seed revisions use that label; later absent snapshots say Check not recorded. Actual resubmissions preserve current On/Off evidence.
+- Question: what survives demo exit? Choice: the selected URL case/channel and shared drafts; invalid combinations do not silently open another item.
+- Question: how are P's state tests updated? Choice: retain the full 34-test family and exact Both/switched snapshots, explicitly asserting draft-only edits and same-state pharmacy Apply events. No field is removed from the observer.
+- Question: may the retained paper prescriber be corrected? Choice: restore its human input alongside modern declaration fields in referred-back detail; initial declaration entry still does not invent prescriber evidence.
+
+## 2026-09-15: Requirement 4 Follow scope extension
+
+- Question: does synchronous Follow navigation prove the new one-second cross-side requirement? Choice: retain the existing one-store navigation and neutral action labels, add request/confirmation and unchanged diagnostic-event contract coverage, and leave all-four-case browser deadlines to V after R integration; no timing or new-paper-path pass is claimed from unit tests. Tie-breakers: truthful evidence, explicit human decisions and no duplicated operational state.
+
+## 2026-09-15: Concrete pharmacy recommendation mounts
+
+- Question: which preview drives Apply? Choice: render R's shared draft recommendation and invoke the shared correction action; no separate UI correction algorithm or automatic action on toggle.
+- Question: what do paper demo controls change? Choice: explicit complete/missing buttons prepare R's labelled synthetic declaration, including the visible demo prescriber. Scanner presentation reveals the retained poor image without rewriting it; Post and capture remain separate human actions.
+- Question: what is filled for an unknown invoice price? Choice: nothing. The actual invoice control focuses the authoritative endorsement field for manual entry; no claimed amount becomes invoice evidence.
+- Question: which fields are highlighted? Choice: R's before/after applied-field metadata, including restored original values; not an inference from the original source alone.
+- Question: how does the demo recognise shared-card controls? Choice: an optional pharmacy-only prop marks the real Apply and invoice-focus buttons. No proxy controls or weakened absence checks.
+
+## 2026-09-15: Current pharmacy communication visibility
+
+- Question: should an expanded recommendation push the operator's current question below the hand-off viewport? Choice: place the actual question, confirmation controls, sent answer and referral response near the claim state, before supporting evidence. Keep the full recommendation expanded and preserve every recorded word.
+- Question: how should a followed claim enter the viewport? Choice: focus its heading without browser nearest-edge scrolling, then align it below the measured sticky header. Repeat only for a case, state or revision change, never a draft edit or assistance toggle. The one-second assertion and its actual evidence nodes remain unchanged.
+
+## 2026-09-15: Untouched pharmacy correction context
+
+- Question: why was an existing approved referral not attributed in its untouched Recommendation card? Choice: an editable referral view supplies `correction` only when the displayed draft has no explicit purpose. The shared recommendation still determines approval from the actual current-revision record; new-submission drafts, unapproved records and earlier revisions cannot inherit approval. This is a read-only view projection, not an approval or draft write.
+- Question: what if that real attribution exists but is below the hand-off viewport? Choice: put the complete correction card immediately after the operator response and move its existing conditional approval statement to its header. Preserve the same paragraph, predicate, text and all card contents; neither a duplicate badge nor a relaxed visibility assertion is acceptable.
 
 ## 2026-09-14: Task 33 operator controls use one human draft
 
 Where should Apply write? Use revision-bound `operatorDrafts` for the actual
 visible outcome, RB code and note, not page-local decision copies; one state
 and explicit human authority take precedence over presentation convenience.
-
-- Question: what item appears after exiting a pharmacy demo step? Chosen: the ordinary form reads the retained case/channel query, and its selectors update that query; invalid combinations show no substitute item. Same-item continuity without operational mutations wins.
-- Question: should migrated browser tests discard changed-field focus or receipt evidence checks? Chosen: restore explicit Apply focus and collapsed immutable source disclosures plus ordinary queue navigation; compact demo panels remain unchanged. Preserving existing human controls wins.
-- Question: how are repeated EPS evidence regions distinguished? Chosen: use the shared renderer's meaningful `Recorded claim` context for the receipt copy, retaining default live-source names and all roles/data. Accessibility and source clarity win.
 
 Does Off discard an applied suggestion? Start empty before any human drafting,
 but preserve subsequent human edits and Apply history when toggling; the
@@ -2021,46 +2131,26 @@ in either header mode. No payment is calculated or approved.
 - Question: where does compact NHSBSA evidence live? Chosen: the same operator component exposes the actual source, captured fields and gathered evidence alongside advice; visible evidence authority wins over a suggestion-only demo.
 - Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.
 - Question: what does an automatic item's audit show without a human record? Chosen: the recorded existing-pricing outcome, not a manual comparison or an impossible request for a human decision; truthful human authority wins.
+- Question: how should repeated EPS comparison landmarks differ? Chosen: a meaningful Manual comparison context prefixes their accessible names, preserving every landmark and source value; accessibility and truthful context win over deleting roles or evidence.
 
-## 2026-09-14: Four playable cases, eleven distinct demonstration steps
+## 2026-09-15: Compact Type 1 evidence and editor placement
 
-Question: keep readable paper as a fifth playable case? Choice: no. The latest
-vision supersedes the original step 6 fixture. Step 6 is D's pharmacy declaration
-and explicit Post; step 7 is that same D's human Type 1 confirmation and case.
-Their different hand-offs retain eleven steps without duplicate controls.
-Tie-breakers: latest four-case scope and a clearer Today/With comparison.
+- Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
+- Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
+- Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
+- Question: what does the complete D/R/O measurement establish? Choice: preserve the exact raw result. At 1280/1440x1000, Off Confirm ends at y787; On's mandatory visible Recommendation moves Confirm to y2078 and the document is 2169px high. All controls remain operable, one form remains, and no source or required advice is clipped. This is not an On first-viewport pass.
+- Question: when does the compact layout regression run? Choice: keep all four checks in `tests/integration/compact-type1-layout.spec.ts`, executed through `tests/e2e/compact-type1-layout.config.ts` after D's actual mount. O's merge intentionally precedes that mount; no skipped tests, reduced assertions or proxy geometry replace the separate integration run.
 
-Question: which rows may the focused queue open? Choice: use G's authoritative
-`isPlayableCase` helper; only A, B, the mismatch and D are operational. Render
-G's C/F background records without controls or staff counts. The presentation
-case-ID set is tested against G's inventory, not used as another authority.
-Tie-breaker: one state.
+## 2026-09-15: Concrete recommendations on operator surfaces
 
-Question: should entering step 8 make historical B actionable? Choice: no.
-Show its actual state and let the audience open a genuine waiting row. Never
-submit, reset, release or fabricate review work merely to enter a step.
-Tie-breakers: preserved history and human decisions.
-
-## 2026-09-14: Four-case Vision and system-design decisions
-
-- Ten seeded items or four playable cases? Keep only complete EPS, missing-date EPS, wrong-information EPS and unreadable paper playable; C/F are fixed unclickable background and E's rule-only behaviour is shown within complete EPS Today; decided by (e), the explicit latest four-case instruction.
-- Does the four-case cut erase old six-case evidence? No: preserve historical records and pure regression fixtures, but remove their live actions, list links and deep-link reachability; decided by (a), truthful records, then (e), the new playable scope.
-- Eleven steps after removing readable paper? Replace step 6 with unreadable-paper pharmacy declaration/submission and retain step 7 for that same item's Type 1 capture/confirmation; decided by (c), two distinct visible hand-offs, while satisfying the latest eleven-step and four-case requirements.
-- Does pharmacy Paid mean this prototype paid? No: present actually released items in the normal-schedule Paid grouping with explicit release-to-existing-pricing wording and preserved code/human provenance; no new payment calculation or synthetic approval transition; decided by (a), the governing principle.
-- Can temporary Follow context create another Zustand store? No: put that UI-only context in the existing store, exclude it from the domain snapshot and clear it on Reset/item change; decided by (a), one authoritative store.
-- Which prose limit applies to system design? Under 60 words per How it works panel only; all other meaningful panels remain under 25; decided by (e), the explicit reference-page exception.
-- Where are concrete platform names allowed? Only the labelled Reference mapping, one example table, sourced from one dedicated module; CI scans first-party displayed source copy without treating package imports as interface claims; decided by (e), the precise platform-neutrality exception, then (d), a narrow enforceable boundary.
-- Do supplied scale and cost figures prove capacity or pricing? No: expose arithmetic, working-day/peak assumptions, token/sample/rate inputs and operator-touch comparison; label latency and production costs assumptions rather than measured guarantees; decided by (a), honest evidence.
-- How does S integrate without blocking the existing streams? Keep the existing `/architecture` route and ArchitecturePage export, add its owned design content/document/tests, coordinate navigation with D and global source checks with V; merge after G/D alongside O/P/F, before V; decided by (d), the smallest isolated integration.
-- What closes the new alignment register? Actual reviewed, integrated source and the latest main's required live results, not an owner's promise or an old capture; decided by (a), evidence integrity.
-
-## 2026-09-14: Four-case source authority follow-through
-
-- Question: do historical fixtures remain playable? Choice: only the frozen four IDs appear in operational maps; C/F evidence and other old fixtures remain pure archival inputs, not a hidden store mode. Tie-breaker: newest four-case Vision.
-- Question: how does seed D validate after human capture? Choice: check its retained declaration as declared, not against the seed's deliberately different scan-text field; independently compare the actual capture and claim. Tie-breaker: no false image reading and no success fallback.
-- Question: does Release erase an earlier applied suggestion after toggling Off? Choice: retain the real current-revision applied recommendation, agent version and source/check snapshot in its human decision record without invoking the agent again. Separate production model/prompt identifiers remain proposed because the scripted kernel has none. Tie-breaker: truthful audit provenance.
-- Question: can paper draft copies drift? Choice: the shared setter derives the declaration copy from edited paper form fields while preserving explicitly entered prescriber evidence; no submitted source, verification result or history is rewritten. Tie-breaker: one draft authority.
-- Question: what source does a legacy EPS text action retain? Choice: A and B now seed explicit EPS payloads so subsequent submissions retain actual message fields beside the independent claim ledger. Tie-breaker: source-bound reconciliation rather than projection self-corroboration.
+- Question: where should operator advice come from? Choice: use R's shared read-only derivation and RecommendationCard on current operator, Type 1, trace and record surfaces, not a second local recommendation authority.
+- Question: can diagnostic Apply clear an unreadable item? Choice: only R's validated safe follow-up adapter may populate the current operator draft; the original abstention and failed checks remain visible and Release still uses the authoritative code gate.
+- Question: when is the card shown? Choice: every valid item surface shows one complete card while On, including before Start review and read-only outcomes. Off performs no new recommendation derivation; recorded-source cards remain explicitly pinned to their revision and record.
+- Question: is an escalated record a completed review? Choice: no. An open escalated operator case keeps current actionable advice; only a closed review uses the read-only recorded-source context.
+- Question: where does a received pharmacy answer appear? Choice: render the exact current revision's confirmation in a visible Pharmacy confirmation landmark before recommendation/playback content, in either mode. Do not infer captured facts from free text or require opening history; shared parents suppress only duplicate child copies.
+- Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
+- Question: why did the first queue repair remain partially clipped? Choice: preserve the measured failure: the actual table cell was y945, height57, ending at1002 in a1000px viewport after a same-filter click. Explicit filter selections now request focus again, with a small viewport margin for the complete original cell; no span proxy, relaxed visibility ratio or deadline increase. Track actual target/lane changes separately without resetting a user's unchanged filter every render.
+- Question: why was a received answer above the viewport after Follow returned to its NHSBSA case? Choice: case routes need explicit entry focus because the chapter shell deliberately skips them. Focus the actual case heading without implicit scrolling, then align the complete case header below the existing sticky chrome. Run only on route/item changes, never field edits or mode changes; preserve the actual state, answer, card and unchanged one-second verifier.
 
 ## 2026-09-14: Mount the real compact tasks, not hidden operational pages
 
@@ -2083,12 +2173,6 @@ the page, on step or route changes only. Header mode and perspective changes
 do not steal focus. Frozen submission channels are passed to P's renderer,
 without rewriting an item's latest recorded channel. Tie-breakers: keyboard
 operability and truthful source presentation.
-
-## 2026-09-14: Task 34 four-case vision alignment
-
-- Question: retain extra pharmacy scenarios? Chosen: only A/B/wrong-pack EPS and unreadable D paper are selectable; C/F are fixed unclickable background. The latest four-case instruction supersedes earlier extra-playable requirements.
-- Question: where do released items appear to a pharmacy? Chosen: Paid on the normal schedule, with the recorded release-to-existing-pricing qualifier and human-origin label; do not add a fake paid transition. The latest vision and immutable authority both hold.
-- Question: does Gate 1 Ready hide a valid correction? Chosen: separately evaluate supported correction availability, so an approved wrong-pack referral can apply real source fields despite passing format checks. Two-gate correctness wins.
 
 ## 2026-09-14: Demonstration refinements after vision review
 
@@ -2136,25 +2220,6 @@ The actual desktop axe run measured 4.34:1 on the muted background. Keep the
 grey panel and read-only label, but use darker light-theme text and lighter
 dark-theme text. Re-run the unchanged checks. Tie-breaker: accessibility.
 
-## 2026-09-14: Source authority and integration follow-through
-
-- Question: can the seeded referral's workbench apply a fix before a new Send? Choice: an explicit `new_submission` draft purpose permits preparation without approving the historical referral; Resubmit rejects that purpose. Tie-breaker: working pre-send flow without hidden submission or approval.
-- Question: how does G remain deployable before new panels merge? Choice: the coordinator authorised minimal existing selector, overview, background and completed-bucket compatibility; no new O/P panels or D mounting are included. Tie-breaker: no dead controls and the smallest dependency cut.
-- Question: can a later same-state Apply change a release label? Choice: labels anchor to the actual release transition/provenance, not the latest event whose destination happens to be released. Missing automatic evidence is labelled unavailable. Tie-breaker: truthful human attribution.
-- Question: can advice metadata clear an item on queue arrival? Choice: agent events remain same-state; only the independent submission/release paths can advance to pricing. Tie-breaker: no agent state authority.
-- Question: does an arbitrary lower claimed amount count as reconciliation? Choice: compare against the known dated synthetic pack reference, not merely an upper bound; unsupported differences require review. Tie-breaker: actual reconciliation without calculating a payment.
-- Question: how are four-case equivalence tests proved? Choice: run all four real cycles in both modes, in Both and switched perspectives, comparing full snapshots after every actual action with a controlled clock. No timestamps, IDs or operational fields are erased. Tie-breaker: exact one-state evidence.
-- Question: how does current domain metadata satisfy the single reference-mapping rule? Choice: current tool and trace service metadata use neutral capabilities, with agent definition `prototype-0.6`; the original F records retain all values in a frozen archival fixture outside production `src`. No current configuration is hidden there. Tie-breaker: newest platform-neutrality rule and immutable historical evidence.
-- Question: can an On submission finish through later Off manual capture? Choice: record mode at the actual human capture event and accept independently matching manual facts without a hidden proposed checkbox; retain the original submission's mode and gate history. On capture still requires attestation, and any release remains human-attributed. Tie-breaker: a working existing-process fallback and immutable provenance.
-
-## 2026-09-14: Verification source policy and evidence boundaries
-
-- Question: how is the single platform example enforced? Choice: scan all production source, excluding package module specifiers and only the second service cells of `REFERENCE_MAPPING.rows` in its one declared module. Captions, capability cells and other exports remain checked. Rendered audits separately require one exact table and reject vendor copy elsewhere. Tie-breaker: the narrow explicit exception, not a whole-file waiver.
-- Question: keep active brand aliases to disguise current metadata? Choice: current architecture, tools and agent versions use neutral capabilities at source; display adapters preserve strings rather than redact them. Original F values remain immutable archival fixtures. Tie-breaker: honest current configuration and retained historical evidence.
-- Question: can a partial or retried checklist establish acceptance? Choice: require every named check exactly once, one passing attempt, and valid clean before/after identities matching the expected commit. Preserve missing identities, malformed attachments and all failed attempts as explicit evidence. HTTP remains local rehearsal, never hosted acceptance.
-- Question: are the development state runs source-pinned release proof? Choice: report their actual dirty build identity and full results separately. The coherent eight-test run proves sixteen actual Both/switched UI cycles locally; it does not replace a clean final run or latest-main hosted acceptance.
-- Question: did the baseline process-test split preserve registration? Choice: correct the misplaced new test at suite scope, retain all five existing variants, and verify the committed registration separately. Earlier combined-worktree results do not certify the faulty intermediate commit.
-
 ## 2026-09-14: Carry the actual operator response into step 9
 
 Question: should Next open fixed B after the operator refers a different item?
@@ -2168,48 +2233,6 @@ The regression explicitly corrects and sends B to automatic release, submits
 the wrong-pack EPS item, applies the operator suggestion and refers it back.
 Next must then open that actual referral with correction and resubmission
 controls, not B's completed record.
-
-## 2026-09-15: Concrete recommendations on operator surfaces
-
-- Question: where should operator advice come from? Choice: use R's shared read-only derivation and RecommendationCard on current operator, Type 1, trace and record surfaces, not a second local recommendation authority.
-- Question: can diagnostic Apply clear an unreadable item? Choice: only R's validated safe follow-up adapter may populate the current operator draft; the original abstention and failed checks remain visible and Release still uses the authoritative code gate.
-- Question: when is the card shown? Choice: every valid item surface shows one complete card while On, including before Start review and read-only outcomes. Off performs no new recommendation derivation; recorded-source cards remain explicitly pinned to their revision and record.
-- Question: is an escalated record a completed review? Choice: no. An open escalated operator case keeps current actionable advice; only a closed review uses the read-only recorded-source context.
-- Question: where does a received pharmacy answer appear? Choice: render the exact current revision's confirmation in a visible Pharmacy confirmation landmark before recommendation/playback content, in either mode. Do not infer captured facts from free text or require opening history; shared parents suppress only duplicate child copies.
-
-- Question: why did a complete On EPS receipt incorrectly say Type 2 was pending? Choice: replace its legacy automatic-pricing-only check with the selected revision's recorded pricing/release event and attribution-aware label. Preserve Off pricing text and human review provenance; do not change the model outcome to fit the old receipt. Tie-breaker: truthful visible outcomes.
-- Question: does shared Apply count as a caught item automatically? Choice: append counter evidence atomically only after a checked format or source gap becomes ready on independent current facts; bind it to the next attempt and deduplicate legacy recorder events. Partial or still-invalid corrections remain uncounted, and applying still does not submit or release. Tie-breaker: an actual evidence-based count, not a click counter.
-- Question: does correcting a referred-back item count as upfront prevention? Choice: no; the new shared recorder requires explicit `new_submission` intent. A post-referral correction remains recorded human work but does not increment the upfront caught collection. Tie-breaker: preserve the prevention versus rework distinction.
-- Question: can both comparison panes retain their EPS evidence landmarks? Choice: yes; label the manual comparison's root, item and dispenser regions with meaningful context rather than deleting regions or excluding axe rules. Tie-breaker: the reproduced landmark-unique violation and accessible evidence.
-- Question: does preparing an agent case pack imply a saved decision record? Choice: no; the current trace says prepared in memory and awaiting human decision, not appended. Historical records and actual human writes remain unchanged. Tie-breaker: truthful mock and authority boundaries.
-- Question: should shared resubmission display a seed placeholder? Choice: record an explicit unperformed Off snapshot or the actual current On check at the human resubmit action, retaining existing source data for text-only corrections. Tie-breaker: truthful revision-bound audit evidence.
-- Question: which provision validates manually keyed, undeclared paper? Choice: Gate 2 resolves the received or human-captured product, date and endorsement independently; it must not reuse Gate 1's unreadable input or missing clause. Preserve the original scan and validate all actual captured facts. Tie-breaker: independent code validation and the supported Off manual path.
-
-## 2026-09-15: Integrated P recommendation decisions
-
-- Question: where do unfinished pharmacy edits live? Choice: one revision-bound pharmacy draft, retained across perspectives; explicit Apply records human attribution without submitting. One-state authority wins.
-- Question: how does an old referral demonstrate pre-send checking? Choice: the workbench explicitly labels a new attempt; claim detail retains correction-only actions. History is never replaced by navigation.
-- Question: what proves the receipt and monthly counts? Choice: recorded gates, release origin and validated correction events; actual Hillcrest counts stay separate from estimates and payment calculations.
-- Question: what if no generated note was approved? Choice: keep the recorded human reason visible without inventing a citation or an approved suggestion. Human authority wins.
-- Question: can an absent check be called Seed? Choice: only seed revisions use that label; later absent snapshots say Check not recorded. Actual resubmissions preserve current On/Off evidence.
-- Question: what survives demo exit? Choice: the selected URL case/channel and shared drafts; invalid combinations do not silently open another item.
-- Question: how are P's state tests updated? Choice: retain the full 34-test family and exact Both/switched snapshots, explicitly asserting draft-only edits and same-state pharmacy Apply events. No field is removed from the observer.
-- Question: may the retained paper prescriber be corrected? Choice: restore its human input alongside modern declaration fields in referred-back detail; initial declaration entry still does not invent prescriber evidence.
-
-## 2026-09-15: Concrete pharmacy recommendations extension
-
-- Question: which recommendation drives the pharmacy Apply button? Choice: render R's shared draft projection and use the same shared correction action, so the visible preview is exactly what the human applies. The header alone never applies or submits.
-- Question: how do complete and missing paper examples begin? Choice: explicit human buttons prepare R's labelled synthetic declaration fixture, including its declared demo prescriber; the scan, submitted revisions and Type 1 capture remain unchanged until separate actions.
-- Question: does scanner presentation change evidence? Choice: the scanner-view button reveals the retained unreadable synthetic form and its uncertainty, without writing lifecycle or capture evidence.
-- Question: what does an unknown invoice suggestion fill? Choice: nothing; its control focuses the existing authoritative endorsement input for human entry. No claimed amount is copied into invoice evidence.
-- Question: how are restored values highlighted? Choice: use R's applied-field metadata comparing the actual before/after draft, including fields restored to their original values; manual edits clear that metadata.
-- Question: can unreadable paper receipts promise automatic release? Choice: no; preserve recorded gate results and state explicitly that an operator compares the declaration with the scan. A pending item is not labelled as already built or released.
-
-## 2026-09-15: Compact Type 1 evidence and editor placement
-
-- Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
-- Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
-- Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
 
 ## 2026-09-15: Paper walkthrough and a shared evidence companion
 
@@ -2234,6 +2257,54 @@ and its recommendation card. No clipping, internal scrolling or hidden card.
 Keep ordinary operations unchanged. Tie-breaker: required content before a height
 proxy; measure the complete R/O integration before claiming viewport acceptance.
 
-- Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
-- Question: why did the first queue repair remain partially clipped? Choice: preserve the measured failure: the actual table cell was y945, height57, ending at1002 in a1000px viewport after a same-filter click. Explicit filter selections now request focus again, with a small viewport margin for the complete original cell; no span proxy, relaxed visibility ratio or deadline increase. Track actual target/lane changes separately without resetting a user's unchanged filter every render.
-- Question: why was a received answer above the viewport after Follow returned to its NHSBSA case? Choice: case routes need explicit entry focus because the chapter shell deliberately skips them. Focus the actual case heading without implicit scrolling, then align the complete case header below the existing sticky chrome. Run only on route/item changes, never field edits or mode changes; preserve the actual state, answer, card and unchanged one-second verifier.
+## 2026-09-15: Preserve ordinary overview navigation after mounting the demo
+
+Question: how are ordinary overview sections reachable after the chapter rail
+is replaced? Choice: a Home-only section navigation reuses the six existing
+chapter destinations as real router links. It is absent from the active demo
+because the ordinary Outlet is unmounted. No second tour state or Agent control
+is added. Tie-breakers: retain existing reachable views and use the smallest fix.
+
+Question: how should chapter tests navigate? Choice: exit demo when necessary,
+open Overview through the existing primary navigation, then activate its real
+section link and await both URL and heading focus. No reload, history injection,
+forced click or operational-state writes. All six links are tested against the
+complete read-only domain snapshot in both modes.
+
+Question: which old compatibility patches should replay? Choice: preserve
+current main's stronger P/O counter, source, approval and state assertions when
+combining the mounted tests. The numerical counter patch is already covered by
+main and is not duplicated. Adopt only V's immutable navigation helper and its
+small data dependency, not the full foreign proof branch.
+
+## 2026-09-15: Reconstruct verification without replacing merged owner work
+
+Question: how should the final verification branch incorporate the merged
+desktop runtime? Choice: retain the merged runtime, owner unit regressions,
+all 36 state checks and governance documents, then apply only the reviewed
+verification inventory, reporter, new requirement checks and documentation.
+Preserve the earlier branch ancestry and external reports rather than replaying
+its mixed implementation snapshots.
+
+Question: how are superseded live declarations retained? Choice: keep their
+assertion bodies unchanged and give them a frozen legacy inventory import.
+The active configuration selects exactly five current files and 75 names;
+historical declarations are neither deleted nor counted as new acceptance.
+
+Question: how can the new four-case parity checks retain temporary Follow
+context? Choice: add an optional presentation-preservation flag to the action
+helper. Existing callers keep identical default switching and complete
+snapshot/clock behaviour. The read-only observer and human-release provenance
+checks are unchanged.
+
+Question: what can passing subsets or diagnostic observers establish? Choice:
+retain partial selection as an overall failed full checklist, keep every
+failed predecessor, and require a new whole run. Route diagnostics are separate
+from acceptance, do not change the original deadline or subtract overhead,
+and do not turn post-verdict geometry or animation frames into paint evidence.
+
+Question: should the strict source-copy check be weakened for an existing
+hosting comment? Choice: retain the checker unchanged and replace only
+"Azure hosting" with "production hosting" in App.tsx's site-root comment.
+This is the sole approved source-byte exception; executable tokens, routing
+and hosting behaviour remain unchanged.

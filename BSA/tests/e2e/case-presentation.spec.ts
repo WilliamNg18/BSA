@@ -276,7 +276,7 @@ test("Task6 D keeps failed signals and unestablished reconciliation; A remains n
   await page.goto("case/EX-24123");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("alert").locator("li")).toHaveCount(3);
-  const signals = page.getByRole("list", { name: "Confidence signals", exact: true });
+  const signals = page.locator('[data-prose="confidence explanation"]').getByRole("list", { name: "Confidence signals", exact: true });
   await expect(signals.locator(":scope > li")).toHaveCount(5);
   await expect(signals.locator(".sr-only").filter({ hasText: ", failed" })).toHaveCount(4);
   const reconciliation = signals.getByRole("listitem").filter({ hasText: "Sources reconcile" });

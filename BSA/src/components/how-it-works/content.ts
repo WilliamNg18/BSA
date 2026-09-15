@@ -52,7 +52,7 @@ export const DESIGN_SECTIONS: readonly DesignSection[] = [
   {
     id: "alternatives", title: "Why agentic, rather than another tool?", status: "proposed",
     panels: [
-      { title: "The next action depends on the last result", status: "proposed", text: "Five evidence sources must be joined: source image or EPS message, captured fields, product and pack master, claim ledger and case history. The retrieved dated Tariff governs them. Endorsement type selects a provision, version and requirements; reconciliation then determines whether advice or abstention is justified." },
+      { title: "The next action depends on the last result", status: "proposed", text: "Five read-only sources: image and captured fields or EPS message; product and pack master; claim ledger; case history; and effective-date Tariff corpus. Endorsement type selects a provision, version and requirements; reconciliation then determines whether advice or abstention is justified. Captured fields are a source representation, not independent corroboration." },
       { title: "Keep the agent's job small", status: "assumption", text: "The Tariff is prose published monthly; publication does not mean every rule changes monthly. A governed interpreter could reduce maintenance when wording changes. Domain experts still approve ingestion and executable checks. If deterministic parsing covers the exceptions reliably, use it instead: agentic complexity must earn its place." },
     ],
     table: {

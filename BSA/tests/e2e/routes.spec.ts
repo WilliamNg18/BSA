@@ -1,4 +1,4 @@
-import { cases, expect, navigatePrimary, openCaseFromQueueOrClaim, staticRoutes, test } from "./fixtures";
+import { captureCheckpoint, cases, expect, navigatePrimary, openCaseFromQueueOrClaim, staticRoutes, test } from "./fixtures";
 
 const caseRoutes = cases.flatMap((c) => [
   { path: `case/${c.id}`, title: `Operator case pack: ${c.title}` },
@@ -27,10 +27,7 @@ for (const colorScheme of ["light", "dark"] as const) {
           await page.evaluate(() => document.fonts.ready);
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
           expect(overflow, "Page must not overflow horizontally").toBeLessThanOrEqual(1);
-          if (width === 1440) {
-            await page.screenshot({ path: testInfo.outputPath("after.png"), fullPage: true });
-            await testInfo.attach("after", { path: testInfo.outputPath("after.png"), contentType: "image/png" });
-          }
+          await captureCheckpoint(page, testInfo, "after");
         });
       }
     });
@@ -38,7 +35,7 @@ for (const colorScheme of ["light", "dark"] as const) {
 }
 
 for (const suffix of ["", "/trace", "/record"]) {
-  for (const id of ["invalid", "EX-99999", "%3Cinvalid%3E"]) {
+  for (const id of ["invalid", "EX-99999", "%3Cinvalid%3E", "EX-24119", "EX-24088", "EX-24101", "SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK", "SYN-FQ123-READABLE"]) {
     test(`invalid case ${id}${suffix} retains shell and queue recovery`, async ({ page }) => {
       await page.goto(`case/${id}${suffix}`);
       await expect(page.getByText("Case not found", { exact: true })).toBeVisible();
@@ -48,7 +45,7 @@ for (const suffix of ["", "/trace", "/record"]) {
   }
 }
 
-for (const id of ["SYN-FQ123-TYPE2", "SYN-FQ123-RECHECK"]) {
+for (const { id } of cases) {
 test(`shared Hillcrest item ${id} has real pack, trace, record and pharmacy deep links`, async ({ page }) => {
   for (const suffix of ["", "/trace", "/record"]) {
     await page.goto(`case/${id}${suffix}`);

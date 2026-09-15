@@ -1,6 +1,6 @@
 import { cases, captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
-import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState } from "./current-lifecycle-helpers";
-import { operatorDecision, operatorRadio, performDecision, startDemonstrationReview } from "./operator-action-helpers";
+import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
+import { operatorDecision, performDecision } from "./operator-action-helpers";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
@@ -82,8 +82,11 @@ for (const enabled of [false, true]) {
         }
         await page.getByRole("button", { name: "Load worked declaration", exact: true }).click();
         await page.getByLabel("Declared quantity", { exact: true }).fill("-1");
+        const receiptBefore = await page.getByRole("region", { name: "Submission receipt", exact: true }).innerText();
         await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
-        await expect(page.getByRole("alert")).toContainText("quantity");
+        await expect(page.getByRole("alert")).toHaveText("Invalid paper declaration.");
+        await expect(page.getByLabel("Declared quantity", { exact: true })).toHaveValue("-1");
+        await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveText(receiptBefore, { useInnerText: true });
         audits.push({ scenario, phase: "invalid-declaration", ...await page.evaluate(auditProse) });
         await page.getByLabel("Declared quantity", { exact: true }).fill("");
         if (!enabled) await page.getByRole("banner").getByRole("switch").setChecked(false);
@@ -102,12 +105,15 @@ for (const enabled of [false, true]) {
 for (const enabled of [false, true]) {
   test(`Task6 interactive comparison and recorded decision copy On=${enabled}`, async ({ page }, info) => {
     await page.goto("case/EX-24112");
-    await startDemonstrationReview(page, "EX-24112", enabled);
+    await startDemonstrationReview(page);
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
     if (enabled) await page.getByRole("button", { name: "Compare manual view", exact: true }).click();
     const audits = [{ state: "pack-comparison", ...await page.evaluate(auditProse) }];
     await page.getByLabel("Reason (required)", { exact: true }).fill("Human review confirms missing evidence");
-    if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
-    else await operatorRadio(page, "ESCALATE").check();
+    if (enabled) {
+      await page.getByRole("radio", { name: /^Refer back/ }).check();
+      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
+    } else await page.getByRole("radio", { name: /^Escalate/ }).check();
     await performDecision(page, enabled ? "REFER_BACK" : "ESCALATE");
     await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
     audits.push({ state: "human-record", ...await page.evaluate(auditProse) });

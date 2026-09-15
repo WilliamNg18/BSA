@@ -6,26 +6,37 @@ ms.date: 2026-09-13
 
 # Scope register
 
-## Current scope: Tasks 31-36, desktop only
+## Current scope: Tasks 25-38, four-case desktop vision
 
 The 14 September owner brief supersedes the previous closeout. Supported
 verification widths are 1280 and 1440 px; new captures are 1440 px only.
 Mobile/tablet layouts and active tests/screenshots are intentionally removed.
 Earlier results retain their original source and cannot establish this scope.
+The latest playable set is complete EPS, missing-date EPS, wrong-information
+EPS and unreadable paper. C/F are fixed unclickable background; E's rule-only
+behaviour is contained in complete EPS Today. ALIGNMENT owns drift and proof.
 
-| Task | Required outcome |
-| --- | --- |
-| 31 D | Eleven focused step screens, Today/With panels, persistent strip and correct routes/case/channel |
-| 32 F | Same-item reference/channel/state/location/history and explicit Pharmacy/NHSBSA side controls |
-| 33 O | Human Apply suggestion and Release/referral/information/escalation controls with code gating |
-| 34 P | Actual approved correction application, resubmission, confirmation and verification receipts |
-| 35 G | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released |
-| 36 V | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
+| Task | Status | Required outcome |
+| --- | --- | --- |
+| 31 D | Core merged; integration in progress | Eleven focused steps, expanded paper steps 7-10, visible recommendation and correct same-case routing |
+| 32 F | In progress | Same-item reference/channel/state/location/history and explicit Pharmacy/NHSBSA side controls |
+| 33 O | In progress | Human Apply suggestion and Release/referral/information/escalation controls with code gating |
+| 34 P | In progress | Actual approved correction application, resubmission, confirmation and verification receipts |
+| 35 G | Done, #93 | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released; new Task 38 extensions remain separately gated |
+| 36 V | In progress | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
+| 37 S | In progress | Complete How it works reference page, SYSTEM-DESIGN, contents rail, diagrams, labelled assumptions and sole concrete-service mapping table |
+| 38 R | In progress | Always-visible source-bound Recommendation card, concrete values and exact previews, safe disagreement follow-up and cross-surface integrations |
 
-No new task is accepted yet. The user approved keeping human-release provenance
+Task 35's kernel is merged; remaining UI, mounting and Task 38 additions are not
+yet accepted. The user approved keeping human-release provenance
 visible; only automatic two-gate release may say no operator action.
 The prior Tasks 25-30 visual acceptance is unverified, not silently waived or
-renamed complete by the new desktop scope.
+renamed complete by the new desktop scope. Current completion instead requires
+the owner's latest Tasks 25-38 desktop live checklist against the final main,
+including all five additional requirements and one-second cross-side assertions.
+All eight rows have owners; no unowned Not started row currently
+exists. A finished stream completes its integration/proof handoff before taking
+the next newly recorded, unowned Not started row.
 
 ## Active scope: Tasks 25-30
 
@@ -38,7 +49,9 @@ independent inspection of all 58 images failed its visual/prose gate. The
 failed archive is preserved. Repair #87 at `34d7567` passed a new complete
 30-check hosted run; independent review of the new capture and the final
 evidence-only release still remain.
-Tasks 25-30 are not yet declared ALL DONE. The prior release is
+Tasks 25-30 are not yet declared ALL DONE under the combined desktop acceptance.
+The interrupted old image-review gate remains historically unverified, not an
+additional active mobile/recovery-review stream. The prior release is
 `887d2a4`, recorded on issue #73 comment 5654511835.
 
 | Task | Acceptance required |
@@ -53,10 +66,10 @@ Tasks 25-30 are not yet declared ALL DONE. The prior release is
 Every operational view uses the same store, header Agent control and perspective
 switch. Existing history and failures remain immutable; no agent payment or
 decision authority is introduced. Final release is a separate latest-main gate.
-V's six-chapter runtime merges after E/Q, then receives the complete 29-check
-hosted run and independent full-height review. A runtime-identical V evidence/
-documentation PR merges last, followed by fresh latest-main CI/deployment/live
-verification. A passing local rehearsal or scoped subset is not final acceptance.
+The old six-chapter release plan and its image-review limitation remain
+historical. V now owns the eleven-step desktop checklist and current evidence,
+followed by latest-main deployment/live verification. A passing local rehearsal
+or scoped subset is not final acceptance.
 
 ## Current new scope: Tasks 19-24
 

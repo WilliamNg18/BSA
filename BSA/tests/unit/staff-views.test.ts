@@ -263,6 +263,21 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(JSON.stringify(c)).toBe(original);
   });
 
+  it("distinguishes repeated EPS comparison landmarks without changing their evidence", () => {
+    const c = sessionCase("EX-24112")!;
+    const before = useAppStore.getState();
+    const html = renderToStaticMarkup(createElement("div", null,
+      createElement(CaseSourceEvidence, { c }),
+      createElement(RawCaseFields, { c, contextLabel: "Manual comparison" })));
+    const labels = [...html.matchAll(/aria-label="([^"]+)"/g)].map((match) => match[1]);
+    expect(new Set(labels).size).toBe(labels.length);
+    expect(labels).toContain("Submitted electronic prescription, synthetic");
+    expect(labels).toContain("Manual comparison: Submitted electronic prescription, synthetic");
+    expect(labels).toContain("Manual comparison: Recorded dispenser claim");
+    expect(html.match(/SYN-AMLO10-28/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it("never paints a declaration date onto the original paper image or machine capture", () => {
     const original = CASES[3];
     const c = { ...original, extracted: { ...original.extracted, dispensingDate: "2026-07-27" },
@@ -308,6 +323,7 @@ describe("Task 29 current-revision staff presentation", () => {
     const c = sessionCase("EX-24123")!;
     expect(c.channel).toBe("Electronic (EPS)");
     expect(c.claim.submittedVia).toBe("FP34C batch");
+    expect(CASES[3].claim.submittedVia).toBe("FP34C batch");
     const before = useAppStore.getState();
     const evidence = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
     expect(evidence).toContain("EPS claim message");

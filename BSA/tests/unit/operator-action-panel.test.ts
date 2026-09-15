@@ -170,6 +170,23 @@ describe("shared operator action panel", () => {
     expect(renderToStaticMarkup(createElement(ReleaseRecord, { caseId: "EX-24112" }))).toBe("");
   });
 
+  it("keeps a real two-gate automatic release read-only and unchanged when assistance is switched off", () => {
+    const store = useAppStore.getState();
+    const revision = store.caseRevisions["EX-24107"].at(-1)!;
+    store.setAgentEnabled(true);
+    store.submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: revision.endorsementText,
+      epsPrescription: revision.epsPrescription });
+    const released = getDomainSnapshot();
+    expect(released.lifecycles["EX-24107"].state).toBe("released_to_pricing");
+    const html = renderToStaticMarkup(createElement(ReleaseRecord, { caseId: "EX-24107" }));
+    expect(html).toContain("Verified and released to existing pricing, no operator action");
+    expect(html).toContain("data-automatic-case");
+    expect(html).not.toContain("<button");
+    store.setAgentEnabled(false);
+    expect(renderToStaticMarkup(createElement(ReleaseRecord, { caseId: "EX-24107" }))).toBe(html);
+    expect(getDomainSnapshot()).toEqual(released);
+  });
+
   it("fails closed when a recorded release has conflicting actor attribution", () => {
     const store = useAppStore.getState();
     const row = store.lifecycles["EX-24112"];

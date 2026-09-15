@@ -2,6 +2,9 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Locator } from "@playwright/test";
 import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { openQueueCapture } from "./paper-declaration-helpers";
+import { operatorActionButtons, operatorAction, operatorRadio } from "./operator-action-helpers";
 
 const D = "EX-24123";
 const declaration = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)" };
@@ -36,20 +39,30 @@ for (const enabled of [false, true]) {
         const initial = await readDomainState(page);
         if (scenario === "fresh unknown") {
           await action("Choose unreadable paper without a declaration", "Pharmacy", async () => {
-            await page.getByRole("radio", { name: "Paper", exact: true }).check();
+            await choosePharmacyRadio(page, "Paper");
             await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
             await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toBeVisible();
           });
           await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
           if (enabled) {
             for (const name of ["Declared product", "Declared quantity", "Declared endorsement", "Declared dispensing date"]) {
-              await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
+              await action(`Clear the retained paper draft ${name}`, "Pharmacy", async () => {
+                await page.getByLabel(name, { exact: true }).fill("");
+              });
             }
+            const blank = await readDomainState(page);
+            expect(blank.pharmacyDrafts[D]).toMatchObject({
+              revision: initial.caseRevisions[D].at(-1)!.number, channel: "paper", appliedSuggestion: false,
+              paperDeclaration: { typedProduct: "", quantity: null, endorsementText: "", dispensingDate: "" },
+            });
+            expect(blank, "Clearing a retained declaration changes only its shared draft").toEqual({
+              ...initial, pharmacyDrafts: { ...initial.pharmacyDrafts, [D]: blank.pharmacyDrafts[D] },
+            });
             await action("Reject posting a blank proposed declaration", "Pharmacy", async () => {
               await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
               await expect(page.getByRole("alert")).toBeVisible();
             });
-            expect(await readDomainState(page)).toEqual(initial);
+            expect(await readDomainState(page), "Rejected posting leaves the complete draft and all source state unchanged").toEqual(blank);
             await action("Choose the ordinary undeclared paper path", "Pharmacy", async () => {
               await page.getByRole("banner").getByRole("switch").setChecked(false);
             });
@@ -57,6 +70,8 @@ for (const enabled of [false, true]) {
           await expect(page.getByLabel("Declared product", { exact: true })).toHaveCount(0);
           const submitted = await action("Submit the genuinely undeclared paper revision", "Pharmacy", async () => {
             await page.getByRole("button", { name: "Post paper", exact: true }).click();
+            await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText(`${D}:2`);
+            await expect(page.getByRole("alert")).toHaveCount(0);
           });
           expect(submitted.caseRevisions[D].at(-1)?.declaration).toBeUndefined();
           expect(submitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });
@@ -67,6 +82,7 @@ for (const enabled of [false, true]) {
         }
         await action("Open the actual capture lane", "NHSBSA", async () => {
           await navigatePrimary(page, "NHSBSA queue");
+          await openQueueCapture(page, D);
         });
         const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
         await expect(capture).toBeVisible();
@@ -80,7 +96,7 @@ for (const enabled of [false, true]) {
         }
         await expect(reconciled).toHaveCount(assisted ? 1 : 0);
         if (assisted) await expect(reconciled).not.toBeChecked();
-        await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+        await expect(operatorActionButtons(page)).toHaveCount(0);
 
         if (scenario === "reset draft" || scenario === "manual mode") {
           await fillCapture(action, capture, { productCode: "UNSAVED-SYNTHETIC" });
@@ -116,6 +132,7 @@ for (const enabled of [false, true]) {
               expect(await readDomainState(page), "Opening the modal cannot mutate domain state").toEqual(before);
               await page.getByRole("alertdialog", { name: "Reset demonstration?", exact: true })
                 .getByRole("button", { name: "Reset demonstration", exact: true }).click();
+              await openQueueCapture(page, D);
             });
             await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
             for (const label of Object.values(labels)) await expect(capture.getByRole("textbox", { name: label, exact: true })).toHaveValue("");
@@ -197,9 +214,10 @@ for (const enabled of [false, true]) {
           await expect(page.getByRole("alert")).toContainText("The agent abstained");
           await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
           await expect(page.getByRole("alert").getByText("Missing prescriber.", { exact: true })).toBeVisible();
-          await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).toBeDisabled();
-          await expect(page.getByRole("radio", { name: /^Amend / })).toBeDisabled();
-          await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+          await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+          await expect(operatorRadio(page, "ACCEPT")).not.toBeChecked();
+          await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
+          expect((await readDomainState(page)).records).toEqual(confirmed.records);
         } else if (enabled && (corrected || scenario === "fresh unknown")) {
           await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
           await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();

@@ -38,6 +38,8 @@ for (const enabled of [true, false]) {
   test(`rapid consecutive tour inputs agent=${enabled}`, { tag: ["@hosted-qa", "@fast-keyboard", stateTag] }, async ({ page }) => {
     await enterDesktopDemo(page, enabled);
     const rail = page.getByTestId("demo-strip");
+    const screen = page.getByTestId("demo-step-screen");
+    const firstDestination = new URL(demoStepDestination(DEMO_STEPS[0]), page.url()).href;
     // The native switch is an input; shortcuts deliberately ignore fields.
     await page.getByRole("heading", { level: 1 }).focus();
     // Real keyboard events, deliberately no screenshot, sleep or assertion
@@ -45,10 +47,12 @@ for (const enabled of [true, false]) {
     for (let pass = 0; pass < 3; pass++) {
       for (let step = 1; step < DEMO_STEPS.length; step++) await page.keyboard.press("Alt+ArrowRight");
       await expect(page).toHaveURL(/#close$/);
+      await expect(screen).toHaveAttribute("data-demo-step", "11");
       await expect(rail).toContainText("11 / 11");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       for (let step = 1; step < DEMO_STEPS.length; step++) await page.keyboard.press("Alt+ArrowLeft");
-      await expect(page).toHaveURL(/#pipeline$/);
+      await expect(page).toHaveURL(firstDestination);
+      await expect(screen).toHaveAttribute("data-demo-step", "1");
       await expect(rail).toContainText("1 / 11");
     }
     // A same-task burst deterministically exercises history ahead of React's
@@ -57,22 +61,33 @@ for (const enabled of [true, false]) {
     let index = 0;
     const expected = directions.map((direction) => {
       index = Math.max(0, Math.min(DEMO_STEPS.length - 1, index + direction));
-      return demoStepDestination(DEMO_STEPS[index]);
+      const destination = new URL(demoStepDestination(DEMO_STEPS[index]), "http://demo.invalid");
+      return `${destination.pathname}${destination.search}${destination.hash}`;
     });
     const visited = await page.evaluate((steps) => steps.map((direction) => {
       window.dispatchEvent(new KeyboardEvent("keydown", { key: direction > 0 ? "ArrowRight" : "ArrowLeft", altKey: true, bubbles: true, cancelable: true }));
       return `${location.pathname}${location.search}${location.hash}`;
     }), directions);
     expect(visited).toEqual(expected);
-    await expect(page).toHaveURL(/#pipeline$/);
-    await rail.getByRole("button", { name: "Exit demo", exact: true }).click();
+    await expect(page).toHaveURL(firstDestination);
+    await expect(screen).toHaveAttribute("data-demo-step", "1");
+    await rail.getByRole("button", { name: "Exit demo", exact: true }).press("Enter");
+    await expect(screen).toHaveCount(0);
+    // Ordinary browser history stays ordinary; explicit re-entry starts the focused demo.
     await navigatePrimary(page, "Pharmacy check");
-    await page.getByRole("heading", { level: 1 }).click();
-    await page.keyboard.press("Alt+ArrowLeft");
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    await page.goBack();
+    await expect(page).toHaveURL(firstDestination);
+    await expect(screen).toHaveCount(0);
+    await page.goForward();
     await expect(page).toHaveURL(/\/pharmacy$/);
+    await expect(screen).toHaveCount(0);
+    await rail.getByRole("button", { name: "Enter demo mode", exact: true }).press("Enter");
+    await expect(screen).toHaveAttribute("data-demo-step", "1");
+    await expect(screen.getByRole("heading", { level: 1 })).toBeFocused();
     await page.keyboard.press("Alt+ArrowRight");
-    await expect(page).toHaveURL(/\/pharmacy$/);
-    await expect(rail.getByRole("button", { name: "Enter demo mode", exact: true })).toBeVisible();
+    await expect(page).toHaveURL(/#month$/);
+    await expect(screen).toHaveAttribute("data-demo-step", "2");
     await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
   });
 

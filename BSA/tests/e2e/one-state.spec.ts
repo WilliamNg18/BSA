@@ -1,5 +1,8 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { openQueueCapture } from "./paper-declaration-helpers";
+import { operatorAction, operatorActionButtons } from "./operator-action-helpers";
 
 test("one state: observer is read-only and retains every authoritative collection", async ({ page }) => {
   await page.goto("/pharmacy");
@@ -25,6 +28,7 @@ test("one state: observer is read-only and retains every authoritative collectio
         const initial = await readDomainState(page);
         await action("Open actual NHSBSA work", "NHSBSA", async () => {
           await navigatePrimary(page, "NHSBSA queue");
+          await openQueueCapture(page);
         });
         const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
         await expect(capture).toBeVisible();
@@ -32,6 +36,7 @@ test("one state: observer is read-only and retains every authoritative collectio
         await expect(product).toHaveValue(enabled ? "SYN-COCOD-100" : "");
         expect(await readDomainState(page), "Opening a capture form must not confirm the prior declaration").toEqual(initial);
         await action("Restart the assumed capture stopwatch", "NHSBSA", async () => {
+          await capture.getByText("Timing assumptions and routing", { exact: true }).click();
           await capture.getByRole("button", { name: "Restart timing illustration", exact: true }).click();
         });
         await action("Advance the assumed capture stopwatch", "NHSBSA", async () => {
@@ -74,7 +79,8 @@ test("one state: observer is read-only and retains every authoritative collectio
           await expect(page.getByText("Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.", { exact: true })).toBeVisible();
           expect(confirmed.itemProcesses["EX-24123"].capture?.fields.prescriber).toBeNull();
           await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
-          await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+          await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+          await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
         }
       });
     });
@@ -85,7 +91,7 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Select the EPS missing-information example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+        await choosePharmacyRadio(page, "NCSO missing date");
       });
       await action("Enter a complete endorsement for the EPS item", "Pharmacy", async () => {
         await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO AB 27/08/26");
@@ -98,14 +104,17 @@ for (const enabled of [false, true]) {
         itemProcesses: { "EX-24112": { channel: "eps", routing: {
           outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine",
         } } },
-        lifecycles: { "EX-24112": { state: "paid", history: expect.arrayContaining([
-          expect.objectContaining({ actor: "code", processStep: "automatic_pricing" }),
+        lifecycles: { "EX-24112": { state: enabled ? "released_to_pricing" : "paid", history: expect.arrayContaining([
+          expect.objectContaining({ actor: "code", processStep: enabled ? "release_to_pricing" : "automatic_pricing" }),
         ]) } },
         caseStates: { "EX-24112": "cleared_by_rules" },
         caseRevisions: { "EX-24112": expect.arrayContaining([expect.objectContaining({
           kind: "submission", channel: "eps", endorsementText: "NCSO AB 27/08/26",
         })]) },
       });
+      expect(submitted.itemVerification["EX-24112"]).toEqual(enabled
+        ? { gate1: "pass", gate2: "pass", reconciled: true, released: true }
+        : { gate1: "none", gate2: "none", reconciled: false, released: false });
       expect(initial.records).toEqual(expect.any(Array));
       expect(submitted.records, "Automatic pricing must not append a human approval").toEqual(initial.records);
       await action("Read the automatic item receipt", "Pharmacy", async () => {
@@ -113,7 +122,7 @@ for (const enabled of [false, true]) {
         await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("EX-24112");
       });
       expect(await readDomainState(page), "Reading the receipt cannot create an operator decision").toEqual(submitted);
-      await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+      await expect(operatorActionButtons(page)).toHaveCount(0);
     });
   });
 
@@ -122,7 +131,7 @@ for (const enabled of [false, true]) {
       const initial = await readDomainState(page);
       const field = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
       await action("Select incomplete EPS example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+        await choosePharmacyRadio(page, "NCSO missing date");
       });
       await action("Enter an incomplete endorsement", "Pharmacy", async () => {
         await field.fill("NCSO XY");
@@ -131,7 +140,15 @@ for (const enabled of [false, true]) {
         await expect(field).toHaveValue("NCSO XY");
         await field.fill("NCSO RK");
       });
-      expect(await readDomainState(page), "Unsubmitted edits are not lifecycle or correction events").toEqual(initial);
+      const edited = await readDomainState(page);
+      expect(edited.pharmacyDrafts["EX-24112"]).toMatchObject({
+        revision: initial.caseRevisions["EX-24112"].at(-1)!.number, channel: "eps",
+        endorsementText: "NCSO RK", appliedSuggestion: false,
+        epsPrescription: { dispenserEndorsement: "NCSO RK" },
+      });
+      expect(edited, "Only the shared draft changes before submission").toEqual({
+        ...initial, pharmacyDrafts: { ...initial.pharmacyDrafts, "EX-24112": edited.pharmacyDrafts["EX-24112"] },
+      });
       const submitted = await action("Explicitly submit the retained incomplete draft", "Pharmacy", async () => {
         await expect(field).toHaveValue("NCSO RK");
         await page.getByRole("button", { name: "Send claim", exact: true }).click();

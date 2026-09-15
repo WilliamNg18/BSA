@@ -1,9 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, navigatePrimary, test } from "./fixtures";
-import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS, postWorkedPaperDeclaration } from "./paper-declaration-helpers";
+import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS, postWorkedPaperDeclaration, openQueueCapture } from "./paper-declaration-helpers";
 import { choosePaperExample } from "./pharmacy-scenario-helpers";
-import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { operatorRadio, performDecision } from "./operator-action-helpers";
+import { humanReleaseLabel, operatorAction, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 test("worked paper declaration reaches Sufficient only after explicit human evidence and confirmation", async ({ page }, info) => {
   await page.goto("/pharmacy");
@@ -16,11 +15,11 @@ test("worked paper declaration reaches Sufficient only after explicit human evid
   await expect(page.getByText("Gate: PASS", { exact: true })).toBeVisible();
   await expect(page.getByText("All mandatory fields supplied", { exact: true })).toBeVisible();
   await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
-  const decision = page.getByRole("region", { name: "Operator decision", exact: true });
-  await expect(decision.getByRole("region", { name: "Suggestion", exact: true }).getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
-  await expect(decision.getByRole("radio", { checked: true })).toHaveCount(0);
-  await decision.getByRole("button", { name: "Apply suggestion", exact: true }).click();
-  await expect(decision.getByRole("radio", { name: "Sufficient (human choice)", exact: true })).toBeChecked();
+  await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
+  await expect(operatorRadio(page, "ACCEPT")).not.toBeChecked();
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(operatorRadio(page, "ACCEPT")).toBeChecked();
+  await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
   await expect(page.getByRole("main")).toContainText("declared by the pharmacy, not read from the form");
   const audit = await new AxeBuilder({ page }).analyze();
   await captureJson(info, "worked-declaration-built-case-axe", audit);
@@ -42,7 +41,8 @@ test("a contradictory human capture does not turn a complete declaration into so
   await page.locator('[data-case-id="EX-24123"]').getByRole("link", { name: "Open EX-24123", exact: true }).click();
   await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
   await expect(page.getByText("The sources agree.", { exact: true })).toHaveCount(0);
-  await expect(page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("button", { name: "Apply suggestion", exact: true })).toBeDisabled();
+  await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+  await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
 });
 
 for (const enabled of [false, true]) {
@@ -58,7 +58,7 @@ for (const enabled of [false, true]) {
       await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24123:2");
       await navigatePrimary(page, "NHSBSA queue");
     }
-    const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
+    const capture = await openQueueCapture(page);
     for (const [name, value] of Object.entries(PAPER_D_CAPTURE_FIELDS)) {
       const field = capture.getByRole("textbox", { name, exact: true });
       if (!enabled || name === "Prescriber") {
@@ -71,20 +71,22 @@ for (const enabled of [false, true]) {
     const row = page.getByRole("region", { name: "Type 2 worklist", exact: true }).locator('[data-case-id="EX-24123"]');
     await expect(row).toBeVisible();
     await row.getByRole("link", { name: "Open EX-24123", exact: true }).click();
-    await expect(page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true })
-      .getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Human capture confirmed", exact: true })).toBeVisible();
     await operatorRadio(page, "ACCEPT").check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human checked the captured product, quantity, endorsement and independently established prescriber.");
     await performDecision(page, "ACCEPT", { releaseVerified: enabled });
+    await expect(page).toHaveURL(/\/record$/);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     const detail = page.getByRole("region", { name: "Claim detail", exact: true });
-    await expect(detail).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
-    await expect(detail).toContainText("after operator review");
+    await expect(detail.getByRole("status").first()).toHaveText(humanReleaseLabel(enabled, "pharmacy"));
     await expect(detail).not.toContainText("no operator action");
     await expect(detail).not.toContainText("no person involved");
     await detail.getByText("History and attempts (2)", { exact: true }).click();
     await expect(detail.getByRole("region", { name: "Type 1 capture for attempt 2", exact: true })).toContainText("Dr Demo (synthetic)");
-    await expect(detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").last()).toContainText("operator");
+    const lifecycleEvents = detail.getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li");
+    await expect(lifecycleEvents.filter({ hasText: "Human review complete; released to existing pricing. No payment calculated." })).toHaveCount(1);
+    await expect(lifecycleEvents.last()).toContainText("operator");
+    await expect(lifecycleEvents.last()).toContainText("Human review complete; released to existing pricing. No payment calculated.");
     const audit = await new AxeBuilder({ page }).analyze();
     await captureJson(info, "four-case-paper-human-pricing-axe", audit);
     expect(audit.violations).toEqual([]);

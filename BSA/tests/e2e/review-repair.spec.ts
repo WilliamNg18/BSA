@@ -1,7 +1,9 @@
 import { expect, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
-import { openAuditRecord, operatorAction, operatorDecision, startDemonstrationReview } from "./operator-action-helpers";
-import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { startDemonstrationReview } from "./lifecycle-helpers";
+import { choosePharmacyRadio, openPharmacyReceipt } from "./pharmacy-scenario-helpers";
+import { openAuditRecord, operatorAction, operatorDecision } from "./operator-action-helpers";
+import { chooseProcessChapter } from "./process-model-helpers";
 
 test("complete EPS Off describes hypothetical risk without running a hidden check", async ({ page }) => {
   await page.goto("/pharmacy");
@@ -11,7 +13,7 @@ test("complete EPS Off describes hypothetical risk without running a hidden chec
   await expect(page.getByRole("button", { name: "Manual: No advisory check; later correction is possible", exact: true })).toBeVisible();
   await expect(page.getByRole("list", { name: "Requirement checkboxes", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
-  const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+  const receipt = await openPharmacyReceipt(page);
   await expect(receipt).toContainText("no person involved");
   await expect(receipt).toContainText("not_checked");
   await expect(page.getByRole("button", { name: "Manual: No advisory check; later correction is possible", exact: true })).toBeVisible();
@@ -29,8 +31,7 @@ test("confirmed conflicted paper records an attestation without claiming agreeme
   await expect(page.getByRole("main")).toContainText("The operator attested reconciliation; this does not prove source agreement.");
   await expect(page.getByRole("main")).not.toContainText("declaration and paper explicitly reconciled");
   await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
-  await page.goto("/#cases");
-  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await chooseProcessChapter(page, 4);
   await expect(page.locator('[data-case="C"]')).toHaveCount(0);
   const currentB = page.locator("[data-case]").filter({ hasText: "EX-24112" });
   await expect(currentB.locator("[data-outcome]")).toHaveText("Refer back with the exact fix");
@@ -51,7 +52,7 @@ for (const enabled of [false, true]) {
       await record.click();
       const error = page.getByRole("alert").filter({ hasText: message });
       await expect(error).toBeFocused();
-      const prose = (await panel.locator(":scope > p").allTextContents()).join(" ");
+      const prose = (await panel.locator(":scope > p, :scope > div > p").allTextContents()).join(" ");
       expect(prose.trim().split(/\s+/).length, prose).toBeLessThan(25);
       await expect(panel.getByRole("radio")).toHaveCount(4);
       await expect(referral).toBeChecked();

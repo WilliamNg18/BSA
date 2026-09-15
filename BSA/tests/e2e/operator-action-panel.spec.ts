@@ -115,7 +115,10 @@ for (const enabled of [false, true]) {
   test(`automated count opens a read-only audit with no human decision prompt, Agent ${enabled}`, async ({ page }) => {
     await page.goto("/pharmacy");
     await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+    await page.getByRole("radio", { name: "Complete endorsement", exact: true }).click();
+    await expect(page).toHaveURL(/case=EX-24107/);
+    await expect(page.getByRole("radio", { name: "Complete endorsement", exact: true })).toBeChecked();
+    await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24107");
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
     await navigatePrimary(page, "NHSBSA queue");
     const records = page.locator("[data-automated-records]");

@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
-import { expect } from "./fixtures";
+import { expect, navigatePrimary } from "./fixtures";
+import { TOUR_CHAPTERS } from "../../src/lib/tour-navigation";
 import { PROCESS_FIELDS } from "../../src/components/demo/process-fields";
 import { MANUAL_LOOP_MONTH_DEFAULTS as PROCESS_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, type ManualLoopMonthInputs as ProcessMonthInputs, type ManualLoopMonthResult as ProcessMonthResult } from "../../src/lib/domain/baseline";
 import { calculateManualLoopMonth as calculateProcessMonth } from "../../src/lib/domain/manual-loop-month-model";
@@ -73,14 +74,21 @@ export async function expectSceneMetrics(page: Page, input = PROCESS_MONTH_DEFAU
 }
 
 export async function chooseProcessChapter(page: Page, chapter: 1 | 2 | 3 | 4) {
-  const label = {
-    1: "1. Real process", 2: "2. A month in numbers",
-    3: "3. Evidence to a decision", 4: "4. Cases and boundaries",
-  }[chapter];
-  await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
-  const item = page.getByRole("menuitem", { name: label, exact: true });
+  const section = TOUR_CHAPTERS.find((entry) => entry.chapter === chapter);
+  if (!section) throw new Error(`No overview section is defined for chapter ${chapter}.`);
+  const exit = page.getByRole("button", { name: "Exit demo", exact: true });
+  if (await exit.count()) await exit.click();
+  const beforeOverview = page.url();
+  await navigatePrimary(page, "Overview");
+  await expect(page.locator('[data-tour-chapter="1"]')).toBeVisible();
+  if (page.url() !== beforeOverview) {
+    await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
+  }
+  const item = page.getByRole("navigation", { name: "Overview sections", exact: true })
+    .getByRole("link", { name: section.label, exact: true });
   await item.focus();
   await expect(item).toBeFocused();
   await item.press("Enter");
-  await expect(page).toHaveURL(new RegExp(`#${{ 1: "scene", 2: "month", 3: "pipeline", 4: "cases" }[chapter]}$`));
+  await expect(page).toHaveURL((url) => `${url.pathname}${url.hash}` === section.to);
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeFocused();
 }

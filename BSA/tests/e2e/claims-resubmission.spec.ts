@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
-import { operatorDecision, performDecision } from "./operator-action-helpers";
+import { decisionNote, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 for (const [width, colorScheme] of [[1440, "light"]] as const) {
   test.describe(`claims resubmission comparison ${width} ${colorScheme}`, () => {
@@ -61,6 +61,10 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
       await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+      await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
+      expect((await decisionNote(page).inputValue()).trim().length).toBeGreaterThanOrEqual(8);
+      await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Awaiting operator");
       await performDecision(page, "REFER_BACK");
       await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
       await expect(page.getByRole("heading", { name: "Claim detail: EX-24112", exact: true })).toBeVisible();
@@ -90,7 +94,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await page.keyboard.press("Enter");
       await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
       await expect(marker).toHaveText("Assisted: Ready; explicit resubmission required");
-      await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Changed fields highlighted; not sent.");
+      await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Highlighted; not sent.");
       await flag.setChecked(false);
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
       await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);

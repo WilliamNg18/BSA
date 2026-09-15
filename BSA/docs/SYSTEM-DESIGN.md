@@ -50,7 +50,7 @@ Proposed for production
 
 Proposed for production
 
-Five evidence sources must be joined: source image or EPS message, captured fields, product and pack master, claim ledger and case history. The retrieved dated Tariff governs them. Endorsement type selects a provision, version and requirements; reconciliation then determines whether advice or abstention is justified.
+Five read-only sources: image and captured fields or EPS message; product and pack master; claim ledger; case history; and effective-date Tariff corpus. Endorsement type selects a provision, version and requirements; reconciliation then determines whether advice or abstention is justified. Captured fields are a source representation, not independent corroboration.
 
 ### Keep the agent's job small
 

@@ -1,7 +1,7 @@
 ---
 title: Four-case desktop demonstration specification
 description: Eleven shared-state steps, source-bound verification, explicit human actions and an honest system-design reference.
-ms.date: 2026-09-14
+ms.date: 2026-09-15
 ---
 
 ## 1. Purpose and authority
@@ -60,8 +60,13 @@ Unknown or background IDs cannot create operational controls or substitute
 another item. Pharmacy case/channel queries select the actual source form;
 invalid combinations show recovery rather than a different case.
 
+Ordinary Home also exposes six real **Overview sections** links to `/#scene`,
+`/#month`, `/#pipeline`, `/#cases`, `/#two-places` and `/#close`. These use
+SPA navigation and retain the shared state. They are absent from the focused
+demo; the removed chapter rail is not restored.
+
 `demoStep: null` means ordinary navigation. **Enter demo mode** deliberately
-selects step 1. The Demo mode strip replaces the former chapter rail and
+selects step 1 at `/#pipeline`. The Demo mode strip replaces the former chapter rail and
 contains Back, Next, a labelled jump selector and Exit demo. The eleven steps:
 
 | Step | Subject | Case |
@@ -217,7 +222,7 @@ Meaningful UI prose stays under 25 words per panel; the system-design
 reference alone permits under 60. UK English and no em dashes remain required.
 
 Final acceptance additionally requires the complete named latest-main live
-inventory: all eleven steps Off/On, Back/Next at both desktop widths, the
+inventory of 75 checks: all eleven steps Off/On, Back/Next at both desktop widths, the
 actual operator-to-pharmacy hand-off, all four full cycles in Both and
 switched perspectives, both side buttons at every state, real Apply/Release
 and Apply/Resubmit actions, wrong EPS never automatically released, both
@@ -227,6 +232,8 @@ The separate instrumented matrix compares complete domain snapshots after
 each UI action with controlled clocks and IDs, including all verification,
 drafts, records and capture metadata. It never strips inconvenient fields.
 The ordinary production build must not expose its read-only observer.
+The existing 36 state checks remain intact; eight additional four-case checks
+exercise both side buttons at every state without replacing that coverage.
 
 Local rehearsal is not hosted acceptance. Partial or duplicated selections,
 missing or dirty identities, mismatched commits, errors and retries cannot

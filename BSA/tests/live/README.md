@@ -17,6 +17,10 @@ domain fixtures remain semantic evidence; they do not make C/F/E, readable
 paper or old recheck fixtures operational. The former live files and their
 30-name inventory are superseded by the current four-case scope. Historical
 reports, captures and failures retain their original identities.
+The retained `continuous-cycle`, `generic-correction`, `perspective` and
+`task30` files import `legacy-inventory.ts` solely to preserve their historical
+declarations and assertions. Neither current live configuration selects those
+files; their names do not enter the 75-name acceptance inventory.
 
 ## Readiness and invocation
 

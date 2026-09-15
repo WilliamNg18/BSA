@@ -18,6 +18,9 @@ const labels = {
 
 // O-phase contract: exact current controls; never detect or fall back to the old panel.
 export const operatorDecision = (page: Page) => page.getByRole("region", { name: "Operator decision", exact: true });
+export const operatorActionButtons = (page: Page) => operatorDecision(page).getByRole("button", {
+  name: /^(Release to pricing|Refer back|Request information|Escalate)$/,
+});
 export const operatorRadio = (page: Page, outcome: OperatorOutcome) =>
   operatorDecision(page).getByRole("radio", { name: labels[outcome], exact: true });
 export const operatorAction = (page: Page, outcome: OperatorOutcome) =>
@@ -25,6 +28,10 @@ export const operatorAction = (page: Page, outcome: OperatorOutcome) =>
 export const decisionNote = (page: Page, outcome: OperatorOutcome = "ESCALATE") =>
   operatorDecision(page).getByRole("textbox", { name: outcome === "REQUEST_INFORMATION" ? "Question (required)" : "Reason (required)", exact: true });
 export const reasonError = "Enter a reason of at least eight characters.";
+export const humanReleaseLabel = (verified: boolean, side: "pharmacy" | "nhsbsa") =>
+  side === "pharmacy"
+    ? `${verified ? "Verified and released" : "Released"} to pricing after operator review (synthetic)`
+    : `${verified ? "Verified and released" : "Released"} to existing pricing after operator review`;
 
 export async function openAuditRecord(page: Page) {
   await page.getByRole("navigation", { name: "Case views", exact: true })

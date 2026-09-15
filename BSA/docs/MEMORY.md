@@ -6,11 +6,96 @@ ms.date: 2026-09-13
 
 ## Purpose and principle
 
-Current scope is Tasks 31-36: a desktop-only eleven-step demonstration, explicit
+Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit
 operator/pharmacy action panels, a persistent followed item and two verification
 gates. Verify at 1280 and 1440 px; capture new screenshots at 1440 px only.
 The owner explicitly removed mobile/tablet layouts, navigation and test/capture
 coverage. Follow the 14 September contracts in DECISIONS before any older rule.
+
+## Vision
+
+This is a proof of concept showing the art of the possible with agentic AI on one real problem at NHSBSA, presented as a Forward Deployed Engineer would show it to stakeholders: the problem first, then the outcome, with the audience watching the change rather than being told about it.
+
+The header toggle is the story. Off is Today: what NHSBSA and the pharmacy have now. On is With the agent: the same step, solved. Every step shows both, side by side.
+Both perspective is the guided walkthrough: the problem in numbers (over 100 million items a month; most priced with no person; roughly four per cent touched by staff; 85,000 a month referred back), what they have now, what they are trying to achieve, then the agentic outcome step by step.
+Wherever the agent is On and the item is not automatic, a case is built, the agent advises, and one button acts on the advice: at the pharmacy, Apply suggested correction then Send or Resubmit; at NHSBSA, Apply suggestion then Release to pricing or Refer back. The agent never presses the final button.
+The cycle is live and shared: submit from the pharmacy and the item appears in NHSBSA's queue; satisfied at both gates means completed with no operator action and the pharmacy sees Paid on the normal schedule (released to existing pricing; the agent pays nothing); not satisfied means NHSBSA is notified, the operator opens a case with image, extracted fields, evidence and recommendation, applies the fix or refers back, and the pharmacy sees exactly why. Following a case shows the same item at every point; switching perspective shows exactly what that side sees, without Reset.
+Four real cases only, playable end to end and re-playable; everything else is labelled background.
+
+The four playable examples are synthetic: EPS complete `EX-24107`, EPS missing
+date `EX-24112`, wrong-but-complete-looking EPS `SYN-FQ123-MISMATCH`, and unreadable
+paper `EX-24123`. C and F are fixed unclickable background; E's rule-only behaviour
+is illustrated within complete EPS Today. All other playable seeds are removed.
+Historic six-case records and domain regression evidence are not rewritten.
+The latest four-case instruction supersedes the earlier ten-item seed proposal.
+Paid means the existing pricing path and normal schedule, not a payment performed
+or approved by this prototype. Failed gates never imply automatic completion.
+
+The eleven-step order remains. The former readable-paper step becomes the
+unreadable paper's pharmacy declaration/submission; the next step shows that
+same item's NHSBSA capture/confirmation. These are two distinct human hand-offs,
+not a fifth scenario or two copies of one panel.
+Task 37 adds the separate How it works reference page: panels under 60 words
+there only, with built/proposed/assumption labels. Vendor names are permitted
+only in its single "Reference mapping, one example" table; all other interface
+copy stays capability-based. ALIGNMENT tracks drift against actual main and
+in-flight commits; a contract decision alone is not deployed acceptance.
+
+### Recommendation always visible and concrete
+
+The latest addition extends Tasks 25-37; it does not replace their safeguards.
+Every Agent-On item view shows an expanded Recommendation card with the
+dispensing-date clause/version, requirement results, missing facts, concrete
+suggestions and exact corrected previews, outcome and five confidence signals.
+The card says "the agent verifies and advises; a person decides".
+Complete items say what is complete and that nothing needs adding. A missing
+provision or unknown value is disclosed, never fabricated. Non-item reference,
+pipeline and monthly screens do not invent a selected prescription.
+
+Preview and Apply use one shared, source-bound patch. Dates come from the
+dispensing date; manufacturer, pack and form suggestions cite actual product
+evidence. An unknown invoice price remains a required human input with a
+placeholder, not a value inferred from the claim or an invented invoice.
+Applying a suggestion remains distinct from sending, resubmitting or deciding.
+
+The unreadable-paper demonstration has explicit scanner-preview and complete/
+missing-declaration preparation controls. They prepare a synthetic draft, never
+silently send it or rewrite the original scan. Post remains available when
+advice is incomplete; unreadable paper always needs an actual operator release.
+Type 1 confirms or corrects declared evidence, then Type 2 takes the final action.
+Disagreement stays visible: safe Refer back/Request information advice must not
+turn abstention into verified agreement or permit release. Only a separate
+human decision can approve a communication or change disposition.
+
+All four cases must show each successful business action on both sides within
+one second, with the same item, exact reason/answer, and truthful last event.
+The Follow controls preserve the ongoing case without Reset. Timed browser
+assertions must measure the actual action and destination view, not a timeout
+started after an arbitrary sleep. The expanded requirements are recorded in
+ALIGNMENT and verified on the latest deployed main before completion.
+
+## Decision authority
+
+1. For any question about how to implement, interpret, name, lay out, order, style, test, or resolve a conflict between two instructions, choose the option that best fits these tie-breakers, in this order, and continue without asking: (a) keeps the governing principle intact (the agent gathers evidence and recommends; deterministic code validates and calculates; a human decides; nothing here calculates or approves a payment); (b) keeps the six case outcomes and the two-gate rule intact; (c) makes the difference between Today and With the agent more visible to a first-time viewer; (d) is simpler and faster to build; (e) matches the most recent instruction over an older one. Record the choice in docs/DECISIONS.md in one line: the question, the option chosen, the tie-breaker that decided it.
+2. Ask me only if: (i) a decision would change the governing principle or one of the six case outcomes; (ii) an action needs a credential, permission or payment only I hold (an Azure or GitHub setting, a token, billing); or (iii) an instruction I gave says in so many words "check with me before" or "double check". Nothing else qualifies. If unsure whether a question qualifies, it does not; decide and record.
+3. When you post a question that does qualify, post it as STATUS with the exact steps or the exact choice, and keep every other stream building while you wait. Never pause a stream that is not blocked by that question.
+4. Default answers for questions that have already come up, so they are never asked again: naming and labels, use the words in docs/MEMORY.md "Words that must and must not appear" and the lifecycle label table; layout, desktop only at 1280 and 1440 px, side by side Today left and With the agent right; copy, under 25 words per panel, UK English, no em dashes; figures, every With figure tagged "estimate", every assumption editable and tagged; time model, the defaults in Task 28; ordering, the eleven demo steps in Task 31; scope, if a request is ambiguous build the smaller version that still shows the Today versus With difference and log the larger version as a follow-up issue; tests, keep only the blocking checks (npm run check, Vitest, crash and dead-control and six-outcome Playwright, axe) and make everything else informational; data, one pharmacy, Hillcrest, other pharmacies as unclickable background; motion, two-second sequence with reduced-motion crossfade; anything about mobile or tablet, out of scope, do not build or test.
+
+## Words that must and must not appear
+
+Required interface wording: "released to existing pricing, no operator action";
+"priced by NHSBSA's existing rules engine, no person involved";
+"the agent verifies and advises; a person decides";
+"applied by the operator from the agent's suggestion";
+"declared by the pharmacy, not read from the form"; "rule and reason recorded";
+"experience only"; and "estimate" on every With figure.
+The no-operator phrases apply only to actual automatic paths, never human releases.
+Do not use "approved by the agent", "paid by the agent", implementation vendor,
+product or documentary names, or em dashes. Task 37 permits concrete services
+only in its single labelled reference-mapping table. Required process names and
+synthetic prescription content remain permitted, as recorded in DECISIONS.
+
+## Current desktop contracts
 
 Gate 1 checks typed EPS or declared paper against the dispensing-month provision.
 Gate 2 independently reconciles what arrived with source evidence and the claim.
@@ -20,6 +105,9 @@ the proposal for a human-initiated attempt; toggling never rewrites old release
 history. The user explicitly approved distinct labels for human releases:
 "no operator action" applies only to code-only verification, never an actual
 operator Release button. No release here calculates or approves a payment.
+The owner also explicitly approved Off human release after the existing
+deterministic checks and explicit human judgement; both proposed gates remain
+`none`. Only the automatic path requires both proposed gates to pass.
 
 One store also holds revision-bound operator and pharmacy drafts, current
 `itemVerification`, and presentation-only `demoStep`. `DEMO_STEPS` is the frozen
@@ -69,8 +157,9 @@ separate 30-check hosted runs, each with 60 clean identities, 58 images and
 gate; that report, capture set and manual record stay immutable. Repair #87
 corrects source wording, cumulative prose, capture obstruction and mobile focus
 without changing domain outcomes or historical records. Independent review of
-the new `34d7567` capture remains a gate before the runtime-identical evidence/docs
-PR and latest-main repeat close the release. Do not infer acceptance from CI.
+the new `34d7567` capture remained unverified. That historical release checklist
+is superseded by the current desktop acceptance, not retrospectively passed.
+Do not infer acceptance from CI.
 
 ## Process model
 
