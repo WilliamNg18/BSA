@@ -2079,3 +2079,8 @@ Tie-breakers: preserved history and human decisions.
 - Question: what is filled for an unknown invoice price? Choice: nothing. The actual invoice control focuses the authoritative endorsement field for manual entry; no claimed amount becomes invoice evidence.
 - Question: which fields are highlighted? Choice: R's before/after applied-field metadata, including restored original values; not an inference from the original source alone.
 - Question: how does the demo recognise shared-card controls? Choice: an optional pharmacy-only prop marks the real Apply and invoice-focus buttons. No proxy controls or weakened absence checks.
+
+## 2026-09-15: Current pharmacy communication visibility
+
+- Question: should an expanded recommendation push the operator's current question below the hand-off viewport? Choice: place the actual question, confirmation controls, sent answer and referral response near the claim state, before supporting evidence. Keep the full recommendation expanded and preserve every recorded word.
+- Question: how should a followed claim enter the viewport? Choice: focus its heading without browser nearest-edge scrolling, then align it below the measured sticky header. Repeat only for a case, state or revision change, never a draft edit or assistance toggle. The one-second assertion and its actual evidence nodes remain unchanged.
