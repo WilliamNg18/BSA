@@ -74,7 +74,7 @@ for (const enabled of [false, true]) {
       await expect(attempts).toHaveCount(3);
       await expect(attempts.nth(1)).toContainText("NCSO  RK");
       await expect(attempts.nth(1)).not.toContainText("NCSO  RK 21/08/26");
-      await expect(attempts.nth(2)).toContainText("NCSO  RK 21/08/26");
+      await expect(attempts.nth(2)).toContainText(enabled ? "NCSO RK 21/08/26" : "NCSO  RK 21/08/26");
       await expect(attempts.nth(2)).toContainText(enabled ? "ready · scripted" : "not_checked · off");
       const events = history(page).getByRole("list", { name: "Lifecycle events" });
       await expect(events.getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(2);

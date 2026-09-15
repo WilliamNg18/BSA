@@ -52,7 +52,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
-  await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
+  await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO RK 21/08/26");
   await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("Ready");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("Ready");

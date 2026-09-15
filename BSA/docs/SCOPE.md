@@ -6,7 +6,7 @@ ms.date: 2026-09-13
 
 # Scope register
 
-## Current scope: Tasks 25-37, four-case desktop vision
+## Current scope: Tasks 25-38, four-case desktop vision
 
 The 14 September owner brief supersedes the previous closeout. Supported
 verification widths are 1280 and 1440 px; new captures are 1440 px only.
@@ -18,20 +18,23 @@ behaviour is contained in complete EPS Today. ALIGNMENT owns drift and proof.
 
 | Task | Status | Required outcome |
 | --- | --- | --- |
-| 31 D | In progress | Eleven focused step screens, Today/With panels, persistent strip and correct routes/case/channel |
+| 31 D | Core merged; integration in progress | Eleven focused steps, expanded paper steps 7-10, visible recommendation and correct same-case routing |
 | 32 F | In progress | Same-item reference/channel/state/location/history and explicit Pharmacy/NHSBSA side controls |
 | 33 O | In progress | Human Apply suggestion and Release/referral/information/escalation controls with code gating |
 | 34 P | In progress | Actual approved correction application, resubmission, confirmation and verification receipts |
-| 35 G | In progress | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released |
+| 35 G | Done, #93 | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released; new Task 38 extensions remain separately gated |
 | 36 V | In progress | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
 | 37 S | In progress | Complete How it works reference page, SYSTEM-DESIGN, contents rail, diagrams, labelled assumptions and sole concrete-service mapping table |
+| 38 R | In progress | Always-visible source-bound Recommendation card, concrete values and exact previews, safe disagreement follow-up and cross-surface integrations |
 
-No new task is accepted yet. The user approved keeping human-release provenance
+Task 35's kernel is merged; remaining UI, mounting and Task 38 additions are not
+yet accepted. The user approved keeping human-release provenance
 visible; only automatic two-gate release may say no operator action.
 The prior Tasks 25-30 visual acceptance is unverified, not silently waived or
 renamed complete by the new desktop scope. Current completion instead requires
-the owner's latest Tasks 25-37 desktop live checklist against the final main.
-All seven new rows are owned and active; no unowned Not started row currently
+the owner's latest Tasks 25-38 desktop live checklist against the final main,
+including all five additional requirements and one-second cross-side assertions.
+All eight rows have owners; no unowned Not started row currently
 exists. A finished stream completes its integration/proof handoff before taking
 the next newly recorded, unowned Not started row.
 

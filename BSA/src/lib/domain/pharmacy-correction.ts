@@ -55,7 +55,7 @@ export function checkPharmacyCorrection(current: ExceptionCase, revision: CaseRe
     agreement: "Typed declaration format only; received-source reconciliation remains separate" };
 }
 
-export function suggestedPharmacyCorrection(current: ExceptionCase, revision: CaseRevision, draft = initialisePharmacyDraft(current, revision)): PharmacyCorrectionDraft {
+export function previewPharmacyCorrection(current: ExceptionCase, revision: CaseRevision, draft = initialisePharmacyDraft(current, revision)): PharmacyCorrectionDraft | null {
   if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale.");
   const next: { -readonly [K in keyof PharmacyCorrectionDraft]: PharmacyCorrectionDraft[K] } = structuredClone(draft);
   const eps = next.epsPrescription, paper = next.paperDeclaration;
@@ -71,15 +71,52 @@ export function suggestedPharmacyCorrection(current: ExceptionCase, revision: Ca
   if (facts.type === "NCSO" && facts.initialled && !facts.dated && versionForDate(date)?.clauses
     .find((entry) => entry.endorsementType === "NCSO")?.requirements.some((entry) => entry.id === "dated")) {
     const [year, month, day] = date.split("-");
-    next.endorsementText = `${next.endorsementText.trimEnd()} ${day}/${month}/${year.slice(2)}`;
+    next.endorsementText = `${next.endorsementText.trim().replace(/[ \t]+/g, " ")} ${day}/${month}/${year.slice(2)}`;
     changed = true;
   }
-  if (!changed) throw new Error("No supported correction is available; enter the required facts explicitly.");
+  if (!changed) return null;
   if (next.epsPrescription) next.epsPrescription = { ...next.epsPrescription, dispenserEndorsement: next.endorsementText, claimMessageState: "submitted" };
   if (paper) next.paperDeclaration = { ...paper, endorsementText: next.endorsementText };
   if (next.declaration) next.declaration = { ...next.declaration, fields: { ...next.declaration.fields, endorsementText: next.endorsementText,
     ...(next.paperDeclaration ? { productCode: paperDeclarationFields(next.paperDeclaration).productCode, quantity: next.paperDeclaration.quantity } : {}) } };
   if (next.declaration?.fields.productCode && !productByCode(next.declaration.fields.productCode)) throw new Error("Unknown corrected product.");
   validateSubmissionSources({ ...next, caseId: current.id, channel: next.channel ?? revision.channel ?? "paper" }, revision.number);
-  return immutable({ ...next, appliedSuggestion: true });
+  return immutable({ ...next, appliedSuggestion: true, appliedFields: getChangedPharmacyFields(draft, next) });
+}
+
+export function getChangedPharmacyFields(before: PharmacyCorrectionDraft, after: PharmacyCorrectionDraft): NonNullable<PharmacyCorrectionDraft["appliedFields"]> {
+  const fields: ("endorsementText" | "brandManufacturer" | "packSize" | "form")[] = [];
+  if (before.endorsementText !== after.endorsementText) fields.push("endorsementText");
+  for (const field of ["brandManufacturer", "packSize", "form"] as const) {
+    if (before.epsPrescription?.supplyEvidence?.[field] !== after.epsPrescription?.supplyEvidence?.[field]) fields.push(field);
+  }
+  return fields;
+}
+
+export function suggestedPharmacyCorrection(current: ExceptionCase, revision: CaseRevision, draft = initialisePharmacyDraft(current, revision)): PharmacyCorrectionDraft {
+  const preview = previewPharmacyCorrection(current, revision, draft);
+  if (!preview) throw new Error("No supported correction is available; enter the required facts explicitly.");
+  return preview;
+}
+
+/** Explicit human-selected synthetic prefill, not an interpretation of the retained scan. */
+export function preparePaperDemoDraft(current: ExceptionCase, revision: CaseRevision, variant: "complete" | "missing"): PharmacyCorrectionDraft {
+  if (current.id !== "EX-24123" || !["complete", "missing"].includes(variant)) throw new Error("Choose a supported unreadable-paper demo declaration.");
+  const original = caseById(current.id);
+  if (!original) throw new Error("Original paper demo evidence is unavailable.");
+  const date = original.extracted.dispensingDate;
+  const [year, month, day] = date.split("-");
+  const endorsementText = variant === "complete" ? `NCSO JB ${day}/${month}/${year.slice(2)}` : "NCSO JB";
+  const draft = {
+    revision: revision.number, channel: "paper" as const, purpose: "new_submission" as const,
+    endorsementText, paperDeclaration: {
+      typedProduct: original.claim.productCode, quantity: original.claim.quantity, endorsementText,
+      dispensingDate: date, declaredByPharmacy: true as const,
+    },
+  };
+  const prepared = synchronisePharmacyDraft(draft, revision);
+  return immutable({ ...prepared, declaration: {
+    ...prepared.declaration!,
+    fields: { ...prepared.declaration!.fields, prescriber: "Dr Example (synthetic demo declaration)" },
+  }, appliedSuggestion: false });
 }

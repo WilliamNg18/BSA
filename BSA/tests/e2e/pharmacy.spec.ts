@@ -142,7 +142,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await page.getByRole("button", { name: "Apply suggested correction", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(field).toBeFocused();
-  await expect(field).toHaveValue("NCSO  RK 21/08/26");
+  await expect(field).toHaveValue("NCSO RK 21/08/26");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
   await expect(await openPharmacyPrecheck(page)).toContainText("Dated: met");
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
@@ -153,7 +153,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await expect(page.getByRole("list", { name: "Submission timeline" }).locator("li")).toHaveCount(2);
   await field.fill("NCSO  RK");
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
-  await expect(await openPharmacyReceipt(page)).toContainText("NCSO  RK 21/08/26");
+  await expect(await openPharmacyReceipt(page)).toContainText("NCSO RK 21/08/26");
   await confirmReset(page);
   await expect(page.getByRole("region", { name: "Submission receipt" })).toHaveCount(0);
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
@@ -219,7 +219,7 @@ test("Task4 corrected B stays corrected when submitted Off, without performed ch
   await flag.setChecked(false);
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
   const receipt = await openPharmacyReceipt(page);
-  await expect(receipt).toContainText("NCSO  RK 21/08/26");
+  await expect(receipt).toContainText("NCSO RK 21/08/26");
   await expect(receipt).toContainText("not_checked");
   await expect(receipt).toContainText("No checks performed");
   await page.getByRole("button", { name: "Jump to end", exact: true }).click();

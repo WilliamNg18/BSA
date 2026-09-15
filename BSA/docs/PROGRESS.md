@@ -4,7 +4,14 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-13
 ---
 
-## Active scope: Tasks 25-37, four-case desktop vision
+## Active scope: Tasks 25-38, four-case desktop vision
+
+The recommendation/paper addition is classified in ALIGNMENT. New Stream R owns
+the shared always-visible concrete recommendation contract/card and safe
+suggestion adapters; P/O/F/D/V retain and extend their existing responsibilities.
+G #93 is merged at `71127d24`, with its main CI/deployment passed. D's independent
+core #88 is merged at `5dd65d2`; its deployment identity has been verified.
+Neither merge is acceptance of the remaining UI, mounting or new requirements.
 
 The latest 14 September Vision brief supersedes the prior final-closeout workflow.
 Only four examples remain playable: complete EPS, missing-date EPS,
@@ -34,13 +41,14 @@ retrieve the original bytes from their original Git commits, not the current tre
 
 | Task | Stream | Ownership | Status |
 | --- | --- | --- | --- |
-| 31 | D | Demo strip, eleven step layouts and navigation | In progress; unmounted core draft #88, integration follows O/P |
+| 31 | D | Demo strip, eleven step layouts and navigation | Core #88 merged; mounting and expanded paper/recommendation steps remain |
 | 32 | F | Follow banner and explicit side links | In progress; explicit navigation and single-store correction implemented, latest four-case proof pending |
 | 33 | O | Operator decision and Type 1 panels | In progress; shared panel and actions authored, concrete capture crash referred to G |
 | 34 | P | Pharmacy claim actions, submission receipts and released count | In progress; compact exports authored, four-case presentation and integrated proof pending |
-| 35 | G | Verification/routing, shared store actions and wrong-information scenario | In progress; early `22e1b47` callable foundation, legacy regression repair and four-case cut pending |
+| 35 | G | Verification/routing, shared store actions and wrong-information scenario | Done: #93 merged at `71127d24`; Task 38 additions are separately owned by R |
 | 36 | V | Desktop tests/screenshots, live checklist and final documentation | In progress; phased compatibility, latest four-case live inventory and source checks |
 | 37 | S | How it works, SYSTEM-DESIGN, contents rail, diagrams and bounded tests | In progress; existing architecture route retained, new stream on Step 0 main |
+| 38 | R | Concrete recommendation schema/card, exact previews and safe diagnostic suggestions | In progress; new foundation stream, integrations coordinated with P/O/D/F/V |
 
 Step 0 reached main as `5e8fb35d5a849cfaaefa4bc45ba95a042a50e945`.
 Deployment 34870106263 succeeded; public root/build identity matched with strict
@@ -57,7 +65,8 @@ is claimed. All four cases must complete their applicable live cycles in Both
 and again switching perspectives at every state. Automatic complete EPS needs
 no invented referral/operator work; mismatched facts must be corrected before
 release, never waived to finish the walkthrough. Decisions and resource
-constraints are recorded explicitly. No new task is accepted yet.
+constraints are recorded explicitly. Task 35's merged kernel is accepted within
+its scope; remaining UI, mounting and Task 38 additions still require verification.
 
 ## Active scope: Tasks 25-30, one pharmacy and one continuous cycle
 

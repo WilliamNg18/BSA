@@ -1,5 +1,6 @@
 /** Frozen cross-stream contracts. Synthetic session data, not payment authority. */
 import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, EpsPrescription, FieldProvenance, HumanDecision, ItemChannel, PaperDeclaration, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
+import type { DiagnosticFollowUp } from "./recommendations";
 
 export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated" | "released_to_pricing";
 export type Actor = "pharmacy" | "agent" | "code" | "operator";
@@ -34,6 +35,7 @@ export interface PharmacyCorrectionDraft {
   readonly paperDeclaration?: PaperDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly appliedSuggestion: boolean;
+  readonly appliedFields?: readonly ("endorsementText" | "brandManufacturer" | "packSize" | "form")[];
   readonly confirmation?: string;
 }
 
@@ -77,7 +79,9 @@ export interface HistoryEvent {
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
   /** Snapshot of advice explicitly copied by a person, not recomputed on release. */
-  readonly appliedSuggestionEvidence?: Pick<DecisionRecord, "recommendation" | "tariffVersion" | "agentVersion" | "inputs" | "sources" | "checks">;
+  readonly appliedSuggestionEvidence?: Pick<DecisionRecord, "recommendation" | "tariffVersion" | "agentVersion" | "inputs" | "sources" | "checks"> & {
+    readonly diagnostic?: DiagnosticFollowUp;
+  };
 }
 
 /** Created only by an explicit human approval argument, never by the flag. */
@@ -87,7 +91,9 @@ export interface ApprovedDraft {
   readonly approvedBy: string;
   readonly decision: HumanDecision;
   readonly tariffVersion: string;
-  readonly clauseId: string;
+  readonly clauseId: string | null;
+  readonly provenance?: "verified_findings" | "unverified" | "reconciliation_failed";
+  readonly diagnostic?: DiagnosticFollowUp;
 }
 
 /** Original historical records remain valid; new records carry revision linkage. */
