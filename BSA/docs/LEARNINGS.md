@@ -30,6 +30,12 @@ A source region with an empty string is still a present region. Rendering
 that region visually empty and preserves the source's synthetic patient and
 pharmacy labels; OCR labels remain in their separate hypothetical column.
 
+The amendment visibility gap was in the canonical source snapshot, not the
+renderer. G `cdd436b` adds the actual brand/pack/form regions; U's canonical
+store/render test now finds each in the scan column after acknowledged
+resubmission. Forty-six selected tests and typecheck pass without a UI
+declaration-to-image fallback.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The
