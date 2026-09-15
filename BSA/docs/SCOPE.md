@@ -6,6 +6,25 @@ ms.date: 2026-09-15
 
 # Scope register
 
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+## B40 readable-blank scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
 ### G39/40 explicit-action checkpoint
 
 Functional checkpoint: the four new cases and channel-specific actual actions

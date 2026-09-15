@@ -66,8 +66,9 @@ it("requires current Type 1 confirmation before Type 2, without presenting confi
   expect(reconcilePaperEvidence({ ...input, capture: { ...capture, declarationReconciled: false } }).outcome).toBe("REQUEST_INFORMATION");
 });
 
-it.each(["", null])("routes a confidently readable blank brand (%s) to Type 2 referral, not Type 1", (blank) => {
+it("routes a confidently readable blank brand to Type 2 referral, not Type 1", () => {
   const source = complete();
+  const blank = "";
   const result = reconcilePaperEvidence({
     ...source,
     declaration: { ...source.declaration, brandManufacturer: blank },
@@ -91,7 +92,7 @@ it("refers both confidently blank brand and pack fields without inventing a Type
     characterRecognition: [
       ...source.characterRecognition.map((observation) => observation.field === "brandManufacturer"
         ? { ...observation, value: "", confidence: 0.99 } : observation),
-      { field: "packSize", value: null, confidence: 0.99 },
+      { field: "packSize", value: "", confidence: 0.99 },
     ],
     tariffChecks: [...source.tariffChecks,
       { field: "packSize", met: false, request: { rule: "required_field", field: "packSize" } }],
@@ -99,6 +100,14 @@ it("refers both confidently blank brand and pack fields without inventing a Type
   expect(result).toMatchObject({ requiresType1: false, outcome: "REFER_BACK", automaticRelease: false });
   expect(result.note).toContain("Brand or manufacturer");
   expect(result.note).toContain("Pack size");
+});
+
+it("retains an unknown OCR value as Type 1 uncertainty even when confidence is high", () => {
+  const source = complete();
+  const result = reconcilePaperEvidence({ ...source, characterRecognition: source.characterRecognition.map((observation) =>
+    observation.field === "brandManufacturer" ? { ...observation, value: null, confidence: 0.99 } : observation) });
+  expect(result).toMatchObject({ requiresType1: true, outcome: "TYPE1_CONFIRMATION", reconciliationBasis: "not_established" });
+  expect(result.evidence.characterRecognition[2]).toMatchObject({ value: null, confidence: 0.99 });
 });
 
 it("a human capture cannot erase high-confidence contradictory scan or OCR", () => {

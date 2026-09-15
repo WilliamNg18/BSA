@@ -4,6 +4,37 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## B40 canonical verification branch integration
+
+New `submission-fidelity-store.test.ts` exercises real store actions: all four
+current IDs Send and arrive, every perspective and Follow retain exact payloads,
+paper traverses capture/referral/draft/ACK/resubmission/release in both modes,
+and explicit EPS audit preserves prior submission and pricing history.
+The combined eight-file selection passes 67 tests; check also passes. The
+new Task 39/40 seed/source snapshot integration is still G-owned and pending,
+so this evidence is pinned to G `9b41cc2`, not the final four-case runtime.
+
+OCR semantics now match U's scanner: null is Unknown, empty string is a known
+Blank. A high-confidence blank goes to Type 2 when required; an unknown value
+still requires Type 1. Typed numeric null may mean omitted declaration, but the
+raw OCR must explicitly report an empty string to claim a known blank.
+
+B's verification branch now includes published G
+`9b41cc2a2f1a60ff324d2121e5781a253064ef07` without changing G's canonical
+store/types/lifecycle/seeds. The merge preserves both streams' documentation
+and B's readable-blank repair. It is a validation workstream, not a merge to
+main, deployment, backup or completed C7 acceptance.
+
+## 2026-09-15: B40 readable-blank repair
+
+G's integration found a concrete pure-routing defect: confidently readable
+blank fields were being treated as unreadable capture. Two new regressions
+failed before the repair. The repaired predicate reserves Type 1 for unreadable
+scans, missing extraction observations or low confidence; known blank required
+fields instead produce a Type 2 referral. All 54 contract units and check passed.
+G's published `6054408` provides real ACK/audit actions, but new seed/routing
+integration and actual all-four/state fidelity proof remain pending.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper
