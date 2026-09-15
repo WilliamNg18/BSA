@@ -97,6 +97,12 @@ amendment initially failed readiness because a known readable prescriber was
 dropped by draft initialisation. Preserving that existing source value, without
 inventing a value for unreadable paper, repaired the two-mode recheck tests.
 Earlier full-suite results do not cover the intentionally changed outcomes.
+
+The changed-scope full run passed check but failed 210 tests (1,575 passed);
+that failure remains recorded, not replaced by the 19 targeted runtime passes.
+Concrete review found missing amendment-image supplier regions and unprotected
+form aliases in outbound notes. Repairing the source data and final guards,
+rather than changing presentation evidence, closes those focused regressions.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.
