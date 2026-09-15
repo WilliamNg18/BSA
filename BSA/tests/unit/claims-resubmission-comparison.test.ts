@@ -8,23 +8,20 @@ const statuses: Array<PharmacyCheck["status"] | null> = [null, "missing", "unabl
 
 describe("claims resubmission comparison authority", () => {
   for (const enabled of [false, true]) {
-    for (const approved of [false, true]) {
-      for (const status of statuses) {
-        it(`enabled=${enabled}, approved=${approved}, status=${status}`, () => {
-          const markup = renderToStaticMarkup(createElement(ClaimsResubmissionComparison, { enabled, approved, status }));
-          const resolved = enabled && approved && status === "ready";
-          expect(markup).toContain(`data-pain-marker="${resolved ? "resolved" : "open"}"`);
-          if (!enabled) {
-            expect(markup).toContain("Hypothetical repeat correction, not a prediction");
-            expect(markup).not.toContain("Assisted");
-          } else {
-            if (!approved) expect(markup).toContain("No operator-approved correction");
-            else if (status === "missing") expect(markup).toContain("Current correction remains incomplete");
-            else if (status === "ready") expect(markup).toContain("Ready; explicit resubmission required");
-            else expect(markup).toContain("Current correction not verified");
-          }
-        });
-      }
+    for (const status of statuses) {
+      it(`enabled=${enabled}, status=${status}`, () => {
+        const markup = renderToStaticMarkup(createElement(ClaimsResubmissionComparison, { enabled, status }));
+        const resolved = enabled && status === "ready";
+        expect(markup).toContain(`data-pain-marker="${resolved ? "resolved" : "open"}"`);
+        if (!enabled) {
+          expect(markup).toContain("Hypothetical repeat correction, not a prediction");
+          expect(markup).not.toContain("Assisted");
+        } else {
+          if (status === "missing") expect(markup).toContain("Current correction remains incomplete");
+          else if (status === "ready") expect(markup).toContain("Ready; explicit resubmission required");
+          else expect(markup).toContain("Current correction not verified");
+        }
+      });
     }
   }
 });

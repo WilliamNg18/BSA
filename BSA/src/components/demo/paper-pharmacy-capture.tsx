@@ -29,7 +29,7 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
     <Button variant="outline" data-pharmacy-demo="scanner" aria-pressed={scannerShown} onClick={() => setScannerShown((shown) => !shown)}>
       Show the form as NHSBSA&apos;s scanner will see it
     </Button>
-    {scannerShown && <p role="status">image cannot be read</p>}
+    {scannerShown && <p role="status">{poorScan ? "image cannot be read" : "Readable synthetic paper"}</p>}
     {(!compact || scannerShown) && <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} />}
     <BoundaryTag cls="human" />
     <dl className="text-sm"><dt>Submission purpose</dt><dd>New demonstration attempt; history retained.</dd></dl>
@@ -38,9 +38,6 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
         <Button variant="outline" data-pharmacy-demo="complete" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "complete")))}>Declaration complete</Button>
         <Button variant="outline" data-pharmacy-demo="missing" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "missing")))}>Declaration missing information</Button>
       </div>
-      {!compact && <Button type="button" variant="outline" onClick={() => update(original)}>
-        {c.scenario === "D" ? "Load worked declaration" : "Load complete paper declaration"}
-      </Button>}
       <PharmacyDraftFields draft={draft} original={original} channel="paper" update={update} recommendationVisible />
       <PharmacyRecommendationPanel caseId={caseId} draft={draft} compact={compact}
         onApply={controls === "correct-and-submit" && canApply ? () => act(() => {

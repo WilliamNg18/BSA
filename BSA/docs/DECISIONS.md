@@ -2474,3 +2474,7 @@ The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
+
+Question: must pharmacy corrections wait for an NHSBSA note containing the answer? Choice: use only shared pharmacy-record suggestions, show the actual field/rule operator note without an exact-fix field, and require a separate payload-bound accuracy acknowledgement in both modes; tie-breaker: current C5/C6 authority and explicit human action.
+
+Question: how should simultaneous pharmacy tiles become plausible? Choice: project all actual lifecycle cohorts side by side and let G own seed/history state, never populate tiles by navigation; tie-breaker: one authoritative state.

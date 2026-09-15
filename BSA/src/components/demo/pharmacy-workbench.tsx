@@ -8,7 +8,8 @@ import type { ItemChannel } from "@/lib/domain/types";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { PharmacyReleasedCount } from "./pharmacy-submission-receipt";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
-import { isPlayableCase, playableCaseChannel } from "@/lib/domain/cases";
+import { isPlayableCase, playableCaseChannel, PLAYABLE_CASES } from "@/lib/domain/cases";
+import { EPS_STRENGTH_CASE_ID } from "@/lib/domain/eps-strength";
 
 export function PharmacySubmissionPanel({ caseId, channel, controls = "correct-and-submit" }: {
   caseId: string; channel?: ItemChannel; controls?: "submit" | "correct-and-submit";
@@ -27,7 +28,7 @@ export function PharmacyPage() {
   const requestedChannel = params.get("channel");
   const channel = requestedChannel === "eps" || requestedChannel === "paper" ? requestedChannel
     : playableCaseChannel(requestedCase ?? "") ?? "eps";
-  const caseId = requestedCase ?? (channel === "paper" ? "EX-24123" : "EX-24112");
+  const caseId = requestedCase ?? (channel === "paper" ? "EX-24123" : EPS_STRENGTH_CASE_ID);
   const invalidSelection = !isPlayableCase(caseId) || playableCaseChannel(caseId) !== channel ||
     requestedChannel !== null && requestedChannel !== "eps" && requestedChannel !== "paper";
   function select(caseId: string, channel: ItemChannel) {
@@ -50,7 +51,7 @@ export function PharmacyPage() {
     </header>
     <NativeChoiceGroup value={invalidSelection ? "" : channel} onValueChange={(value) => {
       if (value === "eps" || value === "paper") {
-        select(playableCaseChannel(caseId) === value ? caseId : value === "eps" ? "EX-24112" : "EX-24123", value);
+        select(playableCaseChannel(caseId) === value ? caseId : value === "eps" ? EPS_STRENGTH_CASE_ID : "EX-24123", value);
       }
     }} aria-label="Submission channel" className="justify-start">
       <NativeChoiceItem value="eps">EPS</NativeChoiceItem>
@@ -58,7 +59,13 @@ export function PharmacyPage() {
     </NativeChoiceGroup>
     {invalidSelection ? <p role="alert">Unknown or mismatched example. Choose a submission channel to continue.</p>
       : channel === "eps" ? <EpsPharmacyCapture caseId={caseId} onCaseChange={(id) => select(id, "eps")} />
-        : <PaperPharmacyCapture caseId={caseId} />}
+        : <>
+          <NativeChoiceGroup value={caseId} onValueChange={(id) => select(id, "paper")} aria-label="Choose a paper scenario" className="justify-start">
+            {PLAYABLE_CASES.filter((c) => playableCaseChannel(c.id) === "paper").map((c) =>
+              <NativeChoiceItem key={c.id} value={c.id}>{c.id === "EX-24123" ? "Unreadable paper" : "Brand missing on readable paper"}</NativeChoiceItem>)}
+          </NativeChoiceGroup>
+          <PaperPharmacyCapture key={caseId} caseId={caseId} />
+        </>}
     <PharmacyReleasedCount />
     <PharmacyModelStrip />
   </div>;

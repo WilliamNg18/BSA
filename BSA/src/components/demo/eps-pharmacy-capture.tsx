@@ -14,15 +14,16 @@ import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { useAppStore } from "@/lib/store";
 import { PLAYABLE_CASES, playableCaseChannel } from "@/lib/domain/cases";
+import { EPS_STRENGTH_CASE_ID } from "@/lib/domain/eps-strength";
 
 const SCENARIOS = PLAYABLE_CASES.filter((c) => playableCaseChannel(c.id) === "eps").map((c) => ({
-  id: c.id, label: c.id === "EX-24107" ? "Complete endorsement" : c.id === "EX-24112" ? "NCSO missing date" : "Wrong pack size",
+  id: c.id, label: c.id === "EX-24107" ? "Complete endorsement" : "Wrong medication strength",
 }));
 
 export function EpsPharmacyCapture({ caseId: fixedCaseId, onCaseChange, compact = false, controls = "correct-and-submit" }: {
   caseId?: string; onCaseChange?: (caseId: string) => void; compact?: boolean; controls?: "submit" | "correct-and-submit";
 } = {}) {
-  const [selected, select] = useState("EX-24112");
+  const [selected, select] = useState(EPS_STRENGTH_CASE_ID);
   const caseId = fixedCaseId ?? selected;
   return <div className="space-y-4">
     {(!fixedCaseId || onCaseChange) && <NativeChoiceGroup value={caseId} onValueChange={onCaseChange ?? select} aria-label="Choose an EPS scenario" className="justify-start">
