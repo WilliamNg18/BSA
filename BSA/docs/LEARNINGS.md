@@ -128,6 +128,13 @@ mode-specific routing that G is implementing.
 
 ### Task 39 N percent and denominator boundary
 
+After exact G `4765770` integration, the three missing-store-property errors
+are resolved without N writing the store or introducing an adapter.
+Source-copy/type/lint/build checks and 70 targeted tests pass, including real
+store edit/Reset/snapshot behaviour and unchanged old monthly totals.
+The earlier check failure and published pending-store status remain historical
+evidence; they are not counted as a clean first attempt.
+
 The existing monthly model uses a referral subset for its hours but exposes
 total submitted items separately. Reusing that subset for mismatch prevalence
 would understate the requested comparison. UI percentages and fractional

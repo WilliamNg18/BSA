@@ -126,6 +126,12 @@ These guards preserve source identity without treating an edit as attestation.
 | Live completion | Unverified for new scope | Coordinator tracks deployment; no branch build is the product or backup | Last coordinator-reported live SHA `08f4d399`; no new live observation in this checkpoint |
 ## Task 39 N numbers alignment: WIP on main baseline `6418151`
 
+Current N validation uses temporary canonical G `4765770`, not an alternative
+store. Required check and 70 real-store/model/presentation tests pass.
+The exact one-state key inventory is extended with `mismatchSharePercent`,
+without dropping any authoritative fields. Earlier pending-store notes below
+describe the preceding checkpoint. Browser/live acceptance remains pending.
+
 | Requirement | Current evidence and remaining work |
 | --- | --- |
 | Study context separate from NHSBSA claim rates | W `fe0a521` supplies verified abstract copy and an explicit study-only label; no unverified wrong-strength ranking will be rendered |
