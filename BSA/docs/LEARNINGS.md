@@ -23,6 +23,47 @@ must explicitly select pharmacy or its existing real Apply/invoice controls
 disappear. The isolated adapter preserves that boundary. Partial-integration
 check and 24 focused consumer units passed; full Vitest retained 65 failures
 and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+B's verification merge of G `9b41cc2` encountered tracking-document and
+repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
+records and retains B's later readable-blank fix, with no canonical store,
+type, lifecycle or seed differences from G. New store-level evidence will be
+published separately from this ownership-preserving source integration.
+
+Four additional real-store cases confirm that `sendConfirmation` appends an
+information response without replacing the actual submission replica. The
+19-unit fidelity selection passes. This exposed a consumer seam: U correctly
+requires matching submission/reconciliation revisions, while the current
+response increments lifecycle revision. G/U must explicitly link that response
+to its original submission source; simply accepting any revision would weaken
+fidelity. The concern was sent to both owners without editing their files.
+
+The refreshed published-source audit now includes R/U/P consumer foundations
+and S's scanner production explanation. Their source-level progress is partial,
+not a current-main, browser or all-state acceptance claim.
+
+The real-store fidelity tests now pass alongside the domain/action suites:
+67 tests in eight files, followed by check. The assertions compare the entire
+last submission object after actual actions, retain prior revision arrays and
+scan evidence, and do not use test-only state replacement or navigation-created
+history. The source still uses G's pre-new-seed `9b41cc2` runtime; this limitation
+is explicit rather than assuming old four-case coverage proves new scenarios.
+
+U's raw scanner representation exposed ambiguity in B's earlier null-blank
+test: null denotes Unknown, not a positively observed omission. The refined
+regression uses empty string for a known blank, retains null as Type 1
+uncertainty even with a high confidence figure, and leaves typed declaration
+null distinct from extraction evidence. The earlier two-failure reproduction
+and subsequent results remain historical rather than being rewritten.
+
+## 2026-09-15: B40 readable-blank regression
+
+G's paper integration exposed an incorrect `missing(observation.value)` test in
+the Type 1 predicate. A readable blank may have high extraction confidence:
+confidence describes the observation, not whether the mandatory field is filled.
+Both empty-string and null brand tests failed with Type 1 before the repair.
+Removing that value-completeness condition yields Type 2 field/rule referrals;
+the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
+The new result is 54 contract units plus check, not integrated live proof.
 
 ## 2026-09-15: EPS error evidence, primary-source verification
 
@@ -82,6 +123,12 @@ amendment initially failed readiness because a known readable prescriber was
 dropped by draft initialisation. Preserving that existing source value, without
 inventing a value for unreadable paper, repaired the two-mode recheck tests.
 Earlier full-suite results do not cover the intentionally changed outcomes.
+
+The changed-scope full run passed check but failed 210 tests (1,575 passed);
+that failure remains recorded, not replaced by the 19 targeted runtime passes.
+Concrete review found missing amendment-image supplier regions and unprotected
+form aliases in outbound notes. Repairing the source data and final guards,
+rather than changing presentation evidence, closes those focused regressions.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

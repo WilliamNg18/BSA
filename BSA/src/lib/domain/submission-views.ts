@@ -69,5 +69,5 @@ export function evaluatePaperSubmission(original: ExceptionCase, revision: CaseR
 
 export function isPaperReadyToRelease(row: CaseLifecycle, process: ItemProcess | undefined): boolean {
   return Boolean(process?.channel === "paper" && process.readyToRelease && ["resubmitted", "in_review"].includes(row.state) &&
-    row.history.some((event) => event.revision === process.revision));
+    row.history.at(-1)?.revision === process.revision);
 }

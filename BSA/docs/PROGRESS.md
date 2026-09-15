@@ -32,6 +32,42 @@ in its shared wrapper, preserving real Apply and invoice controls. Check and
 run was 1,665 passing / 65 failing across 105 files, principally old ACK,
 Card/audience and retired scenario assumptions. It is retained as failed
 evidence, not accepted full-suite or live proof.
+## B40 canonical verification branch integration
+
+Four additional actual-store tests cover Request information and the pharmacy
+response for every current ID, proving that a confirmation answer does not
+replace the last submitted claim. The 19-unit fidelity selection passes; the
+updated all-active-published-head audit is pinned in ALIGNMENT. G/U own the
+identified scanner-facade submission-versus-response revision linkage.
+
+New `submission-fidelity-store.test.ts` exercises real store actions: all four
+current IDs Send and arrive, every perspective and Follow retain exact payloads,
+paper traverses capture/referral/draft/ACK/resubmission/release in both modes,
+and explicit EPS audit preserves prior submission and pricing history.
+The combined eight-file selection passes 67 tests; check also passes. The
+new Task 39/40 seed/source snapshot integration is still G-owned and pending,
+so this evidence is pinned to G `9b41cc2`, not the final four-case runtime.
+
+OCR semantics now match U's scanner: null is Unknown, empty string is a known
+Blank. A high-confidence blank goes to Type 2 when required; an unknown value
+still requires Type 1. Typed numeric null may mean omitted declaration, but the
+raw OCR must explicitly report an empty string to claim a known blank.
+
+B's verification branch now includes published G
+`9b41cc2a2f1a60ff324d2121e5781a253064ef07` without changing G's canonical
+store/types/lifecycle/seeds. The merge preserves both streams' documentation
+and B's readable-blank repair. It is a validation workstream, not a merge to
+main, deployment, backup or completed C7 acceptance.
+
+## 2026-09-15: B40 readable-blank repair
+
+G's integration found a concrete pure-routing defect: confidently readable
+blank fields were being treated as unreadable capture. Two new regressions
+failed before the repair. The repaired predicate reserves Type 1 for unreadable
+scans, missing extraction observations or low confidence; known blank required
+fields instead produce a Type 2 referral. All 54 contract units and check passed.
+G's published `6054408` provides real ACK/audit actions, but new seed/routing
+integration and actual all-four/state fidelity proof remain pending.
 
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
@@ -51,6 +87,14 @@ automatic eligible EPS rechecks, paper amendment snapshots and human-only paper
 release. The shared source facades and optional mismatch store input are
 callable. Existing consumer tests still require migration; this is published
 WIP, not main/live completion.
+
+Reported paper/consumer defects are repaired in the next checkpoint: outbound
+notes protect presentation and pack aliases, amendment scans visibly contain
+their recorded supplier fields, submission workbenches can initialise the
+original scenario without overwriting the latest recheck, and paper Apply
+uses known pack/form records. Typecheck and 19 targeted runtime regressions pass.
+The first full changed-scope inventory remains failed: 210 failures, 1,575
+passes across 106 files. No legacy gate is waived; owner migrations are pending.
 
 W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
 headline checker and 33 focused units from base main `6418151`. `npm run check`

@@ -21,8 +21,36 @@ and existing pharmacy-suite migration remain open.
 
 The minimal explicit pharmacy Card audience adapter is published separately
 for R/G foundation integration; no shared Card edit or store fallback is used.
+C1's B proof now includes all-four information-request/response transitions
+using actual store actions. A response is not a corrected claim submission,
+so the exact last submitted object remains unchanged. The 19 passing fidelity
+tests still run on G's pre-new-seed canonical snapshot, not final live scope.
+
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+## B40 readable-blank scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
+
+The first full integration inventory is not green: 210 failed / 1,575 passed
+tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.
+New targeted paper, source-image and note guards pass, but this is not release
+acceptance. Strength trace/rule-authority findings are active merge blockers.
 
 Functional checkpoint: the four new cases and channel-specific actual actions
 are wired. `EX-24112` has an acknowledged historical paper amendment awaiting

@@ -4,6 +4,15 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how can B test real actions without a duplicate store? Choice: merge G's exact published canonical lineage into B's verification branch, preserve its shared files byte-for-byte and add only new B tests/helpers. Tie-breaker: one authoritative implementation and executable fidelity rather than simulation.
+- Question: does null OCR mean a known blank? Choice: no; null is Unknown and empty string is Blank, matching the scanner component. Type 1 remains required for unknown extraction, while a confidently known blank is missing information for Type 2. Tie-breaker: do not claim to have read absent source evidence.
+- Question: can current action tests establish the new four-case baseline? Choice: source-pin them to G `9b41cc2` and rerun/adapt after canonical new seed/source publication. Tie-breaker: exact requirement verification, not proxy coverage.
+- Question: does an information-only pharmacy answer replace As submitted? Choice: no; retain the last actual submission and separately record the response revision, requiring explicit source linkage in the scanner facade. Tie-breaker: no invented corrected claim or erased provenance.
+
+## 2026-09-15: B40 readable-blank decision
+
+- Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
+
 ## 2026-09-15: Task 39 source-backed wrong-strength contract
 
 - Question: why replace the date headline? Choice: the owner's explicit new wrong-strength scenario makes a plausible, complete-looking pick-list error visible while keeping all current dates correct. Tie-breaker: newest instruction; historical audit evidence remains unchanged.
@@ -21,6 +30,8 @@ ms.date: 2026-09-15
 - G integration: corrected paper creates a new acknowledged synthetic amendment scan/OCR snapshot rather than rewriting its earlier unreadable or blank source; the new paper still needs an operator release; tie-breaker: exact source fidelity and C6's one-press recheck.
 - G integration: the strength-case EPS contract contains no editable claim amount, so code validates a known selected pack price and the independent prescribed/supplied identity without inventing a payment amount during Apply; tie-breaker: no payment calculation.
 - G integration: keep N's optional mismatch input in the same store and exact domain snapshot, separate from the unchanged manual-loop defaults; tie-breaker: one state and non-additive assumptions.
+- G correction: emit brand/pack/form from the acknowledged amendment into its actual synthetic scan regions, and reject those proposed aliases in all outbound note paths; tie-breaker: the reproduced C4/C5 source and communication failures.
+- G correction: initialise a new workbench attempt from the original scenario source but keep its current revision binding; never rewrite the current ready amendment merely by opening a page; tie-breaker: C8 fidelity and explicit human submission.
 - Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
