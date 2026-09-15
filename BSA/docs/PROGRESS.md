@@ -15,6 +15,14 @@ edits cannot forge one. Explicit audit preserves prior code-pricing history.
 Typecheck and 38 focused contract/module/action tests pass. Legacy UI consumers
 and the new channel-specific seeds/recheck behaviour remain integration work.
 
+The first functional Tasks 39/40 runtime checkpoint now passes typecheck and
+12 actual-store integration tests. It includes four correctly dated active
+cases, independent strength checks, explicit Today audit, exact ACK enforcement,
+automatic eligible EPS rechecks, paper amendment snapshots and human-only paper
+release. The shared source facades and optional mismatch store input are
+callable. Existing consumer tests still require migration; this is published
+WIP, not main/live completion.
+
 W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
 headline checker and 33 focused units from base main `6418151`. `npm run check`
 and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
@@ -36,6 +44,14 @@ whole-file or history exemption. UI, real both-mode/both-gate lifecycle tests,
 round trips, screenshots, main merge, green deployment and observed live
 behaviour remain integration work. Owner actions for me: none.
 ## 2026-09-15: B40 domain foundation, published incomplete
+
+G's integration found a concrete pure-routing defect: confidently readable
+blank fields were being treated as unreadable capture. Two new regressions
+failed before the repair. The repaired predicate reserves Type 1 for unreadable
+scans, missing extraction observations or low confidence; known blank required
+fields instead produce a Type 2 referral. All 54 contract units and check passed.
+G's published `6054408` provides real ACK/audit actions, but new seed/routing
+integration and actual all-four/state fidelity proof remain pending.
 
 Foundation `c433f4546f50d9ecb09d3da5699ef5fd48365234` is pushed and handed to
 G for integration. A bounded follow-up adds original-source identity validation,
@@ -108,6 +124,15 @@ This is published WIP, not completion or a local backup. The coordinator's last
 reported live artifact was `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observation
 does not establish deployment or live acceptance of Tasks 39/40.
+### Task 39 N numbers: published WIP, not live completion
+
+N reactivated on main `6418151` for the additive mismatch estimate, not a rerun
+of Task 28. The pure helper consumes W's evidence constants, converts UI 1%
+to numeric share 0.01, and multiplies total submitted claims. Existing monthly
+cohorts and 297.5-hour total remain unchanged. G owns the new same-store draft
+and Reset integration; chapter views and browser coverage are in progress.
+This branch is incomplete work, not a product or backup. No browser, deployment
+or live acceptance is claimed. Owner actions for me: none.
 
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
