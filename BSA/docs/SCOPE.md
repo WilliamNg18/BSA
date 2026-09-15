@@ -62,6 +62,11 @@ Subsequent frozen `15f9562` verification passes the four N browser cases at
 G `4765770`; canonical-main reduction, dependency gates, merge, green deployment
 and exact live observation remain required before completion.
 
+Capture-preservation coverage now includes `mismatchSharePercent`, using V's
+exact owner-supplied test hunk. This strengthens the existing matrix without
+adding a store implementation, filtering state, changing seeds or claiming
+unexecuted browser coverage.
+
 The independent mismatch helper uses all submitted claims, not the referral
 subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
 With share times volume labelled estimate, unchanged existing totals, verified
