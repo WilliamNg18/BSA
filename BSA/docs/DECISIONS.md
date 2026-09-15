@@ -2494,3 +2494,10 @@ The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
+
+## Tasks 39/40 R audience decisions
+
+- Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
+- Question: does NHSBSA supply a corrected value to the pharmacy? Choice: no; B's structured field/rule requests generate the canonical operator note, while the pharmacy derives its own values from records; tie-breaker: explicit C5 separation.
+- Question: can an audience change approve or acknowledge a correction? Choice: no; it is an immutable projection with no store writes, and actual same-revision human provenance is retained; tie-breaker: one state and human authority.
+- Question: who edits current recommendation derivation? Choice: R exclusively; G retains canonical types/store/lifecycle/seeds/source facade, W the strength module and B the fidelity/referral/paper modules; tie-breaker: isolated file ownership.

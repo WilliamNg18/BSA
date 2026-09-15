@@ -1345,3 +1345,13 @@ Using actual parsed token leaves gives the same immutable-original hash,
 on both platforms. Tests also reject changed numeric and template tokens.
 This repairs the integrity test, not application behaviour, and preserves
 the failed CI record until a new exact-head run succeeds.
+
+## Tasks 39/40 R audience evidence boundary
+
+An audience-specific card cannot be implemented by redacting matching values
+from the entire object: prescribed and selected strengths are evidence, whereas
+the correction patch and preview are proposals. The projection therefore removes
+only the operator's proposal payload and reuses the cloned W source facts.
+Operator communication is generated from field/rule identifiers, never by
+interpolating the diagnostic finding text. New isolated unit contracts cover
+this distinction; broader G/P/O integration and live proof remain pending.

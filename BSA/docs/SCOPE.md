@@ -405,3 +405,12 @@ here identify the same commits, not additional unpushed work.
 No scope row is Not started. Owner-authorised work resumes from this preserved
 checkpoint. Do not merge empty checkpoint commits from completed streams as
 new features or claim a browser inventory is an executed pass.
+
+## Tasks 39/40 R audience scope
+
+In progress: explicit Card audience, pharmacy-only concrete value/preview,
+field/rule-only operator draft notes and unmodified read-only source facts.
+R's new audience unit contracts cover the projection, default operator boundary,
+source identity and absence of fabricated approval. Existing canonical actions
+remain G-owned; P/O wire their real components. Full four-case integration,
+exact-head CI, main deployment and live observations are still required.
