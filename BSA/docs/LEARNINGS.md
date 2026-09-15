@@ -1175,3 +1175,9 @@ process serving only its copied fixture. The final complete unit run passes
 and the fresh complete run passed without altering that test or its deadline.
 These are developer checks, not the still-pending isolated production-backup
 browser proof. Check/typecheck/lint and the production build also passed.
+
+A readiness-only HTTP probe could otherwise accept a pre-existing listener.
+The verifier now checks that the requested port is unoccupied first; a focused
+negative test holds an actual TCP listener and verifies rejection. All 23
+focused checks and typecheck pass. This strengthens process identity without
+claiming that the pending production backup has been exercised offline.

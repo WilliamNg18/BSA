@@ -231,4 +231,17 @@ describe("standalone offline backup verification", () => {
     }
     await expect(fetch(`${server.base}/build-info.json`)).rejects.toThrow();
   });
+
+  it("refuses to count an already-listening process as fresh recovery", async () => {
+    const root = await fixture();
+    const existing = createServer((socket) => socket.end());
+    await new Promise<void>((done) => existing.listen(0, "localhost", done));
+    const address = existing.address();
+    if (!address || typeof address === "string") throw new Error("Expected TCP address");
+    try {
+      await expect(verifier.startBackup(root, address.port)).rejects.toThrow("already occupied");
+    } finally {
+      await new Promise<void>((done, reject) => existing.close((error) => error ? reject(error) : done()));
+    }
+  });
 });

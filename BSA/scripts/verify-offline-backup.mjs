@@ -3,6 +3,7 @@ import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { lstat, readdir, readFile, realpath, writeFile } from "node:fs/promises";
 import { networkInterfaces } from "node:os";
+import { createConnection } from "node:net";
 import { dirname, isAbsolute, join, resolve, sep } from "node:path";
 import { performance } from "node:perf_hooks";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -144,6 +145,20 @@ export function verifyOfflineEnvironment(interfaces = networkInterfaces()) {
 }
 
 export async function startBackup(root, port) {
+  await new Promise((done, reject) => {
+    const socket = createConnection({ host: "localhost", port });
+    const finish = (error) => {
+      socket.destroy();
+      if (error) reject(error);
+      else done();
+    };
+    socket.setTimeout(1000, () => finish(new Error(`Cannot establish that port${port} is free`)));
+    socket.once("connect", () => finish(new Error(`Port${port} is already occupied; refusing an existing server as recovery proof`)));
+    socket.once("error", (error) => {
+      const failures = error instanceof AggregateError ? error.errors : [error];
+      finish(failures.every((failure) => failure.code === "ECONNREFUSED") ? undefined : error);
+    });
+  });
   const env = { ...process.env, NODE_PATH: "", PORT: String(port) };
   delete env.PLAYWRIGHT_PORT;
   delete env.SERVER_PORT;

@@ -287,3 +287,6 @@ D retains backup core, root commands, workflow and deployed-artifact parity
 ownership. The clean offline container proof, actual recovery timing and
 main/live observation are still pending. No Azure deletion, recreation,
 provisioning, runtime feature change or browser-matrix replacement is included.
+
+Recovery requires a newly started backup process. A pre-existing listener is
+an explicit failure, not a substitute for the clean-container startup test.

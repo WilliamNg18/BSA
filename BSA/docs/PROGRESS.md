@@ -2035,3 +2035,7 @@ run pass. The CLI accepts the frozen `--backup`, `--expected-commit`,
 proof; without it the report explicitly says browser execution was not
 performed. Reports are created outside the backup and never overwrite a
 previous result. D must require browser execution in the clean recovery job.
+
+Fresh-start verification also refuses an already-listening local port before
+launching the backup, so another process cannot satisfy the readiness probe.
+The updated focused suite passes 23 tests; isolated production proof is pending.

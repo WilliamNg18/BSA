@@ -133,3 +133,6 @@ Manifest self-consistency is not deployed-artifact parity: D's independent
 live/deployment comparison remains mandatory. Optional browser checks are
 explicitly marked performed or not performed. Local fixture tests do not
 constitute the clean offline recovery proof or the final live checklist.
+
+The startup readiness probe is preceded by a fail-closed port-availability
+check; a reachable existing server cannot be counted as fresh recovery.

@@ -2441,3 +2441,5 @@ Question: how can O verify D's backup without sharing its producer implementatio
 Question: can localhost-only requests on a connected developer machine count as clean offline recovery? Choice: no; require a fresh network-isolated hosted container and keep local unit fixtures separate, with production/download/extraction timings supplied by CI; tie-breaker: truthful verification of the exact requirement.
 
 Question: may an optional browser check silently appear as executed? Choice: no; report whether browser tooling was supplied and run, fail on observed external requests/errors, and retain D's separate live/artifact parity gate; tie-breaker: explicit evidence boundaries.
+
+Question: can an existing listener satisfy the backup startup probe? Choice: reject an occupied port before launching the child process, rather than treating another server's response as recovery evidence; tie-breaker: verify the exact requirement.
