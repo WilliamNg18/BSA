@@ -30,6 +30,9 @@ a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
 retain Type 1 ordering. This 54-unit/check result does not establish the owning
 scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
+The minimal explicit pharmacy Card audience adapter is published separately
+for R/G foundation integration; no shared Card edit or store fallback is used.
+
 ### G39/40 explicit-action checkpoint
 
 Current-source linking and seeded readiness provenance are implemented:

@@ -46,6 +46,12 @@ Removing that value-completeness condition yields Type 2 field/rule referrals;
 the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
 The new result is 54 contract units plus check, not integrated live proof.
 
+R's new Card correctly defaults to the operator audience. The pharmacy wrapper
+must explicitly select pharmacy or its existing real Apply/invoice controls
+disappear. The isolated adapter preserves that boundary. Partial-integration
+check and 24 focused consumer units passed; full Vitest retained 65 failures
+and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic

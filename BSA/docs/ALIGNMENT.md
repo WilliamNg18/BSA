@@ -4,6 +4,29 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: P consumer source checkpoint
+
+Main `6418151` still used the retired EPS headline and lacked the required
+pharmacy acknowledgement. Published G `9b41cc2` supplies the real setter and
+W catalogue constants, but not final channel seeds/preparation/recheck wiring.
+P consumes those interfaces without a new store or duplicated correction rule.
+C5 removes the pharmacy display's exact-fix field from the operator note;
+own-record suggestions no longer require an approved exact-value note.
+C6 adds required checkbox and separate guarded Resubmit in both modes.
+C8 renders actual Paid, Action needed and Waiting rows concurrently; canonical
+seed coexistence and browser/live acceptance remain pending. No SSR result is
+claimed as viewport, timing or live acceptance.
+
+The real accuracy input's callback is covered by five handler/store tests.
+Rendering it creates no draft/event; explicit checking calls G's setter,
+manual editing clears the binding, and stale callbacks surface the action
+error without changing state. This closes only the bounded consumer seam.
+
+P's actual shared recommendation wrapper now declares the pharmacy audience;
+an omitted caller remains safely operator-only. Local check and 24 focused
+consumer units passed; full partial-integration run retained 65 failures
+(1,665 passing), so canonical acceptance remains open.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Active published inventory refreshed for the information-response proof

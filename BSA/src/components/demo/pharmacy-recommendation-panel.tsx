@@ -36,6 +36,6 @@ export function PharmacyRecommendationPanel({ caseId, draft, compact = false, on
       : target === "packSize" ? "eps-pack" : target === "form" ? "eps-form" : endorsementId;
     document.getElementById(field)?.focus();
   }
-  return <RecommendationCard recommendation={result.recommendation} compact={compact}
+  return <RecommendationCard recommendation={result.recommendation} audience="pharmacy" compact={compact}
     pharmacyAction="apply-correction" onApply={result.recommendation.preview ? onApply : undefined} onFocusField={draft ? focus : undefined} />;
 }

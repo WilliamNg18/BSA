@@ -2528,6 +2528,14 @@ pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
 
+Question: must pharmacy corrections wait for an NHSBSA note containing the answer? Choice: use only shared pharmacy-record suggestions, show the actual field/rule operator note without an exact-fix field, and require a separate payload-bound accuracy acknowledgement in both modes; tie-breaker: current C5/C6 authority and explicit human action.
+
+Question: how should simultaneous pharmacy tiles become plausible? Choice: project all actual lifecycle cohorts side by side and let G own seed/history state, never populate tiles by navigation; tie-breaker: one authoritative state.
+
+Question: how should the required checkbox be tested without a browser lease? Choice: execute its actual native-input callback against the canonical store and retain SSR as a separate read-only assertion, without claiming browser or timing acceptance; tie-breaker: exact evidence and owner-controlled browser slots.
+
+Question: how should P adopt R's fail-closed Card audience default? Choice: publish an isolated explicit pharmacy audience prop in the real shared pharmacy wrapper for early foundation import; tie-breaker: preserve genuine controls without exposing pharmacy proposals on NHSBSA screens.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
