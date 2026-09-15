@@ -27,6 +27,11 @@ export interface EpsPrescription {
   readonly dispenserEndorsement: string;
   readonly exemptionStatus: "exempt" | "chargeable" | "not_recorded";
   readonly claimMessageState: "draft" | "submitted";
+  /** Pharmacy's actual supply record, independent of the selected claim code. */
+  readonly supplyRecord?: {
+    readonly productCode: string;
+    readonly quantity: number;
+  };
   readonly supplyEvidence?: {
     readonly ruleId: "SYN-EPS-SUPPLY";
     readonly brandManufacturer: string;
@@ -42,6 +47,9 @@ export interface PaperDeclaration {
   readonly endorsementText: string;
   readonly dispensingDate: string;
   readonly declaredByPharmacy: true;
+  readonly brandManufacturer?: string;
+  readonly packSize?: number | null;
+  readonly form?: string;
 }
 
 export interface DeclaredItemFields {
@@ -50,6 +58,9 @@ export interface DeclaredItemFields {
   readonly endorsementText: string;
   /** Required for a complete confirmed capture when the original prescriber is unreadable. */
   readonly prescriber?: string | null;
+  readonly brandManufacturer?: string;
+  readonly packSize?: number | null;
+  readonly form?: string;
 }
 
 export interface PharmacyDeclaration {
@@ -120,6 +131,7 @@ export type RequirementId =
   | "invoice_price"
   | "brand_manufacturer"
   | "pack_size"
+  | "selected_pack_matches"
   | "presentation";
 
 export interface Requirement {
@@ -212,6 +224,7 @@ export interface HistoryRecord {
 export interface ExceptionCase {
   id: string;
   scenario: "A" | "B" | "C" | "D" | "E" | "F";
+  readonly pharmacySupplyRecord?: DeclaredItemFields;
   title: string;
   purpose: string;
   pharmacy: { name: string; contractorCode: string };
@@ -270,6 +283,9 @@ export interface TraceStep {
 
 export interface Signals {
   provisionFound: boolean;
+  provisionStatus?: "found" | "not_found" | "not_applicable";
+  readingStatus?: "applicable" | "not_applicable";
+  imageStatus?: "applicable" | "not_applicable";
   sampleAgreement: { agree: number; total: number };
   reconciliation: "agree" | "conflict" | "not_established" | "not_applicable";
   imageQuality: number;
@@ -309,6 +325,7 @@ export interface RequirementResult {
 }
 
 export interface CasePack {
+  ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check" | "unavailable";
   caseId: string;
   tariffVersion: string;
   tariffLabel: string;
@@ -337,6 +354,7 @@ export interface CasePack {
 }
 
 export interface DecisionRecord {
+  ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check" | "unavailable";
   id: string;
   caseId: string;
   timestamp: string;

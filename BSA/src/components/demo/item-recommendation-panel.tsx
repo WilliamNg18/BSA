@@ -10,5 +10,5 @@ export function ItemRecommendationPanel({ caseId, context, compact = false, head
 }) {
   const { recommendation, error } = useItemRecommendation(caseId, context);
   if (error) return <p role="alert" className="text-sm text-destructive">{error}</p>;
-  return recommendation ? <RecommendationCard recommendation={recommendation} compact={compact} headingLevel={headingLevel} /> : null;
+  return recommendation ? <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} headingLevel={headingLevel} /> : null;
 }

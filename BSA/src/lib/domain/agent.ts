@@ -21,7 +21,9 @@ import { versionForDate } from "./tariff";
 import { capturedFields, compatibleCapture } from "./capture-evidence";
 import { interpretPharmacyText } from "./pharmacy-check";
 import { routeSubmission, routingFactsForCase } from "./routing";
-import { EPS_SUPPLY_RULE, evaluateEpsSupply } from "./eps-check";
+import { EPS_SUPPLY_RULE, evaluateEpsSupply, createEpsPrescription } from "./eps-check";
+import { buildReferralNote } from "./referral-wording";
+import { runStrengthAgent } from "./strength-agent";
 import type {
   CasePack,
   CaseState,
@@ -55,6 +57,7 @@ function requiredTypeFromReadings(readings: EndorsementFacts[]): EndorsementType
 }
 
 export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePack {
+  if (original.epsPrescription?.supplyRecord) return runStrengthAgent(original, opts.agentEnabled ?? true);
   const captured = Boolean(original.capturedEvidence);
   const compatible = compatibleCapture(original);
   const c = captured ? { ...original, extracted: capturedFields(original) } : original;
@@ -62,7 +65,13 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   const evidence: EvidenceItem[] = [];
   const agentEnabled = opts.agentEnabled ?? true;
   const dateVersion = opts.tariffVersion ? null : versionForDate(c.extracted.dispensingDate);
-  const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : null;
+  const paperFields = c.capturedEvidence?.fields ?? c.paperDeclaration;
+  const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) :
+    c.extracted.productCode === EPS_SUPPLY_RULE.productCode && c.extracted.quantity !== null
+      ? evaluateEpsSupply({ ...createEpsPrescription(c), supplyEvidence: {
+        ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: paperFields?.brandManufacturer ?? "",
+        packSize: paperFields?.packSize ?? null, form: paperFields?.form ?? "",
+      } }) : null;
   const supplyRequired = c.extracted.productCode === EPS_SUPPLY_RULE.productCode || supply !== null;
 
   // ---- Tier 0: deterministic pre-checks (no model) ----
@@ -210,7 +219,8 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
   const endorsementType = supplyRequired ? "SUPPLY" : captured ? facts!.type : requiredTypeFromReadings(c.readings);
 
   // ---- RETRIEVE (agentic: which provision, for which date) ----
-  const retrieval = toolRetrieveTariff(endorsementType, c.extracted.dispensingDate, opts.tariffVersion);
+  const retrieval = toolRetrieveTariff(endorsementType, c.extracted.dispensingDate, opts.tariffVersion,
+    supplyRequired ? EPS_SUPPLY_RULE.id : undefined);
   const version = retrieval.version;
   const clause = retrieval.clause;
   const concession = version && lookup.product ? version.concessions.find((k) => k.productCode === lookup.product?.code) ?? null : null;
@@ -291,9 +301,9 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     inCoverage: c.inCoverage,
   };
   const composite = supplyRequired
-    ? !eps || !supply || !clause || reconciliation === "not_established"
+    ? !supply || !clause || reconciliation === "not_established"
       ? { level: "abstain" as const, reasons: ["Registered generic supply source, dated provision or comparable fields are unavailable."] }
-      : { level: "low" as const, reasons: ["Typed EPS supply fields checked directly. Handwriting readings and image confidence do not apply."] }
+      : { level: "low" as const, reasons: ["Structured supply fields checked directly; image and capture provenance remain separate."] }
     : captured
     ? !compatible || !clause || reconciliation !== "agree" || !mandatory.every((check) => check.pass) || requirementResults.some((check) => check.met === null)
       ? { level: "abstain" as const, reasons: [
@@ -340,7 +350,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
       reasons.push("The endorsement does not meet every retrieved requirement. Review the checks and missing information.");
       reasons.push(`Missing: ${missing.join("; ")}.`);
       alternative = { outcome: "SUFFICIENT", note: "Not permitted: the gate blocks SUFFICIENT while a requirement of the clause is unmet." };
-      draft = supplyRequired ? `Please supply: ${missing.join("; ")}. Resubmit the corrected synthetic claim.`
+      draft = supplyRequired ? buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }])
         : "Please add the date beside the initials and resubmit. No other correction is needed for this synthetic endorsement.";
     } else {
       recommendation = "SUFFICIENT";
