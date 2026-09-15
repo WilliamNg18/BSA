@@ -168,13 +168,16 @@ export function deriveRecommendation(
     ? { ...projectedDraft, extracted: fields, readings: [] } : projectedDraft ?? current;
   const pack = runAgent(packInput, { agentEnabled: record ? record.recommendation !== "NONE" : true });
   const clauseId = context.kind === "draft" || !capture ? assessment.clauseId : assessment.sourceClauseId;
-  const clause = version?.clauses.find((entry) => entry.id === clauseId) ?? null;
+  const typedFacts = interpretPharmacyText(text);
+  const unsupportedSpecial = typedFacts.type === "UNKNOWN" && /^\s*SP\b/i.test(text);
+  const clause = version?.clauses.find((entry) => unsupportedSpecial ? entry.endorsementType === "SP" : entry.id === clauseId) ?? null;
   const sourceKnown = channel === "eps" || Boolean(capture) || context.kind === "draft" || Boolean(declared);
   const supply = candidate.epsPrescription ? evaluateEpsSupply(candidate.epsPrescription) : null;
-  const requirements: RecommendationRequirement[] = evaluateRequirements(clause, sourceKnown ? interpretPharmacyText(text) : null, fields, supply?.checks)
+  const requirements: RecommendationRequirement[] = evaluateRequirements(clause, sourceKnown ? typedFacts : null, fields, supply?.checks)
     .map(({ requirement, met }) => ({ id: requirement.id, label: requirement.label, status: met === null ? "not_established" : met ? "met" : "not_met" }));
-  const sourceGap = !clause ? "Governing provision unavailable for this source and dispensing date." : null;
-  if (sourceGap) requirements.push({ id: "provision", label: "Applicable provision", status: "not_established" });
+  const sourceGap = !clause ? "Governing provision unavailable for this source and dispensing date."
+    : unsupportedSpecial ? "Unsupported input: SP is outside validated coverage; manual review only." : null;
+  if (sourceGap) requirements.push({ id: clause ? "coverage" : "provision", label: clause ? "Validated interpretation coverage" : "Applicable provision", status: "not_established" });
   const unreadable = channel === "paper" && original.imageQuality < QUALITY_THRESHOLD;
   const findings = unreadable && (!assessment.verification.reconciled || assessment.verification.gate2 !== "pass") && context.kind !== "draft"
     ? disagreementFindings(original, candidate, capture) : [];
@@ -201,7 +204,7 @@ export function deriveRecommendation(
   const baseDraft = draft ?? initialisePharmacyDraft(current, revision);
   const preview = previewPharmacyCorrection(current, revision, baseDraft);
   const suggestions = concreteSuggestions(requirements, baseDraft, preview, date);
-  const ordinary = pack.gate.result === "PASS" && (pack.recommendation !== "SUFFICIENT" || assessment.releaseEligible);
+  const ordinary = !unsupportedSpecial && pack.gate.result === "PASS" && (pack.recommendation !== "SUFFICIENT" || assessment.releaseEligible);
   const fieldDisagreement = findings.some((finding) => finding.includes('"; '));
   const diagnostic: DiagnosticFollowUp | null = !ordinary && findings.length ? {
     kind: "safe_human_follow_up", caseId, revision: revision.number,
@@ -221,13 +224,14 @@ export function deriveRecommendation(
     suggestions: complete ? [] : suggestions, preview: complete ? null : preview, outcome,
     summary: complete ? `Complete against ${clauseLabel}, Version ${version?.label}; nothing to add.` :
       diagnostic ? "Safe human follow-up; verification remains unsuccessful." : sourceGap ?? "Correction required before the submission is complete.",
-    signals: { ...pack.signals, provisionFound: Boolean(clause),
+    signals: { ...pack.signals, provisionFound: Boolean(clause), inCoverage: unsupportedSpecial ? false : pack.signals.inCoverage,
       sampleAgreement: context.kind === "draft" ? { agree: 0, total: 0 } : pack.signals.sampleAgreement,
       reconciliation: context.kind === "draft" ? "not_established" : assessment.verification.reconciled ? "agree" : capture || channel === "eps" ? "conflict" : "not_established" },
     kernelRecommendation: record?.recommendation ?? pack.recommendation,
     kernelGate: record ? record.recommendation === "ABSTAIN" || record.recommendation === "NONE" ? "NOT_RUN"
       : record.checks.length ? record.checks.every((entry) => entry.pass) ? "PASS" : "FAIL" : "NOT_RUN" : pack.gate.result, diagnostic, sourceGap,
-    nextStep: sourceGap ? "Request the applicable provision and readable source evidence." : unreadable
+    nextStep: unsupportedSpecial && clause ? "Enter the actual invoice evidence for manual review; this input cannot be verified for release."
+      : sourceGap ? "Request the applicable provision and readable source evidence." : unreadable
       ? !capture ? "Confirm or correct Type 1 capture, then Type 2 review; unreadable paper always requires operator release."
         : "Requires operator release because the scan could not be read." : complete ? "Continue through the existing submission or review controls." : "Apply a supported correction, then make a separate human submission or decision.",
     provenance: channel === "eps" ? "Typed EPS and retained claim ledger" : capture ? "Human-confirmed capture; original unreadable image retained"

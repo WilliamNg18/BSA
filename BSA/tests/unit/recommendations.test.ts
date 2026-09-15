@@ -141,6 +141,27 @@ describe("shared recommendation contract", () => {
     expect(draft.endorsementText).not.toContain("£");
   });
 
+  it("existing B accepts an unsupported SP draft for manual invoice guidance without widening kernel coverage", () => {
+    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, endorsementText: "SP RK",
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "SP RK" } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r).toMatchObject({ clause: { id: "P8B-S1" }, outcome: "ABSTAIN", kernelRecommendation: "ABSTAIN",
+      kernelGate: "NOT_RUN", operatorApplyAllowed: false, preview: null, signals: { inCoverage: false } });
+    expect(r.summary).toContain("Unsupported input");
+    expect(r.suggestions).toContainEqual(expect.objectContaining({ field: "invoice_price", value: null,
+      label: "invoice price required; enter £x.xx", focusTarget: "invoicePrice", status: "needs-human-input" }));
+    expect(store().pharmacyDrafts[id].endorsementText).toBe("SP RK");
+    expect(store().itemVerification[id].released).toBe(false);
+    store().setAgentEnabled(true);
+    for (const text of ["SP RK", "SP RK £3.41"]) {
+      store().submitItem({ caseId: id, channel: "eps", endorsementText: text,
+        epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: text } });
+      expect(store().itemVerification[id]).toMatchObject({ gate1: "fail", released: false });
+      expect(deriveRecommendation(store(), id)).toMatchObject({ outcome: "ABSTAIN", operatorApplyAllowed: false });
+    }
+  });
+
   it("supply corrections expose manufacturer, listed pack and dispensed form from the same patch", () => {
     const id = "SYN-FQ123-MISMATCH", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!,
