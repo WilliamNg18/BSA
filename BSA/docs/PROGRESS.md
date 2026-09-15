@@ -52,6 +52,13 @@ No browser, live, deployment or backup verification is claimed.
 G integrates W+B after the independent header change; no self-merge or deployment.
 Owner actions for me: none.
 
+W's follow-up records the coordinator's later C5 clarification: only the
+pharmacy card displays the proposed corrected pack and preview. Operator views
+may show submitted/source facts but only field/rule-based correction advice.
+The complete Off wrong-strength cycle requires a real later audit/query
+reopening after automatic pricing; an On failure followed by Off is not a
+substitute. G owns the explicit action, P/O/V its presentation and proof.
+
 ## Current release gate: live first, exact local backup
 
 ### Tasks 39/40: shared domain integration reactivated

@@ -79,6 +79,17 @@ exact replica equality, stale/payload ACK rejection, value-leak guards,
 paper three-source conflicts/Type 1 ordering and all 36 channel/gate/reconciliation
 combinations. They do not claim actual store-action or browser completion.
 
+The subsequent coordinator clarification distinguishes three concepts:
+submitted/source facts can be visible to the operator; the proposed exact
+correction belongs only to the pharmacy; the outbound operator note must
+contain no proposed value. A pure assessment may carry a source-backed
+suggestion, but its shared presentation adapter must enforce those audiences.
+Likewise, a full Off wrong-strength round trip cannot be demonstrated by
+inventing an initial operator row: Today first prices the endorsed pack, and
+an actual human audit/query must reopen it. A mixed-mode response test does
+not establish that separate path. These are handoffs, not implemented or
+observed-live claims.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
