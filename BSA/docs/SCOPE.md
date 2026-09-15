@@ -6,6 +6,12 @@ ms.date: 2026-09-15
 
 # Scope register
 
+B's new-canonical fidelity proof is now 25 real-store cases across the new
+four identities, including complete correction cycles in all three perspectives
+and both modes. The combined seven-file selection passes 91 units and check.
+C1/C2/C6 have bounded branch-state evidence; C7's actual UI action timing and
+current-main deployment/live acceptance remain with V and the coordinator.
+
 The B verification branch now includes exact G `4765770` new runtime. Initial
 73/75 proof retained two stale extra-Type-1 test failures after paper amendments;
 those owned tests require migration before a new pass may be claimed.

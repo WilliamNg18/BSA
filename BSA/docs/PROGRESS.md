@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+The migrated B matrix now passes 91 combined units and check on G `4765770`.
+It uses the canonical submission/scanner facades, all four new identities,
+and complete D, wrong-strength EPS and brand-missing paper cycles in Off/On
+across Both, Pharmacy and NHSBSA. Corrected EPS is absent from the actual
+`staffLane` queue projection; paper has no Paid receipt before one human
+Release. Every step preserves prior submissions, OCR, capture and human history.
+The two obsolete second-capture failures remain recorded below.
+
 B now incorporates G `4765770c37e3f063fe5d2678e361f115e03e13d4`, with
 new four-case seeds, revision-pinned paper sources and corrected channel routing.
 The first B run passed 73/75; two old tests incorrectly attempted a second
