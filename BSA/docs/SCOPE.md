@@ -6,6 +6,19 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## B40 bounded foundation scope, 15 September
+
+New pure contracts cover C1 exact last-submission replication, C5 safe note
+generation and final-note validation, C6 revision/payload acknowledgement and
+EPS-only automatic recheck disposition, and C4 paper field/scan/hypothetical-OCR
+reconciliation. Explicit human capture stays separate from original submission.
+Canonical actions and historical seeds remain G-owned; C3/C7/C8 and the
+consumer UI/desktop/live proof remain integration obligations, not delivered
+behaviour from these standalone modules. This branch is published WIP, not a
+product or local backup. Current-main deployment observation remains required.
+The bounded foundation passed 48 units and check; these are not store-action
+or screen acceptance and do not satisfy the integrated C7 timing requirement.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

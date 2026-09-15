@@ -181,6 +181,40 @@ Do not infer acceptance from CI.
 
 ## Process model
 
+### Task 40 fidelity, scanner and corrected recheck contract
+
+The latest Part C contract supersedes the older manual-EPS-recheck rule below.
+NHSBSA displays the exact last pharmacy submission read-only under **As submitted
+by the pharmacy**. EPS retains every sent message field; paper retains the typed
+declaration and its revision-pinned synthetic scan. Human capture is separate
+derived evidence and never edits that submission. Only an explicit pharmacy
+resubmission supplies a new corrected revision.
+
+Paper's three columns are **Pharmacy's declaration (as typed)**, **Scan as the
+high-speed scanner sees it**, and **Extracted by character recognition
+(hypothetical)**. Per-field extraction values/confidence carry **synthetic;
+illustrates what NHSBSA's capture would produce**. Unreadable capture requires
+Type 1 confirmation before Type 2. Matching fields do not replace deterministic
+Tariff checks. Any scanned-paper release still requires the operator's press.
+
+Outbound NHSBSA notes name the field and rule and request accuracy, never the
+proposed corrected value. Exact source facts remain visible as evidence.
+Concrete correction/preview belongs only in the pharmacy's own suggestion card.
+Manual as well as generated outbound notes are checked at the final action;
+unsafe text produces a clear error, never a silent rewrite.
+
+Corrected resubmission requires **I confirm the corrected information is
+accurate**, bound to the current revision and exact corrected payload in both
+toggle modes. Off uses manual corrections, not hidden assistance. Editing or
+Apply invalidates acknowledgement. Satisfied corrected EPS proceeds to existing
+pricing without an operator; satisfied corrected paper is ready for one human
+Release. Every submission, referral reason, acknowledgement, resubmission and
+release remains append-only with its actual human or code actor.
+
+These are required contracts, not claims that the old runtime or live site
+already satisfies them. G owns canonical integration and historical seed states;
+the screen owners adopt the shared contracts before V's exact live verification.
+
 The owner's 13 September process brief supersedes the earlier referral-only
 workload model for Tasks 19-24. Treat the following supplied public figures as
 fixed project context, not as a claim of fresh external source verification:
