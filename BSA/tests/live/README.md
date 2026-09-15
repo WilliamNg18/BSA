@@ -4,9 +4,10 @@ The pre-addition named inventory contains **55 checks**: eight core application
 checks, two system-design widths, three header-perspective checks, 22 individual
 step/mode audits, four complete Back/Next walks and sixteen four-case cycles.
 Task 38 adds twenty mandatory width/mode requirement checks, for an expected
-inventory of **75 names**. All 75 declarations now discover across five files;
-the new UI and timing paths still await execution against the integrated owner
-surfaces. Discovery and passing unit controls are not application acceptance.
+inventory of **75 names**. All 75 declarations now discover across five files.
+Four bounded recommendation, preview, paper and timing probes have passed on
+a composed local candidate; the complete new inventory remains a separate
+execution gate. Discovery and passing unit controls are not application acceptance.
 The reporter rejects missing, unrun or failed checks.
 The earlier 55-check pass is historical pre-addition evidence, not Task 38
 acceptance.

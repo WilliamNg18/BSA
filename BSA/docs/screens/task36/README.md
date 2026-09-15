@@ -197,6 +197,18 @@ and matched the full commit. `req38-b-34af` retains the six timing records;
 port 4336 was released. This is one complete bounded journey, not a fresh
 four-probe result, the broader 75-check matrix, or hosted acceptance.
 
+The subsequent **fresh original four-probe run passed 4/4** at clean
+`712ee4f4c49f0c773427c557cf1bc1aa0bea5e03` in 89.400 seconds, with one
+worker, zero retries and zero skipped tests. All four probes ran together;
+this result is not assembled from previous attempts. The 31 axe audits
+recorded zero violations and 13 audits with incomplete findings. The six B
+timings were Send 765.7866, request 495.6692, confirmation 470.4424,
+referral 600.0932, resubmission 596.6822 and human release 485.7086 ms.
+Check passed, the clean build identity matched the full commit, and port
+4336 was released. Artifacts remain in `req38-smoke-712e` and its sibling
+JSON report. This composed candidate is not latest main. The complete
+75-name local rehearsal and final hosted acceptance remain separate gates.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
