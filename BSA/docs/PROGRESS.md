@@ -66,6 +66,14 @@ round trips, screenshots, main merge, green deployment and observed live
 behaviour remain integration work. Owner actions for me: none.
 ## 2026-09-15: B40 domain foundation, published incomplete
 
+G's integration found a concrete pure-routing defect: confidently readable
+blank fields were being treated as unreadable capture. Two new regressions
+failed before the repair. The repaired predicate reserves Type 1 for unreadable
+scans, missing extraction observations or low confidence; known blank required
+fields instead produce a Type 2 referral. All 54 contract units and check passed.
+G's published `6054408` provides real ACK/audit actions, but new seed/routing
+integration and actual all-four/state fidelity proof remain pending.
+
 Foundation `c433f4546f50d9ecb09d3da5699ef5fd48365234` is pushed and handed to
 G for integration. A bounded follow-up adds original-source identity validation,
 explicit raw-versus-human-confirmed reconciliation basis, pharmacy-amendment

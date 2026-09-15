@@ -31,6 +31,15 @@ consumer units passed; full partial-integration run retained 65 failures
 
 ### Refreshed published-source snapshot after the B foundation
 
+G `6054408f5573bf975089d81e9300d66ec656a0f2` was inspected at its exact
+source: it adds real explicit ACK and later EPS audit actions with event-bound
+guards, invalidation and immutable earlier history. Its published store tests
+still use the earlier active seed mapping. C6 is now partially implemented on
+that branch, not main; new automatic corrected EPS/paper routing remains
+pending. B's concrete C4 readable-blank regression failed twice before repair;
+the resulting 54 contract units and check pass. No prior failed result is
+relabelled and no C1/C7 all-state proof is inferred.
+
 Actual main remains `641815137b36ab3e925dcc98c4738d0b150a75d1`.
 The new open-PR query found W #102; its subsequent fetched published head is
 `4f3bc3a6356ca42c1a1613d1d717c193ab4217bc`. Inspection of the exact head shows
