@@ -51,6 +51,11 @@ O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
 
 # Scope register
 
+Draft #110 now carries the complete assembled candidate. Check and 1,990 units
+pass on `d4f27ce`; the structural operator-panel requirement and remaining
+browser/main/deployment/live gates are still open. No backup or live release
+is inferred from this draft.
+
 The remaining assembled-unit gap is narrowed to four operator-view compatibility
 checks after correcting the citation-denominator expectation. Proposed matching
 guidance is not counted as a retrieved Tariff provision. No release completion

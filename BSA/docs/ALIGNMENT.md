@@ -412,6 +412,12 @@ main actions or updated four-case historical seeds.
 
 # Vision alignment
 
+Assembled candidate `d4f27ce` is locally green: complete check plus 1,990 unit
+tests across 116 files. Draft #110 remains incomplete pending the required
+operator-panel structure, browser CI and live-first release evidence. The
+coordinator's observed header-first main `5b75e5f` remains the live baseline,
+not this candidate.
+
 Citation alignment is explicit: the proposed strength matching check has no
 Tariff clause/citation and does not inflate the dated-provision counter. The
 strict headline guard now runs as part of shared verification; 314 selected

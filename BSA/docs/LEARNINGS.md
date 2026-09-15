@@ -471,6 +471,10 @@ The final assembled migration exposed a stale citation expectation: both
 examples assemble evidence, but only the paper rule has a retrieved Tariff
 citation. Correcting that expectation and asserting proposed strength authority
 preserves, rather than weakens, the governance distinction.
+
+The assembled `d4f27ce` candidate passes check and all 1,990 units. This closes
+the local migration failures, not the separate structural-panel, browser-CI
+or live acceptance requirements. Draft #110 records those remaining boundaries.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

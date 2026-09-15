@@ -460,6 +460,12 @@ assembly examples and asserts the strength authority explicitly. The source
 headline guard is activated in shared verification. Baseline/guard/runner
 selection: 314 tests pass; four operator-region/prose compatibility cases remain.
 
+Those five failures are now repaired. Exact candidate `d4f27ce` passes the
+complete check and all 1,990 unit tests in 116 files. Draft #110 publishes the
+assembled integration for review; it is not merge-ready or a live product.
+O's required genuine advice/decision panel structure, exact-head browser CI,
+deployment and observed served SHA still gate completion.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the
