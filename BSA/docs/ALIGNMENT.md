@@ -28,6 +28,13 @@ consumer units passed; full partial-integration run retained 65 failures
 (1,665 passing), so canonical acceptance remains open.
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
+C1 information-response refinement on `4765770`: the facade already preserves
+the exact submission, OCR and human-confirmed basis, but actual routing re-enters
+Type 1 after `sendConfirmation`. A new G-requested negative test reproduces
+that routing mismatch without altering the earlier source/capture history.
+G owns explicit source-revision linkage; this targeted failure is not hidden
+by the earlier facade-equality pass.
+
 Additional negative verification against G `4765770` finds C4/C5 still
 misaligned at two concrete points. For paper with `form: ""`, an outbound
 request containing the correct source presentation (`capsules`) is accepted

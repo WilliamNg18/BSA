@@ -34,6 +34,13 @@ The first five checks failed, then the expanded Off/On set failed all nine.
 G and U were notified; source facts must be added by G's explicit amendment
 source builder, never backfilled by U from the declaration.
 
+At G's request, B added a focused D Post/Type 1/Request information/response
+test. The exact facade and `human_confirmed_capture` basis remain equal, but
+`itemProcesses` incorrectly changes routing to Type 1. The new assertion failed
+once against `4765770`; the prior 25 cases were not rerun in that targeted
+reproduction. G is introducing source-revision linkage rather than copying a
+previous capture into a new human event.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
