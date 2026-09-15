@@ -4,6 +4,12 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: V canonical handoff and fresh-scenario fidelity
+
+- Question: may verification create missing brand data by mutating the ready-to-release C8 seed? Choice: use only the real original-scenario factory and visible preparation controls when published; retain the dependency meanwhile. Tie-breaker: exact source fidelity and no fabricated operational state.
+- Question: who adds the new assumption to state verification? Choice: preserve N's `15f9562` exact-key hunk and separately strengthen V's capture preservation list in its next source-compatible patch. Tie-breaker: one writer per hunk and complete observer coverage.
+- Question: do canonical store and handler passes establish C7 or current-live acceptance? Choice: retain them as bounded evidence only; require real UI cycles and the original timing assertions after coherent integration. Tie-breaker: truthful evidence and live-first authority.
+
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.

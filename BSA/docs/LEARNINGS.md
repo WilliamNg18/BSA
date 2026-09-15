@@ -4,6 +4,32 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Canonical runtime and browser preparation are distinct
+
+Reading G `4765770` confirmed that wrong-strength Today first prices as
+endorsed and only an explicit audit reopens it. Acknowledged EPS corrections
+then recheck automatically; eligible paper amendments still need the operator's
+release. B's `95db18a` and P's `330675a` report store/handler evidence only.
+
+P identified a separate setup hazard: the current C8 ready-to-release paper
+revision is complete, while the real fresh brand-missing scenario must begin
+incomplete. Tests must await/use the original-scenario factory, not blank
+fields through a hidden observer mutation. B also identified missing amended
+scan regions for brand, pack and form despite populated OCR fields; those
+remain G/U work, not a visual pass. N's new global assumption belongs both in
+the exact snapshot schema and in unrelated-global capture preservation.
+
+The parent's newer B `dd07f91` pinpoints nine failing negative regressions:
+eight `own.form` leaks across four outbound APIs and both modes, plus one
+manufacturer region absent from the actual amended image. Positive fidelity
+tests do not supersede these failures. R `32e0a3`'s remote integration logs
+independently report 36 failed files and 185 failed / 1,600 passed tests;
+this is an earlier integration boundary, not evidence against later fixes.
+
+No V browser or profiler was launched for these handoffs. The live build
+identity remained clean `6418151` at `2026-09-15T20:04:12.9214878Z`; identity
+freshness alone does not verify the new behaviour.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

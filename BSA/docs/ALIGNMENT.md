@@ -8,6 +8,23 @@ ms.date: 2026-09-15
 
 ## Latest Task 39/40 verification gaps
 
+Canonical actions/facades are published at G `4765770`; B `95db18a` and
+P `330675a` provide bounded store/handler evidence, not C7 browser evidence.
+The C8 ready-to-release paper seed cannot double as the fresh brand-missing
+scenario. G's original-scenario factory and the missing amended-scan
+brand/pack/form regions remain unresolved verification prerequisites.
+N's `15f9562` owns the snapshot schema assertion; V's corresponding capture
+global-preservation assertion is still pending source-compatible integration.
+The live identity was refreshed at `2026-09-15T20:04:12.9214878Z` and remained
+clean `6418151`; no new-scope visual, timing or full-live result is implied.
+
+B `dd07f91` adds nine open negative regressions, not another positive gate:
+eight outbound `own.form` proposed-value leaks and one manufacturer omission
+in the actual amended image. G owns both repairs. R `32e0a3`'s failed
+185/1,785-unit integration is retained separately from later owner migrations;
+no Card masking, old active fixture restoration or weakened assertion resolves
+these defects.
+
 The live baseline observed at `2026-09-15T18:59:23.9424369Z` served clean
 `641815137b36ab3e925dcc98c4738d0b150a75d1` after V #94's successful
 deployment. This does not align the subsequent requirements merely because

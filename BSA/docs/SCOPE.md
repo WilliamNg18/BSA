@@ -8,6 +8,15 @@ ms.date: 2026-09-15
 
 ## Tasks 39/40 extension: verification pending
 
+Published G `4765770` establishes callable canonical contracts, not completed
+screen integration. V will exercise wrong-strength Today through actual
+automatic pricing and a later explicit audit, never substitute an On failure.
+Fresh brand-missing paper must come from the real scenario control/factory,
+not from the completed C8 amendment or a hidden store write. That factory and
+the reported scan-region discrepancy remain source dependencies. N retains
+ownership of its exact snapshot-key hunk; V retains capture preservation
+coverage. Neither published store nor handler results close browser/live gates.
+
 The latest brief supersedes the prior missing-date and wrong-pack headline
 scenarios. The same mismatch ID becomes prescribed/supplied 10 mg versus
 selected 5 mg EPS; Today follows endorsed-pack automatic pricing, while

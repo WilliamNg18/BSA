@@ -8,6 +8,34 @@ ms.date: 2026-09-15
 
 ### Task 39/40 verification extension
 
+V has inspected published canonical checkpoint
+`4765770c37e3f063fe5d2678e361f115e03e13d4`, including actual audit,
+acknowledgement and channel-specific recheck actions. B's `95db18a` reports
+25 store tests / 91 combined tests, not browser timing or live acceptance.
+P's `330675a` reports real-handler coverage, not DOM coverage. The original
+paper-scenario factory remains pending: a fresh brand-missing submission must
+not inherit the complete C8 ready-to-release revision or be manufactured by
+hidden test-store edits. B also reported missing brand/pack/form scan regions;
+G/U source and visual resolution remain open.
+
+Parent's newer B `dd07f91` diagnostic has nine failing negative regressions:
+eight proposed-value leaks involving `own.form` across four outbound APIs in
+both modes, and one missing manufacturer region in the actual amended image.
+G owns the repair; these remain failed gates. R `32e0a3` CI `35016926570`
+also failed: 185/1,785 units across 36 files, with 1,600 passing. That earlier
+integration inventory is not a fresh result for later owner patches.
+F `326abfb` publishes final ACK/audit labels and paper ready status; its owned
+unit results do not close C7. A's reported 1,053 ordinary / 44 state result
+is branch evidence; final-head CI, visual handoff and live acceptance remain
+separate.
+
+N owns the published `15f9562` exact snapshot-key addition. V's next compatible
+capture patch must additionally assert that `mismatchSharePercent` is unchanged,
+without filtering the observer or duplicating N's hunk. No new browser or
+profiling run was started. A fresh build-identity observation at
+`2026-09-15T20:04:12.9214878Z` still served clean `6418151`; this is identity
+evidence only, not a new UI or Tasks 39/40 acceptance result.
+
 V #94 merged as `641815137b36ab3e925dcc98c4738d0b150a75d1`; deployment
 `35009957918` succeeded. At `2026-09-15T18:59:23.9424369Z`, the live root
 and build identity returned HTTP 200 and served that clean commit. Its
