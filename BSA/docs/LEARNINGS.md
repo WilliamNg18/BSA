@@ -36,6 +36,13 @@ The provenance checks also reject a non-string commit rather than letting
 regular-expression coercion accept an array containing a SHA.
 ## 2026-09-15: Reopened header fade audit diagnosis
 
+The microtask hold works: both entry negatives passed, and exit frames were
+genuinely paused. However, a 95%-exit frame has opacity 0.00447462, which axe
+rounds to 1:1 and marks incomplete rather than violating. The exact diagnostics
+are retained in `files/outcome-settlement-corrected`. Sample 90% of the same
+native exit instead to produce a measurable contrast negative without changing
+runtime duration, weakening the negative expectation or clearing incompletes.
+
 The first clean `e3df041` bounded run passed both ordinary final-state tests
 but failed its four new diagnostic controls. Recorded `playState` was running:
 Motion's `NativeAnimationExtended` sets `startTime` after `Element.animate`

@@ -38,6 +38,10 @@ all four diagnostic holds. It exposed a diagnostic initialization error, not
 an ordinary audit failure: Motion sets native `startTime` after `animate()`
 returns, undoing an immediate pause. The hold now runs in the next microtask
 and requires actual paused state; production motion remains untouched.
+The second diagnostic's 95%-exit frame rounded to axe's 1:1 incomplete case,
+so its expected violation did not occur. Keep that failed result and sample
+90% of the real exit animation for the low-contrast negative control; no
+ordinary audit filter, assertion or timeout is relaxed.
 
 ## Part A candidate acceptance boundary
 
