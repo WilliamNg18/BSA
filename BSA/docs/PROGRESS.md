@@ -2188,3 +2188,9 @@ generator, including diagnostic notes, rather than copying source values.
 W's published strength projection is reused. Consumers P/O and G's new four-case
 source/recheck integration remain pending. This branch is incomplete work,
 not a live release or backup; no browser or live result is claimed.
+
+The follow-up extends the same prepared-patch renderer to typed paper
+brand/manufacturer, pack and form fields. Fifty targeted recommendation units
+and typecheck pass, including exact canonical operator-preview/Apply equality
+and pharmacy-only paper values. G's canonical source facade and corrected
+four-case seeds remain dependencies, not reconstructed state in R.

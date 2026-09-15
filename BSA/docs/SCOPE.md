@@ -414,3 +414,7 @@ R's new audience unit contracts cover the projection, default operator boundary,
 source identity and absence of fabricated approval. Existing canonical actions
 remain G-owned; P/O wire their real components. Full four-case integration,
 exact-head CI, main deployment and live observations are still required.
+
+Prepared paper correction values now use the same before/after draft contract
+as EPS supply values; R supplies no replacement source data or independent
+correction algorithm. Actual paper seed/source preparation stays with G.

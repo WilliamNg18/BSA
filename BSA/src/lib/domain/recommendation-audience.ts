@@ -17,8 +17,11 @@ export type AudienceRecommendation = AudienceFacts & (
 /** Only rule/field identifiers reach outbound wording; evidence values are never interpolated. */
 export function recommendationReferralRequests(r: Pick<ItemRecommendation, "requirements" | "strength" | "paper" | "version">): ReferralRequest[] {
   if (r.paper?.requests.length) return [...r.paper.requests];
-  if (r.strength && !r.strength.complete) return [{ rule: "strength_matches_prescription" }];
   const requests: ReferralRequest[] = [];
+  if (r.strength && !r.strength.complete) requests.push(
+    r.strength.prescribed && r.strength.selected && r.strength.prescribed.strength !== r.strength.selected.strength
+      ? { rule: "strength_matches_prescription" } : { rule: "sources_must_agree", field: "productCode" },
+  );
   for (const entry of r.requirements.filter((requirement) => requirement.status !== "met")) {
     if (entry.id === "brand_manufacturer") requests.push({ rule: "brand_required_for_multiple_suppliers" });
     else if (entry.id === "pack_size") requests.push({ rule: "required_field", field: "packSize" });
@@ -28,7 +31,8 @@ export function recommendationReferralRequests(r: Pick<ItemRecommendation, "requ
     else if (entry.id === "invoice_price") requests.push({ rule: "required_field", field: "amountClaimed" });
     else if (/prescriber/i.test(entry.label)) requests.push({ rule: "required_field", field: "prescriber" });
     else if (/quantity/i.test(entry.label)) requests.push({ rule: "sources_must_agree", field: "quantity" });
-    else if (/amount|concession/i.test(entry.label) && r.version) requests.push({ rule: "amount_matches_concession", tariffMonth: r.version });
+    else if (/concession/i.test(entry.label) && r.version) requests.push({ rule: "amount_matches_concession", tariffMonth: r.version });
+    else if (/amount/i.test(entry.label)) requests.push({ rule: "sources_must_agree", field: "amountClaimed" });
     else if (/product/i.test(entry.label)) requests.push({ rule: "sources_must_agree", field: "productCode" });
     else if (/endorsement/i.test(entry.label)) requests.push({ rule: "sources_must_agree", field: "endorsementText" });
     else requests.push({ rule: "readable_evidence_required" });
