@@ -24,6 +24,9 @@ describe("Tasks 39/40 additive domain contracts", () => {
       endorsementText: claim.dispenserEndorsement, epsPrescription: { ...claim, claimMessageState: "submitted" } }, 1)).not.toThrow();
     const corrected = { ...claim, items: [{ ...claim.items[0], dispensedCode: "SYN-AMLO10-28", dispensedName: "Amlodipine 10mg tablets" }] };
     expect(() => validateRetainedEpsSources(claim, corrected)).not.toThrow();
+    expect(() => validateRetainedEpsSources(claim, { ...corrected,
+      prescriber: { practice: corrected.prescriber.practice, name: corrected.prescriber.name },
+      supplyRecord: { quantity: 28, productCode: "SYN-AMLO10-28" } })).not.toThrow();
     expect(() => validateRetainedEpsSources(claim, { ...corrected, supplyRecord: { productCode: "SYN-AMLO5-28", quantity: 28 } })).toThrow("original prescription");
     expect(() => validateRetainedEpsSources(claim, { ...corrected, supplyRecord: undefined })).toThrow("retained");
     expect(() => validateRetainedEpsSources(claim, { ...corrected, items: [{ ...corrected.items[0], quantity: 56 }] })).toThrow("original prescription");

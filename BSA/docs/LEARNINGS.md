@@ -1160,6 +1160,10 @@ are different: a known 5mg selection may be structurally valid while disagreeing
 with a retained 10mg prescription and supply record. Reject malformed copies,
 but leave the genuine supported mismatch visible to the independent gates.
 
+A source-identity guard must compare semantic fields in a fixed order, not the
+caller's object-key insertion order. Legitimate reserialisation passes while
+changed prescribed quantity, source product or supply record still fails.
+
 CI `35006154532` found one callback-integrity unit failure in all four jobs.
 The unchanged original callback produced scanner hash `4542a736...` under
 CRLF and `bcbecf2c...` under LF. A standalone scanner's repeated `scan()`

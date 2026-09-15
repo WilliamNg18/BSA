@@ -196,7 +196,10 @@ export const useAppStore = create<AppState>((set, get) => {
       ? previous.epsPrescription?.dispenserEndorsement ?? previous.paperDeclaration?.endorsementText ??
         previous.declaration?.fields.endorsementText ?? previous.endorsementText : text;
     validateSubmissionSources({ ...submission, caseId, channel, endorsementText: submittedText, epsPrescription, paperDeclaration, declaration }, previous.number);
-    if (channel === "eps") validateRetainedEpsSources(previous.epsPrescription, epsPrescription);
+    if (channel === "eps") {
+      validateRetainedEpsSources((caseById(caseId) ?? caseById(previous.templateCaseId))?.epsPrescription, epsPrescription);
+      validateRetainedEpsSources(previous.epsPrescription, epsPrescription);
+    }
     validatePrecheck(precheck, submittedText, epsPrescription?.dispensingDate ?? paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate);
     if (declaration) validateDeclaredFields(declaration.fields);
     if (declaration && (channel !== "paper" || declaration.provenance !== "pharmacy_declaration" || !Number.isFinite(Date.parse(declaration.declaredAt)) ||
@@ -343,8 +346,13 @@ export const useAppStore = create<AppState>((set, get) => {
       if (draft.purpose !== undefined && !["new_submission", "correction"].includes(draft.purpose)) throw new Error("Choose a supported draft purpose.");
       const s = get(), revision = s.caseRevisions[caseId].at(-1)!;
       if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale; reopen the current item.");
+      if (draft.epsPrescription) {
+        validateRetainedEpsSources((caseById(caseId) ?? caseById(revision.templateCaseId))?.epsPrescription, draft.epsPrescription);
+        validateRetainedEpsSources(revision.epsPrescription, draft.epsPrescription);
+      }
       set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
         ...synchronisePharmacyDraft(draft, revision), revision: revision.number, appliedSuggestion: false, appliedFields: undefined,
+        correctionAcknowledgement: undefined,
       } }) });
     },
     applySuggestionToDecision: (caseId) => {

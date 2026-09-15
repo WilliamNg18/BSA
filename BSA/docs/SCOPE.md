@@ -17,6 +17,11 @@ without rewriting the prescription or supply record. Paper supply fields are
 preserved across source-copy validation. This preparatory change does not claim
 the new wrong-strength scenario, acknowledgement or recheck flow is complete.
 
+Source identity is enforced on editable drafts as well as submissions.
+Acknowledgement metadata supplied through ordinary edits is cleared; an
+explicit acknowledgement action and runtime resubmission enforcement follow
+with B's module integration.
+
 The latest authorised scope replaces the active wrong-pack EPS example with
 prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
 `EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:

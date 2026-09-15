@@ -18,6 +18,10 @@ are implemented, with synthetic 5mg catalogue evidence and paper supply-field
 propagation. Typecheck and 43 targeted tests pass. Active scenario outcomes,
 W/B module integration and live acceptance remain pending.
 
+Draft authority update: source-changing drafts are rejected and incoming
+acknowledgement metadata is invalidated by the ordinary edit setter.
+These guards preserve source identity without treating an edit as attestation.
+
 | Item | Alignment | Change / ownership | Evidence |
 | --- | --- | --- | --- |
 | Current main model | Drifted against newly authorised scope | G integrates sole canonical state/types; W strength modules and B fidelity modules are separate owners | Read main `6418151`; existing mismatch remains pack-based and `EX-24112` remains missing-date EPS |

@@ -71,9 +71,12 @@ export function validateRetainedEpsSources(previous: EpsPrescription | undefined
   if (!previous?.supplyRecord) return;
   if (!next?.supplyRecord) throw new Error("The original EPS supply record must be retained.");
   const sources = (eps: EpsPrescription) => ({
-    prescriber: eps.prescriber, patientLabel: eps.patientLabel, prescriptionDate: eps.prescriptionDate,
+    prescriber: { name: eps.prescriber.name, practice: eps.prescriber.practice }, patientLabel: eps.patientLabel, prescriptionDate: eps.prescriptionDate,
     dispensingDate: eps.dispensingDate, prescriberEndorsement: eps.prescriberEndorsement,
-    supplyRecord: eps.supplyRecord, items: eps.items.map(({ dispensedCode: _code, dispensedName: _name, ...prescribed }) => prescribed),
+    supplyRecord: eps.supplyRecord ? { productCode: eps.supplyRecord.productCode, quantity: eps.supplyRecord.quantity } : null,
+    items: eps.items.map((item) => ({
+      prescribedCode: item.prescribedCode, product: item.product, strength: item.strength, form: item.form, quantity: item.quantity, dose: item.dose,
+    })),
   });
   if (JSON.stringify(sources(previous)) !== JSON.stringify(sources(next))) {
     throw new Error("A claim correction cannot alter the original prescription or pharmacy supply record.");

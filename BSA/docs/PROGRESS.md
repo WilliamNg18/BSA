@@ -29,6 +29,12 @@ declaration/capture adapters. The synthetic 5mg catalogue entry is available.
 Typecheck and 43 targeted source/capture tests pass; active seed and gate
 behaviour are not yet switched to Tasks 39/40.
 
+Draft edits now clear acknowledgement metadata and validate retained EPS source
+identity before advice can consume the draft. The same guard checks both the
+configured source and previous revision at submission. Canonical source
+comparison ignores object-key insertion order. W's module handoff is ready
+for integration; no new live completion is claimed.
+
 This is published WIP, not completion or a local backup. The coordinator's last
 reported live artifact was `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observation

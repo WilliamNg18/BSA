@@ -2431,6 +2431,8 @@ Question: should submission shape validation reject a known wrong-strength selec
 
 Question: what binds correction acknowledgement? Choice: the current revision and canonical exact-payload fingerprint, excluding acknowledgement and presentation metadata; any payload edit or Apply invalidates acknowledgement; tie-breaker: explicit informed human action.
 
+Question: can a draft temporarily replace immutable prescription or supply evidence? Choice: validate retained sources on draft writes as well as submission, using fixed field ordering and leaving the claim selection editable; tie-breaker: recommendations must not corroborate a forged source.
+
 Question: should the new fourth scenario introduce a fifth playable identity? Choice: preserve the four IDs and repurpose `EX-24112` as correctly dated paper with missing brand evidence; retain historical fixtures independently; tie-breaker: the authorised four-case scope.
 
 Question: how should V publish verified but incomplete work under the standing rule? Choice: push draft #94 at STATUS and at least every thirty minutes, update all five registers in the same commit, and keep completion blocked until merged green-deployed work is observed live; tie-breaker: the latest explicit instruction and truthful evidence.
