@@ -1,3 +1,4 @@
+import { HISTORICAL_PHARMACY_HISTORY } from "../../../data/archive/pharmacy-history";
 import type { HistoryRecord, Product } from "./types";
 
 // SYNTHETIC reference data standing in for NHSBSA source systems.
@@ -6,6 +7,7 @@ import type { HistoryRecord, Product } from "./types";
 export const PRODUCTS: Product[] = [
   { code: "SYN-SERT50-28", name: "Sertraline 50mg tablets", packSize: 28, category: "M", basicPrice: 1.27 },
   { code: "SYN-AMLO10-28", name: "Amlodipine 10mg tablets", packSize: 28, category: "M", basicPrice: 0.98 },
+  { code: "SYN-AMLO5-28", name: "Amlodipine 5mg tablets", packSize: 28, category: "M", basicPrice: 0.82 },
   { code: "SYN-METF500-56", name: "Metformin 500mg tablets", packSize: 56, category: "M", basicPrice: 1.53 },
   { code: "SYN-COCOD-100", name: "Co-codamol 30/500 tablets", packSize: 100, category: "M", basicPrice: 3.86 },
   { code: "SYN-AMOX500-21", name: "Amoxicillin 500mg capsules", packSize: 21, category: "M", basicPrice: 1.02 },
@@ -27,13 +29,7 @@ export function productCandidates(text: string): Product[] {
   });
 }
 
-export const HISTORY: HistoryRecord[] = [
-  { contractorCode: "FQ123", referralsLast90Days: 3, lastReasons: ["NCSO not dated", "NCSO not dated", "Quantity mismatch"], quantityMismatchesLast90Days: 1 },
-  { contractorCode: "FH774", referralsLast90Days: 1, lastReasons: ["Missing endorsement"], quantityMismatchesLast90Days: 0 },
-  { contractorCode: "FM208", referralsLast90Days: 5, lastReasons: ["Quantity mismatch", "Quantity mismatch", "NCSO not dated"], quantityMismatchesLast90Days: 2 },
-  { contractorCode: "FT561", referralsLast90Days: 0, lastReasons: [], quantityMismatchesLast90Days: 0 },
-  { contractorCode: "FK390", referralsLast90Days: 2, lastReasons: ["Illegible endorsement", "Missing endorsement"], quantityMismatchesLast90Days: 0 },
-];
+export const HISTORY: HistoryRecord[] = HISTORICAL_PHARMACY_HISTORY;
 
 export function historyFor(code: string): HistoryRecord {
   return (

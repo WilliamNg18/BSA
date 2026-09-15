@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 import { captureJson, confirmReset, expect, test } from "./fixtures";
 import { GATHERING_STEPS, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
-import { automaticCaseIds, cases, decisionNote, operatorAction, operatorDecision, operatorRadio, performDecision, prepareCorrectedBReview, startDemonstrationReview } from "./operator-action-helpers";
+import { automaticCaseIds, cases, decisionNote, operatorAction, operatorAdvice, operatorDecision, operatorRadio, performDecision, prepareCorrectedBReview, startDemonstrationReview } from "./operator-action-helpers";
 
 for (const c of cases) {
   test(`Task6 ${c.id} manual trace and raw pack are not agent evidence`, async ({ page }) => {
@@ -130,7 +130,7 @@ for (const id of ["EX-24112", "SYN-FQ123-MISMATCH"]) {
 for (const enabled of [false, true]) {
   test(`corrected B requires a fresh human recheck before pricing, Agent ${enabled}`, async ({ page }) => {
     await prepareCorrectedBReview(page, enabled);
-    if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    if (enabled) await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     await operatorRadio(page, "ACCEPT").check();
     const reason = page.getByLabel("Reason (required)", { exact: true });
     for (const value of ["", "1234567", "   1234567   "]) {
@@ -256,7 +256,7 @@ test("Task6 shared decision draft survives toggle, comparison and navigation; Re
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
   await expect(decisionNote(page, "REQUEST_INFORMATION")).toHaveValue("Keep this human decision draft");
   await flag.setChecked(true);
-  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   const note = await decisionNote(page).inputValue();
   expect(note.trim().length).toBeGreaterThanOrEqual(8);
   for (const enabled of [false, true]) {

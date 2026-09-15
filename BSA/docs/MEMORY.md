@@ -4,6 +4,54 @@ description: Read first at each task; correct facts in place rather than appendi
 ms.date: 2026-09-15
 ---
 
+## EPS error evidence
+
+Verified 2026-09-15: Um IS, Clough A, Tan ECK. *Dispensing error rates in
+pharmacy: a systematic review and meta-analysis.* Research in Social and
+Administrative Pharmacy. 2024;20(1):1-9.
+DOI <https://doi.org/10.1016/j.sapharm.2023.10.003>.
+The primary indexed abstract/bibliography at
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>
+confirms 62 studies, pooled prevalence 1.6% (95% CI 1.2-2.1) and database
+search January 2010-September 2023. The proposed 39/44/34 error-type study
+counts and ranking remain unverified; do not display them as established
+facts. The abstract's 44 refers to hospital-setting studies.
+Label exactly: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic". It is not an NHSBSA claim rate.
+
+Verified 2026-09-15: NHSBSA, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d.,
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Opening paragraph and **Reimbursement**, paragraphs 1-2, support incorrect-
+endorsement referrals/delays and automatic processing when the selected AMPP
+has a dm+d price. Short quote: "what you have endorsed and not what you have
+supplied". Label exactly: "public, NHSBSA". Preserve that conditional context;
+do not invent a Tariff clause for the proposed strength reconciliation.
+LEARNINGS records acquisition limitations and the bibliographic details.
+
+Task 39's synthetic source is prescribed and actually supplied Amlodipine
+10mg tablets, 28, with 5mg/28 selected in the claim. The actual supply record
+does not come from the selected claim. Apply corrects only its code/name from
+corroborated source records, never submits or decides. An editable 1% assumed
+share over total submitted claims may estimate pre-pricing mismatch catches;
+it is separate from the study rate and the referral-loop calculation.
+This W domain handoff is not live completion; G integrates the canonical
+four-case model before the consuming streams and live verification.
+
+Current C5 authority: operator and pharmacy views may show prescribed and
+selected source facts, but the exact proposed corrected pack and preview
+appear only in the pharmacy's "your agent's suggestion from your records"
+card. Operator advice and outbound notes name the field/rule with no proposed
+value. The full Off wrong-strength cycle first prices the endorsed pack and
+then uses a real explicit human audit/query reopening; toggling never discovers
+or reopens the mismatch.
+
+The pure `epsStrengthForAudience` adapter enforces the proposed-value split
+without changing the source assessment: operator `suggestion` is always null;
+pharmacy proposals retain the exact own-records caption. G integrates it into
+the shared recommendation projection; views must not bypass it by rendering
+the raw assessment's proposal on the operator side.
+
 ## Purpose and principle
 
 Current scope is Tasks 25-40: a desktop-only eleven-step demonstration, explicit
@@ -151,35 +199,6 @@ Do not use "approved by the agent", "paid by the agent", implementation vendor,
 product or documentary names, or em dashes. Task 37 permits concrete services
 only in its single labelled reference-mapping table. Required process names and
 synthetic prescription content remain permitted, as recorded in DECISIONS.
-
-## EPS error evidence
-
-Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
-review and meta-analysis*. Research in Social and Administrative Pharmacy
-2024;20(1):1-9. DOI: https://doi.org/10.1016/j.sapharm.2023.10.003;
-PubMed: https://pubmed.ncbi.nlm.nih.gov/37848350/.
-Stream W verified the original abstract's 62 studies, search from January 2010
-to September 2023, and pooled dispensing-error prevalence of 1.6 per cent
-(95 per cent CI 1.2 to 2.1). Required label:
-"study on dispensing errors, used to make the scenario realistic; not an NHSBSA claim statistic".
-The owner's supplied subtype counts (wrong strength 39, wrong medication 44,
-wrong quantity 34) and ranking remain pending independent full-text verification;
-the abstract's 44 hospital studies do not verify the wrong-medication count.
-Do not present an unverified subtype claim as independently verified evidence.
-
-NHSBSA, *Endorsing correctly in EPS: actual medicinal product pack*:
-https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack.
-W verified its public explanation that an endorsed pack with a dm+d price can
-be processed automatically without processing-team review and reimbursed as
-endorsed rather than as supplied, including an incorrect pick-list selection.
-Use its verified short quotation with the label "public, NHSBSA".
-This supports the synthetic mechanism, not an NHSBSA error prevalence estimate.
-
-The separate optional pack/strength-mismatch assumption defaults to one per
-cent of total submitted claim volume, not the 85,000 referral subset and not
-the study's 1.6 per cent. Its With row is labelled estimate and is non-additive
-to the existing referral model until overlap is defined. Existing cohort and
-297.5-hour defaults remain unchanged.
 
 ## Current desktop contracts
 

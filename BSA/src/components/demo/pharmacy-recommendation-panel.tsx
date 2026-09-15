@@ -32,10 +32,11 @@ export function PharmacyRecommendationPanel({ caseId, draft, compact = false, on
     <h3 className="font-semibold">Recommendation</h3><p role="alert">{result.error}</p>
   </section>;
   function focus(target: ConcreteSuggestion["focusTarget"]) {
-    const field = target === "brandManufacturer" ? "eps-manufacturer"
-      : target === "packSize" ? "eps-pack" : target === "form" ? "eps-form" : endorsementId;
+    const field = draft?.paperDeclaration && ["typedProduct", "quantity", "brandManufacturer", "packSize", "form"].includes(target) ? `paper-${target}`
+      : target === "dispensedCode" ? "eps-selected-pack" : target === "brandManufacturer" ? "eps-manufacturer"
+        : target === "packSize" ? "eps-pack" : target === "form" ? "eps-form" : endorsementId;
     document.getElementById(field)?.focus();
   }
-  return <RecommendationCard recommendation={result.recommendation} compact={compact}
+  return <RecommendationCard recommendation={result.recommendation} audience="pharmacy" compact={compact}
     pharmacyAction="apply-correction" onApply={result.recommendation.preview ? onApply : undefined} onFocusField={draft ? focus : undefined} />;
 }

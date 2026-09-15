@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { DEMO_STEPS } from "../../src/lib/domain/demo-steps";
 import { itemStateLabel, LIFECYCLE_LABELS, NO_VERIFICATION, type CaseLifecycle } from "../../src/lib/domain/lifecycle";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { caseById } from "../../src/lib/domain/cases";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 
 const store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
@@ -23,19 +26,22 @@ describe("Tasks 31-36 desktop contracts", () => {
     expect(store().demoStep).toBeNull();
   });
 
-  it("starts verification as unperformed, never as a success-shaped default", () => {
+  it("retains recorded seed verification without inventing verification for unperformed items", () => {
     expect(Object.keys(store().itemVerification).sort()).toEqual(Object.keys(store().lifecycles).sort());
-    for (const verification of Object.values(store().itemVerification)) expect(verification).toEqual(NO_VERIFICATION);
+    for (const id of ["EX-24107", "EX-24123"]) expect(store().itemVerification[id]).toEqual(NO_VERIFICATION);
+    expect(store().itemVerification["EX-24112"]).toEqual({ gate1: "pass", gate2: "pass", reconciled: true, released: false });
+    expect(store().itemVerification["SYN-FQ123-MISMATCH"]).toEqual({ gate1: "fail", gate2: "fail", reconciled: false, released: false });
     expect(LIFECYCLE_LABELS.released_to_pricing.pharmacy).toBe("Verified and released to pricing (synthetic)");
     expect(LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on).toBe("Verified, released to existing pricing, no operator action");
     const original = getDomainSnapshot();
-    expect(() => store().releaseToPricing("SYN-FQ123-MISMATCH", "Human checked this item")).toThrow(/pack/i);
+    expect(() => store().releaseToPricing("SYN-FQ123-MISMATCH", "Human checked this item")).toThrow(/referred_back/);
     expect(getDomainSnapshot()).toEqual(original);
   });
 
   it("applies a valid operator suggestion as a human draft and history event, not a decision", () => {
     const id = "EX-24112";
-    store().submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+    const paperDeclaration = caseById(id)!.paperDeclaration!;
+    store().submitItem({ caseId: id, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
     store().arriveInQueue(id);
     const before = getDomainSnapshot();
     expect(() => store().applySuggestionToDecision(id)).toThrow("off");
@@ -54,26 +60,31 @@ describe("Tasks 31-36 desktop contracts", () => {
   it("uses explicit pharmacy drafts and rejects stale or absent resubmission", () => {
     const id = "EX-24112";
     expect(() => store().resubmit(id)).toThrow("current pharmacy correction draft");
+    store().arriveInQueue(id);
+    store().referBack(id, "RB2B", buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }]));
     const revision = store().caseRevisions[id].at(-1)!;
     expect(() => store().setPharmacyDraft(id, { revision: 0, endorsementText: "NCSO RK 21/08/26" })).toThrow("stale");
-    store().setPharmacyDraft(id, { revision: revision.number, endorsementText: "NCSO RK 21/08/26" });
+    store().setPharmacyDraft(id, { ...initialisePharmacyDraft(caseById(id)!, revision), purpose: "correction" });
     expect(store().caseRevisions[id].at(-1)).toBe(revision);
+    expect(() => store().resubmit(id)).toThrow("must be checked");
+    store().setCorrectionAcknowledgement(id, revision.number, true);
     store().resubmit(id);
     expect(store().caseRevisions[id].at(-1)).toMatchObject({ number: revision.number + 1, kind: "resubmission", endorsementText: "NCSO RK 21/08/26" });
     expect(store().lifecycles[id].state).toBe("resubmitted");
-    expect(store().lifecycles[id].history.at(-1)?.actor).toBe("pharmacy");
+    expect(store().lifecycles[id].history).toContainEqual(expect.objectContaining({ actor: "pharmacy", processStep: "correction_acknowledged" }));
     expect(() => store().resubmit(id)).toThrow("current pharmacy correction draft");
   });
 
   it("resets new drafts, verification and demo mode while preserving perspective", () => {
+    const initial = getDomainSnapshot();
     store().setDemoStep(4);
     store().setPerspective("pharmacy");
     store().setPharmacyDraft("EX-24112", { revision: store().caseRevisions["EX-24112"].at(-1)!.number, endorsementText: "NCSO RK 21/08/26" });
     store().resetDemo();
     expect(store().demoStep).toBeNull();
-    expect(store().operatorDrafts).toEqual({});
+    expect(store().operatorDrafts).toEqual(initial.operatorDrafts);
     expect(store().pharmacyDrafts).toEqual({});
-    expect(Object.values(store().itemVerification).every((v) => v.gate1 === "none" && v.gate2 === "none" && !v.released)).toBe(true);
+    expect(store().itemVerification).toEqual(initial.itemVerification);
     expect(store().perspective).toBe("pharmacy");
     expect(store().agentEnabled).toBe(false);
   });

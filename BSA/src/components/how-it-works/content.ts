@@ -1,5 +1,5 @@
 export const DESIGN_TITLE = "How it works and how it would scale";
-export const DESIGN_DATE = "14 September 2026";
+export const DESIGN_DATE = "15 September 2026";
 export const DESIGN_PRINCIPLE = "The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides. This prototype does not calculate or approve payments.";
 export const REFERENCE_EXPLANATION = "Equivalents exist on other platforms. Selection follows NHSBSA's existing estate, procurement and assurance, not this example. Service names do not establish approved configuration or compliance.";
 
@@ -28,6 +28,19 @@ export interface DesignSection {
   table?: DesignTable;
 }
 
+export const PICK_LIST_SOURCE = {
+  title: EPS_ERROR_EVIDENCE.nhsbsa.title,
+  url: EPS_ERROR_EVIDENCE.nhsbsa.url,
+  label: EPS_ERROR_EVIDENCE.nhsbsa.label,
+  quotation: EPS_ERROR_EVIDENCE.nhsbsa.quotation,
+  checkedOn: EPS_ERROR_EVIDENCE.verifiedOn,
+  checkedLabel: new Intl.DateTimeFormat("en-GB", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+  }).format(new Date(`${EPS_ERROR_EVIDENCE.verifiedOn}T00:00:00Z`)),
+  scope: EPS_ERROR_EVIDENCE.nhsbsa.scope,
+  boundary: EPS_STRENGTH_COPY.ruleLabel,
+} as const;
+
 export const DESIGN_SECTIONS: readonly DesignSection[] = [
   {
     id: "proof", title: "What this proof of concept actually is", status: "built",
@@ -42,10 +55,10 @@ export const DESIGN_SECTIONS: readonly DesignSection[] = [
       headers: ["Item", "Today", "With the agent"],
       rows: [
         ["EPS complete · EX-24107", "Complete evidence follows existing automatic pricing; no operator or model.", "Both gates must pass independently before code-only release, with no operator action."],
-        ["EPS missing date · EX-24112", "Possible weeks-later referral is the comparison assumption.", "Apply suggested correction, then human Send. If sent deficient, build a case for operator Apply suggestion and explicit disposition."],
-        ["Wrong EPS · SYN-FQ123-MISMATCH", "Looking complete is not proof of source agreement; no random outcome.", "Gate 1 passes format; Gate 2 detects the mismatch. Never auto-release; operator reviews the built case."],
+        ["Wrong-strength EPS · SYN-FQ123-MISMATCH", "If the selected 5 mg AMPP has a dm+d price, the claim can process automatically for what was endorsed, not the 10 mg actually supplied. This prototype makes no payment.", "Compare prescribed 10 mg / 28 and independently recorded actual supply 10 mg / 28 with selected claim 5 mg / 28. Gate 1 catches strength; unchanged Send fails Gate 2. Corrected EPS is rechecked and releases to existing pricing without operator action only when both gates pass."],
         ["Unreadable paper · EX-24123", "Type 1 keys by eye; unresolved evidence may need RB2B.", "Check before posting; fields are declared by the pharmacy, not read from the form. Human reconciliation is required; unreconcilable evidence abstains."],
-        ["Background, not additional playable cases", "C and F retain background/history roles.", "E's no-model behaviour is in EPS complete. No separate readable-paper demonstration. Reset makes the four cases replayable."],
+        ["Paper missing brand · EX-24112", "Missing brand/manufacturer evidence needs follow-up.", "Post remains available. NHSBSA returns the missing field and rule, not a supplied brand value. The pharmacy suggests from its own records, explicitly applies, acknowledges and resubmits. Recheck can make paper ready, but an operator must press Release."],
+        ["Background, not additional playable cases", "C and F retain background/history roles.", "E's no-model behaviour is in EPS complete. No additional playable paper case. Reset makes the four cases replayable."],
       ],
     },
   },
@@ -92,6 +105,10 @@ export const DESIGN_SECTIONS: readonly DesignSection[] = [
       { title: "Keep what already works", status: "assumption", text: "Supplied process context includes scanners and character recognition, EPS claim messages, existing rules-engine pricing, MYS returns, Type 1 and Type 2 streams, and a 50,000-item monthly accuracy sample. These stay. Access, event contracts, queue extensibility and the sample's suitability for exception evaluation require NHSBSA confirmation." },
       { title: "Adapters, not a replacement pricing system", status: "proposed", text: "Read-only adapters access the image store, captured fields, dm+d-aligned product master, claim ledger and case history. Existing exception routing triggers work. Ingest the Tariff monthly with effective dates, provenance and approved corrections. No adapter writes pricing; an operator's recorded decision hands back to today's pricing path." },
       { title: "Redaction before interpretation", status: "proposed", text: "Remove patient identity before every model request, including image regions, notes and telemetry. Use a pseudonymous item key for authorised joins. Confirm data minimisation, lawful basis, retention, deletion, residency and supplier terms with the CISO and information governance team. Current synthetic data is not evidence these controls are implemented." },
+      { title: "Scanner reconciliation preserves separate sources", status: "proposed", text: "Accept the pharmacy declaration, scanner-captured values and per-field confidence, actual scan, and revision-bound Type 1 human capture separately. Reconcile them against deterministic Tariff requirements; never upgrade the scan because a declaration agrees. Paper always requires an explicit final operator Release; corrected EPS can release automatically only after both gates pass." },
+      { title: "Hypothetical capture, not working character recognition", status: "assumption", text: `The scanner comparison labels its prepared output "${PAPER_RECONCILIATION_LABELS.characterRecognition}" and "${PAPER_RECONCILIATION_LABELS.synthetic}". These are illustrative field values and confidence, not a real character-recognition service or model result. Keep the original scan and human capture provenance visible.` },
+      { title: "Human capture does not improve the original scan", status: "proposed", text: `"${PAPER_RECONCILIATION_LABELS.humanCapture}". Distinguish raw-source agreement from human-confirmed effective evidence. A later correction is an "${PAPER_RECONCILIATION_LABELS.amendment}". Neither attestation nor amendment makes an unreadable original legible or rewrites earlier submissions.` },
+      { title: "A referral describes the gap, not the answer", status: "proposed", text: "Outbound NHSBSA notes contain the missing field and governing rule only. Concrete correction values belong to a separately labelled pharmacy suggestion from its own records. Human Apply, acknowledgement and Resubmit are distinct actions; none invents an invoice, overwrites original evidence or releases paper without an operator decision." },
     ],
     table: {
       caption: "Data requested from NHSBSA and its use",
@@ -159,6 +176,7 @@ export const DESIGN_SECTIONS: readonly DesignSection[] = [
       { title: "Why three samples?", status: "proposed", text: "Three allow code to detect disagreement and a two-of-three majority. Samples can share systematic errors; this is not calibrated confidence. Compare one versus three in blinded evaluation before accepting extra cost and latency. Today's three readings are scripted." },
       { title: "What if the Tariff changes mid-month?", status: "proposed", text: "Publish an approved, effective-dated correction without overwriting the previous corpus. Route by dispensing date and applicable correction policy. Pin the exact version in every record; replay separately and have governance decide whether affected cases need review." },
       { title: "What about EPS versus paper?", status: "proposed", text: "EPS supplies typed messages, not an unreadable image or Type 1 task. Paper retains original capture and declared-not-read provenance. A pharmacy declaration cannot corroborate itself. Poor, conflicting or unconfirmed evidence stays manual or abstains." },
+      { title: "How do you catch a wrong pick-list selection?", status: "proposed", text: "Retain prescribed 10 mg / 28 and actual supply 10 mg / 28 independently from the selected 5 mg / 28 claim. Gate 1 flags strength; preview the 10 mg pack, then explicit Apply and Send. Unchanged Send fails independent Gate 2, builds an operator case and never auto-releases the mismatch." },
       { title: "How do you stop an invented clause?", status: "built", text: "Code verifies the retrieved clause identifier, version and quoted span against the selected synthetic corpus. Missing or invalid citations withhold advice. Production must preserve that boundary against the approved corpus; model memory is never a source." },
       { title: "What happens when the agent is down?", status: "proposed", text: "Keep today's manual queue and pharmacy submission path. Time out assistance, show unavailable, retain the trace and retry safely. Fail-open means manual continuity, never a successful gate or automatic release. Practise this monthly." },
       { title: "How is this different from the existing rules engine?", status: "proposed", text: "The rules engine still prices straightforward items. This prepares evidence for the ambiguous tail and may prevent avoidable pharmacy gaps. It neither replaces pricing nor assumes every staff-touched item needs a model." },
@@ -181,18 +199,18 @@ export const COMPONENT_FLOW = [
   "Append-only records feed the existing operator queue surface. A human decides exceptions; authorised code-only items follow their separate eligibility path.",
 ] as const;
 
-export const CASE_B_SEQUENCE = [
-  "Pharmacy → Pre-check: EX-24112 typed EPS endorsement is missing its date.",
-  "Pre-check → Pharmacy: dated clause and gap; Apply suggested correction fills the draft only.",
-  "Pharmacy → Ingress: human Send submits the current revision; sending without the correction remains possible.",
-  "Ingress → Case builder: if deficient, read claim, source, product, history and effective-date clause; interpret only where required.",
-  "Case builder → Code gate: reconcile facts, validate citation and requirements; missing date fails the sufficiency checks.",
-  "Code gate → Operator: record evidence, clause/version, recommendation and draft; never automatically release the deficient item.",
-  "Operator → Pharmacy: human Apply suggestion, then explicit Refer back with RB code and approved note, or a justified permitted disposition.",
-  "Pharmacy → Ingress: human Apply suggested correction, then Resubmit; retain prior attempts.",
-  "Ingress → Case builder: revalidate the resubmitted revision against source, claim and effective-date clause; recompute independent gate evidence.",
-  "Case builder → Operator: append the new evidence and checks to the record; perform the required human re-check. Missing or disputed evidence still withholds release.",
-  "Operator → Existing pricing: after satisfied checks and required review, explicit Release to pricing; pharmacy sees normal-schedule attribution, no agent payment.",
+export const CASE_W_SEQUENCE = [
+  "Pharmacy → Pre-check: SYN-FQ123-MISMATCH selects a 5 mg / 28 claim against independently retained prescribed 10 mg / 28 and actual supply 10 mg / 28.",
+  "Pre-check → Pharmacy: Gate 1 identifies the precise strength mismatch and previews a 10 mg pack suggestion from the pharmacy's own records. Apply would change only the draft, not send. This is a cross-record comparison, not an invented Tariff clause.",
+  "Pharmacy → Ingress: this sequence follows explicit unchanged Send, not the available Apply correction path. Retain the selected 5 mg claim and independent 10 mg source records.",
+  "Ingress → Case builder: receive the submitted revision and gather the original prescription, actual-supply record and product catalogue separately.",
+  "Case builder → Code gate: Gate 2 independently compares the received claim against those sources; it does not trust Gate 1's result or enrich the submitted copy.",
+  `Case builder → Operator: the mismatch fails reconciliation. Build a case with prescribed and selected strengths, evidence, field/rule and safe referral or information advice, not a proposed correction value. Block automatic release: ${EPS_STRENGTH_COPY.proof}.`,
+  "Operator → Pharmacy: a person explicitly requests correction or refers back with a field-and-rule-only explanation. Concrete correction values come from the pharmacy's own records, not the outbound NHSBSA note.",
+  "Pharmacy → Ingress: review the pharmacy's 10 mg pack suggestion, explicitly Apply, acknowledge and Resubmit a corrected claim revision; retain prior attempts and independent source evidence.",
+  "Ingress → Case builder: validate the corrected revision again against the prescribed and actual-supply records, catalogue and applicable requirements; missing or disputed evidence still blocks release.",
+  "Case builder → Code gate: independently check the corrected EPS revision at both gates. Only passing requirements and established reconciliation permit automatic release; otherwise retain the operator case.",
+  "Code gate → Existing pricing: corrected EPS with both gates satisfied releases to existing pricing, no operator action. Paper remains a separate human-final path. The agent calculates or approves no payment.",
 ] as const;
 
 export function systemDesignMarkdown(reference: DesignTable): string {
@@ -208,11 +226,17 @@ export function systemDesignMarkdown(reference: DesignTable): string {
       `### ${panel.title}`, "", DESIGN_LABELS[panel.status], "", panel.text, "",
     ]),
     ...(section.table ? [table(section.table)] : []),
+    ...(section.id === "questions" ? [
+      "### Public evidence for the pick-list example", "", PICK_LIST_SOURCE.label, "",
+      `[${PICK_LIST_SOURCE.title}](${PICK_LIST_SOURCE.url})`, "",
+      `Checked ${PICK_LIST_SOURCE.checkedLabel}; publication date not stated.`, "",
+      `> ${PICK_LIST_SOURCE.quotation}`, "", PICK_LIST_SOURCE.scope, "", PICK_LIST_SOURCE.boundary, "",
+    ] : []),
     ...(section.id === "architecture" ? [
       "### Component diagram: proposed production boundary", "",
       ...COMPONENT_FLOW.map((step, index) => `${index + 1}. ${step}`), "",
-      "### Case B sequence: missing-date EPS, proposed integration", "",
-      ...CASE_B_SEQUENCE.map((step, index) => `${index + 1}. ${step}`), "",
+      "### Case W sequence: wrong-strength EPS, proposed integration", "",
+      ...CASE_W_SEQUENCE.map((step, index) => `${index + 1}. ${step}`), "",
     ] : []),
   ].join("\n")).join("\n");
   return [
@@ -222,3 +246,5 @@ export function systemDesignMarkdown(reference: DesignTable): string {
     table(reference),
   ].join("\n");
 }
+import { EPS_ERROR_EVIDENCE, EPS_STRENGTH_COPY } from "@/lib/domain/eps-error-evidence";
+import { PAPER_RECONCILIATION_LABELS } from "@/lib/domain/paper-reconciliation";

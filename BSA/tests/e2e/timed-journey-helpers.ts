@@ -3,7 +3,7 @@ import { expect, navigatePrimary } from "./fixtures";
 import { choosePerspective } from "./perspective-helpers";
 import { choosePaperExample } from "./pharmacy-scenario-helpers";
 import { DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
-import { decisionNote, operatorDecision, operatorRadio, selectEpsScenario } from "./operator-action-helpers";
+import { decisionNote, operatorAdvice, operatorDecision, operatorRadio, selectEpsScenario } from "./operator-action-helpers";
 import { assertVisibleHandoffWithinOneSecond } from "./timed-transition-helpers";
 import { HUMAN_RELEASE_LABELS, MANUAL_RELEASE_LABELS } from "../support/release-labels";
 import { EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
@@ -125,7 +125,7 @@ export async function runTimedCaseJourney(
   if (item.channel === "paper") await capture("NCSO JB");
   else await operatorDecision(page).getByRole("button", { name: "Start review", exact: true }).click();
 
-  if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  if (enabled) await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   else {
     await operatorRadio(page, "REFER_BACK").check();
     await decisionNote(page).fill(item.kind === "wrong-pack" ? "Please correct the pack size from the product record." : "Please add the dispensing date beside the initials.");
@@ -165,7 +165,7 @@ export async function runTimedCaseJourney(
   await bothSides();
   if (item.channel === "paper") await capture("NCSO JB 27/08/26");
   else await operatorDecision(page).getByRole("button", { name: "Start review", exact: true }).click();
-  if (enabled) await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  if (enabled) await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   else {
     await operatorRadio(page, "ACCEPT").check();
     await decisionNote(page).fill("The operator has checked the corrected source evidence before release.");

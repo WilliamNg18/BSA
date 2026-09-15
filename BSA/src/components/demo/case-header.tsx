@@ -15,6 +15,7 @@ export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state
   const heading = useRef<HTMLHeadingElement>(null);
   const perspective = useAppStore((s) => s.perspective);
   const lifecycle = useAppStore((s) => s.lifecycles[c.id]);
+  const process = useAppStore((s) => s.itemProcesses[c.id]);
   useLayoutEffect(() => {
     heading.current?.focus({ preventScroll: true });
     container.current?.scrollIntoView({ block: "start", inline: "nearest", behavior: "instant" });
@@ -29,7 +30,7 @@ export function CaseHeader({ c, state, title, intro }: { c: ExceptionCase; state
     <div ref={container} className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <SyntheticTag>Synthetic case {c.scenario} · {c.id}</SyntheticTag>
-        {lifecycle ? <span className="rounded-md border px-2 py-1 text-xs font-medium" data-item-state>{itemStateLabel(lifecycle, "pharmacy")}</span> : <StateBadge state={state} />}
+        {lifecycle ? <span className="rounded-md border px-2 py-1 text-xs font-medium" data-item-state>{itemStateLabel(lifecycle, "pharmacy", undefined, process)}</span> : <StateBadge state={state} />}
         <Button asChild size="sm" variant="ghost"><Link to="/queue">Back to queue</Link></Button>
       </div>
       <h1 ref={heading} tabIndex={-1} className="rounded-sm text-2xl font-semibold tracking-tight focus-visible:outline-2">{title}</h1>

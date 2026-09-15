@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,9 @@ import { itemStateLabel, type OperatorDecisionDraft } from "@/lib/domain/lifecyc
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 import type { HumanDecision } from "@/lib/domain/types";
 import { getReleaseEligibility, useAppStore } from "@/lib/store";
+import { isPaperReadyToRelease } from "@/lib/domain/submission-views";
+import { operatorErrorMessage } from "@/lib/operator-error-message";
+import { revealOperatorNote } from "@/lib/operator-focus";
 
 const OUTCOMES: { value: HumanDecision; label: string }[] = [
   { value: "ACCEPT", label: "Sufficient (human choice)" },
@@ -29,6 +32,35 @@ export function OperatorActionPanel({ caseId, compact = false, showConfirmation 
   const reset = useAppStore((s) => s.queue.revision);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   return <OperatorActions key={`${caseId}:${revision?.number}:${reset}:${agentEnabled}`} caseId={caseId} compact={compact} showConfirmation={showConfirmation} />;
+}
+
+export function OperatorAuditPanel({ caseId }: { caseId: string }) {
+  const id = useId();
+  const revision = useAppStore((state) => state.caseRevisions[caseId]?.at(-1));
+  const lifecycle = useAppStore((state) => state.lifecycles[caseId]);
+  const process = useAppStore((state) => state.itemProcesses[caseId]);
+  const reopen = useAppStore((state) => state.reopenForAudit);
+  const [reason, setReason] = useState("");
+  const [error, setError] = useState("");
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
+  if (!revision || !lifecycle || process?.revision !== revision.number || process.channel !== "eps"
+    || !["paid", "released_to_pricing"].includes(lifecycle.state)) return null;
+  return <section aria-label="Later audit or query" className="space-y-3 rounded-xl border p-4">
+    <h2 className="font-semibold">Later audit or query <BoundaryTag cls="human" short /></h2>
+    <p className="text-sm">Earlier pricing remains recorded. Reopening requires an explicit human action.</p>
+    <form className="space-y-3" onSubmit={(event) => {
+      event.preventDefault();
+      try { reopen(caseId, revision.number, reason); setError(""); }
+      catch (cause) { setError(cause instanceof Error ? cause.message : "Audit unavailable. Reopen the current item."); }
+    }}>
+      <Label htmlFor={`${id}-audit-reason`}>Audit or later-query reason (at least eight characters)</Label>
+      <Textarea id={`${id}-audit-reason`} value={reason} minLength={8} required
+        onChange={(event) => { setReason(event.target.value); setError(""); }} />
+      <Button type="submit" disabled={reason.trim().length < 8}>Open later audit or query</Button>
+      {error && <p role="alert" ref={errorRef} tabIndex={-1} className="text-sm text-destructive focus-visible:outline-2">{error}</p>}
+    </form>
+  </section>;
 }
 
 function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string; compact: boolean; showConfirmation: boolean }) {
@@ -57,6 +89,9 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
   const errorRef = useRef<HTMLParagraphElement>(null);
   const noteRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => { if (error) errorRef.current?.focus(); }, [error]);
+  useLayoutEffect(() => {
+    if (noteRef.current && document.activeElement === noteRef.current) revealOperatorNote(noteRef.current);
+  }, [storedDraft?.note]);
 
   if (!c || !revision || !process || !lifecycle || process.revision !== revision.number) {
     return <p role="alert">Current routing unavailable. Reopen the item.</p>;
@@ -64,23 +99,28 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
   const active = process.routing.outcome === "type2_endorsement" && process.routing.requiresHuman;
   if (!active || !["in_review", "escalated", "submitted", "resubmitted"].includes(lifecycle.state)) {
     const event = lifecycle.history.filter((entry) => entry.actor === "operator" && entry.revision === revision.number).at(-1);
-    return <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
-      <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
+    return <div className="space-y-4" data-operator-workspace={caseId}>
       {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
       {recommendationError && <p role="alert">{recommendationError}</p>}
-      {recommendation && <RecommendationCard recommendation={recommendation} compact={compact} />}
+      {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} headingLevel={2} />}
+      <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
+      <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
       {compact ? lifecycle.state === "released_to_pricing" ? <ReleaseRecord caseId={caseId} /> : <>
-        <p>{itemStateLabel(lifecycle, "nhsbsa", agentEnabled)}</p>
+        <p>{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}</p>
         <dl className="grid gap-2 text-sm">
           <div><dt className="font-medium">Recorded human decision</dt><dd>{record?.decision ?? event?.decision ?? "None"}</dd></div>
           <div><dt className="font-medium">Human reason</dt><dd>{record?.reason ?? event?.reason ?? "Not recorded"}</dd></div>
           <div><dt className="font-medium">Recorded rule</dt><dd>{record?.clauseId ?? event?.clauseId ?? "Not recorded"} · {record?.tariffVersion ?? event?.tariffVersion ?? "Not recorded"}</dd></div>
         </dl>
       </> : <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(caseId)}/record`}>Open audit record</Link></Button>}
-    </section>;
+      </section>
+      {compact && <OperatorAuditPanel caseId={caseId} />}
+    </div>;
   }
 
-  const reviewing = lifecycle.state === "in_review" || lifecycle.state === "escalated";
+  const readyPaper = isPaperReadyToRelease(lifecycle, process);
+  const readyWithoutReview = readyPaper && lifecycle.state === "resubmitted";
+  const reviewing = lifecycle.state === "in_review" || lifecycle.state === "escalated" || readyPaper;
   const draft: OperatorDecisionDraft = storedDraft?.revision === revision.number ? storedDraft
     : { revision: revision.number, outcome: null, rbCode: "", note: "", appliedSuggestion: false };
   const eligibility = getReleaseEligibility(caseId);
@@ -88,7 +128,7 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
 
   function perform(action: () => void) {
     try { action(); setError(""); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Action unavailable. Reopen the item."); }
+    catch (cause) { setError(operatorErrorMessage(cause)); }
   }
   function change(patch: Partial<Pick<OperatorDecisionDraft, "outcome" | "rbCode" | "note">>) {
     perform(() => setDraft(caseId, { revision: draft.revision, outcome: draft.outcome, rbCode: draft.rbCode, note: draft.note, ...patch }));
@@ -107,17 +147,12 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
     });
   }
 
-  return <section aria-label="Operator decision" data-operator-action-panel={caseId} data-compact={compact}
-    className="space-y-4 rounded-xl border border-orange-600 bg-card p-4">
-    <div className="flex items-center justify-between gap-2">
-      <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
-    </div>
+  return <div className="space-y-4" data-operator-workspace={caseId}>
     {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
     {recommendationError && <p role="alert" className="text-sm text-destructive">{recommendationError}</p>}
-    {recommendation && <RecommendationCard recommendation={recommendation} compact={compact} applyLabel="Apply suggestion"
+    {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} headingLevel={2} applyLabel="Apply suggestion"
       onApply={reviewing && recommendation.operatorApplyAllowed
         ? () => perform(() => { apply(caseId); noteRef.current?.focus(); }) : undefined} />}
-    {!agentEnabled && <p className="text-sm">experience only</p>}
     {compact && <details open className="space-y-3 rounded-lg border p-3">
       <summary className="cursor-pointer font-medium focus-visible:outline-2">Evidence and received source</summary>
       <RawCaseFields c={c} compact />
@@ -125,12 +160,19 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
         <dt className="font-medium">{evidence.field}</dt><dd>{evidence.value}</dd><dd className="text-xs">Source: {evidence.origin}</dd>
       </div>)}</dl>}
     </details>}
+    <section aria-label="Operator decision" data-operator-action-panel={caseId} data-compact={compact}
+      className="space-y-4 rounded-xl border border-orange-600 bg-card p-4">
+    <div className="flex items-center justify-between gap-2">
+      <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
+    </div>
+    {readyPaper && <p role="status">{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}. Press Release.</p>}
+    {!agentEnabled && <p className="text-sm">experience only</p>}
     {!reviewing ? <>
       <Button onClick={() => perform(() => arrive(caseId))}>Start review</Button>
       {error && <p ref={errorRef} tabIndex={-1} role="alert">{error}</p>}
     </> : <>
       {appliedEvent && <p className="text-sm" data-suggestion-applied>applied by the operator from the agent&apos;s suggestion</p>}
-      <NativeRadioGroup aria-label="Decision" value={draft.outcome ?? ""} onValueChange={(value) => {
+      <NativeRadioGroup aria-label="Decision" value={draft.outcome ?? ""} disabled={readyWithoutReview} onValueChange={(value) => {
         const outcome = OUTCOMES.find((option) => option.value === value)?.value;
         if (outcome) change({ outcome });
       }} className="grid grid-cols-2 gap-2">
@@ -141,7 +183,7 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
       </NativeRadioGroup>
       <div className="space-y-1.5">
         <Label htmlFor={`${id}-rb-code`}>RB code (required)</Label>
-        <select id={`${id}-rb-code`} name="rb-code" value={draft.rbCode} onChange={(event) => change({ rbCode: event.target.value })}
+        <select id={`${id}-rb-code`} name="rb-code" value={draft.rbCode} disabled={readyWithoutReview} onChange={(event) => change({ rbCode: event.target.value })}
           aria-required={draft.outcome === "REFER_BACK"} className="h-10 w-full rounded-md border bg-background px-3 text-sm focus-visible:outline-2 focus-visible:outline-ring">
           <option value="">Choose an RB code</option>
           {RB_CODE_CATALOG.map((entry) => <option key={entry.code} value={entry.code}>{entry.code}: {entry.reason}</option>)}
@@ -151,6 +193,7 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
         <Label htmlFor={compact ? `${id}-reason` : "reason"}>{draft.outcome === "REQUEST_INFORMATION" ? "Question (required)" : "Reason (required)"}</Label>
         <Textarea ref={noteRef} id={compact ? `${id}-reason` : "reason"} name="reason" value={draft.note} minLength={8}
           aria-required="true" aria-describedby={error ? undefined : `${id}-note-help`} autoComplete="off"
+          onFocus={(event) => revealOperatorNote(event.currentTarget)}
           onChange={(event) => change({ note: event.target.value })} />
         {!error && <p id={`${id}-note-help`} className="text-xs text-muted-foreground">At least eight characters.</p>}
       </div>
@@ -158,14 +201,17 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
       <div className="flex flex-wrap gap-2">
         <Button type="button" disabled={!eligibility.allowed || draft.note.trim().length < 8} aria-describedby={!eligibility.allowed && !recommendation ? `${id}-release-gate` : undefined}
           onClick={() => decide("ACCEPT")}>Release to pricing</Button>
-        <Button type="button" variant="outline" onClick={() => decide("REFER_BACK")}>Refer back</Button>
-        <Button type="button" variant="outline" onClick={() => decide("REQUEST_INFORMATION")}>Request information</Button>
-        <Button type="button" variant="outline" onClick={() => decide("ESCALATE")}>Escalate</Button>
+        {readyWithoutReview ? <Button type="button" variant="outline" onClick={() => perform(() => arrive(caseId))}>Start review</Button> : <>
+          <Button type="button" variant="outline" onClick={() => decide("REFER_BACK")}>Refer back</Button>
+          <Button type="button" variant="outline" onClick={() => decide("REQUEST_INFORMATION")}>Request information</Button>
+          <Button type="button" variant="outline" onClick={() => decide("ESCALATE")}>Escalate</Button>
+        </>}
       </div>
       {!eligibility.allowed && !recommendation && <details>
         <summary id={`${id}-release-gate`} className="cursor-pointer text-sm focus-visible:outline-2">Release unavailable: code gate</summary>
         <p className="mt-2 text-sm">{eligibility.reason}</p>
       </details>}
     </>}
-  </section>;
+    </section>
+  </div>;
 }

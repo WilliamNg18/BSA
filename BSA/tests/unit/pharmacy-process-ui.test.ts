@@ -3,9 +3,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ClaimDetail } from "@/components/demo/claim-detail";
+import { PharmacySubmissionReceipt } from "@/components/demo/pharmacy-submission-receipt";
 import { caseById } from "@/lib/domain/cases";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { useAppStore } from "@/lib/store";
+import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -34,7 +36,8 @@ describe("process claim evidence", () => {
       const before = structuredClone(store.caseRevisions["EX-24123"]);
       const originalCase = structuredClone(caseById("EX-24123"));
       const markup = renderClaim("EX-24123");
-      expect(before[0].endorsementText).not.toBe(before[0].declaration?.fields.endorsementText);
+      expect(before[0].endorsementText).toBe("NCSO JB 27/08/26");
+      expect(before[0].declaration?.fields.endorsementText).toBe("NCSO JB 27/08/26");
       expect(markup).toContain("Replay the retained pharmacy declaration, not the scan reading.");
       expect(markup).toContain("Replay endorsement source</dt><dd>Retained pharmacy declaration</dd>");
       expect(markup).toContain("Replay endorsement</dt><dd>NCSO JB 27/08/26</dd>");
@@ -70,32 +73,34 @@ describe("process claim evidence", () => {
     it(`distinguishes the recorded human reason from an approved referral note, approved=${approve}`, () => {
       const store = useAppStore.getState();
       const caseId = "EX-24112";
-      store.submitItem({ caseId, channel: "eps", endorsementText: "NCSO RK" });
+      const paperDeclaration = caseById(caseId)!.paperDeclaration!;
+      store.submitItem({ caseId, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
       store.arriveInQueue(caseId);
       store.setAgentEnabled(true);
       store.recordType2Decision({
         caseId, decision: "REFER_BACK", rbCode: "SYN-NCSO",
         reason: "Raw operator reason retained exactly.",
-        ...(approve ? { approvedDraft: "Add the dispensing date beside the initials." } : {}),
+        ...(approve ? { approvedDraft: "Confirm the brand or manufacturer supplied." } : {}),
       });
       const history = useAppStore.getState().lifecycles[caseId].history;
       const on = renderClaim(caseId);
       expect(on).toContain("RB code");
       expect(on).toContain("SYN-NCSO");
       expect(on.includes("Raw operator reason retained exactly.")).toBe(!approve);
-      expect(on.includes("Add the dispensing date beside the initials.")).toBe(approve);
+      expect(on.includes("Confirm the brand or manufacturer supplied.")).toBe(approve);
       if (approve) {
         expect(on).toContain("Operator-approved note");
         expect(on).toContain("2026-08");
         expect(on).toContain("Exact fix");
       } else {
         expect(on).toContain("No operator-approved draft");
-        expect(on).not.toContain('data-pharmacy-action="apply-correction"');
+        expect(on).toContain('data-pharmacy-action="apply-correction"');
+        expect(on).not.toContain("Operator-approved; the agent verified and advised.");
       }
       store.setAgentEnabled(false);
       const off = renderClaim(caseId);
       expect(off).toContain("Raw operator reason retained exactly.");
-      expect(off).not.toContain("Add the dispensing date beside the initials.");
+      expect(off).not.toContain("Confirm the brand or manufacturer supplied.");
       expect(useAppStore.getState().lifecycles[caseId].history).toBe(history);
     });
   }
@@ -128,16 +133,32 @@ describe("process claim evidence", () => {
     expect(useAppStore.getState().itemProcesses[caseId].capture).toBeNull();
   });
 
-  it("does not describe human-reviewed Paid items as no-person pricing", () => {
+  it("does not describe human-released paper as no-person pricing", () => {
     const store = useAppStore.getState();
     const caseId = "EX-24112";
-    store.resubmitItem({ caseId, channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    const paperDeclaration = caseById(caseId)!.paperDeclaration!;
+    store.submitItem({ caseId, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
     store.arriveInQueue(caseId);
-    store.recordType2Decision({ caseId, decision: "ACCEPT", reason: "Human reviewed the supplied synthetic evidence." });
+    store.referBack(caseId, "RB2B", "Confirm the brand or manufacturer supplied.");
+    const current = useAppStore.getState(), revision = current.caseRevisions[caseId].at(-1)!;
+    const c = caseForLifecycle(caseId, current.lifecycles, current.caseRevisions, current.itemProcesses)!;
+    const draft = initialisePharmacyDraft(c, revision);
+    store.setPharmacyDraft(caseId, { ...draft, purpose: "correction", paperDeclaration: {
+      ...draft.paperDeclaration!, brandManufacturer: caseById(caseId)!.pharmacySupplyRecord!.brandManufacturer,
+    } });
+    store.setCorrectionAcknowledgement(caseId, revision.number, true);
+    store.resubmit(caseId);
+    expect(useAppStore.getState().itemProcesses[caseId].readyToRelease).toBe(true);
+    store.releaseToPricing(caseId, "Human reviewed the supplied synthetic evidence.");
     const markup = renderClaim(caseId);
     expect(markup).toContain("Paid on the normal schedule");
-    expect(markup).toContain("priced by NHSBSA&#x27;s existing rules engine");
     expect(markup).not.toContain("no person involved");
+    const receipt = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(PharmacySubmissionReceipt, {
+      caseId, revisionNumber: useAppStore.getState().caseRevisions[caseId].at(-1)!.number, compact: true,
+    })));
+    expect(receipt).toContain("after operator review");
+    expect(receipt).not.toContain("no operator action");
+    expect(useAppStore.getState().lifecycles[caseId].history.at(-1)).toMatchObject({ actor: "operator", releaseOrigin: "human_decision" });
   });
 
   it("shows blind paper submission without inventing a declaration", () => {

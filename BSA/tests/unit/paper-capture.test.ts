@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { PAPER_DECLARATION_PROVENANCE, prepareCaptureConfirmation, preparePaperCapture } from "../../src/lib/domain/paper-capture";
 import type { PharmacyDeclaration } from "../../src/lib/domain/types";
-import { CASES } from "../../src/lib/domain/cases";
+import { caseById } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 
@@ -12,7 +12,7 @@ const declaration: PharmacyDeclaration = Object.freeze({
 });
 
 describe("paper capture helper with the authoritative store", () => {
-  const D = CASES[3];
+  const D = caseById("EX-24123")!;
   const store = () => useAppStore.getState();
   const submittedDeclaration: PharmacyDeclaration = {
     provenance: "pharmacy_declaration", declaredAt: "2026-09-13T10:00:00Z",

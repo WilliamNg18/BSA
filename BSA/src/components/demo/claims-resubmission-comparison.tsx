@@ -1,14 +1,12 @@
 import { PainMarker } from "@/components/demo/pain-marker";
 import type { PharmacyCheck } from "@/lib/domain/pharmacy-check";
 
-export function ClaimsResubmissionComparison({ enabled, approved, status }: {
+export function ClaimsResubmissionComparison({ enabled, status }: {
   enabled: boolean;
-  approved: boolean;
   status: PharmacyCheck["status"] | null;
 }) {
-  const resolved = enabled && approved && status === "ready";
+  const resolved = enabled && status === "ready";
   const pain = !enabled ? "Hypothetical repeat correction, not a prediction"
-    : !approved ? "No operator-approved correction"
     : status === "missing" ? "Current correction remains incomplete"
     : "Current correction not verified";
 

@@ -10,6 +10,7 @@ import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
 import { DEMO_STEPS, getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
 import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
+import { EPS_STRENGTH_COPY } from "@/lib/domain/eps-error-evidence";
 import type { ItemChannel } from "@/lib/domain/types";
 import { staffLane } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
@@ -33,12 +34,12 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
     assisted: ["Gate 1: complete fields", "Gate 2: reconciled claim", "released to existing pricing, no operator action"],
   },
   4: {
-    today: ["NCSO initials, missing date", "Type 2: experience only", "Referral weeks later (illustrative)"],
-    assisted: ["Missing date identified before sending", "Pharmacy applies suggested correction", "Human sends the completed claim"],
+    today: [EPS_STRENGTH_COPY.today, EPS_STRENGTH_COPY.todayReimbursement, "A later audit or query may uncover the selection error"],
+    assisted: [EPS_STRENGTH_COPY.mismatch, EPS_STRENGTH_COPY.suggestion, "Apply the proposed correction; Send remains a separate human action"],
   },
   5: {
-    today: ["Right format, wrong pack size", "Manual judgement may miss the mismatch", "Pricing or referral is uncertain"],
-    assisted: ["Gate 1: format passes", "Gate 2: pack and claimed amount mismatch", "Not released; built case for operator"],
+    today: [EPS_STRENGTH_COPY.today, "A person explicitly reopens an audit or later query", "The operator asks for accurate product and strength information"],
+    assisted: ["Gate 1 flags the strength mismatch", "Uncorrected Send fails Gate 2; not automatically released", "The operator reviews evidence and decides; no corrected value in the referral"],
   },
   6: {
     today: ["Unreadable paper posted", "Missing information returns weeks later (illustrative)"],
@@ -53,8 +54,8 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
     assisted: ["Built case and recommendation", "Apply suggestion, then human decision", "rule and reason recorded"],
   },
   9: {
-    today: ["Action needed", "Read RB code; edit unaided", "Resubmit without proposed checks"],
-    assisted: ["Operator-approved reason", "Apply suggested correction", "Re-check, then Resubmit"],
+    today: ["Paper brand or manufacturer required", "Read the field and rule; edit from pharmacy records", "Acknowledge accuracy, Resubmit; paper still needs operator release"],
+    assisted: ["Operator-approved field and rule, not a proposed value", "Pharmacy suggestion and preview from its own records", "Apply, acknowledge accuracy and Resubmit; re-check precedes operator release"],
   },
   10: {
     today: ["Same paper item throughout", "Pharmacy correction; NHSBSA judgement", "No Reset between sides"],
@@ -144,12 +145,15 @@ function ScenarioProjection({ step, caseId, assisted }: { step: DemoStepDefiniti
   return <div className="space-y-3" data-demo-projection>
     <p className="text-sm font-semibold">{caseId} · Scenario, not history.</p>
     <ol className="space-y-3">{(assisted ? content.assisted : content.today).map((line) => <li key={line} className="rounded-lg border bg-background p-3 text-sm">{line}</li>)}</ol>
+    {(step.number === 4 || step.number === 5) && <p className="text-sm">{EPS_STRENGTH_COPY.proof}</p>}
   </div>;
 }
 
 function FollowProjection({ caseId, assisted, kind }: { caseId: string; assisted: boolean; kind: DemoTaskKind }) {
-  const scenario = DEMO_STEPS.find((step) => step.caseId === caseId && step.number >= 3 && step.number <= 7
-    && (step.number !== 6 || kind !== "operator"));
+  const matches = DEMO_STEPS.filter((step) => step.caseId === caseId && CASE_COMPARISONS[step.number]);
+  const scenario = matches.find((step) => kind === "operator" || kind === "type1"
+    ? step.path.startsWith("/case/") || step.number === 7
+    : step.path === "/pharmacy" || step.path === "/pharmacy/claims") ?? matches[0];
   if (!scenario) return <p role="alert">No scenario comparison is defined for {caseId}.</p>;
   return <ScenarioProjection step={scenario} caseId={caseId} assisted={assisted} />;
 }
@@ -179,8 +183,8 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
     <div className="max-h-56 overflow-auto rounded-lg border">
       <table className="w-full text-left text-sm"><caption className="sr-only">Hillcrest queue, choose one item</caption>
         <thead className="bg-muted"><tr><th scope="col" className="p-2">Reference</th><th scope="col">State</th><th scope="col" className="p-2">Open</th></tr></thead>
-        <tbody>{rows.filter((item) => filter === "all" || item.lane === filter).map(({ row }) => <tr key={row.caseId} className={cn("border-t", row.caseId === caseId && "bg-muted")}>
-          <td className="p-2 font-mono text-xs">{row.caseId}</td><td className="py-2">{itemStateLabel(row, "nhsbsa", enabled)}</td>
+        <tbody>{rows.filter((item) => filter === "all" || item.lane === filter).map(({ row, process }) => <tr key={row.caseId} className={cn("border-t", row.caseId === caseId && "bg-muted")}>
+          <td className="p-2 font-mono text-xs">{row.caseId}</td><td className="py-2">{itemStateLabel(row, "nhsbsa", enabled, process)}</td>
           <td className="p-2"><Button variant="outline" size="sm" data-demo-control="queue-row" aria-label={`Open ${row.caseId}`} aria-pressed={row.caseId === caseId} onClick={() => {
             useAppStore.getState().followCase(row.caseId);
             const params = new URLSearchParams({ case: row.caseId, channel: processes[row.caseId].channel });
@@ -203,7 +207,6 @@ function LiveItem({ step, caseId, kind, renderTask, showQueue = false, externalE
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]);
   const process = useAppStore((s) => s.itemProcesses[caseId]);
-  const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const enabled = useAppStore((s) => s.agentEnabled);
   if (!item || !lifecycle || !process) return <p role="alert">Operational item unavailable: {caseId}. No replacement case has been selected.</p>;
   const task = kind === "operator" && process.routing.outcome === "type1_capture" && process.routing.requiresHuman ? "type1" : kind;
@@ -212,7 +215,7 @@ function LiveItem({ step, caseId, kind, renderTask, showQueue = false, externalE
     <div className={compactCapture ? "space-y-1" : "space-y-2"} data-demo-case-summary>
       <div className={compactCapture ? "flex flex-wrap items-baseline gap-x-3" : "space-y-2"}>
       <h3 className={cn("font-semibold", compactCapture ? "text-base" : "text-lg")}>{caseId}</h3>
-      <p className="text-sm" data-item-state>{itemStateLabel(lifecycle, kind === "operator" ? "nhsbsa" : "pharmacy", enabled)}</p>
+      <p className="text-sm" data-item-state>{itemStateLabel(lifecycle, kind === "operator" ? "nhsbsa" : "pharmacy", enabled, process)}</p>
       </div>
       <dl className={cn("text-sm", compactCapture ? "flex flex-wrap gap-x-4 gap-y-1 [&>div]:flex [&>div]:gap-2" : "grid grid-cols-2 gap-3")}>
         <div><dt className="font-medium">{kind === "submission" ? "Submission channel" : "Channel"}</dt><dd>{(kind === "submission" ? step.channel : process.channel) === "eps" ? "EPS" : "Paper"}</dd></div>
@@ -227,7 +230,7 @@ function LiveItem({ step, caseId, kind, renderTask, showQueue = false, externalE
       <div><dt>Reconciliation</dt><dd>{verification.reconciled ? "Agrees" : "Not established"}</dd></div>
     </dl>}
     <div data-demo-control={task === "operator" ? "operator" : task === "type1" ? "type1-capture" : undefined}>
-      {renderTask({ kind: task, caseId, allowCorrection: step.number !== 5 || Boolean(revision && revision.kind !== "seed"), channel: kind === "submission" ? step.channel : process.channel,
+      {renderTask({ kind: task, caseId, allowCorrection: true, channel: kind === "submission" ? step.channel : process.channel,
         ...(compactCapture ? { evidencePlacement: "external" } : {}) })}
     </div>
     {step.number === 10 && <details data-demo-control="history" className="rounded-lg border p-3">

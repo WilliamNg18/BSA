@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import type { Page } from "@playwright/test";
+import { operatorAdvice } from "./operator-action-helpers";
 import { choosePaperExample, choosePharmacyRadio, openPharmacyPrecheck, openPharmacyReceipt, startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
 
 const scenarios = [
@@ -162,7 +163,7 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await startBReviewFromPharmacy(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("radio", { name: "Refer back", exact: true })).not.toBeChecked();
-  await page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
 });
 

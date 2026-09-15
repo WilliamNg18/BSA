@@ -7,7 +7,7 @@ import { MONTH_MODEL_DEFAULTS, monthModel } from "../../src/lib/domain/baseline"
 import { projectQueueComparison, QUEUE_SEEDS, queueCitationAvailable, queueStatus, queueTableWindow, type QueuePreviewRow } from "../../src/lib/domain/queue-model";
 import * as agent from "../../src/lib/domain/agent";
 import { CASES, PLAYABLE_CASES } from "../../src/lib/domain/cases";
-import { useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
 import { useQueueStore } from "../../src/lib/queue-store";
 import { QueuePage } from "../../src/pages/queue";
 import { caseForLifecycle } from "../../src/lib/domain/lifecycle-model";
@@ -106,12 +106,21 @@ describe("current queue comparison", () => {
 });
 
 describe("counted logical table windows", () => {
-  it("uses current revised evidence after Off arrival without rewriting stored state or history", () => {
-    const id = CASES[1].id;
-    useAppStore.getState().setAgentEnabled(false);
-    useAppStore.getState().submitFromPharmacy(id, "unreadable endorsement");
-    useAppStore.getState().arriveInQueue(id);
+  it("uses current revised evidence after Off arrival and human capture without rewriting stored state or history", () => {
+    const id = "EX-24123";
+    const store = useAppStore.getState();
+    store.setAgentEnabled(false);
+    const original = store.caseRevisions[id].at(-1)!;
+    store.submitItem({ caseId: id, channel: "paper", endorsementText: original.endorsementText,
+      paperDeclaration: original.paperDeclaration, declaration: original.declaration });
+    store.arriveInQueue(id);
+    const revision = useAppStore.getState().caseRevisions[id].at(-1)!;
+    store.confirmType1({ caseId: id, revision: revision.number, provenance: "human_capture", declarationReconciled: false,
+      fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
     const before = useAppStore.getState();
+    const snapshot = getDomainSnapshot();
+    expect(before.caseRevisions[id].at(-1)).toBe(revision);
+    expect(before.lifecycles[id].history.at(-1)?.actor).toBe("operator");
     const current = caseForLifecycle(id, before.lifecycles, before.caseRevisions)!;
     const pack = agent.runAgent(current, { agentEnabled: true });
     expect(before.caseStates[id]).toBe("operator_review_required");
@@ -120,11 +129,13 @@ describe("counted logical table windows", () => {
     expect(queueStatus(before.caseStates[id], true, before.lifecycles[id], pack)).toBe("abstained");
     expect(queueStatus("human_decision_recorded", true, before.lifecycles[id], pack)).toBe("decided");
     expect(queueStatus(before.caseStates[id], true, { ...before.lifecycles[id], state: "submitted" }, pack)).toBe("evidence");
+    expect(getDomainSnapshot()).toEqual(snapshot);
     useAppStore.getState().setAgentEnabled(true);
     expect(useAppStore.getState().caseStates).toBe(before.caseStates);
     expect(useAppStore.getState().lifecycles).toBe(before.lifecycles);
     expect(useAppStore.getState().caseRevisions).toBe(before.caseRevisions);
     expect(useAppStore.getState().records).toBe(before.records);
+    expect(getDomainSnapshot()).toEqual(snapshot);
   });
   it("current pack clearances, evidence requests and failed gates override stale assistance labels", () => {
     const pack = agent.runAgent(CASES[2], { agentEnabled: true });

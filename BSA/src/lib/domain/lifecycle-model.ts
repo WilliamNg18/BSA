@@ -4,7 +4,7 @@ import { interpretPharmacyText } from "./pharmacy-check";
 import { PHARMACIES, PRODUCTS, productByCode } from "./reference";
 import { versionForDate } from "./tariff";
 import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot, ProcessSubmission, Type1Capture } from "./lifecycle";
-import type { DeclaredItemFields, ExceptionCase, PaperDeclaration } from "./types";
+import type { DeclaredItemFields, EpsPrescription, ExceptionCase, PaperDeclaration } from "./types";
 
 /** Clone before recursively freezing: caller-owned objects and fixtures stay untouched. */
 export function immutable<T>(value: T): T {
@@ -34,9 +34,10 @@ export function appendHistory(current: CaseLifecycle, event: HistoryEvent): Case
 }
 
 /** Human capture authority comes from its append-only event, not routing metadata. */
-export function captureForRevision(row: CaseLifecycle, revision: number): Type1Capture | null {
+export function captureForRevision(row: CaseLifecycle, revision: number, sourceRevision = row.history
+  .filter((event) => event.revision === revision && event.sourceRevision !== undefined).at(-1)?.sourceRevision ?? revision): Type1Capture | null {
   return row.history.filter((event) => event.actor === "operator" && event.processStep === "type1_capture" &&
-    event.capture?.revision === revision).at(-1)?.capture ?? null;
+    event.capture && event.capture.revision <= revision && (event.capture.sourceRevision ?? event.capture.revision) === sourceRevision).at(-1)?.capture ?? null;
 }
 
 function requireDate(date: string): void {
@@ -49,14 +50,38 @@ function requireDate(date: string): void {
 /** Exact synthetic catalogue lookup, never an inferred reading of the image. */
 export function paperDeclarationFields(paper: PaperDeclaration): DeclaredItemFields {
   if (!paper || typeof paper.typedProduct !== "string" || typeof paper.endorsementText !== "string" ||
-    paper.declaredByPharmacy !== true || paper.quantity !== null && (!Number.isSafeInteger(paper.quantity) || paper.quantity <= 0)) {
+    paper.declaredByPharmacy !== true || paper.quantity !== null && (!Number.isSafeInteger(paper.quantity) || paper.quantity <= 0) ||
+    paper.brandManufacturer !== undefined && typeof paper.brandManufacturer !== "string" ||
+    paper.form !== undefined && typeof paper.form !== "string" ||
+    paper.packSize !== undefined && paper.packSize !== null && (!Number.isSafeInteger(paper.packSize) || paper.packSize <= 0)) {
     throw new Error("Invalid paper declaration.");
   }
   requireDate(paper.dispensingDate);
   const text = paper.typedProduct.trim();
   const product = PRODUCTS.find((item) => item.code === text || item.name.toLowerCase() === text.toLowerCase());
   if (text.startsWith("SYN-") && !product) throw new Error("Unknown synthetic product code.");
-  return { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText };
+  return { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText,
+    ...(paper.brandManufacturer !== undefined ? { brandManufacturer: paper.brandManufacturer } : {}),
+    ...(paper.packSize !== undefined ? { packSize: paper.packSize } : {}),
+    ...(paper.form !== undefined ? { form: paper.form } : {}),
+  };
+}
+
+/** Corrections change claim selection, never the separately recorded prescription or supply. */
+export function validateRetainedEpsSources(previous: EpsPrescription | undefined, next: EpsPrescription | undefined): void {
+  if (!previous?.supplyRecord) return;
+  if (!next?.supplyRecord) throw new Error("The original EPS supply record must be retained.");
+  const sources = (eps: EpsPrescription) => ({
+    prescriber: { name: eps.prescriber.name, practice: eps.prescriber.practice }, patientLabel: eps.patientLabel, prescriptionDate: eps.prescriptionDate,
+    dispensingDate: eps.dispensingDate, prescriberEndorsement: eps.prescriberEndorsement,
+    supplyRecord: eps.supplyRecord ? { productCode: eps.supplyRecord.productCode, quantity: eps.supplyRecord.quantity } : null,
+    items: eps.items.map((item) => ({
+      prescribedCode: item.prescribedCode, product: item.product, strength: item.strength, form: item.form, quantity: item.quantity, dose: item.dose,
+    })),
+  });
+  if (JSON.stringify(sources(previous)) !== JSON.stringify(sources(next))) {
+    throw new Error("A claim correction cannot alter the original prescription or pharmacy supply record.");
+  }
 }
 
 /** Validate source copies before any state write. Advice cannot replace source fields. */
@@ -78,13 +103,17 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     const presentation = prescribedName ? /^(.*?)\s+([\d/]+(?:mg|mcg)?)\s+(tablets|capsules)(?: \(generic synthetic\))?$/.exec(prescribedName) : null;
     const composedName = item ? `${item.product} ${item.strength} ${item.form}` : "";
     if (!item || !productByCode(item.prescribedCode) || !productByCode(item.dispensedCode) ||
-      item.prescribedCode !== item.dispensedCode ||
+      !eps.supplyRecord && item.prescribedCode !== item.dispensedCode ||
       prescribedName !== item.product && prescribedName?.replace(" (generic synthetic)", "") !== composedName ||
       !presentation || item.strength !== presentation[2] || item.form !== presentation[3] ||
       productByCode(item.dispensedCode)?.name !== item.dispensedName ||
       !Number.isSafeInteger(item.quantity) || item.quantity <= 0 ||
       [item.strength, item.form, item.dose].some((value) => typeof value !== "string")) throw new Error("Invalid synthetic EPS item or product copy.");
     const supply = eps.supplyEvidence;
+    if (eps.supplyRecord !== undefined && (!eps.supplyRecord || !productByCode(eps.supplyRecord.productCode) ||
+      !Number.isSafeInteger(eps.supplyRecord.quantity) || eps.supplyRecord.quantity <= 0)) {
+      throw new Error("Invalid independent pharmacy supply record.");
+    }
     if (supply !== undefined && (!supply || supply.ruleId !== "SYN-EPS-SUPPLY" ||
       typeof supply.brandManufacturer !== "string" || typeof supply.form !== "string" ||
       supply.packSize !== null && (!Number.isSafeInteger(supply.packSize) || supply.packSize <= 0))) {
@@ -96,7 +125,9 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     const fields = paperDeclarationFields(paper);
     if (paper.endorsementText !== endorsementText || declaration &&
       (declaration.fields.productCode !== fields.productCode || declaration.fields.quantity !== fields.quantity ||
-        declaration.fields.endorsementText !== fields.endorsementText)) throw new Error("Paper declaration copies do not match.");
+        declaration.fields.endorsementText !== fields.endorsementText ||
+        declaration.fields.brandManufacturer !== fields.brandManufacturer || declaration.fields.packSize !== fields.packSize ||
+        declaration.fields.form !== fields.form)) throw new Error("Paper declaration copies do not match.");
   }
 }
 
@@ -117,6 +148,10 @@ export function caseForLifecycle(
   const original = caseById(caseId) ?? caseById(revision?.templateCaseId);
   if (!original || !revision) return null;
   let c = structuredClone(original);
+  if (revision.paperSource) {
+    const scan = revision.paperSource.scan;
+    c = { ...c, extracted: { ...scan.extracted }, regions: scan.regions, imageQuality: scan.imageQuality, imageStyle: scan.imageStyle };
+  }
   if (revision.channel) c.channel = revision.channel === "eps" ? "Electronic (EPS)" : "Paper FP10";
   if (c.id !== caseId) {
     const pharmacy = PHARMACIES.find((p) => p.contractorCode === lifecycles[caseId].pharmacyCode);
@@ -154,9 +189,9 @@ export function caseForLifecycle(
     c.readings = [facts, { ...facts }, { ...facts }];
     c.inCoverage = c.inCoverage && facts.type === "NCSO";
   }
-  const capture = lifecycles[caseId].history.filter((event) => event.capture?.revision === revision.number).at(-1)?.capture
+  const capture = captureForRevision(lifecycles[caseId], revision.number, revision.sourceRevision ?? revision.number)
     ?? itemProcesses?.[caseId]?.capture;
-  if (capture?.revision === revision.number) {
+  if (capture && capture.revision <= revision.number && (capture.sourceRevision ?? capture.revision) === (revision.sourceRevision ?? revision.number)) {
     return immutable({ ...c, capturedEvidence: {
       fields: capture.fields, provenance: capture.provenance === "pharmacy_declaration" ? "pharmacy_declaration" : "human_capture",
       declarationReconciled: capture.declarationReconciled, revision: capture.revision,
@@ -187,7 +222,10 @@ export function validatePrecheck(snapshot: PharmacyPrecheckSnapshot | undefined,
     if (facts !== null || snapshot.checkedAt !== null || snapshot.tariffVersion !== null || snapshot.clauseId !== null || snapshot.checks.length) fail();
   } else {
     if (snapshot.mode !== "scripted" || typeof snapshot.checkedAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(snapshot.checkedAt) || !Number.isFinite(Date.parse(snapshot.checkedAt))) fail();
-    if (snapshot.status !== "unable" && (!facts || !snapshot.tariffVersion || (!snapshot.clauseId && facts.type !== "NONE") || !snapshot.checks.length)) fail();
+    if (snapshot.ruleAuthority !== undefined && !["retrieved_tariff", "proposed_cross_record_check"].includes(snapshot.ruleAuthority)) fail();
+    if (snapshot.ruleAuthority === "proposed_cross_record_check" && snapshot.clauseId !== null) fail();
+    if (snapshot.status !== "unable" && (!facts || snapshot.ruleAuthority !== "proposed_cross_record_check" &&
+      (!snapshot.tariffVersion || (!snapshot.clauseId && facts.type !== "NONE")) || !snapshot.checks.length)) fail();
     if (snapshot.status === "ready" && snapshot.checks.some((check) => check.met !== true)) fail();
   }
 }

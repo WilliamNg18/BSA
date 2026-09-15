@@ -8,10 +8,11 @@ import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
 import { PharmacyRecommendationPanel } from "./pharmacy-recommendation-panel";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
-import { useAppStore } from "@/lib/store";
+import { getCorrectionAcknowledgementValid, useAppStore } from "@/lib/store";
 import { itemStateLabel, NO_VERIFICATION, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { isPlayableCase } from "@/lib/domain/cases";
+import { PharmacyCorrectionAcknowledgement } from "./pharmacy-correction-acknowledgement";
 
 export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
   return <section aria-label="Claim detail" className="space-y-4 rounded-xl border bg-card p-5">
@@ -23,6 +24,7 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
 export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: string; compact?: boolean }) {
   const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId);
   const row = useAppStore((s) => s.lifecycles[caseId]);
+  const process = useAppStore((s) => s.itemProcesses[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]) ?? NO_VERIFICATION;
   const [message, setMessage] = useState<{ caseId: string; revision: number; draft: string; text: string } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -39,6 +41,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
   const response = row.history.filter((event) => event.actor === "operator" && (event.revision ?? 1) === revision.number &&
     (event.to === "referred_back" || event.to === "information_requested")).at(-1);
   const approved = response?.approvedDraft;
+  const acknowledged = getCorrectionAcknowledgementValid(caseId);
   const replayText = revision.declaration?.fields.endorsementText ?? revision.endorsementText;
   const draftSignature = JSON.stringify(draft);
   const revisionNumber = revision.number;
@@ -47,7 +50,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
   }
   return <div data-pharmacy-case={caseId} className="space-y-3">
     <h2 ref={heading} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {caseId}</h2>
-    <p role="status">{itemStateLabel(row, "pharmacy", enabled)}</p>
+    <p role="status">{itemStateLabel(row, "pharmacy", enabled, process)}</p>
     {row.state === "released_to_pricing" && <p>Paid on the normal schedule (synthetic).</p>}
     {requested && <section aria-label="Requested confirmation" className="space-y-3">
       <dl><dt className="font-semibold">Question</dt><dd>{response?.reason ?? "No question recorded."}</dd>
@@ -73,7 +76,6 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
         <dl className="text-sm">
           <dt>Clause / version</dt><dd>{approved.clauseId} / {approved.tariffVersion}</dd>
           <dt>Approved by operator</dt><dd>{approved.approvedBy} / {approved.approvedAt}</dd>
-          <dt>Exact fix</dt><dd>{response?.exactFix ?? "No exact fix recorded"}</dd>
         </dl>
       </section> : <>
         <dl><dt>Human decision reason</dt><dd>{response?.reason ?? "No reason recorded."}</dd></dl>
@@ -91,7 +93,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
       {enabled &&
         <PharmacyRecommendationPanel caseId={caseId} draft={{ ...draft, purpose: draft.purpose ?? "correction" }} compact={compact} endorsementId="claim-endorsement"
-          onApply={approved && canApply ? () => act(() => {
+          onApply={canApply ? () => act(() => {
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
           store.applySuggestedCorrection(caseId);
@@ -100,15 +102,16 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction recommendationVisible={enabled} />
       {enabled && <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
         recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
-      <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
-      <Button data-pharmacy-action="resubmit" onClick={() => act(() => {
+      <ClaimsResubmissionComparison enabled={enabled} status={result?.status ?? null} />
+      <PharmacyCorrectionAcknowledgement caseId={caseId} draft={draft} act={act} />
+      <Button data-pharmacy-action="resubmit" disabled={!acknowledged} onClick={() => act(() => {
         const store = useAppStore.getState();
         if (!store.pharmacyDrafts[caseId] || store.pharmacyDrafts[caseId].purpose === "new_submission") {
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
         }
         store.resubmit(caseId);
         notify("Resubmitted");
-      })}>{enabled ? "Resubmit" : "Resubmit blind"}</Button>
+      })}>Resubmit</Button>
     </section>}
     {!editable && <PharmacyRecommendationPanel caseId={caseId} compact={compact} />}
     <dl aria-label="Item verification" className="grid grid-cols-3 gap-2 text-sm">

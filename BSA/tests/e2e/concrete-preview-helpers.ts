@@ -2,7 +2,7 @@ import type { Page } from "@playwright/test";
 import { expect } from "./fixtures";
 import { EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
 import { applyPreviewedDate, assertVisibleRecommendation } from "./recommendation-contract-helpers";
-import { operatorDecision, operatorRadio, performDecision, startDemonstrationReview } from "./operator-action-helpers";
+import { operatorAdvice, operatorDecision, operatorRadio, performDecision, startDemonstrationReview } from "./operator-action-helpers";
 
 export async function verifyConcretePreviews(page: Page, width: number, enabled: boolean) {
   await page.setViewportSize({ width, height: 1000 });
@@ -43,7 +43,7 @@ export async function verifyConcretePreviews(page: Page, width: number, enabled:
     await assertVisibleRecommendation(page, "EX-24112", true);
     const note = await card().getByText("Note", { exact: true }).locator("xpath=following-sibling::dd[1]").innerText();
     await expect(card().getByText("Operator draft preview", { exact: true })).toBeVisible();
-    await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+    await operatorAdvice(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
     await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
     await expect(operatorDecision(page).getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
     await expect(operatorDecision(page).getByRole("textbox", { name: "Reason (required)", exact: true })).toHaveValue(note);

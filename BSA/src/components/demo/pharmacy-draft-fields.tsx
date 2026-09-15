@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import type { PharmacyCorrectionDraft } from "@/lib/domain/lifecycle";
 import type { ItemChannel } from "@/lib/domain/types";
 import { EPS_SUPPLY_RULE } from "@/lib/domain/eps-check";
+import { EPS_STRENGTH_CORRECT_CODE, EPS_STRENGTH_SELECTED_CODE } from "@/lib/domain/eps-strength";
+import { productByCode } from "@/lib/domain/reference";
 
 export function PharmacyDraftFields({ draft, original, channel, update, correction = false, recommendationVisible = false }: {
   draft: PharmacyCorrectionDraft; original: PharmacyCorrectionDraft; channel: ItemChannel;
@@ -32,12 +34,22 @@ export function PharmacyDraftFields({ draft, original, channel, update, correcti
       <dt>Demo prescriber (declared)</dt><dd>{declaration.fields.prescriber}</dd>
     </dl>}
     {channel === "paper" && paper && <div className="grid grid-cols-2 gap-3">
-      <label className="grid gap-1">Declared product<Input value={paper.typedProduct} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.typedProduct, paper.typedProduct)}
+      <label className="grid gap-1">Declared product<Input id="paper-typedProduct" value={paper.typedProduct} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.typedProduct, paper.typedProduct, "typedProduct")}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, typedProduct: e.target.value } })} /></label>
-      <label className="grid gap-1">Declared quantity<Input type="number" min="1" step="1" value={paper.quantity ?? ""} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.quantity, paper.quantity)}
+      <label className="grid gap-1">Declared quantity<Input id="paper-quantity" type="number" min="1" step="1" value={paper.quantity ?? ""} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.quantity, paper.quantity, "quantity")}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, quantity: e.target.value === "" ? null : Number(e.target.value) } })} /></label>
       <label className="grid gap-1">Declared dispensing date<Input type="date" value={paper.dispensingDate} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.dispensingDate, paper.dispensingDate)}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, dispensingDate: e.target.value } })} /></label>
+      {(["brandManufacturer", "packSize", "form"] as const).map((field) => <label className="grid gap-1" key={field}>
+        {field === "brandManufacturer" ? "Declared brand or manufacturer" : field === "packSize" ? "Declared pack size" : "Declared form"}
+        <Input id={`paper-${field}`} type={field === "packSize" ? "number" : "text"}
+          min={field === "packSize" ? 1 : undefined} step={field === "packSize" ? 1 : undefined}
+          value={paper[field] ?? ""} aria-describedby={`${id}-origin`}
+          className={highlight(original.paperDeclaration?.[field], paper[field], field)}
+          onChange={(event) => update({ ...draft, paperDeclaration: { ...paper,
+            [field]: field === "packSize" ? event.target.value === "" ? null : Number(event.target.value) : event.target.value,
+          } })} />
+      </label>)}
       {correction && declaration && <label className="col-span-2 grid gap-1">Declared prescriber (synthetic)
         <Input value={declaration.fields.prescriber ?? ""} aria-describedby={`${id}-origin`}
           onChange={(e) => update({ ...draft, declaration: { ...declaration, fields: { ...declaration.fields, prescriber: e.target.value || null } } })} />
@@ -57,6 +69,23 @@ export function PharmacyDraftFields({ draft, original, channel, update, correcti
         aria-describedby={draft.appliedSuggestion ? `${id}-applied` : channel === "paper" ? `${id}-origin` : undefined}
         onChange={(e) => endorsement(e.target.value)} />
     </div>
+    {eps?.items[0]?.prescribedCode === EPS_STRENGTH_CORRECT_CODE && <label className="grid gap-1">
+      Selected claim pack
+      <select id="eps-selected-pack" value={eps.items[0].dispensedCode}
+        className={`rounded-md border bg-background p-2 ${highlight(original.epsPrescription?.items[0]?.dispensedCode, eps.items[0].dispensedCode, "dispensedCode")}`}
+        onChange={(event) => {
+          const product = productByCode(event.target.value);
+          if (!product) throw new Error("Selected claim pack is unavailable.");
+          update({ ...draft, epsPrescription: { ...eps,
+            items: eps.items.map((item, index) => index === 0 ? { ...item, dispensedCode: product.code, dispensedName: product.name } : item),
+          } });
+        }}>
+        {[EPS_STRENGTH_SELECTED_CODE, EPS_STRENGTH_CORRECT_CODE].map((code) => {
+          const product = productByCode(code);
+          return <option key={code} value={code}>{product ? `${product.name}, ${product.packSize}` : code}</option>;
+        })}
+      </select>
+    </label>}
     {eps?.items[0]?.dispensedCode === EPS_SUPPLY_RULE.productCode && <div className="grid grid-cols-2 gap-3">
       {(["brandManufacturer", "packSize", "form"] as const).map((field) => <label className={`grid gap-1 ${field === "brandManufacturer" ? "col-span-2" : ""}`} key={field}>
         {field === "brandManufacturer" ? "Brand or manufacturer dispensed" : field === "packSize" ? "Pack size dispensed" : "Form dispensed"}
