@@ -37,6 +37,12 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
+### Task 39 N optional numbers decisions
+
+- Question: which volume and units drive mismatches? Choice: total submitted claims times a fractional share; UI 1% converts to 0.01, independently of the study's 1.6%. Tie-breaker: explicit latest denominator and evidence authority.
+- Question: should the new assumption change the frozen referral estimate? Choice: use a separate optional result and independently validated draft in the same store, leaving all existing cohorts and hours unchanged until overlap is defined. Tie-breaker: preserve truthful accounting.
+- Question: what does Today none mean? Choice: no catch modelled in this synthetic comparison, never observed absence of real NHSBSA detection. Tie-breaker: governing principle and truthful provenance.
+
 Live is the product; local is a backup built from the same commit; any difference is a defect.
 
 - Question: what establishes completion? Choice: main merge, green deployment and observation of that exact commit on the live URL; a branch or local diagnostic is incomplete work. Tie-breaker: the newest live-first instruction and truthful evidence.
