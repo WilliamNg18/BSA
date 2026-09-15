@@ -4,6 +4,33 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+The two V Apply assertions now target the actual advice sibling on G
+`4ac77a5`. The helper requires the real workspace, case-bound human panel,
+operator-audience advice, visible H2 markup, adjacent disjoint panels and
+unchanged authority/help text. Each complete panel is measured below 25
+words; nothing is excluded from the former nested layout.
+Typecheck/lint and 40 review/operator tests pass. This is the isolated fix
+for G's two remaining unit failures, not a full-suite or browser verdict.
+
+V imports exact G `4ac77a5`, including O's published genuine sibling panels.
+Owner source is unchanged; only tracking conflicts were unioned. The two
+remaining V Apply assertions will now move to the actual advice panel.
+
+## Exact G first-green native discovery
+
+On clean `d4f27ce8911536ac6977bd4a5ef7ac5fe8ec48cf`, native Playwright
+discovery lists 1,062 ordinary tests in 48 files, 44 state tests in eight
+files and 75 named live checks in five files. Each inventory has unique
+native IDs and zero executed results; reporter placeholder statuses are not
+passes. No browser or server started. The first live-list attempts used a
+nonexistent config name and then lacked the required commit setting; both
+failures remain recorded before the correctly configured discovery.
+
+The inventory is retained under `native-inventory-g-d4f27ce` in V session
+artifacts. It is not a runtime, timing, screenshot or acceptance result.
+A exclusively owns the demo-navigation final-state settlement/axe hunk;
+V will consume that patch without concurrent edits.
+
 ## V EPS headline guard activation
 
 `npm run check:eps-headlines` now runs W's unchanged checker, and `npm run

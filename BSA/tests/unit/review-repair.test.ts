@@ -55,10 +55,27 @@ function declare(endorsementText = "NCSO JB 27/08/26", dispensingDate = "2026-08
     paperDeclaration: { typedProduct: "Co-codamol 30/500 tablets", quantity: 100, endorsementText, dispensingDate, declaredByPharmacy: true } });
   store.setAgentEnabled(true);
 }
-function expectOperatorProse(html: string) {
+function expectOperatorProse(html: string, caseId: string, enabled: boolean) {
   const panel = section(html, "Operator decision</h2>");
-  const help = [...panel.matchAll(/<span class="text-xs text-muted-foreground">([\s\S]*?)<\/span>/g)].map((m) => text(m[1]));
-  expect(words([...paragraphs(panel), ...help].join(" "))).toBeLessThan(25);
+  expect(html).toContain(`data-operator-workspace="${caseId}"`);
+  expect(panel).toContain(`data-operator-action-panel="${caseId}"`);
+  expect(panel).not.toContain("data-recommendation-case");
+  expect(panel).not.toContain(">Apply suggestion<");
+  expect(panel).toContain("At least eight characters.");
+  const panels = [panel];
+  if (enabled) {
+    const advice = section(html, `data-recommendation-case="${caseId}"`);
+    expect(advice).toContain('data-recommendation-audience="operator"');
+    expect(advice).toMatch(/<h2[^>]*>Recommendation<\/h2>/);
+    expect(advice).toContain("the agent verifies and advises; a person decides");
+    expect(advice).not.toContain("data-operator-action-panel");
+    expect(html, "Advice and human decision remain genuine adjacent sibling panels").toContain(`${advice}${panel}`);
+    panels.push(advice);
+  } else expect(html).not.toContain(`data-recommendation-case="${caseId}"`);
+  for (const actualPanel of panels) {
+    const help = [...actualPanel.matchAll(/<span class="text-xs text-muted-foreground">([\s\S]*?)<\/span>/g)].map((m) => text(m[1]));
+    expect(words([...paragraphs(actualPanel), ...help].join(" "))).toBeLessThan(25);
+  }
   return panel;
 }
 
@@ -124,7 +141,7 @@ it.each([false, true])("confirmed paper says supplied, not read; attestation nev
   expect(html).toContain("The operator attested reconciliation; this does not prove source agreement.");
   expect(html).not.toContain("declaration and paper explicitly reconciled");
   expect(html).not.toContain("All mandatory fields read");
-  expectOperatorProse(render(CasePackPage, "/case/EX-24123"));
+  expectOperatorProse(render(CasePackPage, "/case/EX-24123"), "EX-24123", true);
   expect(getDomainSnapshot()).toEqual(before);
 });
 
@@ -162,10 +179,11 @@ it.each([
     expect(useAppStore.getState().lifecycles[id].state).toBe("paid");
     store.reopenForAudit(id, useAppStore.getState().caseRevisions[id].at(-1)!.number, "Later audit queries the endorsed product.");
   } else store.arriveInQueue(id);
-  const html = expectOperatorProse(render(CasePackPage, `/case/${id}`));
+  const workspace = render(CasePackPage, `/case/${id}`);
+  const html = expectOperatorProse(workspace, id, enabled);
   for (const choice of ["Request information", "Refer back", "Escalate", "Reason (required)", "Release to pricing"]) expect(html).toContain(choice);
   expect(html).not.toContain(">Record decision<");
-  if (enabled) expect(html).toContain(">Apply suggestion<");
+  if (enabled) expect(section(workspace, `data-recommendation-case="${id}"`)).toContain(">Apply suggestion<");
   else expect(html).toContain("experience only");
 });
 

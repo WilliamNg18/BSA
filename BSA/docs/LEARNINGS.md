@@ -4,6 +4,26 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The last two G unit failures were caused by searching for Apply inside the
+new human panel. V now asserts the real adjacent advice/human structure,
+checks both full panel narratives and keeps the human controls scoped.
+Typecheck, lint and all 40 focused review/operator tests pass. The old
+26/34-word examples stay historical; no source text or threshold was changed
+by this test patch.
+
+G `4ac77a5` imports O's real advice/decision separation. The V merge changed
+no owner source and preserved both sides' document records; the remaining
+Apply failures are now locator migrations against an implemented structure.
+
+Playwright discovery JSON contains expected outcomes and placeholder statuses
+even though result arrays are empty. V records 1,062 ordinary, 44 state and
+75 live entries on exact G `d4f27ce` as discovery only, with zero execution
+and unique native IDs. Two live-discovery startup mistakes are preserved
+separately; correcting the real config path and supplying its required exact
+commit/external-output settings produced the 75-name list without a server.
+The prior P unit-reproduction patch and failed reports were preserved before
+reusing that isolated checkout for the clean G discovery.
+
 The new guard needs no separate workflow step: every CI shard already runs
 the shared blocking `check` stage. An `&&`-chained EPS check therefore stops
 verification before typecheck/build on a finding. The new unit verifies this

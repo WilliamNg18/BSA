@@ -4,6 +4,20 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The actual sibling layout now satisfies V's migrated review assertions:
+40 focused tests, typecheck and targeted lint pass. This uses O's implemented
+structure, not a nested-content exclusion. Whole-suite, focus/geometry and
+current-live validation remain separate gates.
+
+G `4ac77a5` supplies the actual parent-approved sibling implementation.
+Earlier nested-layout totals stay historical; no assertion-only exclusion
+was used to establish this dependency.
+
+Exact G `d4f27ce` native discovery retains 1,062 ordinary, 44 state and 75
+live entries without duplicate IDs or executed results. This is not browser
+green, and pending O sibling-layout and current-case test migrations must
+not inherit its discovery status as acceptance.
+
 Root guard activation is implemented: the unchanged EPS scanner participates
 in `check`, which is blocking in `verify` and every CI shard. W's traversal
 and negative cases remain active, and the package-to-CI path has a regression
