@@ -534,3 +534,7 @@ The previous date-gap recommendation tests now exercise current strength and
 paper-brand cases, while invalid dates, unknown provisions and unsupported
 invoice input remain negative contracts on an existing EPS item. No test
 weakens the independent source or release guards.
+
+Pinned recorded paper is additionally verified through a real acknowledged
+resubmission: the current revision may become ready for human release without
+changing the historical missing brand, scan, OCR or communication provenance.

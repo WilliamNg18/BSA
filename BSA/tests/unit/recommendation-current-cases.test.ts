@@ -99,4 +99,28 @@ describe("current four-case source-backed recommendations", () => {
     expect(result.preview?.endorsementText).toBe(draft.endorsementText);
     expect(result.paper).toBeUndefined();
   });
+
+  it("recorded paper triads and referrals cannot borrow a later acknowledged correction", () => {
+    s().setAgentEnabled(true);
+    const original = caseById(paperId)!;
+    s().submitItem({ caseId: paperId, channel: "paper", endorsementText: original.paperDeclaration!.endorsementText,
+      paperDeclaration: original.paperDeclaration });
+    s().arriveInQueue(paperId);
+    const revision = s().caseRevisions[paperId].at(-1)!;
+    s().applySuggestionToDecision(paperId);
+    s().referBack(paperId, s().operatorDrafts[paperId].rbCode, s().operatorDrafts[paperId].note);
+    const record = s().records.at(-1)!;
+    const context = { kind: "recorded" as const, revision: revision.number, recordId: record.id };
+    const before = deriveRecommendation(s(), paperId, context);
+    expect(before.operatorApproved).toBe(true);
+    const draft = initialisePharmacyDraft(sessionCase(paperId)!, revision);
+    s().setPharmacyDraft(paperId, { ...draft, purpose: "correction" });
+    s().applySuggestedCorrection(paperId);
+    s().setCorrectionAcknowledgement(paperId, revision.number, true);
+    s().resubmit(paperId);
+    expect(deriveRecommendation(s(), paperId).paper?.outcome).toBe("RELEASE_RECOMMENDED");
+    expect(deriveRecommendation(s(), paperId, context)).toEqual(before);
+    expect(before.paper?.evidence.declaration.brandManufacturer).toBe("");
+    expect(before.paper?.automaticRelease).toBe(false);
+  });
 });
