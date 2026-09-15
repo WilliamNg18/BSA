@@ -1,4 +1,4 @@
-import { createElement, type ComponentProps } from "react";
+import { createElement, type ComponentProps, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -7,7 +7,9 @@ import { PharmacyPage, PharmacySubmissionPanel } from "@/components/demo/pharmac
 import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { ClaimDetail } from "@/components/demo/claim-detail";
 import { PharmacyReleasedCount, PharmacySubmissionReceipt } from "@/components/demo/pharmacy-submission-receipt";
-import { useAppStore, getDomainSnapshot } from "@/lib/store";
+import { useAppStore, getDomainSnapshot, getCorrectionAcknowledgementValid } from "@/lib/store";
+import { PharmacyCorrectionAcknowledgement } from "@/components/demo/pharmacy-correction-acknowledgement";
+import { caseById } from "@/lib/domain/cases";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { deriveRecommendation } from "@/lib/domain/recommendations";
@@ -18,7 +20,8 @@ vi.mock("@/components/ui/button", () => ({
     const action = props["data-pharmacy-action"] ?? (children === "Apply suggested correction" ? "apply-correction"
       : children === "Declaration complete" ? "prepare-complete" : children === "Declaration missing information" ? "prepare-missing"
         : children === "Enter invoice price" ? "focus-invoice" : undefined);
-    if (action && onClick) controls.set(action, () => onClick({} as Parameters<NonNullable<typeof onClick>>[0]));
+    if (action && onClick && !props.disabled) controls.set(action, () => onClick({} as Parameters<NonNullable<typeof onClick>>[0]));
+    else if (action) controls.delete(action);
     return createElement(asChild ? "span" : "button", props, children);
   },
 }));
@@ -35,13 +38,31 @@ function currentDraft(id: string, channel?: "eps" | "paper") {
   const s = useAppStore.getState();
   return initialisePharmacyDraft(caseForLifecycle(id, s.lifecycles, s.caseRevisions, s.itemProcesses)!, s.caseRevisions[id].at(-1)!, channel);
 }
-function referB() {
+function referB(enabled = true) {
   const s = useAppStore.getState();
-  s.setAgentEnabled(true);
-  s.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+  s.setAgentEnabled(enabled);
+  const paperDeclaration = caseById("EX-24112")!.paperDeclaration!;
+  s.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
   s.arriveInQueue("EX-24112");
-  s.recordType2Decision({ caseId: "EX-24112", decision: "REFER_BACK", rbCode: "SYN-NCSO",
-    reason: "Add the dispensing date beside the initials.", approvedDraft: "Add the dispensing date beside the initials." });
+  if (enabled) {
+    s.applySuggestionToDecision("EX-24112");
+    const draft = useAppStore.getState().operatorDrafts["EX-24112"];
+    s.referBack("EX-24112", draft.rbCode, draft.note);
+  } else s.referBack("EX-24112", "RB2B", "Confirm the brand or manufacturer supplied.");
+}
+function acknowledge(id: string) {
+  const s = useAppStore.getState(), before = getDomainSnapshot();
+  const draft = s.pharmacyDrafts[id] ?? currentDraft(id);
+  const element = PharmacyCorrectionAcknowledgement({ caseId: id, draft, act: (action) => action() });
+  const input = element.props.children[0] as ReactElement<ComponentProps<"input">>;
+  input.props.onChange!({ target: { checked: true } } as Parameters<NonNullable<ComponentProps<"input">["onChange"]>>[0]);
+  expect(getCorrectionAcknowledgementValid(id)).toBe(true);
+  const after = getDomainSnapshot();
+  expect(after.caseRevisions).toEqual(before.caseRevisions);
+  expect(after.records).toEqual(before.records);
+  expect(after.lifecycles[id].state).toBe(before.lifecycles[id].state);
+  expect(after.lifecycles[id].history.slice(0, -1)).toEqual(before.lifecycles[id].history);
+  expect(after.lifecycles[id].history.at(-1)).toMatchObject({ actor: "pharmacy", processStep: "correction_acknowledged" });
 }
 
 beforeEach(() => {
@@ -60,7 +81,7 @@ describe("pharmacy panel human controls", () => {
     expect(initial).not.toContain("Submit another demonstration attempt");
     controls.get("apply-correction")!();
     const applied = useAppStore.getState();
-    expect(applied.pharmacyDrafts["EX-24112"].endorsementText).toContain("21/08/26");
+    expect(applied.pharmacyDrafts["EX-24112"].paperDeclaration?.brandManufacturer).toBe(caseById("EX-24112")!.pharmacySupplyRecord!.brandManufacturer);
     expect(applied.caseRevisions["EX-24112"]).toEqual(before);
     expect(applied.lifecycles["EX-24112"].state).toBe("referred_back");
     expect(applied.lifecycles["EX-24112"].history.at(-1)).toMatchObject({ actor: "pharmacy", processStep: "correction_applied" });
@@ -68,6 +89,10 @@ describe("pharmacy panel human controls", () => {
     expect(html).toContain("Operator-approved note");
     expect(html).toContain("Ready");
     expect(html).toContain("Highlighted; not sent.");
+    expect(html).toMatch(/<button(?=[^>]*data-pharmacy-action="resubmit")(?=[^>]*disabled)[^>]*>/);
+    expect(controls.has("resubmit")).toBe(false);
+    acknowledge("EX-24112");
+    render(createElement(PharmacyClaimActionPanel, { caseId: "EX-24112" }));
     controls.get("resubmit")!();
     expect(useAppStore.getState().caseRevisions["EX-24112"].slice(0, -1)).toEqual(before);
     expect(useAppStore.getState().caseRevisions["EX-24112"].at(-1)).toMatchObject({ kind: "resubmission", number: before.at(-1)!.number + 1 });
@@ -75,16 +100,19 @@ describe("pharmacy panel human controls", () => {
   });
 
   it("Off retains manual draft fields and performs no advisory check or automatic Apply", () => {
-    referB();
-    useAppStore.getState().setAgentEnabled(false);
+    referB(false);
     const before = getDomainSnapshot();
     const html = render(createElement(PharmacyClaimActionPanel, { caseId: "EX-24112" }));
-    expect(html).toContain("Resubmit blind");
+    expect(html).toContain("Resubmit");
+    expect(html).toContain("I confirm the corrected information is accurate");
     expect(html).toContain("Corrected endorsement");
     expect(html).toContain("Hypothetical");
     expect(html).not.toContain("Claims precheck");
     expect(controls.has("apply-correction")).toBe(false);
     expect(getDomainSnapshot()).toEqual(before);
+    expect(controls.has("resubmit")).toBe(false);
+    acknowledge("EX-24112");
+    render(createElement(PharmacyClaimActionPanel, { caseId: "EX-24112" }));
     controls.get("resubmit")!();
     expect(useAppStore.getState().caseRevisions["EX-24112"].at(-1)?.precheck).toMatchObject({
       mode: "off", status: "not_checked", facts: null, checks: [], checkedAt: null,
@@ -97,7 +125,7 @@ describe("pharmacy panel human controls", () => {
     s.setAgentEnabled(enabled);
     const draft = currentDraft("EX-24112");
     s.setPharmacyDraft("EX-24112", { ...draft, endorsementText: "Human unfinished draft",
-      epsPrescription: draft.epsPrescription ? { ...draft.epsPrescription, dispenserEndorsement: "Human unfinished draft" } : undefined });
+      paperDeclaration: { ...draft.paperDeclaration!, endorsementText: "Human unfinished draft" } });
     const before = getDomainSnapshot();
     for (const perspective of ["pharmacy", "nhsbsa", "both"] as const) {
       s.setPerspective(perspective);
@@ -109,7 +137,8 @@ describe("pharmacy panel human controls", () => {
   it("Send confirmation uses retained input without changing conflicting source quantities", () => {
     const id = "EX-24112";
     const s = useAppStore.getState();
-    s.submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+    const paperDeclaration = caseById(id)!.paperDeclaration!;
+    s.submitItem({ caseId: id, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
     s.arriveInQueue(id);
     s.requestInformation(id, "Please confirm the supplied endorsement with the original form.");
     const before = structuredClone(useAppStore.getState().caseRevisions[id]);
@@ -137,15 +166,16 @@ describe("pharmacy panel human controls", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
-  it("fixes the first B workbench draft after Reset without approving or replacing the historical referral", () => {
-    const id = "EX-24112";
+  it("fixes the first wrong-strength workbench draft after Reset without approving or replacing the historical referral", () => {
+    const id = "SYN-FQ123-MISMATCH";
     useAppStore.getState().setAgentEnabled(true);
     const before = structuredClone(useAppStore.getState().caseRevisions[id]);
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
     controls.get("apply-correction")!();
     const after = useAppStore.getState();
     expect(after.pharmacyDrafts[id]).toMatchObject({ purpose: "new_submission", appliedSuggestion: true });
-    expect(after.pharmacyDrafts[id].endorsementText).toContain("21/08/26");
+    expect(after.pharmacyDrafts[id].epsPrescription?.items[0].dispensedCode).toBe("SYN-AMLO10-28");
+    expect(after.pharmacyDrafts[id].epsPrescription?.supplyRecord).toEqual(before.at(-1)?.epsPrescription?.supplyRecord);
     expect(after.caseRevisions[id]).toEqual(before);
     expect(after.lifecycles[id].state).toBe("referred_back");
     expect(after.lifecycles[id].history.at(-1)?.approvedDraft).toBeUndefined();
@@ -156,7 +186,7 @@ describe("pharmacy panel human controls", () => {
   });
 
   it("counts a checked human correction before Send, once per attempt and across perspectives", () => {
-    const s = useAppStore.getState(), caseId = "EX-24112";
+    const s = useAppStore.getState(), caseId = "SYN-FQ123-MISMATCH";
     s.setAgentEnabled(true);
     expect(render(createElement(PharmacyClaimsPage))).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
     const before = structuredClone(s.caseRevisions[caseId]);
@@ -236,30 +266,37 @@ describe("pharmacy panel human controls", () => {
     expect(after.at(-1)?.precheck).toMatchObject({ mode: "off", dispensingDate: "2026-08-27", checkedAt: null, facts: null });
   });
 
-  it("generic Apply writes actual brand, pack and form without rewriting the EPS source", () => {
+  it("strength Apply writes only the selected code and name without rewriting the EPS source", () => {
     const id = "SYN-FQ123-MISMATCH";
     useAppStore.getState().setAgentEnabled(true);
     const before = structuredClone(useAppStore.getState().caseRevisions[id]);
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
     controls.get("apply-correction")!();
     const after = useAppStore.getState();
-    expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.brandManufacturer).not.toBe("");
-    expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.packSize).toBe(21);
-    expect(after.pharmacyDrafts[id].epsPrescription?.supplyEvidence?.form).not.toBe("");
+    const source = before.at(-1)!.epsPrescription!;
+    expect(after.pharmacyDrafts[id].epsPrescription).toEqual({
+      ...source, claimMessageState: "submitted",
+      items: source.items.map((item) => ({ ...item, dispensedCode: "SYN-AMLO10-28", dispensedName: "Amlodipine 10mg tablets" })),
+    });
     expect(after.caseRevisions[id]).toEqual(before);
     expect(after.lifecycles[id].history.at(-1)).toMatchObject({ actor: "pharmacy", processStep: "correction_applied" });
     expect(render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }))).toContain("Ready");
   });
 
   it.each([
-    ["EX-24112", "endorsement"],
-    ["SYN-FQ123-MISMATCH", "eps-pack"],
-  ])("explicit Apply moves keyboard focus to the changed field for %s", (caseId, fieldId) => {
+    ["EX-24112", "paper-brandManufacturer", "paper"],
+    ["SYN-FQ123-MISMATCH", "eps-selected-pack", "eps"],
+  ] as const)("explicit Apply moves keyboard focus to the changed field for %s", (caseId, fieldId, channel) => {
     useAppStore.getState().setAgentEnabled(true);
+    if (channel === "paper") {
+      const draft = currentDraft(caseId, channel);
+      useAppStore.getState().setPharmacyDraft(caseId, { ...draft, purpose: "new_submission",
+        paperDeclaration: { ...draft.paperDeclaration!, brandManufacturer: "" } });
+    }
     const focus = vi.fn();
     const getElementById = vi.fn(() => ({ focus }));
     vi.stubGlobal("document", { getElementById });
-    render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+    render(createElement(PharmacySubmissionPanel, { caseId, channel }));
     controls.get("apply-correction")!();
     expect(getElementById).toHaveBeenCalledWith(fieldId);
     expect(focus).toHaveBeenCalledOnce();
@@ -269,9 +306,8 @@ describe("pharmacy panel human controls", () => {
   it("keeps applied compact paper prose cumulatively below 25 words", () => {
     const id = "EX-24123", s = useAppStore.getState();
     s.setAgentEnabled(true);
-    const draft = currentDraft(id, "paper");
-    s.setPharmacyDraft(id, { ...draft, endorsementText: "NCSO JB",
-      paperDeclaration: { ...draft.paperDeclaration!, endorsementText: "NCSO JB" } });
+    render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "paper" }));
+    controls.get("prepare-missing")!();
     render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "paper" }));
     controls.get("apply-correction")!();
     const html = render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "paper" }));
@@ -320,7 +356,7 @@ describe("recorded receipt and release count", () => {
 
   describe("ordinary pharmacy preserves demo exit context", () => {
     it.each([
-      ["EX-24107", "eps"], ["EX-24112", "eps"], ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
+      ["EX-24107", "eps"], ["EX-24112", "paper"], ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
     ])("keeps %s and its channel without submission on exit", (caseId, channel) => {
       const s = useAppStore.getState();
       s.followCase(caseId);
@@ -339,7 +375,7 @@ describe("recorded receipt and release count", () => {
 
     describe("concrete pharmacy recommendation extension", () => {
       it.each([
-        ["EX-24107", "eps"], ["EX-24112", "eps"], ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
+        ["EX-24107", "eps"], ["EX-24112", "paper"], ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
       ] as const)("always displays the current %s recommendation On without executing an action", (caseId, channel) => {
         const s = useAppStore.getState();
         const before = getDomainSnapshot();
@@ -352,29 +388,30 @@ describe("recorded receipt and release count", () => {
         expect(getDomainSnapshot()).toEqual(before);
       });
 
-      it("applies the exact visible date preview, not a separately constructed correction", () => {
-        const s = useAppStore.getState(), caseId = "EX-24112";
+      it("applies the exact visible strength preview, not a separately constructed correction", () => {
+        const s = useAppStore.getState(), caseId = "SYN-FQ123-MISMATCH";
         s.setAgentEnabled(true);
         const recommendation = deriveRecommendation(s, caseId, { kind: "draft" });
         const html = render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
-        expect(html).toContain("21/08/2026");
-        expect(html).toContain(recommendation.preview!.endorsementText);
+        expect(html).toContain("Amlodipine 10mg tablets");
+        expect(html).toContain("your agent");
         const before = structuredClone(s.caseRevisions[caseId]);
         controls.get("apply-correction")!();
-        expect(useAppStore.getState().pharmacyDrafts[caseId].endorsementText).toBe(recommendation.preview!.endorsementText);
+        expect(useAppStore.getState().pharmacyDrafts[caseId].epsPrescription).toEqual(recommendation.preview!.epsPrescription);
         expect(useAppStore.getState().caseRevisions[caseId]).toEqual(before);
       });
 
       it("highlights fields restored from a cleared draft even when the new values equal original evidence", () => {
-        const s = useAppStore.getState(), caseId = "SYN-FQ123-MISMATCH";
+        const s = useAppStore.getState(), caseId = "EX-24123";
         s.setAgentEnabled(true);
-        const draft = currentDraft(caseId, "eps");
-        s.setPharmacyDraft(caseId, { ...draft, epsPrescription: { ...draft.epsPrescription!,
-          supplyEvidence: { ...draft.epsPrescription!.supplyEvidence!, brandManufacturer: "", form: "" } } });
-        render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+        render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
+        controls.get("prepare-missing")!();
+        const before = getDomainSnapshot();
+        render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
         controls.get("apply-correction")!();
-        const after = render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
-        for (const id of ["eps-manufacturer", "eps-pack", "eps-form"]) {
+        const after = render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
+        expect(getDomainSnapshot().caseRevisions).toEqual(before.caseRevisions);
+        for (const id of ["paper-typedProduct", "paper-quantity"]) {
           expect(after).toMatch(new RegExp(`<input(?=[^>]*id="${id}")(?=[^>]*ring-2)[^>]*>`));
         }
       });
@@ -387,9 +424,10 @@ describe("recorded receipt and release count", () => {
         controls.get(`prepare-${variant}`)!();
         const after = getDomainSnapshot(), draft = after.pharmacyDrafts[caseId];
         expect(draft).toMatchObject({ revision: 1, purpose: "new_submission", appliedSuggestion: false,
-          paperDeclaration: { quantity: 100, dispensingDate: "2026-08-27", declaredByPharmacy: true } });
+          paperDeclaration: { quantity: variant === "complete" ? 100 : null, typedProduct: variant === "complete" ? "SYN-COCOD-100" : "",
+            dispensingDate: "2026-08-27", declaredByPharmacy: true } });
         expect(draft.declaration?.fields.prescriber).toBe("Dr Example (synthetic demo declaration)");
-        expect(draft.endorsementText.includes("27/08/26")).toBe(variant === "complete");
+        expect(draft.endorsementText).toBe("NCSO JB 27/08/26");
         expect(after).toEqual({ ...before, pharmacyDrafts: { ...before.pharmacyDrafts, [caseId]: draft } });
         const html = render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
         expect(html).toContain("declared by the pharmacy, not read from the form");
@@ -410,7 +448,7 @@ describe("recorded receipt and release count", () => {
       });
 
       it("focuses the authoritative endorsement for an unknown invoice price without inventing a value", () => {
-        const s = useAppStore.getState(), caseId = "EX-24112";
+        const s = useAppStore.getState(), caseId = "EX-24107";
         s.setAgentEnabled(true);
         const draft = currentDraft(caseId, "eps");
         s.setPharmacyDraft(caseId, { ...draft, endorsementText: "SP RK",
@@ -437,7 +475,7 @@ describe("recorded receipt and release count", () => {
 
       it("classifies the real shared-card pharmacy Apply button without adding a duplicate control", () => {
         useAppStore.getState().setAgentEnabled(true);
-        const html = render(createElement(PharmacySubmissionPanel, { caseId: "EX-24112", channel: "eps" }));
+        const html = render(createElement(PharmacySubmissionPanel, { caseId: "SYN-FQ123-MISMATCH", channel: "eps" }));
         expect(html.match(/data-pharmacy-action="apply-correction"/g)).toHaveLength(1);
         expect(html).toMatch(/<button[^>]*data-pharmacy-action="apply-correction"[^>]*>Apply suggested correction<\/button>/);
       });

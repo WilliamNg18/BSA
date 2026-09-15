@@ -8,9 +8,10 @@ import { caseById } from "@/lib/domain/cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "@/lib/domain/eps-check";
 import { checkEpsPharmacy } from "@/lib/domain/eps-pharmacy-check";
 import { projectEpsSubmissionDraft } from "@/lib/domain/eps-submission-draft";
+import { preparePaperDemoDraft } from "@/lib/domain/pharmacy-correction";
 import { PharmacyCheckRunner, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import type { EpsPrescription } from "@/lib/domain/types";
-import { useAppStore } from "@/lib/store";
+import { sessionCase, useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -29,12 +30,13 @@ beforeEach(() => useAppStore.getState().resetDemo());
 
 describe("visible EPS prescription", () => {
   it.each(["pending", "ACCEPT", "ESCALATE", "REFER_BACK"] as const)("previews a fresh EPS attempt after human recheck: %s", (decision) => {
-    const id = "EX-24112", s = useAppStore.getState();
-    const eps = { ...createEpsPrescription(caseById(id)!), dispenserEndorsement: "NCSO RK 21/08/26", claimMessageState: "submitted" as const };
-    s.resubmitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
+    const id = "EX-24107", s = useAppStore.getState();
+    const eps = { ...createEpsPrescription(caseById(id)!), claimMessageState: "submitted" as const };
+    s.submitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
+    const revision = useAppStore.getState().caseRevisions[id].at(-1)!;
+    s.reopenForAudit(id, revision.number, "Human opened a later source evidence audit.");
     if (decision !== "pending") {
-      s.arriveInQueue(id);
-      s.recordType2Decision({ caseId: id, decision, reason: "Human checked the corrected date.", ...(decision === "REFER_BACK" ? { rbCode: "SYN-NCSO" } : {}) });
+      s.recordType2Decision({ caseId: id, decision, reason: "Human checked the source evidence.", ...(decision === "REFER_BACK" ? { rbCode: "RB2B" } : {}) });
     }
     const before = useAppStore.getState();
     expect(checkEpsPharmacy(preview(id, eps), eps.dispenserEndorsement).status).toBe("ready");
@@ -44,21 +46,30 @@ describe("visible EPS prescription", () => {
     expect(useAppStore.getState().caseRevisions[id].slice(0, -1)).toEqual(before.caseRevisions[id]);
   });
 
-  it("does not borrow a prior paper declaration or confirmed capture for a new EPS draft", () => {
-    const id = "EX-24112", s = useAppStore.getState();
-    const eps = { ...createEpsPrescription(caseById(id)!), dispenserEndorsement: "NCSO RK 21/08/26", claimMessageState: "submitted" as const };
-    const fields = { productCode: eps.items[0].dispensedCode, quantity: 28, endorsementText: eps.dispenserEndorsement, prescriber: eps.prescriber.name };
-    s.submitItem({ caseId: id, channel: "paper", endorsementText: eps.dispenserEndorsement,
-      declaration: { fields, provenance: "pharmacy_declaration", declaredAt: "2026-09-13T12:00:00.000Z" } });
-    s.confirmType1({ caseId: id, revision: s.caseRevisions[id].at(-1)!.number + 1, fields, provenance: "pharmacy_declaration", declarationReconciled: true });
+  it("does not borrow a real confirmed paper capture for an isolated historical EPS-channel projection", () => {
+    const id = "EX-24123", s = useAppStore.getState();
+    const draft = preparePaperDemoDraft(sessionCase(id)!, s.caseRevisions[id].at(-1)!, "complete");
+    s.submitItem({ ...draft, caseId: id, channel: "paper" });
+    const revision = useAppStore.getState().caseRevisions[id].at(-1)!;
+    s.confirmType1({ caseId: id, revision: revision.number, fields: revision.declaration!.fields,
+      provenance: "pharmacy_declaration", declarationReconciled: true });
+    expect(useAppStore.getState().itemProcesses[id].capture).not.toBeNull();
     const before = useAppStore.getState();
-    const projected = preview(id, eps);
+    const epsId = "EX-24107", eps = { ...createEpsPrescription(caseById(epsId)!), claimMessageState: "submitted" as const };
+    // Only the isolated historical projection switches channels; canonical live identities never do.
+    const historicalRevisions = { ...before.caseRevisions, [epsId]: [{ ...revision, templateCaseId: epsId }] };
+    const historicalLifecycles = { ...before.lifecycles, [epsId]: {
+      ...before.lifecycles[epsId], history: before.lifecycles[id].history,
+    } };
+    const projected = projectEpsSubmissionDraft(epsId, eps, historicalLifecycles, historicalRevisions);
     expect(projected.capturedEvidence).toBeUndefined();
     expect(projected.paperDeclaration).toBeUndefined();
     expect(checkEpsPharmacy(projected, eps.dispenserEndorsement).status).toBe("ready");
     expect(useAppStore.getState()).toBe(before);
-    s.submitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
-    expect(useAppStore.getState().itemProcesses[id].routing.outcome).toBe("auto_priced");
+    s.submitItem({ caseId: epsId, channel: "eps", endorsementText: eps.dispenserEndorsement, epsPrescription: eps });
+    expect(useAppStore.getState().itemProcesses["EX-24107"].routing.outcome).toBe("auto_priced");
+    expect(useAppStore.getState().caseRevisions[id]).toEqual(before.caseRevisions[id]);
+    expect(useAppStore.getState().lifecycles[id].history).toEqual(before.lifecycles[id].history);
   });
 
   it("separates the prescription from dispenser fields and never renders an image", () => {
@@ -72,29 +83,30 @@ describe("visible EPS prescription", () => {
     expect(html).not.toContain("<img");
   });
 
-  it("offers the three playable EPS scenarios, manual pain and explicit Send", () => {
+  it("offers exactly two playable EPS scenarios, manual pain and explicit Send", () => {
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(EpsPharmacyCapture)));
-    for (const label of ["Complete endorsement", "NCSO missing date", "Wrong pack size", "Dispenser endorsement", "Exemption status", "Send claim", "No advisory check; later correction is possible"]) expect(html).toContain(label);
+    for (const label of ["Complete endorsement", "Wrong medication strength", "Dispenser endorsement", "Exemption status", "Send claim", "No advisory check; later correction is possible"]) expect(html).toContain(label);
+    for (const label of ["NCSO missing date", "Wrong pack size", "EX-24112"]) expect(html).not.toContain(label);
     expect(html).not.toContain("Generic missing brand");
     expect(html).not.toContain("Unreadable form");
     expect(html).not.toContain("Apply correction");
     expect(html).not.toContain('aria-label="Claims precheck"');
   });
 
-  it("only reports ready for deterministic automatic routing", () => {
+  it("only reports ready for complete historical NCSO fixtures with deterministic automatic routing", () => {
     const a = createEpsPrescription(caseById("EX-24107")!);
     expect(checkEpsPharmacy(preview("EX-24107", a), a.dispenserEndorsement).status).toBe("ready");
-    const b = createEpsPrescription(caseById("EX-24112")!);
-    const missing = checkEpsPharmacy(preview("EX-24112", b), b.dispenserEndorsement);
+    const b = { ...a, dispenserEndorsement: "NCSO JB" };
+    const missing = checkEpsPharmacy(preview("EX-24107", b), b.dispenserEndorsement);
     expect(missing.status).toBe("missing");
     expect(missing.checks.filter((check) => check.met === false).map((check) => check.id)).toContain("dated");
-    const corrected = { ...b, dispenserEndorsement: `${b.dispenserEndorsement} 21/08/26` };
-    expect(checkEpsPharmacy(preview("EX-24112", corrected), corrected.dispenserEndorsement).status).toBe("ready");
+    const corrected = { ...b, dispenserEndorsement: `${b.dispenserEndorsement} 14/08/26` };
+    expect(checkEpsPharmacy(preview("EX-24107", corrected), corrected.dispenserEndorsement).status).toBe("ready");
   });
 
-  it("uses the dispensing month, preserving B July sufficiency", () => {
-    const b = { ...createEpsPrescription(caseById("EX-24112")!), dispensingDate: "2026-07-21" };
-    const result = checkEpsPharmacy(preview("EX-24112", b), b.dispenserEndorsement);
+  it("uses the dispensing month, preserving historical July NCSO sufficiency in an isolated fixture", () => {
+    const b = { ...createEpsPrescription(caseById("EX-24107")!), dispenserEndorsement: "NCSO JB", dispensingDate: "2026-07-14" };
+    const result = checkEpsPharmacy(preview("EX-24107", b), b.dispenserEndorsement);
     expect(result.version).toBe("2026-07");
     expect(result.checks.some((check) => check.id === "dated")).toBe(false);
   });
@@ -115,18 +127,18 @@ describe("visible EPS prescription", () => {
 
   it("sends exact Off text and immutable source without a silent precheck", () => {
     const s = useAppStore.getState();
-    const original = structuredClone(s.caseRevisions["EX-24112"]);
+    const original = structuredClone(s.caseRevisions["EX-24107"]);
     const text = "  NCSO RK arbitrary typed text  ";
-    const draft = { ...createEpsPrescription(caseById("EX-24112")!), dispenserEndorsement: text, claimMessageState: "submitted" as const };
-    s.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: text, epsPrescription: draft,
+    const draft = { ...createEpsPrescription(caseById("EX-24107")!), dispenserEndorsement: text, claimMessageState: "submitted" as const };
+    s.submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: text, epsPrescription: draft,
       precheck: pharmacySnapshot(text, draft.dispensingDate, "off", null, null) });
-    const after = useAppStore.getState(), revision = after.caseRevisions["EX-24112"].at(-1)!;
+    const after = useAppStore.getState(), revision = after.caseRevisions["EX-24107"].at(-1)!;
     expect(revision.endorsementText).toBe(text);
     expect(revision.epsPrescription?.dispenserEndorsement).toBe(text);
     expect(revision.precheck).toMatchObject({ mode: "off", status: "not_checked", checks: [], facts: null, checkedAt: null });
-    expect(after.caseRevisions["EX-24112"].slice(0, -1)).toEqual(original);
+    expect(after.caseRevisions["EX-24107"].slice(0, -1)).toEqual(original);
     expect(Object.isFrozen(revision.epsPrescription)).toBe(true);
-    expect(after.itemProcesses["EX-24112"].routing.outcome).not.toBe("type1_capture");
+    expect(after.itemProcesses["EX-24107"].routing.outcome).not.toBe("type1_capture");
   });
 
   it("invalidates stale and Off checks without calling the EPS evaluator", () => {
@@ -155,7 +167,10 @@ describe("visible EPS prescription", () => {
     expect(missing.gap).toContain("Brand or manufacturer");
     const complete = { ...generic, supplyEvidence: { ...generic.supplyEvidence!, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer } };
     expect(checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", complete), "").status).toBe("ready");
-    expect(checkEpsPharmacy(preview("EX-24107", complete), "").status).not.toBe("ready");
+    const before = useAppStore.getState();
+    expect(checkEpsPharmacy(preview("EX-24107", complete), "").status).toBe("ready");
+    expect(useAppStore.getState()).toBe(before);
+    expect(caseById("SYN-FQ123-MISMATCH")!.epsPrescription).toBe(original);
     const missingPrescriber = { ...complete, prescriber: { ...complete.prescriber, name: "" } };
     const incomplete = checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", missingPrescriber), "");
     expect(incomplete.status).toBe("missing");

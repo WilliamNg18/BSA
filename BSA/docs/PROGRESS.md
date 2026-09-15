@@ -156,6 +156,14 @@ the brand-missing example without a hidden fixture edit. Missing paper pack and
 form use G's own-record patch. Thirty-six focused P tests pass; full existing
 suite migration and release gates remain open.
 
+The eight existing P unit files are migrated without dropping tests. Their
+landmark uniqueness assertion caught the new supply record's missing context
+prefix; the real EPS section now follows the adjacent contextual label pattern.
+All 13 owned P suites pass together: 140 tests. `npm run check` passes.
+Full two-worker Vitest remains failed: 1,637 passing / 170 failing across 109
+files, with G/O/D/F/R/U legacy-contract migration still in flight. No full green,
+browser, merge or live completion is inferred from the owned subset.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper
