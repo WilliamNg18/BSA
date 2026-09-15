@@ -2794,3 +2794,8 @@ through the existing 1440-only capture helper. B is captured before Release;
 D after the asserted note focus. At1280 the helper records capture scope,
 not a named PNG, while all functional checks still execute. G owns the
 single allocated assembled-candidate run; O will not duplicate it.
+
+O corrected a local dependency-import merge artifact by restoring
+`review-repair.test.ts` exactly to V's published e004383 content. Typecheck
+passes again. This is not an O-owned assertion change and is not needed
+by G's already-correct composed test file.

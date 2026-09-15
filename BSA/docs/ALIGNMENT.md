@@ -749,3 +749,7 @@ Checkpoint calls preserve all ten expanded test identities, 37 parsed
 expectation expressions and 19 parsed functional-action expressions.
 Only the existing guarded artifact helper is added; actual image production
 and browser outcomes remain pending G's one coordinated execution.
+
+The local review-repair dependency now byte-matches V e004383 after
+removing an accidentally combined old/new fixture hunk. No assertion is
+removed from the authoritative owner version.

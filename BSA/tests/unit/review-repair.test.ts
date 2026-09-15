@@ -12,7 +12,7 @@ import { HomePage } from "../../src/pages/home";
 import { NotificationContext } from "../../src/hooks/use-notification";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import { runAgent } from "../../src/lib/domain/agent";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, caseById, playableCaseChannel } from "../../src/lib/domain/cases";
 import { abstentionReasonLabel } from "../../src/lib/abstention-display";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -171,10 +171,8 @@ it.each([
   { id: "SYN-FQ123-MISMATCH", enabled: false }, { id: "SYN-FQ123-MISMATCH", enabled: true },
 ])("keeps every operator choice and optional approval within one concise explanation: $id Agent $enabled", ({ id, enabled }) => {
   const store = useAppStore.getState();
-  store.submitItem({ caseId: id, channel: "eps", endorsementText: id === "EX-24112" ? "NCSO RK" : sessionCase(id)!.extracted.endorsementText });
-  store.arriveInQueue(id);
+  const c = caseById(id)!;
   store.setAgentEnabled(enabled);
-  const html = expectOperatorProse(render(CasePackPage, `/case/${id}`));
   store.submitItem({ caseId: id, channel: playableCaseChannel(id)!, endorsementText: c.extracted.endorsementText,
     epsPrescription: c.epsPrescription, paperDeclaration: c.paperDeclaration });
   if (id === "SYN-FQ123-MISMATCH" && !enabled) {
@@ -192,7 +190,8 @@ it.each([
 it("uses readable outcome labels and conditional manual EPS risk without prechecking Off", () => {
   useAppStore.getState().setAgentEnabled(true);
   const home = render(HomePage, "/#cases");
-  expect(home).toContain("Complete format, wrong pack");
+  expect(home).toContain("Wrong strength selected");
+  expect(home).not.toContain("Complete format, wrong pack");
   expect(home).not.toContain(">REQUEST_INFORMATION<");
   useAppStore.getState().setAgentEnabled(false);
   const before = getDomainSnapshot();

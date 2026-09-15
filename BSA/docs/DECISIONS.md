@@ -2646,3 +2646,5 @@ Question: where does Apply live after separation? Choice: in the actual advice c
 Question: how is a rejected proposed-value note explained concisely? Choice: display a precise field/rule-and-accuracy message only after G's actual rejection, preserve the draft and unknown error text, and never validate or rewrite the note locally; tie-breaker: clear human help without a second authority.
 
 Question: how should the single operator validation run retain named visual evidence? Choice: call the existing 1440-only checkpoint helper before B's final Release and after D's note-focus checks, keeping all actions/assertions and the normal failure policy unchanged; tie-breaker: scoped evidence without a duplicate run.
+
+Question: how should an incorrect dependency merge be repaired? Choice: restore the exact published owner test file and preserve its assertions, not invent a local compatibility variant; tie-breaker: single ownership and reproducible evidence.

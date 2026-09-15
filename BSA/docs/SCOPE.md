@@ -703,3 +703,6 @@ operator regression file. No timing predicate or one-second clock changes.
 Named operator-panel screenshot checkpoints are artifact-only additions to
 the same ten cases. The standard failure-artifact policy is unchanged.
 No new scenario, action, predicate, retry or browser run is introduced.
+
+V retains ownership of review-repair assertions; O's local merge repair
+restores the exact published owner file rather than changing test semantics.

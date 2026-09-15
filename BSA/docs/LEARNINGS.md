@@ -1939,3 +1939,8 @@ raw-text comparison differed across Git LF and Windows CRLF; comparing
 parsed TypeScript expressions confirms unchanged title templates,
 expectations and functional-action order. Typecheck and ten-test discovery
 pass. No new screenshot or browser result exists before the allocated run.
+
+A union-style dependency import combined an old fixture with V's new fixture,
+leaving a duplicate declaration and missing imports. Comparing with the exact
+published V file exposed the issue; restoring that version resolves typecheck.
+Document unions must not be treated as safe code-conflict resolution.
