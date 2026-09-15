@@ -15,10 +15,15 @@ authority. This published reference preparation does not implement their gates
 or change store, demo, operator or pharmacy controls.
 
 The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
-paper case and scanner/field-only-referral boundaries. Reuse of W/B constants,
-the public NHSBSA quotation/link, foundation integration, exact-head CI and
-main/deployment/live observation remain pending. Do not treat WIP as the live
-product or an exact-main backup.
+paper case and scanner/field-only-referral boundaries. It reuses the G-approved
+isolated W/B foundation constants for the public NHSBSA quotation/link/check
+date and hypothetical/human-capture labels. Check and 1,714 units passed;
+the exact document parity and 14 FAQ topics are covered.
+
+The owner-authored foundation commits remain dependency history, not new
+S-authored domain behaviour. Actual G runtime integration, fresh exact-head
+CI and main/deployment/live observation remain pending. Do not treat WIP as
+the live product or an exact-main backup.
 
 ## 2026-09-15: Task 39 W foundation, not live completion
 

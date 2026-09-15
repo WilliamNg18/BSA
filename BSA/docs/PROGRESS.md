@@ -14,11 +14,18 @@ scanner reconciliation separates declaration, hypothetical character-recognition
 fields/confidence, original scan and revision-bound human capture. Paper stays
 human-final; corrected EPS requires both gates before code-only release.
 
-Check and 12 focused reference units passed. The 49 prose panels have at most
-54 words, informational only. Canonical W/B imports, public citation rendering
-and actual integrated behaviour review await G's foundation integration.
-No new browser, hosted or complete Task 39-40 result is claimed. The paired
-SYSTEM-DESIGN document matches the reference text in this change.
+The follow-up consumes G-approved owner-authored W `fe0a521` and B `c433f45`
+plus `8151770` as isolated foundations, preserving all tracking entries.
+The public NHSBSA quote/link/check date and proposed-check label now reuse
+canonical W metadata. Scanner and human-capture/amendment labels reuse B's
+constants; no duplicated bibliography or improved-original-scan claim.
+
+Check and all 1,714 units in 100 files passed, including 13 S reference tests.
+The 50 prose panels have at most 54 words, informational only. SYSTEM-DESIGN
+matches the page text exactly. The new citation/retired-headline browser
+assertions have not run locally; no browser allocation or hosted claim exists.
+G's actual source/gate integration, exact-head CI, coordinator merge, green
+deployment and observed live change remain required for Task 39-40 completion.
 
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
