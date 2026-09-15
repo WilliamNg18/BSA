@@ -156,23 +156,26 @@ describe("visible EPS prescription", () => {
   });
 
   it("requires persisted manufacturer/pack/form for the generic source, not an advisory flag", () => {
-    const original = caseById("SYN-FQ123-MISMATCH")!.epsPrescription!;
+    const source = caseById("SYN-FQ123-TYPE2")!;
+    const original = createEpsPrescription(source);
+    const before = useAppStore.getState();
     const generic: EpsPrescription = {
       ...original,
-      items: original.items.map((item) => ({ ...item, prescribedCode: EPS_SUPPLY_RULE.productCode, dispensedCode: EPS_SUPPLY_RULE.productCode, product: "Amoxicillin 500mg capsules (generic synthetic)", dispensedName: "Amoxicillin 500mg capsules (generic synthetic)" })),
       supplyEvidence: { ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: "", packSize: 21, form: "capsules" },
     };
-    const missing = checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", generic), "");
+    const historicalRows = { [source.id]: { ...before.lifecycles["EX-24107"], caseId: source.id } };
+    const historicalRevisions = { [source.id]: [{ ...before.caseRevisions["EX-24107"][0], templateCaseId: source.id, epsPrescription: original }] };
+    const check = (epsPrescription: EpsPrescription) => checkEpsPharmacy(
+      projectEpsSubmissionDraft(source.id, epsPrescription, historicalRows, historicalRevisions), "");
+    const missing = check(generic);
     expect(missing.status).toBe("missing");
     expect(missing.gap).toContain("Brand or manufacturer");
     const complete = { ...generic, supplyEvidence: { ...generic.supplyEvidence!, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer } };
-    expect(checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", complete), "").status).toBe("ready");
-    const before = useAppStore.getState();
-    expect(checkEpsPharmacy(preview("EX-24107", complete), "").status).toBe("ready");
+    expect(check(complete).status).toBe("ready");
     expect(useAppStore.getState()).toBe(before);
-    expect(caseById("SYN-FQ123-MISMATCH")!.epsPrescription).toBe(original);
+    expect(createEpsPrescription(source)).toEqual(original);
     const missingPrescriber = { ...complete, prescriber: { ...complete.prescriber, name: "" } };
-    const incomplete = checkEpsPharmacy(preview("SYN-FQ123-MISMATCH", missingPrescriber), "");
+    const incomplete = check(missingPrescriber);
     expect(incomplete.status).toBe("missing");
     expect(incomplete.gap).not.toBe("None");
     expect(incomplete.gap.toLowerCase()).toContain("prescriber");

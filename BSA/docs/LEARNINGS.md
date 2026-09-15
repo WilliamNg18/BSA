@@ -159,6 +159,14 @@ when two messages render. After that repair, 140 tests in all 13 P suites pass
 together and check passes. Full Vitest still reports 170 failures / 1,637 passes;
 those shared migration failures remain preserved and assigned, never waived.
 
+Truthful strength checking exposed a historical test that projected generic
+supply fields onto the new strength identity. Using the original isolated
+generic source preserves manufacturer and missing-prescriber checks without
+forging the current scenario. All 194 owned P tests and check now pass.
+The latest full run remains 1,664 passing / 144 failing, with failures retained
+for the owning streams; unrelated timeout results were not retried into a
+claimed coherent pass.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic

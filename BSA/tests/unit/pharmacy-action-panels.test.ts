@@ -383,7 +383,7 @@ describe("recorded receipt and release count", () => {
         s.setAgentEnabled(true);
         const html = render(createElement(PharmacySubmissionPanel, { caseId, channel }));
         expect(html).toContain(`data-recommendation-case="${caseId}"`);
-        for (const label of ["Recommendation", "Tariff version", "Requirement results", "Recommended outcome", "the agent verifies and advises; a person decides"]) expect(html).toContain(label);
+        for (const label of ["Recommendation", caseId === "SYN-FQ123-MISMATCH" ? "Dispensing-month reference" : "Tariff version", "Requirement results", "Recommended outcome", "the agent verifies and advises; a person decides"]) expect(html).toContain(label);
         expect(html).not.toMatch(/<details[^>]*>[^]*data-recommendation-case/);
         expect(getDomainSnapshot()).toEqual(before);
       });

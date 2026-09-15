@@ -2554,6 +2554,10 @@ Question: how should the workbench use G's original-scenario factory? Choice: us
 
 Question: how should duplicate supply-record landmarks be repaired? Choice: use the existing contextLabel prefix in the real section, retaining both complete source views and the uniqueness assertion; tie-breaker: accessible source fidelity.
 
+Question: should legacy date/generic-domain regressions change current playable source to remain green? Choice: retain isolated historical source fixtures and all their assertions while current UI tests use the canonical four cases; tie-breaker: preserve coverage without inventing a live fifth example.
+
+Question: how should strength precheck show authority without a retrieved clause? Choice: consume G's ruleAuthority and label the proposed cross-record check with Tariff clause not applicable; tie-breaker: no fabricated Tariff evidence.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

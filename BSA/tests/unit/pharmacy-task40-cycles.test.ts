@@ -71,6 +71,9 @@ it("the real strength Apply previews and writes only the 10mg selection before e
   expect(html).toContain("Select Amlodipine 10mg tablets, 28");
   expect(html).toContain(PHARMACY_SUGGESTION_LABEL.replace("'", "&#x27;"));
   expect(html).toContain("Strength mismatch: prescribed 10mg, selected 5mg");
+  expect(html).toContain("Proposed cross-record matching check");
+  expect(html).toContain("Not applicable");
+  expect(html).not.toContain("SYN-EPS-STRENGTH");
   click("apply-correction");
   const applied = s().pharmacyDrafts[strength];
   expect(applied.epsPrescription?.items[0].dispensedCode).toBe("SYN-AMLO10-28");

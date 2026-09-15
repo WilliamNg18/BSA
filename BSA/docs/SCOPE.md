@@ -110,6 +110,11 @@ consumers still need migration. G additionally hands P the two pharmacy-domain
 unit files `pharmacy.test.ts` and `pharmacy-correction-events.test.ts`; no other
 domain test or production ownership changes.
 
+Both handed-off pharmacy-domain suites are migrated. The owned pharmacy scope
+now has 194 passing tests in 15 suites; current check passes. Shared full-suite
+failures are not waived. No infrastructure, backup, workflow, operator or
+browser instrumentation work was added to P's scope.
+
 ### G39/40 explicit-action checkpoint
 
 Current-source linking and seeded readiness provenance are implemented:

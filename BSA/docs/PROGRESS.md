@@ -164,6 +164,16 @@ Full two-worker Vitest remains failed: 1,637 passing / 170 failing across 109
 files, with G/O/D/F/R/U legacy-contract migration still in flight. No full green,
 browser, merge or live completion is inferred from the owned subset.
 
+P additionally migrated the two G-released pharmacy-domain suites, preserving
+historical date-parser/receipt coverage through explicit archival fixtures
+rather than relabelling the current B case. All 15 owned suites pass 194 tests
+together. G `c3f69f2` and R's authority/migration follow-ups are consumed; P's
+precheck now labels the proposed matching rule and makes Tariff applicability
+explicit. Check passes on this source. The latest full two-worker run remains
+failed: 1,664 passing / 144 failing, including three unrelated timeout cases.
+Actual fetched main is now Part A `5b75e5f`; G/R foundation merge and independent
+browser/live acceptance still block a final own-only pharmacy release.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper
