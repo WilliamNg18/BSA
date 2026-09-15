@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { FileText, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -27,10 +27,20 @@ function QueueWorklist() {
   const processes = useAppStore((s) => s.itemProcesses);
   const records = useAppStore((s) => s.records);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  const [filter, setFilter] = useState<WorkFilter>("all");
+  const followedCaseId = useAppStore((s) => s.followedCaseId);
+  const [search] = useSearchParams();
+  const requestedCaseId = search.get("case") ?? search.get("caseId");
+  const targetCaseId = requestedCaseId !== null
+    ? isPlayableCase(requestedCaseId) ? requestedCaseId : null
+    : isPlayableCase(followedCaseId) ? followedCaseId : null;
+  const targetLane = targetCaseId && lifecycles[targetCaseId] && processes[targetCaseId]
+    ? staffLane(lifecycles[targetCaseId], processes[targetCaseId]) : null;
+  const [filter, setFilter] = useState<WorkFilter>(() => targetLane ?? "all");
   const [handoff, setHandoff] = useState<string | null>(null);
   const focusedCapture = useRef<string | null>(null);
   const worklistHeading = useRef<HTMLHeadingElement>(null);
+  const stateElements = useRef(new Map<string, HTMLElement>());
+  const lastFocused = useRef("");
   const rows = useMemo(() => Object.values(lifecycles).flatMap((lifecycle) => {
     const id = lifecycle.caseId;
     if (!isPlayableCase(id)) return [];
@@ -78,6 +88,43 @@ function QueueWorklist() {
   const visible = rows.filter((row) => active === "all" || active === "new" && row.fresh
     || row.category === active);
   const type1 = visible.filter((row) => row.type1);
+  const targetRevision = targetCaseId ? revisions[targetCaseId]?.at(-1)?.number : undefined;
+  const targetState = targetCaseId ? lifecycles[targetCaseId]?.state : undefined;
+  useLayoutEffect(() => {
+    if (!targetCaseId) return;
+    const signature = `${targetCaseId}:${targetRevision}:${targetState}:${active}`;
+    if (lastFocused.current === signature) return;
+    const element = stateElements.current.get(targetCaseId);
+    if (!element) return;
+    lastFocused.current = signature;
+    element.focus({ preventScroll: true });
+    const bounds = element.getBoundingClientRect();
+    if (bounds.bottom > window.innerHeight || bounds.top < 0) {
+      element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+    }
+  }, [targetCaseId, targetRevision, targetState, active]);
+  function stateRef(id: string, element: HTMLElement | null) {
+    if (element) stateElements.current.set(id, element);
+    else stateElements.current.delete(id);
+  }
+  const captureFirst = active === "type1" || active === "all" && targetLane === "type1";
+  const captureLane = <section aria-label="Type 1 capture lane" className="space-y-3">
+    <h2 className="text-lg font-semibold">Type 1 capture lane</h2>
+    <p className="text-sm text-muted-foreground">Separate capture work. A person confirms the fields before code routes the item onward.</p>
+    {type1.map((row) => <details key={row.id} open={active === "type1" || row.id === targetCaseId}
+      className="rounded-xl border p-4" data-type1-case={row.id}
+      onFocusCapture={() => { focusedCapture.current = row.id; }}
+      onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
+      <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · <span
+        ref={(element) => stateRef(row.id, element)} tabIndex={-1} data-item-state
+        className="rounded-sm focus-visible:outline-2">{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled)}</span></summary>
+      <div className="mt-3 space-y-3">
+        <Type1Capture caseId={row.id} />
+        <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
+      </div>
+    </details>)}
+    {!type1.length && <p role="status">No items awaiting Type 1 capture in this filter.</p>}
+  </section>;
 
   return <div className="mx-auto max-w-7xl space-y-5">
     <header className="space-y-2">
@@ -89,13 +136,6 @@ function QueueWorklist() {
       <AutomaticPricingCount />
       <AutomatedCaseRecords />
     </header>
-    <section aria-label="Background cases" className="rounded-xl border bg-muted/30 p-4 text-sm">
-      <h2 className="font-semibold">Background cases</h2>
-      <p>Fixed historical context, excluded from playable items and counts.</p>
-      <ul className="mt-2 grid gap-2 grid-cols-2">
-        {BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · {c.title} · Background only</li>)}
-      </ul>
-    </section>
     {invalid && <p role="alert">Some items lack current routing metadata. Their work rows are withheld until the shared state is consistent.</p>}
     <section aria-label="Actual session work counts" className="space-y-3">
       <h2 className="font-semibold">Actual synthetic session items</h2>
@@ -111,20 +151,7 @@ function QueueWorklist() {
       </div>
     </section>
     {handoff && <p role="status" className="text-sm">{handoff}: capture recorded. Follow the current routing; no Type 2 decision was made.</p>}
-    <section aria-label="Type 1 capture lane" className="space-y-3">
-      <h2 className="text-lg font-semibold">Type 1 capture lane</h2>
-      <p className="text-sm text-muted-foreground">Separate capture work. A person confirms the fields before code routes the item onward.</p>
-      {type1.map((row) => <details key={row.id} open={row.id === "EX-24123"} className="rounded-xl border p-4" data-type1-case={row.id}
-        onFocusCapture={() => { focusedCapture.current = row.id; }}
-        onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
-        <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · {itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled)}</summary>
-        <div className="mt-3 space-y-3">
-          <Type1Capture caseId={row.id} />
-          <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
-        </div>
-      </details>)}
-      {!type1.length && <p role="status">No items awaiting Type 1 capture in this filter.</p>}
-    </section>
+    {captureFirst && captureLane}
     {(["type2", "referred", "decided"] as const).map((lane) => <section key={lane} aria-label={tiles.find((tile) => tile.key === lane)!.label} className="space-y-3">
       <h2 ref={lane === "type2" ? worklistHeading : undefined} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">{tiles.find((tile) => tile.key === lane)!.label}</h2>
       <div role="region" aria-label={`${tiles.find((tile) => tile.key === lane)!.label} items`} tabIndex={0} className="overflow-x-auto rounded-xl border [&_[data-slot=table-container]]:overflow-visible">
@@ -134,7 +161,8 @@ function QueueWorklist() {
             <TableCell className="font-mono">{row.id}{row.fresh && <span className="block text-xs">New submission</span>}</TableCell>
             <TableCell className="whitespace-normal">{row.c.pharmacy.name}</TableCell>
             <TableCell><span className="inline-flex items-center gap-1">{row.process.channel === "eps" ? <Monitor aria-hidden="true" className="size-4" /> : <FileText aria-hidden="true" className="size-4" />}{row.process.channel === "eps" ? "EPS" : "Paper"}</span></TableCell>
-            <TableCell className="whitespace-normal" data-item-state>{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled)}</TableCell>
+            <TableCell ref={(element) => stateRef(row.id, element)} tabIndex={-1}
+              className="whitespace-normal focus-visible:outline-2" data-item-state>{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled)}</TableCell>
             <TableCell className="max-w-72 whitespace-normal">{row.process.routing.reason}{row.process.rbCode && <span className="block font-semibold">{row.process.rbCode}</span>}</TableCell>
             <TableCell className="max-w-64 whitespace-normal">{row.agentWork}</TableCell>
             <TableCell><Button asChild variant="outline" size="sm"><Link to={`/case/${encodeURIComponent(row.id)}`} aria-label={`Open ${row.id}`}>Open</Link></Button></TableCell>
@@ -143,11 +171,19 @@ function QueueWorklist() {
       </div>
       {!visible.some((row) => row.category === lane) && <p role="status">No {tiles.find((tile) => tile.key === lane)!.label.toLowerCase()} items match this filter.</p>}
     </section>)}
+    {!captureFirst && captureLane}
     {visible.some((row) => row.captureCompleted) && <section aria-label="Completed Type 1 captures" className="space-y-3">
       <h2 className="text-lg font-semibold">Completed Type 1 captures</h2>
       <p className="text-sm">Human capture is complete. These items are not awaiting Type 2 judgement.</p>
       {visible.filter((row) => row.captureCompleted).map((row) => <Type1Capture key={row.id} caseId={row.id} />)}
     </section>}
+    <section aria-label="Background cases" className="rounded-xl border bg-muted/30 p-4 text-sm">
+      <h2 className="font-semibold">Background cases</h2>
+      <p>Fixed historical context, excluded from playable items and counts.</p>
+      <ul className="mt-2 grid gap-2 grid-cols-2">
+        {BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · {c.title} · Background only</li>)}
+      </ul>
+    </section>
     <div data-queue-month-summary><ManualLoopProjection /></div>
   </div>;
 }
