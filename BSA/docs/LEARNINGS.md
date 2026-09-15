@@ -10,6 +10,12 @@ records and retains B's later readable-blank fix, with no canonical store,
 type, lifecycle or seed differences from G. New store-level evidence will be
 published separately from this ownership-preserving source integration.
 
+The new G `4765770` merge conflicts were limited to B's later Unknown/Blank
+OCR refinement and its tests, which were retained. The first actual runtime
+selection passed 73/75; the two failures were extra Type 1 calls in B's old
+paper-resubmission test after a new acknowledged source was already ready.
+No store rule was weakened to make that old test pass.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
@@ -98,6 +104,20 @@ including fabricated/stale/withdrawn acknowledgements, mode/perspective parity
 and explicit later audit reopening. The previous full source-foundation suite
 passed 1,630 tests in 93 files; that earlier pass predates new mandatory ACK
 enforcement and must not be reused as final consumer compatibility evidence.
+
+The first new-seed runtime pass has 12 successful actual-store tests. A paper
+amendment initially failed readiness because a known readable prescriber was
+dropped by draft initialisation. Preserving that existing source value, without
+inventing a value for unreadable paper, repaired the two-mode recheck tests.
+Earlier full-suite results do not cover the intentionally changed outcomes.
+G's paper integration exposed an incorrect `missing(observation.value)` test in
+the Type 1 predicate. A readable blank may have high extraction confidence:
+confidence describes the observation, not whether the mandatory field is filled.
+Both empty-string and null brand tests failed with Type 1 before the repair.
+Removing that value-completeness condition yields Type 2 field/rule referrals;
+the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
+The new result is 54 contract units plus check, not integrated live proof.
+
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
 operator projection. A poor source supported by human confirmation must disclose
@@ -153,6 +173,16 @@ existing gate regressions protect the current base, not the unmerged new
 mode-specific routing that G is implementing.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
+
+### Task 39 N percent and denominator boundary
+
+The existing monthly model uses a referral subset for its hours but exposes
+total submitted items separately. Reusing that subset for mismatch prevalence
+would understate the requested comparison. UI percentages and fractional
+shares also differ by 100: default text 1 must become numeric 0.01, not 1.
+The new helper retains fractional expected counts without inventing rounding
+or subtracting them from referral cohorts. W's 1.6% study context supplies no
+NHSBSA prevalence estimate. Consumer and live acceptance remain pending.
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,

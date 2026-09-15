@@ -8,6 +8,7 @@ ms.date: 2026-09-15
 - Question: does null OCR mean a known blank? Choice: no; null is Unknown and empty string is Blank, matching the scanner component. Type 1 remains required for unknown extraction, while a confidently known blank is missing information for Type 2. Tie-breaker: do not claim to have read absent source evidence.
 - Question: can current action tests establish the new four-case baseline? Choice: source-pin them to G `9b41cc2` and rerun/adapt after canonical new seed/source publication. Tie-breaker: exact requirement verification, not proxy coverage.
 - Question: does an information-only pharmacy answer replace As submitted? Choice: no; retain the last actual submission and separately record the response revision, requiring explicit source linkage in the scanner facade. Tie-breaker: no invented corrected claim or erased provenance.
+- Question: should B retain a second capture call after G's acknowledged paper amendment is already reconciled? Choice: test readiness and one final human Release instead; earlier capture and old scan remain immutable. Tie-breaker: the explicit corrected-paper contract, without unnecessary operator work.
 
 ## 2026-09-15: B40 readable-blank decision
 
@@ -27,6 +28,11 @@ ms.date: 2026-09-15
 - G integration: correction acknowledgement requires both exact current payload metadata and its explicit pharmacy event, preventing a fabricated fingerprint from substituting for the checkbox action; tie-breaker: real human authority.
 - G integration: Off wrong-strength audit is an explicit operator reopening that preserves previous pricing history, never an automatic mismatch check or navigation side effect; tie-breaker: the owner's specified Today behaviour.
 - G integration: pharmacy suggestions come from the pharmacy's own source records, not from an operator-approved value-containing note; communication approval remains separate provenance; tie-breaker: C5/C6 separation.
+- G integration: corrected paper creates a new acknowledged synthetic amendment scan/OCR snapshot rather than rewriting its earlier unreadable or blank source; the new paper still needs an operator release; tie-breaker: exact source fidelity and C6's one-press recheck.
+- G integration: the strength-case EPS contract contains no editable claim amount, so code validates a known selected pack price and the independent prescribed/supplied identity without inventing a payment amount during Apply; tie-breaker: no payment calculation.
+- G integration: keep N's optional mismatch input in the same store and exact domain snapshot, separate from the unchanged manual-loop defaults; tie-breaker: one state and non-additive assumptions.
+- Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
+
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
 - Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.
 - Question: how does the Today wrong-strength round trip reopen? Choice: G must provide an explicit later audit/query action after existing pricing; an On-failure-then-Off toggle is not the required Today demonstration. Tie-breaker: latest owner clarification and truthful history.
@@ -43,6 +49,12 @@ ms.date: 2026-09-15
 - Question: where is the card audience split implemented? Choice: G requested one pure W helper returning copied facts/checks for both audiences and a proposal only for the pharmacy. Its discriminated operator result has `suggestion: null`; no duplicate store, outbound-note generator or routing function is introduced. Tie-breaker: one shared interpretation with explicit presentation authority.
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
+
+### Task 39 N optional numbers decisions
+
+- Question: which volume and units drive mismatches? Choice: total submitted claims times a fractional share; UI 1% converts to 0.01, independently of the study's 1.6%. Tie-breaker: explicit latest denominator and evidence authority.
+- Question: should the new assumption change the frozen referral estimate? Choice: use a separate optional result and independently validated draft in the same store, leaving all existing cohorts and hours unchanged until overlap is defined. Tie-breaker: preserve truthful accounting.
+- Question: what does Today none mean? Choice: no catch modelled in this synthetic comparison, never observed absence of real NHSBSA detection. Tie-breaker: governing principle and truthful provenance.
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.
 

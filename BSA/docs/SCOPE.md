@@ -6,6 +6,10 @@ ms.date: 2026-09-15
 
 # Scope register
 
+The B verification branch now includes exact G `4765770` new runtime. Initial
+73/75 proof retained two stale extra-Type-1 test failures after paper amendments;
+those owned tests require migration before a new pass may be claimed.
+
 C1's B proof now includes all-four information-request/response transitions
 using actual store actions. A response is not a corrected claim submission,
 so the exact last submitted object remains unchanged. The 19 passing fidelity
@@ -31,6 +35,12 @@ retain Type 1 ordering. This 54-unit/check result does not establish the owning
 scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
+
+Functional checkpoint: the four new cases and channel-specific actual actions
+are wired. `EX-24112` has an acknowledged historical paper amendment awaiting
+human release, while complete EPS is Paid and wrong-strength EPS awaits pharmacy
+action. No navigation creates these states. Twelve targeted actual-store tests
+pass; complete current-consumer and live verification remain required.
 
 W/B pure foundations and revision-bound ACK/audit store controls are integrated
 as published WIP. Every corrected resubmission now requires accurate-current-
@@ -66,6 +76,15 @@ Required acceptance includes exact immutable submissions, independent captures,
 revision-bound correction acknowledgement, field/rule-only outbound notes,
 automatic eligible EPS rechecks and exclusively human paper releases.
 No task in this new scope is complete until merged, green-deployed and seen live.
+## Task 39 N optional numbers addition: WIP
+
+The independent mismatch helper uses all submitted claims, not the referral
+subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
+With share times volume labelled estimate, unchanged existing totals, verified
+study-only chapter 1 wording, same-store Reset and 1280/1440 browser coverage.
+The helper is implemented; consumer/state integration and exact-main live
+verification remain pending. This does not reopen historical Task 28.
+
 ## 2026-09-15: Task 39 W foundation, not live completion
 
 The latest owner brief replaces the playable EPS error with wrong strength:
@@ -85,6 +104,12 @@ Source and passing units do not establish implemented lifecycle routing or
 live acceptance. No price, medicine-selection advice or NHSBSA error-rate
 estimate is introduced by this module.
 ## B40 bounded foundation scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 The follow-up preserves unreadable raw scan/OCR evidence even when a current
 human capture supports effective reconciliation. Its result explicitly names

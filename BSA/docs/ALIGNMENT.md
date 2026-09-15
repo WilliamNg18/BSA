@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+G's new `4765770c37e3f063fe5d2678e361f115e03e13d4` is now integrated into
+B's verification branch. `getAsSubmitted` and `getPaperReconciliation` pin the
+last actual submission; the confirmation/source linkage concern is resolved
+in that facade rather than by weakening U's source guard. The first 75-test
+selection passed 73 with two stale second-Type-1 assertions after corrected
+paper was already ready for Release. B owns that test adaptation; no new full
+runtime or live pass is claimed from this initial run.
+
 ### Active published inventory refreshed for the information-response proof
 
 Main is still `641815137b36ab3e925dcc98c4738d0b150a75d1`. Open PRs at
@@ -132,6 +140,14 @@ main actions or updated four-case historical seeds.
 
 ### Canonical action integration
 
+Functional G checkpoint now provides `getAsSubmitted`, `getPaperReconciliation`,
+`evaluatePaperSubmission`, `getCorrectionAcknowledgementValid` and paper-ready
+state metadata. Exact source snapshots remain separate from capture; acknowledged
+resubmission creates a separately labelled synthetic amendment. Twelve actual
+runtime tests pass, including Off audit, both-mode EPS recheck, paper release,
+safe-note rejection and no navigation mutation. Consumer and live alignment
+are not inferred from these unit results.
+
 ACK enforcement now checks revision, exact payload, current draft and an actual
 pharmacy acknowledgement event. Withdrawal and edits invalidate authority;
 history remains append-only. Explicit EPS audit reopening is a recorded human
@@ -161,6 +177,15 @@ These guards preserve source identity without treating an edit as attestation.
 | Corrected resubmission | Drifted against new requirement | G wires B revision-bound accuracy acknowledgement and channel-specific recheck rules | Existing shared resubmit has no explicit accuracy acknowledgement |
 | Main and active branches | Audit in progress | B coordinates published/open-branch audit; G supplies canonical model facts | No blanket branch alignment or live pass claimed |
 | Live completion | Unverified for new scope | Coordinator tracks deployment; no branch build is the product or backup | Last coordinator-reported live SHA `08f4d399`; no new live observation in this checkpoint |
+## Task 39 N numbers alignment: WIP on main baseline `6418151`
+
+| Requirement | Current evidence and remaining work |
+| --- | --- |
+| Study context separate from NHSBSA claim rates | W `fe0a521` supplies verified abstract copy and an explicit study-only label; no unverified wrong-strength ranking will be rendered |
+| Optional mismatch percentage | New pure helper converts UI percent to fractional share and validates decimal bounds; G same-store draft/Reset integration pending |
+| Correct denominator and unchanged totals | Uses total submitted-claim volume; separate non-additive result does not alter the existing referral-loop shape, cohorts or hours |
+| Completion authority | Consumer/browser integration and merged, green-deployed live observation pending; no branch artifact is a product or backup |
+
 ## 2026-09-15: Task 39 W source comparison and integration boundary
 
 W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
