@@ -4,6 +4,23 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Root guard activation is implemented: the unchanged EPS scanner participates
+in `check`, which is blocking in `verify` and every CI shard. W's traversal
+and negative cases remain active, and the package-to-CI path has a regression
+assertion. Check and all 67 selected units pass; no browser or deployed
+behaviour is inferred from this tooling result.
+
+The actual G `e954aa1` source passes the standalone EPS-headline scan with
+zero findings after F/S migration. The existing narrow Tariff-text exception
+is unchanged. This permits root check activation, not a new browser or
+deployed-behaviour pass.
+
+Current pharmacy-response assertions now distinguish a prior C8 referral from
+an active correction request and distinguish pharmacy advice from operator
+approval. Typecheck/lint/discovery are static evidence only. Prose measurement
+will change only after O's real sibling-panel implementation; existing
+functional and false-Home-correction gates remain intact meanwhile.
+
 The canonical scanner assertion migration resolves three stale selectors:
 the same six-file selection is now 72/74 on G `815278f`. Exact submitted
 values and duplicate absence are checked, not replaced with a broad text
@@ -696,6 +713,13 @@ EPS verification and paper human release; this is policy alignment only.
 
 Historical Task 25-38 evidence remains intact but is not a substitute for this
 new register. A source-ready module is not an aligned live feature.
+
+Run `35012808974` passed all four PR CI shards for exact source `66579e7`.
+An additional filesystem regression now verifies the headline checker's
+recursive production-source coverage and a real fail-to-pass migration,
+without scanning old test fixtures outside `src`. All 38 W units, typecheck
+and lint pass. Neither result removes the outstanding active-source findings
+or establishes the integrated Task 39 browser/live outcome.
 
 ## Current live-first alignment
 

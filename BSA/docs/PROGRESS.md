@@ -4,6 +4,40 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## V EPS headline guard activation
+
+`npm run check:eps-headlines` now runs W's unchanged checker, and `npm run
+check` invokes it after source-copy checking and before typecheck/lint/build.
+The existing blocking check stage in `npm run verify` and all four CI shards
+therefore enforce it without a workflow or infrastructure change.
+
+W's `ecd4a934` negative/traversal tests are preserved; a new verification
+contract checks the actual package command and blocking CI path. Full
+`npm run check` and 67 targeted scanner/source-policy/verification units pass
+with two workers. No new source exception, historical-data change, browser
+run, deployment or backup is included. Full integration acceptance remains
+open.
+
+V imports G `e954aa1`, including F's Home/step repair and S's source-copy
+migration. The unchanged standalone W checker now reports zero findings
+against the actual working source. Root hook activation is authorised and
+is the next isolated V change; no exception or historical-data rewrite is
+needed. Owner source remains exact and document conflicts are unioned.
+
+V migrated the nine existing pharmacy-response checks to current B paper and
+C8 history. The seeded prior referral remains historical while corrected
+paper awaits release; current manual reasons never become approved notes.
+Pharmacy-owned Apply is independent of operator-note approval. Current-event
+assertions identify the actual decision before the presentation mode changes.
+Typecheck/lint and combined eleven-check discovery pass; no browser ran.
+
+Parent clarified prose measurement: O must first publish genuinely separate
+sibling advice and decision panels with visible headings/landmarks. Only
+then may each actual panel's cumulative prose be measured below 25 words,
+with mandatory R copy retained and structural separation asserted. The old
+26/34-word counterexamples remain recorded; no nested-content exclusion was
+introduced.
+
 The V scanner follow-up now selects the canonical declaration column and
 asserts one scanner, no retired duplicate, exact submitted revision and exact
 typed endorsement. All three migrated declaration cases pass. The six-file
@@ -584,6 +618,13 @@ receives the proposed patch/preview. Operator `suggestion` is strictly null.
 Four new authority tests bring W's focused total to 37; 120 combined new and
 existing EPS/correction/recommendation/gate regressions and check pass.
 This pure adapter still requires G/P/O wiring and live verification.
+
+The exact `66579e7` PR CI run `35012808974` passed all four shards.
+W then added a real directory-walk regression for the headline checker:
+it finds a retired nested source heading, passes after migration and leaves
+historical test-only material outside `src` untouched. All 38 W units,
+typecheck and lint pass. The source guard remains unactivated until the
+assigned owners migrate active content; this is not a live result.
 
 ## Current release gate: live first, exact local backup
 
