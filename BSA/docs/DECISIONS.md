@@ -2209,3 +2209,26 @@ controls, not B's completed record.
 - Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
 - Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
 - Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
+
+## 2026-09-15: Paper walkthrough and a shared evidence companion
+
+Question: how should the unreadable-paper sequence start? Choice: step 7 opens
+the actual pharmacy workbench for D; its buttons prepare a draft and Post is
+explicit. Step 8 defaults to D's queue case, step 9 retains the actual actionable
+handoff, and step 10 opens D's current NHSBSA revision for recapture or release.
+Follow's pharmacy link remains the current claim, never an implicit new attempt.
+Tie-breakers: the latest paper path and one operational history.
+
+Question: can the compact Type 1 source be omitted to fit the screen? Choice:
+no. Render O's same-ID read-only scan and immutable declaration in the inactive
+comparison, labelled Shared original evidence, and use external evidence only
+when that companion is actually rendered. Keep exactly one live form. Without
+the companion renderer, keep inline evidence. Tie-breakers: visible evidence
+and a clearer side-by-side comparison.
+
+Question: how should the wrapper make room for mandatory advice? Choice: reduce
+spacing, put case/state together and keep channel, endorsement and recorded gates
+inline for Type 1. Preserve all facts and normal-size text, the full task renderer
+and its recommendation card. No clipping, internal scrolling or hidden card.
+Keep ordinary operations unchanged. Tie-breaker: required content before a height
+proxy; measure the complete R/O integration before claiming viewport acceptance.

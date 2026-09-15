@@ -30,7 +30,7 @@ describe("eleven-step navigation, never a business action", () => {
       expect(useAppStore.getState().perspective).toBe("pharmacy");
       expect(getDomainSnapshot()).toEqual(before);
     }
-    expect(destinations.at(-1)).toBe("/pharmacy?case=EX-24123&channel=paper");
+    expect(destinations.at(-1)).toBe("/case/EX-24123?case=EX-24123&channel=paper");
     store.setDemoStep(null);
     expect(getDomainSnapshot()).toEqual(before);
     expect(useAppStore.getState().pharmacyDrafts["EX-24112"].endorsementText).toBe("Unsent human edit");
@@ -51,8 +51,8 @@ describe("eleven-step navigation, never a business action", () => {
     state.followCase("EX-24123");
     let path = "";
     navigateDemoStep(9, (destination) => { path = destination; });
-    expect(path).toBe("/pharmacy/claims?case=EX-24112&channel=eps");
-    expect(useAppStore.getState().followedCaseId).toBe("EX-24112");
+    expect(path).toBe("/pharmacy/claims?case=EX-24123&channel=paper");
+    expect(useAppStore.getState().followedCaseId).toBe("EX-24123");
   });
 
   it("does not substitute an unreferred operator item into step 9", () => {
@@ -61,7 +61,7 @@ describe("eleven-step navigation, never a business action", () => {
     state.followCase("SYN-FQ123-MISMATCH");
     let path = "";
     navigateDemoStep(9, (destination) => { path = destination; });
-    expect(path).toBe("/pharmacy/claims?case=EX-24112&channel=eps");
+    expect(path).toBe("/pharmacy/claims?case=EX-24123&channel=paper");
   });
 
   it("reads the item identity, not a case subroute suffix", () => {
@@ -87,8 +87,11 @@ describe("eleven-step navigation, never a business action", () => {
     expect(DEMO_CASE_IDS).toEqual(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"]);
     expect(DEMO_CASE_IDS).toEqual(PLAYABLE_CASE_IDS);
     expect(getDemoStep(6)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy" });
-    expect(getDemoStep(7)).toMatchObject({ caseId: "EX-24123", path: "/case/EX-24123" });
+    expect(getDemoStep(7)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy" });
     expect(DEMO_ALLOWED_CONTROLS[6]).toEqual(["submission", "correction"]);
-    expect(DEMO_ALLOWED_CONTROLS[7]).not.toContain("submission");
+    expect(DEMO_ALLOWED_CONTROLS[7]).toEqual(["submission", "correction", "operator", "type1-capture"]);
+    expect(getDemoStep(8)).toMatchObject({ caseId: "EX-24123", path: "/queue", channel: "paper" });
+    expect(getDemoStep(9)).toMatchObject({ caseId: "EX-24123", path: "/pharmacy/claims", channel: "paper" });
+    expect(getDemoStep(10)).toMatchObject({ caseId: "EX-24123", path: "/case/EX-24123", channel: "paper" });
   });
 });

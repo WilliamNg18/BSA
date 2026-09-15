@@ -10,7 +10,8 @@ import { DemoStepLayout } from "@/components/demo/step-layouts";
 import { PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
 import { PharmacyClaimActionPanel } from "@/components/demo/claim-detail";
 import { OperatorActionPanel } from "@/components/demo/operator-action-panel";
-import { Type1Capture } from "@/components/demo/type1-capture";
+import { Type1Capture, Type1CaptureEvidence } from "@/components/demo/type1-capture";
+import { cn } from "@/lib/utils";
 import { FollowBanner } from "@/components/demo/follow-banner";
 import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { TOUR_CONTENT } from "@/lib/domain/public-facts";
@@ -70,13 +71,13 @@ export function AppShell() {
         <DemoStrip />
       </div>
       <section aria-label="Demonstration scope and governing principle">
-      <div className="border-b border-amber-300 bg-amber-50 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 px-6" data-disclaimer>
+      <div className={cn("border-b border-amber-300 bg-amber-50 py-2 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200 px-6", demoStep !== null && "flex flex-wrap items-baseline gap-x-4 gap-y-1")} data-disclaimer>
         <button type="button" className="rounded-sm text-left font-medium underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4" aria-expanded={disclaimerOpen} aria-controls="synthetic-disclaimer" onClick={() => setDisclaimerOpen((open) => !open)}>
           Synthetic demonstration data throughout. {disclaimerOpen ? "Hide details" : "Show details"}
         </button>
-        <p id="synthetic-disclaimer" hidden={!disclaimerOpen} className="mt-2">No payments calculated or approved. Not measured NHSBSA performance.</p>
+        <p id="synthetic-disclaimer" hidden={!disclaimerOpen} className={demoStep === null ? "mt-2" : ""}>No payments calculated or approved. Not measured NHSBSA performance.</p>
       </div>
-      <p className="border-b bg-muted/30 py-3 text-xs font-medium px-6" data-principle>The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.</p>
+      <p className={cn("border-b bg-muted/30 text-xs font-medium px-6", demoStep === null ? "py-3" : "py-1.5")} data-principle>The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.</p>
       </section>
       <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
         <TooltipProvider><AssistanceTransition>
@@ -85,7 +86,7 @@ export function AppShell() {
             <Outlet/> would animate the NEXT route's content, not the leaving one. */}
         <div
           key={`${pathname}:${resetEpoch}`}
-          className="flex-1 py-6 px-6 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out"
+          className={cn("flex-1 px-6 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-150 motion-safe:ease-out", demoStep === null ? "py-6" : "py-3")}
         >
           {demoStep === null && both && pathname === "/queue" && <section aria-label={`Tour chapter ${tourStop.chapter}`} className="mx-auto mb-6 max-w-7xl rounded-lg border border-dashed bg-muted/30 p-4">
             <h2 className="font-semibold">{tourStop.chapter}. {tourStop.label}</h2>
@@ -97,9 +98,11 @@ export function AppShell() {
             <p className="text-sm text-muted-foreground">{TOUR_CONTENT.chapters.find((chapter) => chapter.chapter === tourStop.chapter)?.prose}</p>
           </section>}
           <RouteErrorBoundary key={pathname} pathname={pathname}>
-            {demoStep === null ? <PerspectiveGuard><Outlet /></PerspectiveGuard> : <DemoStepLayout renderTask={({ kind, caseId, allowCorrection, channel }) => {
+            {demoStep === null ? <PerspectiveGuard><Outlet /></PerspectiveGuard> : <DemoStepLayout
+              renderType1Evidence={(caseId) => <Type1CaptureEvidence caseId={caseId} />}
+              renderTask={({ kind, caseId, allowCorrection, channel, evidencePlacement }) => {
               if (kind === "operator") return <OperatorActionPanel caseId={caseId} compact />;
-              if (kind === "type1") return <Type1Capture caseId={caseId} compact />;
+              if (kind === "type1") return <Type1Capture caseId={caseId} compact evidencePlacement={evidencePlacement} />;
               if (kind === "claim") return <PharmacyClaimActionPanel caseId={caseId} />;
               return <PharmacySubmissionPanel caseId={caseId} channel={channel ?? undefined} controls={allowCorrection ? "correct-and-submit" : "submit"} />;
             }} />}
