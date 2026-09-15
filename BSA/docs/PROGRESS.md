@@ -686,6 +686,12 @@ domain, package, workflow or payment/clinical authority changes are included.
 Prior Part A release proof stays historical and is not relabelled by this
 newly open audit-compatibility finding. Owner actions for me: none.
 
+The corrected hold passed both entry negatives. At 95% of the exit fade,
+computed opacity 0.00447462 made axe classify the text as a 1:1 incomplete,
+not a violation; both exit diagnostic expectations failed and are retained.
+Sample 90% of the same real exit fade instead, without changing its duration
+or accepting incomplete as a pass. Final bounded proof remains pending.
+
 ## Part A release candidate: full hosted matrix green, live pending
 
 Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four

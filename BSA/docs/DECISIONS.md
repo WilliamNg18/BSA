@@ -134,6 +134,8 @@ ms.date: 2026-09-15
 - Question: where is the card audience split implemented? Choice: G requested one pure W helper returning copied facts/checks for both audiences and a proposal only for the pharmacy. Its discriminated operator result has `suggestion: null`; no duplicate store, outbound-note generator or routing function is introduced. Tie-breaker: one shared interpretation with explicit presentation authority.
 ## 2026-09-15: Outcome fades and final-state accessibility audits
 
+- Question: may axe's 1:1 incomplete at an almost transparent 95%-exit frame count as a contrast negative? Choice: no; retain the failed diagnostic and sample 90% of the same native exit animation so the intended low-contrast violation is measurable. Tie-breaker: explicit evidence, not relabelling incomplete findings.
+
 - Question: why did the first held-frame negative not stay held? Choice: Motion sets native `startTime` after `animate()` returns, which resumes WAAPI; pause in the next microtask and assert `playState === "paused"`. Tie-breaker: test the actual native animation without changing production initialization or timing.
 
 - Question: remove the required fade to fix #109's audit failure? Choice: no; the downloaded failing light-Off result sampled a still-exiting header after only the demo panel settled. Require the header's actual final state before final-state axe. Tie-breaker: preserve the user's fade and truthful audit semantics.
