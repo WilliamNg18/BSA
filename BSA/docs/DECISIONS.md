@@ -2582,6 +2582,8 @@ Question: should legacy date/generic-domain regressions change current playable 
 
 Question: how should strength precheck show authority without a retrieved clause? Choice: consume G's ruleAuthority and label the proposed cross-record check with Tariff clause not applicable; tie-breaker: no fabricated Tariff evidence.
 
+Question: how should P verify Type 1 after O replaces duplicate declaration evidence? Choice: assert the actual immutable as-submitted date and read-only store snapshot while retaining unchecked human reconciliation and prescriber assertions; tie-breaker: real source fidelity, not obsolete label compatibility.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

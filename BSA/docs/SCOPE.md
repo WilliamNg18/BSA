@@ -48,6 +48,11 @@ now has 194 passing tests in 15 suites; current check passes. Shared full-suite
 failures are not waived. No infrastructure, backup, workflow, operator or
 browser instrumentation work was added to P's scope.
 
+F and O explicitly supplied bounded consumer/test handoffs, with O identifying
+the prerequisite U scanner commits. P imports those unchanged for coherent
+staging; their ownership and final acceptance remain separate. The only new P
+compatibility assertion follows the actual as-submitted Type 1 evidence block.
+
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
 and both modes. The combined seven-file selection passes 91 units and check.

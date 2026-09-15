@@ -59,6 +59,12 @@ The latest full run remains 1,664 passing / 144 failing, with failures retained
 for the owning streams; unrelated timeout results were not retried into a
 claimed coherent pass.
 
+O's integrated Type 1 surface places the date in its immutable submitted-source
+block instead of the duplicate declaration heading. The pharmacy integration
+test was the remaining P failure in the 1,839/122 full run. It now checks that
+real date and unchanged domain state; all 30 selected source/operator tests
+pass. Imported handoffs did not modify shared models or other owners' logic.
+
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
 records and retains B's later readable-blank fix, with no canonical store,

@@ -63,6 +63,12 @@ than mutating the new wrong-strength identity. Main `5b75e5f` contains Part A,
 not this pharmacy integration. No hosted observation or complete verdict is
 claimed for this working branch.
 
+The authorised F/U/O staging integration passes check, while full Vitest still
+has 122 failures (1,839 passing). A P-owned integration test now requires the
+actual as-submitted heading/date and unchanged domain snapshot rather than an
+obsolete duplicate date label. The subsequent three-file selection passes 30
+tests; it is not a replacement full-suite, browser or live verdict.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 B's updated evidence on exact G `4765770` is 91 passing combined units plus
 check. The new 25-case store fidelity matrix uses `getAsSubmitted` and

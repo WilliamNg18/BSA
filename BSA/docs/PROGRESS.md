@@ -74,6 +74,14 @@ failed: 1,664 passing / 144 failing, including three unrelated timeout cases.
 Actual fetched main is now Part A `5b75e5f`; G/R foundation merge and independent
 browser/live acceptance still block a final own-only pharmacy release.
 
+P's staging branch now imports the explicitly released F, U and O consumer
+commits without their model merges or backup lineage. Combined check passes.
+The full cross-view unit run remains 1,839 pass / 122 fail. O's subsequent
+two-file compatibility and P's date/source-label integration pass 30 targeted
+tests. The pharmacy test now reads the actual immutable submitted date instead
+of requiring the duplicate legacy declaration heading. No browser has started;
+4342 is queued behind the coordinator's existing lease, not yet allocated.
+
 ## B40 canonical verification branch integration
 
 The migrated B matrix now passes 91 combined units and check on G `4765770`.
