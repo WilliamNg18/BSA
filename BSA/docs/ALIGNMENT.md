@@ -26,6 +26,11 @@ The portrait adapter now includes original synthetic patient/pharmacy labels
 and leaves empty source regions empty. It does not substitute a declaration
 value or an unreadability claim for a readable blank field.
 
+After G `cdd436b`, the actual amendment scan visibly includes brand, pack size
+and presentation. U's real-store renderer assertion reads those raw source
+regions, never the declaration; 46 scanner/runtime tests and typecheck pass.
+This closes the scoped source-visibility defect, not mounted/live acceptance.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription

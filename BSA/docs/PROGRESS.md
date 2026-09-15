@@ -28,6 +28,11 @@ The scan adapter also retains the original synthetic patient/pharmacy identity.
 An explicitly empty source region stays empty instead of being labelled
 unreadable; this supports G's incoming brand/pack regions without inventing ink.
 
+G's `cdd436b` source repair is now integrated. The actual acknowledged amendment
+scan column contains the source brand, pack size and presentation, not values
+backfilled by U from a declaration. The 46-test scanner/runtime selection and
+typecheck pass; O's mounted desktop/browser and live gates are still pending.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store

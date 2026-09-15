@@ -31,6 +31,10 @@ V owns new C7 deadlines and
 cross-view acceptance. Complete only after the change reaches main, deployment
 is green and the actual live URL serves and demonstrates that commit.
 
+G `cdd436b` now supplies visible immutable amendment regions. U verifies their
+actual brand/pack/form rendering through the canonical facade and human
+acknowledgement/resubmission path: 46 selected tests and typecheck pass.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
