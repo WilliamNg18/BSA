@@ -2697,3 +2697,8 @@ Question: does code-prefilled corrected paper contradict an initially empty manu
 Question: how should the ready-paper status remain concise? Choice: retain the actual state label and use "Press Release.", preserving the explicit human action and unchanged prose limit; tie-breaker: clear, concise operator control.
 
 Question: can a copy counter justify shortening the mandated paper recommendation or hiding reason help? Choice: no; preserve both, record the nested-panel aggregate counterexample and resolve its actual per-panel scope before claiming copy compliance; tie-breaker: latest explicit content and truthful evidence.
+## 2026-09-15: S reference follows the Task 39-40 evidence boundary
+
+Question: retain the date-based reference sequence or explain the new case? Choice: use W's unchanged wrong-strength Send, independent Gate 2, field/rule-only operator referral and pharmacy-owned correction, then both-gate EPS release; tie-breaker: newest explicit case scope and unchanged human/source authority.
+
+Question: duplicate W/B evidence constants before G integrates them? Choice: publish bounded reference WIP and reuse the canonical modules after integration; tie-breaker: one authoritative evidence source, not a second bibliography or invented capture result.

@@ -718,6 +718,15 @@ EPS verification and paper human release; this is policy alignment only.
 
 Historical Task 25-38 evidence remains intact but is not a substitute for this
 new register. A source-ready module is not an aligned live feature.
+## Stream S Tasks 39-40 follow-up
+
+| Reference item | Alignment in this change | Remaining evidence |
+| --- | --- | --- |
+| Retired EPS date headline and Case B diagram | Replaced in active S copy with W wrong-strength EPS and its unchanged-Send sequence | W/G integrated source review |
+| Four playable cases | Complete EPS, wrong-strength EPS, unreadable paper and paper missing brand, with existing IDs | Canonical G seed integration |
+| Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
+| Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate | B canonical labels/import and integration |
+| Evidence and completion | Check plus 12 scoped units passed; full document parity retained | Canonical NHSBSA citation rendering, exact-head CI, green main deployment and observed live change |
 
 Run `35012808974` passed all four PR CI shards for exact source `66579e7`.
 An additional filesystem regression now verifies the headline checker's

@@ -625,6 +625,21 @@ receives the proposed patch/preview. Operator `suggestion` is strictly null.
 Four new authority tests bring W's focused total to 37; 120 combined new and
 existing EPS/correction/recommendation/gate regressions and check pass.
 This pure adapter still requires G/P/O wiring and live verification.
+## Stream S: Tasks 39-40 reference alignment, published WIP
+
+S prepared the How it works follow-up on actual main `6418151`. Four-case
+copy and the sequence now describe W's wrong-strength EPS and P's paper
+missing-brand example, rather than the retired date headline. The fourteenth
+FAQ explains independent prescription/supply/claim evidence. B's proposed
+scanner reconciliation separates declaration, hypothetical character-recognition
+fields/confidence, original scan and revision-bound human capture. Paper stays
+human-final; corrected EPS requires both gates before code-only release.
+
+Check and 12 focused reference units passed. The 49 prose panels have at most
+54 words, informational only. Canonical W/B imports, public citation rendering
+and actual integrated behaviour review await G's foundation integration.
+No new browser, hosted or complete Task 39-40 result is claimed. The paired
+SYSTEM-DESIGN document matches the reference text in this change.
 
 The exact `66579e7` PR CI run `35012808974` passed all four shards.
 W then added a real directory-walk regression for the headline checker:

@@ -2141,3 +2141,17 @@ nested card with operator help still measures34 On-mode words. This is a
 different scope from the D fixture and is not called a pass or concealed by
 markup changes. The local browser evidence does not settle that copy
 interpretation or the outstanding deployed/offline acceptance gates.
+## 2026-09-15: S reference preparation for strength and scanner fidelity
+
+The NHSBSA AMPP page was read directly on 15 September. Its automatic-processing
+statement is conditional on the selected AMPP having a dm+d price; it does not
+prove that every incorrect claim is detected or automatically processed.
+The short quotation concerns what was endorsed versus supplied, not an
+additional Drug Tariff clause. W's canonical metadata will provide the page's
+public citation rather than a duplicated reference register.
+
+The first scoped S preparation passed check and all 12 reference units.
+Shared text generated SYSTEM-DESIGN exactly; 49 panels had at most 54 prose
+words and 14 FAQ topics. These are branch-development observations, not a
+new live, browser or backend implementation result. W/B/G foundation imports,
+the citation surface and integrated release evidence remain unfinished.
