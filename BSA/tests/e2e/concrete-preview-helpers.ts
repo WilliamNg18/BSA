@@ -66,12 +66,23 @@ export async function verifyConcretePreviews(page: Page, width: number, enabled:
   if (enabled) {
     await assertVisibleRecommendation(page, "EX-24112", true);
     await expect(card()).toContainText(/unsupported|outside.*coverage/i);
+    await expect(card()).toContainText("ABSTAIN");
+    await expect(card()).toContainText(/NOT[ _]RUN/);
     await expect(card()).toContainText("invoice price required; enter £x.xx");
     const suggestions = card().getByRole("heading", { name: "Suggested values", exact: true }).locator("..");
     await expect(suggestions).not.toContainText(/£\s*\d/);
     await card().getByRole("button", { name: "Enter invoice price", exact: true }).click();
     await expect(invoiceEndorsement).toBeFocused();
     await expect(invoiceEndorsement).toHaveValue("SP RK");
+    await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Release to pricing", exact: true })).toHaveCount(0);
   } else await expect(page.getByRole("button", { name: "Enter invoice price", exact: true })).toHaveCount(0);
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
+  if (enabled) {
+    await page.getByRole("button", { name: "Send claim", exact: true }).click();
+    const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+    await expect(receipt).toContainText("EX-24112:2");
+    await expect(receipt.locator("dl").first()).toContainText("Gate 1fail");
+    await expect(receipt).not.toContainText("released to existing pricing, no operator action");
+  }
 }

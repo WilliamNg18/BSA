@@ -4,7 +4,7 @@ import { TransitionDeadline } from "../support/transition-deadline";
 
 async function visibleWithinDeadline(locator: Locator, deadline: TransitionDeadline) {
   await expect(locator).toBeVisible({ timeout: deadline.remainingMs() });
-  await expect(locator).toBeInViewport({ timeout: deadline.remainingMs() });
+  await expect(locator).toBeInViewport({ ratio: 1, timeout: deadline.remainingMs() });
   await expect.poll(async () => locator.evaluate((element) => {
     let opacity = 1;
     for (let node: Element | null = element; node; node = node.parentElement) {

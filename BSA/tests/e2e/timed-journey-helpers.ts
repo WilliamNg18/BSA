@@ -46,8 +46,8 @@ export async function runTimedCaseJourney(
     };
   }
   function queueRow(automatic: boolean) {
-    return automatic ? page.locator("[data-automated-records] li").filter({ hasText: id })
-      : page.locator(item.channel === "paper" ? `[data-type1-case="${id}"]` : `[data-case-id="${id}"]`);
+    return automatic ? page.locator("[data-automated-records] li").filter({ hasText: id }).getByRole("link")
+      : page.locator(item.channel === "paper" ? `[data-type1-case="${id}"] > summary` : `[data-case-id="${id}"] [data-item-state]`);
   }
   async function capture(endorsement: string) {
     const panel = page.getByRole("region", { name: `Type 1 capture for ${id}`, exact: true });
@@ -81,7 +81,7 @@ export async function runTimedCaseJourney(
   await assertVisibleHandoffWithinOneSecond(page, info, {
     name: name("send-post"), action: page.locator('[data-pharmacy-action="submit"]'), followedId: id,
     destination: "NHSBSA", originState: initialState,
-    originRequiredText: [{ locator: page.getByRole("region", { name: "Submission receipt", exact: true }), text: `${id}:2` }],
+    originRequiredText: [{ locator: page.getByRole("region", { name: "Submission receipt", exact: true }).getByText(`${id}:2`, { exact: true }), text: `${id}:2` }],
     queue: queueTarget(automatic), destinationState: queueRow(automatic),
     destinationText: automatic ? `${id}: read-only record` : LIFECYCLE_LABELS.submitted.nhsbsa.on, stateMatch: "contains",
     lastEventText: automatic ? enabled ? "Verified and released" : "Existing rules engine priced item" : enabled ? "Verification recorded" : "Pharmacy submitted item",
@@ -103,7 +103,7 @@ export async function runTimedCaseJourney(
     name: name("request-information"), action: operatorDecision(page).getByRole("button", { name: "Request information", exact: true }),
     followedId: id, destination: "Pharmacy", originState: LIFECYCLE_LABELS.information_requested.nhsbsa.on,
     destinationState: claimState(), destinationText: LIFECYCLE_LABELS.information_requested.pharmacy,
-    requiredText: [{ locator: page.getByRole("region", { name: "Requested confirmation", exact: true }), text: question }],
+    requiredText: [{ locator: page.getByRole("region", { name: "Requested confirmation", exact: true }).getByText(question, { exact: true }), text: question }],
     lastEventText: "Operator requested information",
   });
   await bothSides();
@@ -114,7 +114,7 @@ export async function runTimedCaseJourney(
     name: name("send-confirmation"), action: page.getByRole("button", { name: "Send confirmation", exact: true }),
     followedId: id, destination: "NHSBSA", originState: LIFECYCLE_LABELS.resubmitted.pharmacy,
     destinationState: caseState(), destinationText: LIFECYCLE_LABELS.resubmitted.nhsbsa.on,
-    requiredText: [{ locator: page.getByRole("region", { name: "Pharmacy confirmation", exact: true }), text: answer }],
+    requiredText: [{ locator: page.getByRole("region", { name: "Pharmacy confirmation", exact: true }).getByText(answer, { exact: true }), text: answer }],
     lastEventText: enabled ? "Verification recorded" : "Pharmacy sent confirmation",
   });
   await bothSides();
@@ -135,9 +135,9 @@ export async function runTimedCaseJourney(
     followedId: id, destination: "Pharmacy", originState: LIFECYCLE_LABELS.referred_back.nhsbsa.on,
     destinationState: claimState(), destinationText: LIFECYCLE_LABELS.referred_back.pharmacy,
     requiredText: [
-      { locator: page.getByRole("region", { name: "Operator response", exact: true }), text: reason },
-      { locator: page.getByRole("region", { name: "Operator response", exact: true }), text: rbCode },
-      ...(enabled ? [{ locator: page.getByRole("region", { name: "Recommendation", exact: true }), text: "Operator-approved; the agent verified and advised." }] : []),
+      { locator: page.getByRole("region", { name: "Operator response", exact: true }).getByText(reason, { exact: true }).first(), text: reason },
+      { locator: page.getByRole("region", { name: "Operator response", exact: true }).getByText(rbCode, { exact: true }).first(), text: rbCode },
+      ...(enabled ? [{ locator: page.getByRole("region", { name: "Recommendation", exact: true }).getByText("Operator-approved; the agent verified and advised.", { exact: true }), text: "Operator-approved; the agent verified and advised." }] : []),
     ],
     lastEventText: "Referred back",
   });
@@ -171,7 +171,7 @@ export async function runTimedCaseJourney(
     followedId: id, destination: "Pharmacy",
     originState: enabled ? HUMAN_RELEASE_LABELS.nhsbsa : MANUAL_RELEASE_LABELS.nhsbsa,
     destinationState: claimState(), destinationText: enabled ? HUMAN_RELEASE_LABELS.pharmacy : MANUAL_RELEASE_LABELS.pharmacy,
-    requiredText: [{ locator: claim(), text: "Paid on the normal schedule" }], lastEventText: "Released after operator review",
+    requiredText: [{ locator: claim().getByText("Paid on the normal schedule (synthetic).", { exact: true }), text: "Paid on the normal schedule" }], lastEventText: "Released after operator review",
   });
   await bothSides();
   await expect(follow()).not.toContainText("no operator action");
