@@ -4,7 +4,7 @@ import type { ExceptionCase, ItemChannel } from "./types";
 import { immutable, paperDeclarationFields, validateSubmissionSources } from "./lifecycle-model";
 import { caseById } from "./cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "./eps-check";
-import { interpretPharmacyText, type PharmacyCheck } from "./pharmacy-check";
+import { interpretPharmacyText, PHARMACY_STEPS, type PharmacyCheck } from "./pharmacy-check";
 import { productByCode, PRODUCTS } from "./reference";
 import { evaluateItemVerification } from "./verification";
 import { versionForDate } from "./tariff";
@@ -49,7 +49,16 @@ export function checkPharmacyCorrection(current: ExceptionCase, revision: CaseRe
   const clause = version?.clauses.find((entry) => entry.id === assessment.clauseId) ?? null;
   const checks = assessment.gate1Checks.map((entry, i) => ({ id: `format-${i}`, label: entry.name, met: entry.pass }));
   const ready = assessment.verification.gate1 === "pass";
-  return { status: ready ? "ready" : "missing", facts: interpretPharmacyText(draft.endorsementText),
+  const facts = interpretPharmacyText(draft.endorsementText);
+  const unresolvedStage = facts.type === "UNKNOWN" && !clause ? 1 : !version ? 2 : !clause && facts.type !== "NONE" ? 3 : null;
+  if (unresolvedStage !== null) return {
+    status: "unable", facts, version: assessment.tariffVersion, clause, checks,
+    stages: PHARMACY_STEPS.map((_, index) =>
+      index < unresolvedStage ? "PASS" : index === unresolvedStage ? "STOPPED" : "NOT RUN"),
+    gap: checks.filter((entry) => !entry.met).map((entry) => entry.label).join(", "),
+    agreement: "Typed declaration format only; received-source reconciliation remains separate",
+  };
+  return { status: ready ? "ready" : "missing", facts,
     version: assessment.tariffVersion, clause, checks, stages: ["PASS", "PASS", "PASS", "PASS", ready ? "PASS" : "MISSING"],
     gap: ready ? "None" : checks.filter((entry) => !entry.met).map((entry) => entry.label).join(", "),
     agreement: "Typed declaration format only; received-source reconciliation remains separate" };
