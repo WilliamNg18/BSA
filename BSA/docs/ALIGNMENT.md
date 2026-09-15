@@ -4,6 +4,41 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Root guard activation is implemented: the unchanged EPS scanner participates
+in `check`, which is blocking in `verify` and every CI shard. W's traversal
+and negative cases remain active, and the package-to-CI path has a regression
+assertion. Check and all 67 selected units pass; no browser or deployed
+behaviour is inferred from this tooling result.
+
+The actual G `e954aa1` source passes the standalone EPS-headline scan with
+zero findings after F/S migration. The existing narrow Tariff-text exception
+is unchanged. This permits root check activation, not a new browser or
+deployed-behaviour pass.
+
+Current pharmacy-response assertions now distinguish a prior C8 referral from
+an active correction request and distinguish pharmacy advice from operator
+approval. Typecheck/lint/discovery are static evidence only. Prose measurement
+will change only after O's real sibling-panel implementation; existing
+functional and false-Home-correction gates remain intact meanwhile.
+
+The canonical scanner assertion migration resolves three stale selectors:
+the same six-file selection is now 72/74 on G `815278f`. Exact submitted
+values and duplicate absence are checked, not replaced with a broad text
+match. Home and operator prose remain distinct unresolved source findings.
+Parent has reassigned the bounded Home/step repair to F; O retains its prose
+repair. V supplied the exact Home failure and retains all unrelated assertions.
+
+Exact G `815278f` integrates the consumer contracts without V source edits.
+The new six-file unit result is 69/74, not the earlier P-stage 73/74:
+canonical scanner selectors require migration and the new operator prose
+exceeds the existing target. Both source and assertion obligations stay open.
+
+Claims keyboard assertions now reflect actual current paper fields, ACK
+gating and payload-edit invalidation, without changing their two leaf names.
+P's claim status must consume the current ItemProcess to match F's published
+ready-paper label. That source integration dependency is not waived by static
+typecheck/lint/discovery, and no browser result is claimed.
+
 ## 2026-09-15: P consumer source checkpoint
 
 Main `6418151` still used the retired EPS headline and lacked the required
@@ -685,6 +720,13 @@ new register. A source-ready module is not an aligned live feature.
 | Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
 | Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate | B canonical labels/import and integration |
 | Evidence and completion | Check plus 12 scoped units passed; full document parity retained | Canonical NHSBSA citation rendering, exact-head CI, green main deployment and observed live change |
+
+Run `35012808974` passed all four PR CI shards for exact source `66579e7`.
+An additional filesystem regression now verifies the headline checker's
+recursive production-source coverage and a real fail-to-pass migration,
+without scanning old test fixtures outside `src`. All 38 W units, typecheck
+and lint pass. Neither result removes the outstanding active-source findings
+or establishes the integrated Task 39 browser/live outcome.
 
 ## Current live-first alignment
 

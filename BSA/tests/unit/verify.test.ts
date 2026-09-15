@@ -229,6 +229,22 @@ describe("cross-platform process execution", () => {
 });
 
 describe("CI verification contract", () => {
+  it("blocks on both source policies through the shared check stage in every CI shard", () => {
+    const { scripts }: { scripts: Record<string, string> } = JSON.parse(
+      readFileSync(new URL("../../package.json", import.meta.url), "utf8"));
+    expect(scripts["check:eps-headlines"]).toBe("node scripts/check-eps-headlines.mjs");
+    expect(scripts.check.split(" && ")).toEqual([
+      "npm run check:source-copy", "npm run check:eps-headlines", "npm run typecheck", "npm run lint", "npm run build",
+    ]);
+    expect(scripts.verify).toBe("node scripts/verify.mjs");
+    for (const index of [1, 2, 3, 4]) {
+      expect(verificationStages({ index, total: 4 })[0]).toMatchObject({ args: ["run", "check"], informational: false });
+    }
+    const workflow = readFileSync(new URL("../../../.github/workflows/ci.yml", import.meta.url), "utf8");
+    expect(workflow).toContain("matrix.shard }}/4");
+    expect(workflow).toContain("run: npm run verify -- --shard=${{ matrix.shard }}/4");
+  });
+
   it("publishes only the PR shard-one build with short, best-effort retention", () => {
     const workflow = readFileSync(new URL("../../../.github/workflows/ci.yml", import.meta.url), "utf8");
     const upload = workflow.split("      - name: Upload PR build (not a live deployment)")[1].split("      - name: Link available PR build")[0];

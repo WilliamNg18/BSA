@@ -4,6 +4,75 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## V EPS headline guard activation
+
+`npm run check:eps-headlines` now runs W's unchanged checker, and `npm run
+check` invokes it after source-copy checking and before typecheck/lint/build.
+The existing blocking check stage in `npm run verify` and all four CI shards
+therefore enforce it without a workflow or infrastructure change.
+
+W's `ecd4a934` negative/traversal tests are preserved; a new verification
+contract checks the actual package command and blocking CI path. Full
+`npm run check` and 67 targeted scanner/source-policy/verification units pass
+with two workers. No new source exception, historical-data change, browser
+run, deployment or backup is included. Full integration acceptance remains
+open.
+
+V imports G `e954aa1`, including F's Home/step repair and S's source-copy
+migration. The unchanged standalone W checker now reports zero findings
+against the actual working source. Root hook activation is authorised and
+is the next isolated V change; no exception or historical-data rewrite is
+needed. Owner source remains exact and document conflicts are unioned.
+
+V migrated the nine existing pharmacy-response checks to current B paper and
+C8 history. The seeded prior referral remains historical while corrected
+paper awaits release; current manual reasons never become approved notes.
+Pharmacy-owned Apply is independent of operator-note approval. Current-event
+assertions identify the actual decision before the presentation mode changes.
+Typecheck/lint and combined eleven-check discovery pass; no browser ran.
+
+Parent clarified prose measurement: O must first publish genuinely separate
+sibling advice and decision panels with visible headings/landmarks. Only
+then may each actual panel's cumulative prose be measured below 25 words,
+with mandatory R copy retained and structural separation asserted. The old
+26/34-word counterexamples remain recorded; no nested-content exclusion was
+introduced.
+
+The V scanner follow-up now selects the canonical declaration column and
+asserts one scanner, no retired duplicate, exact submitted revision and exact
+typed endorsement. All three migrated declaration cases pass. The six-file
+selection is 72/74 on G `815278f`; Home's false date instruction and O's
+ready-paper prose are the only failures. Typecheck and targeted lint pass.
+O has announced an equivalent shorter suffix; verification awaits its
+published source. No browser/scanner geometry run was duplicated.
+
+Parent transferred the bounded Home/step source repair to F. V supplied the
+exact counterexample and agreed only that Home-case assertion block may be
+adjusted if necessary; its existing negative, Type 2 and read-only guards
+must remain. V retains the other unit migrations and is not editing that
+block concurrently.
+
+V integrates exact G `815278f` with the published P/U/O/N/F/R consumers.
+Only the five tracking documents conflicted; both sides were retained and
+owner source was not changed. The six-test-file rerun is 69/74: three old
+declaration selectors need V migration to the canonical scanner, while the
+false Home date instruction and a 26-word operator explanation remain
+reported D/O source findings. No browser or full-suite pass is claimed.
+
+V migrated the two existing claims-resubmission keyboard checks to fresh
+brand-missing paper. Off fills the actual pharmacy record fields and requires
+keyboard ACK before Resubmit; On verifies brand Apply/focus, exact retained
+attempts, ACK preservation across mode flips and invalidation after a brand
+edit. Both existing axe assertions and leaf names remain. Typecheck, targeted
+lint and two-name discovery pass; no browser execution is claimed.
+
+The expected ready-paper status depends on F's process-aware presentation.
+P `b236e8d` still omits ItemProcess from its claim status call; V reported
+that integration gap rather than accepting the older awaiting-recheck label.
+The live build identity was independently refreshed at
+`2026-09-15T20:48:03.1763254Z`, serving clean main
+`5b75e5f7711bf599b02ff9fab752781fa0685b00`. This verifies identity only.
+
 ## V six-file canonical unit migration
 
 The six assigned files now exercise current paper/strength actions: actual
@@ -495,6 +564,13 @@ Check and 12 focused reference units passed. The 49 prose panels have at most
 and actual integrated behaviour review await G's foundation integration.
 No new browser, hosted or complete Task 39-40 result is claimed. The paired
 SYSTEM-DESIGN document matches the reference text in this change.
+
+The exact `66579e7` PR CI run `35012808974` passed all four shards.
+W then added a real directory-walk regression for the headline checker:
+it finds a retired nested source heading, passes after migration and leaves
+historical test-only material outside `src` untouched. All 38 W units,
+typecheck and lint pass. The source guard remains unactivated until the
+assigned owners migrate active content; this is not a live result.
 
 ## Current release gate: live first, exact local backup
 

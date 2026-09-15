@@ -4,6 +4,24 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how should the EPS source guard become blocking without duplicate CI logic? Choice: add `check:eps-headlines` to the existing `check` chain before compilation, preserving the shared fail-fast `verify` stage and four-shard workflow; tie-breaker: one canonical verification path and no infrastructure changes.
+- Question: may activation weaken W's scanner or its tests? Choice: import the exact published `ecd4a934` traversal/negative test file, leave checker/schema/source exceptions unchanged and add only a root-wiring regression; tie-breaker: actual source-clean readiness and fail-closed evidence.
+
+- Question: when may the EPS headline check enter the blocking root path? Choice: after exact G `e954aa1` and an independent zero-finding run of W's unchanged scanner, retaining every negative/traversal regression and the single AST-selected Tariff-text exception; tie-breaker: the authorised activation condition is now met without a waiver.
+
+- Question: does a seeded prior referral make corrected C8 paper actively editable? Choice: keep the prior note in history, require current ready-to-release status and no active response/resubmit controls; tie-breaker: actual revision and lifecycle authority.
+- Question: may pharmacy Apply depend on an operator supplying the correction? Choice: verify its own-records action for a current referral regardless of note approval, while checking approval metadata on the actual decision event; tie-breaker: C5 audience separation.
+- Parent decision: mandatory R summary and authority remain, and the numeric limit stays below 25. O must create genuine sibling advice and human-decision panels with distinct visible headings/landmarks. V then measures cumulative paragraphs and choice-help in each actual panel and asserts separation; no exclusion from the existing nested layout, hidden help or generic wrapper workaround.
+
+- Question: what replaces the removed duplicate declaration assertion? Choice: inspect the canonical scanner declaration column, require its exact revision/endorsement and forbid duplicate legacy evidence while retaining consent/immutability checks; tie-breaker: exact C4 source fidelity without reintroducing old UI.
+- Question: how is the parent's Home ownership transfer coordinated? Choice: F may change its bounded source and the specific Home-case assertion block if needed, preserving the existing negative and state guards; V freezes that block and retains all other unit work. Tie-breaker: explicit handoff without parallel edits.
+
+- Question: may V promote earlier P-only unit evidence after U/O integration? Choice: rerun on exact G `815278f`, migrate the retired duplicate-declaration selector and report remaining real source failures; tie-breaker: current source fidelity without weakening functional or quality assertions.
+
+- Question: how does the Off keyboard test resubmit current paper? Choice: enter all required pharmacy-owned fields from the canonical supply record, then explicitly acknowledge accuracy and press Resubmit; tie-breaker: actual UI actions and no synthetic hidden correction.
+- Question: should an edited approved correction remain submit-enabled? Choice: assert that the payload change clears the current ACK and disables Resubmit while preserving historical Apply/ACK events and every attempt; tie-breaker: payload-bound consent and immutable history.
+- Question: may a generic awaiting-recheck label stand in for ready paper? Choice: require F's exact ready label and report P's missing process argument; tie-breaker: consistent same-item state, not a relaxed text predicate.
+
 ## 2026-09-15: B40 fidelity and communication contract choices
 - Question: how can V distinguish stale dependency failures from test defects without resolving others' source conflicts? Choice: run the identical six owned tests on an isolated exact published P checkout, with source/package diffs empty and no browser/build; tie-breaker: source-pinned evidence and no duplicate source writer.
 - Question: should a correctly dated B satisfy an old Home date-correction assertion? Choice: assert absence of that false instruction and keep the failure assigned to D; tie-breaker: current source truth, not a green legacy fixture.
@@ -127,6 +145,8 @@ ms.date: 2026-09-15
 - Question: which evidence is publishable as independently checked? Choice: use W's verified abstract and NHSBSA mechanism; keep unverified subtype counts/rank explicit until a primary source confirms them. Tie-breaker: evidence accuracy over apparent completeness.
 - Question: how is the mismatch input interpreted? Choice: one per cent of total submitted claims, a separate non-additive assumption/estimate, never 1.6 per cent as an NHSBSA rate or a percentage of the referral subset. Tie-breaker: preserve existing model arithmetic and honest denominators.
 - Question: should O wait indefinitely for D's backup schema? Choice: use the coordinator-frozen runtime/docs/data/README/manifest/serve contract and independently verify actual files, so both streams proceed. Tie-breaker: simpler parallel delivery without fabricated backup proof.
+
+- Question: how is the headline guard's scope verified? Choice: add a real nested-directory regression that fails on source copy, passes after replacement and leaves historical test-only records outside `src` untouched. Preserve the narrow NCSO text exception and all existing checks. Tie-breaker: test the actual traversal and migration, not only a regex proxy.
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 

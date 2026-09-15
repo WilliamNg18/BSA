@@ -1,5 +1,8 @@
+import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { scanEpsHeadlines } from "../../scripts/check-eps-headlines.mjs";
+import { checkEpsHeadlines, scanEpsHeadlines } from "../../scripts/check-eps-headlines.mjs";
 
 const clause = `const clauses = [{ id: "P2-C9", endorsementType: "NCSO", text: "An endorsement not dated fails the dated requirement.", requirements: [] }];`;
 
@@ -30,5 +33,24 @@ describe("retired EPS date-error headline guard", () => {
   it("accepts strength headlines and the real initialled-and-dated requirement", () => {
     expect(scanEpsHeadlines("src/page.tsx",
       'const labels = ["EPS: wrong strength", "Strength mismatch: prescribed 10mg, selected 5mg", "NCSO initialled and dated"];')).toEqual([]);
+  });
+
+  it("walks nested production source without scanning historical test records outside src", async () => {
+    const root = await mkdtemp(join(tmpdir(), "bsa-eps-headlines-"));
+    try {
+      await mkdir(join(root, "src", "lib", "domain"), { recursive: true });
+      await mkdir(join(root, "src", "components"), { recursive: true });
+      await mkdir(join(root, "tests"), { recursive: true });
+      await writeFile(join(root, "src", "lib", "domain", "tariff.ts"), clause);
+      await writeFile(join(root, "src", "components", "case.tsx"), 'export const title = <h1>Missing date</h1>;');
+      await writeFile(join(root, "tests", "historical.test.ts"), 'const original = "not dated";');
+      expect(await checkEpsHeadlines(root)).toEqual([
+        expect.objectContaining({ path: join("src", "components", "case.tsx"), line: 1, text: "Missing date" }),
+      ]);
+      await writeFile(join(root, "src", "components", "case.tsx"), 'export const title = <h1>EPS: wrong strength</h1>;');
+      expect(await checkEpsHeadlines(root)).toEqual([]);
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
   });
 });

@@ -4,6 +4,41 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The authorised EPS headline guard is now active in root checking and the
+existing four-shard CI verification path. Its scope remains executable
+source with only W's exact AST-selected NCSO requirement-text exception.
+Historical files outside `src` are retained, not reclassified as a new pass.
+Check and 67 targeted units pass; whole-suite/live gates are separate.
+
+G `e954aa1` closes the active-source headline migration dependency: V
+independently ran W's unchanged checker with zero findings. Root check/verify
+wiring may now be activated without a source waiver; live completion remains
+separate.
+
+Pharmacy-response migration retains nine checks; its obsolete seeded-manual
+case is now an explicit historical-referral/ready-paper check. C/F background,
+approval provenance, original attempts and Off-return history remain covered.
+Parent's prose-scope change requires real sibling panels, not a test-only
+exclusion or reduced mandatory advice.
+
+V's declaration assertions now use U/O's canonical scanner instead of the
+removed duplicate view, preserving exact source identity, endorsement,
+consent, footer and immutable-state checks. Remaining source failures stay
+open; no timing or visual evidence is inferred from unit success.
+
+F now owns the bounded Home/11-step source repair and, by explicit handoff,
+only the corresponding Home assertion block if needed. This does not transfer
+V's other unit files or waive the false-date negative.
+
+G `815278f` is now V's unified consumer dependency. N's schema/capture
+assertions and all owner code are preserved. New source versions require
+fresh verification; earlier P-stage results are not transferred to this head.
+
+The two existing 1440 px claims keyboard checks now prepare current paper
+corrections and exercise real required accuracy acknowledgement. Their
+history, focus and axe obligations remain; discovery alone does not satisfy
+them. No new screenshot, browser lease or live acceptance run was added.
+
 The V six-file unit migration preserves 74 checks and the historical
 pure-domain regression cases. Current operational tests no longer fabricate
 date corrections, route readable B through Type 1, or treat capture as paper
@@ -474,6 +509,12 @@ paper case and scanner/field-only-referral boundaries. Reuse of W/B constants,
 the public NHSBSA quotation/link, foundation integration, exact-head CI and
 main/deployment/live observation remain pending. Do not treat WIP as the live
 product or an exact-main backup.
+
+The guard now also has an actual filesystem-walk regression, not just parser
+examples: nested source fails before headline migration and passes afterwards,
+while historical test material outside `src` is retained. W's 38 focused tests,
+typecheck and lint pass; exact earlier source `66579e7` passed all four PR CI
+shards in run `35012808974`. Integration/live obligations remain open.
 
 ## Live-first release and backup obligations
 

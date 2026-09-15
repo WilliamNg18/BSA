@@ -4,6 +4,63 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The new guard needs no separate workflow step: every CI shard already runs
+the shared blocking `check` stage. An `&&`-chained EPS check therefore stops
+verification before typecheck/build on a finding. The new unit verifies this
+actual command path, while W's original negative and recursive traversal
+tests retain the narrow exception boundary.
+
+`npm run check` passed with zero EPS findings, and 67 targeted verification,
+source-policy and headline units passed with two workers. This build was
+developer verification only, not a local product, backup or deployment.
+Unrun full-suite and live acceptance gates remain unclaimed.
+
+Running the standalone W checker on imported G `e954aa1` now reports no
+retired date-error source outside its actual NCSO requirement-text exception.
+This is an actual source traversal, not a whitelist or historical manifest
+rehash. Root hook activation can proceed while other integration gates remain.
+
+Pharmacy history intentionally changes its presentation of human reasons and
+approved notes between modes. Capture the current decision's position while
+its reason is visible, then verify that same event's authority rather than
+searching all historical notes. Original attempts/messages and the complete
+Off-return history remain exact. Nine response checks and two keyboard checks
+are discoverable; typecheck/lint pass, but browser execution is still pending.
+
+The parent resolved the prose conflict through genuine role separation in
+the UI, not by shortening mandated R copy or excluding a nested card from
+the existing aggregate. The old 26/34 totals remain historical counterexamples
+until O publishes that source and V verifies both real panel boundaries.
+
+Migrating only the declaration evidence selector resolves all three stale
+cases. New assertions also require one canonical scanner, no duplicate legacy
+declaration, the exact source revision and exact typed endorsement. The
+72/74 result retains the Home date and operator prose failures; typecheck
+and lint pass. This is unit evidence only, not repeated U browser geometry.
+
+The Home blocker was transferred from D to F by the parent. Its exact
+source/input/assertion was handed over; the existing test already catches
+the defect, so no parallel broad file rewrite is needed.
+
+The G `815278f` consumer merge preserved source exactly and unioned five
+document conflicts. Its 69/74 unit selection exposes the expected removal
+of the duplicate Original pharmacy declaration view. The replacement is the
+canonical scanner declaration column, not an absent source or a new fixture.
+An additional 26-word ready-paper operator explanation is a separate O
+quality finding; the word limit and functional assertions were not relaxed.
+
+The claims keyboard flow has an additional real tab stop: required accuracy
+acknowledgement precedes Resubmit. For current paper, On Apply focuses the
+changed manufacturer field rather than an already-correct endorsement date.
+Editing that field invalidates ACK but must not delete its historical event.
+Both old keyboard test names and axe checks remain, with typecheck, lint and
+two-test discovery passing; neither browser case has been executed by V.
+
+F's ready-paper label requires ItemProcess, not merely lifecycle state.
+Reading P `b236e8d` exposed a three-argument claim status call; P/F were
+notified so the actual UI can agree with the shared history. No source shim
+or looser expected label was introduced.
+
 Migrating setup rather than removing assertions reduced V's six-file baseline
 from 15 failures to three on G `99abdd4`. Real ACK actions preserve all prior
 paper attempts; a ready paper revision still requires explicit human release.
@@ -594,6 +651,14 @@ pharmacy's own concrete suggestion.
 The earlier 75-check and timing results cover the former cases and contracts.
 They remain historical; no new wrong-strength/paper-incomplete live cycle,
 header centring, backup equality or clean offline recovery is claimed here.
+
+The exact `66579e7` CI run `35012808974` passed all four shards. A subsequent
+test-only addition exercises the real recursive headline-checker entry point
+against an isolated temporary fixture: one forbidden nested source heading
+is reported, replacing that heading clears it, actual NCSO text stays allowed,
+and historical test records outside `src` remain unscanned. The fixture is
+removed in a `finally` block. All 38 W units, strict typecheck and lint pass;
+there is no whole-file source exemption or new live/browser claim.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
