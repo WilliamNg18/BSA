@@ -53,6 +53,13 @@ without scanning old test fixtures outside `src`. All 38 W units, typecheck
 and lint pass. Neither result removes the outstanding active-source findings
 or establishes the integrated Task 39 browser/live outcome.
 
+Final evidence follow-up: publisher-hosted supplementary DOCX returned HTTP
+200 and was inspected; the requested 39/44/34 counts/ranking were not
+confirmed. Institutional access attempts provided no readable accepted
+manuscript. Exact acquisition details are recorded in LEARNINGS, with one
+unchanged EPS-evidence status: verified abstract/NHSBSA subset, unverified
+error-type counts/ranking. No source or UI claim was silently strengthened.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

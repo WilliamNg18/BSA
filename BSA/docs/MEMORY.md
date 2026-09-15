@@ -16,6 +16,12 @@ confirms 62 studies, pooled prevalence 1.6% (95% CI 1.2-2.1) and database
 search January 2010-September 2023. The proposed 39/44/34 error-type study
 counts and ranking remain unverified; do not display them as established
 facts. The abstract's 44 refers to hospital-setting studies.
+The legitimate publisher supplement was also inspected on 2026-09-15:
+<https://ars.els-cdn.com/content/image/1-s2.0-S1551741123004552-mmc1.docx>.
+Its search-strategy, forest-plot and quality-assessment appendices did not
+confirm those counts. Public institutional attempts did not yield a readable
+accepted manuscript; LEARNINGS records the exact URLs and responses.
+The bounded source search is finished without upgrading their status.
 Label exactly: "study on dispensing errors, used to make the scenario
 realistic; not an NHSBSA claim statistic". It is not an NHSBSA claim rate.
 

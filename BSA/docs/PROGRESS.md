@@ -48,6 +48,12 @@ historical test-only material outside `src` untouched. All 38 W units,
 typecheck and lint pass. The source guard remains unactivated until the
 assigned owners migrate active content; this is not a live result.
 
+The bounded primary-source follow-up is finished. The publisher's public
+supplement was acquired and inspected but did not confirm the 39/44/34
+error-type counts or ranking; public institutional attempts yielded no
+readable accepted manuscript. LEARNINGS/MEMORY record exact URLs and limits.
+The published verified subset and all source APIs remain unchanged.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

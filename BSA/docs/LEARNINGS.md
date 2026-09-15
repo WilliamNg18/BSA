@@ -27,6 +27,24 @@ as source verification. The requested error-type ranking is therefore not
 asserted on screen. These proposed counts would be studies reporting types,
 not prevalence rates, even if later confirmed.
 
+The bounded follow-up acquired the legitimate publisher supplement:
+<https://ars.els-cdn.com/content/image/1-s2.0-S1551741123004552-mmc1.docx>,
+HTTP 200, valid 96,521-byte DOCX. Its inspected text covers Appendix 1
+(Embase search strategy), Appendix 2 (forest plots by denominator) and
+Appendix 3 (quality assessment), but did not confirm the requested counts
+or ranking. No page number is asserted. Alternative `mmc1.pdf` and
+`mmc2.docx` endpoints returned 404.
+
+The public institutional search
+<https://ses.library.usyd.edu.au/search?query=10.1016%2Fj.sapharm.2023.10.003>
+returned 403. The candidate profile URL
+<https://profiles.sydney.edu.au/en/publications/dispensing-error-rates-in-pharmacy-a-systematic-review-and-meta-anal>
+returned HTTP 200 but only a generic application shell, not a verified
+manuscript deposit. No access control was bypassed. Follow-up concluded
+15 September 2026 with all three error-type counts and the ranking still
+explicitly unverified. The confirmed abstract and NHSBSA evidence remain
+usable; no model or screen statistic was changed.
+
 Exact study label: "study on dispensing errors, used to make the scenario
 realistic; not an NHSBSA claim statistic".
 
