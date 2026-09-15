@@ -412,6 +412,11 @@ main actions or updated four-case historical seeds.
 
 # Vision alignment
 
+Citation alignment is explicit: the proposed strength matching check has no
+Tariff clause/citation and does not inflate the dated-provision counter. The
+strict headline guard now runs as part of shared verification; 314 selected
+baseline/guard/runner tests pass without broad exceptions.
+
 ES2022 compatibility is restored for the migrated capture test. This fixes a
 typecheck blocker only, not the pending full CI or live acceptance gates.
 

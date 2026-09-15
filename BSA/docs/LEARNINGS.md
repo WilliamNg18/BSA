@@ -466,6 +466,11 @@ operational case set.
 Runtime tests alone missed one `findLast` use outside the configured ES2022
 library. The assembled typecheck caught it; using `filter(...).at(-1)` repaired
 the test without a source change or library-target expansion.
+
+The final assembled migration exposed a stale citation expectation: both
+examples assemble evidence, but only the paper rule has a retrieved Tariff
+citation. Correcting that expectation and asserting proposed strength authority
+preserves, rather than weakens, the governance distinction.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.
