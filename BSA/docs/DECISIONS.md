@@ -2754,3 +2754,11 @@ Question: where does Apply live after separation? Choice: in the actual advice c
 Question: how is a rejected proposed-value note explained concisely? Choice: display a precise field/rule-and-accuracy message only after G's actual rejection, preserve the draft and unknown error text, and never validate or rewrite the note locally; tie-breaker: clear human help without a second authority.
 
 Question: how should the single operator validation run retain named visual evidence? Choice: call the existing 1440-only checkpoint helper before B's final Release and after D's note-focus checks, keeping all actions/assertions and the normal failure policy unchanged; tie-breaker: scoped evidence without a duplicate run.
+
+Question: how should an incorrect dependency merge be repaired? Choice: restore the exact published owner test file and preserve its assertions, not invent a local compatibility variant; tie-breaker: single ownership and reproducible evidence.
+
+Question: what should trigger capture-confirmation focus? Choice: a new case/revision/source-revision/confirmation-time identity, not a newly cloned object containing the same recorded capture; tie-breaker: preserve intentional human focus.
+
+Question: how should an edited operator note remain visible? Choice: reveal the actual focused textarea on focus and after its controlled value updates, retaining its size and a small viewport margin, rather than relaxing ratio1 or targeting a smaller proxy; tie-breaker: accessible, stable controls.
+
+Question: when should the final unrestricted accessibility audit run? Choice: use A's unchanged helper to observe the actual native Outcome state immediately before the audit, without suppressing animation or changing business-action timing; tie-breaker: truthful final-state evidence.

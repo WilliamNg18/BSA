@@ -2262,3 +2262,22 @@ raw-text comparison differed across Git LF and Windows CRLF; comparing
 parsed TypeScript expressions confirms unchanged title templates,
 expectations and functional-action order. Typecheck and ten-test discovery
 pass. No new screenshot or browser result exists before the allocated run.
+
+A union-style dependency import combined an old fixture with V's new fixture,
+leaving a duplicate declaration and missing imports. Comparing with the exact
+published V file exposed the issue; restoring that version resolves typecheck.
+Document unions must not be treated as safe code-conflict resolution.
+
+G491's 6/10 result is not a ten-test pass: four D failures occurred before
+their axe/checkpoints, so only the six reached audits passed. On Apply
+populated the note but it became inactive; immutable history cloning
+re-triggered Type1's reference-based heading-focus effect. A stable
+confirmation key prevents that false new-capture signal. Off typing focused
+the note but left its lower edge clipped; actual control reveal is now
+scoped to focus and active-note updates.
+
+Check and 52 targeted tests pass, including real-store clone identity,
+unchanged capture data, viewport-margin behaviour and no domain mutation
+from reveal. No timer, forced click, resize cap or assertion waiver is used.
+The A helper copied for final-state audit readiness exactly matches its
+published Git blob `26ac2a001931c6226ea6edd6faa6231be54275d1`.

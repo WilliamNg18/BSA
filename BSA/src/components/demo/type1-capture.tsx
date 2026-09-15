@@ -18,6 +18,7 @@ import type { ExceptionCase } from "@/lib/domain/types";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import { captureForRevision } from "@/lib/domain/lifecycle-model";
+import { captureFocusKey } from "@/lib/operator-focus";
 import { checkPaperDeclaration } from "@/lib/domain/paper-declaration";
 import {
   PAPER_DECLARATION_PROVENANCE,
@@ -45,11 +46,12 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
   const capture = lifecycle && revision
     ? captureForRevision(lifecycle, revision.number, revision.sourceRevision ?? revision.number)
     : null;
-  const previousCapture = useRef(capture);
+  const focusKey = captureFocusKey(caseId, capture);
+  const previousCapture = useRef(focusKey);
   useEffect(() => {
-    if (capture && capture !== previousCapture.current) heading.current?.focus();
-    previousCapture.current = capture;
-  }, [capture]);
+    if (focusKey && focusKey !== previousCapture.current) heading.current?.focus();
+    previousCapture.current = focusKey;
+  }, [focusKey]);
 
   if (!c || !revision || !process || process.revision !== revision.number) {
     return <p role="alert">Current capture evidence is unavailable. Reopen the item from the queue.</p>;
