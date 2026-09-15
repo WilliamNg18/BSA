@@ -475,6 +475,12 @@ The exact #109 failure and initial incorrect On hypothesis are preserved;
 the downloaded failing artifact is actually light-Off. Bounded verification
 and publication handoff are pending, not another full-suite or live verdict.
 
+The first bounded run passed the two ordinary final-state tests but failed
+all four diagnostic holds. It exposed a diagnostic initialization error, not
+an ordinary audit failure: Motion sets native `startTime` after `animate()`
+returns, undoing an immediate pause. The hold now runs in the next microtask
+and requires actual paused state; production motion remains untouched.
+
 ## Part A candidate acceptance boundary
 
 The complete 176-test header/Outcome route, perspective, width, eleven-step

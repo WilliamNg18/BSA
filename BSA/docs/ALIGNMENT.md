@@ -679,6 +679,12 @@ untouched. Other lifecycle/migration tests remain with their existing owners.
 No runtime change is justified by this evidence. Native-animation diagnostic
 negatives and ordinary final-state proof are pending under the bounded lease.
 
+Bounded clean `e3df041` passed both ordinary demo final-state tests (normal
+and reduced motion). Its four hold regressions failed because Motion's
+initialization overwrote their pause. Correct the hold after initialization
+and assert native paused state; retain the original failed diagnostics rather
+than presenting them as proof of settlement or changing the product.
+
 ## Part A candidate verification, exact source
 
 Full all-route/three-perspective/eleven-step On/Off, 1280/1440, actual-bounds

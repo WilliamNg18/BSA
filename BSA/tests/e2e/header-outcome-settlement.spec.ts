@@ -16,9 +16,12 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       Element.prototype.animate = function (keyframes, options) {
         const animation = original.call(this, keyframes, options);
         if (this.matches("[data-agent-outcome]")) {
-          animation.pause();
-          animation.currentTime = Number(animation.effect!.getTiming().duration) * (entering ? 0.05 : 0.95);
-          held.push(animation);
+          // Motion sets startTime after animate returns, which unpauses WAAPI.
+          queueMicrotask(() => {
+            animation.pause();
+            animation.currentTime = Number(animation.effect!.getTiming().duration) * (entering ? 0.05 : 0.95);
+            held.push(animation);
+          });
         }
         return animation;
       };
@@ -46,6 +49,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
       }));
       expect(frame.opacity).toBeGreaterThan(0);
       expect(frame.opacity).toBeLessThan(1);
+      expect(frame.animations[0].playState).toBe("paused");
       expect(frame.animations[0].duration).toBe(reducedMotion === "reduce" ? 100 : 150);
       await captureJson(info, `${enabled ? "entering" : "exiting"}-frame`, frame);
 
