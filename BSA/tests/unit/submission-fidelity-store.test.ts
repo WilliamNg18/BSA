@@ -99,4 +99,31 @@ describe("submission fidelity through actual store actions", () => {
     expect(store().lifecycles[id].history.slice(0, -1)).toEqual(history);
     expect(store().lifecycles[id].history.at(-1)).toMatchObject({ actor: "operator", processStep: "audit_reopened" });
   });
+
+  it.each(PLAYABLE_CASE_IDS)("retains the last submission for %s through an information request and response", (id) => {
+    submitCurrent(id);
+    const original = currentReplica(id);
+    const revision = original.asSubmitted;
+    if (["paid", "released_to_pricing"].includes(store().lifecycles[id].state)) {
+      store().reopenForAudit(id, revision.number, "A later human query requests additional source evidence.");
+    } else {
+      store().arriveInQueue(id);
+    }
+    if (store().itemProcesses[id].routing.outcome === "type1_capture") {
+      const source = caseById(revision.templateCaseId)!;
+      store().confirmType1({ caseId: id, revision: revision.number,
+        fields: { productCode: source.claim.productCode, quantity: source.claim.quantity,
+          endorsementText: revision.endorsementText, prescriber: "Dr Example (synthetic)" },
+        provenance: "human_capture", declarationReconciled: true });
+    }
+    store().requestInformation(id, "Readable source evidence is required; please provide evidence for operator comparison.");
+    expect(currentReplica(id)).toEqual(original);
+    const before = store().caseRevisions[id];
+    store().sendConfirmation(id, "Additional pharmacy evidence supplied for human comparison.");
+    expect(store().caseRevisions[id].at(-1)?.kind).toBe("confirmation");
+    expect(store().caseRevisions[id].slice(0, -1)).toEqual(before);
+    expect(currentReplica(id)).toEqual(original);
+    expect(store().lifecycles[id].history.some((event) => event.actor === "pharmacy" &&
+      event.revision === revision.number + 1 && event.processStep === "resubmission")).toBe(true);
+  });
 });

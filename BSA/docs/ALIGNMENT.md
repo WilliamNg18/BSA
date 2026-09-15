@@ -6,6 +6,36 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+### Active published inventory refreshed for the information-response proof
+
+Main is still `641815137b36ab3e925dcc98c4738d0b150a75d1`. Open PRs at
+the refreshed query are #102-#107. The following exact published heads were
+compared against main; relevant new source was inspected rather than accepting
+stream status as proof. None establishes a main/live C1-C9 pass.
+
+| Stream | Exact published head | C requirement classification from actual source |
+| --- | --- | --- |
+| Coordinator | `b005bbb054d180d43ab1c840ca6e65073ef3147e` | Required documentation updated, no runtime change |
+| G | `9b41cc2a2f1a60ff324d2121e5781a253064ef07` | ACK/audit/source guards implemented; new seeds, paper snapshots and channel recheck still pending |
+| R #106 | `6b1b858c62548280ecdde00d61275b3e5ae51e4e` | C5 audience adapter suppresses operator proposals and uses field/rule notes; final-action and paper facade integration pending |
+| U #107 | `5bfb4b74bc0678c8fb003ea16c26d8ffb6b88291` | C4 standalone three-column component with exact source/scan guards and confidence; canonical snapshot adapter/mounts pending |
+| P | `a1554ea07db7b17210ff62fa80ac44838b2bc197` | C6 required ACK control and independent pharmacy Apply; C3 all-paper receipt wording, generic factory integration pending |
+| O | `0f6d420480681598c53134ee9170d13f0a2b6c52` | Published code remains independent offline verifier, no new C operator integration |
+| F | `5f2516f628bb68e73060153888aa9d8bdf755365` | Documentation checkpoint, no new C7 runtime |
+| D | `9fe65204ec5e6bc324871e57dd54c2958baa152d` | No code beyond main at this snapshot |
+| S #103 | `ed8bfd99f17d4b372acc74d9a3dee708a8ff4233` | C9 scanner, human-capture and corrected EPS/paper production explanation present; no claim of real OCR |
+| N #105 | `2b82577ddd156cd06a97eefd02868e5a6607edbc` | Independent editable mismatch estimate, not a C lifecycle implementation |
+| V | `0ccbb80a6dae833ac8bf485908f5703dcd86ed93` | Documentation checkpoint; no new all-state/browser C proof |
+| W #102 | `ecd4a934505795207a3936d383908b26028733b7` | Strength source/advice and audience helpers only, not new shared lifecycle |
+| A #104 | `1080ff7cd72eac58fbe6d3976800378ee1a8091a` | Header/shell change, no C runtime alteration |
+
+New real-store tests also cover Request information and pharmacy information
+responses for all four current IDs. The answer appends a confirmation revision,
+but the replica remains the last actual submission, not an invented corrected
+claim. Nineteen fidelity units pass. G/U were notified that scanner facade
+revision linkage must preserve this distinction rather than weakening source
+identity checks. Full new-case runtime and live proof remain pending.
+
 B's validation branch incorporates exact published G
 `9b41cc2a2f1a60ff324d2121e5781a253064ef07`. Store, types, lifecycle and seeds
 were compared against that SHA after merge resolution and are unchanged.

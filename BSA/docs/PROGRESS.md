@@ -6,6 +6,12 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+Four additional actual-store tests cover Request information and the pharmacy
+response for every current ID, proving that a confirmation answer does not
+replace the last submitted claim. The 19-unit fidelity selection passes; the
+updated all-active-published-head audit is pinned in ALIGNMENT. G/U own the
+identified scanner-facade submission-versus-response revision linkage.
+
 New `submission-fidelity-store.test.ts` exercises real store actions: all four
 current IDs Send and arrive, every perspective and Follow retain exact payloads,
 paper traverses capture/referral/draft/ACK/resubmission/release in both modes,
