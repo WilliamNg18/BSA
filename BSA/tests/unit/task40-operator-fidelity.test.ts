@@ -184,6 +184,17 @@ describe("Task 40 explicit operator actions", () => {
     expect(state().caseRevisions).toEqual(before.caseRevisions);
   });
 
+  it.each([false, true])("shows the seed's actual ready-paper draft without an invented Apply, Agent %s", (enabled) => {
+    state().setAgentEnabled(enabled);
+    const before = getDomainSnapshot();
+    expect(before.operatorDrafts["EX-24112"]).toMatchObject({ outcome: "ACCEPT", appliedSuggestion: false });
+    const html = panel("EX-24112");
+    expect(html).toContain(escaped(before.operatorDrafts["EX-24112"].note));
+    expect(html).not.toContain(">Apply suggestion</button>");
+    expect(html.match(/<button[^>]*>Release to pricing<\/button>/)?.[0]).not.toContain('disabled=""');
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
   it("renders audit controls without reopening on render and preserves prior history on the explicit action", () => {
     const id = "EX-24107", before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(OperatorAuditPanel, { caseId: id }));

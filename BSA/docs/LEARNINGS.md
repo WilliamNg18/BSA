@@ -1633,6 +1633,15 @@ an aggregate assembled from partial runs. Typed prescriber evidence is not
 illegible-image inference: unknown-prescriber tests explicitly submit null
 through the canonical pharmacy action and retain the source object unchanged.
 The new browser regressions are listed only; no execution result is claimed.
+
+After G's source-linked-capture update, two old information-response
+expectations incorrectly demanded a fresh Type1 form. O's confirmation view
+now calls G's canonical capture lookup, and the tests assert the preserved
+null prescriber/empty endorsement, visible answer and absence of recapture.
+The earlier 139-pass/two-fail probe remains separate; the fresh nine-file
+run passes all 141 tests with check. U's pinned four-case scanner proof
+and eight scoped zero-violation axe results are separate from O's unexecuted
+audit/ready-release browsers and the still-pending backup recovery proof.
 The first current-seed regression run failed 22 of 47 old tests: most still
 treated paper B as EPS or expected the former date-gap preset. The migrated
 run passes all 47, preserving invalid-input, unsupported-SP receipt, original

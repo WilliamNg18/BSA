@@ -2479,6 +2479,18 @@ coherent run including those files, new fidelity/scanner checks and the backup
 verifier passed 132 tests across eight files; typecheck and targeted lint pass.
 Four new desktop browser regressions for audit and one-press paper Release
 are discovered but not executed. Their seeded-ready prerequisite is G-owned.
+
+O has now integrated G's seeded-ready draft, source-linked capture and real
+matching-authority fixes with R's corresponding typed signal rendering and
+Part A main. The case pack labels matching checks as non-Tariff authority,
+and Type1's read-only confirmation uses G's capture lookup across information
+responses rather than forcing another capture. Check and a single nine-file
+selection of 141 O/scanner/current-domain tests pass.
+
+U independently ran the mounted scanner at its pinned `941933f` source:
+four desktop cases passed with eight scoped axe analyses reporting zero
+violations. That is scoped geometry/accessibility evidence, not a complete
+visual or current-main live claim. O has not repeated that browser run.
 The R-owned legacy regression migration now passes 47 tests across the four
 existing recommendation files. Date-sensitive validation remains tested as an
 explicit edited EPS input, not a playable date-gap headline. Wrong-strength

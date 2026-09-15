@@ -2597,6 +2597,10 @@ Question: can a ready paper item's alternative decision buttons call actions tha
 Question: should a legacy case-pack draft remain beside the new safe operator note? Choice: remove that duplicate proposed outbound draft and keep R/G's exact safe preview/application path; read-only source facts and historical records remain unchanged; tie-breaker: C5 and one decision authority.
 
 Question: how should old unit fixtures follow the new four-case contract? Choice: use real paper submissions and acknowledgement actions, explicit later EPS audit and canonical Release, while retaining all state/history and negative assertions; tie-breaker: test actual behaviour rather than bypassing new guards.
+
+Question: does an information response require another Type1 capture merely because its revision number changed? Choice: display G's source-linked recorded capture when its canonical lookup returns one, keeping unknown values and the answer separate; tie-breaker: preserve existing human evidence without invented work.
+
+Question: should a proposed cross-record check say that Tariff retrieval failed? Choice: use G's explicit authority metadata to label the provision not applicable, preserving real matching evidence and all five signal rows; tie-breaker: truthful source authority.
 - Question: should old tests recreate the retired operational date-gap case? Choice: no; use current strength/brand cases for playable journeys and explicit edited EPS values for calendar-validation negatives; tie-breaker: newest four-case scope while retaining safeguards.
 - Question: can a Card-only signal override repair a false kernel trace? Choice: no; the canonical owner repairs the kernel and rule authority, then R consumes those facts; tie-breaker: one truthful source of evidence.
 - Question: does a new acknowledged paper amendment update the old recommendation evidence? Choice: no; regression compares the entire original recorded recommendation after the actual resubmit action, including original triad and approval; tie-breaker: immutable historical fidelity.
