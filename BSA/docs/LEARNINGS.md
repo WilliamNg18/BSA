@@ -1385,3 +1385,11 @@ only the operator's proposal payload and reuses the cloned W source facts.
 Operator communication is generated from field/rule identifiers, never by
 interpolating the diagnostic finding text. New isolated unit contracts cover
 this distinction; broader G/P/O integration and live proof remain pending.
+
+The first targeted legacy run exposed three expected audience-contract shifts:
+two previews required an explicit pharmacy audience, and the old diagnostic
+test expected source quantities in outbound text. Updated tests keep exact
+quantities in the immutable findings while rejecting them from the note.
+All fifty targeted recommendation tests then passed. A missing supply record
+is a source-agreement problem, not proof of a strength mismatch; the note
+selection now distinguishes those cases without copying a proposed value.
