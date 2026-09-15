@@ -1,17 +1,52 @@
 ---
 title: Vision alignment register
 description: Current main and in-flight branch drift, correction ownership and evidence.
-ms.date: 2026-09-14
+ms.date: 2026-09-15
 ---
 
 # Vision alignment
+
+## Current live-first alignment
+
+The 15 September rule makes live the product and limits the local backup to the
+same verified main artifact. At adoption, remote main and the live build were
+both `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, `dirty: false`, at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The runtime streams through #100 are merged; the older branch comparisons
+below are historical, not current claims that those implementations are absent.
+
+| Obligation | Alignment and remaining evidence |
+| --- | --- |
+| Live follows every completed main change | Automatic main deployment exists; add a guard against the actual latest main, rendered root and deep link |
+| Repository and documentation stay current | Every active stream must push at STATUS and at least every thirty minutes; update PROGRESS, SCOPE, ALIGNMENT, DECISIONS and LEARNINGS with the described change |
+| Local backup equals the deployed product | Canonical backup/serve commands and exact deployed payload file-list/content-hash checks are pending; branch diagnostics do not qualify |
+| Recovery is demonstrable | Document main Actions redeployment and existing infrastructure recovery; a clean-environment offline test and measured result are pending |
+| Final completion is evidence based | Full current-main live acceptance, visual review, deployment guard and same-commit backup parity remain required |
+
+No earlier local pass or hash-only screenshot check establishes these new
+release obligations. Source authority, four-case outcomes and the two gates
+remain unchanged.
+
+### Stream V publication and product boundary
+
+Published draft implementation: `c091d47269665e12af69a2a82cb3733747209eeb`
+in #94. Its controlled thin-artifact timing comparison passed 2/2 with 132
+transitions, but this is historical partial developer evidence. It is not
+aligned to the completion gate merely because the branch is pushed.
+
+The product observation at `2026-09-15T18:13:32.3959381Z` returned HTTP 200
+for the live root and build identity, serving clean
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f`. No V branch build is a second
+product or local backup. Current-main live acceptance and exact-main backup
+parity remain open obligations; D's implementation and O's independent
+verification are not overwritten by this status adoption.
 
 The latest owner brief extends Tasks 25-38 around four playable synthetic cases.
 This register distinguishes inspected source, implementation commitments and
 actual live acceptance. No pending correction is marked aligned merely because
 an owner has received it.
 
-Current main: `5dd65d2c5f271bbebde57baf8cd79bb60f8d4fcd`.
+Historical integration baseline: `5dd65d2c5f271bbebde57baf8cd79bb60f8d4fcd`.
 G #93 merged at `71127d24` after all four exact-head CI shards passed, including
 1,201 unique units, 796 ordinary checks and 34 state checks. D's independent
 core #88 then merged after its four CI shards passed; actual demo mounting

@@ -1,8 +1,18 @@
 ---
 title: Architecture and product decisions
 description: Append-only decisions with reasons and rejected alternatives.
-ms.date: 2026-09-10
+ms.date: 2026-09-15
 ---
+
+## 2026-09-15: Live is the product; the local copy is a verified backup
+
+Live is the product; local is a backup built from the same commit; any difference is a defect.
+
+- Question: what establishes completion? Choice: main merge, green deployment and observation of that exact commit on the live URL; a branch or local diagnostic is incomplete work. Tie-breaker: the newest live-first instruction and truthful evidence.
+- Question: how do working branches coexist with the live-first rule? Choice: push incomplete branch work at each STATUS and at least every thirty minutes, but never present it as the product or package it as a backup. Only the current main artifact verified on live is eligible. Tie-breaker: preserve the established merge order without a separate local version.
+- Question: when are tracking documents updated? Choice: include PROGRESS, SCOPE, ALIGNMENT, DECISIONS and LEARNINGS in the same commit as each described change; retain historical results and state pending gates explicitly. Tie-breaker: the newest repository-currency instruction.
+- Question: may a previously running frozen diagnostic become backup proof? Choice: preserve its original outcome and source boundary only; it cannot establish live completion or backup equality. Tie-breaker: immutable evidence and the new release rule.
+- Question: what is implemented by this policy change? Choice: record and relay the standing rule now; mark deployment freshness, canonical backup/parity and clean-environment recovery implementation pending rather than claiming unrun checks. Tie-breaker: truthful scope and no false completion.
 
 ## 2026-09-11: Issue 27 scene-only estimate count-in
 
@@ -2410,3 +2420,14 @@ test IDs must remain in the four-shard union without loss or duplication.
 No private API, function-valued trace override or unsupported describe-level
 worker option is used. This changes optional artifact collection, not runtime
 behaviour, and does not relabel any prior deadline failure.
+
+## 2026-09-15: Stream V adopts live-first publication
+
+Question: how should V publish verified but incomplete work under the standing rule? Choice: push draft #94 at STATUS and at least every thirty minutes, update all five registers in the same commit, and keep completion blocked until merged green-deployed work is observed live; tie-breaker: the latest explicit instruction and truthful evidence.
+
+Question: what do the retained branch runs represent? Choice: developer test artifacts only, never a separate product or backup; only the current-main payload verified on the live URL can be the backup, with D owning implementation and O its independent verification; tie-breaker: one release authority.
+
+Status source `c091d47269665e12af69a2a82cb3733747209eeb` is published WIP.
+The live HTTP observation at `2026-09-15T18:13:32.3959381Z` still served
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f`. The controlled 132-transition
+pass does not bridge that release gap or replace full live acceptance.
