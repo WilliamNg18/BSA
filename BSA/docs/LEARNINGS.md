@@ -1518,3 +1518,9 @@ V routes shared browser compatibility, while G and the component owners retain
 their unit-test migration. The additional actual-paper-history test confirms
 that the new acknowledgement event does not retrospectively approve or repair
 an earlier submission's evidence.
+
+A proposed strength matching check has no retrieved monthly Tariff clause and
+does not produce image reads. The audience card now communicates those
+non-applicable signals explicitly while still displaying exact prescription,
+selection and supply evidence. Its passing targeted tests are not proof that
+the independent canonical trace has been repaired; that work remains G-owned.

@@ -33,8 +33,9 @@ export function RecommendationCard({
       {r.operatorApproved && <p className="text-sm">Operator-approved; the agent verified and advised.</p>}
       <p className="text-sm">{r.authorityLabel}</p>
       <dl className="grid grid-cols-2 gap-2 text-sm">
-        <div><dt className="text-muted-foreground">Clause</dt><dd>{r.clause?.title ?? "Unavailable"}</dd></div>
-        <div><dt className="text-muted-foreground">Tariff version</dt><dd>{r.versionLabel ?? "Unavailable"}{r.version && ` (${r.version})`}</dd></div>
+        <div><dt className="text-muted-foreground">Clause</dt><dd>{r.ruleAuthority === "proposed_cross_record_check"
+          ? "Not applicable to this proposed cross-record matching check" : r.clause?.title ?? "Unavailable"}</dd></div>
+        <div><dt className="text-muted-foreground">{r.ruleAuthority === "proposed_cross_record_check" ? "Dispensing-month reference" : "Tariff version"}</dt><dd>{r.versionLabel ?? "Unavailable"}{r.version && ` (${r.version})`}</dd></div>
         <div><dt className="text-muted-foreground">Dispensing date</dt><dd>{r.dispensingDate.split("-").reverse().join("/")}</dd></div>
         <div><dt className="text-muted-foreground">Evidence</dt><dd>{r.context === "recorded" ? "Recorded" : r.context === "draft" ? "Draft" : "Current"} revision {r.revision}</dd></div>
         {r.context === "recorded" && <div><dt>Assessment basis</dt><dd>Read-only reassessment of recorded sources, not a historical agent action.</dd></div>}
@@ -108,7 +109,7 @@ export function RecommendationCard({
         <dt>Next step</dt><dd>{r.nextStep}</dd>
         <dt>Source provenance</dt><dd>{r.provenance}</dd>
       </dl>
-      <SignalList signals={r.signals} compact={compact} />
+      <SignalList signals={r.signals} compact={compact} crossRecordOnly={r.ruleAuthority === "proposed_cross_record_check"} />
       {onApply && r.context !== "recorded" && <Button type="button" variant="outline" data-pharmacy-action={pharmacy ? pharmacyAction : undefined} onClick={onApply}>{applyLabel ?? (pharmacy ? "Apply suggested correction" : "Apply suggestion")}</Button>}
     </section>
   );

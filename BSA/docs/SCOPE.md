@@ -522,3 +522,7 @@ weakens the independent source or release guards.
 Pinned recorded paper is additionally verified through a real acknowledged
 resubmission: the current revision may become ready for human release without
 changing the historical missing brand, scan, OCR or communication provenance.
+
+The Card differentiates retrieved Tariff authority from the proposed
+cross-record matching check. Its five structural signals remain visible, with
+non-applicable evidence explicitly labelled rather than fabricated as passed.
