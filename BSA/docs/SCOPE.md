@@ -62,6 +62,12 @@ live acceptance. No price, medicine-selection advice or NHSBSA error-rate
 estimate is introduced by this module.
 ## B40 bounded foundation scope, 15 September
 
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
 The follow-up preserves unreadable raw scan/OCR evidence even when a current
 human capture supports effective reconciliation. Its result explicitly names
 that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
