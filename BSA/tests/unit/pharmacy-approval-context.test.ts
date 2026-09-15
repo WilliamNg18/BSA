@@ -45,6 +45,17 @@ it("shows existing current-revision approval before any pharmacy edit after requ
   const html = renderClaim();
   expect(html).toContain('data-recommendation-case="EX-24112"');
   expect(html).toContain(approvalLabel);
+  const response = html.indexOf('aria-label="Operator response"');
+  const recommendation = html.indexOf('data-recommendation-case="EX-24112"');
+  expect(response).toBeLessThan(recommendation);
+  expect(recommendation).toBeLessThan(html.indexOf("data-pharmacy-draft"));
+  expect(recommendation).toBeLessThan(html.indexOf('aria-label="Item verification"'));
+  expect(html.match(/data-recommendation-case="EX-24112"/g)).toHaveLength(1);
+  expect(html.match(/Operator-approved; the agent verified and advised\./g)).toHaveLength(1);
+  const card = html.slice(recommendation, html.indexOf("data-pharmacy-draft"));
+  expect(card.indexOf(approvalLabel)).toBeLessThan(card.indexOf("Requirement results"));
+  expect(card).toContain("Corrected preview");
+  expect(card).toContain("Kernel outcome and gate retained");
   expect(getDomainSnapshot()).toEqual(before);
 });
 
