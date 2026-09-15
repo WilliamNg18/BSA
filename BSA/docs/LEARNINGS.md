@@ -205,6 +205,13 @@ portrait adapter retains uncertain source glyphs and wraps long values without
 ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
 1280/1440 legibility or replace the pending mounted browser and live checks.
 
+U/B coordination identified that null and an empty OCR string must not be
+interchangeable. Null remains Unknown; an empty string is a known Blank and
+does not itself claim an unreadable image. Supplied confidence is independent.
+The 20-test follow-up protects both meanings, per-value accessible source
+descriptions and sub-certain percentage display. The first scanner checkpoint
+passed check; desktop geometry and live acceptance remain separate gates.
+
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
 operator projection. A poor source supported by human confirmation must disclose

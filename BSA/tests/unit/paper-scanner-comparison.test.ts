@@ -78,6 +78,19 @@ describe("three independent immutable scanner sources", () => {
     expect(ocr).toContain("12%");
     expect(ocr).not.toContain("2026-08-27");
   });
+  it("distinguishes a known blank from an unknown reading and associates their source labels", () => {
+    const props = source(true);
+    const reconciliation = { ...props.reconciliation, evidence: { ...props.reconciliation.evidence, characterRecognition: [
+      { field: "brandManufacturer" as const, value: "", confidence: 0.99 },
+      { field: "packSize" as const, value: null, confidence: 0.99 },
+    ] } };
+    const html = renderToStaticMarkup(createElement(PaperScannerComparison, { ...props, reconciliation }));
+    const ocr = column(html, "character-recognition");
+    expect(ocr).toContain("Blank");
+    expect(ocr).toContain("Unknown");
+    expect(ocr).toContain('aria-describedby="_R_0_-ocr-source"');
+    expect(column(html, "declaration")).toContain('aria-describedby="_R_0_-declaration-source"');
+  });
 
   it("keeps later human-confirmed corrections outside all three original columns", () => {
     const before = source();
@@ -150,5 +163,8 @@ describe("synthetic source image presentation", () => {
   });
   it.each([-0.1, 1.1, NaN, Infinity])("rejects invalid confidence %s", (confidence) => {
     expect(() => characterRecognitionConfidence(confidence)).toThrow();
+  });
+  it("does not round a sub-certain source confidence up to 100 per cent", () => {
+    expect(characterRecognitionConfidence(0.9999999999)).not.toBe("100%");
   });
 });

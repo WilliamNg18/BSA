@@ -42,6 +42,8 @@ ms.date: 2026-09-15
 - Question: can confirmed values improve the scanner column? Choice: draw only immutable source-region strings and original source date; display current human evidence below the three columns; tie-breaker: provenance and human authority.
 - Question: how can a narrow landscape scan remain readable in three desktop columns? Choice: a wrapped portrait synthetic source drawing with 16-unit text and no ellipsis, hidden content or scrollbox; tie-breaker: first-time-viewer clarity, with actual desktop measurement still required.
 - Question: does an unknown OCR date mean a deliberately wrong prescription date? Choice: display Unknown at the supplied confidence while preserving the correct source/declaration date; tie-breaker: no invented evidence.
+- Question: can high confidence turn null into a known blank? Choice: preserve B's explicit null/empty-string distinction and associate each displayed value with its source description; tie-breaker: truthful uncertainty rather than implied readability.
+- Question: may display rounding promote a confidence below one to certainty? Choice: retain sufficient decimal precision so it does not display as 100 per cent; tie-breaker: never improve source confidence through presentation.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
 - Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.
