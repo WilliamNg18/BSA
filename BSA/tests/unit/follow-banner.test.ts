@@ -6,10 +6,10 @@ import { FollowBanner } from "../../src/components/demo/follow-banner";
 import { FollowItem } from "../../src/components/demo/case-links";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import { itemStateLabel } from "../../src/lib/domain/lifecycle";
-import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { initialisePharmacyDraft, preparePaperDemoDraft } from "../../src/lib/domain/pharmacy-correction";
 import { visitFollowedCase } from "../../src/lib/follow-navigation";
 import { followedLastEvent } from "../../src/lib/follow-presentation";
-import { BACKGROUND_CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
+import { BACKGROUND_CASES, PLAYABLE_CASE_IDS, caseById } from "../../src/lib/domain/cases";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -39,7 +39,7 @@ describe("persistent followed item banner", () => {
       expect(html).toMatch(/<button[^>]*>NHSBSA view<\/button>/);
       expect(html).toContain(itemStateLabel(store().lifecycles["EX-24123"], perspective, enabled));
       expect(html).toContain("Type 1: capture");
-      expect(html).toContain("1 September (synthetic)");
+      expect(html).toContain("14 September (synthetic)");
       expect(html).not.toContain("Switch side");
       expect(getDomainSnapshot()).toEqual(before);
     }
@@ -75,7 +75,8 @@ describe("persistent followed item banner", () => {
     store().setAgentEnabled(enabled);
     store().setDemoStep(10);
     store().followCase(id);
-    store().submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+    const paper = caseById(id)!.paperDeclaration!;
+    store().submitItem({ caseId: id, channel: "paper", endorsementText: paper.endorsementText, paperDeclaration: paper });
     store().arriveInQueue(id);
     const question = "Please confirm the dispensing details.";
     const answer = "The pharmacy has confirmed the dispensing details.";
@@ -91,7 +92,7 @@ describe("persistent followed item banner", () => {
         for (const side of ["pharmacy", "nhsbsa"] as const) {
           expect(visitFollowedCase(side)).toBe(side === "pharmacy" ? `/pharmacy/claims?case=${id}` : `/case/${id}`);
           const html = render();
-          expect(html).toContain(`Following ${id} | EPS`);
+          expect(html).toContain(`Following ${id} | Paper`);
           expect(html).toContain(action.label);
           expect(html).toMatch(/<button[^>]*>Pharmacy view<\/button>/);
           expect(html).toMatch(/<button[^>]*>NHSBSA view<\/button>/);
@@ -107,12 +108,12 @@ describe("persistent followed item banner", () => {
     expect(store().caseRevisions[id].at(-1)?.confirmation).toBe(answer);
   });
 
-  it.each([false, true])("follows actual D submission, capture, referral, correction, resubmission and human release, Agent=%s", (enabled) => {
+  it.each([false, true])("follows actual unreadable paper submission, capture and human release, Agent=%s", (enabled) => {
     const id = "EX-24123";
     store().setAgentEnabled(enabled);
     store().setDemoStep(10);
     store().followCase(id);
-    const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB", prescriber: "Dr Example (synthetic)" };
+    const prepared = preparePaperDemoDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!, "complete");
     const checkpoint = (location: string) => {
       const before = getDomainSnapshot();
       for (const perspective of ["both", "pharmacy", "nhsbsa"] as const) {
@@ -125,7 +126,7 @@ describe("persistent followed item banner", () => {
           expect(store().followedCaseId).toBe(id);
           const html = render();
           expect(html).toContain("Following EX-24123 | Paper");
-          expect(html).toContain(itemStateLabel(store().lifecycles[id], store().perspective, enabled));
+          expect(html).toContain(itemStateLabel(store().lifecycles[id], store().perspective, enabled, store().itemProcesses[id]));
           expect(html).toContain(location);
           expect(html).toContain(followedLastEvent(store().lifecycles[id]));
           expect(html).toContain("Pharmacy view");
@@ -133,34 +134,16 @@ describe("persistent followed item banner", () => {
         }
       }
     };
-    store().submitItem({ caseId: id, channel: "paper", endorsementText: fields.endorsementText,
-      declaration: { fields, declaredAt: "2026-09-04T09:00:00Z", provenance: "pharmacy_declaration" } });
+    store().submitItem({ ...prepared, caseId: id, channel: "paper" });
     checkpoint("Type 1: capture");
-    store().confirmType1({ caseId: id, revision: store().caseRevisions[id].at(-1)!.number, fields,
+    const submitted = store().caseRevisions[id].at(-1)!;
+    store().confirmType1({ caseId: id, revision: submitted.number, fields: submitted.declaration!.fields,
       provenance: "pharmacy_declaration", declarationReconciled: true });
-    checkpoint("Type 2: review");
+    checkpoint("Type 2: awaiting operator release");
     if (enabled) {
       store().applySuggestionToDecision(id);
-      checkpoint("Type 2: review");
+      checkpoint("Type 2: awaiting operator release");
     }
-    store().referBack(id, "RB2B", enabled ? store().operatorDrafts[id].note : "Human requires the missing endorsement date.");
-    checkpoint("Referred back to pharmacy");
-    expect(render()).toContain(", RB2B (synthetic)");
-    if (enabled) store().applySuggestedCorrection(id);
-    else {
-      const draft = initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!);
-      const endorsementText = "NCSO JB 27/08/26";
-      store().setPharmacyDraft(id, { ...draft, endorsementText,
-        paperDeclaration: { ...draft.paperDeclaration!, endorsementText },
-        declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields, endorsementText } } });
-    }
-    checkpoint("Referred back to pharmacy");
-    store().resubmit(id);
-    checkpoint("Type 1: capture");
-    const corrected = store().caseRevisions[id].at(-1)!;
-    store().confirmType1({ caseId: id, revision: corrected.number, fields: corrected.declaration!.fields,
-      provenance: "pharmacy_declaration", declarationReconciled: true });
-    checkpoint("Type 2: review");
     store().releaseToPricing(id, "Human reconciled the corrected declaration and source evidence.");
     checkpoint("Released to existing pricing");
     expect(store().lifecycles[id].state).toBe("released_to_pricing");
@@ -168,11 +151,8 @@ describe("persistent followed item banner", () => {
     expect(render()).not.toContain("no operator action");
     expect(render()).toContain("Released after operator review");
     if (enabled) {
-      const draft = initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!);
-      const endorsementText = "NCSO JB";
-      store().setPharmacyDraft(id, { ...draft, purpose: "new_submission", endorsementText,
-        paperDeclaration: { ...draft.paperDeclaration!, endorsementText },
-        declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields, endorsementText } } });
+      const draft = preparePaperDemoDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!, "missing");
+      store().setPharmacyDraft(id, { ...draft, purpose: "new_submission" });
       store().applySuggestedCorrection(id);
       expect(store().lifecycles[id].state).toBe("released_to_pricing");
       expect(render()).toContain("Pharmacy applied correction");

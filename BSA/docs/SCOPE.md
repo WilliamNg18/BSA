@@ -171,6 +171,15 @@ Both handed-off pharmacy-domain suites are migrated. The owned pharmacy scope
 now has 194 passing tests in 15 suites; current check passes. Shared full-suite
 failures are not waived. No infrastructure, backup, workflow, operator or
 browser instrumentation work was added to P's scope.
+Current status: source audit published against main `6418151`; bounded consumer
+implementation uses published G `4765770` and has 53 passing owned units.
+The current status consumes canonical process metadata; historical transitions
+retain their own history prefixes without retroactive current-process readiness.
+G's stale-readiness fix and merged-domain integration are still required.
+Check passes; the early full suite is not green (1,576 passed, 201 failed).
+V owns new C7 deadlines and
+cross-view acceptance. Complete only after the change reaches main, deployment
+is green and the actual live URL serves and demonstrates that commit.
 
 ### G39/40 explicit-action checkpoint
 

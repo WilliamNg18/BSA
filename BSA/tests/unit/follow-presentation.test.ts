@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { followedChannel, followedLastEvent, followedLocation, historyStateLabel } from "../../src/lib/follow-presentation";
 import type { CaseLifecycle, HistoryEvent } from "../../src/lib/domain/lifecycle";
 import { useAppStore } from "../../src/lib/store";
+import { caseById } from "../../src/lib/domain/cases";
 
 const row = (event?: Partial<HistoryEvent>): CaseLifecycle => ({
   caseId: "SYN-TEST", pharmacyCode: "FQ123", state: "in_review",
@@ -16,6 +17,9 @@ describe("follow history and current location presentation", () => {
     [{ processStep: "type2_judgement", decision: "REQUEST_INFORMATION", recommendation: "ABSTAIN" }, "Operator requested information 4 September (synthetic)"],
     [{ processStep: "referral", decision: "REFER_BACK", recommendation: "ABSTAIN", rbCode: "RB2B" }, "Referred back 4 September, RB2B (synthetic)"],
     [{ processStep: "correction_applied", actor: "pharmacy" }, "Pharmacy applied correction 4 September (synthetic)"],
+    [{ processStep: "correction_acknowledged", actor: "pharmacy", correctionAcknowledgement: { revision: 1, fingerprint: "recorded payload" } }, "Pharmacy acknowledged correction 4 September (synthetic)"],
+    [{ processStep: "correction_acknowledged", actor: "pharmacy" }, "Pharmacy withdrew acknowledgement 4 September (synthetic)"],
+    [{ processStep: "audit_reopened", actor: "operator" }, "Operator reopened for audit 4 September (synthetic)"],
     [{ processStep: "type1_capture" }, "Operator confirmed capture 4 September (synthetic)"],
     [{ processStep: "release_to_pricing", releaseOrigin: "human_decision" }, "Released after operator review 4 September (synthetic)"],
     [{ processStep: "release_to_pricing", actor: "code", releaseOrigin: "automatic_verification" }, "Released to existing pricing 4 September (synthetic)"],
@@ -66,7 +70,8 @@ describe("follow history and current location presentation", () => {
     const store = useAppStore.getState();
     store.resetDemo();
     try {
-      store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+      const paper = caseById("EX-24112")!.paperDeclaration!;
+      store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: paper.endorsementText, paperDeclaration: paper });
       store.arriveInQueue("EX-24112");
       store.requestInformation("EX-24112", "Please confirm the dispensing details.");
       store.sendConfirmation("EX-24112", "The pharmacy has confirmed the dispensing details.");

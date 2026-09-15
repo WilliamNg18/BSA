@@ -2556,6 +2556,20 @@ No private API, function-valued trace override or unsupported describe-level
 worker option is used. This changes optional artifact collection, not runtime
 behaviour, and does not relabel any prior deadline failure.
 
+## 2026-09-15: Task 40 F contract-first cross-view extension
+
+Question: wire provisional ACK/re-check states now? Choice: audit main and published branches, then wait for G/W/B's integrated event and display contracts rather than create local business state or stubs; tie-breakers: one authoritative state and source fidelity.
+
+Question: how should Follow describe correction and re-check? Choice: distinguish actual acknowledgement, withdrawal and audit events; retain historical human referral attribution while consuming a new code-origin EPS release or paper waiting-for-operator state; tie-breakers: explicit human authority and truthful recorded provenance.
+
+Question: may Follow manufacture a plausible simultaneous pharmacy month? Choice: no, read G's real four-ID seed histories and leave tiles to P; tie-breakers: one state and the smallest owned change. New one-second proof stays with V, not inferred from synchronous selectors.
+
+Question: how should Follow expose the published Task 40 actions? Choice: use `itemStateLabel` with current process metadata and G's paper-readiness selector, name recorded ACK/withdrawal/audit events explicitly, and keep the existing navigation unchanged; tie-breakers: source fidelity and one authoritative state.
+
+Question: should current paper readiness be projected into older history rows? Choice: no, keep event-prefix history labels independent of today's process metadata, preserving prior human referral and later automatic release attribution; tie-breaker: immutable historical truth.
+
+Question: fix stale readiness locally? Choice: report the differing current-revision predicates to G and consume its shared repair instead of duplicating a business gate in F; tie-breaker: single model ownership.
+
 ## 2026-09-15: Stream V adopts live-first publication
 
 Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits canonical types, store, lifecycle, references and seeds; W and B contribute isolated typed domain modules, then UI owners consume the merged contracts after the header change; tie-breaker: one store and the newest explicit ownership instruction.
