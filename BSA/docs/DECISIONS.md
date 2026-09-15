@@ -8,6 +8,8 @@ ms.date: 2026-09-15
 - Question: does null OCR mean a known blank? Choice: no; null is Unknown and empty string is Blank, matching the scanner component. Type 1 remains required for unknown extraction, while a confidently known blank is missing information for Type 2. Tie-breaker: do not claim to have read absent source evidence.
 - Question: can current action tests establish the new four-case baseline? Choice: source-pin them to G `9b41cc2` and rerun/adapt after canonical new seed/source publication. Tie-breaker: exact requirement verification, not proxy coverage.
 - Question: does an information-only pharmacy answer replace As submitted? Choice: no; retain the last actual submission and separately record the response revision, requiring explicit source linkage in the scanner facade. Tie-breaker: no invented corrected claim or erased provenance.
+- Question: should B retain a second capture call after G's acknowledged paper amendment is already reconciled? Choice: test readiness and one final human Release instead; earlier capture and old scan remain immutable. Tie-breaker: the explicit corrected-paper contract, without unnecessary operator work.
+- Question: which source validates queue absence and payment presentation? Choice: assert the actual `staffLane` and `receiptPricingLabel` adapters after real actions, with no paper Paid receipt before the operator press. Tie-breaker: verify the required presentation contract rather than only a routing flag.
 
 ## 2026-09-15: B40 readable-blank decision
 

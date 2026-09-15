@@ -10,6 +10,20 @@ records and retains B's later readable-blank fix, with no canonical store,
 type, lifecycle or seed differences from G. New store-level evidence will be
 published separately from this ownership-preserving source integration.
 
+The new G `4765770` merge conflicts were limited to B's later Unknown/Blank
+OCR refinement and its tests, which were retained. The first actual runtime
+selection passed 73/75; the two failures were extra Type 1 calls in B's old
+paper-resubmission test after a new acknowledged source was already ready.
+No store rule was weakened to make that old test pass.
+
+After adapting to the actual acknowledged-amendment path, the new matrix
+passes 91 combined units and check. Eighteen full D/W/paper cycles cover
+Off/On in Both, Pharmacy and NHSBSA without Reset inside a cycle. The remaining
+matrix cases cover every Send/arrival/Follow view, audit and information response.
+Deep equality now uses the canonical revision-pinned facade, not a fresh
+template scan. Actual queue and receipt adapters confirm corrected EPS has no
+operator row and paper has no Paid receipt until its real final human release.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly

@@ -28,6 +28,28 @@ consumer units passed; full partial-integration run retained 65 failures
 (1,665 passing), so canonical acceptance remains open.
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
+B's updated evidence on exact G `4765770` is 91 passing combined units plus
+check. The new 25-case store fidelity matrix uses `getAsSubmitted` and
+`getPaperReconciliation`, deep-equals the whole actual submission including
+revision source snapshots, and traverses D/W/paper correction cycles in both
+modes and all three perspectives. Actual `staffLane` returns no row for
+corrected automatic EPS; paper receipt stays absent until one human Release.
+The two old second-Type-1 expectations were replaced with the explicitly
+required ready-to-release amendment assertions, not weakened store rules.
+
+C1/C2/C6 are implemented and bounded-state verified on that branch source,
+not yet main/live. C7 browser timing, C4 actual mounted scanner and C9 refreshed
+live screenshots remain unverified. B also reported a source-rendering seam:
+G's amendment scan regions omit brand/pack/form although hypothetical OCR
+contains those fields; the source owner must make the synthetic image truthful.
+
+G's new `4765770c37e3f063fe5d2678e361f115e03e13d4` is now integrated into
+B's verification branch. `getAsSubmitted` and `getPaperReconciliation` pin the
+last actual submission; the confirmation/source linkage concern is resolved
+in that facade rather than by weakening U's source guard. The first 75-test
+selection passed 73 with two stale second-Type-1 assertions after corrected
+paper was already ready for Release. B owns that test adaptation; no new full
+runtime or live pass is claimed from this initial run.
 
 ### Active published inventory refreshed for the information-response proof
 
