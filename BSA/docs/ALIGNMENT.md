@@ -502,3 +502,7 @@ and live acceptance remain unaligned while G/P/O/V integration is unfinished.
 The R strength card no longer presents `SYN-EPS-STRENGTH` as a retrieved Tariff
 clause. It uses W's proposed public-guidance-informed matching authority.
 Canonical kernel/trace attribution remains G's separate unresolved repair.
+
+The trace browser source now matches the new audience contract, but only
+typecheck and the eight-test discovery have run; no current browser pass is
+inferred from the earlier Task 38 trace evidence.
