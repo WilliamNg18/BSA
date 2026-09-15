@@ -4,6 +4,9 @@ import { getAsSubmitted, getPaperReconciliation, isPaperReadyToRelease } from ".
 import { getCorrectionAcknowledgementValid, getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
 import { initialisePharmacyDraft, initialisePharmacySubmissionDraft, preparePaperDemoDraft, previewPharmacyCorrection } from "../../src/lib/domain/pharmacy-correction";
 import { buildReferralNote } from "../../src/lib/domain/referral-wording";
+import { runAgent } from "../../src/lib/domain/agent";
+import { checkEpsFields } from "../../src/lib/domain/eps-pharmacy-check";
+import { TARIFF_VERSIONS } from "../../src/lib/domain/tariff";
 
 const s = () => useAppStore.getState();
 const strength = "SYN-FQ123-MISMATCH", paper = "EX-24112", unreadable = "EX-24123";
@@ -48,6 +51,17 @@ describe("Task 39/40 actual shared domain integration", () => {
     s().arriveInQueue(strength);
     expect(getReleaseEligibility(strength).allowed).toBe(false);
     expect(() => s().releaseToPricing(strength, "I waive the known mismatch.")).toThrow();
+    const current = sessionCase(strength)!, pack = runAgent(current, { agentEnabled: true });
+    expect(pack.signals).toMatchObject({ provisionStatus: "not_applicable", reconciliation: "conflict", sampleAgreement: { agree: 0, total: 0 } });
+    expect(pack.composite.level).not.toBe("high");
+    expect(pack.clause).toBeNull();
+    expect(pack.ruleAuthority).toBe("proposed_cross_record_check");
+    expect(pack.conflicts[0].values.map((entry) => entry.value)).toEqual(expect.arrayContaining(["Amlodipine 10mg tablets", "Amlodipine 5mg tablets"]));
+    expect(pack.trace.find((step) => step.phase === "RECONCILE")?.status).toBe("fail");
+    expect(JSON.stringify(pack.trace)).not.toContain("SYN-AMLO5-28 = claim SYN-AMLO10-28");
+    expect(pack.trace.flatMap((step) => step.toolCalls).some((call) => call.tool === "retrieve_tariff")).toBe(false);
+    expect(TARIFF_VERSIONS.flatMap((version) => version.clauses).some((clause) => clause.id === "SYN-EPS-STRENGTH")).toBe(false);
+    expect(checkEpsFields(current, current.epsPrescription!.dispenserEndorsement).status).toBe("missing");
   });
 
   it("applies only the selected claim and automatically releases the corrected explicit Send", () => {

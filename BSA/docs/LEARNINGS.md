@@ -115,6 +115,12 @@ that failure remains recorded, not replaced by the 19 targeted runtime passes.
 Concrete review found missing amendment-image supplier regions and unprotected
 form aliases in outbound notes. Repairing the source data and final guards,
 rather than changing presentation evidence, closes those focused regressions.
+
+The first strength integration passed store outcome checks but still displayed
+a false equality and implied a made-up Tariff clause. The exact W probe exposed
+that gap. Separate authority metadata, actual conflict values and a dedicated
+structured-record trace repair it; 47 targeted tests now cover those surfaces.
+Passing state transitions alone was not sufficient evidence of truthful advice.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

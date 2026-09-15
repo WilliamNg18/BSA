@@ -4,9 +4,21 @@ import { mandatoryFieldsCheck, validateCitation } from "./rules";
 import { routeSubmission, routingFactsForCase } from "./routing";
 import { versionForDate } from "./tariff";
 import type { ExceptionCase } from "./types";
+import { evaluateEpsStrength } from "./eps-strength";
 
 /** Field completeness alone is not permission to price or skip human recheck. */
 export function checkEpsFields(c: ExceptionCase, text: string): PharmacyCheck {
+  const strength = c.epsPrescription?.supplyRecord ? evaluateEpsStrength(c.epsPrescription) : null;
+  if (strength) {
+    const checks = [...mandatoryFieldsCheck(c.extracted), ...strength.checks].map((entry, index) => ({
+      id: `source-${index}`, label: entry.name, met: entry.pass,
+    }));
+    const ready = checks.every((entry) => entry.met);
+    return { status: ready ? "ready" : "missing", ruleAuthority: "proposed_cross_record_check",
+      facts: interpretPharmacyText(text), version: null, clause: null, checks,
+      stages: ["PASS", "PASS", "PASS", "PASS", ready ? "PASS" : "MISSING"],
+      gap: ready ? "None" : strength.gap, agreement: "Independent structured records; no image or repeated readings apply." };
+  }
   const supply = c.epsPrescription ? evaluateEpsSupply(c.epsPrescription) : null;
   const version = versionForDate(c.extracted.dispensingDate);
   const clause = supply ? version?.clauses.find((entry) => entry.id === supply.ruleId) : null;

@@ -221,7 +221,10 @@ export function validatePrecheck(snapshot: PharmacyPrecheckSnapshot | undefined,
     if (facts !== null || snapshot.checkedAt !== null || snapshot.tariffVersion !== null || snapshot.clauseId !== null || snapshot.checks.length) fail();
   } else {
     if (snapshot.mode !== "scripted" || typeof snapshot.checkedAt !== "string" || !/^\d{4}-\d{2}-\d{2}T/.test(snapshot.checkedAt) || !Number.isFinite(Date.parse(snapshot.checkedAt))) fail();
-    if (snapshot.status !== "unable" && (!facts || !snapshot.tariffVersion || (!snapshot.clauseId && facts.type !== "NONE") || !snapshot.checks.length)) fail();
+    if (snapshot.ruleAuthority !== undefined && !["retrieved_tariff", "proposed_cross_record_check"].includes(snapshot.ruleAuthority)) fail();
+    if (snapshot.ruleAuthority === "proposed_cross_record_check" && snapshot.clauseId !== null) fail();
+    if (snapshot.status !== "unable" && (!facts || snapshot.ruleAuthority !== "proposed_cross_record_check" &&
+      (!snapshot.tariffVersion || (!snapshot.clauseId && facts.type !== "NONE")) || !snapshot.checks.length)) fail();
     if (snapshot.status === "ready" && snapshot.checks.some((check) => check.met !== true)) fail();
   }
 }
