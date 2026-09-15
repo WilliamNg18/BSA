@@ -132,6 +132,7 @@ for (const enabled of [false, true]) {
               expect(await readDomainState(page), "Opening the modal cannot mutate domain state").toEqual(before);
               await page.getByRole("alertdialog", { name: "Reset demonstration?", exact: true })
                 .getByRole("button", { name: "Reset demonstration", exact: true }).click();
+              await openQueueCapture(page, D);
             });
             await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
             for (const label of Object.values(labels)) await expect(capture.getByRole("textbox", { name: label, exact: true })).toHaveValue("");
