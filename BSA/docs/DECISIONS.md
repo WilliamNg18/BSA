@@ -6,6 +6,7 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Outcome fades and final-state accessibility audits
 
+- Question: does held-animation diagnostic success establish ordinary acceptance? Choice: no; report four diagnostic negatives separately from fourteen unmodified-animation tests and their unrestricted audits, retain all initial diagnostic failures and incompletes, then hand the isolated test-only series to the coordinator for exact #109 CI. Tie-breaker: scoped evidence and no blind global rerun.
 - Question: may axe's 1:1 incomplete at an almost transparent 95%-exit frame count as a contrast negative? Choice: no; retain the failed diagnostic and sample 90% of the same native exit animation so the intended low-contrast violation is measurable. Tie-breaker: explicit evidence, not relabelling incomplete findings.
 
 - Question: why did the first held-frame negative not stay held? Choice: Motion sets native `startTime` after `animate()` returns, which resumes WAAPI; pause in the next microtask and assert `playState === "paused"`. Tie-breaker: test the actual native animation without changing production initialization or timing.

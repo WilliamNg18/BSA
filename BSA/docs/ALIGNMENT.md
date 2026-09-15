@@ -8,6 +8,16 @@ ms.date: 2026-09-15
 
 ## Part A audit follow-up: exact failing source and contract
 
+Exact `0d0837a` bounded verification passed: four native-animation diagnostic
+negatives plus fourteen ordinary tests, covering the failing normal/reduced
+demo final-state audits, retained header fade/reset checks and representative
+shared-accessibility/case/pipeline/route-frame consumers. Twenty-seven ordinary
+axe reports have zero violations with eleven incomplete rule occurrences
+retained. The four paused negatives each reproduce the Outcome contrast
+finding and reject the waiter; after resuming, all four audits have zero
+violations. No production bytes differ from `5b75e5f`. Parent #109 integration
+and integrated CI, not earlier unrelated passing shards, establish its release.
+
 `6a238bc86e6f8e9d49110cad9ae5b95cc18ee26d` in #109 has no frontend source
 or failing-test delta from actual main `5b75e5f`. CI `35024931351` shard 1
 failed the no-preference demo final-state audit; other shards passed.
