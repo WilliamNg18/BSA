@@ -482,3 +482,9 @@ outbound instructions: exact source quantities remain in diagnostic findings,
 while the operator note asks for accuracy without those values. Historical
 pharmacy preview tests explicitly select pharmacy audience. Fifty targeted
 contracts pass; this does not establish the current G/P/O integrated runtime.
+
+The new 29-test current-store selection confirms G/R integration: wrong-strength
+Apply equals the exact proposed patch; paper brand notes omit the supplied value;
+the triad equals G's pinned facade; confirmed capture retains original scan/OCR;
+ready paper recommends human release without an extra invented Apply. Previous
+legacy fixture tests still require the current four-case migration.

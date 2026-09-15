@@ -1498,3 +1498,10 @@ quantities in the immutable findings while rejecting them from the note.
 All fifty targeted recommendation tests then passed. A missing supply record
 is a source-agreement problem, not proof of a strength mismatch; the note
 selection now distinguishes those cases without copying a proposed value.
+
+G's current B seed is already acknowledged and ready for human release, not
+the prior date-gap example. New tests explicitly submit the brand-missing
+template before testing referral advice, and use the real wrong-strength item
+for source-backed correction. Re-evaluating clause requirements without G's
+specialised strength/paper checks falsely marked them unmet; R now projects
+the exact canonical check results and G's paper reconciliation facade.

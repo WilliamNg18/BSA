@@ -508,3 +508,8 @@ exact-head CI, main deployment and live observations are still required.
 Prepared paper correction values now use the same before/after draft contract
 as EPS supply values; R supplies no replacement source data or independent
 correction algorithm. Actual paper seed/source preparation stays with G.
+
+Current-source integration now includes wrong-strength correction, brand-missing
+paper, unreadable capture and ready-to-release paper. Every paper result requires
+the operator's press; hypothetical OCR and original scans are not changed by
+confirmed capture. These are tested working-branch contracts, not a live release.
