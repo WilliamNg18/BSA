@@ -84,34 +84,22 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       </dl>}
     </section>}
     <BoundaryTag cls="human" />
-    <dl aria-label="Item verification" className="grid grid-cols-3 gap-2 text-sm">
-      <div><dt>Gate 1</dt><dd>{verification.gate1}</dd></div>
-      <div><dt>Gate 2</dt><dd>{verification.gate2}</dd></div>
-      <div><dt>Reconciled</dt><dd>{verification.reconciled ? "Yes" : "Not established"}</dd></div>
-    </dl>
-    {!compact && <dl className="grid grid-cols-2 gap-2 text-sm">
-      <div><dt>Pharmacy</dt><dd>{c.pharmacy.name} (synthetic)</dd></div>
-      <div><dt>Dispensing date</dt><dd>{c.extracted.dispensingDate}</dd></div>
-      <div><dt>Current endorsement</dt><dd>{revision.endorsementText || "None"}</dd></div>
-      <div><dt>Channel</dt><dd>{channel === "eps" ? "EPS typed message" : "Paper"}</dd></div>
-    </dl>}
     {row.state === "paid" && <section aria-label="Existing pricing outcome">
       <BoundaryTag cls="existing" />
       <p>Paid on the normal schedule: priced by NHSBSA&apos;s existing rules engine{row.history.some((event) => event.revision === revision.number && event.processStep === "automatic_pricing") ? ", no person involved" : " after human review"}.</p>
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
-      <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction recommendationVisible={enabled} />
-      {enabled && <>
+      {enabled &&
         <PharmacyRecommendationPanel caseId={caseId} draft={{ ...draft, purpose: draft.purpose ?? "correction" }} compact={compact} endorsementId="claim-endorsement"
           onApply={approved && canApply ? () => act(() => {
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
           store.applySuggestedCorrection(caseId);
           focusPharmacyCorrection(draft, useAppStore.getState().pharmacyDrafts[caseId], "claim-endorsement");
-        }) : undefined} />
-        <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
-          recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />
-      </>}
+        }) : undefined} />}
+      <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction recommendationVisible={enabled} />
+      {enabled && <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
+        recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
       <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
       <Button data-pharmacy-action="resubmit" onClick={() => act(() => {
         const store = useAppStore.getState();
@@ -123,6 +111,17 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       })}>{enabled ? "Resubmit" : "Resubmit blind"}</Button>
     </section>}
     {!editable && <PharmacyRecommendationPanel caseId={caseId} compact={compact} />}
+    <dl aria-label="Item verification" className="grid grid-cols-3 gap-2 text-sm">
+      <div><dt>Gate 1</dt><dd>{verification.gate1}</dd></div>
+      <div><dt>Gate 2</dt><dd>{verification.gate2}</dd></div>
+      <div><dt>Reconciled</dt><dd>{verification.reconciled ? "Yes" : "Not established"}</dd></div>
+    </dl>
+    {!compact && <dl className="grid grid-cols-2 gap-2 text-sm">
+      <div><dt>Pharmacy</dt><dd>{c.pharmacy.name} (synthetic)</dd></div>
+      <div><dt>Dispensing date</dt><dd>{c.extracted.dispensingDate}</dd></div>
+      <div><dt>Current endorsement</dt><dd>{revision.endorsementText || "None"}</dd></div>
+      <div><dt>Channel</dt><dd>{channel === "eps" ? "EPS typed message" : "Paper"}</dd></div>
+    </dl>}
     {!editable && !requested && !compact && <details><summary className="cursor-pointer">Demonstration replay</summary>
       <dl className="text-sm"><dt>Replay endorsement source</dt><dd>{revision.declaration ? "Retained pharmacy declaration" : "Current submission"}</dd>
         <dt>Replay endorsement</dt><dd>{replayText || "None"}</dd></dl>
