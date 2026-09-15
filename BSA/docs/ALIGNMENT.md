@@ -4,6 +4,51 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
+
+Source baseline: actual fetched main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+Two fresh `gh pr list --state open` queries returned no open PRs. All named
+active published streams were checked with exact heads and `main..head` ancestry,
+then divergent file inventories; this is source classification, not live proof.
+
+| Published stream | Inspected head | Difference beyond actual main |
+| --- | --- | --- |
+| Coordinator | `cd973d3c6cdf5282011e0a1dc0b293a4866f12a5` | None |
+| G | `59efabf49e20c5b0d19b6b79c35a6bbc700ee4fb` | Five tracking documents only; no C runtime implementation |
+| R | `81a4f3e2c4eb06615b2d680cb51118b52eb5bc90` | None |
+| U | `e39bc180ba7edc1aa76dcc75d122e357fd5cb8f9` | None |
+| P | `2cefc0b60a6b94628ce1665cf062085532fb0434` | None |
+| O | `cd973d3c6cdf5282011e0a1dc0b293a4866f12a5` | None |
+| F | `71f8c9586beb11c2c45d8fad534e6a591b17f5e5` | None |
+| D | `9fe65204ec5e6bc324871e57dd54c2958baa152d` | None |
+| S | `8b2bae47036f9110ce05cf3808ae37f8b9b6decc` | None |
+| N | `c8709d7ae01cc1539b6cd8070f2dd6b4273bd144` | None |
+| V | `0ec6e424ef126aafbb5de30d600e6c6d4ae46931` | None |
+
+A/W/B had no new published remote ref at this audit snapshot; their session
+activity is not source evidence. Later published contracts require a new audit.
+Ancestor streams cannot contain a missing implementation absent from main.
+
+| Requirement | Classification on pinned main and inspected published streams | Evidence and remaining owner |
+| --- | --- | --- |
+| C1 exact as-submitted replica | Partial, fix required | `lifecycle.ts` revisions retain messages; `lifecycle-model.ts` projects source/capture; no exact headed replica in `case-pack.tsx`. B contract, G storage, O view. |
+| C2 corrected EPS, identical payload, no operator queue | Partial, fix required | `store.ts:212-219` restricts automatic release to `kind === "submission"`; `verification.ts` checks sources but rejects current mismatched-code schema earlier. G/W integrate. |
+| C3 paper demo complete/missing and always Post | Partial, fix required | `paper-pharmacy-capture.tsx:35-65` has both buttons and enabled Post; `paper-declaration.ts` only checks NCSO; all-paper release receipt and new two-field generic case still absent. G/P/U. |
+| C4 three-column scanner/reconciliation | Missing, build required | Existing `paper-capture.ts` and `capture-evidence.ts` separate Type 1, but no hypothetical field-confidence three-column model/view. B contract, G/O/U consume. |
+| C5 operator field/rule note, no values | Misaligned, fix required | `recommendations.ts` builds diagnostic notes from `disagreementFindings` values; operator final note checks only minimum length. B generator/validator; G all final actions; O errors. |
+| C6 ACK and channel-specific corrected release | Misaligned, fix required | No accuracy ACK field/action; `store.ts:459-475` resubmits drafts, every resubmission forces human review. B/G domain then P/O. |
+| C7 real cross-perspective cycles within one second | Partial and unverified | Existing store/Follow actions and timed suites cover old four fixtures and old manual EPS recheck, not new cases/ACK or all required current flows. G/P/O/F/D and V exact action-timed proof required. |
+| C8 simultaneous actual Paid/Action needed/recheck | Misaligned, fix required | `lifecycle-seed.ts` filters four legacy states and drops the old separate recheck example; no real resubmitted member in the four playable baseline. G new historical seeds only; no navigation synthesis. |
+| C9 documentation and refreshed screenshots | Partial, integration pending | Current SPEC/MEMORY still describe obsolete active scenarios and manual EPS recheck. Coordinator/B/S document new contracts; V owns refreshed live evidence. |
+
+B's standalone modules/tests in this commit are implementation foundation only.
+They do not turn these rows into aligned runtime or full proof. Required exact
+current-main build, deployment, live observation and final desktop matrix remain.
+Foundation evidence: 48 new units passed, followed by check (source-copy,
+typecheck, lint, production build). No browser was run without a coordinator
+lease. These tests prove the new pure contracts, not integration with the old
+main actions or updated four-case historical seeds.
+
 # Vision alignment
 
 ## Stream S Tasks 39-40 follow-up
