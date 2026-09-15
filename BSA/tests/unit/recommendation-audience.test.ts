@@ -6,6 +6,8 @@ import { recommendationForAudience, operatorRecommendationNote, PHARMACY_SUGGEST
 import { deriveRecommendation } from "../../src/lib/domain/recommendations";
 import { evaluateEpsStrength, type EpsStrengthPrescription } from "../../src/lib/domain/eps-strength";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { concreteSuggestions } from "../../src/lib/domain/recommendation-suggestions";
+import type { PharmacyCorrectionDraft } from "../../src/lib/domain/lifecycle";
 
 const store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
@@ -94,5 +96,45 @@ describe("explicit recommendation audience boundary", () => {
     expect(pharmacy.operatorApproved).toBe(false);
     expect(pharmacy.preview).not.toBeNull();
     expect(pharmacy.suggestionLabel).toBe(PHARMACY_SUGGESTION_LABEL);
+  });
+
+  it("the actual operator Apply copies exactly the field-only draft shown, not a separate rewritten note", () => {
+    const id = "EX-24112";
+    store().setAgentEnabled(true);
+    store().submitFromPharmacy(id, "NCSO RK");
+    store().arriveInQueue(id);
+    const recommendation = deriveRecommendation(store(), id);
+    const projected = recommendationForAudience(recommendation, "operator");
+    expect(projected.operatorPreview).toEqual(recommendation.operatorPreview);
+    store().applySuggestionToDecision(id);
+    expect(store().operatorDrafts[id]).toEqual({ ...projected.operatorPreview, appliedSuggestion: true });
+    expect(store().operatorDrafts[id].note).not.toContain("21/08/2026");
+    expect(store().operatorDrafts[id].note).not.toContain("21/08/26");
+    expect(store().lifecycles[id].state).toBe("in_review");
+    expect(store().records).toHaveLength(0);
+  });
+
+  it("paper suggestions use only changed values in the shared prepared patch", () => {
+    const before: PharmacyCorrectionDraft = {
+      revision: 1, channel: "paper", appliedSuggestion: false, endorsementText: "NCSO JB 27/08/26",
+      paperDeclaration: { typedProduct: "Synthetic generic product", quantity: 28, endorsementText: "NCSO JB 27/08/26",
+        dispensingDate: "2026-08-27", declaredByPharmacy: true, brandManufacturer: "", packSize: null, form: "tablets" },
+    };
+    const after: PharmacyCorrectionDraft = { ...before, appliedSuggestion: true, paperDeclaration: {
+      ...before.paperDeclaration!, brandManufacturer: "Recorded supplier (synthetic)", packSize: 28,
+    } };
+    const suggestions = concreteSuggestions([], before, after, "2026-08-27");
+    expect(suggestions.map((entry) => [entry.field, entry.value])).toEqual([
+      ["brand_manufacturer", "Recorded supplier (synthetic)"], ["pack_size", 28],
+    ]);
+    const recommendation = { ...deriveRecommendation(store(), "EX-24123"), suggestions, preview: after };
+    const operator = renderToStaticMarkup(createElement(RecommendationCard, { recommendation, audience: "operator" }));
+    const pharmacy = renderToStaticMarkup(createElement(RecommendationCard, { recommendation, audience: "pharmacy" }));
+    expect(operator).not.toContain("Recorded supplier (synthetic)");
+    expect(operator).not.toContain("Corrected preview");
+    expect(pharmacy).toContain("Recorded supplier (synthetic)");
+    expect(pharmacy).toContain("Corrected preview");
+    expect(pharmacy).toContain("your agent&#x27;s suggestion from your records");
+    expect(after.paperDeclaration?.dispensingDate).toBe(before.paperDeclaration?.dispensingDate);
   });
 });

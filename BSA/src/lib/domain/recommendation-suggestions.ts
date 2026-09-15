@@ -11,13 +11,14 @@ export function concreteSuggestions(
     field: "dated", label: "Add the dispensing date beside the initials",
     value: dispensingDate.split("-").reverse().join("/"), status: "available", source: "Dispensing date", focusTarget: "endorsementText",
   });
-  const beforeSupply = before.epsPrescription?.supplyEvidence, afterSupply = preview?.epsPrescription?.supplyEvidence;
+  const beforeSupply = before.epsPrescription?.supplyEvidence ?? before.paperDeclaration;
+  const afterSupply = preview?.epsPrescription?.supplyEvidence ?? preview?.paperDeclaration;
   if (afterSupply) for (const [field, key, label] of [
     ["brand_manufacturer", "brandManufacturer", "Brand or manufacturer"],
     ["pack_size", "packSize", "Pack size"],
     ["presentation", "form", "Form dispensed"],
   ] as const) {
-    if (beforeSupply?.[key] !== afterSupply[key]) suggestions.push({
+    if (afterSupply[key] !== undefined && beforeSupply?.[key] !== afterSupply[key]) suggestions.push({
       field, label, value: afterSupply[key], status: "available", source: "Synthetic product supply record", focusTarget: key,
     });
   }

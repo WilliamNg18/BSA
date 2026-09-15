@@ -80,6 +80,14 @@ export function RecommendationCard({
           <div><dt>Pack size</dt><dd>{r.preview.epsPrescription.supplyEvidence.packSize}</dd></div>
           <div><dt>Form</dt><dd>{r.preview.epsPrescription.supplyEvidence.form}</dd></div>
         </dl>}
+        {r.preview.paperDeclaration && <dl className="grid grid-cols-3 gap-2">
+          <div><dt>Product</dt><dd>{r.preview.paperDeclaration.typedProduct}</dd></div>
+          <div><dt>Quantity</dt><dd>{r.preview.paperDeclaration.quantity ?? "Not established"}</dd></div>
+          <div><dt>Brand or manufacturer</dt><dd>{r.preview.paperDeclaration.brandManufacturer || "Not established"}</dd></div>
+          <div><dt>Pack size</dt><dd>{r.preview.paperDeclaration.packSize ?? "Not established"}</dd></div>
+          <div><dt>Form</dt><dd>{r.preview.paperDeclaration.form || "Not established"}</dd></div>
+          <div><dt>Dispensing date</dt><dd>{r.preview.paperDeclaration.dispensingDate}</dd></div>
+        </dl>}
       </div>}
       {!pharmacy && r.operatorPreview && r.context === "current" && r.operatorApplyAllowed && <dl className="space-y-1 text-sm">
         <dt className="font-medium">Operator draft preview</dt>

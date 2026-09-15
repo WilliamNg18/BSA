@@ -20,7 +20,9 @@ describe("safe human diagnostic follow-up", () => {
     const before = getDomainSnapshot(), r = deriveRecommendation(store(), id);
     expect(r.kernelRecommendation).toBe("ABSTAIN");
     expect(r.diagnostic).toMatchObject({ kind: "safe_human_follow_up", outcome: "REFER_BACK", rbCode: "RB2B", provenance: "reconciliation_failed" });
-    expect(r.diagnostic?.note).toContain('Quantity: pharmacy declared "100"; human capture "50"');
+    expect(r.diagnostic?.findings.join(" ")).toContain('Quantity: pharmacy declared "100"; human capture "50"');
+    expect(r.diagnostic?.note).toContain("Quantity must agree");
+    expect(r.diagnostic?.note).not.toMatch(/\b100\b|\b50\b/);
     expect(r.operatorApplyAllowed).toBe(true);
     store().applySuggestionToDecision(id);
     expect(store().operatorDrafts[id]).toEqual({ ...r.operatorPreview, appliedSuggestion: true });
