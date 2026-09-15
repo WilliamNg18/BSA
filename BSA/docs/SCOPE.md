@@ -415,3 +415,8 @@ Current-source integration now includes wrong-strength correction, brand-missing
 paper, unreadable capture and ready-to-release paper. Every paper result requires
 the operator's press; hypothetical OCR and original scans are not changed by
 confirmed capture. These are tested working-branch contracts, not a live release.
+
+The previous date-gap recommendation tests now exercise current strength and
+paper-brand cases, while invalid dates, unknown provisions and unsupported
+invoice input remain negative contracts on an existing EPS item. No test
+weakens the independent source or release guards.
