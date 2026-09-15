@@ -2708,3 +2708,9 @@ Question: may S finish citation integration before G's runtime merge? Choice: co
 Question: how should the ready-paper status remain concise? Choice: retain the actual state label and use "Press Release.", preserving the explicit human action and unchanged prose limit; tie-breaker: clear, concise operator control.
 
 Question: can a copy counter justify shortening the mandated paper recommendation or hiding reason help? Choice: no; preserve both, record the nested-panel aggregate counterexample and resolve its actual per-panel scope before claiming copy compliance; tie-breaker: latest explicit content and truthful evidence.
+
+Question: how should the mandatory advice and human-help text coexist under the per-panel limit? Choice: genuinely separate sibling Recommendation and Operator decision panels, each visibly headed and independently counted below25; no advice remains nested inside the bordered human panel and no text is hidden; tie-breaker: the parent's superseding Task40 authority-separation decision.
+
+Question: where does Apply live after separation? Choice: in the actual advice card, still invoking the same guarded G action and focusing the same visible human note; final disposition controls remain in the human panel; tie-breaker: explicit authority and preserved functionality.
+
+Question: how is a rejected proposed-value note explained concisely? Choice: display a precise field/rule-and-accuracy message only after G's actual rejection, preserve the draft and unknown error text, and never validate or rewrite the note locally; tie-breaker: clear human help without a second authority.

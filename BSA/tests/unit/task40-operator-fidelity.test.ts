@@ -11,6 +11,7 @@ import { initialisePharmacyDraft, preparePaperDemoDraft } from "../../src/lib/do
 import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 import { getAsSubmitted, getPaperReconciliation } from "../../src/lib/domain/submission-views";
 import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
+import { operatorErrorMessage } from "../../src/lib/operator-error-message";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/store")>();
@@ -29,6 +30,25 @@ const panel = (id: string) => renderToStaticMarkup(createElement(MemoryRouter, n
 const evidence = (id: string) => renderToStaticMarkup(createElement(SubmittedCaseEvidence, { caseId: id }));
 const casePack = (id: string) => renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [`/case/${id}`] },
   createElement(Routes, null, createElement(Route, { path: "/case/:id", element: createElement(CasePackPage) }))));
+
+function section(html: string, marker: string) {
+  const at = html.indexOf(marker);
+  expect(at).toBeGreaterThanOrEqual(0);
+  const start = html.lastIndexOf("<section", at);
+  let depth = 0;
+  for (const match of html.slice(start).matchAll(/<\/?section\b[^>]*>/g)) {
+    depth += match[0].startsWith("</") ? -1 : 1;
+    if (depth === 0) return html.slice(start, start + match.index! + match[0].length);
+  }
+  throw new Error(`Unclosed real panel: ${marker}`);
+}
+
+function proseWords(html: string) {
+  const fragments = [...html.matchAll(/<p(?:\s[^>]*)?>([\s\S]*?)<\/p>/g),
+    ...html.matchAll(/<span class="text-xs text-muted-foreground">([\s\S]*?)<\/span>/g)];
+  return fragments.map((match) => match[1].replace(/<[^>]*>/g, " "))
+    .join(" ").trim().split(/\s+/).filter(Boolean).length;
+}
 
 beforeEach(() => state().resetDemo());
 
@@ -193,6 +213,47 @@ describe("Task 40 explicit operator actions", () => {
     expect(html).not.toContain(">Apply suggestion</button>");
     expect(html.match(/<button[^>]*>Release to pricing<\/button>/)?.[0]).not.toContain('disabled=""');
     expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it.each([
+    { id: "EX-24112", enabled: false }, { id: "EX-24112", enabled: true },
+    { id: "EX-24123", enabled: false }, { id: "EX-24123", enabled: true },
+  ])("keeps real advice and human panels separate and below25 words: $id / $enabled", ({ id, enabled }) => {
+    state().setAgentEnabled(enabled);
+    if (id === "EX-24123") {
+      const revision = state().caseRevisions[id].at(-1)!;
+      state().confirmType1({ caseId: id, revision: revision.number, fields: revision.declaration!.fields,
+        provenance: "human_capture", declarationReconciled: true });
+    }
+    const before = getDomainSnapshot(), html = panel(id);
+    const human = section(html, 'aria-label="Operator decision"');
+    expect(human).not.toContain("data-recommendation-case");
+    expect(human).toContain("At least eight characters.");
+    expect(proseWords(human)).toBeLessThan(25);
+    if (enabled) {
+      const advice = section(html, `data-recommendation-case="${id}"`);
+      expect(advice).not.toContain("data-operator-action-panel");
+      expect(advice).toMatch(/<h2[^>]*>Recommendation<\/h2>/);
+      expect(proseWords(advice)).toBeLessThan(25);
+      expect(html).toContain(`${advice}${human}`);
+      expect(advice).toContain("requires the operator&#x27;s press because paper was scanned");
+      expect(proseWords(html), "Mandatory copy remains present across the separate panels").toBeGreaterThanOrEqual(25);
+    } else expect(html).not.toContain("data-recommendation-case");
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it("explains an actual corrected-value rejection concisely without changing the rejected draft", () => {
+    const id = submitStrength(true), revision = state().caseRevisions[id].at(-1)!;
+    const note = "Please select Amlodipine 10mg tablets.";
+    state().setOperatorDraft(id, { revision: revision.number, outcome: "REFER_BACK", rbCode: "RB2B", note });
+    const before = getDomainSnapshot();
+    let rejection: unknown;
+    try { state().referBack(id, "RB2B", note); } catch (error) { rejection = error; }
+    expect(rejection).toBeInstanceOf(Error);
+    expect(operatorErrorMessage(rejection)).toBe("Proposed corrected value rejected. Name fields and rules; request accuracy.");
+    expect(operatorErrorMessage(rejection).split(/\s+/)).toHaveLength(10);
+    expect(getDomainSnapshot()).toEqual(before);
+    expect(operatorErrorMessage(new Error("Current revision unavailable."))).toBe("Current revision unavailable.");
   });
 
   it("renders audit controls without reopening on render and preserves prior history on the explicit action", () => {
