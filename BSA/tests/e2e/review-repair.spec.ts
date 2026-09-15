@@ -1,8 +1,9 @@
-import { expect, navigatePrimary, test } from "./fixtures";
+import { expect, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
 import { startDemonstrationReview } from "./lifecycle-helpers";
 import { choosePharmacyRadio, openPharmacyReceipt } from "./pharmacy-scenario-helpers";
 import { openAuditRecord, operatorAction, operatorDecision } from "./operator-action-helpers";
+import { chooseProcessChapter } from "./process-model-helpers";
 
 test("complete EPS Off describes hypothetical risk without running a hidden check", async ({ page }) => {
   await page.goto("/pharmacy");
@@ -30,9 +31,7 @@ test("confirmed conflicted paper records an attestation without claiming agreeme
   await expect(page.getByRole("main")).toContainText("The operator attested reconciliation; this does not prove source agreement.");
   await expect(page.getByRole("main")).not.toContainText("declaration and paper explicitly reconciled");
   await expect(page.getByRole("main")).not.toContainText("All mandatory fields read");
-  await navigatePrimary(page, "Overview");
-  await page.getByRole("button", { name: "Choose tour chapter", exact: true }).click();
-  await page.getByRole("menuitem", { name: "4. Cases and boundaries", exact: true }).click();
+  await chooseProcessChapter(page, 4);
   await expect(page.locator('[data-case="C"]')).toHaveCount(0);
   const currentB = page.locator("[data-case]").filter({ hasText: "EX-24112" });
   await expect(currentB.locator("[data-outcome]")).toHaveText("Refer back with the exact fix");
