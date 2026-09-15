@@ -26,6 +26,7 @@ it("retains three independent evidence columns and recommends only a human paper
   expect(result.summary).toBe("Release to existing pricing recommended; both gates satisfied; requires the operator's press because paper was scanned");
   expect(result.labels.characterRecognition).toBe("Extracted by character recognition (hypothetical)");
   expect(result.labels.synthetic).toBe("synthetic; illustrates what NHSBSA's capture would produce");
+  expect(result.reconciliationBasis).toBe("raw_sources");
 });
 
 it.each(["missing-declaration", "scan-conflict", "ocr-conflict", "missing-scan", "tariff-failure", "strength-failure", "concession-failure"] as const)(
@@ -60,6 +61,8 @@ it("requires current Type 1 confirmation before Type 2, without presenting confi
   expect(result.outcome).toBe("RELEASE_RECOMMENDED");
   expect(result.evidence.characterRecognition[0].confidence).toBe(0.4);
   expect(result.evidence.scan.readable).toBe(false);
+  expect(result.reconciliationBasis).toBe("human_confirmed_capture");
+  expect(result.labels.humanCapture).toContain("original scan and hypothetical extraction are unchanged");
   expect(reconcilePaperEvidence({ ...input, capture: { ...capture, declarationReconciled: false } }).outcome).toBe("REQUEST_INFORMATION");
 });
 
@@ -84,4 +87,19 @@ it("rejects duplicate extraction fields and absent field-rule checks explicitly"
   const source = complete();
   expect(() => reconcilePaperEvidence({ ...source, characterRecognition: [source.characterRecognition[0], source.characterRecognition[0]] })).toThrow(/duplicate/);
   expect(() => reconcilePaperEvidence({ ...source, tariffChecks: [] })).toThrow(/field-level Tariff/);
+});
+
+it("retains an explicit pharmacy amendment separately from the earlier paper source", () => {
+  const original = complete();
+  const earlier = reconcilePaperEvidence(original);
+  const amendment: PaperReconciliationInput = { ...original, revision: 3,
+    scan: { ...original.scan, provenance: "acknowledged_pharmacy_amendment" } };
+  const current = reconcilePaperEvidence(amendment);
+  expect(current.evidence.scan.provenance).toBe("acknowledged_pharmacy_amendment");
+  expect(earlier.evidence).toEqual(original);
+  expect(current.labels.amendment).toContain("previous submission evidence retained");
+});
+
+it.each([Number.NaN, Number.POSITIVE_INFINITY])("rejects invalid source values instead of granting agreement: %s", (value) => {
+  expect(() => reconcilePaperEvidence({ ...complete(), declaration: { quantity: value } })).toThrow(/invalid field value/);
 });
