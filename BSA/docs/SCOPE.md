@@ -50,6 +50,13 @@ counts/ranking, so their unverified restriction is retained. The study's
 confirmed pooled prevalence and NHSBSA mechanism remain distinct usable
 context, not a measured claim-mismatch rate.
 
+The bounded W integration review of G `4765770` is not a pass: its current
+agent trace misstates source agreement, the proposed strength check appears
+as a retrieved monthly Tariff clause, and the old EPS field checker says
+Ready while Send fails Gate 1. The gate/store workflow tests do not cover
+those surfaced claims. Canonical repairs belong to G, with P/R consuming
+the repaired contracts; W has not expanded into shared implementation or UI.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

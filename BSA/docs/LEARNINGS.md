@@ -96,6 +96,17 @@ and historical test records outside `src` remain unscanned. The fixture is
 removed in a `finally` block. All 38 W units, strict typecheck and lint pass;
 there is no whole-file source exemption or new live/browser claim.
 
+W's exact `6e5d98e` CI run `35014962810` subsequently passed all four shards.
+The requested integration review of G `4765770` used an isolated archive and
+Node bundle, not another operational store in the application or a backup.
+After defining the ordinary static build environment, execution showed that
+an empty strength-conflict list caused `runAgent` to claim agreement and print
+the false equality `SYN-AMLO5-28 = SYN-AMLO10-28`; the old EPS checker also
+returned Ready with no gap. The trace additionally attributed the proposed
+matching rule to an August Tariff retrieval. Shared lifecycle assertions alone
+miss these surface contradictions. G/P/R were notified; a later repaired
+source must be checked separately, without relabelling this failed finding.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

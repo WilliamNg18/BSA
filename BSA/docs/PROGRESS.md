@@ -54,6 +54,14 @@ error-type counts or ranking; public institutional attempts yielded no
 readable accepted manuscript. LEARNINGS/MEMORY record exact URLs and limits.
 The published verified subset and all source APIs remain unchanged.
 
+Exact W head `6e5d98e` passed all four CI shards in run `35014962810`.
+G's `4765770` then introduced the active strength workflow. W's requested
+bounded integration probe found false reconciliation/trace agreement, a
+proposed check presented as a dated Tariff provision, and an old EPS precheck
+returning Ready for the wrong selection. ALIGNMENT records exact outputs;
+G/P/R received the findings. Shared repair and verification remain pending,
+so W does not treat the integration as accepted.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

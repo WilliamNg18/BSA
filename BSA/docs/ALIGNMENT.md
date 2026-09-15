@@ -60,6 +60,28 @@ manuscript. Exact acquisition details are recorded in LEARNINGS, with one
 unchanged EPS-evidence status: verified abstract/NHSBSA subset, unverified
 error-type counts/ranking. No source or UI claim was silently strengthened.
 
+### W bounded integration review of G `4765770`
+
+An isolated Node probe of that exact Git source reproduced three remaining
+surface defects despite the new shared-store tests passing:
+
+- `runAgent(sessionCase("SYN-FQ123-MISMATCH"), { agentEnabled: true })` reports
+  reconciliation `agree` and a high composite while the selected code is 5mg
+  and the prescribed code is 10mg. Its trace prints
+  `Product SYN-AMLO5-28 = claim SYN-AMLO10-28` with status `ok`.
+- The new `SYN-EPS-STRENGTH` entry is returned by `retrieve_tariff` as an
+  August 2026 governing provision. This presents the proposed matching check
+  as a dated Tariff clause rather than the separately labelled public-guidance
+  informed check required by the owner.
+- `checkEpsFields` on that same wrong-strength item returns `ready` with gap
+  `None`, contradicting the actual Gate 1 failure on Send.
+
+G owns the canonical corrections; P and R received the affected helper/trace
+contracts. W changed no shared source and ran no browser. The initial probe
+needed its static build environment defined before it could execute; only
+the successful execution above is evidence. These findings are pinned to
+`4765770`, not claims about a later repaired commit or a deployed site.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the
