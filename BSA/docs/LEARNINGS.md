@@ -51,6 +51,12 @@ audits and both named 1440 screenshots are retained; the image tool delivered D
 but blocked the second image at its limit. Do not describe that as both images
 visually accepted or as evidence of hosted release.
 
+Completed Part A `5b75e5f` and G's source-linked capture fixes
+`c3f69f2`/`c03ab21` integrate without changing U's raw-source renderer.
+Sixty-three scanner/operator/runtime tests and typecheck pass on this newer
+source. The earlier browser screenshots and audit timestamps remain pinned
+to `941933f`, not silently promoted to the new integration.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

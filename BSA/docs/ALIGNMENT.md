@@ -45,6 +45,11 @@ the run; the port is released. Two 1440 screenshots are preserved, but only D wa
 delivered for visual inspection before the image tool's limit. No hosted or
 complete visual acceptance is inferred from this bounded proof.
 
+The subsequent integration includes main `5b75e5f` and G `c3f69f2`/`c03ab21`.
+Sixty-three targeted scanner/operator/runtime tests and typecheck pass with
+source-linked capture retained after information responses. The actual browser
+proof remains pinned to its earlier `941933f`, pending final integrated release.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription

@@ -52,6 +52,11 @@ the second image delivery was blocked by the tool limit, so complete visual
 acceptance is not claimed. Port 4341 was confirmed released.
 This is not a hosted release or final integrated gate.
 
+Later integration now includes completed Part A main `5b75e5f` and G's
+`c3f69f2`/`c03ab21` source-linked capture repairs. The 63-test scanner,
+operator-fidelity and runtime selection plus typecheck pass. No browser rerun
+is claimed for this later source: the retained `941933f` proof stays immutable.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store

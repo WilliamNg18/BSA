@@ -38,6 +38,10 @@ widths and both modes. Raw D evidence remains unchanged after capture. Evidence
 is source-pinned in `docs/screens/task40-scanner/941933f`; this does not establish
 full C7 transitions, two-image visual acceptance, hosted release or backup parity.
 
+The completed Part A header and G's later source-linked capture repairs are
+integrated; 63 targeted scanner/operator/runtime tests and typecheck pass.
+Prior `941933f` browser evidence is not relabelled as a later-head run.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
