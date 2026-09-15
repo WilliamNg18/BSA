@@ -161,7 +161,9 @@ test("Task4 B applies only the suggested dispensing date, retains receipt and ne
   await page.goto("case/EX-24112");
   await startBReviewFromPharmacy(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).not.toBeChecked();
+  await page.getByRole("region", { name: "Operator decision", exact: true }).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(page.getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
 });
 
 for (const text of ["BB RK", "BB RK 21/08/26", "XP RK", "XP RK 21/08/26"]) {
