@@ -1,6 +1,6 @@
 # How it works and how it would scale
 
-Technical reference · 14 September 2026 · Synthetic demonstration
+Technical reference · 15 September 2026 · Synthetic demonstration
 
 The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides. This prototype does not calculate or approve payments.
 
@@ -37,10 +37,10 @@ The header compares Today with With the agent. Both perspectives read one sessio
 | Item | Today | With the agent |
 | --- | --- | --- |
 | EPS complete · EX-24107 | Complete evidence follows existing automatic pricing; no operator or model. | Both gates must pass independently before code-only release, with no operator action. |
-| EPS missing date · EX-24112 | Possible weeks-later referral is the comparison assumption. | Apply suggested correction, then human Send. If sent deficient, build a case for operator Apply suggestion and explicit disposition. |
-| Wrong EPS · SYN-FQ123-MISMATCH | Looking complete is not proof of source agreement; no random outcome. | Gate 1 passes format; Gate 2 detects the mismatch. Never auto-release; operator reviews the built case. |
+| Wrong-strength EPS · SYN-FQ123-MISMATCH | If the selected 5 mg AMPP has a dm+d price, the claim can process automatically for what was endorsed, not the 10 mg actually supplied. This prototype makes no payment. | Compare prescribed 10 mg / 28 and independently recorded actual supply 10 mg / 28 with selected claim 5 mg / 28. Gate 1 catches strength; unchanged Send fails Gate 2. Corrected EPS is rechecked and releases to existing pricing without operator action only when both gates pass. |
 | Unreadable paper · EX-24123 | Type 1 keys by eye; unresolved evidence may need RB2B. | Check before posting; fields are declared by the pharmacy, not read from the form. Human reconciliation is required; unreconcilable evidence abstains. |
-| Background, not additional playable cases | C and F retain background/history roles. | E's no-model behaviour is in EPS complete. No separate readable-paper demonstration. Reset makes the four cases replayable. |
+| Paper missing brand · EX-24112 | Missing brand/manufacturer evidence needs follow-up. | Post remains available. NHSBSA returns the missing field and rule, not a supplied brand value. The pharmacy suggests from its own records, explicitly applies, acknowledges and resubmits. Recheck can make paper ready, but an operator must press Release. |
+| Background, not additional playable cases | C and F retain background/history roles. | E's no-model behaviour is in EPS complete. No additional playable paper case. Reset makes the four cases replayable. |
 
 ## Why agentic, rather than another tool?
 
@@ -139,19 +139,19 @@ Identity, least privilege, secrets management, private networking and approved U
 5. Application code runs reconciliation, citation checks and the compliance/release gates; unavailable or disputed evidence cannot pass.
 6. Append-only records feed the existing operator queue surface. A human decides exceptions; authorised code-only items follow their separate eligibility path.
 
-### Case B sequence: missing-date EPS, proposed integration
+### Case W sequence: wrong-strength EPS, proposed integration
 
-1. Pharmacy → Pre-check: EX-24112 typed EPS endorsement is missing its date.
-2. Pre-check → Pharmacy: dated clause and gap; Apply suggested correction fills the draft only.
-3. Pharmacy → Ingress: human Send submits the current revision; sending without the correction remains possible.
-4. Ingress → Case builder: if deficient, read claim, source, product, history and effective-date clause; interpret only where required.
-5. Case builder → Code gate: reconcile facts, validate citation and requirements; missing date fails the sufficiency checks.
-6. Code gate → Operator: record evidence, clause/version, recommendation and draft; never automatically release the deficient item.
-7. Operator → Pharmacy: human Apply suggestion, then explicit Refer back with RB code and approved note, or a justified permitted disposition.
-8. Pharmacy → Ingress: human Apply suggested correction, then Resubmit; retain prior attempts.
-9. Ingress → Case builder: revalidate the resubmitted revision against source, claim and effective-date clause; recompute independent gate evidence.
-10. Case builder → Operator: append the new evidence and checks to the record; perform the required human re-check. Missing or disputed evidence still withholds release.
-11. Operator → Existing pricing: after satisfied checks and required review, explicit Release to pricing; pharmacy sees normal-schedule attribution, no agent payment.
+1. Pharmacy → Pre-check: SYN-FQ123-MISMATCH selects a 5 mg / 28 claim against independently retained prescribed 10 mg / 28 and actual supply 10 mg / 28.
+2. Pre-check → Pharmacy: Gate 1 identifies the precise strength mismatch and previews a 10 mg pack suggestion from the pharmacy's own records. Apply would change only the draft, not send. This is a cross-record comparison, not an invented Tariff clause.
+3. Pharmacy → Ingress: this sequence follows explicit unchanged Send, not the available Apply correction path. Retain the selected 5 mg claim and independent 10 mg source records.
+4. Ingress → Case builder: receive the submitted revision and gather the original prescription, actual-supply record and product catalogue separately.
+5. Case builder → Code gate: Gate 2 independently compares the received claim against those sources; it does not trust Gate 1's result or enrich the submitted copy.
+6. Case builder → Operator: the mismatch fails reconciliation. Build a case with prescribed and selected strengths, evidence, field/rule and safe referral or information advice, not a proposed correction value. Block automatic release: this is the proof the agent does not rubber-stamp.
+7. Operator → Pharmacy: a person explicitly requests correction or refers back with a field-and-rule-only explanation. Concrete correction values come from the pharmacy's own records, not the outbound NHSBSA note.
+8. Pharmacy → Ingress: review the pharmacy's 10 mg pack suggestion, explicitly Apply, acknowledge and Resubmit a corrected claim revision; retain prior attempts and independent source evidence.
+9. Ingress → Case builder: validate the corrected revision again against the prescribed and actual-supply records, catalogue and applicable requirements; missing or disputed evidence still blocks release.
+10. Case builder → Code gate: independently check the corrected EPS revision at both gates. Only passing requirements and established reconciliation permit automatic release; otherwise retain the operator case.
+11. Code gate → Existing pricing: corrected EPS with both gates satisfied releases to existing pricing, no operator action. Paper remains a separate human-final path. The agent calculates or approves no payment.
 
 ## Work with NHSBSA's existing systems
 
@@ -174,6 +174,30 @@ Read-only adapters access the image store, captured fields, dm+d-aligned product
 Proposed for production
 
 Remove patient identity before every model request, including image regions, notes and telemetry. Use a pseudonymous item key for authorised joins. Confirm data minimisation, lawful basis, retention, deletion, residency and supplier terms with the CISO and information governance team. Current synthetic data is not evidence these controls are implemented.
+
+### Scanner reconciliation preserves separate sources
+
+Proposed for production
+
+Accept the pharmacy declaration, scanner-captured values and per-field confidence, actual scan, and revision-bound Type 1 human capture separately. Reconcile them against deterministic Tariff requirements; never upgrade the scan because a declaration agrees. Paper always requires an explicit final operator Release; corrected EPS can release automatically only after both gates pass.
+
+### Hypothetical capture, not working character recognition
+
+Assumption to validate with NHSBSA
+
+The scanner comparison labels its prepared output "Extracted by character recognition (hypothetical)" and "synthetic; illustrates what NHSBSA's capture would produce". These are illustrative field values and confidence, not a real character-recognition service or model result. Keep the original scan and human capture provenance visible.
+
+### Human capture does not improve the original scan
+
+Proposed for production
+
+"Human-confirmed effective evidence; the original scan and hypothetical extraction are unchanged". Distinguish raw-source agreement from human-confirmed effective evidence. A later correction is an "Explicit pharmacy amendment (synthetic); previous submission evidence retained". Neither attestation nor amendment makes an unreadable original legible or rewrites earlier submissions.
+
+### A referral describes the gap, not the answer
+
+Proposed for production
+
+Outbound NHSBSA notes contain the missing field and governing rule only. Concrete correction values belong to a separately labelled pharmacy suggestion from its own records. Human Apply, acknowledgement and Resubmit are distinct actions; none invents an invoice, overwrites original evidence or releases paper without an operator decision.
 
 ### Data requested from NHSBSA and its use
 
@@ -326,6 +350,12 @@ Proposed for production
 
 EPS supplies typed messages, not an unreadable image or Type 1 task. Paper retains original capture and declared-not-read provenance. A pharmacy declaration cannot corroborate itself. Poor, conflicting or unconfirmed evidence stays manual or abstains.
 
+### How do you catch a wrong pick-list selection?
+
+Proposed for production
+
+Retain prescribed 10 mg / 28 and actual supply 10 mg / 28 independently from the selected 5 mg / 28 claim. Gate 1 flags strength; preview the 10 mg pack, then explicit Apply and Send. Unchanged Send fails independent Gate 2, builds an operator case and never auto-releases the mismatch.
+
 ### How do you stop an invented clause?
 
 Built in this proof of concept
@@ -379,6 +409,20 @@ Two weeks of operator time data and fifty de-identified items judged blind by tw
 Assumption to validate with NHSBSA
 
 No safe data access, no trustworthy dated evidence, material accuracy harm or no net preparation benefit. Reshape to rules or workflow if they suffice. Agree measurable stop thresholds before rollout; no sunk-cost justification for keeping a model.
+
+### Public evidence for the pick-list example
+
+public, NHSBSA
+
+[Endorsing correctly in EPS: actual medicinal product pack](https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack)
+
+Checked 15 September 2026; publication date not stated.
+
+> what you have endorsed and not what you have supplied
+
+When the selected actual medicinal product pack has a dm+d price, processing is automatic. Incorrect endorsements can also cause referred backs and payment delays.
+
+Proposed matching check, informed by public NHSBSA endorsement guidance
 
 ## Reference mapping, one example
 

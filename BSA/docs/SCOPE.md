@@ -6,6 +6,63 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Stream S follow-up: Tasks 39-40
+
+S owns only the How it works reference, its full SYSTEM-DESIGN counterpart,
+related tests and this contemporaneous five-register status. W owns the
+canonical wrong-strength/public evidence module; B/G own scanner and submission
+authority. This published reference preparation does not implement their gates
+or change store, demo, operator or pharmacy controls.
+
+The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
+paper case and scanner/field-only-referral boundaries. It reuses the G-approved
+isolated W/B foundation constants for the public NHSBSA quotation/link/check
+date and hypothetical/human-capture labels. Check and 1,714 units passed;
+the exact document parity and 14 FAQ topics are covered.
+
+The owner-authored foundation commits remain dependency history, not new
+S-authored domain behaviour. Actual G runtime integration, fresh exact-head
+CI and main/deployment/live observation remain pending. Do not treat WIP as
+the live product or an exact-main backup.
+
+## 2026-09-15: Task 39 W foundation, not live completion
+
+The latest owner brief replaces the playable EPS error with wrong strength:
+prescribed and actually supplied Amlodipine 10mg tablets, 28; selected claim
+Amlodipine 5mg tablets, 28; all other fields and dates correct. Today models
+automatic pricing of the selected priced pack; On must fail both independently
+performed gates while wrong. A source-backed Apply changes the selected claim
+only; a separate human Send or acknowledged Resubmit is required.
+
+This W increment supplies the pure check/correction, verified public-evidence
+copy and isolated source-headline guard with 33 passing focused units and check.
+G owns shared integration; B owns acknowledgement/fidelity/referral contracts;
+P/D/S/N/V own their consuming surfaces, calculations and browser evidence.
+The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` (paper, brand missing). Historical records are not rewritten.
+Source and passing units do not establish implemented lifecycle routing or
+live acceptance. No price, medicine-selection advice or NHSBSA error-rate
+estimate is introduced by this module.
+
+## B40 bounded foundation scope, 15 September
+
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
+
+New pure contracts cover C1 exact last-submission replication, C5 safe note
+generation and final-note validation, C6 revision/payload acknowledgement and
+EPS-only automatic recheck disposition, and C4 paper field/scan/hypothetical-OCR
+reconciliation. Explicit human capture stays separate from original submission.
+Canonical actions and historical seeds remain G-owned; C3/C7/C8 and the
+consumer UI/desktop/live proof remain integration obligations, not delivered
+behaviour from these standalone modules. This branch is published WIP, not a
+product or local backup. Current-main deployment observation remains required.
+The bounded foundation passed 48 units and check; these are not store-action
+or screen acceptance and do not satisfy the integrated C7 timing requirement.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

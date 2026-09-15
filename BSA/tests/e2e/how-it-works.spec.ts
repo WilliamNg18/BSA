@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
-import { DESIGN_LABELS, DESIGN_SECTIONS, DESIGN_TITLE } from "../../src/components/how-it-works/content";
+import { DESIGN_LABELS, DESIGN_SECTIONS, DESIGN_TITLE, PICK_LIST_SOURCE } from "../../src/components/how-it-works/content";
 
 for (const width of [1280, 1440]) {
   for (const theme of ["light", "dark"] as const) {
@@ -25,6 +25,13 @@ for (const width of [1280, 1440]) {
       });
       expect(otherCopy).not.toMatch(/\b(Azure|Microsoft|OpenAI|Foundry|Cosmos|Entra)\b/u);
       await expect(reference.getByRole("img")).toHaveCount(2);
+      await expect(reference.getByRole("heading", { name: "How do you catch a wrong pick-list selection?", exact: true })).toHaveCount(1);
+      const evidence = reference.locator("[data-public-evidence]");
+      await expect(evidence.getByRole("link", { name: PICK_LIST_SOURCE.title })).toHaveAttribute("href", PICK_LIST_SOURCE.url);
+      await expect(evidence).toContainText(PICK_LIST_SOURCE.quotation);
+      await expect(evidence).toContainText(PICK_LIST_SOURCE.label);
+      await expect(evidence.locator("time")).toHaveAttribute("datetime", PICK_LIST_SOURCE.checkedOn);
+      await expect(reference).not.toContainText(/missing[- ]date|Gate 1 passes format/iu);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
       const prose = await reference.locator("[data-design-prose]").allTextContents();
       await captureJson(testInfo, "task37-prose-informational", prose.map((text) => ({ text, words: text.trim().split(/\s+/u).length })));

@@ -4,7 +4,112 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
+
+### Refreshed published-source snapshot after the B foundation
+
+Actual main remains `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+The new open-PR query found W #102; its subsequent fetched published head is
+`4f3bc3a6356ca42c1a1613d1d717c193ab4217bc`. Inspection of the exact head shows
+pure strength/evidence modules and a retired-headline checker, not integrated
+store gates or C UI. A's newly published
+`1080ff7cd72eac58fbe6d3976800378ee1a8091a` changes only header/shell and
+related tests/docs; its exact outcome component was inspected, but no C runtime
+implementation or browser-centering acceptance is inferred.
+
+G's exact `ca0a48e3c554dfdd56cc369453810774f60206f8` adds canonical ACK
+types, independent EPS supply records, retained-source validation and optional
+paper brand/pack/form propagation through declaration/capture comparisons.
+Those changes address contract gaps but do not yet implement C6 ACK actions,
+corrected automatic release, C4 view or C8 seeds. B's published
+`c433f4546f50d9ecb09d3da5699ef5fd48365234` supplies five pure contracts only.
+The other active heads remain as pinned below. No requirement becomes runtime
+aligned solely because those source modules now exist.
+
+The follow-up explicitly exposes `reconciliationBasis` and amendment provenance,
+rejects another template's paper scan, and rejects non-finite field values.
+Fifty-one focused units and check passed; all actual store-cycle/live rows remain
+unverified until canonical integration and owning-screen adoption.
+
+Source baseline: actual fetched main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+Two fresh `gh pr list --state open` queries returned no open PRs. All named
+active published streams were checked with exact heads and `main..head` ancestry,
+then divergent file inventories; this is source classification, not live proof.
+
+| Published stream | Inspected head | Difference beyond actual main |
+| --- | --- | --- |
+| Coordinator | `cd973d3c6cdf5282011e0a1dc0b293a4866f12a5` | None |
+| G | `59efabf49e20c5b0d19b6b79c35a6bbc700ee4fb` | Five tracking documents only; no C runtime implementation |
+| R | `81a4f3e2c4eb06615b2d680cb51118b52eb5bc90` | None |
+| U | `e39bc180ba7edc1aa76dcc75d122e357fd5cb8f9` | None |
+| P | `2cefc0b60a6b94628ce1665cf062085532fb0434` | None |
+| O | `cd973d3c6cdf5282011e0a1dc0b293a4866f12a5` | None |
+| F | `71f8c9586beb11c2c45d8fad534e6a591b17f5e5` | None |
+| D | `9fe65204ec5e6bc324871e57dd54c2958baa152d` | None |
+| S | `8b2bae47036f9110ce05cf3808ae37f8b9b6decc` | None |
+| N | `c8709d7ae01cc1539b6cd8070f2dd6b4273bd144` | None |
+| V | `0ec6e424ef126aafbb5de30d600e6c6d4ae46931` | None |
+
+A/W/B had no new published remote ref at this audit snapshot; their session
+activity is not source evidence. Later published contracts require a new audit.
+Ancestor streams cannot contain a missing implementation absent from main.
+
+| Requirement | Classification on pinned main and inspected published streams | Evidence and remaining owner |
+| --- | --- | --- |
+| C1 exact as-submitted replica | Partial, fix required | `lifecycle.ts` revisions retain messages; `lifecycle-model.ts` projects source/capture; no exact headed replica in `case-pack.tsx`. B contract, G storage, O view. |
+| C2 corrected EPS, identical payload, no operator queue | Partial, fix required | `store.ts:212-219` restricts automatic release to `kind === "submission"`; `verification.ts` checks sources but rejects current mismatched-code schema earlier. G/W integrate. |
+| C3 paper demo complete/missing and always Post | Partial, fix required | `paper-pharmacy-capture.tsx:35-65` has both buttons and enabled Post; `paper-declaration.ts` only checks NCSO; all-paper release receipt and new two-field generic case still absent. G/P/U. |
+| C4 three-column scanner/reconciliation | Missing, build required | Existing `paper-capture.ts` and `capture-evidence.ts` separate Type 1, but no hypothetical field-confidence three-column model/view. B contract, G/O/U consume. |
+| C5 operator field/rule note, no values | Misaligned, fix required | `recommendations.ts` builds diagnostic notes from `disagreementFindings` values; operator final note checks only minimum length. B generator/validator; G all final actions; O errors. |
+| C6 ACK and channel-specific corrected release | Misaligned, fix required | No accuracy ACK field/action; `store.ts:459-475` resubmits drafts, every resubmission forces human review. B/G domain then P/O. |
+| C7 real cross-perspective cycles within one second | Partial and unverified | Existing store/Follow actions and timed suites cover old four fixtures and old manual EPS recheck, not new cases/ACK or all required current flows. G/P/O/F/D and V exact action-timed proof required. |
+| C8 simultaneous actual Paid/Action needed/recheck | Misaligned, fix required | `lifecycle-seed.ts` filters four legacy states and drops the old separate recheck example; no real resubmitted member in the four playable baseline. G new historical seeds only; no navigation synthesis. |
+| C9 documentation and refreshed screenshots | Partial, integration pending | Current SPEC/MEMORY still describe obsolete active scenarios and manual EPS recheck. Coordinator/B/S document new contracts; V owns refreshed live evidence. |
+
+B's standalone modules/tests in this commit are implementation foundation only.
+They do not turn these rows into aligned runtime or full proof. Required exact
+current-main build, deployment, live observation and final desktop matrix remain.
+Foundation evidence: 48 new units passed, followed by check (source-copy,
+typecheck, lint, production build). No browser was run without a coordinator
+lease. These tests prove the new pure contracts, not integration with the old
+main actions or updated four-case historical seeds.
+
 # Vision alignment
+
+## Stream S Tasks 39-40 follow-up
+
+| Reference item | Alignment in this change | Remaining evidence |
+| --- | --- | --- |
+| Retired EPS date headline and Case B diagram | Replaced in active S copy with W wrong-strength EPS and its unchanged-Send sequence | W/G integrated source review |
+| Four playable cases | Complete EPS, wrong-strength EPS, unreadable paper and paper missing brand, with existing IDs | Canonical G seed integration |
+| Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
+| Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate; B labels imported, raw-source versus human-confirmed basis explicit | Actual B/G runtime integration |
+| Public pick-list evidence | W's canonical public NHSBSA quotation, URL, checked date and proposed matching-check label render together; publication date remains unstated | No unverified study ranking or invented Tariff clause |
+| Evidence and completion | Check plus 1,714 full units passed, including 13 S tests; full document parity retained | Exact-head CI, G runtime integration, green main deployment and observed live change |
+
+## 2026-09-15: Task 39 W source comparison and integration boundary
+
+W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+`gh pr list --state open` returned no open PRs at this initial comparison;
+in-flight G/B/A branches were separately coordinated, not mistaken for main.
+G's subsequently published `30d211f` and `ca0a48e` add canonical source fields
+and the 5mg reference; W's standalone types remain structurally compatible.
+
+| Requirement | Inspected evidence and current state |
+| --- | --- |
+| Wrong strength rather than wrong pack/date | Main still has the old case/step contract. W's new source-bound module and content are implemented; G owns active seeds and gates, consumers own screens |
+| Independent prescription, supplied record and selected claim | G/W froze prescribed `product/strength/form/prescribedCode/quantity`, actual `supplyRecord`, and editable selected `dispensedCode/dispensedName`; W never rewrites source |
+| Today automatic selected-pack pricing | Verified NHSBSA condition: selected AMPP has a dm+d price. G must replace the old wrong-pack human route, not reuse a failed original-ledger comparison as today's rule |
+| On both gates, Apply and no uncorrected auto-release | W checks/patch units pass; actual store tests and mode-specific routing remain with G |
+| Public evidence | NHSBSA page and study abstract/bibliography confirmed 15 September; 39/44/34 counts and ranking unverified, omitted from asserted screen copy |
+| Headline migration guard | Standalone checker/tests implemented; active main still contains retired copy in G/S/P/D-owned files. V activates the root guard only after migration, not by weakening it |
+| Browser and live outcome | No W browser lease or execution; P/V must verify both perspectives at 1280/1440 and wrong-strength refer/apply/acknowledge/resubmit/recheck paths on integrated main |
+
+The source-copy scan found active matches in `demo-steps.ts`,
+`step-layouts.tsx`, `eps-pharmacy-capture.tsx`, How-it-works content/diagrams,
+and legacy case/reference/history/readout material. Historical evidence must
+be retained, not edited to invent correct old outcomes. The guard's only
+exception is the actual NCSO Tariff clause text, never whole files.
 
 ## Current live-first alignment
 

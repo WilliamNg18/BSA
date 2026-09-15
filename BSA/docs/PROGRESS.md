@@ -4,6 +4,76 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## Stream S: Tasks 39-40 reference alignment, published WIP
+
+S prepared the How it works follow-up on actual main `6418151`. Four-case
+copy and the sequence now describe W's wrong-strength EPS and P's paper
+missing-brand example, rather than the retired date headline. The fourteenth
+FAQ explains independent prescription/supply/claim evidence. B's proposed
+scanner reconciliation separates declaration, hypothetical character-recognition
+fields/confidence, original scan and revision-bound human capture. Paper stays
+human-final; corrected EPS requires both gates before code-only release.
+
+The follow-up consumes G-approved owner-authored W `fe0a521` and B `c433f45`
+plus `8151770` as isolated foundations, preserving all tracking entries.
+The public NHSBSA quote/link/check date and proposed-check label now reuse
+canonical W metadata. Scanner and human-capture/amendment labels reuse B's
+constants; no duplicated bibliography or improved-original-scan claim.
+
+Check and all 1,714 units in 100 files passed, including 13 S reference tests.
+The 50 prose panels have at most 54 words, informational only. SYSTEM-DESIGN
+matches the page text exactly. The new citation/retired-headline browser
+assertions have not run locally; no browser allocation or hosted claim exists.
+G's actual source/gate integration, exact-head CI, coordinator merge, green
+deployment and observed live change remain required for Task 39-40 completion.
+
+## 2026-09-15: W Task 39 domain and evidence handoff
+
+W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
+headline checker and 33 focused units from base main `6418151`. `npm run check`
+and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
+restored the existing lockfile without changing dependencies. No browser was
+started and no branch artifact is a backup.
+
+G/B/W froze A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` repurposed as brand-missing paper. G alone integrates canonical
+types, catalogue, seeds, gates and store actions. W's pure assessment compares
+prescribed and actually supplied 10mg/28 with selected 5mg/28; its correction
+copies only the selected claim code/name from the known 10mg catalogue entry.
+It does not submit, acknowledge, release, decide or calculate a payment.
+
+The NHSBSA endorsement guidance and the study bibliography/pooled prevalence
+are primary-source verified; error-type counts/ranking remain unverified.
+LEARNINGS and MEMORY record exact sources and limitations. V owns activating
+the standalone headline guard after G/S/P/D migrate active source, with no
+whole-file or history exemption. UI, real both-mode/both-gate lifecycle tests,
+round trips, screenshots, main merge, green deployment and observed live
+behaviour remain integration work. Owner actions for me: none.
+
+## 2026-09-15: B40 domain foundation, published incomplete
+
+Foundation `c433f4546f50d9ecb09d3da5699ef5fd48365234` is pushed and handed to
+G for integration. A bounded follow-up adds original-source identity validation,
+explicit raw-versus-human-confirmed reconciliation basis, pharmacy-amendment
+provenance and invalid field-value rejection. All 51 focused units and check
+passed. Store wiring and actual new-case state-transition evidence are pending
+G's canonical runtime; this branch has made no live completion claim.
+
+B owns only new submission-fidelity, correction-acknowledgement, referral-wording,
+paper-reconciliation and submission-recheck modules and their unit files.
+G owns canonical types, store, lifecycle, seeds and their integration; screen
+owners retain their UI. The modules preserve exact submission snapshots, bind
+human acknowledgement to the exact correction payload, generate field/rule-only
+referrals, reconcile three separate synthetic paper evidence sources and never
+automatically release paper. They do not yet change any production store action.
+
+Initial typecheck could not start because this worktree lacked `tsc`; `npm ci`
+restored the unchanged lockfile. All 48 new contract units and `npm run check`
+(source-copy, typecheck, lint, production build) passed before publication.
+No browser, live, deployment or backup verification is claimed.
+G integrates W+B after the independent header change; no self-merge or deployment.
+Owner actions for me: none.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

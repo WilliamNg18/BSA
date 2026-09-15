@@ -4,6 +4,40 @@ description: Read first at each task; correct facts in place rather than appendi
 ms.date: 2026-09-15
 ---
 
+## EPS error evidence
+
+Verified 2026-09-15: Um IS, Clough A, Tan ECK. *Dispensing error rates in
+pharmacy: a systematic review and meta-analysis.* Research in Social and
+Administrative Pharmacy. 2024;20(1):1-9.
+DOI <https://doi.org/10.1016/j.sapharm.2023.10.003>.
+The primary indexed abstract/bibliography at
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>
+confirms 62 studies, pooled prevalence 1.6% (95% CI 1.2-2.1) and database
+search January 2010-September 2023. The proposed 39/44/34 error-type study
+counts and ranking remain unverified; do not display them as established
+facts. The abstract's 44 refers to hospital-setting studies.
+Label exactly: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic". It is not an NHSBSA claim rate.
+
+Verified 2026-09-15: NHSBSA, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d.,
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Opening paragraph and **Reimbursement**, paragraphs 1-2, support incorrect-
+endorsement referrals/delays and automatic processing when the selected AMPP
+has a dm+d price. Short quote: "what you have endorsed and not what you have
+supplied". Label exactly: "public, NHSBSA". Preserve that conditional context;
+do not invent a Tariff clause for the proposed strength reconciliation.
+LEARNINGS records acquisition limitations and the bibliographic details.
+
+Task 39's synthetic source is prescribed and actually supplied Amlodipine
+10mg tablets, 28, with 5mg/28 selected in the claim. The actual supply record
+does not come from the selected claim. Apply corrects only its code/name from
+corroborated source records, never submits or decides. An editable 1% assumed
+share over total submitted claims may estimate pre-pricing mismatch catches;
+it is separate from the study rate and the referral-loop calculation.
+This W domain handoff is not live completion; G integrates the canonical
+four-case model before the consuming streams and live verification.
+
 ## Purpose and principle
 
 Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit
@@ -180,6 +214,40 @@ is superseded by the current desktop acceptance, not retrospectively passed.
 Do not infer acceptance from CI.
 
 ## Process model
+
+### Task 40 fidelity, scanner and corrected recheck contract
+
+The latest Part C contract supersedes the older manual-EPS-recheck rule below.
+NHSBSA displays the exact last pharmacy submission read-only under **As submitted
+by the pharmacy**. EPS retains every sent message field; paper retains the typed
+declaration and its revision-pinned synthetic scan. Human capture is separate
+derived evidence and never edits that submission. Only an explicit pharmacy
+resubmission supplies a new corrected revision.
+
+Paper's three columns are **Pharmacy's declaration (as typed)**, **Scan as the
+high-speed scanner sees it**, and **Extracted by character recognition
+(hypothetical)**. Per-field extraction values/confidence carry **synthetic;
+illustrates what NHSBSA's capture would produce**. Unreadable capture requires
+Type 1 confirmation before Type 2. Matching fields do not replace deterministic
+Tariff checks. Any scanned-paper release still requires the operator's press.
+
+Outbound NHSBSA notes name the field and rule and request accuracy, never the
+proposed corrected value. Exact source facts remain visible as evidence.
+Concrete correction/preview belongs only in the pharmacy's own suggestion card.
+Manual as well as generated outbound notes are checked at the final action;
+unsafe text produces a clear error, never a silent rewrite.
+
+Corrected resubmission requires **I confirm the corrected information is
+accurate**, bound to the current revision and exact corrected payload in both
+toggle modes. Off uses manual corrections, not hidden assistance. Editing or
+Apply invalidates acknowledgement. Satisfied corrected EPS proceeds to existing
+pricing without an operator; satisfied corrected paper is ready for one human
+Release. Every submission, referral reason, acknowledgement, resubmission and
+release remains append-only with its actual human or code actor.
+
+These are required contracts, not claims that the old runtime or live site
+already satisfies them. G owns canonical integration and historical seed states;
+the screen owners adopt the shared contracts before V's exact live verification.
 
 The owner's 13 September process brief supersedes the earlier referral-only
 workload model for Tasks 19-24. Treat the following supplied public figures as
