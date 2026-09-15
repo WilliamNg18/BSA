@@ -4,7 +4,15 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
-## 2026-09-15: B40 domain foundation, published incomplete
+## B40 canonical verification branch integration
+
+B's verification branch now includes published G
+`9b41cc2a2f1a60ff324d2121e5781a253064ef07` without changing G's canonical
+store/types/lifecycle/seeds. The merge preserves both streams' documentation
+and B's readable-blank repair. It is a validation workstream, not a merge to
+main, deployment, backup or completed C7 acceptance.
+
+## 2026-09-15: B40 readable-blank repair
 
 G's integration found a concrete pure-routing defect: confidently readable
 blank fields were being treated as unreadable capture. Two new regressions
@@ -13,6 +21,39 @@ scans, missing extraction observations or low confidence; known blank required
 fields instead produce a Type 2 referral. All 54 contract units and check passed.
 G's published `6054408` provides real ACK/audit actions, but new seed/routing
 integration and actual all-four/state fidelity proof remain pending.
+
+## 2026-09-15: W Task 39 domain and evidence handoff
+
+G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper
+foundations are imported. The canonical store now exposes explicit
+`setCorrectionAcknowledgement(caseId, expectedRevision, acknowledged)` and
+`reopenForAudit(caseId, expectedRevision, reason)` controls. Corrections require
+an exact current acknowledgement plus its real pharmacy history event; ordinary
+edits cannot forge one. Explicit audit preserves prior code-pricing history.
+Typecheck and 38 focused contract/module/action tests pass. Legacy UI consumers
+and the new channel-specific seeds/recheck behaviour remain integration work.
+
+W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
+headline checker and 33 focused units from base main `6418151`. `npm run check`
+and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
+restored the existing lockfile without changing dependencies. No browser was
+started and no branch artifact is a backup.
+
+G/B/W froze A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` repurposed as brand-missing paper. G alone integrates canonical
+types, catalogue, seeds, gates and store actions. W's pure assessment compares
+prescribed and actually supplied 10mg/28 with selected 5mg/28; its correction
+copies only the selected claim code/name from the known 10mg catalogue entry.
+It does not submit, acknowledge, release, decide or calculate a payment.
+
+The NHSBSA endorsement guidance and the study bibliography/pooled prevalence
+are primary-source verified; error-type counts/ranking remain unverified.
+LEARNINGS and MEMORY record exact sources and limitations. V owns activating
+the standalone headline guard after G/S/P/D migrate active source, with no
+whole-file or history exemption. UI, real both-mode/both-gate lifecycle tests,
+round trips, screenshots, main merge, green deployment and observed live
+behaviour remain integration work. Owner actions for me: none.
+## 2026-09-15: B40 domain foundation, published incomplete
 
 Foundation `c433f4546f50d9ecb09d3da5699ef5fd48365234` is pushed and handed to
 G for integration. A bounded follow-up adds original-source identity validation,
@@ -36,7 +77,55 @@ No browser, live, deployment or backup verification is claimed.
 G integrates W+B after the independent header change; no self-merge or deployment.
 Owner actions for me: none.
 
+W's follow-up records the coordinator's later C5 clarification: only the
+pharmacy card displays the proposed corrected pack and preview. Operator views
+may show submitted/source facts but only field/rule-based correction advice.
+The complete Off wrong-strength cycle requires a real later audit/query
+reopening after automatic pricing; an On failure followed by Off is not a
+substitute. G owns the explicit action, P/O/V its presentation and proof.
+
+G requested and W now implements `epsStrengthForAudience(assessment, audience)`.
+Both audiences receive copied source facts and checks; only the pharmacy
+receives the proposed patch/preview. Operator `suggestion` is strictly null.
+Four new authority tests bring W's focused total to 37; 120 combined new and
+existing EPS/correction/recommendation/gate regressions and check pass.
+This pure adapter still requires G/P/O wiring and live verification.
+
 ## Current release gate: live first, exact local backup
+
+### Tasks 39/40: shared domain integration reactivated
+
+Additive contract foundation is now defined and typechecked against current
+consumers: independent EPS `supplyRecord`, paper brand/pack/form facts and a
+revision/fingerprint correction acknowledgement. Existing action signatures
+remain intact. The fields do not yet enforce new runtime behaviour; W/B module
+integration and live acceptance remain pending.
+
+G rebased its existing integration branch onto main
+`641815137b36ab3e925dcc98c4738d0b150a75d1`. It owns canonical shared types,
+store, lifecycle, references, seeds and model tests. W owns new EPS strength
+modules; B owns new submission, acknowledgement, referral and paper modules.
+The header change merges first, then the shared domain integration, then its
+UI consumers. Contract coordination is active; no new runtime behaviour is
+implemented or accepted by this checkpoint. No browser lease has been used.
+
+Source preparation now validates a known claim-selection code independently
+when a separate supply record exists, rejects edits to that retained original
+record and prescribed fields, and preserves paper supply fields through
+declaration/capture adapters. The synthetic 5mg catalogue entry is available.
+Typecheck and 43 targeted source/capture tests pass; active seed and gate
+behaviour are not yet switched to Tasks 39/40.
+
+Draft edits now clear acknowledgement metadata and validate retained EPS source
+identity before advice can consume the draft. The same guard checks both the
+configured source and previous revision at submission. Canonical source
+comparison ignores object-key insertion order. W's module handoff is ready
+for integration; no new live completion is claimed.
+
+This is published WIP, not completion or a local backup. The coordinator's last
+reported live artifact was `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observation
+does not establish deployment or live acceptance of Tasks 39/40.
 
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote

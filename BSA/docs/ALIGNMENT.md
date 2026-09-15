@@ -6,6 +6,12 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+B's validation branch incorporates exact published G
+`9b41cc2a2f1a60ff324d2121e5781a253064ef07`. Store, types, lifecycle and seeds
+were compared against that SHA after merge resolution and are unchanged.
+Both documentation streams and B's `911a001` blank-field predicate are retained.
+This is source integration only; main remains the separately pinned source.
+
 ### Refreshed published-source snapshot after the B foundation
 
 G `6054408f5573bf975089d81e9300d66ec656a0f2` was inspected at its exact
@@ -84,6 +90,77 @@ lease. These tests prove the new pure contracts, not integration with the old
 main actions or updated four-case historical seeds.
 
 # Vision alignment
+
+### Canonical action integration
+
+ACK enforcement now checks revision, exact payload, current draft and an actual
+pharmacy acknowledgement event. Withdrawal and edits invalidate authority;
+history remains append-only. Explicit EPS audit reopening is a recorded human
+action preserving earlier pricing. W/B foundations are imported; active
+scenario/recheck wiring and consumer/live verification are still pending.
+
+## Tasks 39/40 initial domain alignment checkpoint
+
+Contract update: current consumers typecheck with optional EPS supply records,
+paper brand/pack/form and exact-payload acknowledgement metadata. Runtime
+validation remains drifted until the W/B modules and canonical state actions
+are integrated; no gate or live status is inferred from type availability.
+
+Source-adapter update: the retained-record guard and selected-code shape checks
+are implemented, with synthetic 5mg catalogue evidence and paper supply-field
+propagation. Typecheck and 43 targeted tests pass. Active scenario outcomes,
+W/B module integration and live acceptance remain pending.
+
+Draft authority update: source-changing drafts are rejected and incoming
+acknowledgement metadata is invalidated by the ordinary edit setter.
+These guards preserve source identity without treating an edit as attestation.
+
+| Item | Alignment | Change / ownership | Evidence |
+| --- | --- | --- | --- |
+| Current main model | Drifted against newly authorised scope | G integrates sole canonical state/types; W strength modules and B fidelity modules are separate owners | Read main `6418151`; existing mismatch remains pack-based and `EX-24112` remains missing-date EPS |
+| Four operational identities | Preserve, repurpose content | G/W/B agree A complete EPS, M wrong-strength EPS, D unreadable paper, B paper brand missing | Contract coordination only; no new seed mutation published |
+| Corrected resubmission | Drifted against new requirement | G wires B revision-bound accuracy acknowledgement and channel-specific recheck rules | Existing shared resubmit has no explicit accuracy acknowledgement |
+| Main and active branches | Audit in progress | B coordinates published/open-branch audit; G supplies canonical model facts | No blanket branch alignment or live pass claimed |
+| Live completion | Unverified for new scope | Coordinator tracks deployment; no branch build is the product or backup | Last coordinator-reported live SHA `08f4d399`; no new live observation in this checkpoint |
+## 2026-09-15: Task 39 W source comparison and integration boundary
+
+W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+`gh pr list --state open` returned no open PRs at this initial comparison;
+in-flight G/B/A branches were separately coordinated, not mistaken for main.
+G's subsequently published `30d211f` and `ca0a48e` add canonical source fields
+and the 5mg reference; W's standalone types remain structurally compatible.
+
+| Requirement | Inspected evidence and current state |
+| --- | --- |
+| Wrong strength rather than wrong pack/date | Main still has the old case/step contract. W's new source-bound module and content are implemented; G owns active seeds and gates, consumers own screens |
+| Independent prescription, supplied record and selected claim | G/W froze prescribed `product/strength/form/prescribedCode/quantity`, actual `supplyRecord`, and editable selected `dispensedCode/dispensedName`; W never rewrites source |
+| Today automatic selected-pack pricing | Verified NHSBSA condition: selected AMPP has a dm+d price. G must replace the old wrong-pack human route, not reuse a failed original-ledger comparison as today's rule |
+| On both gates, Apply and no uncorrected auto-release | W checks/patch units pass; actual store tests and mode-specific routing remain with G |
+| Public evidence | NHSBSA page and study abstract/bibliography confirmed 15 September; 39/44/34 counts and ranking unverified, omitted from asserted screen copy |
+| Headline migration guard | Standalone checker/tests implemented; active main still contains retired copy in G/S/P/D-owned files. V activates the root guard only after migration, not by weakening it |
+| Browser and live outcome | No W browser lease or execution; P/V must verify both perspectives at 1280/1440 and wrong-strength refer/apply/acknowledge/resubmit/recheck paths on integrated main |
+
+The source-copy scan found active matches in `demo-steps.ts`,
+`step-layouts.tsx`, `eps-pharmacy-capture.tsx`, How-it-works content/diagrams,
+and legacy case/reference/history/readout material. Historical evidence must
+be retained, not edited to invent correct old outcomes. The guard's only
+exception is the actual NCSO Tariff clause text, never whole files.
+
+Follow-up alignment: the coordinator confirms C5 overrides the older wording
+that could imply showing proposed corrections on every card. The exact pack
+proposal/preview is pharmacy-only; G's shared adapter and P/O/V consumers must
+enforce that split. The full Off cycle needs a real human audit/query reopen
+after the selected pack is priced; W's earlier suggested mixed-mode test may
+be additional coverage only, not proof of the required complete Off path.
+Both obligations were relayed to G/S/V. No new source API or lifecycle action
+is introduced by this documentation-only clarification.
+
+The next W source increment implements that audience projection rather than
+leaving it as a documentation-only promise. `epsStrengthForAudience` returns
+an operator card with `suggestion: null` and no serialised patch/preview, while
+retaining the identical factual records/checks. Its four new tests pass;
+the combined 120-regression run and check pass. G explicitly requested the
+helper and retains responsibility for integrating it into the canonical card.
 
 ## Current live-first alignment
 

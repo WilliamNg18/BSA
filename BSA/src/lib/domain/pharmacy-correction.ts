@@ -17,6 +17,9 @@ export function synchronisePharmacyDraft(draft: Omit<PharmacyCorrectionDraft, "a
   const product = PRODUCTS.find((entry) => entry.code === text || entry.name.toLowerCase() === text.toLowerCase());
   return { ...draft, endorsementText: paper.endorsementText,
     declaration: { fields: { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText,
+      ...(paper.brandManufacturer !== undefined ? { brandManufacturer: paper.brandManufacturer } : {}),
+      ...(paper.packSize !== undefined ? { packSize: paper.packSize } : {}),
+      ...(paper.form !== undefined ? { form: paper.form } : {}),
       ...(draft.declaration?.fields.prescriber !== undefined ? { prescriber: draft.declaration.fields.prescriber } : {}) },
     declaredAt: draft.declaration?.declaredAt ?? revision.at, provenance: "pharmacy_declaration" } };
 }

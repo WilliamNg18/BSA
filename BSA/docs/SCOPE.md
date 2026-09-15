@@ -6,13 +6,73 @@ ms.date: 2026-09-15
 
 # Scope register
 
-## B40 bounded foundation scope, 15 September
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+## B40 readable-blank scope, 15 September
 
 The readable-blank repair covers C4's distinction between missing information
 and unreadable capture: a high-confidence empty brand/pack on readable paper is
 a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
 retain Type 1 ordering. This 54-unit/check result does not establish the owning
 scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
+### G39/40 explicit-action checkpoint
+
+W/B pure foundations and revision-bound ACK/audit store controls are integrated
+as published WIP. Every corrected resubmission now requires accurate-current-
+payload acknowledgement in both modes. A human may explicitly reopen priced
+EPS for a later audit; toggling or navigating never does so. No new paper or
+strength workflow is declared live-complete from this checkpoint.
+
+## Tasks 39/40 shared-model integration: in progress
+
+The first additive contract checkpoint introduces independent pharmacy supply
+records and correction acknowledgement metadata without enabling new release
+behaviour. It is not a completed Task 39 or Task 40 implementation.
+
+Known mismatched EPS selections can now be represented for gate evaluation
+without rewriting the prescription or supply record. Paper supply fields are
+preserved across source-copy validation. This preparatory change does not claim
+the new wrong-strength scenario, acknowledgement or recheck flow is complete.
+
+Source identity is enforced on editable drafts as well as submissions.
+Acknowledgement metadata supplied through ordinary edits is cleared; an
+explicit acknowledgement action and runtime resubmission enforcement follow
+with B's module integration.
+
+The latest authorised scope replaces the active wrong-pack EPS example with
+prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
+`EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:
+`EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123`, and `EX-24112`.
+All active dates remain correct; C/F remain unclickable historical background.
+
+G alone integrates canonical state, types, lifecycle and seeds. W and B deliver
+isolated domain modules first; presentation owners follow the merged contracts.
+Required acceptance includes exact immutable submissions, independent captures,
+revision-bound correction acknowledgement, field/rule-only outbound notes,
+automatic eligible EPS rechecks and exclusively human paper releases.
+No task in this new scope is complete until merged, green-deployed and seen live.
+## 2026-09-15: Task 39 W foundation, not live completion
+
+The latest owner brief replaces the playable EPS error with wrong strength:
+prescribed and actually supplied Amlodipine 10mg tablets, 28; selected claim
+Amlodipine 5mg tablets, 28; all other fields and dates correct. Today models
+automatic pricing of the selected priced pack; On must fail both independently
+performed gates while wrong. A source-backed Apply changes the selected claim
+only; a separate human Send or acknowledged Resubmit is required.
+
+This W increment supplies the pure check/correction, verified public-evidence
+copy and isolated source-headline guard with 33 passing focused units and check.
+G owns shared integration; B owns acknowledgement/fidelity/referral contracts;
+P/D/S/N/V own their consuming surfaces, calculations and browser evidence.
+The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` (paper, brand missing). Historical records are not rewritten.
+Source and passing units do not establish implemented lifecycle routing or
+live acceptance. No price, medicine-selection advice or NHSBSA error-rate
+estimate is introduced by this module.
+## B40 bounded foundation scope, 15 September
 
 The follow-up preserves unreadable raw scan/OCR evidence even when a current
 human capture supports effective reconciliation. Its result explicitly names
@@ -30,6 +90,19 @@ behaviour from these standalone modules. This branch is published WIP, not a
 product or local backup. Current-main deployment observation remains required.
 The bounded foundation passed 48 units and check; these are not store-action
 or screen acceptance and do not satisfy the integrated C7 timing requirement.
+
+The later coordinator clarification narrows the card contract: proposed pack
+values and previews belong only to the pharmacy; operator findings may show
+the facts but advice and outbound notes name the field/rule without suggesting
+the correct value. Required Off round-trip coverage must start with actual
+Today pricing and a later explicit human audit/query reopening, not an invented
+queue row or a toggle-generated transition.
+
+W additionally supplies the G-requested pure audience adapter, preserving
+the existing evaluation/correction API. Source facts remain identical across
+the pharmacy/operator projections; a typed operator projection contains no
+proposed patch or preview. Four new authority regressions pass; consumer
+mounting and whole-flow live evidence are not claimed by these unit results.
 
 ## Live-first release and backup obligations
 
