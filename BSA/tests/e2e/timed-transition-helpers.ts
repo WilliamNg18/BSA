@@ -13,12 +13,14 @@ export async function assertVisibleHandoffWithinOneSecond(
     originState: string;
     destinationState: Locator;
     destinationText: string;
+    queue?: { link: Locator; tile: Locator; expectedTileText: string };
     requiredText?: { locator: Locator; text: string }[];
     lastEventText: string;
   },
 ) {
   await expect(input.action).toBeVisible();
   await expect(input.action).toBeEnabled();
+  if (input.queue && input.destination !== "NHSBSA") throw new Error("Queue timing requires the NHSBSA destination.");
   const followed = page.getByRole("region", { name: "Followed item", exact: true });
   await expect(followed).toContainText(input.followedId);
   const deadline = new TransitionDeadline();
@@ -30,6 +32,14 @@ export async function assertVisibleHandoffWithinOneSecond(
     await expect(followed.locator("p").first()).toContainText(input.lastEventText, { timeout: deadline.remainingMs() });
     await followed.getByRole("button", { name: `${input.destination} view`, exact: true })
       .click({ timeout: deadline.remainingMs() });
+    await expect(page).toHaveURL((url) => input.destination === "Pharmacy"
+      ? url.pathname === "/pharmacy/claims" && (url.searchParams.get("case") ?? url.searchParams.get("caseId")) === input.followedId
+      : url.pathname === `/case/${encodeURIComponent(input.followedId)}`, { timeout: deadline.remainingMs() });
+    if (input.queue) {
+      await input.queue.link.click({ timeout: deadline.remainingMs() });
+      await expect(page).toHaveURL((url) => url.pathname === "/queue", { timeout: deadline.remainingMs() });
+      await expect(input.queue.tile).toContainText(input.queue.expectedTileText, { timeout: deadline.remainingMs() });
+    }
     await expect(input.destinationState).toHaveText(input.destinationText, { timeout: deadline.remainingMs() });
     for (const requirement of input.requiredText ?? []) {
       await expect(requirement.locator).toContainText(requirement.text, { timeout: deadline.remainingMs() });

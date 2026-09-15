@@ -6,7 +6,9 @@ export class TransitionDeadline {
     this.startedAt = now();
   }
   elapsedMs() {
-    return this.now() - this.startedAt;
+    const elapsed = this.now() - this.startedAt;
+    if (!Number.isFinite(elapsed) || elapsed < 0) throw new Error("Invalid monotonic transition clock.");
+    return elapsed;
   }
   remainingMs() {
     const remaining = 1000 - this.elapsedMs();

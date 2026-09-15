@@ -28,3 +28,10 @@ it("accepts exactly one second only after all observations have completed", () =
   expect(deadline.finish()).toBe(1000);
   expect(() => deadline.remainingMs()).toThrow("one-second deadline");
 });
+
+it.each([Number.NaN, Number.POSITIVE_INFINITY, -1])("rejects invalid elapsed measurements: %s", (value) => {
+  let clock = 0;
+  const deadline = new TransitionDeadline(() => clock);
+  clock = value;
+  expect(() => deadline.finish()).toThrow("Invalid monotonic transition clock.");
+});

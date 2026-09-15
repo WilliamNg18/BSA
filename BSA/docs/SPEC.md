@@ -6,7 +6,8 @@ ms.date: 2026-09-14
 
 ## 1. Purpose and authority
 
-The current scope is Tasks 31-37 and the owner's four-case Vision.
+The current scope is Tasks 31-38, the owner's four-case Vision and its
+Requirements 1-5 addition.
 [MEMORY](MEMORY.md), [DECISIONS](DECISIONS.md) and [SCOPE](SCOPE.md) govern
 interpretation; [PROGRESS](PROGRESS.md) owns actual acceptance and deployment.
 This specification describes required behaviour, not a passing release verdict.
@@ -232,3 +233,73 @@ missing or dirty identities, mismatched commits, errors and retries cannot
 produce a full passing report. Preserve failed attempts and their evidence.
 Historical Tasks 25-30 images and interrupted review remain historical and
 unverified; removing mobile files does not turn them into a desktop pass.
+
+## 9. Always-visible recommendations and complete paper workflow
+
+This addition is required, not yet accepted by the earlier 55-check local
+rehearsal. That result predates Task 38.
+
+Every actual case-bearing Agent-On view shows a Recommendation card without
+opening a disclosure. Reference, monthly-model and pipeline-only pages do not
+invent a case or a card. Each card is bound to the visible item and the
+appropriate current draft, submitted revision or historical record.
+
+The shared recommendation object and card contain the dispensing-date clause
+and Tariff version, each requirement with its result, the missing/unresolved
+list, suggested values, corrected preview, recommended outcome and structural
+confidence signals. The card says **the agent verifies and advises; a person
+decides**. Complete evidence explicitly says there is nothing to add; missing
+evidence never becomes a fabricated value or a passing gate.
+
+Suggestions are concrete. For B, the proposed date is the dispensing date,
+21/08/2026, and the preview is `NCSO RK 21/08/26`. Apply writes exactly that
+preview into the visible field and highlights the change without sending.
+Manufacturer, pack and presentation suggestions come from the synthetic
+product/reference facts. A missing invoice price is a focused manual-entry
+request, **invoice price required; enter £x.xx**, not an invented amount.
+The pharmacy check, referred-back detail and operator controls use the same
+validated proposal rather than separate approximations of it.
+
+Paper D has explicit controls for **Show the form as NHSBSA's scanner will
+see it**, **Declaration complete** and **Declaration missing information**.
+The scanner view says **image cannot be read**. The card distinguishes the
+declared values from image evidence and previews supported corrections.
+Post paper remains an explicit enabled human action when information is
+missing; deterministic malformed-input errors remain visible, not silently
+treated as a successful submission.
+
+The same submitted D arrives in Type 1 with image and declaration shown
+separately. Human Confirm/Correct records actual capture evidence. Type 2
+then shows the always-visible card: matching evidence may recommend Sufficient
+but still requires the operator's Release action because the image was
+unreadable. Conflicts show the exact disagreement and a safe Refer back or
+Request information proposal. Applying a safe diagnostic fills the operator
+draft and records a same-state human event; it does not change ABSTAIN,
+failed verification, source evidence or release eligibility.
+
+The final human Ref/Info action revalidates and approves its actual note.
+The pharmacy sees the RB code or question, the recorded operator reason and
+the applicable reasoning, without pretending an unapproved generated draft
+was approved. Correction, resubmission, answer and human release remain
+separate actions on the same item.
+
+For all applicable transitions on the four cases, in Both and each single
+perspective, the origin and destination must visibly update within **1,000
+milliseconds measured from before the actual action click**. The budget
+includes Follow navigation and assertions for the actual destination item,
+state and required reason/answer. A monotonic clock independent of synthetic
+business timestamps enforces the remaining budget at each observation.
+There are no sleeps, post-delay starting points or five-second default waits
+disguised as a one-second result. Automatic A does not gain imaginary human
+controls merely to populate a matrix.
+
+The latest event remains the latest recorded event. For example, an On
+confirmation can be followed synchronously by code verification; show that
+verification event while still displaying the actual answer on the NHSBSA
+side. Navigation alone never appends a business event.
+
+The final blocking inventory must add visible card/preview coverage at both
+desktop widths and modes, the complete/missing/scanner/unreconciled paper
+branches, safe Ref/Info actions, explicit resubmission and answer handling,
+and the measured one-second transitions. Previous pre-addition passes are
+retained as bounded history, not relabelled as this acceptance.
