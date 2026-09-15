@@ -69,6 +69,12 @@ Both empty-string and null brand tests failed with Type 1 before the repair.
 Removing that value-completeness condition yields Type 2 field/rule referrals;
 the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
 The new result is 54 contract units plus check, not integrated live proof.
+U's scoped rendering tests prove that later human capture leaves all three
+original columns identical, unknown OCR dates never acquire the declaration's
+date, and stale/source-mismatched projections produce explicit errors. The
+portrait adapter retains uncertain source glyphs and wraps long values without
+ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
+1280/1440 legibility or replace the pending mounted browser and live checks.
 
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an

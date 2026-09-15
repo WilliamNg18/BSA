@@ -6,6 +6,25 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+### U40 source-comparison implementation boundary
+
+Scoped inspection of main `6418151` found the existing landscape prescription
+renderer and two-source capture surface, not the requested three-column view.
+B's `c433f45`/`8151770` define the source seam; G and O explicitly approved pure
+props and full-width insertion. This is not a fresh audit of every open branch.
+
+| C4 obligation | U source and remaining verification |
+| --- | --- |
+| Exact three source labels | Named column regions retain B's labels |
+| Declaration as typed | Original revision values and whitespace; no capture fallback |
+| Actual synthetic scan | Only replica.paperScan supplies image strings; projected capture rejected |
+| Hypothetical extraction | Each raw value/confidence retained; unknown OCR dates stay unknown |
+| Human evidence separate | Current capture is below, never substituted into original columns |
+| Readability at 1280/1440 | Full-width columns and wrapped portrait image; actual browser geometry pending |
+
+Eighteen focused units and typecheck pass. G's source facade, O's mounted view,
+coordinator-approved browser verification and observed live deployment remain gates.
+
 ### Refreshed published-source snapshot after the B foundation
 
 G `6054408f5573bf975089d81e9300d66ec656a0f2` was inspected at its exact

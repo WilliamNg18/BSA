@@ -22,6 +22,18 @@ strength workflow is declared live-complete from this checkpoint.
 
 ## Tasks 39/40 shared-model integration: in progress
 
+U's reactivated Task 40 scope is the new read-only three-column scanner
+comparison, original-source image adapter, rendered units and desktop browser
+assertion helper. Historical Task 27 is not restarted. O owns full-width
+Type 1/case-pack insertion and G supplies the canonical source facade.
+Eighteen units and typecheck pass; actual desktop legibility, accessibility and
+observed deployed-main acceptance remain pending.
+
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
 The first additive contract checkpoint introduces independent pharmacy supply
 records and correction acknowledgement metadata without enabling new release
 behaviour. It is not a completed Task 39 or Task 40 implementation.
