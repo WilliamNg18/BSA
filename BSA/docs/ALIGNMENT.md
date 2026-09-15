@@ -236,3 +236,14 @@ live checklist. No manual WCAG certification is inferred from zero axe findings.
 
 All drifted rows have a current stream owner. No larger follow-up or human-only
 blocker has been identified at this checkpoint.
+
+## Tasks 39/40 R audience alignment
+
+Main's shared card exposed correction values without an audience distinction.
+The R checkpoint introduces an explicit pharmacy projection and a fail-closed
+operator default, reusing W's exact source-fact projection and B's outbound
+field/rule wording. No source strength, quantity or product is redacted from
+read-only evidence. Current consumer mounting, the new G seed/gate integration
+and real live acceptance remain drifted until their owning streams verify them.
+The unused earlier duplicate Card draft remains a NONINTEGRATED historical
+patch artifact and was not replayed onto current main.

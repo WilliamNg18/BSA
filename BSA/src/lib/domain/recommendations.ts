@@ -10,6 +10,9 @@ import { evaluateRequirements, QUALITY_THRESHOLD } from "./rules";
 import { versionForDate } from "./tariff";
 import { evaluateItemVerification } from "./verification";
 import { concreteSuggestions } from "./recommendation-suggestions";
+import { evaluateEpsStrength, type EpsStrengthAssessment } from "./eps-strength";
+import type { PaperReconciliation } from "./paper-reconciliation";
+import { operatorRecommendationNote } from "./recommendation-audience";
 
 export const RECOMMENDATION_AUTHORITY = "the agent verifies and advises; a person decides";
 
@@ -57,6 +60,8 @@ export interface DiagnosticFollowUp {
 }
 
 export interface ItemRecommendation {
+  readonly strength?: EpsStrengthAssessment;
+  readonly paper?: PaperReconciliation;
   readonly caseId: string;
   readonly revision: number;
   readonly context: RecommendationContext["kind"];
@@ -126,6 +131,7 @@ export function deriveRecommendation(
   const draft = context.kind === "draft" ? state.pharmacyDrafts[caseId] ?? initialisePharmacyDraft(current, revision) : null;
   if (draft && draft.revision !== revision.number) throw new Error("Recommendation draft is stale.");
   const candidate = draft ? { ...revision, ...draft, number: revision.number } : revision;
+  const strength = candidate.epsPrescription ? evaluateEpsStrength(candidate.epsPrescription) : null;
   if (draft) {
     try {
       validateSubmissionSources({ ...candidate, precheck: undefined, caseId, revision: revision.number, channel: candidate.channel ?? "paper" }, revision.number);
@@ -205,11 +211,12 @@ export function deriveRecommendation(
   const preview = previewPharmacyCorrection(current, revision, baseDraft);
   const suggestions = concreteSuggestions(requirements, baseDraft, preview, date);
   const ordinary = !unsupportedSpecial && pack.gate.result === "PASS" && (pack.recommendation !== "SUFFICIENT" || assessment.releaseEligible);
+  const safeNote = operatorRecommendationNote({ requirements, version: version?.version ?? null, ...(strength ? { strength } : {}) });
   const fieldDisagreement = findings.some((finding) => finding.includes('"; '));
   const diagnostic: DiagnosticFollowUp | null = !ordinary && findings.length ? {
     kind: "safe_human_follow_up", caseId, revision: revision.number,
     outcome: fieldDisagreement ? "REFER_BACK" : "REQUEST_INFORMATION", rbCode: fieldDisagreement ? "RB2B" : "",
-    note: `${findings.join(" ")} ${capture ? "Please correct or confirm these fields against the paper form." : "Please provide readable evidence for operator comparison."}`,
+    note: safeNote,
     provenance: fieldDisagreement ? "reconciliation_failed" : "unverified",
     kernelRecommendation: pack.recommendation, kernelGate: pack.gate.result,
     clauseId: clause?.id ?? null, tariffVersion: version?.version ?? null, findings,
@@ -220,6 +227,7 @@ export function deriveRecommendation(
   const clauseLabel = clause?.title.split(":")[0] ?? "Unavailable provision";
   return immutable({
     caseId, revision: revision.number, context: context.kind, dispensingDate: date,
+    ...(strength ? { strength } : {}),
     clause, version: version?.version ?? null, versionLabel: version?.label ?? null, requirements, missing,
     suggestions: complete ? [] : suggestions, preview: complete ? null : preview, outcome,
     summary: complete ? `Complete against ${clauseLabel}, Version ${version?.label}; nothing to add.` :
@@ -247,7 +255,7 @@ export function deriveRecommendation(
       revision: revision.number,
       outcome: pack.recommendation === "SUFFICIENT" ? "ACCEPT" : pack.recommendation === "REFER_BACK" ? "REFER_BACK" : "REQUEST_INFORMATION",
       rbCode: pack.recommendation === "REFER_BACK" ? current.scenario === "D" || current.epsPrescription?.supplyEvidence ? "RB2B" : "SYN-NCSO" : "",
-      note: pack.draftToPharmacy ?? pack.composite.reasons.join("; "),
+      note: pack.recommendation === "SUFFICIENT" ? pack.composite.reasons.join("; ") : safeNote,
     } : null,
     verification: context.kind === "draft" ? null : history.filter((event) => event.revision === revision.number && event.verification).at(-1)?.verification ?? null,
     sourceAssessment: context.kind === "draft" ? null : assessment.verification,
