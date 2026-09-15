@@ -16,7 +16,7 @@ describe("current four-case source-backed recommendations", () => {
     const result = deriveRecommendation(s(), id);
     expect(result.requirements.length).toBeGreaterThan(0);
     expect(result.version).toBe("2026-08");
-    expect(Object.keys(result.signals)).toHaveLength(5);
+    expect(Object.keys(result.signals)).toEqual(expect.arrayContaining(["provisionFound", "sampleAgreement", "reconciliation", "imageQuality", "inCoverage"]));
     expect(recommendationForAudience(result, "operator")).toMatchObject({ suggestions: [], preview: null });
     expect(getDomainSnapshot()).toEqual(before);
   });
@@ -30,6 +30,8 @@ describe("current four-case source-backed recommendations", () => {
     expect(before.ruleAuthority).toBe("proposed_cross_record_check");
     expect(before.clause).toBeNull();
     expect(before.sourceGap).toBeNull();
+    expect(before.signals).toMatchObject({ provisionStatus: "not_applicable", readingStatus: "not_applicable",
+      imageStatus: "not_applicable", sampleAgreement: { agree: 0, total: 0 }, reconciliation: "conflict" });
     expect(before.requirements).toContainEqual(expect.objectContaining({ id: "selected_pack_matches", status: "not_met" }));
     expect(before.preview?.epsPrescription?.items[0].dispensedCode).toBe("SYN-AMLO10-28");
     expect(recommendationForAudience(before, "operator").operatorPreview?.note ?? "").not.toMatch(/10mg|5mg|\b28\b/);

@@ -12,7 +12,7 @@ describe("shared recommendation contract", () => {
   it.each(PLAYABLE_CASE_IDS)("contains every required field for %s without changing state", (id) => {
     const before = getDomainSnapshot(), r = deriveRecommendation(store(), id);
     for (const key of ["clause", "version", "requirements", "missing", "suggestions", "outcome", "signals", "preview", "provenance"]) expect(r).toHaveProperty(key);
-    expect(Object.keys(r.signals)).toHaveLength(5);
+    expect(Object.keys(r.signals)).toEqual(expect.arrayContaining(["provisionFound", "sampleAgreement", "reconciliation", "imageQuality", "inCoverage"]));
     expect(r.authorityLabel).toBe("the agent verifies and advises; a person decides");
     expect(getDomainSnapshot()).toEqual(before);
   });

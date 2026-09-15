@@ -249,7 +249,7 @@ export function deriveRecommendation(
   const clauseLabel = clause?.title.split(":")[0] ?? "Unavailable provision";
   return immutable({
     caseId, revision: revision.number, context: context.kind, dispensingDate: date,
-    ruleAuthority: strength ? "proposed_cross_record_check" : clause ? "retrieved_tariff" : "unavailable",
+    ruleAuthority: assessment.ruleAuthority ?? (clause ? "retrieved_tariff" : "unavailable"),
     ...(strength ? { strength } : {}),
     ...(paper ? { paper } : {}),
     clause, version: version?.version ?? null, versionLabel: version?.label ?? null, requirements, missing,
@@ -260,7 +260,7 @@ export function deriveRecommendation(
       diagnostic ? "Safe human follow-up; verification remains unsuccessful." : sourceGap ?? "Correction required before the submission is complete.",
     signals: { ...pack.signals, provisionFound: Boolean(clause), inCoverage: unsupportedSpecial ? false : pack.signals.inCoverage,
       sampleAgreement: context.kind === "draft" ? { agree: 0, total: 0 } : pack.signals.sampleAgreement,
-      reconciliation: context.kind === "draft" ? "not_established" : assessment.verification.reconciled ? "agree" : capture || channel === "eps" ? "conflict" : "not_established" },
+      reconciliation: strength ? pack.signals.reconciliation : context.kind === "draft" ? "not_established" : assessment.verification.reconciled ? "agree" : capture || channel === "eps" ? "conflict" : "not_established" },
     kernelRecommendation: record?.recommendation ?? pack.recommendation,
     kernelGate: record ? record.recommendation === "ABSTAIN" || record.recommendation === "NONE" ? "NOT_RUN"
       : record.checks.length ? record.checks.every((entry) => entry.pass) ? "PASS" : "FAIL" : "NOT_RUN" : pack.gate.result, diagnostic, sourceGap,

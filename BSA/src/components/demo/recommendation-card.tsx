@@ -109,7 +109,7 @@ export function RecommendationCard({
         <dt>Next step</dt><dd>{r.nextStep}</dd>
         <dt>Source provenance</dt><dd>{r.provenance}</dd>
       </dl>
-      <SignalList signals={r.signals} compact={compact} crossRecordOnly={r.ruleAuthority === "proposed_cross_record_check"} />
+      <SignalList signals={r.signals} compact={compact} />
       {onApply && r.context !== "recorded" && <Button type="button" variant="outline" data-pharmacy-action={pharmacy ? pharmacyAction : undefined} onClick={onApply}>{applyLabel ?? (pharmacy ? "Apply suggested correction" : "Apply suggestion")}</Button>}
     </section>
   );

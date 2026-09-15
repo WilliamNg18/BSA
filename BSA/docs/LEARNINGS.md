@@ -1527,3 +1527,9 @@ the independent canonical trace has been repaired; that work remains G-owned.
 
 Browser test discovery confirms the same eight R trace cases after migration.
 It is a source/inventory check only, not browser execution or live verification.
+
+G's optional applicability fields add metadata to the five structural signals;
+object-key count is no longer the signal count. Updated tests assert the five
+underlying facts and exactly five rendered rows, plus canonical non-applicability
+for typed strength records and the unchanged unreadable-paper quality threshold.
+The full owned/current-runtime selection passes 85 tests with check.
