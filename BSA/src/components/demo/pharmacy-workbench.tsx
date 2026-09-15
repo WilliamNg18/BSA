@@ -17,6 +17,7 @@ export function PharmacySubmissionPanel({ caseId, channel, controls = "correct-a
   const c = useLifecycleCase(caseId);
   if (!isPlayableCase(caseId)) return <p role="status">Background only, not playable.</p>;
   if (!c) return <p role="alert">Unknown pharmacy submission.</p>;
+  if (channel && playableCaseChannel(caseId) !== channel) return <p role="alert">This example requires its recorded submission channel.</p>;
   return (channel ?? (c.channel === "Electronic (EPS)" ? "eps" : "paper")) === "eps"
     ? <EpsPharmacyCapture caseId={caseId} compact controls={controls} />
     : <PaperPharmacyCapture caseId={caseId} compact controls={controls} />;

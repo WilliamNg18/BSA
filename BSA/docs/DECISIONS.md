@@ -2546,6 +2546,10 @@ Question: how should P adopt R's fail-closed Card audience default? Choice: publ
 
 Question: may P manufacture an incomplete B draft from the completed C8 seed? Choice: request a canonical source-bound new-submission initializer from G while retaining current claim drafts and immutable receipts; tie-breaker: one state, source fidelity and truthful scenario selection.
 
+Question: can the EPS selection label imply what was actually supplied? Choice: label it endorsed product/pack and show the independently retained supply facts separately, under O's explicit shared-component handoff; tie-breaker: submission fidelity.
+
+Question: should an outdated compact B/EPS invocation create a phantom example? Choice: show an explicit channel error with no submission control; tie-breaker: canonical four-case identity and source integrity.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

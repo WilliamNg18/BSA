@@ -5,6 +5,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { PharmacyDraftFields } from "@/components/demo/pharmacy-draft-fields";
 import { focusPharmacyCorrection } from "@/components/demo/pharmacy-draft-focus";
 import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
+import { EpsPrescriptionMessage } from "@/components/demo/eps-prescription-message";
 import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { applyEpsStrengthCorrection, EPS_STRENGTH_SELECTED_CODE } from "@/lib/domain/eps-strength";
 import { getDomainSnapshot, sessionCase, useAppStore } from "@/lib/store";
@@ -49,6 +50,18 @@ it("offers a neutral selected-pack control without changing prescription or supp
   expect(html).not.toContain("Recommendation");
   expect(update).not.toHaveBeenCalled();
   expect(draft).toEqual(before);
+});
+
+it("distinguishes the endorsed 5mg claim from the immutable actual 10mg supply record", () => {
+  const prescription = strengthDraft().epsPrescription!, before = structuredClone(prescription);
+  const html = renderToStaticMarkup(createElement(EpsPrescriptionMessage, { prescription }));
+  expect(html).toContain("Endorsed product and pack (synthetic)");
+  expect(html).toContain("SYN-AMLO5-28");
+  expect(html).toContain("Retained pharmacy supply record");
+  expect(html).toContain("Supplied product code");
+  expect(html).toContain("SYN-AMLO10-28");
+  expect(html).not.toContain("Product dispensed (synthetic)");
+  expect(prescription).toEqual(before);
 });
 
 it("highlights and focuses the actual selected pack after the shared source-backed correction", () => {

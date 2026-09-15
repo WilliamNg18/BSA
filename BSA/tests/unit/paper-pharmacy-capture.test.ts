@@ -49,7 +49,7 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).not.toContain("checked=");
     expect(getDomainSnapshot()).toEqual(before);
   });
-  it("requires an unchecked human reconciliation and missing prescriber beside the exact retained JB example", () => {
+  it("requires unchecked human reconciliation beside the retained JB declaration and its declared prescriber", () => {
     useAppStore.getState().setAgentEnabled(true);
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));
     expect(html).toContain("NCSO JB 27/08/26");

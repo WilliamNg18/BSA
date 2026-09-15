@@ -95,6 +95,10 @@ must show its original incomplete scenario rather than the completed C8 seed,
 and source-backed missing paper pack/form corrections need canonical support.
 These are raised with G, not implemented as pharmacy-local domain forks.
 
+P owns the O-released minimal EPS message label/supply-fact clarification and
+compact channel guard. Neither change edits the operator case-pack source or
+canonical lifecycle. New focus targets map to actual existing pharmacy fields.
+
 ### G39/40 explicit-action checkpoint
 
 Current-source linking and seeded readiness provenance are implemented:
