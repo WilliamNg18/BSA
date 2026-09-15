@@ -932,3 +932,10 @@ is inferred. Full integration/live rows remain unaligned until their own gates.
 The reported ready-paper future-tense copy is corrected from the same canonical
 paper result: raw-source and human-confirmed bases have distinct completed
 wording, while new drafts retain the pending verification statement.
+
+O audit and ready-paper controls now have a pinned four-test local browser
+pass with full-page axe. The duplicate status instruction was shortened
+without altering the canonical paper summary, required reason or action.
+The existing D prose regression passes, while a separate aggregate of the
+seeded-ready wrapper plus its nested mandatory card still requires a
+per-panel scope decision. No text is hidden or excluded to assert a pass.

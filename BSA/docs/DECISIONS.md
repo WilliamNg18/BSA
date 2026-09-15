@@ -2693,3 +2693,7 @@ Question: does code-prefilled corrected paper contradict an initially empty manu
 - Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
 - Question: what does the allocated eight-case trace pass establish? Choice: only source-pinned R development behaviour and axe results; retain incomplete findings and require separate full integration/main/live gates; tie-breaker: live-first evidence integrity.
 - Question: may successfully reconciled paper still say it will be verified? Choice: no; describe its actual recorded-source or human-capture reconciliation basis, retaining future wording only for pending drafts; tie-breaker: truthful phase and provenance.
+
+Question: how should the ready-paper status remain concise? Choice: retain the actual state label and use "Press Release.", preserving the explicit human action and unchanged prose limit; tie-breaker: clear, concise operator control.
+
+Question: can a copy counter justify shortening the mandated paper recommendation or hiding reason help? Choice: no; preserve both, record the nested-panel aggregate counterexample and resolve its actual per-panel scope before claiming copy compliance; tie-breaker: latest explicit content and truthful evidence.
