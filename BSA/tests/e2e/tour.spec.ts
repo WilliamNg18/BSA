@@ -9,6 +9,7 @@ import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./proc
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { dismissDecisionNotification } from "./perspective-helpers";
 import { REC_META } from "../../src/components/demo/label-meta";
+import { decisionNote, operatorAction, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 async function navigatePrimary(page: Page, label: string) {
   await navigateExisting(page, label);
@@ -294,7 +295,7 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
   const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
-  await expect(capture).toContainText("Image cannot be read");
+  await expect(capture).toContainText("Image unreadable; agreement unknown.");
   await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
   await expect(capture.getByRole("alert")).toBeVisible();
   await chooseProcessChapter(page, 4);
@@ -366,11 +367,12 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: /^Refer back / }).check();
-  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-  await page.getByRole("textbox", { name: /^Reason/ }).fill("Reset must preserve this human referral until explicitly confirmed");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+  await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
+  const approvedReason = await decisionNote(page).inputValue();
+  await performDecision(page, "REFER_BACK");
+  await expect(page.getByRole("main")).toContainText(approvedReason);
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
   await dismissDecisionNotification(page);
   await navigatePrimary(page, "Pharmacy check");
@@ -393,7 +395,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await expect(page.getByRole("switch", { name: "Agent: Off" })).not.toBeChecked();
   await navigatePrimary(page, "NHSBSA queue");
   await page.locator("a[href='/case/EX-24112']").first().click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorActionButtons(page)).toHaveCount(0);
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
@@ -401,7 +403,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
 });
 
 test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmation dialogs", async ({ page }) => {

@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { captureJson, expect, test } from "./fixtures";
 import { DEMONSTRABLE_LIFECYCLE_STATES, prepareUnseededState, startDemonstrationReview } from "./lifecycle-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { decisionNote, humanReleaseLabel, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
+import { decisionNote, humanReleaseLabel, operatorActionButtons, operatorDecision, operatorRadio, performDecision, type OperatorOutcome } from "./operator-action-helpers";
 
 const B = "EX-24112";
 const detail = (page: Page) => page.getByRole("region", { name: "Claim detail", exact: true });
@@ -73,6 +73,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await expect(history(page).getByRole("status")).toHaveText(humanReleaseLabel(true, "nhsbsa"));
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
   await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
+  await expect(operatorActionButtons(page)).toHaveCount(0);
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(humanReleaseLabel(true, "pharmacy"));
   await expect(page.getByRole("button", { name: "Stop following this case", exact: true })).toBeVisible();
@@ -108,7 +109,7 @@ test("Task25 manual EPS correction retains an unchecked snapshot until explicit 
   await operatorRadio(page, "ACCEPT").check();
   await record(page, "ACCEPT", "Human recheck confirms the manually corrected endorsement", false);
   await expect(history(page).getByRole("status")).toHaveText(humanReleaseLabel(false, "nhsbsa"));
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorActionButtons(page)).toHaveCount(0);
   await history(page).getByText("History and attempts (3)", { exact: true }).click();
   await expect(page.getByRole("list", { name: "Immutable pharmacy attempts" })).toContainText("not_checked · off");
   await expect(page.getByRole("list", { name: "Lifecycle events" }).getByText("Human decision recorded (synthetic).", { exact: true })).toHaveCount(1);
@@ -169,7 +170,7 @@ test("Task19 D blocks Type 2 before capture and A Today clears by code without a
   await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" }).locator("li")).toHaveCount(3);
   await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorActionButtons(page)).toHaveCount(0);
   await expect(page.getByRole("radio", { name: /^Refer back/ })).toHaveCount(0);
   await expect(page).toHaveURL(/\/case\/EX-24123$/);
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
@@ -180,7 +181,7 @@ test("Task19 D blocks Type 2 before capture and A Today clears by code without a
   await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.nhsbsa.off);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorActionButtons(page)).toHaveCount(0);
   await page.locator('a[href="/case/EX-24107/trace"]').first().click();
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("list", { name: "Deterministic clearance trace", exact: true })).toContainText("agent not invoked");
