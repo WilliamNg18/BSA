@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 import { expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 export const DEMONSTRABLE_LIFECYCLE_STATES: LifecycleState[] = [
   "in_review", "information_requested", "referred_back", "resubmitted", "paid", "submitted", "escalated", "released_to_pricing",
@@ -13,8 +14,8 @@ async function allClaims(page: Page) {
 
 async function submitReviewableB(page: Page) {
   await navigatePrimary(page, "Pharmacy check");
-  await page.getByRole("radio", { name: "EPS", exact: true }).check();
-  await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+  await choosePharmacyRadio(page, "EPS");
+  await choosePharmacyRadio(page, "NCSO missing date");
   await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO  RK");
   if (await page.getByRole("banner").getByRole("switch").isChecked()) {
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
@@ -51,10 +52,10 @@ export async function prepareUnseededState(page: Page, state: LifecycleState) {
   if (state === "released_to_pricing") {
     const enabled = await page.getByRole("banner").getByRole("switch").isChecked();
     await navigatePrimary(page, "Pharmacy check");
-    await page.getByRole("radio", { name: "EPS", exact: true }).check();
-    await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+    await choosePharmacyRadio(page, "EPS");
+    await choosePharmacyRadio(page, "Complete endorsement");
     await page.getByRole("banner").getByRole("switch").setChecked(true);
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
     const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
     await expect(receipt).toContainText("released to existing pricing, no operator action");
@@ -78,9 +79,10 @@ export async function prepareUnseededState(page: Page, state: LifecycleState) {
     await detail.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO RK 21/08/26");
     if (await page.getByRole("banner").getByRole("switch").isChecked()) {
       await detail.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-      await expect(detail).toContainText("Ready to resubmit");
+      await expect(detail).toContainText("Ready");
     }
-    await detail.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+    const enabled = await page.getByRole("banner").getByRole("switch").isChecked();
+    await detail.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
     await expect(detail.getByRole("status").first()).toHaveText(LIFECYCLE_LABELS.resubmitted.pharmacy);
   } else {
     throw new Error(`No public UI preparation is configured for missing state ${state}.`);
@@ -90,10 +92,7 @@ export async function prepareUnseededState(page: Page, state: LifecycleState) {
 
 /** Public UI only. Seed dispositions are historical, not editable review states. */
 export async function startDemonstrationReview(page: Page) {
-  await page.getByRole("link", { name: "Open pharmacy claim for another attempt", exact: true }).click();
-  const detail = page.getByRole("region", { name: "Claim detail", exact: true });
-  await detail.getByText("Demonstration replay", { exact: true }).click();
-  await detail.getByRole("button", { name: "Submit another demonstration attempt", exact: true }).click();
+  await submitReviewableB(page);
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await expect(page.getByRole("region", { name: "Shared case history", exact: true })).toContainText(/Awaiting operator|awaiting operator/);
