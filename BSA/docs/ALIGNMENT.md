@@ -339,3 +339,7 @@ pass on the current source. W identified separate canonical G defects in
 strength trace reconciliation and proposed-rule attribution; these remain
 explicitly unaligned until repaired in the kernel and verification owner.
 Current card evidence must not substitute for those wider repairs.
+
+R's new history regression covers the actual refer/correct/acknowledge/resubmit
+sequence, not only a constructed immutable object. Final full-suite, deployment
+and live acceptance remain unaligned while G/P/O/V integration is unfinished.

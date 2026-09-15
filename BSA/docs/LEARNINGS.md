@@ -1354,3 +1354,10 @@ treated paper B as EPS or expected the former date-gap preset. The migrated
 run passes all 47, preserving invalid-input, unsupported-SP receipt, original
 history and source-bound preview assertions. The original failed log remains
 a diagnostic artifact, not a passing result or release backup.
+
+The whole early integration CI still fails legacy suites even though the owned
+recommendation selection passes. This is not treated as a flaky run or waived:
+V routes shared browser compatibility, while G and the component owners retain
+their unit-test migration. The additional actual-paper-history test confirms
+that the new acknowledgement event does not retrospectively approve or repair
+an earlier submission's evidence.
