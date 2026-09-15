@@ -75,6 +75,7 @@ export function checkPharmacyCorrection(current: ExceptionCase, revision: CaseRe
     agreement: "Typed declaration format only; received-source reconciliation remains separate",
   };
   return { status: ready ? "ready" : "missing", facts,
+    ruleAuthority: assessment.ruleAuthority,
     version: assessment.tariffVersion, clause, checks, stages: ["PASS", "PASS", "PASS", "PASS", ready ? "PASS" : "MISSING"],
     gap: ready ? "None" : checks.filter((entry) => !entry.met).map((entry) => entry.label).join(", "),
     agreement: "Typed declaration format only; received-source reconciliation remains separate" };

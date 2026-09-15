@@ -283,6 +283,9 @@ export interface TraceStep {
 
 export interface Signals {
   provisionFound: boolean;
+  provisionStatus?: "found" | "not_found" | "not_applicable";
+  readingStatus?: "applicable" | "not_applicable";
+  imageStatus?: "applicable" | "not_applicable";
   sampleAgreement: { agree: number; total: number };
   reconciliation: "agree" | "conflict" | "not_established" | "not_applicable";
   imageQuality: number;
@@ -322,6 +325,7 @@ export interface RequirementResult {
 }
 
 export interface CasePack {
+  ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check" | "unavailable";
   caseId: string;
   tariffVersion: string;
   tariffLabel: string;
@@ -350,6 +354,7 @@ export interface CasePack {
 }
 
 export interface DecisionRecord {
+  ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check" | "unavailable";
   id: string;
   caseId: string;
   timestamp: string;
