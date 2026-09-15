@@ -32,7 +32,7 @@ export async function assertInlineDecisionRecorded(page: Page, outcome: Operator
   await expect(page).toHaveURL(/\/record$/);
   await expect(page.getByRole("heading", { name: /^Record DR-/ })).toBeVisible();
   const decision = page.locator("dl > div").filter({ has: page.getByText("Human decision", { exact: true }) }).getByRole("definition");
-  await expect(decision).toContainText(`${outcome} by Demo operator`);
+  await expect(decision).toContainText(`${outcome.replaceAll("_", " ")} by Demo operator`);
   const notice = page.getByRole("complementary", { name: "Decision notifications", exact: true });
   await expect(notice.locator("[data-decision-notice]")).toHaveCount(0);
 }
