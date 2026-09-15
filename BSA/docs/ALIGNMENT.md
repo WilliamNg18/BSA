@@ -14,6 +14,8 @@ was empty after #94 merged; W/B/G/A subsequently published independent work.
 Each owner must record the exact inspected main and active published branch
 heads for every "verify" requirement. The following rows are obligations and
 known gaps, not claims that unmerged contracts are live.
+Vision/current-desktop prose now distinguishes Today EPS pricing from assisted
+EPS verification and paper human release; this is policy alignment only.
 
 | Item | Classification at the baseline | Owner and required closure |
 | --- | --- | --- |

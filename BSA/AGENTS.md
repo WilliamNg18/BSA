@@ -41,7 +41,7 @@ Any change that lets the "agent" price an item, change a case state, bypass the 
 
 ## Hard constraints
 
-- **Synthetic data only.** No real prescriptions, patients, pharmacies, contractor codes or invented verbatim Drug Tariff text. Keep `SYN-` product codes and factual synthetic-source labels; the global notice is "All data is synthetic" once in the footer under Part A.
+- **Synthetic data only.** No real prescriptions, patients, pharmacies, contractor codes or Drug Tariff text. Keep `SYN-` product codes and factual synthetic-source labels; the global notice is "All data is synthetic" once in the footer under Part A.
 - **Static, offline, private.** No back end, no run-time network calls, no analytics, no external fonts at run time, nothing persisted except presentation preferences. `Reset demo` must return the application to its seeded state.
 - **Perspective is presentation only.** Pharmacy, NHSBSA and Both use the same operational store. Reset retains perspective while restoring seeded data and Agent Off. Human-applied suggestions/corrections may append explicitly attributed events but never submit or release an item by themselves. Demo navigation changes no operational state.
 - **One Agent control.** Only the top-right header may change `agentEnabled`. Pages read the shared state and conditionally show assistance actions; do not add page-local Agent switches or availability overrides.

@@ -12,6 +12,9 @@ Parts A-C supersede older conflicting case/header/re-check contracts. Part A
 has first-merge priority; W39 and B40 run alongside existing streams, with
 their domain changes integrated by G before their owning UI consumers.
 No previous local or live result establishes these new outcomes.
+The master-doc clarification does not relax the synthetic-only Tariff rule:
+assisted EPS automatic release, Today pricing as endorsed, and paper human
+release are distinct requirements, not one blanket automatic-gates rule.
 
 | Addition | Acceptance required | State |
 | --- | --- | --- |

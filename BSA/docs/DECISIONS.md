@@ -6,6 +6,7 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Parts A-C and the Tasks 39-40 authority boundary
 
+- Question: does the new master policy change synthetic-source restrictions or require proposed gates for Today pricing? Choice: preserve the original no-real-Tariff-text rule and explicitly separate Today EPS, assisted EPS and paper release in Vision/current contracts. Tie-breaker: change only the authorised scope and remove contradictory blanket wording.
 - Question: do the new case and release instructions require another permission question? Choice: apply the owner's explicit replacement now, preserving the governing principle and immutable historical evidence. Tie-breaker: the newest instruction already authorises the outcome changes.
 - Question: which work merges first? Choice: Part A's own header branch first, then W/B shared model changes through G, then owning consumers; backup/recovery and verification preparation continue in parallel. Tie-breaker: explicit merge order without stopping unrelated streams.
 - Question: how do four examples remain four? Choice: retain the four IDs; use `SYN-FQ123-MISMATCH` for wrong-strength EPS and repurpose `EX-24112` for paper with a missing brand/manufacturer and correct NCSO date. Tie-breaker: the smaller user-approved paper alternative and no fifth case.
