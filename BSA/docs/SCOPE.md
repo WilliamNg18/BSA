@@ -4,6 +4,13 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The current G candidate includes actual main `a10b000` and the narrowly
+offered V catalog/O focus repairs. G did not independently alter the
+runtime-inventory implementation imported from main. O's stable capture
+identity and focused-note visibility behavior preserve every browser
+focus/full-viewport assertion. Full check and 2,018 units pass on `6acb195`;
+this is not permission to run another browser without coordinator clearance.
+
 G's assembled sibling-panel runtime passes the complete check and 1,995
 units on `612df97`. O's later artifact-only `7ed760a` preserves the same ten
 browser scenarios and adds named 1440 px checkpoints using the existing

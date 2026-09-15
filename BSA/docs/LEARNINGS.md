@@ -4,6 +4,13 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The composed main-plus-repair candidate passes full checking and 2,018 units
+on `6acb195`. O addresses actual capture identity rather than cloned history
+object identity, and reveals the focused note after its value/layout changes.
+This targets the recorded focus loss and partial visibility without test
+scrolling, reduced thresholds or hidden controls. Only the pending browser
+run can establish whether all four observed counterexamples are resolved.
+
 Actual role separation needs both source implementation and consistent
 consumer selectors. V's ordered helper/ACK/response patches compose with A's
 final-state audit helper without changing production behavior. Integrated

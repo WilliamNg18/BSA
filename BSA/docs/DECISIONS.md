@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how should the repaired candidate adopt newly verified main? Choice: merge the actual `a10b000` main history, retain existing A/V migrations, and integrate only the offered V catalog and O focus commits. Keep the original browser failures and require a fresh leased run on a clean published build. Tie-breaker: one main product and exact evidence, not an alternative branch artifact.
+
 - Question: how are overlapping A/V test handoffs composed? Choice: apply their explicitly offered chronological commits, preserve prior test migrations and union only the five tracking histories; stop for any substantive code conflict. Validate combined types, lint and harness tests without treating discovery or owner-only results as fresh G browser acceptance. Tie-breaker: narrow integration with retained evidence.
 
 - Question: how are the four actual D browser failures resolved? Choice: preserve the On focus and Off full-viewport requirements and hand the exact traces to O for source repair; do not focus or scroll in the test to conceal behavior, relax assertions, or claim unexecuted D axe checks. Tie-breaker: actual operator usability and source-pinned evidence.

@@ -4,6 +4,13 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+G now includes actual main `a10b000`, V's canonical case-title expectations
+and O's concrete focus/whole-note repair. The composed `6acb195` passes the
+full check and 2,018 units across 120 files. The old six-pass/four-fail
+browser evidence is retained and is not promoted to this new candidate.
+Coordinator clearance, exact-head browser/CI and main/deploy/live acceptance
+remain separate gates.
+
 G integrated the isolated O structural, V assertion and O capture handoffs.
 
 The A settlement chain and V's ordered compatibility dependencies are now

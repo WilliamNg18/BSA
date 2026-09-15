@@ -4,6 +4,17 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## G repaired candidate after current-main integration
+
+G merged coordinator-confirmed main `a10b000a4aff97aafb17663479cc97583ec28bab`
+without replacing its test migrations, then integrated V's canonical
+case-title catalog and O's isolated focus/whole-note visibility repair.
+Full check and all 2,018 unit tests in 120 files pass on `6acb195`.
+The four failures on `491a808` remain historical counterexamples; the
+repaired candidate still requires a newly authorised full ten-case run.
+The current main deployment/live observation is coordinator-owned and
+pending confirmation; no G live or browser completion is claimed.
+
 ## G assembled authority-panel checkpoint
 
 G additionally integrated A's ordered final-state audit-settlement handoff
