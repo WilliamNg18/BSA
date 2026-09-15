@@ -1,4 +1,5 @@
 import { spawn, type ChildProcess } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, mkdir, readFile, writeFile, copyFile, rm, symlink, unlink } from "node:fs/promises";
 import { request } from "node:http";
 import { tmpdir } from "node:os";
@@ -13,6 +14,17 @@ let child: ChildProcess;
 let base: string;
 let errors = "";
 let headers: Record<string, string>;
+
+function waitForServer(app: ChildProcess, stderr: () => string) {
+  return new Promise<string>((resolve, reject) => {
+    app.once("error", reject);
+    app.once("exit", (code) => reject(new Error(`Server exited ${code}: ${stderr()}`)));
+    app.stdout!.on("data", (data) => {
+      const match = data.toString().match(/http:\/\/localhost:(\d+)/);
+      if (match) resolve(match[0]);
+    });
+  });
+}
 
 beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), "bsa-static-server-"));
@@ -31,14 +43,135 @@ beforeAll(async () => {
     env: { ...process.env, PLAYWRIGHT_PORT: "0" }, stdio: ["ignore", "pipe", "pipe"],
   });
   child.stderr!.on("data", (data) => { errors += data.toString(); });
-  base = await new Promise<string>((resolve, reject) => {
-    child.once("error", reject);
-    child.once("exit", (code) => reject(new Error(`Server exited ${code}: ${errors}`)));
-    child.stdout!.on("data", (data) => {
-      const match = data.toString().match(/http:\/\/localhost:(\d+)/);
-      if (match) resolve(match[0]);
+  base = await waitForServer(child, () => errors);
+});
+
+describe("actual runtime release inventory", () => {
+  let root: string, url: string, app: ChildProcess;
+  let stderr = "", expectedFailures = 0;
+  const build = { commit: "b".repeat(40), builtAt: "2026-09-15T20:21:08.983Z", dirty: false };
+  const paths = [
+    "assets/entry.js", "build-info.json", "hosting.config.json", "index.html",
+    "private-helper.mjs", "server.mjs", "staticwebapp.config.json",
+  ];
+  interface RuntimeFile { path: string; bytes: number; sha256: string; public: boolean }
+  interface ReleaseManifest { schemaVersion: number; commit: string; builtAt: string; files: RuntimeFile[] }
+  const fetchManifest = async (): Promise<ReleaseManifest> => {
+    const response = await fetch(`${url}/release-manifest.json`);
+    expect(response.status, stderr).toBe(200);
+    return response.json();
+  };
+  const expectFailure = async () => {
+    const response = await fetch(`${url}/release-manifest.json`);
+    expect(response.status).toBe(500);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    for (const [name, value] of Object.entries(headers)) expect(response.headers.get(name)).toBe(value);
+    expect(await response.text()).toBe("Static request failed");
+    expectedFailures++;
+  };
+
+  beforeAll(async () => {
+    root = await mkdtemp(join(tmpdir(), "bsa-runtime-inventory-"));
+    await mkdir(join(root, "assets"));
+    await copyFile(source, join(root, "server.mjs"));
+    await copyFile(policyFile, join(root, "hosting.config.json"));
+    await writeFile(join(root, "index.html"), "<html>Synthetic runtime</html>");
+    await writeFile(join(root, "assets", "entry.js"), "export const synthetic = true;");
+    await writeFile(join(root, "private-helper.mjs"), "export const privateHelper = true;");
+    await writeFile(join(root, "staticwebapp.config.json"), "{}");
+    await writeFile(join(root, "build-info.json"), JSON.stringify(build));
+    app = spawn(process.execPath, [join(root, "server.mjs")], {
+      env: { ...process.env, PLAYWRIGHT_PORT: "0" }, stdio: ["ignore", "pipe", "pipe"],
     });
+    app.stderr!.on("data", (data) => { stderr += data.toString(); });
+    url = await waitForServer(app, () => stderr);
   });
+
+  afterAll(async () => {
+    if (app && app.exitCode === null) {
+      const exit = new Promise<void>((resolve) => app.once("exit", () => resolve()));
+      app.kill(); await exit;
+    }
+    if (root) await rm(root, { recursive: true });
+    expect(stderr.match(/Static request failed/g) ?? [], stderr).toHaveLength(expectedFailures);
+  });
+
+  it("enumerates and hashes every actual public and private runtime file", async () => {
+    const result = await fetchManifest();
+    expect(Object.keys(result)).toEqual(["schemaVersion", "commit", "builtAt", "files"]);
+    expect(result).toMatchObject({ schemaVersion: 1, commit: build.commit, builtAt: build.builtAt });
+    expect(result.files.map((file) => file.path)).toEqual(paths);
+    for (const file of result.files) {
+      expect(Object.keys(file)).toEqual(["path", "bytes", "sha256", "public"]);
+      const bytes = await readFile(join(root, file.path));
+      expect(file.bytes).toBe(bytes.length);
+      expect(file.sha256).toBe(createHash("sha256").update(bytes).digest("hex"));
+      expect(file.public).toBe(["assets/entry.js", "build-info.json", "index.html"].includes(file.path));
+      expect((await fetch(`${url}/${file.path}`)).status).toBe(file.public ? 200 : 404);
+    }
+    expect(result.files.some((file) => file.path === "release-manifest.json")).toBe(false);
+  });
+
+  it("keeps strict headers, no-store and exact HEAD parity on the virtual endpoint", async () => {
+    const get = await fetch(`${url}/release-manifest.json?fresh=1`);
+    const body = await get.text();
+    const head = await fetch(`${url}/release-manifest.json`, { method: "HEAD" });
+    expect(head.status, stderr).toBe(200);
+    expect(head.headers.get("content-length")).toBe(String(Buffer.byteLength(body)));
+    expect(head.headers.get("content-type")).toBe("application/json; charset=utf-8");
+    expect(head.headers.get("cache-control")).toBe("no-store");
+    for (const [name, value] of Object.entries(headers)) expect(head.headers.get(name)).toBe(value);
+    expect(await head.text()).toBe("");
+    const post = await fetch(`${url}/release-manifest.json`, { method: "POST" });
+    expect(post.status).toBe(405);
+    expect(post.headers.get("allow")).toBe("GET, HEAD");
+  });
+
+  it("observes changed content and added files rather than trusting a stale manifest", async () => {
+    const first = await fetchManifest();
+    const entry = join(root, "assets", "entry.js");
+    const original = await readFile(entry);
+    try {
+      await writeFile(entry, "export const synthetic = false;");
+      await writeFile(join(root, "assets", "later.css"), "body{color:blue}");
+      const next = await fetchManifest();
+      expect(next.files.find((file) => file.path === "assets/entry.js")?.sha256)
+        .not.toBe(first.files.find((file) => file.path === "assets/entry.js")?.sha256);
+      expect(next.files.find((file) => file.path === "assets/later.css")).toMatchObject({ public: true });
+    } finally {
+      await writeFile(entry, original);
+      await unlink(join(root, "assets", "later.css"));
+    }
+  });
+
+  for (const name of [".env", "release-manifest.json"]) {
+    it(`fails closed for the unsupported runtime entry ${name}`, async () => {
+      await writeFile(join(root, name), "DO_NOT_EXPOSE");
+      try { await expectFailure(); }
+      finally { await unlink(join(root, name)); }
+    });
+  }
+
+  it("rejects a directory symlink without following it or returning partial hashes", async () => {
+    await symlink(directory, join(root, "linked"), process.platform === "win32" ? "junction" : "dir");
+    try { await expectFailure(); }
+    finally { await unlink(join(root, "linked")); }
+  });
+
+  for (const [name, value] of [
+    ["dirty", JSON.stringify({ ...build, dirty: true })],
+    ["invalid commit", JSON.stringify({ ...build, commit: "unknown" })],
+    ["non-string commit", JSON.stringify({ ...build, commit: [build.commit] })],
+    ["missing build time", JSON.stringify({ commit: build.commit, dirty: false })],
+    ["noncanonical build time", JSON.stringify({ ...build, builtAt: "2026-09-15" })],
+    ["malformed JSON", "{"],
+  ]) {
+    it(`rejects ${name} provenance without a success-shaped fallback`, async () => {
+      await writeFile(join(root, "build-info.json"), value);
+      try { await expectFailure(); }
+      finally { await writeFile(join(root, "build-info.json"), JSON.stringify(build)); }
+    });
+  }
 });
 
 afterAll(async () => {

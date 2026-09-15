@@ -6,6 +6,24 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Current live and delivery alignment
+
+Main/live `5b75e5f7711bf599b02ff9fab752781fa0685b00` contains Part A.
+Its final candidate and main four-shard CI and normal deployment are green.
+Actual live root at 1440px and case trace at 1280px satisfy exact On text,
+one line, 16px text, centre within 2px, Off absence/no gap and one global
+footer notice. The coordinator observed both modes and zero browser errors.
+The full 176-test route/perspective/step matrix remains CI evidence, not a
+claim that every live page was manually inspected.
+
+The virtual runtime inventory is implemented and covered by 41 static-server
+tests plus the full check on the coordinator branch, but is not yet deployed. Its response is
+computed from actual files, not a pre-written manifest. Build identity,
+public/private hashes, traversal/symlink boundaries and explicit failures are
+checked; root CSP is unchanged. Canonical production backup equality and
+clean offline recovery remain unaligned until D/O's actual artifact/job proof.
+Tasks 39-40 still require their integrated consumer and live acceptance.
+
 ## Part A candidate verification, exact source
 
 Full all-route/three-perspective/eleven-step On/Off, 1280/1440, actual-bounds

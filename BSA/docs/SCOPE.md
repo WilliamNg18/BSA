@@ -6,6 +6,21 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Current release and bounded inventory scope
+
+Part A is delivered on live main `5b75e5f` after green candidate/main CI and
+deployment, with actual coordinator root/deep-link On/Off/footer observation.
+The older candidate records below retain their original evidence boundaries.
+
+The coordinator's inventory change is delivery metadata only, not a
+business/model API. `GET`/`HEAD /release-manifest.json` returns
+`{schemaVersion: 1, commit, builtAt, files: [{path, bytes, sha256, public}]}`.
+Paths are relative, slash-separated and sorted. Actual private runtime files
+are hashed without exposing their contents; the virtual endpoint is not a
+file entry. No dependencies, CSP changes, scenario changes or infrastructure
+changes are added. Producer/backup commands, parity CI and clean recovery
+remain D/O work and are not satisfied by this endpoint's unit tests.
+
 ## Part A candidate acceptance boundary
 
 The complete 176-test header/Outcome route, perspective, width, eleven-step
