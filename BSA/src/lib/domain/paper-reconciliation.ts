@@ -85,7 +85,7 @@ export function reconcilePaperEvidence(input: PaperReconciliationInput): PaperRe
   if (!fields.length) throw new Error("Paper reconciliation requires field-level Tariff checks.");
   const poorCapture = !input.scan.readable || fields.some((field) => {
     const observation = ocr.get(field);
-    return !observation || observation.confidence < QUALITY_THRESHOLD;
+    return !observation || observation.value === null || observation.confidence < QUALITY_THRESHOLD;
   });
   const requiresType1 = poorCapture && !capture;
   const requests: ReferralRequest[] = [];

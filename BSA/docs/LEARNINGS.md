@@ -59,6 +59,36 @@ The latest full run remains 1,664 passing / 144 failing, with failures retained
 for the owning streams; unrelated timeout results were not retried into a
 claimed coherent pass.
 
+B's verification merge of G `9b41cc2` encountered tracking-document and
+repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
+records and retains B's later readable-blank fix, with no canonical store,
+type, lifecycle or seed differences from G. New store-level evidence will be
+published separately from this ownership-preserving source integration.
+
+The real-store fidelity tests now pass alongside the domain/action suites:
+67 tests in eight files, followed by check. The assertions compare the entire
+last submission object after actual actions, retain prior revision arrays and
+scan evidence, and do not use test-only state replacement or navigation-created
+history. The source still uses G's pre-new-seed `9b41cc2` runtime; this limitation
+is explicit rather than assuming old four-case coverage proves new scenarios.
+
+U's raw scanner representation exposed ambiguity in B's earlier null-blank
+test: null denotes Unknown, not a positively observed omission. The refined
+regression uses empty string for a known blank, retains null as Type 1
+uncertainty even with a high confidence figure, and leaves typed declaration
+null distinct from extraction evidence. The earlier two-failure reproduction
+and subsequent results remain historical rather than being rewritten.
+
+## 2026-09-15: B40 readable-blank regression
+
+G's paper integration exposed an incorrect `missing(observation.value)` test in
+the Type 1 predicate. A readable blank may have high extraction confidence:
+confidence describes the observation, not whether the mandatory field is filled.
+Both empty-string and null brand tests failed with Type 1 before the repair.
+Removing that value-completeness condition yields Type 2 field/rule referrals;
+the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
+The new result is 54 contract units plus check, not integrated live proof.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
