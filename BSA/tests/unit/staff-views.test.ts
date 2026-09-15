@@ -299,8 +299,8 @@ describe("Task 29 current-revision staff presentation", () => {
     store.setAgentEnabled(enabled);
     const c = sessionCase("EX-24123")!;
     expect(c.channel).toBe("Electronic (EPS)");
-    expect(c.claim.submittedVia).toBe("EPS claim message");
-    expect(CASES[0].claim.submittedVia).toBe("FP34C batch");
+    expect(c.claim.submittedVia).toBe("FP34C batch");
+    expect(CASES[3].claim.submittedVia).toBe("FP34C batch");
     const before = useAppStore.getState();
     const evidence = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
     expect(evidence).toContain("EPS claim message");
