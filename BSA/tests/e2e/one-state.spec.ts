@@ -1,6 +1,8 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { openQueueCapture } from "./paper-declaration-helpers";
+import { operatorAction, operatorActionButtons } from "./operator-action-helpers";
 
 test("one state: observer is read-only and retains every authoritative collection", async ({ page }) => {
   await page.goto("/pharmacy");
@@ -26,6 +28,7 @@ test("one state: observer is read-only and retains every authoritative collectio
         const initial = await readDomainState(page);
         await action("Open actual NHSBSA work", "NHSBSA", async () => {
           await navigatePrimary(page, "NHSBSA queue");
+          await openQueueCapture(page);
         });
         const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
         await expect(capture).toBeVisible();
@@ -33,6 +36,7 @@ test("one state: observer is read-only and retains every authoritative collectio
         await expect(product).toHaveValue(enabled ? "SYN-COCOD-100" : "");
         expect(await readDomainState(page), "Opening a capture form must not confirm the prior declaration").toEqual(initial);
         await action("Restart the assumed capture stopwatch", "NHSBSA", async () => {
+          await capture.getByText("Timing assumptions and routing", { exact: true }).click();
           await capture.getByRole("button", { name: "Restart timing illustration", exact: true }).click();
         });
         await action("Advance the assumed capture stopwatch", "NHSBSA", async () => {
@@ -75,7 +79,8 @@ test("one state: observer is read-only and retains every authoritative collectio
           await expect(page.getByText("Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.", { exact: true })).toBeVisible();
           expect(confirmed.itemProcesses["EX-24123"].capture?.fields.prescriber).toBeNull();
           await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
-          await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+          await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+          await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
         }
       });
     });
@@ -117,7 +122,7 @@ for (const enabled of [false, true]) {
         await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("EX-24112");
       });
       expect(await readDomainState(page), "Reading the receipt cannot create an operator decision").toEqual(submitted);
-      await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+      await expect(operatorActionButtons(page)).toHaveCount(0);
     });
   });
 

@@ -8,6 +8,39 @@ type Checkpoint = { action: string; state: unknown };
 export type DomainAction = (label: string, side: Side, perform: () => Promise<void>) => Promise<DomainSnapshot>;
 const epoch = Date.parse("2026-09-13T12:00:00.000Z");
 
+export function expectHumanRelease(before: DomainSnapshot, after: DomainSnapshot, id: string) {
+  const revision = before.caseRevisions[id].at(-1)!;
+  const verification = revision.verificationEnabled
+    ? { gate1: "pass", gate2: "pass", reconciled: true, released: true }
+    : { gate1: "none", gate2: "none", reconciled: false, released: true };
+  const record = after.records.at(-1)!;
+  const event = after.lifecycles[id].history.at(-1)!;
+  expect(record).toMatchObject({
+    caseId: id, revision: revision.number, decision: "ACCEPT", operator: "Demo operator",
+    reason: before.operatorDrafts[id].note.trim(), timestamp: event.at, synthetic: true,
+  });
+  expect(event).toMatchObject({
+    actor: "operator", from: before.lifecycles[id].state, to: "released_to_pricing",
+    revision: revision.number, processStep: "release_to_pricing", releaseOrigin: "human_decision",
+    recordId: record.id, decision: "ACCEPT", verification,
+    message: "Human review complete; released to existing pricing. No payment calculated.",
+  });
+  expect(after, "Only the explicit human release, its record and code-checked provenance may change").toEqual({
+    ...before,
+    records: [...before.records, record],
+    lifecycles: { ...before.lifecycles, [id]: {
+      ...before.lifecycles[id], state: "released_to_pricing", history: [...before.lifecycles[id].history, event],
+    } },
+    itemVerification: { ...before.itemVerification, [id]: verification },
+    itemProcesses: { ...before.itemProcesses, [id]: {
+      ...before.itemProcesses[id], releaseOrigin: "human_decision", routing: {
+        ...before.itemProcesses[id].routing, requiresHuman: false, pricingAuthority: "existing_rules_engine",
+      },
+    } },
+    caseStates: { ...before.caseStates, [id]: "human_decision_recorded" },
+  });
+}
+
 export async function readDomainState(page: Page): Promise<DomainSnapshot> {
   return page.evaluate(() => {
     const read: unknown = Reflect.get(window, "__BSA_READ_DOMAIN_STATE__");
