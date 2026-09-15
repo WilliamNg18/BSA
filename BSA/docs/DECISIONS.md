@@ -2612,6 +2612,8 @@ Question: how should old unit fixtures follow the new four-case contract? Choice
 Question: does an information response require another Type1 capture merely because its revision number changed? Choice: display G's source-linked recorded capture when its canonical lookup returns one, keeping unknown values and the answer separate; tie-breaker: preserve existing human evidence without invented work.
 
 Question: should a proposed cross-record check say that Tariff retrieval failed? Choice: use G's explicit authority metadata to label the provision not applicable, preserving real matching evidence and all five signal rows; tie-breaker: truthful source authority.
+
+Question: does code-prefilled corrected paper contradict an initially empty manual decision? Choice: test the initial manual review separately from the acknowledged, code-checked resubmission, then require one actual operator Release; tie-breaker: preserve C6's explicit human authority and truthful current state.
 - Question: should old tests recreate the retired operational date-gap case? Choice: no; use current strength/brand cases for playable journeys and explicit edited EPS values for calendar-validation negatives; tie-breaker: newest four-case scope while retaining safeguards.
 - Question: can a Card-only signal override repair a false kernel trace? Choice: no; the canonical owner repairs the kernel and rule authority, then R consumes those facts; tie-breaker: one truthful source of evidence.
 - Question: does a new acknowledged paper amendment update the old recommendation evidence? Choice: no; regression compares the entire original recorded recommendation after the actual resubmit action, including original triad and approval; tie-breaker: immutable historical fidelity.
