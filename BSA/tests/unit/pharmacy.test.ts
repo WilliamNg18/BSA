@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CASES, caseById } from "../../src/lib/domain/cases";
+import { CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
 import { PHARMACY_ASSUMPTION_DEFAULTS, validPharmacyDays } from "../../src/lib/domain/baseline";
 import { checkPharmacy, completePharmacyScenario, interpretPharmacyText, PharmacyCheckRunner, pharmacyDateCorrection, pharmacySnapshot, type PharmacyScenario } from "../../src/lib/domain/pharmacy-check";
@@ -7,7 +7,7 @@ import { immutableReceipt, pharmacyTimeline, type PharmacyReceipt } from "../../
 import { usePharmacyStore } from "../../src/lib/pharmacy-store";
 import { useAppStore } from "../../src/lib/store";
 
-const fixture = (scenario: PharmacyScenario) => caseById(scenario === "A" ? "EX-24107" : scenario === "B" ? "EX-24112" : "EX-24123")!;
+const fixture = (scenario: PharmacyScenario) => CASES.find((c) => c.scenario === scenario)!;
 const at = "2026-09-10T12:00:00.000Z";
 function receiptFor(scenario: PharmacyScenario, enabled: boolean, corrected = false): PharmacyReceipt {
   const c = fixture(scenario);
@@ -20,7 +20,7 @@ function receiptFor(scenario: PharmacyScenario, enabled: boolean, corrected = fa
 
 afterEach(() => { vi.useRealTimers(); useAppStore.getState().resetDemo(); usePharmacyStore.getState().reset(); });
 
-describe("scripted pharmacy checks", () => {
+describe("historical scripted pharmacy checks, not current playable scenario headlines", () => {
   it("A has a date-selected validated clause and every requirement met", () => {
     const c = fixture("A"), result = checkPharmacy(c, c.extracted.endorsementText);
     expect(result.status).toBe("ready");

@@ -9,7 +9,10 @@ export function PharmacyDraftCheck({ result, error, apply, recheck }: {
     <BoundaryTag cls="deterministic" />
     <p role="status" data-pharmacy-status>{error || (result?.status === "ready" ? "Ready" : result?.status === "missing" ? "Information missing" : "Human review required")}</p>
     {result && <details><summary className="cursor-pointer">Precheck evidence</summary>
-      <dl className="text-sm"><dt>Version / clause</dt><dd>{result.version ?? "Not retrieved"} / {result.clause?.id ?? "Not retrieved"}</dd>
+      <dl className="text-sm">
+        {result.ruleAuthority === "proposed_cross_record_check"
+          ? <><dt>Rule authority</dt><dd>Proposed cross-record matching check</dd><dt>Tariff clause</dt><dd>Not applicable</dd></>
+          : <><dt>Version / clause</dt><dd>{result.version ?? "Not retrieved"} / {result.clause?.id ?? "Not retrieved"}</dd></>}
         <dt>Exact gap</dt><dd>{result.gap}</dd></dl>
       {result.clause && <blockquote>{result.clause.text}</blockquote>}
       <ul aria-label="Requirement checkboxes">{result.checks.map((check) => <li key={check.id}>{check.label}: {check.met === true ? "met" : check.met === false ? "missing" : "unknown"}</li>)}</ul>

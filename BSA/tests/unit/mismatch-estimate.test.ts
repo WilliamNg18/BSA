@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { MANUAL_LOOP_MONTH_DEFAULTS, monthModel } from "@/lib/domain/baseline";
 import { EPS_ERROR_EVIDENCE, EPS_MISMATCH_ESTIMATE } from "@/lib/domain/eps-error-evidence";
-import { calculateMismatchEstimate, createMismatchSharePercent, selectMismatchEstimate } from "@/lib/domain/mismatch-estimate";
+import { calculateMismatchEstimate, createMismatchSharePercent, formatMismatchEstimate, selectMismatchEstimate } from "@/lib/domain/mismatch-estimate";
 
 describe("optional submitted-claim mismatch estimate", () => {
   it("converts the 1% UI default to a 0.01 fraction independently of the study", () => {
@@ -53,5 +53,16 @@ describe("optional submitted-claim mismatch estimate", () => {
     expect(selectMismatchEstimate("", null)).toEqual({ result: null, errors: {
       sharePercent: expect.any(String), submittedClaimVolume: expect.any(String),
     } });
+  });
+
+  it("never displays zero for a valid small positive expected count", () => {
+    expect(formatMismatchEstimate(1_000_000)).toBe("1,000,000");
+    expect(formatMismatchEstimate(.864192)).toBe("0.864192");
+    expect(formatMismatchEstimate(0)).toBe("0");
+    expect(formatMismatchEstimate(0.00001)).toBe("1E-5");
+    expect(formatMismatchEstimate(Number.MIN_VALUE)).not.toBe("0");
+    const result = selectMismatchEstimate(".00000000001", 100_000_000).result!;
+    expect(result.withAgent).toBeCloseTo(.00001, 12);
+    expect(formatMismatchEstimate(result.withAgent)).toBe("1E-5");
   });
 });

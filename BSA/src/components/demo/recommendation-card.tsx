@@ -23,6 +23,7 @@ export function RecommendationCard({
 }: RecommendationCardProps) {
   const r = recommendationForAudience(recommendation, audience);
   const pharmacy = r.audience === "pharmacy";
+  const suggestions = r.suggestions.filter((entry) => entry.field !== "selected_pack_matches" || !r.strength?.suggestion);
   const headingId = useId();
   const Heading = headingLevel === 2 ? "h2" : headingLevel === 3 ? "h3" : "h4";
   const Subheading = headingLevel === 2 ? "h3" : headingLevel === 3 ? "h4" : "h5";
@@ -32,8 +33,9 @@ export function RecommendationCard({
       {r.operatorApproved && <p className="text-sm">Operator-approved; the agent verified and advised.</p>}
       <p className="text-sm">{r.authorityLabel}</p>
       <dl className="grid grid-cols-2 gap-2 text-sm">
-        <div><dt className="text-muted-foreground">Clause</dt><dd>{r.clause?.title ?? "Unavailable"}</dd></div>
-        <div><dt className="text-muted-foreground">Tariff version</dt><dd>{r.versionLabel ?? "Unavailable"}{r.version && ` (${r.version})`}</dd></div>
+        <div><dt className="text-muted-foreground">Clause</dt><dd>{r.ruleAuthority === "proposed_cross_record_check"
+          ? "Not applicable to this proposed cross-record matching check" : r.clause?.title ?? "Unavailable"}</dd></div>
+        <div><dt className="text-muted-foreground">{r.ruleAuthority === "proposed_cross_record_check" ? "Dispensing-month reference" : "Tariff version"}</dt><dd>{r.versionLabel ?? "Unavailable"}{r.version && ` (${r.version})`}</dd></div>
         <div><dt className="text-muted-foreground">Dispensing date</dt><dd>{r.dispensingDate.split("-").reverse().join("/")}</dd></div>
         <div><dt className="text-muted-foreground">Evidence</dt><dd>{r.context === "recorded" ? "Recorded" : r.context === "draft" ? "Draft" : "Current"} revision {r.revision}</dd></div>
         {r.context === "recorded" && <div><dt>Assessment basis</dt><dd>Read-only reassessment of recorded sources, not a historical agent action.</dd></div>}
@@ -63,9 +65,9 @@ export function RecommendationCard({
         <Subheading className="font-medium">Corrected claim line preview</Subheading>
         <p className="font-mono">{r.strength.suggestion.claimLinePreview}</p>
       </div>}
-      {pharmacy && r.suggestions.length > 0 && <div className="space-y-2 text-sm">
+      {pharmacy && suggestions.length > 0 && <div className="space-y-2 text-sm">
         <Subheading className="font-medium">Suggested values</Subheading>
-        {r.suggestions.map((entry) => <div key={entry.field}>
+        {suggestions.map((entry) => <div key={entry.field}>
           <dl><dt>{entry.label}</dt><dd>{entry.value !== null ? <strong>{entry.value}</strong> : "Needs human input"}</dd>
             <dt className="text-muted-foreground">Source</dt><dd>{entry.source}</dd></dl>
           {entry.status === "needs-human-input" && onFocusField && <Button type="button" variant="outline" size="sm"

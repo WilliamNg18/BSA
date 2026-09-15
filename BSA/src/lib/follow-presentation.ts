@@ -1,4 +1,5 @@
 import { itemStateLabel, type CaseLifecycle, type CaseRevision, type HistoryEvent, type ItemProcess } from "./domain/lifecycle";
+import { isPaperReadyToRelease } from "./domain/submission-views";
 
 export function historyStateLabel(row: CaseLifecycle, index: number, side: "pharmacy" | "nhsbsa", enabled: boolean, before = false): string {
   const event = row.history[index];
@@ -15,6 +16,7 @@ export function followedChannel(row: CaseLifecycle, process?: ItemProcess, revis
 
 /** Gates run synchronously on submission, not while navigating between views. */
 export function followedLocation(row: CaseLifecycle, process?: ItemProcess): string {
+  if (isPaperReadyToRelease(row, process)) return "Type 2: awaiting operator release";
   switch (row.state) {
     case "released_to_pricing":
     case "paid": return "Released to existing pricing";
@@ -37,6 +39,9 @@ function historyAction(event: HistoryEvent): string {
   switch (event.processStep) {
     case "suggestion_applied": return "Operator applied suggestion";
     case "correction_applied": return "Pharmacy applied correction";
+    case "correction_acknowledged": return event.correctionAcknowledgement
+      ? "Pharmacy acknowledged correction" : "Pharmacy withdrew acknowledgement";
+    case "audit_reopened": return "Operator reopened for audit";
     case "type1_capture": return "Operator confirmed capture";
     case "release_to_pricing": return event.actor === "operator" || event.releaseOrigin === "human_decision"
       ? "Released after operator review" : "Released to existing pricing";

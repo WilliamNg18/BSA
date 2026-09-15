@@ -4,6 +4,13 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The G `815278f` consumer merge preserved source exactly and unioned five
+document conflicts. Its 69/74 unit selection exposes the expected removal
+of the duplicate Original pharmacy declaration view. The replacement is the
+canonical scanner declaration column, not an absent source or a new fixture.
+An additional 26-word ready-paper operator explanation is a separate O
+quality finding; the word limit and functional assertions were not relaxed.
+
 The claims keyboard flow has an additional real tab stop: required accuracy
 acknowledgement precedes Resubmit. For current paper, On Apply focuses the
 changed manufacturer field rather than an already-correct endorsement date.
@@ -90,11 +97,78 @@ No V browser or profiler was launched for these handoffs. The live build
 identity remained clean `6418151` at `2026-09-15T20:04:12.9214878Z`; identity
 freshness alone does not verify the new behaviour.
 
+O's integrated Type 1 surface places the date in its immutable submitted-source
+block instead of the duplicate declaration heading. The pharmacy integration
+test was the remaining P failure in the 1,839/122 full run. It now checks that
+real date and unchanged domain state; all 30 selected source/operator tests
+pass. Imported handoffs did not modify shared models or other owners' logic.
+
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
 records and retains B's later readable-blank fix, with no canonical store,
 type, lifecycle or seed differences from G. New store-level evidence will be
 published separately from this ownership-preserving source integration.
+
+The new G `4765770` merge conflicts were limited to B's later Unknown/Blank
+OCR refinement and its tests, which were retained. The first actual runtime
+selection passed 73/75; the two failures were extra Type 1 calls in B's old
+paper-resubmission test after a new acknowledged source was already ready.
+No store rule was weakened to make that old test pass.
+
+After adapting to the actual acknowledged-amendment path, the new matrix
+passes 91 combined units and check. Eighteen full D/W/paper cycles cover
+Off/On in Both, Pharmacy and NHSBSA without Reset inside a cycle. The remaining
+matrix cases cover every Send/arrival/Follow view, audit and information response.
+Deep equality now uses the canonical revision-pinned facade, not a fresh
+template scan. Actual queue and receipt adapters confirm corrected EPS has no
+operator row and paper has no Paid receipt until its real final human release.
+
+Stronger negative checks then reproduced two further gaps, not regressions in
+the passing fidelity assertions. A source-bound presentation proposal was not
+included in the final-note protected aliases: all four communication entry
+points accepted `Please provide capsules as the accurate presentation.` when
+paper presentation was missing. This fails in both modes. The amendment's
+image regions also omitted its manufacturer while OCR recorded it at 0.99.
+The first five checks failed, then the expanded Off/On set failed all nine.
+G and U were notified; source facts must be added by G's explicit amendment
+source builder, never backfilled by U from the declaration.
+
+At G's request, B added a focused D Post/Type 1/Request information/response
+test. The exact facade and `human_confirmed_capture` basis remain equal, but
+`itemProcesses` incorrectly changes routing to Type 1. The new assertion failed
+once against `4765770`; the prior 25 cases were not rerun in that targeted
+reproduction. G is introducing source-revision linkage rather than copying a
+previous capture into a new human event.
+
+G's bounded `cdd436b` patch adds presentation/pack protected aliases and actual
+supplier scan regions. B reran the exact negative checks once against that
+published repair; all nine pass unchanged. The combined eight-file result is
+107 passed and one failed (information-response Type 1 routing). Source-copy,
+typecheck, lint and production build pass. Canonical G/R source files are
+retained during B merge resolution; B's newer tests and historical failures
+are preserved instead of reverting to the older copied test version.
+
+Main `5b75e5f` integration changed header and requirement documentation, not
+G's domain. The full existing demo-shell file passed 102/104; its two failures
+use old B revision 1 and wrong-pack Gate 1 pass expectations. The exact new
+Part A policy selection then passed 72 tests, and typecheck passed. D and the
+coordinator received those separate outcomes; no test expectations were changed
+or whole-file/browser/live acceptance inferred by B.
+
+The final canonical source-link repair passed the exact previously failing
+assertion on its first rerun. All 110 tests in the eight-file B/runtime
+selection then passed, followed by check. The retained capture keeps its
+original revision, timestamp and human actor while information responses link
+to that source; no capture is replayed as a new event. This resolves the tenth
+negative without altering its expectation or the original failure record.
+
+The final test-only additions establish the inverse source-link condition:
+a new Post invalidates the old Type 1 evidence while retaining its historical
+event. C8's simultaneous states also have matching recorded code checks and
+pharmacy acknowledgement rather than computed-only labels. All 111 selected
+tests and typecheck pass. Check previously passed on that unchanged canonical
+runtime. This is B's green integration handoff, not browser timing, global
+legacy-consumer acceptance, current-main deployment or live completion.
 
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
@@ -108,6 +182,71 @@ The refreshed published-source audit now includes R/U/P consumer foundations
 and S's scanner production explanation. Their source-level progress is partial,
 not a current-main, browser or all-state acceptance claim.
 
+G's published source facade keeps a later information-only response separate
+from the actual paper submission. U's five real-store render tests preserve
+the strict matching revision, compare all three original columns before and
+after Type 1/release, and retain earlier source objects after acknowledged
+amendment. Combined scanner coverage is 25 passing tests with typecheck.
+The earlier `e45e0be` WIP passed four remote CI shards in `35015056421`, despite
+the recorded local subprocess deadline failures; no timeouts were weakened.
+Neither result establishes mounted browser geometry or live acceptance.
+
+An SVG title mixing a text child and an expression can trigger React's title
+child warning. One source-derived string preserves its accessible content and
+is covered by a no-console-error rendering assertion.
+
+The G-integrated scanner WIP passes check and its 26 new tests but does not
+pass broad CI: `35016956710` reports 207 failures and 1,592 passes after the
+scenario contract change. No new scanner test fails. Keep this distinct from
+the earlier four-shard green pre-integration WIP; route domain/consumer failures
+to their current owners rather than weakening them or claiming equivalence.
+
+A source region with an empty string is still a present region. Rendering
+"Not visible" inside it would invent a capture-uncertainty statement. U keeps
+that region visually empty and preserves the source's synthetic patient and
+pharmacy labels; OCR labels remain in their separate hypothetical column.
+
+The amendment visibility gap was in the canonical source snapshot, not the
+renderer. G `cdd436b` adds the actual brand/pack/form regions; U's canonical
+store/render test now finds each in the scan column after acknowledged
+resubmission. Forty-six selected tests and typecheck pass without a UI
+declaration-to-image fallback.
+
+O's isolated mount can be integrated without its backup-verifier lineage or
+unpublished unit migrations. The actual full-width scanner now compiles and
+passes the 42-test mounted/scanner selection. Four real-route browser checks
+are prepared, but a passing source renderer does not establish measured desktop
+geometry or axe acceptance. Conditional port 4341 is reserved by the coordinator.
+
+The real full-width mount passed all four desktop cases in 30.6 seconds at
+clean `941933f`, with actual scaled-font and column geometry checks rather than
+CSS-class proxies. Eight scoped axe audits report zero violations; raw sources
+remain identical after mode changes and explicit D capture. The local server's
+build identity matched the clean source and port 4341 was released. Full JSON
+audits and both named 1440 screenshots are retained; the image tool delivered D
+but blocked the second image at its limit. Do not describe that as both images
+visually accepted or as evidence of hosted release.
+
+Completed Part A `5b75e5f` and G's source-linked capture fixes
+`c3f69f2`/`c03ab21` integrate without changing U's raw-source renderer.
+Sixty-three scanner/operator/runtime tests and typecheck pass on this newer
+source. The earlier browser screenshots and audit timestamps remain pinned
+to `941933f`, not silently promoted to the new integration.
+
+The transferred two-file regression run initially failed four tests because
+active store evidence was compared with historical `CASES`, and ordinary paper
+was still expected to inherit an old automatic-pricing path. Active `caseById`
+lookup preserves the exact corrected underlying source dates while leaving
+historical records untouched. New-attempt assertions now verify immutable
+history, fresh revision and mandatory human judgement. All 43 tests pass;
+unknown fields, raw OCR confidence and no-inferred-image checks are retained.
+
+U's scoped rendering tests prove that later human capture leaves all three
+original columns identical, unknown OCR dates never acquire the declaration's
+date, and stale/source-mismatched projections produce explicit errors. The
+portrait adapter retains uncertain source glyphs and wraps long values without
+ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
+1280/1440 legibility or replace the pending mounted browser and live checks.
 The real-store fidelity tests now pass alongside the domain/action suites:
 67 tests in eight files, followed by check. The assertions compare the entire
 last submission object after actual actions, retain prior revision arrays and
@@ -131,6 +270,66 @@ Both empty-string and null brand tests failed with Type 1 before the repair.
 Removing that value-completeness condition yields Type 2 field/rule referrals;
 the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
 The new result is 54 contract units plus check, not integrated live proof.
+
+R's new Card correctly defaults to the operator audience. The pharmacy wrapper
+must explicitly select pharmacy or its existing real Apply/invoice controls
+disappear. The isolated adapter preserves that boundary. Partial-integration
+check and 24 focused consumer units passed; full Vitest retained 65 failures
+and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+## 2026-09-15: P Tasks 39/40 consumer integration
+
+The published `ca0a48e` contract was additive and did not yet contain the ACK
+setter or W module. G `9b41cc2` includes both, so P develops against that exact
+published head without stubs. The old UI required operator-approved exact-value
+advice for Apply; C5 correctly separates approval provenance from pharmacy's
+own source-backed correction. The existing comparison unit exposed that old
+API during typecheck and was updated with the consumer change.
+
+The native accuracy checkbox can be exercised as its own controlled component
+without replacing the store or manufacturing acknowledgement metadata. Five
+focused tests passed, covering positive/negative binding and stale events.
+No browser was launched; source/handler checks are not a live verdict.
+
+R's new Card correctly defaults to the operator audience. The pharmacy wrapper
+must explicitly select pharmacy or its existing real Apply/invoice controls
+disappear. The isolated adapter preserves that boundary. Partial-integration
+check and 24 focused consumer units passed; full Vitest retained 65 failures
+and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+
+G's functional C8 seed places B in a real completed-correction recheck. This
+makes old tests lacking a router fail when a real receipt now renders, and
+requires new-submission previews to distinguish original scenario inputs from
+the current claim. The five focused P suites now pass 31 tests, including the
+actual acknowledgement callback and seven real submission/referral cycles.
+Paper display marks changes from G's actual appliedFields, including values
+restored to their original source values. No browser lease was used.
+
+The old shared EPS message label conflated selected/endorsed and supplied
+products, which becomes false in the wrong-strength example. A read-only label
+repair plus separate supply facts preserves the distinction without changing
+the record. Thirty-four focused P tests now pass; existing-suite migration
+remains active, so an intervening full check on a mid-edit test was not claimed
+as a stable result.
+
+The source-bound factory now makes fresh B Post genuinely incomplete even when
+its current C8 claim is ready for release. Off still has no typed declaration,
+so its manual correction must supply brand, pack, form and prescriber rather
+than borrowing an Agent-On declaration. Actual button/callback tests cover that
+path and its operator-only release; 36 focused P tests pass.
+
+The eight-file migration retained 104 tests and exposed one new real UI defect:
+the shared supply-record section needed its existing evidence-context prefix
+when two messages render. After that repair, 140 tests in all 13 P suites pass
+together and check passes. Full Vitest still reports 170 failures / 1,637 passes;
+those shared migration failures remain preserved and assigned, never waived.
+
+Truthful strength checking exposed a historical test that projected generic
+supply fields onto the new strength identity. Using the original isolated
+generic source preserves manufacturer and missing-prescriber checks without
+forging the current scenario. All 194 owned P tests and check now pass.
+The latest full run remains 1,664 passing / 144 failing, with failures retained
+for the owning streams; unrelated timeout results were not retried into a
+claimed coherent pass.
 
 ## 2026-09-15: EPS error evidence, primary-source verification
 
@@ -215,6 +414,19 @@ Both empty-string and null brand tests failed with Type 1 before the repair.
 Removing that value-completeness condition yields Type 2 field/rule referrals;
 the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
 The new result is 54 contract units plus check, not integrated live proof.
+U's scoped rendering tests prove that later human capture leaves all three
+original columns identical, unknown OCR dates never acquire the declaration's
+date, and stale/source-mismatched projections produce explicit errors. The
+portrait adapter retains uncertain source glyphs and wraps long values without
+ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
+1280/1440 legibility or replace the pending mounted browser and live checks.
+
+U/B coordination identified that null and an empty OCR string must not be
+interchangeable. Null remains Unknown; an empty string is a known Blank and
+does not itself claim an unreadable image. Supplied confidence is independent.
+The 20-test follow-up protects both meanings, per-value accessible source
+descriptions and sub-certain percentage display. The first scanner checkpoint
+passed check; desktop geometry and live acceptance remain separate gates.
 
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
@@ -383,7 +595,71 @@ header centring, backup equality or clean offline recovery is claimed here.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
+### Task 40 Follow audit: new events must not fall through to old state labels
+
+At main `6418151`, Follow formats the actual last appended event and preserves
+release attribution using history prefixes. G's published `6054408` introduces
+`correction_acknowledged` for both acknowledgement and withdrawal, distinguished
+by the recorded payload, and `audit_reopened` for an explicit operator action.
+Without explicit consumer cases, the old formatter would describe the retained
+lifecycle destination rather than the new action. This is a source-level
+integration gap, not a reproduced live failure or a completed repair.
+
+B `8151770` publishes a pure re-check disposition, not an event or a new queue
+stage. F must consume G's revision-bound action/selector integration before
+showing paper ready to release or automatic corrected-EPS release. The earlier
+human referral remains historical even when the later release is automatic.
+ACK preparation and navigation cannot themselves submit, release or fabricate
+the simultaneous C8 month. No browser or timed acceptance ran for this audit.
+
+The published G `4765770` consumer integration demonstrates the new sequence
+through real actions: Off wrong-strength Send prices the selected pack before
+an explicit operator audit; acknowledged correction rechecks automatically,
+while paper remains ready for a human release. F's test uses both view buttons
+in all perspectives after each action and compares full domain snapshots and
+as-submitted evidence without dropping fields. It does not measure browser
+visibility or establish a one-second deadline result.
+
+Current paper status and location must agree on the latest revision. The first
+published readiness helper accepted any matching historical revision while the
+label checked the last event; F reported this stale-process risk to G for the
+shared fix. Current process readiness must not be replayed into historical
+event rows. Prior referrals remain human events even when a newer EPS revision
+is automatically released by code.
+
+G repaired that predicate in `cdd436b`: readiness now requires the last
+history event's revision to match the process. F's regression retains the
+seeded ready process, performs a real later paper referral/ACK/resubmission,
+and verifies that the old process cannot mark the newer revision ready.
+No operational fields are injected or reset during that cycle.
+
+The first full consumer integration passed check but reported 1,576 unit
+passes and 201 failures, including old scenario/action assumptions across
+shared owners and a static-server deadline failure. The 53 passing owned
+Follow tests do not replace that failed integration gate or live evidence.
+
 ### Task 39 N percent and denominator boundary
+
+After exact G `4765770` integration, the three missing-store-property errors
+are resolved without N writing the store or introducing an adapter.
+Source-copy/type/lint/build checks and 70 targeted tests pass, including real
+store edit/Reset/snapshot behaviour and unchanged old monthly totals.
+The earlier check failure and published pending-store status remain historical
+evidence; they are not counted as a clean first attempt.
+
+The desktop runner does not inherit per-call PowerShell environment assignments.
+An invocation missing `PLAYWRIGHT_PORT` used default 4173 rather than leased
+4340. Its four passing cases are preserved, but only the explicit corrected
+4340 invocation is cited as the requested diagnostic: 4/4, one worker, zero
+retries, unchanged deadlines, two clean axe reports and one inspected 1440 image.
+Both servers shut down and ports were confirmed released. No application source
+changed between the runs, and no duplicate test count or live claim is made.
+
+An exact snapshot-key inventory proves inclusion, not preservation during an
+action. V's one-line capture assertion separately proves the mismatch input
+cannot change during Type 1 work. N imports that supplied test hunk without
+rewriting either the observer producer or V's broader matrix. Typechecking
+passes; executing that instrumented matrix remains a separate gate.
 
 The existing monthly model uses a referral subset for its hours but exposes
 total submitted items separately. Reusing that subset for mismatch prevalence
@@ -392,6 +668,18 @@ shares also differ by 100: default text 1 must become numeric 0.01, not 1.
 The new helper retains fractional expected counts without inventing rounding
 or subtracting them from referral cohorts. W's 1.6% study context supplies no
 NHSBSA prevalence estimate. Consumer and live acceptance remain pending.
+
+Thirty isolated helper tests pass, including a percent-to-fraction underflow
+case. The first underflow fixture used a still-representable tiny decimal and
+correctly returned a tiny nonzero estimate; the fixture now tests a value that
+actually underflows during division by 100. The model was not weakened.
+Affected-file lint passes; rendered-state/browser coverage is authored only
+until the canonical-store handoff lands.
+
+The original four-decimal display could make a valid small positive expectation
+look like zero. The mismatch-only formatter now preserves significant digits,
+using scientific notation below 0.0001. This presentation repair is distinct
+from rejecting an input that actually underflows during percent conversion.
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
@@ -1595,3 +1883,87 @@ quantities in the immutable findings while rejecting them from the note.
 All fifty targeted recommendation tests then passed. A missing supply record
 is a source-agreement problem, not proof of a strength mismatch; the note
 selection now distinguishes those cases without copying a proposed value.
+
+G's current B seed is already acknowledged and ready for human release, not
+the prior date-gap example. New tests explicitly submit the brand-missing
+template before testing referral advice, and use the real wrong-strength item
+for source-backed correction. Re-evaluating clause requirements without G's
+specialised strength/paper checks falsely marked them unmet; R now projects
+the exact canonical check results and G's paper reconciliation facade.
+
+## Task 40 O first compiled mount
+
+New canonical-source tests caught an initial omission of the comparison in
+the ordinary pending-Type1 return path; it was corrected before publication.
+A test also initially mistook CSS `disabled:` classes for a disabled HTML
+attribute; it now checks the actual attribute. The resulting 15 O fidelity
+tests and 27 U scanner/store tests pass, with typecheck and targeted lint.
+These checks do not establish browser geometry, full accessibility or live
+completion. Existing fixtures based on retired missing-date/EPS-paper seeds
+and pre-acknowledgement resubmission APIs are being migrated separately.
+
+That four-file migration now passes all 66 original test cases. The coherent
+eight-file O/scanner/backup selection passes 132 tests in one run, rather than
+an aggregate assembled from partial runs. Typed prescriber evidence is not
+illegible-image inference: unknown-prescriber tests explicitly submit null
+through the canonical pharmacy action and retain the source object unchanged.
+The new browser regressions are listed only; no execution result is claimed.
+
+After G's source-linked-capture update, two old information-response
+expectations incorrectly demanded a fresh Type1 form. O's confirmation view
+now calls G's canonical capture lookup, and the tests assert the preserved
+null prescriber/empty endorsement, visible answer and absence of recapture.
+The earlier 139-pass/two-fail probe remains separate; the fresh nine-file
+run passes all 141 tests with check. U's pinned four-case scanner proof
+and eight scoped zero-violation axe results are separate from O's unexecuted
+audit/ready-release browsers and the still-pending backup recovery proof.
+
+The final two O-owned legacy unit files pass 23 tests after canonical-action
+migration. They retain rejection without acknowledgement, empty-reason
+release rejection, abstention protection and immutable queue observation.
+No failed historical run is rewritten, and no browser/deployment result
+is inferred from these focused unit checks.
+The first current-seed regression run failed 22 of 47 old tests: most still
+treated paper B as EPS or expected the former date-gap preset. The migrated
+run passes all 47, preserving invalid-input, unsupported-SP receipt, original
+history and source-bound preview assertions. The original failed log remains
+a diagnostic artifact, not a passing result or release backup.
+
+The whole early integration CI still fails legacy suites even though the owned
+recommendation selection passes. This is not treated as a flaky run or waived:
+V routes shared browser compatibility, while G and the component owners retain
+their unit-test migration. The additional actual-paper-history test confirms
+that the new acknowledgement event does not retrospectively approve or repair
+an earlier submission's evidence.
+
+A proposed strength matching check has no retrieved monthly Tariff clause and
+does not produce image reads. The audience card now communicates those
+non-applicable signals explicitly while still displaying exact prescription,
+selection and supply evidence. Its passing targeted tests are not proof that
+the independent canonical trace has been repaired; that work remains G-owned.
+
+Browser test discovery confirms the same eight R trace cases after migration.
+It is a source/inventory check only, not browser execution or live verification.
+
+G's optional applicability fields add metadata to the five structural signals;
+object-key count is no longer the signal count. Updated tests assert the five
+underlying facts and exactly five rendered rows, plus canonical non-applicability
+for typed strength records and the unchanged unreadable-paper quality threshold.
+The full owned/current-runtime selection passes 85 tests with check.
+## Task 40 O first compiled mount
+
+New canonical-source tests caught an initial omission of the comparison in
+the ordinary pending-Type1 return path; it was corrected before publication.
+A test also initially mistook CSS `disabled:` classes for a disabled HTML
+attribute; it now checks the actual attribute. The resulting 15 O fidelity
+tests and 27 U scanner/store tests pass, with typecheck and targeted lint.
+These checks do not establish browser geometry, full accessibility or live
+completion. Existing fixtures based on retired missing-date/EPS-paper seeds
+and pre-acknowledgement resubmission APIs are being migrated separately.
+
+That four-file migration now passes all 66 original test cases. The coherent
+eight-file O/scanner/backup selection passes 132 tests in one run, rather than
+an aggregate assembled from partial runs. Typed prescriber evidence is not
+illegible-image inference: unknown-prescriber tests explicitly submit null
+through the canonical pharmacy action and retain the source object unchanged.
+The new browser regressions are listed only; no execution result is claimed.

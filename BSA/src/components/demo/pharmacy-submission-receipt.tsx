@@ -35,7 +35,7 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
     <h2 className="font-semibold">Submission receipt</h2>
     <BoundaryTag cls={release || pricing ? humanRelease ? "human" : "deterministic" : "human"} />
     <p role="status">{release?.verification?.released ? "Paid on the normal schedule (synthetic)." : nextPath}</p>
-    {caseId === "EX-24123" && revision.channel === "paper" && !release && <p className="text-sm">Unreadable paper is never released automatically; an operator compares your declaration with the scan.</p>}
+    {revision.channel === "paper" && !release && <p className="text-sm">Paper is scanned at NHSBSA; release always requires the operator&apos;s press.</p>}
     <dl className="grid grid-cols-2 gap-3 text-sm">
       <KeyValue k="Receipt" v={`${caseId}:${revision.number}`} />
       <KeyValue k="Gate 1" v={verification.gate1} />
@@ -60,6 +60,9 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
             <KeyValue k="Declared quantity" v={revision.paperDeclaration.quantity?.toString() ?? "Not declared"} />
             <KeyValue k="Declared endorsement" v={revision.paperDeclaration.endorsementText || "Not declared"} />
             <KeyValue k="Declared dispensing date" v={revision.paperDeclaration.dispensingDate || "Not declared"} />
+            <KeyValue k="Declared brand or manufacturer" v={revision.paperDeclaration.brandManufacturer || "Not declared"} />
+            <KeyValue k="Declared pack size" v={revision.paperDeclaration.packSize?.toString() ?? "Not declared"} />
+            <KeyValue k="Declared form" v={revision.paperDeclaration.form || "Not declared"} />
           </dl>
           <p className="text-xs">declared by the pharmacy, not read from the form</p>
         </section>}

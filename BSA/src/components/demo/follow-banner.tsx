@@ -23,7 +23,7 @@ export function FollowBanner() {
       <dl aria-live="polite" className="flex min-w-0 gap-x-4">
         {sides.map((side) => <div key={side}>
           <dt className="font-semibold">{side === "pharmacy" ? "Pharmacy" : "NHSBSA"}</dt>
-          <dd>{itemStateLabel(row, side, enabled)}</dd>
+          <dd>{itemStateLabel(row, side, enabled, process)}</dd>
         </div>)}
         <div><dt className="font-semibold">Now</dt><dd>{followedLocation(row, process)}</dd></div>
       </dl>
