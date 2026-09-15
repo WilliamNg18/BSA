@@ -53,6 +53,13 @@ claimed yet. PR #110 remains draft; main, deployment and observed live SHA
 are still release gates. The last coordinator-confirmed live baseline is
 `5b75e5f7711bf599b02ff9fab752781fa0685b00` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, not this candidate.
+Recommendation-view URLs now come from the canonical case channel rather
+than the still-pending legacy cycle-kind table. All four cases retain their
+five views and the eleven-step audit walk; B uses paper, not the obsolete
+B/EPS combination from the retained failures. Unknown/background IDs fail
+explicitly. Typecheck/lint, seven catalog units and four-check discovery
+pass. All recommendation/axe assertions remain unchanged and unexecuted.
+
 V replaced the two stale browser title catalogs with one projection of the
 actual four `PLAYABLE_CASES`. This corrects B's paper and M's strength
 heading expectations underlying the 25 retained route failures, without

@@ -30,6 +30,11 @@ paper scenarios, use payload-bound ACK, preserve source-backed responses
 and target Apply in its real advice sibling. Timing primitives, runtime
 fades, rule authority and existing assertion thresholds remain unchanged.
 The remaining stale scenario expectations require their own explicit fixes.
+The recommendation-view adapter preserves twenty canonical case routes and
+the complete demo-step walk while correcting B's submission channel. It does
+not waive the historical heading-order axe failure or certify the full cycle
+driver, whose scenario/action migration remains separate.
+
 The route-title compatibility patch changes only shared test metadata:
 fixtures and operator helpers now use the same current canonical catalog.
 All four IDs/order, exact heading checks and native test identities remain.

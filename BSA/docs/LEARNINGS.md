@@ -34,6 +34,12 @@ widths. Six other cases pass with unrestricted axe. These four failures
 occur before D's axe/checkpoint calls, so neither a ten-case accessibility
 pass nor D screenshot acceptance exists. The exact served clean SHA, JSON
 and failure traces were retained before releasing the leased port.
+The retained recommendation failures started at B's obsolete EPS URL. Shared
+view routing now selects B paper directly from the canonical model, keeping
+all twenty case views and the eleven-step walk. Seven catalog tests,
+typecheck/lint and four-check discovery pass. The old axe failures remain
+recorded; no route has been skipped and no browser pass is inferred.
+
 The route tests and operator helpers had separate copies of the old B/M
 titles. A shared canonical catalog fixes that drift while retaining all
 exact header checks. Typecheck, lint and 13 focused units pass; native

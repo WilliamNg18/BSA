@@ -32,6 +32,11 @@ single ten-case 4335 run requires coordinator clearance and a clean published
 build. Previous CI and owner browser artifacts do not certify this layout.
 PR #110 remains WIP until exact candidate verification and coordinator-owned
 main/deployment/live acceptance.
+Recommendation audits now request the actual B paper route and both actual
+EPS routes through the canonical channel selector. Every five-view set is
+pinned by tests; all existing visibility and zero-violation assertions remain.
+This corrects setup, not the outcome of the retained browser failures.
+
 Stale B/M heading expectations are removed from duplicated test catalogs.
 The actual canonical titles are shared by route and operator consumers;
 new units pin the four expected entries and shared exports. Native identity
