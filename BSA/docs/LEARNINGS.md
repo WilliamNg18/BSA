@@ -51,6 +51,11 @@ there and retains deliberate 1440px captures.
 
 ## 2026-09-15: New evidence, scenarios and immutable-source contracts
 
+The master-policy review found older Vision/current-desktop shorthand still
+implied every submission queues and every automatic release needs proposed
+gates. The clarification distinguishes channels and modes without changing
+historical evidence or the standing synthetic-only Tariff restriction.
+
 W verified the Um/Clough/Tan article's PubMed record (PMID 37848350,
 DOI 10.1016/j.sapharm.2023.10.003), 62 studies, January 2010-September 2023
 search interval and pooled 1.6 per cent prevalence (95 per cent CI 1.2-2.1).

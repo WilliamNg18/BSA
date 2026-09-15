@@ -48,6 +48,8 @@ after #94. Its CI `35009958003` and deployment `35009957918` passed; V observed
 the clean live identity at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ at 18:59 UTC.
 That is not acceptance of the new header, wrong-strength or NHSBSA contracts.
+The master-doc follow-up makes the Vision/current-desktop wording explicitly
+channel- and mode-specific and preserves the existing synthetic-only Tariff rule.
 
 | Work | Owner and publication | Current boundary |
 | --- | --- | --- |

@@ -21,7 +21,7 @@ This is a proof of concept showing the art of the possible with agentic AI on on
 The header toggle is the story. Off is Today: what NHSBSA and the pharmacy have now. On is With the agent: the same step, solved. Every step shows both, side by side.
 Both perspective is the guided walkthrough: the problem in numbers (over 100 million items a month; most priced with no person; roughly four per cent touched by staff; 85,000 a month referred back), what they have now, what they are trying to achieve, then the agentic outcome step by step.
 Wherever the agent is On and the item is not automatic, a case is built, the agent advises, and one button acts on the advice: at the pharmacy, Apply suggested correction then Send or Resubmit; at NHSBSA, Apply suggestion then Release to pricing or Refer back. The agent never presses the final button.
-The cycle is live and shared: submit from the pharmacy and the item appears in NHSBSA's queue; satisfied at both gates means completed with no operator action and the pharmacy sees Paid on the normal schedule (released to existing pricing; the agent pays nothing); not satisfied means NHSBSA is notified, the operator opens a case with image, extracted fields, evidence and recommendation, applies the fix or refers back, and the pharmacy sees exactly why. Following a case shows the same item at every point; switching perspective shows exactly what that side sees, without Reset.
+The cycle is live and shared: submit from the pharmacy and the item reaches NHSBSA; EPS satisfied at both gates is released to existing pricing with no operator action and the pharmacy sees Paid on the normal schedule (the agent pays nothing); paper always needs the operator's release press. Not satisfied means NHSBSA is notified, the operator opens a case with image where applicable, extracted fields, evidence and recommendation, prepares a decision or refers back, and the pharmacy sees exactly why. Following a case shows the same item at every point; switching perspective shows exactly what that side sees, without Reset.
 Four real cases only, playable end to end and re-playable; everything else is labelled background.
 
 The four required playable examples are synthetic: complete EPS `EX-24107`,
@@ -185,7 +185,8 @@ to the existing referral model until overlap is defined. Existing cohort and
 
 Gate 1 checks typed EPS or declared paper against the dispensing-month provision.
 Gate 2 independently reconciles what arrived with source evidence and the claim.
-Only both passing and reconciled can produce automatic `released_to_pricing`.
+Assisted EPS requires both passing and reconciled for automatic
+`released_to_pricing`. Paper never takes that automatic release path.
 Unreadable or mismatched source evidence still needs people. The header selects
 the proposal for a human-initiated attempt; toggling never rewrites old release
 history. The user explicitly approved distinct labels for human releases:
@@ -193,7 +194,9 @@ history. The user explicitly approved distinct labels for human releases:
 operator Release button. No release here calculates or approves a payment.
 The owner also explicitly approved Off human release after the existing
 deterministic checks and explicit human judgement; both proposed gates remain
-`none`. Only the automatic path requires both proposed gates to pass.
+`none`. Today EPS automatic pricing follows the known selected priced pack,
+without claiming the proposed gates passed or detected a strength mismatch.
+An explicit later audit/query, not navigation or toggling, can reopen that item.
 
 One store also holds revision-bound operator and pharmacy drafts, current
 `itemVerification`, and presentation-only `demoStep`. `DEMO_STEPS` is the frozen
