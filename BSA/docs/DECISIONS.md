@@ -2480,3 +2480,10 @@ Question: must pharmacy corrections wait for an NHSBSA note containing the answe
 Question: how should simultaneous pharmacy tiles become plausible? Choice: project all actual lifecycle cohorts side by side and let G own seed/history state, never populate tiles by navigation; tie-breaker: one authoritative state.
 
 Question: how should the required checkbox be tested without a browser lease? Choice: execute its actual native-input callback against the canonical store and retain SSR as a separate read-only assertion, without claiming browser or timing acceptance; tie-breaker: exact evidence and owner-controlled browser slots.
+
+## Tasks 39/40 R audience decisions
+
+- Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
+- Question: does NHSBSA supply a corrected value to the pharmacy? Choice: no; B's structured field/rule requests generate the canonical operator note, while the pharmacy derives its own values from records; tie-breaker: explicit C5 separation.
+- Question: can an audience change approve or acknowledge a correction? Choice: no; it is an immutable projection with no store writes, and actual same-revision human provenance is retained; tie-breaker: one state and human authority.
+- Question: who edits current recommendation derivation? Choice: R exclusively; G retains canonical types/store/lifecycle/seeds/source facade, W the strength module and B the fidelity/referral/paper modules; tie-breaker: isolated file ownership.

@@ -2136,3 +2136,15 @@ files were cleaned up. An initial mock fixture scoping error was corrected in
 the test invocation, not hidden by a helper fallback. No Azure mutations, live
 requests, browser runs or recovery applies were performed by this stream.
 The coordinator owns actual what-if/apply and measured non-destructive results.
+
+## Tasks 39/40 R: audience-safe recommendation checkpoint
+
+R now owns recommendation derivation/content and the shared card, not G's
+canonical types, lifecycle, store or source evidence. The first checkpoint
+adds an explicit operator/pharmacy audience projection. Operator output omits
+proposed correction payloads; source facts stay exact. Pharmacy proposals carry
+the own-records caption. Canonical operator draft notes use B's field/rule
+generator, including diagnostic notes, rather than copying source values.
+W's published strength projection is reused. Consumers P/O and G's new four-case
+source/recheck integration remain pending. This branch is incomplete work,
+not a live release or backup; no browser or live result is claimed.
