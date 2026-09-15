@@ -44,6 +44,8 @@ ms.date: 2026-09-15
 
 - Question: how should N validate before canonical main is merged? Choice: temporarily rebase onto exact G `4765770`, drop duplicated foundation/helper commits and preserve N consumers/formatter; reduce the final PR against actual canonical main later. Tie-breaker: sole canonical owner and approved domain-first order.
 - Question: what changes in the exact observer inventory? Choice: add `mismatchSharePercent` alongside every existing key, never strip it for equality. Tie-breaker: one authoritative state and truthful equivalence evidence.
+- Question: how should the mistaken default-port diagnostic be reported? Choice: retain its 4/4 result separately and cite one explicit-port 4340 corrective run, also 4/4, without counting eight unique tests or changing retries/deadlines. Tie-breaker: accurate execution evidence and coordinator lease discipline.
+- Question: does N's passing browser diagnostic complete Task 39? Choice: no; it validates only N's owned views against a temporary canonical checkpoint, before actual main/deployment/live gates. Tie-breaker: live-first release authority.
 
 - Question: which volume and units drive mismatches? Choice: total submitted claims times a fractional share; UI 1% converts to 0.01, independently of the study's 1.6%. Tie-breaker: explicit latest denominator and evidence authority.
 - Question: should the new assumption change the frozen referral estimate? Choice: use a separate optional result and independently validated draft in the same store, leaving all existing cohorts and hours unchanged until overlap is defined. Tie-breaker: preserve truthful accounting.
