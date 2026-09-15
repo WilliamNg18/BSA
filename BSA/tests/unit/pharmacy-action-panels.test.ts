@@ -426,6 +426,13 @@ describe("recorded receipt and release count", () => {
         expect(getElementById).toHaveBeenCalledWith("endorsement");
         expect(focus).toHaveBeenCalledOnce();
         expect(getDomainSnapshot()).toEqual(before);
+        controls.get("submit")!();
+        const submitted = useAppStore.getState();
+        expect(submitted.caseRevisions[caseId]).toHaveLength(before.caseRevisions[caseId].length + 1);
+        expect(submitted.caseRevisions[caseId].at(-1)?.precheck).toMatchObject({
+          mode: "scripted", status: "unable", clauseId: null, facts: { type: "UNKNOWN", quotedText: "SP RK" },
+        });
+        expect(submitted.itemVerification[caseId]).toMatchObject({ gate1: "fail", released: false });
       });
 
       it("classifies the real shared-card pharmacy Apply button without adding a duplicate control", () => {

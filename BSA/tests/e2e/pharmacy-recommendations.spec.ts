@@ -103,6 +103,12 @@ for (const width of [1280, 1440]) {
       await expect(endorsement).toBeFocused();
       await expect(endorsement).toHaveValue("SP RK");
       await expect(card.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
+      await page.getByRole("button", { name: "Send claim", exact: true }).click();
+      await expect(page.getByRole("alert")).toHaveCount(0);
+      await expect(receipt).toContainText("EX-24112:2");
+      await expect(receipt).toContainText("Gate 1fail");
+      await expect(receipt).not.toContainText("no operator action");
+      await expect(receipt).not.toContainText("Paid on the normal schedule");
       const audit = await new AxeBuilder({ page }).analyze();
       await captureJson(info, "paper-demo-and-invoice-focus-axe", audit);
       expect(audit.violations).toEqual([]);
