@@ -1,9 +1,14 @@
 # Explicit desktop live acceptance
 
-The current named inventory contains **55 checks**: eight core application
+The pre-addition named inventory contains **55 checks**: eight core application
 checks, two system-design widths, three header-perspective checks, 22 individual
 step/mode audits, four complete Back/Next walks and sixteen four-case cycles.
-This is an inventory, not an executed passing result.
+Task 38 adds twenty mandatory width/mode requirement checks, for an expected
+inventory of **75 names**. Their implementations are still being wired to the
+new owner surfaces. Until all names are actually discovered and executed, the
+reporter must report missing checks and cannot produce full acceptance.
+The earlier 55-check pass is historical pre-addition evidence, not Task 38
+acceptance.
 
 Only A, B, wrong-pack EPS and unreadable D are playable. The six canonical
 domain fixtures remain semantic evidence; they do not make C/F/E, readable

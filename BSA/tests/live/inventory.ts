@@ -27,6 +27,15 @@ export const desktopNavigationTitle = (width: typeof DESKTOP_WIDTHS[number], ena
   `32 All eleven desktop steps Back and Next, Agent ${enabled ? "On" : "Off"}, ${width} px`;
 export const fourCaseCycleTitle = (id: typeof PLAYABLE_CYCLES[number]["id"], enabled: boolean, mode: typeof LIVE_CYCLE_MODES[number]) =>
   `33 Full ${id} shared cycle and both side buttons at every state, Agent ${enabled ? "On" : "Off"}, ${mode}`;
+export const EXTENDED_REQUIREMENTS = {
+  recommendation: "34 Always-visible recommendation contract on every actual item view",
+  preview: "35 Concrete suggested values and exact applied previews without implicit submission",
+  paper: "36 Complete, missing, scanner and unreconciled paper paths with safe human actions",
+  transition: "37 Actual cross-side transitions within one second for four cases and three perspectives",
+  guided: "38 Extended paper recommendation story through demo steps seven to ten",
+} as const;
+export const extendedRequirementTitle = (requirement: keyof typeof EXTENDED_REQUIREMENTS, width: typeof DESKTOP_WIDTHS[number], enabled: boolean) =>
+  `${EXTENDED_REQUIREMENTS[requirement]}, ${width} px, Agent ${enabled ? "On" : "Off"}`;
 
 export const LIVE_CHECKLIST = [
   ...Object.values(LIVE_CHECKS),
@@ -35,4 +44,6 @@ export const LIVE_CHECKLIST = [
   ...DEMO_STEPS.flatMap((step) => DEMO_MODES.map((enabled) => desktopStepTitle(step.number, enabled))),
   ...DESKTOP_WIDTHS.flatMap((width) => DEMO_MODES.map((enabled) => desktopNavigationTitle(width, enabled))),
   ...PLAYABLE_CYCLES.flatMap((scenario) => DEMO_MODES.flatMap((enabled) => LIVE_CYCLE_MODES.map((mode) => fourCaseCycleTitle(scenario.id, enabled, mode)))),
+  ...(Object.keys(EXTENDED_REQUIREMENTS) as (keyof typeof EXTENDED_REQUIREMENTS)[])
+    .flatMap((requirement) => DESKTOP_WIDTHS.flatMap((width) => DEMO_MODES.map((enabled) => extendedRequirementTitle(requirement, width, enabled)))),
 ];
