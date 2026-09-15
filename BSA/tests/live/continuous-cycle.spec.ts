@@ -3,7 +3,7 @@ import { navigatePrimary } from "../e2e/fixtures";
 import { choosePerspective, openHistory } from "../e2e/perspective-helpers";
 import { DECLARATION_RECONCILIATION } from "../e2e/paper-declaration-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { LIVE_CYCLE_MODES, wholeCycleTitle } from "./inventory";
+import { LIVE_CYCLE_MODES, wholeCycleTitle } from "./legacy-inventory";
 
 const D = "EX-24123";
 for (const enabled of [false, true]) for (const mode of LIVE_CYCLE_MODES) {

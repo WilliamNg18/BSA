@@ -18,8 +18,8 @@ import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { ASSISTED_SLOTS, caseViewState, traceSlotReady } from "@/lib/case-presentation";
 import { SignalList } from "@/components/demo/signals";
 import { REC_META } from "@/components/demo/label-meta";
-import { RecommendationCard } from "@/components/demo/recommendation-card";
-import { deriveRecommendation } from "@/lib/domain/recommendations";
+import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 
 // The key agentic screen: the observable workflow. Evidence, actions, tool
 // results and decision boundaries are shown. No private model reasoning is
@@ -33,12 +33,6 @@ export function CaseTracePage() {
   const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
   const revision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1)?.number : undefined);
   const records = useAppStore((s) => s.records);
-  const lifecycles = useAppStore((s) => s.lifecycles);
-  const caseRevisions = useAppStore((s) => s.caseRevisions);
-  const pharmacyDrafts = useAppStore((s) => s.pharmacyDrafts);
-  const recommendation = useMemo(() => agentEnabled && id && lifecycles[id]
-    ? deriveRecommendation({ lifecycles, caseRevisions, pharmacyDrafts, records }, id) : null,
-  [agentEnabled, id, lifecycles, caseRevisions, pharmacyDrafts, records]);
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
   const state = caseViewState(pack, process?.revision === revision ? process : undefined,
     records.some((record) => record.caseId === id && (record.revision ?? 1) === revision));
@@ -69,8 +63,9 @@ export function CaseTracePage() {
         title={`How the case was built: ${c.title}`}
         intro="Inspect evidence, rule checks and human confirmation. The agent verifies and advises; a person decides."
       />
-      {recommendation && <RecommendationCard recommendation={recommendation} headingLevel={2} />}
       <LifecycleHistory id={c.id} />
+      <PharmacyConfirmation caseId={c.id} />
+      <ItemRecommendationPanel caseId={c.id} headingLevel={2} />
       {c.paperDeclaration && (agentEnabled || process?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {process?.capture && process.capture.revision === revision && <ConfirmedCaptureEvidence capture={process.capture} />}
 

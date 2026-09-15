@@ -6,7 +6,7 @@ import { AppShell } from "@/components/app-shell";
 import { NotFoundPage } from "@/pages/not-found";
 import { routes } from "@/routes";
 
-// Local and Azure hosting share the site root and Vite's base.
+// Local and production hosting share the site root and Vite's base.
 const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
 
 export function App() {

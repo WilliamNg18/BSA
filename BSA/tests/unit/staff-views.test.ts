@@ -58,6 +58,7 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(table).not.toContain("EX-24123");
     expect(table).toContain("SYN-FQ123-MISMATCH");
     expect(table).not.toContain("EX-24119");
+    expect(table).not.toContain("EX-24088");
     for (const lifecycle of Object.values(before.lifecycles)) {
       const process = before.itemProcesses[lifecycle.caseId];
       if (staffLane(lifecycle, process) === "type2") expect(table).toContain(lifecycle.caseId);
@@ -97,6 +98,29 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(queue()).not.toContain('data-case-id="EX-24112"');
   });
 
+  it("opens the followed item's actual lane without expanding unrelated capture work or changing state", () => {
+    const store = useAppStore.getState();
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+    store.followCase("EX-24112");
+    store.setAgentEnabled(true);
+    const before = useAppStore.getState();
+    const html = queue();
+    expect(html).toContain('data-case-id="EX-24112"');
+    expect(html).not.toContain('data-type1-case="EX-24123"');
+    expect(html.indexOf("data-type2-worklist")).toBeLessThan(html.indexOf('aria-label="Background cases"'));
+    expect(useAppStore.getState()).toBe(before);
+  });
+
+  it("keeps the followed paper state in the real open capture summary", () => {
+    useAppStore.getState().followCase("EX-24123");
+    const before = useAppStore.getState();
+    const html = queue();
+    expect(html).toMatch(/<details[^>]*open=""[^>]*data-type1-case="EX-24123"/);
+    expect(html).toMatch(/<summary[\s\S]*?<span[^>]*data-item-state="true"/);
+    expect(html).not.toContain('data-case-id="SYN-FQ123-MISMATCH"');
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it("shows manual Tariff lookup and a mandatory human reason for Type 2", () => {
     useAppStore.getState().submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
     useAppStore.getState().arriveInQueue("EX-24112");
@@ -120,6 +144,18 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(html).not.toContain(">Record decision<");
   });
 
+  it.each([false, true])("shows an automated audit without requesting an impossible human decision, Agent %s", (enabled) => {
+    useAppStore.getState().setAgentEnabled(enabled);
+    const before = useAppStore.getState();
+    const html = record("EX-24107");
+    expect(html).toContain("Existing automatic pricing record");
+    expect(html).toContain("No human decision was required");
+    expect(html).not.toContain("Record a human decision from the case pack");
+    expect(html).not.toContain("No human decision recorded yet");
+    expect(html).not.toContain("data-manual-record-comparison");
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it.each([false, true])("does not invent human gathering on automatic traces, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     for (const id of ["EX-24107"]) {
@@ -130,15 +166,20 @@ describe("Task 29 current-revision staff presentation", () => {
     }
   });
 
-  it.each([false, true])("retains actual B reason and cited history across inspection mode %s", (enabled) => {
+  it.each([false, true])("retains actual B decision reasons and cited history in mode %s", (enabled) => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
     store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
     store.arriveInQueue("EX-24112");
-    store.recordType2Decision({ caseId: "EX-24112", decision: "REFER_BACK", reason: "The endorsement date remains missing.", rbCode: "SYN-NCSO" });
+    store.applySuggestionToDecision("EX-24112");
+    const draft = useAppStore.getState().operatorDrafts["EX-24112"];
+    store.referBack("EX-24112", draft.rbCode, draft.note);
+    store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.arriveInQueue("EX-24112");
+    store.releaseToPricing("EX-24112", "Human checked the corrected endorsement.");
     store.setAgentEnabled(enabled);
     const before = useAppStore.getState();
-    const original = before.records.at(-1)!;
+    const original = before.records.find((entry) => entry.caseId === "EX-24112")!;
     const html = record("EX-24112");
     expect(html).toContain("Original decision history");
     expect(html).toContain(original.tariffVersion);
@@ -222,6 +263,21 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(JSON.stringify(c)).toBe(original);
   });
 
+  it("distinguishes repeated EPS comparison landmarks without changing their evidence", () => {
+    const c = sessionCase("EX-24112")!;
+    const before = useAppStore.getState();
+    const html = renderToStaticMarkup(createElement("div", null,
+      createElement(CaseSourceEvidence, { c }),
+      createElement(RawCaseFields, { c, contextLabel: "Manual comparison" })));
+    const labels = [...html.matchAll(/aria-label="([^"]+)"/g)].map((match) => match[1]);
+    expect(new Set(labels).size).toBe(labels.length);
+    expect(labels).toContain("Submitted electronic prescription, synthetic");
+    expect(labels).toContain("Manual comparison: Submitted electronic prescription, synthetic");
+    expect(labels).toContain("Manual comparison: Recorded dispenser claim");
+    expect(html.match(/SYN-AMLO10-28/g)?.length).toBeGreaterThanOrEqual(2);
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it("never paints a declaration date onto the original paper image or machine capture", () => {
     const original = CASES[3];
     const c = { ...original, extracted: { ...original.extracted, dispensingDate: "2026-07-27" },
@@ -260,14 +316,14 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(useAppStore.getState()).toBe(before);
   });
 
-  it.each([false, true])("uses the current EPS revision rather than A's original paper claim, agent %s", (enabled) => {
+  it.each([false, true])("uses the current EPS revision rather than D's original paper claim, agent %s", (enabled) => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24107", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    store.submitItem({ caseId: "EX-24123", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
     store.setAgentEnabled(enabled);
-    const c = sessionCase("EX-24107")!;
+    const c = sessionCase("EX-24123")!;
     expect(c.channel).toBe("Electronic (EPS)");
-    expect(c.claim.submittedVia).toBe("EPS claim message");
-    expect(CASES[0].claim.submittedVia).toBe("FP34C batch");
+    expect(c.claim.submittedVia).toBe("FP34C batch");
+    expect(CASES[3].claim.submittedVia).toBe("FP34C batch");
     const before = useAppStore.getState();
     const evidence = renderToStaticMarkup(createElement(CaseSourceEvidence, { c }));
     expect(evidence).toContain("EPS claim message");

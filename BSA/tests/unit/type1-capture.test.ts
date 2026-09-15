@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { Type1Capture } from "../../src/components/demo/type1-capture";
+import { Type1Capture, Type1CaptureEvidence } from "../../src/components/demo/type1-capture";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
 
 // SSR normally reads Zustand's initial seed; render the real current store after submissions.
@@ -19,6 +19,42 @@ vi.mock("../../src/lib/store", async (importOriginal) => {
 beforeEach(() => useAppStore.getState().resetDemo());
 
 describe("Type 1 capture initial presentation", () => {
+  it("keeps externally placed compact evidence read-only and renders exactly one human form", () => {
+    useAppStore.getState().setAgentEnabled(true);
+    const before = getDomainSnapshot();
+    const evidence = renderToStaticMarkup(createElement(Type1CaptureEvidence, { caseId: "EX-24123" }));
+    expect(evidence).toContain("Read-only source comparison");
+    expect(evidence).toContain("Original poor paper image");
+    expect(evidence).toContain("NCSO JB 27/08/26");
+    expect(evidence).toContain("2026-08-27");
+    expect(evidence).not.toMatch(/<(?:form|input|button|textarea)\b/);
+    const form = renderToStaticMarkup(createElement(Type1Capture, {
+      caseId: "EX-24123", compact: true, evidencePlacement: "external",
+    }));
+    expect(form.match(/<form\b/g)).toHaveLength(1);
+    expect(form).not.toContain('role="img"');
+    expect(form).not.toContain('aria-label="Original pharmacy declaration"');
+    expect(form).toContain("Confirm capture and continue to Type 2");
+    expect(form).toContain(">Correct</button>");
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it("ignores external placement for the ordinary capture panel", () => {
+    useAppStore.getState().setAgentEnabled(true);
+    const ordinary = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));
+    const requested = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123", evidencePlacement: "external" }));
+    expect(requested).toBe(ordinary);
+  });
+
+  it("places the compact editor after both immutable sources rather than inside their side column", () => {
+    useAppStore.getState().setAgentEnabled(true);
+    const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123", compact: true }));
+    expect(html.indexOf('data-capture-source="image"')).toBeLessThan(html.indexOf("<form"));
+    expect(html.indexOf('data-capture-source="declaration"')).toBeLessThan(html.indexOf("<form"));
+    expect(html).toContain('data-capture-editor="true"');
+    expect(html).toContain("col-span-2");
+  });
+
   it("renders the actual poor form, empty human fields and labelled assumed stopwatch without changing state", () => {
     const before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));

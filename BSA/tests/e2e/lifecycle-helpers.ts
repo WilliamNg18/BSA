@@ -2,6 +2,7 @@ import type { Page } from "@playwright/test";
 import { expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS, type LifecycleState } from "../../src/lib/domain/lifecycle";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { decisionNote, operatorRadio, performDecision } from "./operator-action-helpers";
 
 export const DEMONSTRABLE_LIFECYCLE_STATES: LifecycleState[] = [
   "in_review", "information_requested", "referred_back", "resubmitted", "paid", "submitted", "escalated", "released_to_pricing",
@@ -30,11 +31,12 @@ async function recordBDecision(page: Page, decision: "Refer back" | "Request inf
   await submitReviewableB(page);
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await page.getByRole("radio", { name: new RegExp(`^${decision} `) }).check();
+  const outcome = decision === "Refer back" ? "REFER_BACK" : decision === "Request information" ? "REQUEST_INFORMATION" : "ESCALATE";
+  await operatorRadio(page, outcome).check();
   if (decision === "Refer back") await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await page.getByRole("textbox", { name: "Reason (required)", exact: true })
+  await decisionNote(page, outcome)
     .fill(`${decision}: human review of the missing dispensing date.`);
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await performDecision(page, outcome);
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
 }
 

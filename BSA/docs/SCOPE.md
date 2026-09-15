@@ -1,10 +1,47 @@
 ---
 title: Integrated scope acceptance
 description: Original eighteen rows plus five clarity tasks, with source-pinned acceptance and release boundaries.
-ms.date: 2026-09-13
+ms.date: 2026-09-15
 ---
 
 # Scope register
+
+## Live-first release and backup obligations
+
+MEMORY's 15 September "Live first, local backup" rule is a blocking release
+requirement, not an optional local preview. The observed baseline is main and
+live commit `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+Runtime streams have merged, but final live acceptance is still pending.
+
+The release must add a current-main root/deep-link deployment guard, canonical
+backup and local serving commands, main-push deployed-file parity CI, and a
+clean-machine/container offline recovery result. The backup contains the exact
+deployed production payload plus same-commit documentation and four-case seed
+data; no unmerged diagnostic build is an offline product. Deployment recovery
+instructions and actual verification results belong in the same change as the
+implementation they describe. No backup equality or ten-minute recovery result
+has yet been established.
+
+### Stream V current obligation
+
+Draft #94 now publishes implementation `c091d47269665e12af69a2a82cb3733747209eeb`.
+The reviewed trace-artifact policy preserves required measurements and all
+existing test identities; its controlled On-only result is 2/2 and 132
+transitions, not current-main live acceptance. Optional DOM/screencast/HAR
+trace loss remains explicit, with no waiver of network/CSP/error assertions.
+
+V remains incomplete until the work is merged, required CI and deployment are
+green, and the actual current live URL is observed with full required evidence.
+Current live identity observed at `2026-09-15T18:24:10.7144775Z` is
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f`, not the WIP branch. Existing local
+test outputs are developer artifacts only. Backup, deployment-guard and clean
+offline verification work remains with its assigned owners.
+
+The current CI repair is limited to the callback-integrity unit's cross-platform
+token parsing. It retains the exact original parsed-token fingerprint and
+rejects real callback changes; it does not relax any measurement or release
+gate. This code change and all five status documents are published together.
 
 ## Current scope: Tasks 25-38, four-case desktop vision
 
@@ -18,17 +55,17 @@ behaviour is contained in complete EPS Today. ALIGNMENT owns drift and proof.
 
 | Task | Status | Required outcome |
 | --- | --- | --- |
-| 31 D | Core merged; integration in progress | Eleven focused steps, expanded paper steps 7-10, visible recommendation and correct same-case routing |
-| 32 F | In progress | Same-item reference/channel/state/location/history and explicit Pharmacy/NHSBSA side controls |
-| 33 O | In progress | Human Apply suggestion and Release/referral/information/escalation controls with code gating |
-| 34 P | In progress | Actual approved correction application, resubmission, confirmation and verification receipts |
-| 35 G | Done, #93 | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released; new Task 38 extensions remain separately gated |
-| 36 V | In progress | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
-| 37 S | In progress | Complete How it works reference page, SYSTEM-DESIGN, contents rail, diagrams, labelled assumptions and sole concrete-service mapping table |
-| 38 R | In progress | Always-visible source-bound Recommendation card, concrete values and exact previews, safe disagreement follow-up and cross-surface integrations |
+| 31 D | Runtime merged in #99/#100; final live acceptance pending | Eleven focused steps, expanded paper steps 7-10, visible recommendation and correct same-case routing |
+| 32 F | Runtime merged in #89; final live acceptance pending | Same-item reference/channel/state/location/history and explicit Pharmacy/NHSBSA side controls |
+| 33 O | Runtime merged in #92; final live acceptance pending | Human Apply suggestion and Release/referral/information/escalation controls with code gating |
+| 34 P | Runtime merged through #98; final live acceptance pending | Actual approved correction application, resubmission, confirmation and verification receipts |
+| 35 G | Kernel merged in #93; final integrated acceptance pending | Separate format/provision and independent reconciliation gates; wrong-looking-complete item never released |
+| 36 V | Draft #94; final live and backup gates pending | Desktop two-width functional/axe coverage, eleven-step script, latest full hosted checklist and honest evidence |
+| 37 S | Runtime merged in #90; final live acceptance pending | Complete How it works reference page, SYSTEM-DESIGN, contents rail, diagrams, labelled assumptions and sole concrete-service mapping table |
+| 38 R | Foundation #95 and consumers merged; final live acceptance pending | Always-visible source-bound Recommendation card, concrete values and exact previews, safe disagreement follow-up and cross-surface integrations |
 
-Task 35's kernel is merged; remaining UI, mounting and Task 38 additions are not
-yet accepted. The user approved keeping human-release provenance
+The kernel, UI, mounting and Task 38 consumers are merged, but their complete
+current-main live acceptance is not yet established. The user approved keeping human-release provenance
 visible; only automatic two-gate release may say no operator action.
 The prior Tasks 25-30 visual acceptance is unverified, not silently waived or
 renamed complete by the new desktop scope. Current completion instead requires

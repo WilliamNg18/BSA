@@ -6,7 +6,7 @@ import type { liveSettings } from "./settings";
 export function checklistConfig(settings: ReturnType<typeof liveSettings>) {
   return defineConfig({
     testDir: fileURLToPath(new URL(".", import.meta.url)),
-    testMatch: ["checklist.spec.ts", "perspective.spec.ts", "header-agent.spec.ts", "task30.spec.ts", "continuous-cycle.spec.ts", "generic-correction.spec.ts"],
+    testMatch: ["checklist.spec.ts", "header-agent.spec.ts", "desktop-demo.spec.ts", "four-case-cycle.spec.ts", "recommendations.spec.ts"],
     fullyParallel: false,
     workers: 1,
     retries: 0,
@@ -18,7 +18,7 @@ export function checklistConfig(settings: ReturnType<typeof liveSettings>) {
     metadata: { baseURL: settings.baseURL, expectedCommit: settings.expectedCommit },
     use: {
       ...devices["Desktop Chrome"], baseURL: settings.baseURL, viewport: { width: 1440, height: 1000 },
-      reducedMotion: "reduce", trace: "retain-on-failure", screenshot: "only-on-failure",
+      reducedMotion: "reduce", trace: "retain-on-failure", screenshot: "off",
     },
     projects: [{ name: "live-chromium" }],
     webServer: undefined,

@@ -2,7 +2,7 @@ import { audit, captureView, expect, test } from "./fixtures";
 import { navigatePrimary } from "../e2e/fixtures";
 import { DECLARATION_RECONCILIATION, postWorkedPaperDeclaration } from "../e2e/paper-declaration-helpers";
 import { expandProcessInputs } from "../e2e/process-model-helpers";
-import { LIVE_CHECKS } from "./inventory";
+import { LIVE_CHECKS } from "./legacy-inventory";
 
 test(LIVE_CHECKS.hillcrest, async ({ page }, info) => {
   await page.goto("/pharmacy");

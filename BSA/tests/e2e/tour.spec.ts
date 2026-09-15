@@ -1,14 +1,16 @@
 import { confirmReset, expect, navigatePrimary as navigateExisting, test } from "./fixtures";
 import type { Page } from "@playwright/test";
-import { TOUR_STOPS } from "../../src/lib/tour-navigation";
+import { DEMO_STEPS, demoStepDestination } from "../../src/lib/domain/demo-steps";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "../../src/lib/domain/public-facts";
 import { CASES, PLAYABLE_CASES } from "../../src/lib/domain/cases";
 import { runAgent } from "../../src/lib/domain/agent";
-import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "../../src/lib/domain/baseline";
-import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
+import { PROCESS_PUBLIC_FACTS, formatProcessItems, formatProcessHours } from "../../src/lib/domain/baseline";
+import { PROCESS_FIELDS, PROCESS_MONTH_DEFAULTS, calculateProcessMonth, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { dismissDecisionNotification } from "./perspective-helpers";
+import { assertInlineDecisionRecorded, historyIdentity, openHistory } from "./perspective-helpers";
 import { REC_META } from "../../src/components/demo/label-meta";
+import { decisionNote, operatorAction, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
+import { assertDesktopStep, enterDesktopDemo } from "./desktop-step-helpers";
 
 async function navigatePrimary(page: Page, label: string) {
   await navigateExisting(page, label);
@@ -25,7 +27,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       test("single row, pinned rail, full grouped navigation and both agent states", async ({ page }) => {
         await page.goto("./");
         const header = page.getByRole("banner");
-        const rail = page.getByRole("navigation", { name: "Guided tour" });
+        const rail = page.getByRole("navigation", { name: "Demo mode", exact: true });
         for (const enabled of [true, false]) {
           await header.getByRole("switch").setChecked(enabled);
           const box = await header.boundingBox();
@@ -58,68 +60,44 @@ for (const colorScheme of ["light", "dark"] as const) {
 }
 
 for (const enabled of [true, false]) {
-  test(`@tour-focus tour forwards and backwards, chapter menu, pharmacy substop: agent=${enabled}`, async ({ page }) => {
-    await page.goto("./#scene");
-    await page.getByRole("banner").getByRole("switch").focus();
-    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
-    const rail = page.getByRole("navigation", { name: "Guided tour" });
+  test(`@tour-focus eleven steps forwards and backwards, Jump and cross-route focus: agent=${enabled}`, async ({ page }) => {
+    test.setTimeout(90_000);
+    await enterDesktopDemo(page, enabled);
+    const rail = page.getByTestId("demo-strip");
     await expect(rail.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
-    for (const [index, stop] of TOUR_STOPS.entries()) {
+    for (const [index, stop] of DEMO_STEPS.entries()) {
       if (index) await rail.getByRole("button", { name: "Next", exact: true }).click();
-      await expect(page).toHaveURL(new URL(stop.to, page.url()).href);
-      await expect(rail).toContainText(`${stop.chapter}/6 · ${stop.label}`);
-      // Toggling the flag intentionally leaves focus on that switch at entry.
-      if (index > 0) await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      else await expect(page.getByRole("banner").getByRole("switch")).toBeFocused();
-      if (stop.chapter === 2) await expect(page.getByRole("region", { name: "Monthly workload calculator" })).toBeVisible();
-      if (stop.chapter === 3) {
-        await expect(page.locator("[data-pipeline]")).toBeVisible();
-        await expect(page.locator("[data-case]")).toHaveCount(0);
-      }
-      if (stop.chapter === 4) {
-        await expect(page.locator("[data-case]")).toHaveCount(4);
-        await expect(page.locator("[data-pipeline]")).toHaveCount(0);
-      }
-      if (stop.to === "/queue") {
-        await expect(page.getByRole("heading", { level: 1, name: "NHSBSA exception queue", exact: true })).toBeFocused();
-        await expect(page.getByRole("region", { name: "Type 2 worklist", exact: true })).toBeVisible();
-        await expect(page.getByRole("region", { name: "Type 1 capture lane", exact: true })).toBeVisible();
-      }
-      if (stop.to === "/pharmacy/claims") await expect(page.getByRole("heading", { name: "Pharmacy claims", exact: true })).toBeFocused();
-    }
-    await expect(rail.getByRole("button", { name: "Done", exact: true })).toBeDisabled();
-    for (let index = TOUR_STOPS.length - 2; index >= 0; index--) {
-      await rail.getByRole("button", { name: "Back", exact: true }).focus();
-      await page.keyboard.press("Enter");
-      await expect(rail).toContainText(TOUR_STOPS[index].label);
-      await expect(page).toHaveURL(new URL(TOUR_STOPS[index].to, page.url()).href);
+      await assertDesktopStep(page, stop.number, enabled);
+      await expect(page).toHaveURL(new URL(demoStepDestination(stop), page.url()).href);
+      await expect(rail).toContainText(`${stop.number} / 11 · ${stop.title}`);
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     }
-    // Exercise the same full route sequence in both directions via shortcuts.
+    await expect(rail.getByRole("button", { name: "Next", exact: true })).toBeDisabled();
+    for (let index = DEMO_STEPS.length - 2; index >= 0; index--) {
+      await rail.getByRole("button", { name: "Back", exact: true }).focus();
+      await page.keyboard.press("Enter");
+      await expect(rail).toContainText(DEMO_STEPS[index].title);
+      await expect(page).toHaveURL(new URL(demoStepDestination(DEMO_STEPS[index]), page.url()).href);
+      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+    }
     for (const direction of [1, -1]) {
-      for (let index = direction === 1 ? 1 : TOUR_STOPS.length - 2; index >= 0 && index < TOUR_STOPS.length; index += direction) {
+      for (let index = direction === 1 ? 1 : DEMO_STEPS.length - 2; index >= 0 && index < DEMO_STEPS.length; index += direction) {
         await page.keyboard.press(direction === 1 ? "Alt+ArrowRight" : "Alt+ArrowLeft");
-        await expect(page).toHaveURL(new URL(TOUR_STOPS[index].to, page.url()).href);
+        await expect(page).toHaveURL(new URL(demoStepDestination(DEMO_STEPS[index]), page.url()).href);
         await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
         await expect(page.getByRole("banner").getByRole("switch")).toBeChecked({ checked: enabled });
       }
     }
-    await page.keyboard.press("Alt+ArrowRight");
-    await expect(page).toHaveURL(/#month$/);
-    await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await expect(page.getByRole("menuitem")).toHaveCount(6);
-    await page.getByRole("menuitem", { name: "6. The central bet", exact: true }).press("Enter");
-    await expect(page.getByRole("heading", { level: 1, name: "The central bet", exact: true })).toBeFocused();
-    await rail.getByRole("button", { name: "Choose tour chapter" }).click();
-    await page.getByRole("menuitem", { name: "5. One continuous cycle", exact: true }).click();
-    await expect(page).toHaveURL(/#two-places$/);
-    await expect(page.locator("[data-two-places]")).toContainText(`Agent ${enabled ? "On" : "Off"}`);
-    await expect(page.getByRole("list", { name: "Pharmacy · Before submission flow" })).toBeVisible();
-    await expect(page.getByRole("list", { name: "NHSBSA · After exception routing flow" })).toBeVisible();
-    await rail.getByRole("button", { name: "Next", exact: true }).click();
-    await expect(page).toHaveURL(/\/pharmacy$/);
+    const jump = rail.getByRole("combobox", { name: "Jump to demo step" });
+    await expect(jump.locator("option")).toHaveText(DEMO_STEPS.map((step) => `${step.number}. ${step.title}`));
+    await jump.selectOption("11");
+    await expect(page.getByRole("heading", { level: 1, name: "11. Where it ends", exact: true })).toBeFocused();
+    await jump.selectOption("6");
+    await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-case", "EX-24123");
+    await expect(page).toHaveURL(/\/pharmacy\?case=EX-24123&channel=paper$/);
     await rail.getByRole("button", { name: "Back", exact: true }).click();
-    await expect(page).toHaveURL(/#two-places$/);
+    await expect(page).toHaveURL(/\/pharmacy\?case=SYN-FQ123-MISMATCH&channel=eps$/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   });
 
   for (const route of ["./#month", "pharmacy", "queue", "pharmacy/claims"]) {
@@ -197,6 +175,39 @@ for (const enabled of [true, false]) {
     });
   }
 }
+
+test("demo month uses the ordinary shared inputs and renders one editable surface", async ({ page }) => {
+  await page.goto("./#month");
+  await page.locator("[data-month-detail] > summary").click();
+  await page.locator("#process-preventionPercent").fill("37");
+  await page.getByRole("button", { name: "Enter demo mode", exact: true }).click();
+  await page.getByRole("combobox", { name: "Jump to demo step" }).selectOption("2");
+  const result = calculateProcessMonth({ ...PROCESS_MONTH_DEFAULTS, preventionPercent: 37 });
+  for (const enabled of [false, true]) {
+    await page.getByRole("banner").getByRole("switch").setChecked(enabled);
+    const screen = page.getByTestId("demo-step-screen");
+    const active = page.getByTestId(enabled ? "demo-assisted" : "demo-today");
+    const inactive = page.getByTestId(enabled ? "demo-today" : "demo-assisted");
+    await active.locator("[data-month-detail] > summary").click();
+    await expect(page.locator("#process-preventionPercent")).toHaveCount(1);
+    await expect(active.locator("#process-preventionPercent")).toHaveValue("37");
+    await expect(active.getByRole("textbox")).toHaveCount(PROCESS_FIELDS.length);
+    await expect(inactive.locator("input,select,textarea,button,summary")).toHaveCount(0);
+    await expect(page.locator("[data-month-headlines]")).toHaveCount(0);
+    for (const [panel, values] of [[page.getByTestId("demo-today"), result.today], [page.getByTestId("demo-assisted"), result.withAgent]] as const) {
+      await expect(panel.locator("[data-demo-month] > dl > div").nth(0).locator("dd")).toContainText(formatProcessItems(values.referredBackItems));
+      await expect(panel.locator("[data-demo-month] > dl > div").nth(1).locator("dd")).toContainText(formatProcessHours(values.operatorHours));
+    }
+    await active.locator("#process-preventionPercent").press("Alt+ArrowRight");
+    await expect(screen).toHaveAttribute("data-demo-step", "2");
+    await expect(active.locator("#process-preventionPercent")).toBeFocused();
+  }
+  await page.getByRole("button", { name: "Exit demo", exact: true }).click();
+  await page.locator("[data-month-detail] > summary").click();
+  await expect(page.locator("#process-preventionPercent")).toHaveValue("37");
+  await confirmReset(page);
+  await expect(page.locator("#process-preventionPercent")).toHaveValue(String(PROCESS_MONTH_DEFAULTS.preventionPercent));
+});
 
 test("public scene facts stay invariant; automatic, Type 2 and Type 1 cases follow their actual routing", async ({ page }) => {
   await page.goto("./#scene");
@@ -294,7 +305,7 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
   const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
-  await expect(capture).toContainText("Image cannot be read");
+  await expect(capture).toContainText("Image unreadable; agreement unknown.");
   await capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true }).click();
   await expect(capture.getByRole("alert")).toBeVisible();
   await chooseProcessChapter(page, 4);
@@ -338,23 +349,32 @@ test("one sourcing footer and concise qualifications replace documentary disclos
   await expect(page.getByText("Stop if no repeatable pattern.", { exact: false })).toBeVisible();
 });
 
-test("dismissal is session-only; principle remains; restore resumes; reload restores defaults", async ({ page }) => {
-  await page.goto("./#cases");
+test("Exit preserves session presentation; re-entry starts step one; reload restores defaults", async ({ page }) => {
+  await enterDesktopDemo(page, true);
+  await page.getByRole("combobox", { name: "Jump to demo step" }).selectOption("4");
+  const seed = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();
+  await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK human draft");
   await page.getByRole("button", { name: /Synthetic demonstration data throughout/ }).click();
   await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
   await expect(page.locator("[data-principle]")).toBeVisible();
-  await page.getByRole("button", { name: "Dismiss tour", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Exit demo", exact: true }).click();
+  await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
+  const url = page.url();
+  await expect(page.getByRole("textbox", { name: "Dispenser endorsement", exact: true })).toHaveValue("NCSO RK human draft");
   await page.keyboard.press("Alt+ArrowRight");
-  await expect(page).toHaveURL(/#cases$/);
-  await page.getByRole("button", { name: "Restore tour", exact: true }).click();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toContainText("4/6");
-  await navigatePrimary(page, "Pharmacy check");
+  await expect(page).toHaveURL(url);
+  await page.getByRole("button", { name: "Enter demo mode", exact: true }).click();
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
+  await page.getByRole("combobox", { name: "Jump to demo step" }).selectOption("4");
+  await expect(page.getByRole("textbox", { name: "Dispenser endorsement", exact: true })).toHaveValue("NCSO RK human draft");
   await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
   await expect(page.locator("[data-principle]")).toBeVisible();
   await page.reload();
   await expect(page.locator("#synthetic-disclaimer")).toBeVisible();
-  await expect(page.getByRole("navigation", { name: "Guided tour" })).toBeVisible();
+  await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Enter demo mode", exact: true })).toBeVisible();
+  await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
+  await expect(page.getByRole("textbox", { name: "Dispenser endorsement", exact: true })).toHaveValue(seed);
 });
 
 test("reset cancel and Escape preserve edits and records; confirm resets local and global state", async ({ page }) => {
@@ -366,13 +386,16 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: /^Refer back / }).check();
-  await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-  await page.getByRole("textbox", { name: /^Reason/ }).fill("Reset must preserve this human referral until explicitly confirmed");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+  await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+  await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
+  const approvedReason = await decisionNote(page).inputValue();
+  await performDecision(page, "REFER_BACK");
+  await expect(page.getByRole("main")).toContainText(approvedReason);
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
-  await dismissDecisionNotification(page);
+  await assertInlineDecisionRecorded(page, "REFER_BACK");
+  await openHistory(page);
+  const decisionHistory = await historyIdentity(page);
   await navigatePrimary(page, "Pharmacy check");
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   const seed = await field.inputValue();
@@ -387,13 +410,20 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
     await expect(dialog).toHaveCount(0);
     await expect(field).toHaveValue("NCSO RK 21/08/26");
     await expect(page.getByRole("switch", { name: "Agent: Off" })).not.toBeChecked();
+    await navigatePrimary(page, "Pharmacy claims");
+    await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
+      .filter({ hasText: "EX-24112" }).getByRole("button").click();
+    await openHistory(page);
+    expect(await historyIdentity(page)).toEqual(decisionHistory);
+    await navigatePrimary(page, "Pharmacy check");
+    await expect(field).toHaveValue("NCSO RK 21/08/26");
   }
   await confirmReset(page);
   await expect(field).toHaveValue(seed);
   await expect(page.getByRole("switch", { name: "Agent: Off" })).not.toBeChecked();
   await navigatePrimary(page, "NHSBSA queue");
   await page.locator("a[href='/case/EX-24112']").first().click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+  await expect(operatorActionButtons(page)).toHaveCount(0);
   await navigatePrimary(page, "Pharmacy check");
   await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
@@ -401,52 +431,58 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await page.getByRole("button", { name: "Start review", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
 });
 
 test("keyboard shortcuts ignore fields, combined modifiers, menus and confirmation dialogs", async ({ page }) => {
-  await page.goto("pharmacy");
-  await page.getByRole("banner").getByRole("switch").setChecked(true);
+  await enterDesktopDemo(page, true);
+  const jump = page.getByRole("combobox", { name: "Jump to demo step" });
+  await jump.selectOption("4");
+  const url = page.url();
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   await field.focus();
   await page.keyboard.press("Alt+ArrowRight");
-  await expect(page).toHaveURL(/\/pharmacy$/);
+  await expect(page).toHaveURL(url);
   await page.getByRole("button", { name: "Next", exact: true }).focus();
   for (const key of ["Control+Alt+ArrowRight", "Meta+Alt+ArrowRight", "Shift+Alt+ArrowRight"]) {
     await page.keyboard.press(key);
-    await expect(page).toHaveURL(/\/pharmacy$/);
+    await expect(page).toHaveURL(url);
   }
-  await page.getByRole("button", { name: "Choose tour chapter" }).click();
+  await jump.focus();
   await page.keyboard.press("Alt+ArrowRight");
-  await expect(page).toHaveURL(/\/pharmacy$/);
+  await expect(page).toHaveURL(url);
+  await page.getByRole("button", { name: "Exit demo", exact: true }).click();
+  await page.getByRole("navigation", { name: "Primary", exact: true }).getByRole("button", { name: "Operations", exact: true }).click();
+  await page.keyboard.press("Alt+ArrowRight");
+  await expect(page).toHaveURL(url);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Reset demo", exact: true }).click();
   await page.keyboard.press("Alt+ArrowRight");
-  await expect(page).toHaveURL(/\/pharmacy$/);
+  await expect(page).toHaveURL(url);
   await page.keyboard.press("Escape");
   await page.getByRole("switch", { name: "Agent: On" }).focus();
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAccessibleDescription(/Off withholds recommendations/);
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("title", /Off withholds recommendations/);
   await expect(page.getByRole("tooltip")).toHaveCount(0);
   await expect(page.getByRole("switch", { name: "Agent: On" })).toHaveAttribute("data-state", "checked");
-  await page.getByRole("button", { name: "Choose tour chapter" }).click();
-  await page.getByRole("menuitem", { name: "3. Evidence to a decision", exact: true }).click();
+  await page.getByRole("button", { name: "Enter demo mode", exact: true }).click();
   await expect(page).toHaveURL(/#pipeline$/);
-  await expect(page.getByRole("heading", { level: 1, name: "Evidence to a decision", exact: true })).toBeFocused();
+  await expect(page.getByRole("heading", { level: 1, name: "1. The real process", exact: true })).toBeFocused();
   await page.getByRole("link", { name: "Skip to main content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
   await expect(page).toHaveURL(/#pipeline$/);
 });
 
-test("unknown routes do not claim a tour chapter and retain start and home recovery", async ({ page }) => {
+test("unknown ordinary routes retain home recovery and explicit demo entry", async ({ page }) => {
   await page.goto("not-a-tour-page");
   await expect(page.getByRole("heading", { name: "Page not found" })).toBeVisible();
-  const rail = page.getByRole("navigation", { name: "Guided tour" });
-  await expect(rail).toContainText("Explore · Start the tour");
-  await expect(rail.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
-  await rail.getByRole("button", { name: "Start", exact: true }).click();
-  await expect(page).toHaveURL(/#scene$/);
+  const rail = page.getByTestId("demo-strip");
+  await expect(rail.getByRole("button", { name: "Back", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("navigation", { name: "Primary", exact: true }).getByRole("link", { name: "Overview", exact: true })).toBeVisible();
+  await rail.getByRole("button", { name: "Enter demo mode", exact: true }).click();
+  await expect(page).toHaveURL(/#pipeline$/);
+  await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
 });
 
 test("chapter narrative and responsive presentation in both states; selected QA screenshots", async ({ page }, testInfo) => {
@@ -484,7 +520,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
         await follow.press("Enter");
         const banner = page.getByRole("region", { name: "Followed item", exact: true });
         const header = page.getByRole("banner");
-        const rail = page.getByRole("navigation", { name: "Guided tour", exact: true });
+        const rail = page.getByRole("navigation", { name: "Demo mode", exact: true });
         const flag = header.getByRole("switch");
         const reset = header.getByRole("button", { name: "Reset demo", exact: true });
         for (const enabled of [true, false]) {

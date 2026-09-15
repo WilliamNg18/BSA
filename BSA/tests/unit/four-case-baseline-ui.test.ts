@@ -1,4 +1,4 @@
-import { createElement } from "react";
+import { createElement, type ComponentType } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -18,11 +18,11 @@ vi.mock("@/lib/store", async (importOriginal) => {
   ) };
 });
 
-const render = (component: typeof HomePage, path = "/") =>
+const render = (component: ComponentType, path = "/") =>
   renderToStaticMarkup(createElement(MemoryRouter, { initialEntries: [path] }, createElement(component)));
 beforeEach(() => useAppStore.getState().resetDemo());
 
-describe("four-case baseline compatibility before new panels land", () => {
+describe("four-case compatibility with operator and pharmacy panels", () => {
   it.each([false, true])("renders only supported EPS controls without absent-source crashes, enabled=%s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     const before = getDomainSnapshot(), html = render(EpsPharmacyCapture);
@@ -45,7 +45,7 @@ describe("four-case baseline compatibility before new panels land", () => {
   it("shows C and F only as fixed, unlinked background in both lists", () => {
     for (const component of [QueuePage, PharmacyClaimsPage]) {
       const html = render(component);
-      expect(html).toContain("Historical cases, background");
+      expect(html).toContain("Background");
       for (const id of ["EX-24119", "EX-24088"]) {
         expect(html).toContain(id);
         expect(html).not.toContain(`href="/case/${id}`);

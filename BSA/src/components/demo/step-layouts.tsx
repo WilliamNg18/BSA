@@ -2,17 +2,19 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BoundaryTag } from "@/components/demo/labels";
-import { ProcessFigure } from "@/components/demo/process-figure";
+import { ProcessAssumptions } from "@/components/demo/process-assumptions";
 import { SceneEstimateNumber } from "@/components/demo/scene-estimate-number";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
-import { formatProcessHours, formatProcessItems, PROCESS_PUBLIC_FACTS } from "@/lib/domain/baseline";
-import { getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
+import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
+import { DEMO_STEPS, getDemoStep, type DemoStepDefinition } from "@/lib/domain/demo-steps";
 import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 import { itemStateLabel } from "@/lib/domain/lifecycle";
 import type { ItemChannel } from "@/lib/domain/types";
 import { staffLane } from "@/lib/case-presentation";
 import { useAppStore } from "@/lib/store";
+import { demoRouteCaseId } from "@/lib/demo-navigation";
+import { isCommittedDemoLocation } from "@/lib/demo-focus";
 import { cn } from "@/lib/utils";
 
 export type DemoTaskKind = "submission" | "claim" | "operator" | "type1";
@@ -21,6 +23,7 @@ export interface DemoTaskProps {
   caseId: string;
   allowCorrection: boolean;
   channel: ItemChannel | null;
+  evidencePlacement?: "external";
 }
 export type DemoTaskRenderer = (props: DemoTaskProps) => ReactNode;
 
@@ -39,7 +42,7 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
   },
   6: {
     today: ["Unreadable paper posted", "Missing information returns weeks later (illustrative)"],
-    assisted: ["declared by the pharmacy, not read from the form", "Gate 1 checks the declaration", "Human posts; unreadable scan needs confirmation"],
+    assisted: ["declared by the pharmacy, not read from the form", "Gate 1 checks the declaration", "Unreadable scan needs confirmation"],
   },
   7: {
     today: ["Type 1 keys by eye", "Type 2 judges", "RB2B if evidence remains insufficient"],
@@ -59,18 +62,19 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
   },
 };
 
-export function DemoComparison({ enabled, today, assisted, activeLabel = "Current mode · Shared operational item" }: { enabled: boolean; today: ReactNode; assisted: ReactNode; activeLabel?: string }) {
+export function DemoComparison({ enabled, today, assisted, compact = false, activeLabel = "Current mode · Shared operational item" }: { enabled: boolean; today: ReactNode; assisted: ReactNode; compact?: boolean; activeLabel?: string }) {
   return <div className="grid grid-cols-2 items-start gap-6" data-demo-comparison>
-    <section aria-labelledby="demo-today-heading" data-testid="demo-today" data-readonly={enabled} className="min-w-0 space-y-4 rounded-xl border bg-card p-5">
-      <div className="border-b pb-3"><h2 id="demo-today-heading" className="text-xl font-semibold">Today</h2>
+    <section aria-labelledby="demo-today-heading" data-testid="demo-today" data-readonly={enabled} className={cn("min-w-0 rounded-xl border bg-card", compact ? "space-y-3 p-4" : "space-y-4 p-5")}>
+      <div className={cn("border-b", compact ? "flex flex-wrap items-baseline justify-between gap-x-3 pb-2" : "pb-3")}><h2 id="demo-today-heading" className="text-xl font-semibold">Today</h2>
         <p className="mt-1 text-xs font-medium">{enabled ? "Read-only scenario projection" : activeLabel}</p></div>
       {today}
     </section>
     <section key={enabled ? "on" : "off"} aria-labelledby="demo-assisted-heading" data-testid="demo-assisted" data-readonly={!enabled}
-      className={cn("min-w-0 space-y-4 rounded-xl border p-5", enabled
+      className={cn("relative isolate min-w-0 rounded-xl border", compact ? "space-y-3 p-4" : "space-y-4 p-5", enabled
         ? "border-teal-700 bg-card ring-1 ring-teal-700 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-[2000ms]"
-        : "border-dashed bg-muted text-muted-foreground")}>
-      <div className="border-b pb-3"><h2 id="demo-assisted-heading" className="text-xl font-semibold">With the agent</h2>
+        : "border-dashed bg-muted text-neutral-700 dark:text-neutral-300")}>
+      {enabled && <span aria-hidden="true" data-demo-motion="background" className="pointer-events-none absolute inset-0 -z-10 rounded-xl bg-teal-50 dark:bg-teal-950 motion-reduce:animate-in motion-reduce:fade-in-0 motion-reduce:duration-150" />}
+      <div className={cn("border-b", compact ? "flex flex-wrap items-baseline justify-between gap-x-3 pb-2" : "pb-3")}><h2 id="demo-assisted-heading" className="text-xl font-semibold">With the agent</h2>
         <p className="mt-1 text-xs font-medium">{enabled ? activeLabel : "Read-only scenario projection · Agent Off"}</p></div>
       {assisted}
     </section>
@@ -108,32 +112,17 @@ function ProcessPanel({ assisted }: { assisted: boolean }) {
 
 function MonthPanel({ assisted, active }: { assisted: boolean; active: boolean }) {
   const { result } = useManualLoopMonth();
-  if (!result) return <p role="alert">Estimate unavailable. Exit demo to correct the monthly assumptions.</p>;
-  const column = assisted ? result.withAgent : result.today;
+  const column = result && (assisted ? result.withAgent : result.today);
   return <div className="space-y-4" data-demo-month>
-    <dl className="grid grid-cols-2 gap-3">{([
+    {result && column ? <dl className="grid grid-cols-2 gap-3">{([
       ["Referred-back items", column.referredBackItems, formatProcessItems],
       ["Referral-loop operator hours", column.operatorHours, formatProcessHours],
     ] as const).map(([label, value, format]) => <div key={label} className="rounded-lg border bg-background p-4">
       <dt className="text-sm font-medium">{label}{assisted && " (estimate)"}</dt>
       <dd className="mt-3 text-3xl font-semibold tabular-nums"><SceneEstimateNumber value={value} enabled={assisted && active} scenario={result} format={format} /></dd>
-    </div>)}</dl>
+    </div>)}</dl> : <p role="alert">Estimate unavailable. Correct the highlighted shared assumptions.</p>}
     <p className="text-sm">Synthetic assumptions, not measured savings. Judgement stays human; only evidence gathering and avoidable referrals change.</p>
-    {active ? <details data-demo-control="month-detail" className="rounded-lg border p-3">
-      <summary className="cursor-pointer font-medium">Estimate detail and assumptions</summary>
-      <MonthDetail />
-    </details> : <p className="text-xs">Same monthly assumptions. Detail is available in the current mode.</p>}
-  </div>;
-}
-
-function MonthDetail() {
-  const { input } = useManualLoopMonth();
-  return <div className="mt-3 space-y-3 text-sm">
-    <ProcessFigure source="Public" label="Monthly referral context" explanation="Owner-supplied public context, not independently verified.">
-      {formatProcessItems(PROCESS_PUBLIC_FACTS.monthlyReferrals)} monthly referrals
-    </ProcessFigure>
-    <p>Assumptions are editable in the ordinary monthly calculator after Exit demo.</p>
-    {input && <p>Pharmacy prevention assumption: {input.preventionPercent}%.</p>}
+    {active && <div data-demo-control="month-detail"><ProcessAssumptions /></div>}
   </div>;
 }
 
@@ -145,7 +134,7 @@ function ClosingPanel({ assisted }: { assisted: boolean }) {
     <section className="space-y-2 rounded-lg border p-4"><h3 className="font-semibold">{assisted ? "The central bet" : "The problem"}</h3>
       <p className="text-sm">{assisted ? input ? `Prevent ${input.preventionPercent}% of would-be referrals (assumption). This estimate fails if measured prevention is substantially lower.` : "Estimate unavailable. Correct the monthly assumptions outside demo mode." : "People gather uncertain evidence. Pharmacies correct referred items; only that item's payment is delayed."}</p></section>
     <section className="space-y-2 rounded-lg border p-4"><h3 className="font-semibold">First test</h3>
-      <p className="text-sm">{assisted ? "Test referral-reason concentration using two years of item-level history. Proceed, reshape or stop." : "Establish why items return, before proposing a change."}</p></section>
+      <p className="text-sm">{assisted ? "Two weeks of operator-time data; fifty items, two operators, blind. Establish the agreement ceiling before proceeding." : "Establish why items return, before proposing a change."}</p></section>
   </div>;
 }
 
@@ -153,9 +142,16 @@ function ScenarioProjection({ step, caseId, assisted }: { step: DemoStepDefiniti
   const content = CASE_COMPARISONS[step.number];
   if (!content) return <p role="alert">Scenario comparison unavailable.</p>;
   return <div className="space-y-3" data-demo-projection>
-    <p className="text-sm font-semibold">{caseId} · Synthetic scenario, not recorded history</p>
+    <p className="text-sm font-semibold">{caseId} · Scenario, not history.</p>
     <ol className="space-y-3">{(assisted ? content.assisted : content.today).map((line) => <li key={line} className="rounded-lg border bg-background p-3 text-sm">{line}</li>)}</ol>
   </div>;
+}
+
+function FollowProjection({ caseId, assisted, kind }: { caseId: string; assisted: boolean; kind: DemoTaskKind }) {
+  const scenario = DEMO_STEPS.find((step) => step.caseId === caseId && step.number >= 3 && step.number <= 7
+    && (step.number !== 6 || kind !== "operator"));
+  if (!scenario) return <p role="alert">No scenario comparison is defined for {caseId}.</p>;
+  return <ScenarioProjection step={scenario} caseId={caseId} assisted={assisted} />;
 }
 
 function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }) {
@@ -187,7 +183,8 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
           <td className="p-2 font-mono text-xs">{row.caseId}</td><td className="py-2">{itemStateLabel(row, "nhsbsa", enabled)}</td>
           <td className="p-2"><Button variant="outline" size="sm" data-demo-control="queue-row" aria-label={`Open ${row.caseId}`} aria-pressed={row.caseId === caseId} onClick={() => {
             useAppStore.getState().followCase(row.caseId);
-            navigate(`/case/${encodeURIComponent(row.caseId)}`);
+            const params = new URLSearchParams({ case: row.caseId, channel: processes[row.caseId].channel });
+            navigate(`/queue?${params}`);
           }}>Open</Button></td>
         </tr>)}</tbody>
         <tfoot className="border-t bg-muted text-xs">
@@ -201,30 +198,37 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
   </div>;
 }
 
-function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition; caseId: string; kind: DemoTaskKind; renderTask: DemoTaskRenderer }) {
+function LiveItem({ step, caseId, kind, renderTask, showQueue = false, externalEvidence = false }: { step: DemoStepDefinition; caseId: string; kind: DemoTaskKind; renderTask: DemoTaskRenderer; showQueue?: boolean; externalEvidence?: boolean }) {
   const item = useLifecycleCase(caseId);
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]);
   const process = useAppStore((s) => s.itemProcesses[caseId]);
+  const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const enabled = useAppStore((s) => s.agentEnabled);
   if (!item || !lifecycle || !process) return <p role="alert">Operational item unavailable: {caseId}. No replacement case has been selected.</p>;
   const task = kind === "operator" && process.routing.outcome === "type1_capture" && process.routing.requiresHuman ? "type1" : kind;
-  const content = <div className="space-y-4" data-demo-live-case={caseId} data-demo-live-kind={task}>
-    <div className="space-y-2">
-      <h3 className="text-lg font-semibold">{caseId}</h3>
+  const compactCapture = task === "type1" && externalEvidence;
+  const content = <div className={compactCapture ? "space-y-3" : "space-y-4"} data-demo-live-case={caseId} data-demo-live-kind={task}>
+    <div className={compactCapture ? "space-y-1" : "space-y-2"} data-demo-case-summary>
+      <div className={compactCapture ? "flex flex-wrap items-baseline gap-x-3" : "space-y-2"}>
+      <h3 className={cn("font-semibold", compactCapture ? "text-base" : "text-lg")}>{caseId}</h3>
       <p className="text-sm" data-item-state>{itemStateLabel(lifecycle, kind === "operator" ? "nhsbsa" : "pharmacy", enabled)}</p>
-      <dl className="grid grid-cols-2 gap-3 text-sm">
+      </div>
+      <dl className={cn("text-sm", compactCapture ? "flex flex-wrap gap-x-4 gap-y-1 [&>div]:flex [&>div]:gap-2" : "grid grid-cols-2 gap-3")}>
         <div><dt className="font-medium">{kind === "submission" ? "Submission channel" : "Channel"}</dt><dd>{(kind === "submission" ? step.channel : process.channel) === "eps" ? "EPS" : "Paper"}</dd></div>
         <div><dt className="font-medium">Current endorsement</dt><dd>{item.extracted.endorsementText || "None"}</dd></div>
       </dl>
     </div>
-    {enabled && verification && <dl aria-label="Recorded verification, not a scenario forecast" className="grid grid-cols-3 gap-2 rounded-lg border p-3 text-sm">
+    {enabled && verification && <dl aria-label="Recorded verification, not a scenario forecast" className={cn("rounded-lg border text-sm", compactCapture
+      ? "flex flex-wrap gap-x-4 gap-y-1 px-3 py-2 [&>div]:flex [&>div]:gap-2"
+      : "grid grid-cols-3 gap-2 p-3")}>
       <div><dt>Gate 1</dt><dd>{verification.gate1 === "none" ? "Not performed" : verification.gate1}</dd></div>
       <div><dt>Gate 2</dt><dd>{verification.gate2 === "none" ? "Not performed" : verification.gate2}</dd></div>
       <div><dt>Reconciliation</dt><dd>{verification.reconciled ? "Agrees" : "Not established"}</dd></div>
     </dl>}
     <div data-demo-control={task === "operator" ? "operator" : task === "type1" ? "type1-capture" : undefined}>
-      {renderTask({ kind: task, caseId, allowCorrection: step.number === 4 || step.number === 10, channel: kind === "submission" ? step.channel : process.channel })}
+      {renderTask({ kind: task, caseId, allowCorrection: step.number !== 5 || Boolean(revision && revision.kind !== "seed"), channel: kind === "submission" ? step.channel : process.channel,
+        ...(compactCapture ? { evidencePlacement: "external" } : {}) })}
     </div>
     {step.number === 10 && <details data-demo-control="history" className="rounded-lg border p-3">
       <summary className="cursor-pointer font-medium">Same-item history</summary>
@@ -233,37 +237,57 @@ function LiveItem({ step, caseId, kind, renderTask }: { step: DemoStepDefinition
       </li>)}</ol>
     </details>}
   </div>;
-  return step.number === 8 ? <DemoQueue caseId={caseId}>{content}</DemoQueue> : content;
+  return showQueue ? <DemoQueue caseId={caseId}>{content}</DemoQueue> : content;
 }
 
-export function DemoStepLayout({ renderTask }: { renderTask: DemoTaskRenderer }) {
+export function DemoStepLayout({ renderTask, renderType1Evidence }: { renderTask: DemoTaskRenderer; renderType1Evidence?: (caseId: string) => ReactNode }) {
   const number = useAppStore((s) => s.demoStep);
   const enabled = useAppStore((s) => s.agentEnabled);
   const followedId = useAppStore((s) => s.followedCaseId);
+  const processes = useAppStore((s) => s.itemProcesses);
   const { pathname, search, hash } = useLocation();
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
+    if (!isCommittedDemoLocation({ pathname, search, hash }, window.location)) return;
     heading.current?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [number, pathname, search, hash]);
   if (number === null) return null;
   const step = getDemoStep(number);
-  const routeCase = pathname.startsWith("/case/") ? decodeURIComponent(pathname.slice("/case/".length)) : new URLSearchParams(search).get("case");
+  const routeCase = demoRouteCaseId(pathname, search);
   const explicitSide = pathname.startsWith("/case/") ? "operator" : pathname === "/pharmacy/claims" ? "claim" : null;
   const caseId = routeCase && (step.number === 8 || step.number === 10 || routeCase === followedId) ? routeCase : step.caseId;
   const kind: DemoTaskKind = explicitSide ?? (step.number === 8 ? "operator" : step.number === 9 ? "claim" : "submission");
+  const process = caseId ? processes[caseId] : undefined;
+  const externalCapture = Boolean(renderType1Evidence && caseId && kind === "operator"
+    && process?.routing.outcome === "type1_capture" && process.routing.requiresHuman);
+  const followOverride = Boolean(explicitSide && routeCase === followedId
+    && (!step.caseId || routeCase !== step.caseId || pathname !== step.path.split("#")[0]));
   function panel(assisted: boolean) {
     const active = assisted === enabled;
+    if (!active && externalCapture && caseId && renderType1Evidence) return <div className="space-y-4">
+      <ScenarioProjection step={getDemoStep(7)} caseId={caseId} assisted={assisted} />
+      <section aria-label={`Shared original evidence for ${caseId}`} data-demo-shared-evidence={caseId} className="space-y-3 border-t pt-3">
+        <h3 className="font-semibold">Shared original evidence (read-only)</h3>
+        {renderType1Evidence(caseId)}
+      </section>
+    </div>;
+    if (followOverride && caseId) return active
+      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} externalEvidence={externalCapture} />
+      : <FollowProjection caseId={caseId} assisted={assisted} kind={kind} />;
     if (step.number === 1) return <ProcessPanel assisted={assisted} />;
     if (step.number === 2) return <MonthPanel assisted={assisted} active={active} />;
     if (step.number === 11) return <ClosingPanel assisted={assisted} />;
     return active && caseId
-      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} />
+      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} showQueue={step.number === 8} externalEvidence={externalCapture} />
       : <ScenarioProjection step={step} caseId={caseId} assisted={assisted} />;
   }
-  return <div className="mx-auto w-full max-w-7xl space-y-5" data-testid="demo-step-screen" data-demo-step={step.number} data-demo-case={caseId ?? undefined}>
-    <h1 ref={heading} tabIndex={-1} className="rounded-sm text-3xl font-semibold tracking-tight focus-visible:outline-2">{step.number}. {step.title}</h1>
-    <DemoComparison enabled={enabled} today={panel(false)} assisted={panel(true)}
-      activeLabel={step.caseId ? undefined : step.number === 2 ? "Current mode · Shared assumptions" : "Current mode · Process illustration"} />
+  return <div className={cn("mx-auto w-full max-w-7xl", externalCapture ? "space-y-3" : "space-y-5")} data-testid="demo-step-screen" data-demo-step={step.number} data-demo-case={caseId ?? undefined}>
+    <h1 ref={heading} tabIndex={-1} className={cn("rounded-sm font-semibold tracking-tight focus-visible:outline-2", externalCapture ? "text-2xl" : "text-3xl")}>
+      {followOverride ? `Following ${caseId} from step ${step.number}` : `${step.number}. ${step.title}`}
+    </h1>
+    {followOverride && <p className="text-sm font-medium" data-demo-follow-context>{caseId} · {kind === "claim" ? "Pharmacy view" : "NHSBSA view"}</p>}
+    <DemoComparison enabled={enabled} today={panel(false)} assisted={panel(true)} compact={externalCapture}
+      activeLabel={caseId ? undefined : step.number === 2 ? "Current mode · Shared assumptions" : "Current mode · Process illustration"} />
   </div>;
 }

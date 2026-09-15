@@ -5,6 +5,11 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { captureJson, test as existingTest, expect } from "../e2e/fixtures";
 import { isBuildInfo } from "./settings";
+import { installRouteCommitDiagnostics, routeDiagnosticsEnabled } from "../support/route-commit-diagnostics";
+import {
+  runtimeProfileEnabled, RuntimeProfileSetupError, startChromiumRuntimeProfile, type RuntimeProfileManifest,
+} from "../support/chromium-runtime-profile";
+import { THIN_TIMED_TRACE } from "../support/timed-trace-policy";
 
 async function verifyBuild(request: APIRequestContext, info: TestInfo, phase: string) {
   const response = await request.get("/build-info.json");
@@ -24,13 +29,83 @@ async function verifyBuild(request: APIRequestContext, info: TestInfo, phase: st
   expect(body.dirty, "A release must be built from a clean commit").toBe(false);
 }
 
-export const test = existingTest.extend<{ buildIdentity: void }>({
+export const test = existingTest.extend<{ buildIdentity: void; routeDiagnostics: void; runtimeProfile: void }>({
   buildIdentity: [async ({ request }, use, info) => {
     await verifyBuild(request, info, "before");
     await use();
     await verifyBuild(request, info, "after");
   }, { auto: true }],
+  routeDiagnostics: [async ({ page }, use, info) => {
+    if (!routeDiagnosticsEnabled(info.config.metadata, info.project.use.baseURL)) {
+      await use();
+      return;
+    }
+    const diagnostics = await installRouteCommitDiagnostics(page);
+    diagnostics.mark("test-start");
+    const collect = async () => {
+      const originalStatus = info.status;
+      diagnostics.mark(`test-outcome:${originalStatus}`);
+      try {
+        await captureJson(info, "route-commit-diagnostics", {
+          originalStatus, expectedCommit: process.env.EXPECTED_BUILD_COMMIT,
+          ...await diagnostics.collect(),
+        });
+      } catch (error) {
+        await captureJson(info, "route-commit-diagnostic-error", {
+          originalStatus, message: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
+    };
+    try {
+      await use();
+    } finally {
+      await collect();
+    }
+  }, { auto: true }],
+  runtimeProfile: [async ({ page }, use, info) => {
+    const baseURL = info.project.use.baseURL;
+    if (!runtimeProfileEnabled(info.config.metadata, baseURL)) {
+      await use();
+      return;
+    }
+    const expectedCommit = process.env.EXPECTED_BUILD_COMMIT;
+    if (!baseURL || !expectedCommit) throw new Error("Runtime profiling requires an exact build and local URL.");
+    const attachProfile = async (manifest: RuntimeProfileManifest, originalStatus: string | undefined, phase: "setup" | "after-outcome") => {
+      await captureJson(info, "runtime-profile-manifest", { originalStatus: originalStatus ?? "not-reported", phase, ...manifest });
+      if (manifest.cpu) await info.attach("cpu-profile", { path: manifest.cpu.path, contentType: "application/json" });
+      if (manifest.trace.path) await info.attach("chromium-runtime-trace", { path: manifest.trace.path, contentType: "application/json" });
+    };
+    let profile: Awaited<ReturnType<typeof startChromiumRuntimeProfile>>;
+    try {
+      profile = await startChromiumRuntimeProfile(page, info.outputPath("runtime-profile"), baseURL, expectedCommit);
+    } catch (error) {
+      if (error instanceof RuntimeProfileSetupError) await attachProfile(error.manifest, "not-run", "setup");
+      await captureJson(info, "runtime-profile-error", {
+        originalStatus: "not-run", phase: "setup", message: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
+    const collect = async () => {
+      const originalStatus = info.status;
+      try {
+        const manifest = await profile.collect();
+        await attachProfile(manifest, originalStatus, "after-outcome");
+        if (!manifest.complete) {
+          throw new Error(`Runtime profile is incomplete (${manifest.stopReason}): ${manifest.errors.map((error) => error.message).join("\n")}`);
+        }
+      } catch (error) {
+        await captureJson(info, "runtime-profile-error", {
+          originalStatus, message: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
+    };
+    try { await use(); } finally { await collect(); }
+  }, { auto: true }],
 });
+
+export const timedTest = test.extend({ trace: THIN_TIMED_TRACE, timedArtifactsExpected: true });
 
 async function dismissDecisionNotice(page: Page) {
   const notices = page.getByRole("complementary", { name: "Decision notifications", exact: true });
@@ -45,7 +120,7 @@ async function dismissDecisionNotice(page: Page) {
   return text;
 }
 
-export async function audit(page: Page, info: TestInfo, name: string, enabled: boolean) {
+export async function audit(page: Page, info: TestInfo, name: string, enabled: boolean, capture = true) {
   const dismissedNotification = await dismissDecisionNotice(page);
   const result = await new AxeBuilder({ page }).analyze();
   await captureJson(info, `axe-${name}-${enabled ? "on" : "off"}`, {
@@ -53,7 +128,7 @@ export async function audit(page: Page, info: TestInfo, name: string, enabled: b
     violations: result.violations, passes: result.passes.length, incomplete: result.incomplete, dismissedNotification,
   });
   expect(result.violations).toEqual([]);
-  await captureView(page, info, `audit-${name}-${enabled ? "on" : "off"}`);
+  if (capture) await captureView(page, info, `audit-${name}-${enabled ? "on" : "off"}`);
 }
 
 export async function captureView(page: Page, info: TestInfo, name: string) {
@@ -70,6 +145,7 @@ export async function captureView(page: Page, info: TestInfo, name: string) {
     ":(top)BSA/vite.config.ts", ":(top)hosting.config.json");
   const viewport = page.viewportSize();
   if (!viewport) throw new Error("Capture requires an explicit viewport.");
+  if (viewport.width !== 1440) throw new Error("New screenshot evidence is restricted to 1440 px; run other widths without capture.");
   const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
   expect(scrollWidth, "Captured views must not overflow the page horizontally").toBeLessThanOrEqual(viewport.width);
   const perspectiveGroup = page.getByRole("group", { name: "Perspective", exact: true });

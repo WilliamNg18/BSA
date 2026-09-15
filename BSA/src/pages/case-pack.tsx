@@ -1,13 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { AlertTriangle, Check, FileText, Scale } from "lucide-react";
-import { useNotification } from "@/hooks/use-notification";
+import { useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { AlertTriangle, FileText, Scale } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { NativeRadioGroup as RadioGroup, NativeRadioItem as RadioGroupItem } from "@/components/ui/native-radio-group";
-import { Textarea } from "@/components/ui/textarea";
 import { PageSection } from "@/components/page-section";
 import { ErrorState } from "@/components/states";
 import { CaseHeader } from "@/components/demo/case-header";
@@ -17,9 +13,8 @@ import { CompositeBadge, SignalList } from "@/components/demo/signals";
 import { runAgent } from "@/lib/domain/agent";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
-import type { HumanDecision } from "@/lib/domain/types";
 import { useAppStore } from "@/lib/store";
-import { caseViewState, manualChoice, permitsProposal } from "@/lib/case-presentation";
+import { caseViewState, permitsProposal } from "@/lib/case-presentation";
 import { CasePlayback, CaseSourceEvidence, MissingAssistedSlots, OriginalPaperDeclaration, RawCaseFields } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { Type1Capture } from "@/components/demo/type1-capture";
@@ -27,21 +22,10 @@ import { ManualTariffLookup } from "@/components/demo/case-presentation";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import { abstentionReasonLabel } from "@/lib/abstention-display";
-
-const DECISIONS: { value: HumanDecision; label: string; help: string }[] = [
-  { value: "ACCEPT", label: "Accept the recommendation", help: "Human acceptance." },
-  { value: "AMEND", label: "Amend", help: "Human amendment." },
-  { value: "REQUEST_INFORMATION", label: "Request information", help: "Await clarification." },
-  { value: "REFER_BACK", label: "Refer back", help: "Request correction." },
-  { value: "ESCALATE", label: "Escalate", help: "Senior review." },
-];
-
-function suggestedFor(rec: string): HumanDecision {
-  if (rec === "SUFFICIENT") return "ACCEPT";
-  if (rec === "REFER_BACK") return "REFER_BACK";
-  if (rec === "REQUEST_INFORMATION") return "REQUEST_INFORMATION";
-  return "ESCALATE";
-}
+import { OperatorActionPanel } from "@/components/demo/operator-action-panel";
+import { ReleaseRecord } from "@/components/demo/release-record";
+import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 
 export function CasePackPage() {
   const { id } = useParams();
@@ -52,14 +36,10 @@ export function CasePackPage() {
 
 function CasePackContent() {
   const { id } = useParams();
-  const notification = useNotification();
-  const navigate = useNavigate();
   const c = useLifecycleCase(id);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
   const lifecycle = useAppStore((s) => id ? s.lifecycles[id] : undefined);
-  const arrive = useAppStore((s) => s.arriveInQueue);
-  const recordDecision = useAppStore((s) => s.recordType2Decision);
   const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
   const currentRevision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1) : undefined);
   const revision = currentRevision?.number;
@@ -68,57 +48,21 @@ function CasePackContent() {
   const pack = useMemo(() => (c ? runAgent(c, { agentEnabled }) : null), [c, agentEnabled]);
   const state = caseViewState(pack, process?.revision === revision ? process : undefined,
     existing.some((record) => (record.revision ?? 1) === revision));
-  const [decision, setDecision] = useState<HumanDecision | null>(null);
-  const [reason, setReason] = useState("");
-  const [rbCode, setRbCode] = useState("");
   const [compare, setCompare] = useState(false);
-  const [approved, setApproved] = useState(false);
-  const [error, setError] = useState("");
-  const errorRef = useRef<HTMLParagraphElement>(null);
   const clock = useCasePresentation(6, agentEnabled, pack);
-  useEffect(() => {
-    if (error) errorRef.current?.focus();
-  }, [error]);
 
   if (!c || !pack || !state) {
     return <ErrorState title="Case not found" description="Choose a case from the exception queue." action={<Button asChild variant="outline"><Link to="/queue">Go to the queue</Link></Button>} />;
   }
 
   const showRecommendation = permitsProposal(pack);
-  const suggested = showRecommendation ? suggestedFor(pack.recommendation) : "ESCALATE";
-  const chosen = !pack.agentInvoked ? manualChoice(decision) : !showRecommendation && (decision === "ACCEPT" || decision === "AMEND") ? "ESCALATE" : decision ?? suggested;
-  const isOverride = showRecommendation && (chosen === "AMEND" || chosen !== suggested && chosen !== "ACCEPT");
-  const disposition = chosen === "ACCEPT" && showRecommendation ? suggested : chosen;
   const currentProcess = process?.revision === revision ? process : undefined;
   const awaitingCapture = currentProcess?.routing.outcome === "type1_capture" && currentProcess.routing.requiresHuman;
   const captureCompleted = currentProcess?.routing.outcome === "type1_capture" && !currentProcess.routing.requiresHuman;
   const automatic = currentProcess?.routing.outcome === "auto_priced";
+  const released = lifecycle?.state === "released_to_pricing";
   const decided = !currentProcess || awaitingCapture || captureCompleted || automatic || lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
-  const canApprove = agentEnabled && showRecommendation && !!pack.draftToPharmacy && (disposition === "REFER_BACK" || disposition === "REQUEST_INFORMATION");
   const originalCapture = paperImageEvidence(c, currentRevision?.templateCaseId).extracted;
-
-  function submit() {
-    if (!c || !pack || decided || (pack.agentInvoked && clock.revealed < 6)) return;
-    if (reason.trim().length < 8) {
-      setError("A reason of at least eight characters is required for this decision.");
-      return;
-    }
-    if (disposition === "REFER_BACK" && !rbCode) {
-      setError("Choose an RB code for the referral.");
-      return;
-    }
-    try {
-    recordDecision({
-      caseId: c.id,
-      decision: disposition,
-      reason: reason.trim(),
-      rbCode: disposition === "REFER_BACK" ? rbCode : undefined,
-      approvedDraft: canApprove && approved ? pack.draftToPharmacy! : undefined,
-    });
-    notification.show("success", "Human decision recorded");
-    navigate(`/case/${c.id}/record`);
-    } catch (err) { setError(err instanceof Error ? err.message : "Decision unavailable. Review the current case state."); }
-  }
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -129,26 +73,25 @@ function CasePackContent() {
         intro="Review the evidence, monthly rule and checks. The agent verifies and advises; a person decides."
       />
       <LifecycleHistory id={c.id} />
-      {c.paperDeclaration && (agentEnabled || currentProcess?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
+      <PharmacyConfirmation caseId={c.id} />
+      {released && <ReleaseRecord caseId={c.id} />}
+      {(automatic || released || captureCompleted) && <ItemRecommendationPanel caseId={c.id} />}
+      {!awaitingCapture && c.paperDeclaration && (agentEnabled || currentProcess?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
         Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
       </p>}
       {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
-      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} />}
-      {automatic && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
+      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} showRecommendation={awaitingCapture} showConfirmation={false} />}
+      {automatic && !released && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
         <BoundaryTag cls="deterministic" />
         <p>priced by NHSBSA's existing rules engine, no person involved</p>
         <p className="text-sm text-muted-foreground">No operator action is needed. Any earlier human decisions remain in the history.</p>
       </section>}
-      {!awaitingCapture && !captureCompleted && !automatic && currentProcess && (lifecycle?.state === "submitted" || lifecycle?.state === "resubmitted") && <section className="space-y-2 rounded-xl border p-4">
-        <BoundaryTag cls="human" /><p>Start review explicitly before recording a decision.</p>
-        <Button onClick={() => { try { arrive(c.id); setError(""); } catch (err) { setError(err instanceof Error ? err.message : "Review unavailable."); } }}>Start review</Button>
-      </section>}
-      {decided && !automatic && !awaitingCapture && lifecycle?.state !== "submitted" && lifecycle?.state !== "resubmitted" && <section className="space-y-2 rounded-xl border p-4">
+      {decided && !automatic && !released && !awaitingCapture && lifecycle?.state !== "submitted" && lifecycle?.state !== "resubmitted" && <section className="space-y-2 rounded-xl border p-4">
         <p>Historical case view. Submit another demonstration attempt at the pharmacy before starting a new review.</p>
         {perspective !== "nhsbsa" && <Button asChild variant="outline" className="h-auto max-w-full whitespace-normal"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>}
       </section>}
-      {error && <p ref={errorRef} tabIndex={-1} role="alert" className="rounded-md border border-destructive p-3 focus-visible:outline-2 focus-visible:outline-ring">{error}</p>}
+      {!awaitingCapture && !captureCompleted && !automatic && !released && <OperatorActionPanel caseId={c.id} showConfirmation={false} />}
 
       {!pack.agentInvoked && (
         <Alert>
@@ -197,13 +140,13 @@ function CasePackContent() {
         <div className={compare ? "grid gap-6 xl:grid-cols-2" : ""}>
           {compare && <aside className="space-y-4 rounded-xl border p-4" aria-label="Read-only manual comparison">
             <h2 className="font-semibold">Manual comparison · Read-only</h2>
-            <p className="text-sm text-muted-foreground">Synthetic assumptions. Shared decision controls remain below; this comparison writes nothing.</p>
+            <p className="text-sm text-muted-foreground">Read-only comparison. Source evidence stays unchanged.</p>
             <RawCaseFields c={c} contextLabel="Manual comparison" /><MissingAssistedSlots markers />
           </aside>}
       <div className={compare ? "space-y-6" : "grid gap-6 xl:grid-cols-5"} data-pack-assembly={clock.revealed}>
         <div className="space-y-6 xl:col-span-3">
           {clock.revealed >= 5 && <>
-          <PageSection title="Recommendation" description={showRecommendation ? "Prepared by the agent, permitted by the gate, decided by a person." : "No recommendation to show."}>
+          <PageSection title="Assessment details" description={showRecommendation ? "Prepared by the agent, permitted by the gate, decided by a person." : "No recommendation to show."}>
             <Card className="border-teal-600">
               <CardHeader>
                 <div className="flex flex-wrap items-center gap-2">
@@ -344,50 +287,6 @@ function CasePackContent() {
         </div>
       </>}
 
-      {(!agentEnabled || !pack.agentInvoked || clock.revealed >= 6) && <>
-      <PageSection title="Operator decision" description={error ? "No payment approval." : "Human reason required; explain overrides. No payment approval."}>
-        <Card className="border-orange-600">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base"><BoundaryTag cls="human" /> {decided ? "Read-only: not awaiting an operator decision" : "Record the decision"}</CardTitle>
-            {decided && existing.length > 0 && <CardDescription>Latest record: {existing[existing.length - 1].id}. Previous attempts remain in history.</CardDescription>}
-          </CardHeader>
-          {!decided && (
-            <CardContent className="space-y-4">
-              <RadioGroup value={chosen} onValueChange={(v) => setDecision(v as HumanDecision)} aria-label="Decision" className="grid gap-2 grid-cols-2">
-                {DECISIONS.filter((d) => agentEnabled || d.value !== "AMEND").map((d) => (
-                  <div key={d.value} className="flex items-start gap-2 rounded-md border p-2.5">
-                    <RadioGroupItem value={d.value} id={`d-${d.value}`} className="mt-0.5" disabled={!showRecommendation && (d.value === "AMEND" || pack.agentInvoked && d.value === "ACCEPT")} />
-                    <Label htmlFor={`d-${d.value}`} className="flex flex-col gap-0.5 font-normal">
-                      <span className="font-medium">{!showRecommendation && d.value === "ACCEPT" ? "Sufficient (human choice)" : d.label}{showRecommendation && d.value === suggested ? " (as recommended)" : ""}</span>
-                      {!error && <span className="text-xs text-muted-foreground">{!showRecommendation && d.value === "ACCEPT" ? "Human judgement." : d.help}</span>}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-              {canApprove && <div className="space-y-2">
-                <label className="flex items-start gap-2"><input name="approve-draft" type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1 size-4" />Approve this draft for the pharmacy</label>
-                <p className="text-sm text-muted-foreground">Draft approval is optional.</p>
-              </div>}
-              {disposition === "REFER_BACK" && <div className="space-y-1.5">
-                <Label htmlFor="rb-code">RB code (required)</Label>
-                <select id="rb-code" name="rb-code" value={rbCode} onChange={(event) => setRbCode(event.target.value)} required
-                  className="h-10 w-full rounded-md border bg-background px-3 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2">
-                  <option value="">Choose an RB code</option>
-                  {RB_CODE_CATALOG.map((entry) => <option key={entry.code} value={entry.code}>{entry.code}: {entry.reason}</option>)}
-                </select>
-              </div>}
-              <div className="space-y-1.5">
-                <Label htmlFor="reason">Reason (required)</Label>
-                <Textarea id="reason" name="reason" autoComplete="off" value={reason} onChange={(e) => setReason(e.target.value)} placeholder={isOverride ? "Explain why you are departing from the recommendation." : "Explain your decision based on the evidence."} aria-required="true" minLength={8} />
-              </div>
-              <Button type="button" className="bg-orange-700 text-white hover:bg-orange-800" onClick={submit}>
-                <Check aria-hidden="true" /> Record decision
-              </Button>
-            </CardContent>
-          )}
-        </Card>
-      </PageSection>
-      </>}
     </div>
   );
 }

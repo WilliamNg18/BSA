@@ -1,6 +1,6 @@
 import { audit, test } from "./fixtures";
 import { perspectiveRoundTrips } from "../e2e/perspective-helpers";
-import { LIVE_CHECKS } from "./inventory";
+import { LIVE_CHECKS } from "./legacy-inventory";
 
 test(LIVE_CHECKS.perspective, async ({ page }, info) => {
   await perspectiveRoundTrips(page, info);

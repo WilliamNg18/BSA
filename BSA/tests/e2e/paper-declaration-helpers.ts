@@ -10,6 +10,15 @@ export const PAPER_D_CAPTURE_FIELDS = {
   Prescriber: "Dr Demo (synthetic)",
 } as const;
 
+export async function openQueueCapture(page: Page, id = "EX-24123") {
+  const item = page.locator(`[data-type1-case="${id}"]`);
+  await expect(item).toBeVisible();
+  if (await item.getAttribute("open") === null) await item.locator(":scope > summary").click();
+  const capture = page.getByRole("region", { name: `Type 1 capture for ${id}`, exact: true });
+  await expect(capture).toBeVisible();
+  return capture;
+}
+
 export async function postWorkedPaperDeclaration(page: Page) {
   await navigatePrimary(page, "Pharmacy check");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -30,9 +39,8 @@ export async function postWorkedPaperDeclaration(page: Page) {
   await expect(receipt).toContainText("NCSO JB 27/08/26");
   await expect(receipt).not.toContainText("no person involved");
   await receipt.getByRole("link", { name: "Open shared queue", exact: true }).click();
-  const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
-  await expect(capture).toBeVisible();
-  await expect(capture).toContainText("Image cannot be read");
+  const capture = await openQueueCapture(page);
+  await expect(capture).toContainText("Image unreadable; agreement unknown.");
   await expect(capture).toContainText("declared by the pharmacy, not read from the form");
   await expect(capture.getByRole("textbox", { name: "Product code", exact: true })).toHaveValue("SYN-COCOD-100");
   await expect(capture.getByRole("textbox", { name: "Quantity", exact: true })).toHaveValue("100");

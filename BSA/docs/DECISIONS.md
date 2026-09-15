@@ -1,8 +1,18 @@
 ---
 title: Architecture and product decisions
 description: Append-only decisions with reasons and rejected alternatives.
-ms.date: 2026-09-10
+ms.date: 2026-09-15
 ---
+
+## 2026-09-15: Live is the product; the local copy is a verified backup
+
+Live is the product; local is a backup built from the same commit; any difference is a defect.
+
+- Question: what establishes completion? Choice: main merge, green deployment and observation of that exact commit on the live URL; a branch or local diagnostic is incomplete work. Tie-breaker: the newest live-first instruction and truthful evidence.
+- Question: how do working branches coexist with the live-first rule? Choice: push incomplete branch work at each STATUS and at least every thirty minutes, but never present it as the product or package it as a backup. Only the current main artifact verified on live is eligible. Tie-breaker: preserve the established merge order without a separate local version.
+- Question: when are tracking documents updated? Choice: include PROGRESS, SCOPE, ALIGNMENT, DECISIONS and LEARNINGS in the same commit as each described change; retain historical results and state pending gates explicitly. Tie-breaker: the newest repository-currency instruction.
+- Question: may a previously running frozen diagnostic become backup proof? Choice: preserve its original outcome and source boundary only; it cannot establish live completion or backup equality. Tie-breaker: immutable evidence and the new release rule.
+- Question: what is implemented by this policy change? Choice: record and relay the standing rule now; mark deployment freshness, canonical backup/parity and clean-environment recovery implementation pending rather than claiming unrun checks. Tie-breaker: truthful scope and no false completion.
 
 ## 2026-09-11: Issue 27 scene-only estimate count-in
 
@@ -2084,3 +2094,342 @@ Tie-breakers: preserved history and human decisions.
 
 - Question: should an expanded recommendation push the operator's current question below the hand-off viewport? Choice: place the actual question, confirmation controls, sent answer and referral response near the claim state, before supporting evidence. Keep the full recommendation expanded and preserve every recorded word.
 - Question: how should a followed claim enter the viewport? Choice: focus its heading without browser nearest-edge scrolling, then align it below the measured sticky header. Repeat only for a case, state or revision change, never a draft edit or assistance toggle. The one-second assertion and its actual evidence nodes remain unchanged.
+
+## 2026-09-15: Untouched pharmacy correction context
+
+- Question: why was an existing approved referral not attributed in its untouched Recommendation card? Choice: an editable referral view supplies `correction` only when the displayed draft has no explicit purpose. The shared recommendation still determines approval from the actual current-revision record; new-submission drafts, unapproved records and earlier revisions cannot inherit approval. This is a read-only view projection, not an approval or draft write.
+- Question: what if that real attribution exists but is below the hand-off viewport? Choice: put the complete correction card immediately after the operator response and move its existing conditional approval statement to its header. Preserve the same paragraph, predicate, text and all card contents; neither a duplicate badge nor a relaxed visibility assertion is acceptable.
+
+## 2026-09-14: Task 33 operator controls use one human draft
+
+Where should Apply write? Use revision-bound `operatorDrafts` for the actual
+visible outcome, RB code and note, not page-local decision copies; one state
+and explicit human authority take precedence over presentation convenience.
+
+Does Off discard an applied suggestion? Start empty before any human drafting,
+but preserve subsequent human edits and Apply history when toggling; the
+one-state rule takes precedence over a destructive interpretation of empty.
+Off renders no new suggestion card or agent call in the action panel.
+
+When is a drafted response approved? Apply only copies fields and records the
+operator attribution. The subsequent Refer back or Request information click
+approves the exact applied note through G's guarded action; no hidden approval,
+release or invented fallback reason. Manual reasons retain eight characters.
+
+How are controls shared with the demonstration? Export
+`OperatorActionPanel({ caseId, compact? })` and retain
+`Type1Capture({ caseId, compact? })`. Compact capture omits timing controls;
+it retains the same image, immutable declaration, fields and confirmation.
+Use G's `getReleaseEligibility` for source validity in both modes, never a
+second UI gate. The visible note remains the human input to final release.
+
+What does Correct do? Enter a visibly named correction mode, focus Product
+code and invalidate reconciliation. Any field edit also invalidates it.
+The original declaration remains read-only beside the original paper image;
+unknown prescriber evidence is never inferred from the scan. Attestation is
+not proof of image agreement. Capture remains separate from Type 2 decisions.
+
+Where are automatic cases inspected? A disclosed actual-session automated
+count links to read-only case records, independently of monthly estimates.
+Only a recorded code-origin two-gate release says no operator action.
+Human releases show after operator review; historical sources remain visible
+in either header mode. No payment is calculated or approved.
+
+## 2026-09-14: Task 33 follows the four-case vision correction
+
+- Question: which queue items act? Chosen: G's authoritative playable set only, with C/F as fixed unclickable background; the newest four-case instruction wins.
+- Question: where does compact NHSBSA evidence live? Chosen: the same operator component exposes the actual source, captured fields and gathered evidence alongside advice; visible evidence authority wins over a suggestion-only demo.
+- Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.
+- Question: what does an automatic item's audit show without a human record? Chosen: the recorded existing-pricing outcome, not a manual comparison or an impossible request for a human decision; truthful human authority wins.
+- Question: how should repeated EPS comparison landmarks differ? Chosen: a meaningful Manual comparison context prefixes their accessible names, preserving every landmark and source value; accessibility and truthful context win over deleting roles or evidence.
+
+## 2026-09-15: Compact Type 1 evidence and editor placement
+
+- Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
+- Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
+- Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
+- Question: what does the complete D/R/O measurement establish? Choice: preserve the exact raw result. At 1280/1440x1000, Off Confirm ends at y787; On's mandatory visible Recommendation moves Confirm to y2078 and the document is 2169px high. All controls remain operable, one form remains, and no source or required advice is clipped. This is not an On first-viewport pass.
+- Question: when does the compact layout regression run? Choice: keep all four checks in `tests/integration/compact-type1-layout.spec.ts`, executed through `tests/e2e/compact-type1-layout.config.ts` after D's actual mount. O's merge intentionally precedes that mount; no skipped tests, reduced assertions or proxy geometry replace the separate integration run.
+
+## 2026-09-15: Concrete recommendations on operator surfaces
+
+- Question: where should operator advice come from? Choice: use R's shared read-only derivation and RecommendationCard on current operator, Type 1, trace and record surfaces, not a second local recommendation authority.
+- Question: can diagnostic Apply clear an unreadable item? Choice: only R's validated safe follow-up adapter may populate the current operator draft; the original abstention and failed checks remain visible and Release still uses the authoritative code gate.
+- Question: when is the card shown? Choice: every valid item surface shows one complete card while On, including before Start review and read-only outcomes. Off performs no new recommendation derivation; recorded-source cards remain explicitly pinned to their revision and record.
+- Question: is an escalated record a completed review? Choice: no. An open escalated operator case keeps current actionable advice; only a closed review uses the read-only recorded-source context.
+- Question: where does a received pharmacy answer appear? Choice: render the exact current revision's confirmation in a visible Pharmacy confirmation landmark before recommendation/playback content, in either mode. Do not infer captured facts from free text or require opening history; shared parents suppress only duplicate child copies.
+- Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
+- Question: why did the first queue repair remain partially clipped? Choice: preserve the measured failure: the actual table cell was y945, height57, ending at1002 in a1000px viewport after a same-filter click. Explicit filter selections now request focus again, with a small viewport margin for the complete original cell; no span proxy, relaxed visibility ratio or deadline increase. Track actual target/lane changes separately without resetting a user's unchanged filter every render.
+- Question: why was a received answer above the viewport after Follow returned to its NHSBSA case? Choice: case routes need explicit entry focus because the chapter shell deliberately skips them. Focus the actual case heading without implicit scrolling, then align the complete case header below the existing sticky chrome. Run only on route/item changes, never field edits or mode changes; preserve the actual state, answer, card and unchanged one-second verifier.
+
+## 2026-09-14: Mount the real compact tasks, not hidden operational pages
+
+Question: how should the shell enter the new walkthrough? Choice: replace the
+chapter rail with Demo mode after the actual O/P task exports are available.
+The shell mounts exactly one compact submission, claim, Type 1 or operator
+panel in the current comparison column. Ordinary Outlet content is not mounted
+behind it. Exit returns that Outlet without changing operational state.
+Tie-breakers: one action authority and honest focused presentation.
+
+Question: can a perspective change hide the current step? Choice: no. The
+Follow banner remains directly under the header, followed by the separate demo
+strip. Demo layouts sit outside the ordinary opposite-side guard. Explicit
+follow links choose the same item's task surface; the step persists. Header
+Primary navigation and Reset return only after Exit, while the one Agent switch
+and perspective switch remain. Tie-breaker: a continuous shared demonstration.
+
+Question: what should Next focus? Choice: the new step heading, at the top of
+the page, on step or route changes only. Header mode and perspective changes
+do not steal focus. Frozen submission channels are passed to P's renderer,
+without rewriting an item's latest recorded channel. Tie-breakers: keyboard
+operability and truthful source presentation.
+
+## 2026-09-14: Demonstration refinements after vision review
+
+Question: must assumption editing break the walkthrough? Choice: no. Reuse the
+real shared ProcessAssumptions once, inside the active month's collapsed detail.
+Keep that editor mounted when values are invalid; never retain stale figures
+or force Exit to recover. Tie-breakers: shared authority and simpler exploration.
+
+Question: how should reduced motion crossfade without harming contrast? Choice:
+crossfade only the decorative assisted background for 150 ms. Text remains
+opaque and stationary; normal presentation still uses the two-second movement.
+No timing implies a model call. Tie-breakers: accessibility and truthful motion.
+
+Question: when is correction relevant? Choice: expose P's real supported fix
+on submission steps, not an invented fix. Step 5 first submits the unchanged
+wrong-pack scenario to demonstrate Gate 2's rejection, then permits explicit
+correction of that real attempt. Unknown paper facts remain unknown.
+Tie-breakers: demonstrate the gate and retain meaningful human controls.
+
+Question: which first test closes the demonstration? Choice: the latest vision's
+two weeks of operator-time data and fifty items, two operators, blind. The
+historical two-year referral-data request no longer substitutes for this test.
+Tie-breaker: latest explicit direction.
+
+## 2026-09-14: Follow links override every step's viewing surface
+
+Question: what should Follow do on the process, numbers or closing step?
+Choice: retain the demo step but show the selected item's real task surface,
+headed Following the item from that step. Its inactive comparison refers to
+the same item, never the displaced narrative or another fixture. Back/Next
+returns to the normal sequence. Tie-breakers: functional navigation and clarity.
+
+Question: should a pharmacy Follow visit retain queue controls? Choice: no.
+An explicit side visit shows only that item's side. Opening a normal step 8
+queue row instead updates the queue's case/channel query and keeps its one
+opened row. Both operations are presentation-only. Tie-breaker: one focus.
+
+Question: may a generic Follow comparison imply operator work for complete A?
+Choice: no. Reuse the existing case-specific scenario, with D's pharmacy or
+operator hand-off selected by side. A keeps its automatic/no-operator comparison.
+Tie-breaker: truthful attribution.
+
+Question: may the Off comparison use low-contrast muted text? Choice: no.
+The actual desktop axe run measured 4.34:1 on the muted background. Keep the
+grey panel and read-only label, but use darker light-theme text and lighter
+dark-theme text. Re-run the unchanged checks. Tie-breaker: accessibility.
+
+## 2026-09-14: Carry the actual operator response into step 9
+
+Question: should Next open fixed B after the operator refers a different item?
+Choice: on step 8 to 9 only, retain the followed playable item when it actually
+needs pharmacy action (referred back or information requested), with its recorded
+channel. Otherwise retain the frozen B default. The strip and live panel use
+that same destination; navigation appends no events and changes no drafts.
+Tie-breakers: a functional shared hand-off and preserved operational history.
+
+The regression explicitly corrects and sends B to automatic release, submits
+the wrong-pack EPS item, applies the operator suggestion and refers it back.
+Next must then open that actual referral with correction and resubmission
+controls, not B's completed record.
+
+## 2026-09-15: Paper walkthrough and a shared evidence companion
+
+Question: how should the unreadable-paper sequence start? Choice: step 7 opens
+the actual pharmacy workbench for D; its buttons prepare a draft and Post is
+explicit. Step 8 defaults to D's queue case, step 9 retains the actual actionable
+handoff, and step 10 opens D's current NHSBSA revision for recapture or release.
+Follow's pharmacy link remains the current claim, never an implicit new attempt.
+Tie-breakers: the latest paper path and one operational history.
+
+Question: can the compact Type 1 source be omitted to fit the screen? Choice:
+no. Render O's same-ID read-only scan and immutable declaration in the inactive
+comparison, labelled Shared original evidence, and use external evidence only
+when that companion is actually rendered. Keep exactly one live form. Without
+the companion renderer, keep inline evidence. Tie-breakers: visible evidence
+and a clearer side-by-side comparison.
+
+Question: how should the wrapper make room for mandatory advice? Choice: reduce
+spacing, put case/state together and keep channel, endorsement and recorded gates
+inline for Type 1. Preserve all facts and normal-size text, the full task renderer
+and its recommendation card. No clipping, internal scrolling or hidden card.
+Keep ordinary operations unchanged. Tie-breaker: required content before a height
+proxy; measure the complete R/O integration before claiming viewport acceptance.
+
+## 2026-09-15: Preserve ordinary overview navigation after mounting the demo
+
+Question: how are ordinary overview sections reachable after the chapter rail
+is replaced? Choice: a Home-only section navigation reuses the six existing
+chapter destinations as real router links. It is absent from the active demo
+because the ordinary Outlet is unmounted. No second tour state or Agent control
+is added. Tie-breakers: retain existing reachable views and use the smallest fix.
+
+Question: how should chapter tests navigate? Choice: exit demo when necessary,
+open Overview through the existing primary navigation, then activate its real
+section link and await both URL and heading focus. No reload, history injection,
+forced click or operational-state writes. All six links are tested against the
+complete read-only domain snapshot in both modes.
+
+Question: which old compatibility patches should replay? Choice: preserve
+current main's stronger P/O counter, source, approval and state assertions when
+combining the mounted tests. The numerical counter patch is already covered by
+main and is not duplicated. Adopt only V's immutable navigation helper and its
+small data dependency, not the full foreign proof branch.
+
+## 2026-09-15: Reconstruct verification without replacing merged owner work
+
+Question: how should the final verification branch incorporate the merged
+desktop runtime? Choice: retain the merged runtime, owner unit regressions,
+all 36 state checks and governance documents, then apply only the reviewed
+verification inventory, reporter, new requirement checks and documentation.
+Preserve the earlier branch ancestry and external reports rather than replaying
+its mixed implementation snapshots.
+
+Question: how are superseded live declarations retained? Choice: keep their
+assertion bodies unchanged and give them a frozen legacy inventory import.
+The active configuration selects exactly five current files and 75 names;
+historical declarations are neither deleted nor counted as new acceptance.
+
+Question: how can the new four-case parity checks retain temporary Follow
+context? Choice: add an optional presentation-preservation flag to the action
+helper. Existing callers keep identical default switching and complete
+snapshot/clock behaviour. The read-only observer and human-release provenance
+checks are unchanged.
+
+Question: what can passing subsets or diagnostic observers establish? Choice:
+retain partial selection as an overall failed full checklist, keep every
+failed predecessor, and require a new whole run. Route diagnostics are separate
+from acceptance, do not change the original deadline or subtract overhead,
+and do not turn post-verdict geometry or animation frames into paint evidence.
+
+Question: should the strict source-copy check be weakened for an existing
+hosting comment? Choice: retain the checker unchanged and replace only
+"Azure hosting" with "production hosting" in App.tsx's site-root comment.
+This is the sole approved source-byte exception; executable tokens, routing
+and hosting behaviour remain unchanged.
+
+Question: where should route-commit instrumentation run? Choice: a separate
+local diagnostic configuration enables a typed test fixture, retains both
+traces and labels its JSON report as diagnostic rather than acceptance.
+The normal 75-check configurations leave the observer inactive. It installs
+before navigation, collects after the original outcome and adds no awaited
+steps inside the existing one-second actions. Browser records cover only
+the final or failing document; earlier document evidence remains in traces.
+Record caps, dropped observations and added overhead stay explicit.
+
+Question: does the automatic queue's read-only link establish destination
+state? Choice: no. A's timed hand-off must verify the actual NHSBSA shared
+case status immediately after Follow navigation and before returning to the
+queue. This exact Off/On state check uses the same original one-second
+deadline, viewport and opacity assertions; the queue count and link remain
+additional checks. No state column, proxy, extra navigation or runtime change
+is introduced. Earlier timing results did not include this added observation.
+
+## 2026-09-15: Focus only the committed demo route
+
+Question: why can Jump lose focus immediately after entering demo? Choice:
+preserve the main CI failure and the read-only diagnostic showing two calls
+to the same heading-focus effect. The synchronous demo-step store update can
+mount the screen before BrowserRouter commits the new location; the later
+route commit ran that effect again after the user moved focus.
+
+Gate only that effect until its rendered pathname, search and hash match the
+browser's current location, using the same Vite basename as the router. Then
+the committed route owns one heading-focus action. Keep intentional step,
+Back/Next and Follow navigation focus, all motion and the single store unchanged.
+No forced synchronous rendering, delay, retry or weakened focus assertion.
+Tie-breakers: preserve user focus and fix the demonstrated duplicate side effect.
+
+## 2026-09-15: Settle independent visibility reads without changing obligations
+
+Question: may independent visibility predicates share their observation
+window? Choice: launch only the existing visible, full-viewport and cumulative
+opacity predicates concurrently within each visibility helper invocation.
+Each uses the same original deadline. An all-settled barrier waits for every
+observation, including synchronous guard failures, before propagating the
+original single error or an aggregate containing all original failures.
+
+Text checks, origin and destination stages, actual A pre-queue state, queue
+counts, selections, links and navigation remain ordered exactly as before.
+The final deadline check still follows every required observation. No extra
+clock, timeout, state proxy or overhead subtraction is introduced.
+This is protocol read-scheduling efficiency, not a proven runtime fix.
+The prior standard D 1,008.3189 ms failure and diagnostic A 1,006.67 ms failure
+remain failed evidence; the changed procedure requires fresh verification.
+
+## 2026-09-15: Profile runtime costs without changing acceptance
+
+Question: what follows the failed serial and concurrent-read procedures?
+Choice: stop further harness adjustments and prepare one explicitly labelled
+local CPU/timeline profile of the existing full 1280 On matrix. Preserve
+all actions, ordering, strong automatic-state checks and the one-second
+deadline. Profiling starts before the test and is collected after its
+original outcome, without route DOM observers or application instrumentation.
+
+Require a new output directory, exclusive files, complete chunk writes,
+actual CPU/trace hashes, exact build/entry-asset identity and explicit
+duration/buffer/output caps. Errors, caps or lost data make capture incomplete
+and are surfaced separately from the original functional result. No repeated
+run, overhead subtraction, guessed source mapping or speculative runtime
+patch follows from incomplete samples.
+
+## 2026-09-15: Profile the original first journey in a shorter window
+
+Question: how can the first action be profiled without increasing capture
+caps or discarding required preconditions? Choice: a separate diagnostic
+specification calls the unchanged first A/On/Both journey at 1280 px once.
+A and Both are already first in the full matrix; the helper retains the real
+submission, verified NHSBSA state, queue checks, both-side visits and final
+normal-pricing assertions. Collection ends after that original journey.
+
+The existing profiler, sampling, buffer/output limits, single deadline and
+standard matrix files are unchanged. The shorter diagnostic is not a matrix
+or 75-check pass and does not repair or relabel earlier failures. If it is
+again capped or insufficient, stop without another profiling attempt.
+
+## 2026-09-15: Isolate optional trace snapshots from timed verification
+
+Question: can optional trace-recorder work be excluded without changing the
+required measurements? Choice: use the installed public Playwright literal
+worker trace option only for the eight timing declarations. Keep the actual
+callbacks, helpers, action order, predicates and deadline unchanged. Preserve
+API/source traces and attachments, but explicitly lose continuous DOM,
+screencast and HAR resource/payload coverage for those tests.
+
+Validate the actual resolved option before the body, record it after every
+outcome, and retain failure HTML/ARIA only after the verdict. Existing named
+screenshots, axe audits, network/CSP/error assertions and failure geometry
+remain independent and unchanged. Do not add a network collector to claim
+parity or subtract any estimated observation cost.
+
+Global and untimed/state tracing stays unchanged. Separate diagnostic matrix
+wrappers use the base full-trace fixture and the exact original callback
+tokens. Worker grouping and shard membership may change, but all original
+test IDs must remain in the four-shard union without loss or duplication.
+No private API, function-valued trace override or unsupported describe-level
+worker option is used. This changes optional artifact collection, not runtime
+behaviour, and does not relabel any prior deadline failure.
+
+## 2026-09-15: Stream V adopts live-first publication
+
+Question: how should V publish verified but incomplete work under the standing rule? Choice: push draft #94 at STATUS and at least every thirty minutes, update all five registers in the same commit, and keep completion blocked until merged green-deployed work is observed live; tie-breaker: the latest explicit instruction and truthful evidence.
+
+Question: what do the retained branch runs represent? Choice: developer test artifacts only, never a separate product or backup; only the current-main payload verified on the live URL can be the backup, with D owning implementation and O its independent verification; tie-breaker: one release authority.
+
+Status source `c091d47269665e12af69a2a82cb3733747209eeb` is published WIP.
+The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f`. The controlled 132-transition
+pass does not bridge that release gap or replace full live acceptance.
+
+Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
