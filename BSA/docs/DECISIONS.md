@@ -2501,3 +2501,9 @@ Question: may filesystem aliases allow a report to be written inside the backup?
 Question: can projected current fields be relabelled as the pharmacy's submission? Choice: no; mount G's immutable submitted-revision replica and U's raw-source comparison separately from effective human capture; tie-breaker: source fidelity and one authority.
 
 Question: where do Task 40 note safety and later-audit decisions belong? Choice: consume G's guarded final actions and R's operator audience, preserving the visible draft on rejection; audit requires an explicit operator press, current revision and reason, never render/toggle detection; tie-breaker: explicit human authority.
+## Tasks 39/40 R audience decisions
+
+- Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
+- Question: does NHSBSA supply a corrected value to the pharmacy? Choice: no; B's structured field/rule requests generate the canonical operator note, while the pharmacy derives its own values from records; tie-breaker: explicit C5 separation.
+- Question: can an audience change approve or acknowledge a correction? Choice: no; it is an immutable projection with no store writes, and actual same-revision human provenance is retained; tie-breaker: one state and human authority.
+- Question: who edits current recommendation derivation? Choice: R exclusively; G retains canonical types/store/lifecycle/seeds/source facade, W the strength module and B the fidelity/referral/paper modules; tie-breaker: isolated file ownership.

@@ -407,3 +407,11 @@ all domain/store authority, R the recommendation card/derivation, U the
 pure three-column component, and P pharmacy correction/acknowledgement.
 The compact scanner comparison requires a full-width evidence placement;
 it must not be compressed into the existing half-width editor.
+## Tasks 39/40 R audience scope
+
+In progress: explicit Card audience, pharmacy-only concrete value/preview,
+field/rule-only operator draft notes and unmodified read-only source facts.
+R's new audience unit contracts cover the projection, default operator boundary,
+source identity and absence of fabricated approval. Existing canonical actions
+remain G-owned; P/O wire their real components. Full four-case integration,
+exact-head CI, main deployment and live observations are still required.

@@ -1346,3 +1346,12 @@ adapter is not a mounted operator workflow. Current projected case fields
 cannot stand in for the immutable original submission; confirmed human
 capture must not be described as agreement among unreliable raw sources.
 No new-source UI/browser outcome has been asserted by this audit.
+## Tasks 39/40 R audience evidence boundary
+
+An audience-specific card cannot be implemented by redacting matching values
+from the entire object: prescribed and selected strengths are evidence, whereas
+the correction patch and preview are proposals. The projection therefore removes
+only the operator's proposal payload and reuses the cloned W source facts.
+Operator communication is generated from field/rule identifiers, never by
+interpolating the diagnostic finding text. New isolated unit contracts cover
+this distinction; broader G/P/O integration and live proof remain pending.

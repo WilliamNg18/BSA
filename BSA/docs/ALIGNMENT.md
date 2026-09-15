@@ -325,3 +325,13 @@ header #104 and numbers #105. None supplies an O-owned case-pack/Type1
 mount. U's later provenance refinement and R's operator audience defaults
 must be preserved, not reconstructed locally. The old four-case proof does
 not establish the new wrong-strength and paper-incomplete round trips.
+## Tasks 39/40 R audience alignment
+
+Main's shared card exposed correction values without an audience distinction.
+The R checkpoint introduces an explicit pharmacy projection and a fail-closed
+operator default, reusing W's exact source-fact projection and B's outbound
+field/rule wording. No source strength, quantity or product is redacted from
+read-only evidence. Current consumer mounting, the new G seed/gate integration
+and real live acceptance remain drifted until their owning streams verify them.
+The unused earlier duplicate Card draft remains a NONINTEGRATED historical
+patch artifact and was not replayed onto current main.
