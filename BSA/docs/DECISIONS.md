@@ -2663,3 +2663,8 @@ Question: does code-prefilled corrected paper contradict an initially empty manu
 - Question: how does a proposed cross-record check use the five-signal layout? Choice: retain every row but label retrieved provision, independent readings and image quality not applicable; preserve actual source reconciliation and coverage rather than infer a pass; tie-breaker: truthful authority.
 - Question: what should operator trace regression assert after C5? Choice: exact source strengths remain visible, but correction proposals and previews are absent; keep all original widths, test identities and unrestricted axe; tie-breaker: evidence fidelity and audience authority.
 - Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
+## 2026-09-15: S reference follows the Task 39-40 evidence boundary
+
+Question: retain the date-based reference sequence or explain the new case? Choice: use W's unchanged wrong-strength Send, independent Gate 2, field/rule-only operator referral and pharmacy-owned correction, then both-gate EPS release; tie-breaker: newest explicit case scope and unchanged human/source authority.
+
+Question: duplicate W/B evidence constants before G integrates them? Choice: publish bounded reference WIP and reuse the canonical modules after integration; tie-breaker: one authoritative evidence source, not a second bibliography or invented capture result.

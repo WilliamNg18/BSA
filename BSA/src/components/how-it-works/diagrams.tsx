@@ -1,4 +1,4 @@
-import { CASE_B_SEQUENCE, COMPONENT_FLOW } from "./content";
+import { CASE_W_SEQUENCE, COMPONENT_FLOW } from "./content";
 
 const nodes = [
   { x: 15, y: 20, label: "Exception ingress" },
@@ -43,19 +43,19 @@ export function ComponentDiagram() {
 
 const participants = ["Pharmacy", "Pre-check / ingress", "Case builder / gate", "Operator", "Existing pricing"];
 const arrows = [
-  [0, 1, "1. Typed EPS"], [1, 0, "2. Gap + draft"], [0, 1, "3. Human Send"],
-  [1, 2, "4. Deficient revision"], [2, 2, "5. Validate / withhold"], [2, 3, "6. Built case"],
+  [0, 1, "1. Claim 5 mg"], [1, 0, "2. Gate 1 + 10 mg preview"], [0, 1, "3. Unchanged Send"],
+  [1, 2, "4. Received revision"], [2, 2, "5. Gate 2"], [2, 3, "6. Mismatch: no release"],
   [3, 0, "7. Human referral"], [0, 1, "8. Human Resubmit"],
-  [1, 2, "9. Revalidate revision"], [2, 3, "10. Human re-check"], [3, 4, "11. Human release"],
+  [1, 2, "9. Revalidate revision"], [2, 2, "10. Both gates"], [2, 4, "11. Code release if pass"],
 ] as const;
 
-export function CaseBSequenceDiagram() {
+export function CaseWSequenceDiagram() {
   return (
     <figure className="space-y-4 rounded-lg border p-4">
-      <figcaption className="font-semibold">Case B sequence: missing-date EPS, proposed integration</figcaption>
+      <figcaption className="font-semibold">Case W sequence: wrong-strength EPS, proposed integration</figcaption>
       <svg viewBox="0 0 900 740" role="img" aria-labelledby="sequence-title sequence-description" className="w-full text-foreground">
-        <title id="sequence-title">EX-24112 missing-date sequence</title>
-        <desc id="sequence-description">Five lifelines show the deficient-send and referral branch. Human actions are explicit. Correcting before the first Send can avoid this referral. The numbered sequence below describes every message and required re-check.</desc>
+        <title id="sequence-title">SYN-FQ123-MISMATCH wrong-strength sequence</title>
+        <desc id="sequence-description">Five lifelines distinguish applying the 10 mg draft from the alternative unchanged 5 mg Send. The unchanged claim fails independent Gate 2 and needs an operator case. A pharmacy correction and acknowledged resubmission are checked again; corrected EPS releases without operator action only if both gates pass. Paper always needs a final human Release.</desc>
         <defs><marker id="sequence-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="currentColor" /></marker></defs>
         {participants.map((label, index) => <g key={label}>
           <rect x={index * 180 + 5} y="5" width="170" height="50" rx="6" className="fill-background" stroke="currentColor" />
@@ -72,7 +72,7 @@ export function CaseBSequenceDiagram() {
           </g>;
         })}
       </svg>
-      <ol className="list-decimal space-y-2 pl-5 text-sm">{CASE_B_SEQUENCE.map((step) => <li key={step}>{step}</li>)}</ol>
+      <ol className="list-decimal space-y-2 pl-5 text-sm">{CASE_W_SEQUENCE.map((step) => <li key={step}>{step}</li>)}</ol>
     </figure>
   );
 }
