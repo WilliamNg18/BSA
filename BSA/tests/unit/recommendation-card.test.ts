@@ -21,12 +21,12 @@ describe("always-visible shared recommendation", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
-  it("shows the exact missing date and corrected text, with no duplicate date narration", () => {
-    const r = deriveRecommendation(useAppStore.getState(), "EX-24112");
+  it("shows the source-backed selected pack correction without changing the dispensing date", () => {
+    const r = deriveRecommendation(useAppStore.getState(), "SYN-FQ123-MISMATCH");
     const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, audience: "pharmacy" }));
     expect(html).toContain("Corrected preview");
-    expect(html).toContain("NCSO RK 21/08/26");
-    expect(html).toContain("Add the dispensing date beside the initials");
+    expect(html).toContain("Select Amlodipine 10mg tablets, 28");
+    expect(html).toContain("Corrected claim line preview");
     expect(html).toContain("21/08/2026");
     expect(html).toContain("Not met");
   });
@@ -48,7 +48,7 @@ describe("always-visible shared recommendation", () => {
   });
 
   it.each([2, 3, 4] as const)("preserves the containing page heading hierarchy at level %s", (headingLevel) => {
-    const r = deriveRecommendation(useAppStore.getState(), "EX-24112");
+    const r = deriveRecommendation(useAppStore.getState(), "SYN-FQ123-MISMATCH");
     const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, headingLevel }));
     expect(html).toContain(`</h${headingLevel}>`);
     expect(html).toContain(`<h${headingLevel + 1} class="font-medium">`);

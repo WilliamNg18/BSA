@@ -488,3 +488,9 @@ Apply equals the exact proposed patch; paper brand notes omit the supplied value
 the triad equals G's pinned facade; confirmed capture retains original scan/OCR;
 ready paper recommends human release without an extra invented Apply. Previous
 legacy fixture tests still require the current four-case migration.
+
+R's four older owned recommendation files have now migrated: all 47 cases
+pass on the current source. W identified separate canonical G defects in
+strength trace reconciliation and proposed-rule attribution; these remain
+explicitly unaligned until repaired in the kernel and verification owner.
+Current card evidence must not substitute for those wider repairs.
