@@ -177,6 +177,16 @@ is never subtracted from the original deadline. The JSON report is explicitly
 **chromium runtime profile, not acceptance**; a profile does not satisfy the
 standard 75-check gate.
 
+`first-a-runtime-profile.config.ts` is a separately authorised short-window
+diagnostic. It selects only `tests/integration/first-a-runtime-profile.spec.ts`,
+which invokes the unchanged timed journey for `PLAYABLE_CYCLES[0]`, Agent On,
+Both, at 1280 px. A/Both is already first in the full matrix, so no preceding
+case or warm-up is removed. Every A action and observation remains in the
+original helper. The same profiler, caps, collection rules and inactive
+standard defaults apply. Its JSON explicitly says **first A only**, not a
+matrix or acceptance pass. Any insufficient or capped capture stops that
+diagnostic scope; it does not authorise another profiling attempt.
+
 ## Full-state equivalence is separate
 
 `one-state.config.ts` builds a separate instrumented artifact with a read-only

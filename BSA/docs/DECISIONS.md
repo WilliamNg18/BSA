@@ -2373,3 +2373,17 @@ duration/buffer/output caps. Errors, caps or lost data make capture incomplete
 and are surfaced separately from the original functional result. No repeated
 run, overhead subtraction, guessed source mapping or speculative runtime
 patch follows from incomplete samples.
+
+## 2026-09-15: Profile the original first journey in a shorter window
+
+Question: how can the first action be profiled without increasing capture
+caps or discarding required preconditions? Choice: a separate diagnostic
+specification calls the unchanged first A/On/Both journey at 1280 px once.
+A and Both are already first in the full matrix; the helper retains the real
+submission, verified NHSBSA state, queue checks, both-side visits and final
+normal-pricing assertions. Collection ends after that original journey.
+
+The existing profiler, sampling, buffer/output limits, single deadline and
+standard matrix files are unchanged. The shorter diagnostic is not a matrix
+or 75-check pass and does not repair or relabel earlier failures. If it is
+again capped or insufficient, stop without another profiling attempt.
