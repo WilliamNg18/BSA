@@ -161,6 +161,23 @@ Artifacts remain in `req38-b-2798`; port 4336 was released. Later referral,
 resubmission and release timing assertions were not reached. The coordinator
 owns the next case-entry repair assignment; all earlier failures remain.
 
+Two subsequent exact-B probes preserved the same assertions and one-second
+deadline, each with one worker and no retries:
+
+| Clean source | Passing transitions (ms) | First failure |
+| --- | --- | --- |
+| `c3293b82415cc8578185e9f3c29ba9eadf4f989c` | Send 781.3183; request 551.1008; confirmation 491.343 | Referral 1,011.4957: actual approved note present, but the Recommendation card's approval statement absent |
+| `7a00f300d522ebb3176782e0d27960422a1aed5b` | Send 743.8881; request 504.3838; confirmation 506.3328 | Referral 1,019.6992: approval statement now present after the correction-context repair, but outside the viewport |
+
+The latter run's post-verdict geometry places the actual approval paragraph
+at y1600/height20/bottom1620, with scrollTop1470. The operator's reason at
+y435/height24 and RB code at y366/height24 are visible. Semantic presence is
+therefore repaired, but the timed visibility requirement still fails.
+Artifacts remain in `req38-b-c329` and `req38-b-7a00`. Port 4336 was
+released after each run; resubmission and release timing remain unreached.
+The sources passed check and respectively 1,554/84 and 1,560/85 unit
+tests/files. No individual transition is aggregated into a full-journey pass.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
