@@ -34,32 +34,40 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   await expect(status).toHaveText("Information missing");
   await captureCheckpoint(page, testInfo, "pharmacy-before-date");
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
+  await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO  RK 21/08/26");
-  await expect(status).toHaveText("Complete: will flow to automated pricing, no person involved");
+  await expect(status).toHaveText("Ready");
   await captureCheckpoint(page, testInfo, "pharmacy-after-date");
-  await page.getByRole("button", { name: "Restore draft", exact: true }).click();
+  await field.fill("NCSO  RK");
   await expect(status).toHaveText("Information missing");
   await field.fill("NCSO RK 21/08/26");
-  await expect(status).toHaveText("Complete: will flow to automated pricing, no person involved");
+  await expect(status).toHaveText("Ready");
   await selectEpsScenario(page, "EX-24107");
-  await expect(status).toHaveText("Complete: will flow to automated pricing, no person involved");
+  await expect(status).toHaveText("Ready");
   await expect(page.getByRole("radio", { name: "EPS", exact: true })).toBeChecked();
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
-  await expect(page.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("");
-  await expect(page.locator("[data-declaration-advice]")).toHaveText("No Tariff version for the declared dispensing date.");
+  const paper = page.getByRole("region", { name: "Paper pharmacy submission", exact: true });
+  await expect(paper).toHaveAttribute("data-pharmacy-case", "EX-24123");
+  await expect(paper.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("NCSO JB 27/08/26");
+  await paper.getByText("Precheck evidence", { exact: true }).click();
+  await expect(paper).toContainText("2026-08 / P2-C9");
+  await paper.getByLabel("Declared dispensing date", { exact: true }).fill("");
+  await expect(status).toContainText(/date/i);
+  await expect(status).not.toHaveText("Ready");
+  await expect(page.getByRole("button", { name: "Post paper with declaration", exact: true })).toBeEnabled();
   const submit = page.getByRole("button", { name: "Send claim" });
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await page.getByRole("button", { name: "Post paper", exact: true }).click();
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24123:2");
   await selectEpsScenario(page, "EX-24112");
   await page.getByRole("banner").getByRole("switch").setChecked(false);
-  await expect(status).toHaveText("Not checked: manual submission");
+  await expect(status).toHaveCount(0);
+  await field.fill("NCSO RK");
   await expect(submit).toBeEnabled();
   await submit.click();
-  await expect(page.getByRole("status").filter({ hasText: "Submitted (synthetic)." })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24112:2");
 });
 
 test("override requires eight trimmed characters then writes and preserves a human record", async ({ page }, testInfo) => {
@@ -117,11 +125,15 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await startDemonstrationReview(page);
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  const background = page.getByRole("region", { name: "Historical cases, background", exact: true });
-  await expect(background).toContainText("EX-24119");
-  await expect(background).toContainText("EX-24088");
-  await expect(background.getByRole("link")).toHaveCount(0);
-  await expect(background.getByRole("button")).toHaveCount(0);
+  const background = page.locator("tr[data-background-case]");
+  await expect(background).toHaveCount(2);
+  for (const id of ["EX-24119", "EX-24088"]) {
+    const row = background.filter({ hasText: id });
+    await expect(row).toBeVisible();
+    await expect(row).toContainText(/not playable/i);
+    await expect(row.getByRole("link")).toHaveCount(0);
+    await expect(row.getByRole("button")).toHaveCount(0);
+  }
 });
 
 test("agent flag hides recommendations on every case without changing case state", async ({ page }, testInfo) => {

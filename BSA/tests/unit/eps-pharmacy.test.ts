@@ -72,12 +72,13 @@ describe("visible EPS prescription", () => {
     expect(html).not.toContain("<img");
   });
 
-  it("shows exactly three EPS scenarios, the source fields, manual pain and explicit Send", () => {
+  it("offers the three playable EPS scenarios, manual pain and explicit Send", () => {
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(EpsPharmacyCapture)));
-    for (const label of ["Complete endorsement", "NCSO missing date", "Wrong pack size", "Dispenser endorsement", "Exemption status", "Send claim", "No check against this month", "If incomplete, problems may be found at NHSBSA weeks later"]) expect(html).toContain(label);
+    for (const label of ["Complete endorsement", "NCSO missing date", "Wrong pack size", "Dispenser endorsement", "Exemption status", "Send claim", "No advisory check; later correction is possible"]) expect(html).toContain(label);
+    expect(html).not.toContain("Generic missing brand");
     expect(html).not.toContain("Unreadable form");
     expect(html).not.toContain("Apply correction");
-    expect(html).toContain("NOT RUN");
+    expect(html).not.toContain('aria-label="Claims precheck"');
   });
 
   it("only reports ready for deterministic automatic routing", () => {
@@ -143,7 +144,7 @@ describe("visible EPS prescription", () => {
   });
 
   it("requires persisted manufacturer/pack/form for the generic source, not an advisory flag", () => {
-    const original = createEpsPrescription(caseById("EX-24101")!);
+    const original = caseById("SYN-FQ123-MISMATCH")!.epsPrescription!;
     const generic: EpsPrescription = {
       ...original,
       items: original.items.map((item) => ({ ...item, prescribedCode: EPS_SUPPLY_RULE.productCode, dispensedCode: EPS_SUPPLY_RULE.productCode, product: "Amoxicillin 500mg capsules (generic synthetic)", dispensedName: "Amoxicillin 500mg capsules (generic synthetic)" })),

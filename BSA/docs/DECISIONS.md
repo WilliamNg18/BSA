@@ -2041,3 +2041,14 @@ Question: should entering step 8 make historical B actionable? Choice: no.
 Show its actual state and let the audience open a genuine waiting row. Never
 submit, reset, release or fabricate review work merely to enter a step.
 Tie-breakers: preserved history and human decisions.
+
+## 2026-09-15: Pharmacy action panels over merged model and demo core
+
+- Question: where do unfinished pharmacy edits live? Choice: one revision-bound pharmacy draft, retained across perspectives; explicit Apply records human attribution without submitting. One-state authority wins.
+- Question: how does an old referral demonstrate pre-send checking? Choice: the workbench explicitly labels a new attempt; claim detail retains correction-only actions. History is never replaced by navigation.
+- Question: what proves the receipt and monthly counts? Choice: recorded gates, release origin and validated correction events; actual Hillcrest counts stay separate from estimates and payment calculations.
+- Question: what if no generated note was approved? Choice: keep the recorded human reason visible without inventing a citation or an approved suggestion. Human authority wins.
+- Question: can an absent check be called Seed? Choice: only seed revisions use that label; later absent snapshots say Check not recorded. Actual resubmissions preserve current On/Off evidence.
+- Question: what survives demo exit? Choice: the selected URL case/channel and shared drafts; invalid combinations do not silently open another item.
+- Question: how are P's state tests updated? Choice: retain the full 34-test family and exact Both/switched snapshots, explicitly asserting draft-only edits and same-state pharmacy Apply events. No field is removed from the observer.
+- Question: may the retained paper prescriber be corrected? Choice: restore its human input alongside modern declaration fields in referred-back detail; initial declaration entry still does not invent prescriber evidence.

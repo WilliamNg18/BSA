@@ -50,15 +50,15 @@ for (const enabled of [false, true]) {
       await expect(detail(page).getByRole("region", { name: "Operator-approved pharmacy note" })).toBeVisible();
       await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
       await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
-      await expect(detail(page)).toContainText("Not checked for this edit");
+      await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("Ready");
       await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-      await expect(detail(page)).toContainText("Ready to resubmit");
+      await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("Ready");
     } else {
       await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
       await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
       await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
     }
-    await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+    await page.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
     await expect(detail(page)).toContainText(LIFECYCLE_LABELS.resubmitted.pharmacy);
     await followed(page).getByRole("link", { name: "Switch side: NHSBSA", exact: true }).click();
     await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
@@ -101,7 +101,9 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           await page.getByRole("banner").getByRole("switch").setChecked(enabled);
           await prepareUnseededState(page, state);
           await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
-          const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({ has: page.getByRole("cell", { name: LIFECYCLE_LABELS[state].pharmacy, exact: true }) });
+          const rows = page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row").filter({
+            has: page.getByRole("cell", { name: LIFECYCLE_LABELS[state].pharmacy, exact: state !== "released_to_pricing" }),
+          });
           expect(await rows.count()).toBeGreaterThan(0);
           for (const text of await rows.allTextContents()) expect(text).toContain(LIFECYCLE_LABELS[state].pharmacy);
           const listAudit = await new AxeBuilder({ page }).analyze();

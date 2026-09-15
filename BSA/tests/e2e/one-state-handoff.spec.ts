@@ -1,6 +1,7 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
 import { caseById } from "../../src/lib/domain/cases";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 const B = "EX-24112";
 const D = "EX-24123";
@@ -10,8 +11,8 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Select the playable missing-date EPS item", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "EPS", exact: true }).check();
-        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+        await choosePharmacyRadio(page, "EPS");
+        await choosePharmacyRadio(page, "NCSO missing date");
         await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK");
       });
       const submitted = await action("Send an actual B revision with unresolved evidence", "Pharmacy", async () => {
@@ -55,7 +56,7 @@ for (const enabled of [false, true]) {
       const confirmation = page.getByRole("region", { name: "Requested confirmation", exact: true });
       const source = caseById(B)!;
       for (const [label, value] of [["Captured form quantity", String(source.extracted.quantity)], ["Claim ledger quantity", String(source.claim.quantity)]]) {
-        await expect(confirmation.locator("dl > div").filter({ has: page.getByText(label, { exact: true }) }).locator("dd")).toHaveText(value);
+        await expect(confirmation.getByRole("term").filter({ hasText: new RegExp(`^${label}$`) }).locator("+ dd")).toHaveText(value);
       }
       await action("Reject an empty pharmacy confirmation", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
@@ -64,9 +65,16 @@ for (const enabled of [false, true]) {
       expect(await readDomainState(page)).toEqual(requested);
       const text = "Please review the dispensing date; this response does not amend the original NCSO endorsement";
       await action("Type confirmation without sending or resolving evidence", "Pharmacy", async () => {
-        await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill(text);
+        await page.getByRole("textbox", { name: "Confirm", exact: true }).fill(text);
       });
-      expect(await readDomainState(page)).toEqual(requested);
+      const confirmationDraft = await readDomainState(page);
+      expect(confirmationDraft.pharmacyDrafts[B]).toMatchObject({
+        revision: requested.caseRevisions[B].at(-1)!.number,
+        confirmation: text, endorsementText: requested.caseRevisions[B].at(-1)!.endorsementText, appliedSuggestion: false,
+      });
+      expect(confirmationDraft, "Typing confirmation changes only the shared pharmacy draft").toEqual({
+        ...requested, pharmacyDrafts: { ...requested.pharmacyDrafts, [B]: confirmationDraft.pharmacyDrafts[B] },
+      });
       const sent = await action("Send the pharmacy confirmation for human re-check", "Pharmacy", async () => {
         await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
       });
@@ -142,16 +150,24 @@ for (const enabled of [false, true]) {
       });
       await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("RB2B");
       for (const [name, value] of [
-        ["Declared product code", "SYN-COCOD-100"], ["Declared quantity", "100"],
+        ["Declared product", "Co-codamol 30/500 tablets"], ["Declared quantity", "100"],
         ["Declared prescriber (synthetic)", "Dr Demo (synthetic)"], ["Corrected endorsement", "NCSO AB 27/08/26"],
       ]) {
         await action(`Correct D ${name}`, "Pharmacy", async () => {
           await page.getByRole(name === "Declared quantity" ? "spinbutton" : "textbox", { name, exact: true }).fill(value);
         });
       }
-      expect(await readDomainState(page)).toEqual(referred);
+      const edited = await readDomainState(page);
+      expect(edited.pharmacyDrafts[D]).toMatchObject({
+        revision: referred.caseRevisions[D].at(-1)!.number, channel: "paper", purpose: "correction", appliedSuggestion: false,
+        endorsementText: "NCSO AB 27/08/26",
+        declaration: { fields: { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO AB 27/08/26", prescriber: "Dr Demo (synthetic)" } },
+      });
+      expect(edited, "Manual paper edits remain one shared draft, never a new attempt").toEqual({
+        ...referred, pharmacyDrafts: { ...referred.pharmacyDrafts, [D]: edited.pharmacyDrafts[D] },
+      });
       const resubmitted = await action("Explicitly resubmit the declared paper item", "Pharmacy", async () => {
-        await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+        await page.getByRole("button", { name: enabled ? "Resubmit" : "Resubmit blind", exact: true }).click();
       });
       expect(resubmitted.records).toEqual(referred.records);
       expect(resubmitted.caseRevisions[D].slice(0, initial.caseRevisions[D].length)).toEqual(initial.caseRevisions[D]);

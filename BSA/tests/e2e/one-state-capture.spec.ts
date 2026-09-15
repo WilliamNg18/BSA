@@ -2,6 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Locator } from "@playwright/test";
 import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 const D = "EX-24123";
 const declaration = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)" };
@@ -36,20 +37,30 @@ for (const enabled of [false, true]) {
         const initial = await readDomainState(page);
         if (scenario === "fresh unknown") {
           await action("Choose unreadable paper without a declaration", "Pharmacy", async () => {
-            await page.getByRole("radio", { name: "Paper", exact: true }).check();
+            await choosePharmacyRadio(page, "Paper");
             await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
             await expect(page.getByRole("region", { name: "Paper pharmacy submission", exact: true })).toBeVisible();
           });
           await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
           if (enabled) {
             for (const name of ["Declared product", "Declared quantity", "Declared endorsement", "Declared dispensing date"]) {
-              await expect(page.getByLabel(name, { exact: true })).toHaveValue("");
+              await action(`Clear the retained paper draft ${name}`, "Pharmacy", async () => {
+                await page.getByLabel(name, { exact: true }).fill("");
+              });
             }
+            const blank = await readDomainState(page);
+            expect(blank.pharmacyDrafts[D]).toMatchObject({
+              revision: initial.caseRevisions[D].at(-1)!.number, channel: "paper", appliedSuggestion: false,
+              paperDeclaration: { typedProduct: "", quantity: null, endorsementText: "", dispensingDate: "" },
+            });
+            expect(blank, "Clearing a retained declaration changes only its shared draft").toEqual({
+              ...initial, pharmacyDrafts: { ...initial.pharmacyDrafts, [D]: blank.pharmacyDrafts[D] },
+            });
             await action("Reject posting a blank proposed declaration", "Pharmacy", async () => {
               await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
               await expect(page.getByRole("alert")).toBeVisible();
             });
-            expect(await readDomainState(page)).toEqual(initial);
+            expect(await readDomainState(page), "Rejected posting leaves the complete draft and all source state unchanged").toEqual(blank);
             await action("Choose the ordinary undeclared paper path", "Pharmacy", async () => {
               await page.getByRole("banner").getByRole("switch").setChecked(false);
             });
@@ -57,6 +68,8 @@ for (const enabled of [false, true]) {
           await expect(page.getByLabel("Declared product", { exact: true })).toHaveCount(0);
           const submitted = await action("Submit the genuinely undeclared paper revision", "Pharmacy", async () => {
             await page.getByRole("button", { name: "Post paper", exact: true }).click();
+            await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText(`${D}:2`);
+            await expect(page.getByRole("alert")).toHaveCount(0);
           });
           expect(submitted.caseRevisions[D].at(-1)?.declaration).toBeUndefined();
           expect(submitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });

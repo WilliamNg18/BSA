@@ -1,5 +1,6 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
+import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
 
 test("one state: observer is read-only and retains every authoritative collection", async ({ page }) => {
   await page.goto("/pharmacy");
@@ -85,7 +86,7 @@ for (const enabled of [false, true]) {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
       await action("Select the EPS missing-information example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+        await choosePharmacyRadio(page, "NCSO missing date");
       });
       await action("Enter a complete endorsement for the EPS item", "Pharmacy", async () => {
         await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO AB 27/08/26");
@@ -125,7 +126,7 @@ for (const enabled of [false, true]) {
       const initial = await readDomainState(page);
       const field = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
       await action("Select incomplete EPS example", "Pharmacy", async () => {
-        await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
+        await choosePharmacyRadio(page, "NCSO missing date");
       });
       await action("Enter an incomplete endorsement", "Pharmacy", async () => {
         await field.fill("NCSO XY");
@@ -134,7 +135,15 @@ for (const enabled of [false, true]) {
         await expect(field).toHaveValue("NCSO XY");
         await field.fill("NCSO RK");
       });
-      expect(await readDomainState(page), "Unsubmitted edits are not lifecycle or correction events").toEqual(initial);
+      const edited = await readDomainState(page);
+      expect(edited.pharmacyDrafts["EX-24112"]).toMatchObject({
+        revision: initial.caseRevisions["EX-24112"].at(-1)!.number, channel: "eps",
+        endorsementText: "NCSO RK", appliedSuggestion: false,
+        epsPrescription: { dispenserEndorsement: "NCSO RK" },
+      });
+      expect(edited, "Only the shared draft changes before submission").toEqual({
+        ...initial, pharmacyDrafts: { ...initial.pharmacyDrafts, "EX-24112": edited.pharmacyDrafts["EX-24112"] },
+      });
       const submitted = await action("Explicitly submit the retained incomplete draft", "Pharmacy", async () => {
         await expect(field).toHaveValue("NCSO RK");
         await page.getByRole("button", { name: "Send claim", exact: true }).click();

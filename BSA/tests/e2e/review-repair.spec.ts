@@ -1,19 +1,20 @@
 import { expect, navigatePrimary, test } from "./fixtures";
 import { postWorkedPaperDeclaration, DECLARATION_RECONCILIATION } from "./paper-declaration-helpers";
 import { startDemonstrationReview } from "./lifecycle-helpers";
+import { choosePharmacyRadio, openPharmacyReceipt } from "./pharmacy-scenario-helpers";
 
 test("complete EPS Off describes hypothetical risk without running a hidden check", async ({ page }) => {
   await page.goto("/pharmacy");
-  await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
+  await choosePharmacyRadio(page, "Complete endorsement");
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Not checked: manual submission");
-  await expect(page.getByRole("button", { name: "Manual: If incomplete, problems may be found at NHSBSA weeks later", exact: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Manual: No advisory check; later correction is possible", exact: true })).toBeVisible();
   await expect(page.getByRole("list", { name: "Requirement checkboxes", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Send claim", exact: true }).click();
-  const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+  const receipt = await openPharmacyReceipt(page);
   await expect(receipt).toContainText("no person involved");
   await expect(receipt).toContainText("not_checked");
-  await expect(page.getByRole("button", { name: "Manual: If incomplete, problems may be found at NHSBSA weeks later", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Manual: No advisory check; later correction is possible", exact: true })).toBeVisible();
 });
 
 test("confirmed conflicted paper records an attestation without claiming agreement or machine reading", async ({ page }) => {

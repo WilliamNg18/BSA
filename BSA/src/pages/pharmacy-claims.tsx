@@ -7,10 +7,11 @@ import { ClaimDetail } from "@/components/demo/claim-detail";
 import { PharmacyModelStrip } from "@/components/demo/manual-loop-projection";
 import { formatProcessItems } from "@/lib/domain/baseline";
 import { itemStateLabel, type CaseLifecycle } from "@/lib/domain/lifecycle";
-import { BACKGROUND_CASES } from "@/lib/domain/cases";
+import { PharmacyReleasedCount } from "@/components/demo/pharmacy-submission-receipt";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { useAppStore } from "@/lib/store";
+import { BACKGROUND_CASES, isPlayableCase } from "@/lib/domain/cases";
 
 const filters = ["Action needed", "Waiting on NHSBSA", "Paid this month", "All"] as const;
 type ClaimFilter = typeof filters[number];
@@ -35,7 +36,7 @@ export function PharmacyClaimsPage() {
   const pharmacy = HILLCREST_PHARMACY.contractorCode;
   const [filter, setFilter] = useState<ClaimFilter>("Action needed");
   const month = new Date().toISOString().slice(0, 7);
-  const rows = useMemo(() => Object.values(lifecycles).filter((row) => row.pharmacyCode === pharmacy).map((row) => ({
+  const rows = useMemo(() => Object.values(lifecycles).filter((row) => row.pharmacyCode === pharmacy && isPlayableCase(row.caseId)).map((row) => ({
     ...row, c: caseForLifecycle(row.caseId, lifecycles, revisions, processes),
   })), [lifecycles, revisions, processes, pharmacy]);
   const shown = rows.filter((row) => matchesFilter(row, filter, month));
@@ -63,17 +64,14 @@ export function PharmacyClaimsPage() {
     <p data-pharmacy-identity>{HILLCREST_PHARMACY.name} ({pharmacy}) · Synthetic pharmacy</p>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
-      <p className="text-sm">Paid on the normal schedule includes release to existing pricing. Categories overlap; no payments calculated.</p>
+      <p className="text-sm">Recorded UTC-month items; categories overlap. Paid includes release to existing pricing, not calculated payment.</p>
       <dl className="grid gap-3 grid-cols-5">
         {totals.map(([label, total]) => <div key={label}><dt className="text-sm">{label}</dt><dd className="text-xl font-semibold">{formatProcessItems(total)}</dd></div>)}
         {agentEnabled && <div><dt className="text-sm">Caught before submission</dt><dd className="text-xl font-semibold">{formatProcessItems(caught)}</dd></div>}
       </dl>
       {agentEnabled && <p className="text-sm">Catches count checked, human-applied corrections once per attempt.</p>}
       <PharmacyModelStrip />
-    </section>
-    <section aria-label="Historical cases, background" className="rounded-xl border p-4 text-sm">
-      <h2 className="font-semibold">Historical cases, background</h2>
-      <ul>{BACKGROUND_CASES.map((c) => <li key={c.id}>{c.id} · Case {c.scenario} · Background only, not playable</li>)}</ul>
+      <PharmacyReleasedCount />
     </section>
     <section aria-label="MYS Unpaid items" className="space-y-1 rounded-xl border p-4 text-sm">
       <h2 className="font-semibold">MYS Unpaid items</h2>
@@ -86,7 +84,6 @@ export function PharmacyClaimsPage() {
           className="rounded-xl border bg-card p-4 text-left focus-visible:outline-2 focus-visible:outline-ring aria-pressed:border-primary aria-pressed:ring-2 aria-pressed:ring-primary">
           <span className="block font-semibold">{name}</span>
           <span className="block">{matching.length} items</span>
-          <span className="block text-sm">{money(matching.reduce((sum, row) => sum + (row.c?.claim.amountClaimed ?? 0), 0))} claimed (synthetic)</span>
         </button>;
       })}
     </div>
@@ -98,16 +95,25 @@ export function PharmacyClaimsPage() {
           <th scope="row" className="break-words p-3 font-medium">{row.caseId}</th>
           <td className="p-3">{row.c?.extracted.dispensingDate ?? "Not recorded"}</td>
           <td className="p-3">{row.c ? money(row.c.claim.amountClaimed) : "Not recorded"}</td>
-          <td className="p-3">{itemStateLabel(row, "pharmacy")}</td>
+          <td className="p-3">{row.state === "released_to_pricing" && <span className="block">Paid on the normal schedule (synthetic)</span>}{itemStateLabel(row, "pharmacy", agentEnabled)}</td>
           <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setParams({ caseId: row.caseId }); }}>
             {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
             <span className="sr-only"> {row.caseId}</span>
           </Button></td>
         </tr>)}</tbody>
+        <tbody aria-label="Historical cases, background">
+        {BACKGROUND_CASES.map((c) => <tr key={c.id} data-background-case className="border-b bg-muted/30">
+          <th scope="row" className="p-3 font-medium">{c.id}</th>
+          <td className="p-3">{c.extracted.dispensingDate}</td><td className="p-3">Background</td>
+          <td className="p-3">{c.scenario === "C" ? "Information request example" : "Historical decision"}</td>
+          <td className="p-3">Background only, not playable</td>
+        </tr>)}</tbody>
       </table>
     </div>
     {!shown.length && <p role="status">No claims match this filter.</p>}
-    {id && !selected && <p role="alert">Unknown synthetic claim. Choose a claim from this pharmacy.</p>}
+    {id && !selected && <p role="alert">{BACKGROUND_CASES.some((c) => c.id === id)
+      ? "Background only, not playable. Choose one of the four operational items."
+      : "Unknown synthetic claim. Choose a claim from this pharmacy."}</p>}
     {selected?.c && <ClaimDetail key={selected.caseId} c={selected.c} row={selected} />}
   </div>;
 }

@@ -7,7 +7,7 @@ import { runAgent } from "../../src/lib/domain/agent";
 import { PROCESS_PUBLIC_FACTS, formatProcessItems } from "../../src/lib/domain/baseline";
 import { PROCESS_FIELDS, chooseProcessChapter, expectSceneMetrics } from "./process-model-helpers";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { startDemonstrationReview } from "./lifecycle-helpers";
+import { dismissDecisionNotification } from "./perspective-helpers";
 import { REC_META } from "../../src/components/demo/label-meta";
 
 async function navigatePrimary(page: Page, label: string) {
@@ -268,7 +268,12 @@ test("case D card follows human-confirmed current capture instead of retaining i
   const d = page.locator('[data-case="D"]');
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await navigatePrimary(page, "Pharmacy check");
-  await page.getByRole("radio", { name: "Paper", exact: true }).check();
+  const channel = page.getByRole("radio", { name: "Paper", exact: true });
+  await channel.click();
+  await expect(channel).toBeChecked();
+  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24123");
+  await expect(page).toHaveURL((url) => url.pathname === "/pharmacy"
+    && url.searchParams.get("case") === "EX-24123" && url.searchParams.get("channel") === "paper");
   const paper = page.getByRole("region", { name: "Paper pharmacy submission", exact: true });
   await expect(paper.getByRole("img", { name: /^Synthetic scanned prescription form for case EX-24123\./ })).toBeVisible();
   await expect(page.getByRole("radio", { name: "Unreadable form", exact: true })).toHaveCount(0);
@@ -277,7 +282,14 @@ test("case D card follows human-confirmed current capture instead of retaining i
   await page.getByLabel("Declared quantity", { exact: true }).fill(String(source.claim.quantity));
   await page.getByRole("textbox", { name: "Declared endorsement", exact: true }).fill("NCSO RK 27/08/26");
   await page.getByRole("button", { name: "Post paper with declaration", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("declared by the pharmacy, not read from the form");
+  const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
+  await expect(receipt).toContainText("EX-24123:2");
+  await expect(receipt.getByRole("status")).toHaveText("Human capture or reconciliation pending.");
+  await receipt.getByText("Recorded submission", { exact: true }).click();
+  const declaration = receipt.getByRole("region", { name: "Submitted pharmacy declaration", exact: true });
+  await expect(declaration).toContainText("declared by the pharmacy, not read from the form");
+  await expect(declaration.locator("dl > div").filter({ has: page.getByText("Declared quantity", { exact: true }) }).locator("dd")).toHaveText(String(source.claim.quantity));
+  await expect(declaration.locator("dl > div").filter({ has: page.getByText("Declared endorsement", { exact: true }) }).locator("dd")).toHaveText("NCSO RK 27/08/26");
   await chooseProcessChapter(page, 4);
   await expect(d).toHaveAttribute("data-case-routing", "type1_capture");
   await d.getByRole("link", { name: "Open case D", exact: true }).click();
@@ -346,8 +358,13 @@ test("dismissal is session-only; principle remains; restore resumes; reload rest
 });
 
 test("reset cancel and Escape preserve edits and records; confirm resets local and global state", async ({ page }) => {
-  await page.goto("case/EX-24112");
-  await startDemonstrationReview(page);
+  await page.goto("pharmacy");
+  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
+  await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
+  await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await page.getByRole("button", { name: "Start review", exact: true }).click();
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await page.getByRole("radio", { name: /^Refer back / }).check();
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
@@ -355,6 +372,7 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await page.getByRole("textbox", { name: /^Reason/ }).fill("Reset must preserve this human referral until explicitly confirmed");
   await page.getByRole("button", { name: "Record decision", exact: true }).click();
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
+  await dismissDecisionNotification(page);
   await navigatePrimary(page, "Pharmacy check");
   const field = page.getByRole("textbox", { name: "Dispenser endorsement" });
   const seed = await field.inputValue();
@@ -376,7 +394,13 @@ test("reset cancel and Escape preserve edits and records; confirm resets local a
   await navigatePrimary(page, "NHSBSA queue");
   await page.locator("a[href='/case/EX-24112']").first().click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-  await startDemonstrationReview(page);
+  await navigatePrimary(page, "Pharmacy check");
+  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
+  await page.getByRole("button", { name: "Send claim", exact: true }).click();
+  await page.getByRole("link", { name: "View submitted claim", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
+  await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
+  await page.getByRole("button", { name: "Start review", exact: true }).click();
   await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
 });
 
