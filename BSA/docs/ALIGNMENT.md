@@ -4,6 +4,12 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Root guard activation is implemented: the unchanged EPS scanner participates
+in `check`, which is blocking in `verify` and every CI shard. W's traversal
+and negative cases remain active, and the package-to-CI path has a regression
+assertion. Check and all 67 selected units pass; no browser or deployed
+behaviour is inferred from this tooling result.
+
 The actual G `e954aa1` source passes the standalone EPS-headline scan with
 zero findings after F/S migration. The existing narrow Tariff-text exception
 is unchanged. This permits root check activation, not a new browser or
@@ -744,6 +750,13 @@ new register. A source-ready module is not an aligned live feature.
 | Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
 | Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate | B canonical labels/import and integration |
 | Evidence and completion | Check plus 12 scoped units passed; full document parity retained | Canonical NHSBSA citation rendering, exact-head CI, green main deployment and observed live change |
+
+Run `35012808974` passed all four PR CI shards for exact source `66579e7`.
+An additional filesystem regression now verifies the headline checker's
+recursive production-source coverage and a real fail-to-pass migration,
+without scanning old test fixtures outside `src`. All 38 W units, typecheck
+and lint pass. Neither result removes the outstanding active-source findings
+or establishes the integrated Task 39 browser/live outcome.
 
 ## Current live-first alignment
 

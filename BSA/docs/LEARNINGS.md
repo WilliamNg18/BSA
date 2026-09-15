@@ -4,6 +4,17 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The new guard needs no separate workflow step: every CI shard already runs
+the shared blocking `check` stage. An `&&`-chained EPS check therefore stops
+verification before typecheck/build on a finding. The new unit verifies this
+actual command path, while W's original negative and recursive traversal
+tests retain the narrow exception boundary.
+
+`npm run check` passed with zero EPS findings, and 67 targeted verification,
+source-policy and headline units passed with two workers. This build was
+developer verification only, not a local product, backup or deployment.
+Unrun full-suite and live acceptance gates remain unclaimed.
+
 Running the standalone W checker on imported G `e954aa1` now reports no
 retired date-error source outside its actual NCSO requirement-text exception.
 This is an actual source traversal, not a whitelist or historical manifest
@@ -630,6 +641,14 @@ pharmacy's own concrete suggestion.
 The earlier 75-check and timing results cover the former cases and contracts.
 They remain historical; no new wrong-strength/paper-incomplete live cycle,
 header centring, backup equality or clean offline recovery is claimed here.
+
+The exact `66579e7` CI run `35012808974` passed all four shards. A subsequent
+test-only addition exercises the real recursive headline-checker entry point
+against an isolated temporary fixture: one forbidden nested source heading
+is reported, replacing that heading clears it, actual NCSO text stays allowed,
+and historical test records outside `src` remain unscanned. The fixture is
+removed in a `finally` block. All 38 W units, strict typecheck and lint pass;
+there is no whole-file source exemption or new live/browser claim.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 

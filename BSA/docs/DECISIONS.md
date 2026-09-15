@@ -4,6 +4,9 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how should the EPS source guard become blocking without duplicate CI logic? Choice: add `check:eps-headlines` to the existing `check` chain before compilation, preserving the shared fail-fast `verify` stage and four-shard workflow; tie-breaker: one canonical verification path and no infrastructure changes.
+- Question: may activation weaken W's scanner or its tests? Choice: import the exact published `ecd4a934` traversal/negative test file, leave checker/schema/source exceptions unchanged and add only a root-wiring regression; tie-breaker: actual source-clean readiness and fail-closed evidence.
+
 - Question: when may the EPS headline check enter the blocking root path? Choice: after exact G `e954aa1` and an independent zero-finding run of W's unchanged scanner, retaining every negative/traversal regression and the single AST-selected Tariff-text exception; tie-breaker: the authorised activation condition is now met without a waiver.
 
 - Question: does a seeded prior referral make corrected C8 paper actively editable? Choice: keep the prior note in history, require current ready-to-release status and no active response/resubmit controls; tie-breaker: actual revision and lifecycle authority.
@@ -140,6 +143,8 @@ ms.date: 2026-09-15
 - Question: which evidence is publishable as independently checked? Choice: use W's verified abstract and NHSBSA mechanism; keep unverified subtype counts/rank explicit until a primary source confirms them. Tie-breaker: evidence accuracy over apparent completeness.
 - Question: how is the mismatch input interpreted? Choice: one per cent of total submitted claims, a separate non-additive assumption/estimate, never 1.6 per cent as an NHSBSA rate or a percentage of the referral subset. Tie-breaker: preserve existing model arithmetic and honest denominators.
 - Question: should O wait indefinitely for D's backup schema? Choice: use the coordinator-frozen runtime/docs/data/README/manifest/serve contract and independently verify actual files, so both streams proceed. Tie-breaker: simpler parallel delivery without fabricated backup proof.
+
+- Question: how is the headline guard's scope verified? Choice: add a real nested-directory regression that fails on source copy, passes after replacement and leaves historical test-only records outside `src` untouched. Preserve the narrow NCSO text exception and all existing checks. Tie-breaker: test the actual traversal and migration, not only a regex proxy.
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 

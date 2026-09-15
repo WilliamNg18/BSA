@@ -4,6 +4,20 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## V EPS headline guard activation
+
+`npm run check:eps-headlines` now runs W's unchanged checker, and `npm run
+check` invokes it after source-copy checking and before typecheck/lint/build.
+The existing blocking check stage in `npm run verify` and all four CI shards
+therefore enforce it without a workflow or infrastructure change.
+
+W's `ecd4a934` negative/traversal tests are preserved; a new verification
+contract checks the actual package command and blocking CI path. Full
+`npm run check` and 67 targeted scanner/source-policy/verification units pass
+with two workers. No new source exception, historical-data change, browser
+run, deployment or backup is included. Full integration acceptance remains
+open.
+
 V imports G `e954aa1`, including F's Home/step repair and S's source-copy
 migration. The unchanged standalone W checker now reports zero findings
 against the actual working source. Root hook activation is authorised and
@@ -538,6 +552,13 @@ Check and 12 focused reference units passed. The 49 prose panels have at most
 and actual integrated behaviour review await G's foundation integration.
 No new browser, hosted or complete Task 39-40 result is claimed. The paired
 SYSTEM-DESIGN document matches the reference text in this change.
+
+The exact `66579e7` PR CI run `35012808974` passed all four shards.
+W then added a real directory-walk regression for the headline checker:
+it finds a retired nested source heading, passes after migration and leaves
+historical test-only material outside `src` untouched. All 38 W units,
+typecheck and lint pass. The source guard remains unactivated until the
+assigned owners migrate active content; this is not a live result.
 
 ## Current release gate: live first, exact local backup
 

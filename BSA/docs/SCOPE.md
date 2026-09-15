@@ -4,6 +4,12 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The authorised EPS headline guard is now active in root checking and the
+existing four-shard CI verification path. Its scope remains executable
+source with only W's exact AST-selected NCSO requirement-text exception.
+Historical files outside `src` are retained, not reclassified as a new pass.
+Check and 67 targeted units pass; whole-suite/live gates are separate.
+
 G `e954aa1` closes the active-source headline migration dependency: V
 independently ran W's unchanged checker with zero findings. Root check/verify
 wiring may now be activated without a source waiver; live completion remains
@@ -538,6 +544,12 @@ paper case and scanner/field-only-referral boundaries. Reuse of W/B constants,
 the public NHSBSA quotation/link, foundation integration, exact-head CI and
 main/deployment/live observation remain pending. Do not treat WIP as the live
 product or an exact-main backup.
+
+The guard now also has an actual filesystem-walk regression, not just parser
+examples: nested source fails before headline migration and passes afterwards,
+while historical test material outside `src` is retained. W's 38 focused tests,
+typecheck and lint pass; exact earlier source `66579e7` passed all four PR CI
+shards in run `35012808974`. Integration/live obligations remain open.
 
 ## Live-first release and backup obligations
 
