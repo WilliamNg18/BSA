@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 # Scope register
 
+### G39/40 explicit-action checkpoint
+
+W/B pure foundations and revision-bound ACK/audit store controls are integrated
+as published WIP. Every corrected resubmission now requires accurate-current-
+payload acknowledgement in both modes. A human may explicitly reopen priced
+EPS for a later audit; toggling or navigating never does so. No new paper or
+strength workflow is declared live-complete from this checkpoint.
+
 ## Tasks 39/40 shared-model integration: in progress
 
 The first additive contract checkpoint introduces independent pharmacy supply

@@ -53,6 +53,8 @@ export interface HumanActionSlice {
   pharmacyDrafts: Record<string, PharmacyCorrectionDraft>;
   setOperatorDraft: (caseId: string, draft: Pick<OperatorDecisionDraft, "revision" | "outcome" | "rbCode" | "note">) => void;
   setPharmacyDraft: (caseId: string, draft: Omit<PharmacyCorrectionDraft, "appliedSuggestion">) => void;
+  setCorrectionAcknowledgement: (caseId: string, expectedRevision: number, acknowledged: boolean) => void;
+  reopenForAudit: (caseId: string, expectedRevision: number, reason: string) => void;
   applySuggestionToDecision: (caseId: string) => void;
   releaseToPricing: (caseId: string, reason?: string) => void;
   referBack: (caseId: string, rbCode: string, note: string) => void;
@@ -80,9 +82,10 @@ export interface HistoryEvent {
   approvedDraft?: ApprovedDraft;
   channel?: ItemChannel;
   rbCode?: string;
-  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission" | "suggestion_applied" | "correction_applied" | "verification" | "release_to_pricing";
+  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission" | "suggestion_applied" | "correction_applied" | "correction_acknowledged" | "audit_reopened" | "verification" | "release_to_pricing";
   readonly verification?: ItemVerification;
   readonly releaseOrigin?: ReleaseOrigin;
+  readonly correctionAcknowledgement?: CorrectionAcknowledgement;
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
   /** Snapshot of advice explicitly copied by a person, not recomputed on release. */

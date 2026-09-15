@@ -54,6 +54,7 @@ import { evaluateItemVerification } from "@/lib/domain/verification";
 import { checkPharmacyCorrection, initialisePharmacyDraft, suggestedPharmacyCorrection, synchronisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { deriveRecommendation, validateDiagnosticFollowUp, type DiagnosticFollowUp } from "@/lib/domain/recommendations";
 import { HISTORICAL_DECISION_RECORDS } from "../../data/archive/decision-records";
+import { assertCorrectionAcknowledged, correctionFingerprint } from "@/lib/domain/correction-acknowledgement";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -204,9 +205,21 @@ export const useAppStore = create<AppState>((set, get) => {
     if (declaration) validateDeclaredFields(declaration.fields);
     if (declaration && (channel !== "paper" || declaration.provenance !== "pharmacy_declaration" || !Number.isFinite(Date.parse(declaration.declaredAt)) ||
       declaration.fields.endorsementText !== submittedText || declaration.fields.productCode !== null && !declaration.fields.productCode.startsWith("SYN-"))) throw new Error("Invalid pharmacy declaration.");
+    const acknowledgement = submission?.correctionAcknowledgement ?? s.pharmacyDrafts[caseId]?.correctionAcknowledgement;
+    if (kind === "resubmission") {
+      const payload = { revision: previous.number, channel, endorsementText: submittedText, declaration, paperDeclaration, epsPrescription };
+      assertCorrectionAcknowledged(payload, previous.number, acknowledgement);
+      if (s.pharmacyDrafts[caseId]?.correctionAcknowledgement?.fingerprint !== acknowledgement?.fingerprint ||
+        !s.lifecycles[caseId].history.some((entry) => entry.actor === "pharmacy" &&
+        entry.processStep === "correction_acknowledged" && entry.revision === previous.number &&
+        entry.correctionAcknowledgement?.fingerprint === acknowledgement?.fingerprint)) {
+        throw new Error("A current explicit pharmacy accuracy acknowledgement is required.");
+      }
+    }
     const revision: CaseRevision = { number: previous.number + 1, at, kind, templateCaseId: previous.templateCaseId,
       endorsementText: submittedText, precheck: precheck ?? null, confirmation: kind === "confirmation" ? text : null,
-      channel, verificationEnabled: s.agentEnabled, ...(declaration ? { declaration } : {}), ...(epsPrescription ? { epsPrescription } : {}), ...(paperDeclaration ? { paperDeclaration } : {}) };
+      channel, verificationEnabled: s.agentEnabled, ...(kind === "resubmission" ? { correctionAcknowledgement: acknowledgement } : {}),
+      ...(declaration ? { declaration } : {}), ...(epsPrescription ? { epsPrescription } : {}), ...(paperDeclaration ? { paperDeclaration } : {}) };
     const event: HistoryEvent = { at, actor: "pharmacy", from: current.state, to: kind === "submission" ? "submitted" : "resubmitted",
       message: kind === "submission" ? "Explicit demo submission; previous revisions retained." : kind === "confirmation" ? "Pharmacy confirmation received; human re-check required." : "Pharmacy correction resubmitted for re-check.",
       revision: revision.number, channel, processStep: kind === "submission" ? "submission" : "resubmission" };
@@ -350,10 +363,44 @@ export const useAppStore = create<AppState>((set, get) => {
         validateRetainedEpsSources((caseById(caseId) ?? caseById(revision.templateCaseId))?.epsPrescription, draft.epsPrescription);
         validateRetainedEpsSources(revision.epsPrescription, draft.epsPrescription);
       }
+      const initial = !draft.epsPrescription && !draft.paperDeclaration && !draft.declaration
+        ? initialisePharmacyDraft(currentCase(caseId), revision, draft.channel) : null;
+      const completeDraft = initial ? { ...initial, ...draft,
+        ...(initial.epsPrescription ? { epsPrescription: { ...initial.epsPrescription, dispenserEndorsement: draft.endorsementText } } : {}),
+        ...(initial.paperDeclaration ? { paperDeclaration: { ...initial.paperDeclaration, endorsementText: draft.endorsementText } } : {}),
+        ...(initial.declaration ? { declaration: { ...initial.declaration, fields: { ...initial.declaration.fields, endorsementText: draft.endorsementText } } } : {}),
+      } : draft;
       set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
-        ...synchronisePharmacyDraft(draft, revision), revision: revision.number, appliedSuggestion: false, appliedFields: undefined,
+        ...synchronisePharmacyDraft(completeDraft, revision), revision: revision.number, appliedSuggestion: false, appliedFields: undefined,
         correctionAcknowledgement: undefined,
       } }) });
+    },
+    setCorrectionAcknowledgement: (caseId, expectedRevision, acknowledged) => {
+      const s = get(), row = requireState(caseId, ["referred_back", "information_requested"]);
+      const draft = s.pharmacyDrafts[caseId], revision = s.caseRevisions[caseId].at(-1)!;
+      if (typeof acknowledged !== "boolean") throw new Error("Accuracy acknowledgement must be an explicit choice.");
+      if (revision.number !== expectedRevision || !draft || draft.revision !== expectedRevision) throw new Error("The correction draft is stale or unavailable.");
+      if (draft.purpose === "new_submission") throw new Error("Accuracy acknowledgement applies to a correction, not a new demonstration attempt.");
+      const acknowledgement = acknowledged ? { revision: expectedRevision, fingerprint: correctionFingerprint(draft) } : undefined;
+      const event: HistoryEvent = { at: timestamp(caseId), actor: "pharmacy", from: row.state, to: row.state, revision: expectedRevision,
+        processStep: "correction_acknowledged", correctionAcknowledgement: acknowledgement,
+        message: acknowledged ? "Pharmacy confirmed the corrected information is accurate; not resubmitted." : "Pharmacy withdrew the accuracy acknowledgement." };
+      set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: { ...draft, correctionAcknowledgement: acknowledgement } }),
+        lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }) });
+    },
+    reopenForAudit: (caseId, expectedRevision, reason) => {
+      const s = get(), row = requireState(caseId, ["paid", "released_to_pricing"]), revision = s.caseRevisions[caseId].at(-1)!;
+      if (expectedRevision !== revision.number) throw new Error("The audit request is stale.");
+      requireText(reason, "Audit or later-query reason", 8);
+      const process = s.itemProcesses[caseId];
+      if (process.channel !== "eps") throw new Error("This explicit audit path is for EPS claims.");
+      const event: HistoryEvent = { at: timestamp(caseId), actor: "operator", from: row.state, to: "in_review",
+        processStep: "audit_reopened", revision: revision.number, reason,
+        message: "Operator opened a later audit or query; earlier pricing history remains unchanged." };
+      set({ lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
+        itemProcesses: immutable({ ...s.itemProcesses, [caseId]: { ...process, routing: { outcome: "type2_endorsement",
+          requiresHuman: true, pricingAuthority: null, reason: "Explicit human audit or later query." } } }),
+        caseStates: { ...s.caseStates, [caseId]: "operator_review_required" } });
     },
     applySuggestionToDecision: (caseId) => {
       const row = requireState(caseId, ["in_review", "escalated"]), s = get();
@@ -426,9 +473,7 @@ export const useAppStore = create<AppState>((set, get) => {
     applySuggestedCorrection: (caseId) => {
       const s = get(), row = requireLifecycle(caseId, s.lifecycles), revision = s.caseRevisions[caseId].at(-1)!;
       if (!s.agentEnabled) throw new Error("Agent assistance is off; enter your correction manually.");
-      const approval = s.records.filter((record) => record.caseId === caseId && (record.revision ?? 1) === revision.number).at(-1)?.approvedDraft;
       const newAttempt = s.pharmacyDrafts[caseId]?.purpose === "new_submission";
-      if (row.state === "referred_back" && !approval && !newAttempt) throw new Error("No operator-approved correction is available for this revision.");
       const c = currentCase(caseId), beforeDraft = s.pharmacyDrafts[caseId] ?? initialisePharmacyDraft(c, revision);
       const correction = suggestedPharmacyCorrection(c, revision, beforeDraft), at = timestamp(caseId);
       const before = checkPharmacyCorrection(c, revision, beforeDraft), after = checkPharmacyCorrection(c, revision, correction);
@@ -461,7 +506,7 @@ export const useAppStore = create<AppState>((set, get) => {
           : "Suggested correction applied by the pharmacy; not resubmitted." };
       set({
         pharmacyCorrections: caught ? immutable([...s.pharmacyCorrections, caught]) : s.pharmacyCorrections,
-        pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: correction }),
+        pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: { ...correction, correctionAcknowledgement: undefined } }),
         lifecycles: immutable({ ...s.lifecycles, [caseId]: appendHistory(row, event) }),
       });
     },

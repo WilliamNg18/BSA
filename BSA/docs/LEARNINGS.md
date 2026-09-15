@@ -51,6 +51,12 @@ TypeScript baseline was resolved by restoring the existing lockfile. No live,
 browser or backup result is inferred from these branch checks.
 ## 2026-09-15: B40 actual-source audit and foundation boundary
 
+G's canonical ACK/audit checkpoint passes typecheck and 38 focused tests,
+including fabricated/stale/withdrawn acknowledgements, mode/perspective parity
+and explicit later audit reopening. The previous full source-foundation suite
+passed 1,630 tests in 93 files; that earlier pass predates new mandatory ACK
+enforcement and must not be reused as final consumer compatibility evidence.
+
 At main `641815137b36ab3e925dcc98c4738d0b150a75d1`, the existing revision
 and capture history already preserve useful evidence, but the operator view
 does not expose an exact full submission replica. `store.ts` restricts automatic

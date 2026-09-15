@@ -51,6 +51,14 @@ main actions or updated four-case historical seeds.
 
 # Vision alignment
 
+### Canonical action integration
+
+ACK enforcement now checks revision, exact payload, current draft and an actual
+pharmacy acknowledgement event. Withdrawal and edits invalidate authority;
+history remains append-only. Explicit EPS audit reopening is a recorded human
+action preserving earlier pricing. W/B foundations are imported; active
+scenario/recheck wiring and consumer/live verification are still pending.
+
 ## Tasks 39/40 initial domain alignment checkpoint
 
 Contract update: current consumers typecheck with optional EPS supply records,

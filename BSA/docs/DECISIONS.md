@@ -15,6 +15,10 @@ ms.date: 2026-09-15
 - Question: how can W supply the CI guard without breaking other owners' work? Choice: publish the strict standalone checker and its negative tests; V hooks it into the existing root check after coordinated active-source migration. No broad whitelist and no historic record rewrite.
 ## 2026-09-15: B40 fidelity and communication contract choices
 
+- G integration: correction acknowledgement requires both exact current payload metadata and its explicit pharmacy event, preventing a fabricated fingerprint from substituting for the checkbox action; tie-breaker: real human authority.
+- G integration: Off wrong-strength audit is an explicit operator reopening that preserves previous pricing history, never an automatic mismatch check or navigation side effect; tie-breaker: the owner's specified Today behaviour.
+- G integration: pharmacy suggestions come from the pharmacy's own source records, not from an operator-approved value-containing note; communication approval remains separate provenance; tie-breaker: C5/C6 separation.
+
 - Question: who edits common state? Choice: G alone integrates types/store/lifecycle/seeds; B supplies new pure modules/tests and owners adapt their screens. Tie-breaker: one authoritative state and no parallel overwrite.
 - Question: how does Off acknowledge corrections? Choice: the same explicit accuracy checkbox is required after manual editing, with no hidden agent call. Tie-breaker: human accuracy responsibility is independent of assistance.
 - Question: how is acknowledgement bound? Choice: exact canonical payload JSON plus current revision, invalidated by edits and Apply, excluding assistance/acknowledgement metadata. Tie-breaker: avoid stale approval and lossy hash collisions.

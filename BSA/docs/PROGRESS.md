@@ -6,6 +6,15 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
+G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper
+foundations are imported. The canonical store now exposes explicit
+`setCorrectionAcknowledgement(caseId, expectedRevision, acknowledged)` and
+`reopenForAudit(caseId, expectedRevision, reason)` controls. Corrections require
+an exact current acknowledgement plus its real pharmacy history event; ordinary
+edits cannot forge one. Explicit audit preserves prior code-pricing history.
+Typecheck and 38 focused contract/module/action tests pass. Legacy UI consumers
+and the new channel-specific seeds/recheck behaviour remain integration work.
+
 W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
 headline checker and 33 focused units from base main `6418151`. `npm run check`
 and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
