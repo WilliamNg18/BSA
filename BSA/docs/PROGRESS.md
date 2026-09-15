@@ -20,6 +20,12 @@ identified the old comparison unit API; its expectation now follows pharmacy
 records rather than approval of an NHSBSA correction value. No browser started.
 This branch is published WIP, not main/live completion or a backup.
 
+The actual required checkbox handler is now isolated for focused execution.
+Five units pass for both modes, current payload, withdrawal, manual edit
+invalidation, presentation retention, explicit conversion of demonstration
+intent and stale action errors. These are handler/store proofs, not DOM,
+viewport or live acceptance.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper

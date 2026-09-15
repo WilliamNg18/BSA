@@ -12,7 +12,8 @@ import { useAppStore } from "@/lib/store";
 import { itemStateLabel, NO_VERIFICATION, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { isPlayableCase } from "@/lib/domain/cases";
-import { CORRECTION_ACKNOWLEDGEMENT_LABEL, correctionFingerprint } from "@/lib/domain/correction-acknowledgement";
+import { correctionFingerprint } from "@/lib/domain/correction-acknowledgement";
+import { PharmacyCorrectionAcknowledgement } from "./pharmacy-correction-acknowledgement";
 
 export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
   return <section aria-label="Claim detail" className="space-y-4 rounded-xl border bg-card p-5">
@@ -104,17 +105,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       {enabled && <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
         recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
       <ClaimsResubmissionComparison enabled={enabled} status={result?.status ?? null} />
-      <label className="flex items-start gap-2">
-        <input type="checkbox" required data-pharmacy-action="acknowledge-correction" checked={acknowledged}
-          onChange={(event) => act(() => {
-            const store = useAppStore.getState();
-            if (!store.pharmacyDrafts[caseId] || store.pharmacyDrafts[caseId].purpose === "new_submission") {
-              store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
-            }
-            store.setCorrectionAcknowledgement(caseId, revision.number, event.target.checked);
-          })} />
-        {CORRECTION_ACKNOWLEDGEMENT_LABEL}
-      </label>
+      <PharmacyCorrectionAcknowledgement caseId={caseId} draft={draft} act={act} />
       <Button data-pharmacy-action="resubmit" disabled={!acknowledged} onClick={() => act(() => {
         const store = useAppStore.getState();
         if (!store.pharmacyDrafts[caseId] || store.pharmacyDrafts[caseId].purpose === "new_submission") {

@@ -15,6 +15,10 @@ operator, header and verification harness files remain with their owners.
 Canonical integration, checks, browser acceptance, merge and observed green
 deployment remain pending; the UI checkpoint alone completes no requirement.
 
+P's five focused accuracy-checkbox handler tests now pass in both modes,
+including invalidation and stale-input rejection. Wider canonical integration
+and existing pharmacy-suite migration remain open.
+
 ### G39/40 explicit-action checkpoint
 
 W/B pure foundations and revision-bound ACK/audit store controls are integrated

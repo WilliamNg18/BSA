@@ -2478,3 +2478,5 @@ Question: how should callback integrity remain exact across Linux and Windows ch
 Question: must pharmacy corrections wait for an NHSBSA note containing the answer? Choice: use only shared pharmacy-record suggestions, show the actual field/rule operator note without an exact-fix field, and require a separate payload-bound accuracy acknowledgement in both modes; tie-breaker: current C5/C6 authority and explicit human action.
 
 Question: how should simultaneous pharmacy tiles become plausible? Choice: project all actual lifecycle cohorts side by side and let G own seed/history state, never populate tiles by navigation; tie-breaker: one authoritative state.
+
+Question: how should the required checkbox be tested without a browser lease? Choice: execute its actual native-input callback against the canonical store and retain SSR as a separate read-only assertion, without claiming browser or timing acceptance; tie-breaker: exact evidence and owner-controlled browser slots.
