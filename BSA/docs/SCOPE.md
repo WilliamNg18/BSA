@@ -6,6 +6,11 @@ ms.date: 2026-09-15
 
 # Scope register
 
+B's additional negative proof is currently blocked by two G-owned C4/C5 defects:
+outbound presentation-value leakage and missing manufacturer text in the
+actual synthetic amendment scan. Nine failing regressions are published as
+explicit WIP evidence, not waived or described as passing. No task completion.
+
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
 and both modes. The combined seven-file selection passes 91 units and check.

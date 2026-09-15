@@ -24,6 +24,16 @@ Deep equality now uses the canonical revision-pinned facade, not a fresh
 template scan. Actual queue and receipt adapters confirm corrected EPS has no
 operator row and paper has no Paid receipt until its real final human release.
 
+Stronger negative checks then reproduced two further gaps, not regressions in
+the passing fidelity assertions. A source-bound presentation proposal was not
+included in the final-note protected aliases: all four communication entry
+points accepted `Please provide capsules as the accurate presentation.` when
+paper presentation was missing. This fails in both modes. The amendment's
+image regions also omitted its manufacturer while OCR recorded it at 0.99.
+The first five checks failed, then the expanded Off/On set failed all nine.
+G and U were notified; source facts must be added by G's explicit amendment
+source builder, never backfilled by U from the declaration.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
