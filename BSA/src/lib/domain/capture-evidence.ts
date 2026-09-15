@@ -39,12 +39,16 @@ export function validateDeclaredFields(fields: DeclaredItemFields): void {
     fields.productCode !== null && (typeof fields.productCode !== "string" || !fields.productCode.trim()) ||
     fields.quantity !== null && (!Number.isSafeInteger(fields.quantity) || fields.quantity <= 0) ||
     typeof fields.endorsementText !== "string" ||
-    fields.prescriber !== undefined && fields.prescriber !== null && typeof fields.prescriber !== "string") {
+    fields.prescriber !== undefined && fields.prescriber !== null && typeof fields.prescriber !== "string" ||
+    fields.brandManufacturer !== undefined && typeof fields.brandManufacturer !== "string" ||
+    fields.form !== undefined && typeof fields.form !== "string" ||
+    fields.packSize !== undefined && fields.packSize !== null && (!Number.isSafeInteger(fields.packSize) || fields.packSize <= 0)) {
     throw new Error("Invalid declared or captured fields.");
   }
 }
 
 export function sameDeclaredFields(a: DeclaredItemFields, b: DeclaredItemFields): boolean {
   return a.productCode?.trim() === b.productCode?.trim() && a.quantity === b.quantity &&
-    a.endorsementText.trim() === b.endorsementText.trim() && (a.prescriber?.trim() ?? "") === (b.prescriber?.trim() ?? "");
+    a.endorsementText.trim() === b.endorsementText.trim() && (a.prescriber?.trim() ?? "") === (b.prescriber?.trim() ?? "") &&
+    a.brandManufacturer === b.brandManufacturer && a.packSize === b.packSize && a.form === b.form;
 }

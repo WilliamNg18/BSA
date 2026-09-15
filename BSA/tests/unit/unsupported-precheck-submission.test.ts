@@ -5,7 +5,7 @@ import { validatePrecheck } from "../../src/lib/domain/lifecycle-model";
 import { deriveRecommendation } from "../../src/lib/domain/recommendations";
 import { sessionCase, useAppStore } from "../../src/lib/store";
 
-const id = "EX-24112";
+const id = "EX-24107";
 const store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
 
@@ -41,11 +41,11 @@ describe("unsupported pharmacy precheck submission", () => {
     expect(() => validatePrecheck(snapshot, draft.endorsementText, "2027-01-21")).not.toThrow();
   });
 
-  it("retains missing-date classification and strict rejection of the old malformed snapshot", () => {
+  it("retains complete classification and strict rejection of a malformed citation snapshot", () => {
     const revision = store().caseRevisions[id][0], current = sessionCase(id)!;
     const draft = initialisePharmacyDraft(current, revision);
     const result = checkPharmacyCorrection(current, revision, draft);
-    expect(result).toMatchObject({ status: "missing", clause: { id: "P2-C9" } });
+    expect(result).toMatchObject({ status: "ready", clause: { id: "P2-C9" } });
     const snapshot = pharmacySnapshot(draft.endorsementText, draft.epsPrescription!.dispensingDate, "scripted", result, "2026-09-15T02:00:00.000Z");
     expect(() => validatePrecheck({ ...snapshot, clauseId: null }, draft.endorsementText, draft.epsPrescription!.dispensingDate)).toThrow("Invalid or stale");
   });
