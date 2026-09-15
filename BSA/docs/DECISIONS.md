@@ -2169,6 +2169,13 @@ the wrong-pack EPS item, applies the operator suggestion and refers it back.
 Next must then open that actual referral with correction and resubmission
 controls, not B's completed record.
 
+## 2026-09-15: Concrete recommendations on operator surfaces
+
+- Question: where should operator advice come from? Choice: use R's shared read-only derivation and RecommendationCard on current operator, Type 1, trace and record surfaces, not a second local recommendation authority.
+- Question: can diagnostic Apply clear an unreadable item? Choice: only R's validated safe follow-up adapter may populate the current operator draft; the original abstention and failed checks remain visible and Release still uses the authoritative code gate.
+- Question: when is the card shown? Choice: every valid item surface shows one complete card while On, including before Start review and read-only outcomes. Off performs no new recommendation derivation; recorded-source cards remain explicitly pinned to their revision and record.
+- Question: is an escalated record a completed review? Choice: no. An open escalated operator case keeps current actionable advice; only a closed review uses the read-only recorded-source context.
+
 - Question: why did a complete On EPS receipt incorrectly say Type 2 was pending? Choice: replace its legacy automatic-pricing-only check with the selected revision's recorded pricing/release event and attribution-aware label. Preserve Off pricing text and human review provenance; do not change the model outcome to fit the old receipt. Tie-breaker: truthful visible outcomes.
 - Question: does shared Apply count as a caught item automatically? Choice: append counter evidence atomically only after a checked format or source gap becomes ready on independent current facts; bind it to the next attempt and deduplicate legacy recorder events. Partial or still-invalid corrections remain uncounted, and applying still does not submit or release. Tie-breaker: an actual evidence-based count, not a click counter.
 - Question: does correcting a referred-back item count as upfront prevention? Choice: no; the new shared recorder requires explicit `new_submission` intent. A post-referral correction remains recorded human work but does not increment the upfront caught collection. Tie-breaker: preserve the prevention versus rework distinction.
