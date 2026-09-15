@@ -876,3 +876,12 @@ resubmission, wrong-strength manual audit and immutable unknown-prescriber
 submissions instead of retired seed assumptions. Safe operator-preview checks
 retain exact prescribed/selected/supplied facts while forbidding pharmacy-only
 target proposals. All 66 pass; no assertion or deadline is skipped.
+
+R's operator trace audience assertions now have actual bounded browser proof:
+8/8 on clean `2df6549`, covering all four cases and 1280/1440 widths. The
+recorded audit URLs confirm port 4337; no hosted or screenshot-review result
+is inferred. Full integration/live rows remain unaligned until their own gates.
+
+The reported ready-paper future-tense copy is corrected from the same canonical
+paper result: raw-source and human-confirmed bases have distinct completed
+wording, while new drafts retain the pending verification statement.
