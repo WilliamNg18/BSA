@@ -321,3 +321,9 @@ read-only evidence. Current consumer mounting, the new G seed/gate integration
 and real live acceptance remain drifted until their owning streams verify them.
 The unused earlier duplicate Card draft remains a NONINTEGRATED historical
 patch artifact and was not replayed onto current main.
+
+The R-only regression expectations now distinguish factual disagreements from
+outbound instructions: exact source quantities remain in diagnostic findings,
+while the operator note asks for accuracy without those values. Historical
+pharmacy preview tests explicitly select pharmacy audience. Fifty targeted
+contracts pass; this does not establish the current G/P/O integrated runtime.
