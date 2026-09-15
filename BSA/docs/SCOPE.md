@@ -6,6 +6,24 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Task 40 F extension: real cross-view hand-offs
+
+Own Follow navigation, banner, presentation helpers, consuming history labels
+and their tests only. Preserve the four existing item IDs, exact histories,
+revision-bound source data, Agent/demo settings and temporary Both semantics.
+Do not write shared types/store, queue staging, pharmacy views or header layout.
+
+After Part A and the G/W/B contracts land, consume actual acknowledgement
+and withdrawal events, explicit audit reopening, corrected-EPS automatic
+release and paper readiness for an operator. A new code release must not erase
+an earlier human referral. Paper readiness must not claim release or payment.
+Do not invent a C8 stage: the simultaneous month comes from G seed histories.
+
+Current status: source audit published against main `6418151`; consumer
+implementation awaits authoritative exports. V owns new C7 deadlines and
+cross-view acceptance. Complete only after the change reaches main, deployment
+is green and the actual live URL serves and demonstrates that commit.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

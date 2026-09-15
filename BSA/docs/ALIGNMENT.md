@@ -6,6 +6,26 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Task 40 F contract audit: C7 and C8
+
+Audit base: published main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+This is source inspection, not a new deployment or timed live verdict.
+
+| Requirement | Classification | Inspected evidence and required integration |
+| --- | --- | --- |
+| C7 same-item navigation and preserved history | Existing implementation; new-cycle verification pending | Main Follow uses one store, explicit side buttons and presentation-only temporary Both. History labels use each event's history prefix, not the current toggle or a replacement case. |
+| C6/C7 accuracy acknowledgement and audit events | Consumer gap awaiting model integration | Published G `6054408` adds `correction_acknowledged` and `audit_reopened`. Main's formatter has no explicit cases for them. Add distinct acknowledgement, withdrawal and audit labels after the contract lands; do not mislabel these as referral, pricing or submission. |
+| C6/C7 corrected EPS automatic re-check | Model change in progress | Main permits automatic release only for initial submission and requires human re-check after resubmission. B `8151770` publishes a pure re-check contract; G owns its real action integration. Preserve the prior human referral while the new code release retains automatic provenance. |
+| C6/C7 paper ready for human release | Model/selector integration pending | B's re-check result distinguishes paper readiness from automatic release. G proposes `ItemProcess.readyToRelease`; F awaits its final authoritative display selector and must not derive a second business state. |
+| C7 four revised cases and timed cross-view actions | New acceptance pending | W #102 `66579e7` publishes wrong-strength evidence/helpers for the retained mismatch ID, not a merged replacement seed. G's intended mapping retains all four IDs and moves `EX-24112` to paper. V owns real Off automatic pricing followed by an explicit audit, ACK/re-check cycles and pre-click one-second deadlines. |
+| C8 simultaneous pharmacy states | G seed/P view ownership; F must not manufacture stages | Main's old four-case seed does not establish the new completed/referral/re-check month. Await G's actual seed histories; Follow only reads those histories and locations. |
+| Other open published branches | No alternative Follow contract found | Part A #104 `1080ff7` changes the shell Outcome/notice layout; S #103 `260b70e` changes system design. Neither supplies ACK/re-check Follow state. Preserve their owning surfaces and integrate Part A first. |
+
+The source audit also inspected published B `8151770` and G `6054408`,
+which were not open pull requests at inspection. No shared types, store, queue,
+pharmacy views or header were changed by F. Consumer code waits for the actual
+G/W/B integration; unpublished plans and helper exports are not a live product.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

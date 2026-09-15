@@ -6,6 +6,21 @@ ms.date: 2026-09-15
 
 ## Current release gate: live first, exact local backup
 
+### Task 40 F: published contract audit, not implementation completion
+
+F resumed on main `641815137b36ab3e925dcc98c4738d0b150a75d1` and inspected
+all three open published branches (#102 W, #103 S, #104 Part A), plus G
+`6054408` and B `8151770`. C7/C8 classifications are recorded in ALIGNMENT.
+Main's Follow navigation/history foundation exists, but new ACK/audit event
+labels, corrected-EPS automatic re-check and paper ready-to-release displays
+await the authoritative G/W/B action and selector integration.
+
+This change updates all five tracking documents and is published as WIP.
+No runtime code, tests, browser session, deployment or backup was run.
+V owns the new real four-case one-second matrix; G owns actual C8 seed histories,
+and P owns the simultaneous pharmacy tiles. No new live URL/SHA observation or
+Task 40 completion is claimed. Owner actions for me: none.
+
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
 main and the live build identity were verified as

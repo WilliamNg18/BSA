@@ -6,6 +6,23 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
+### Task 40 Follow audit: new events must not fall through to old state labels
+
+At main `6418151`, Follow formats the actual last appended event and preserves
+release attribution using history prefixes. G's published `6054408` introduces
+`correction_acknowledged` for both acknowledgement and withdrawal, distinguished
+by the recorded payload, and `audit_reopened` for an explicit operator action.
+Without explicit consumer cases, the old formatter would describe the retained
+lifecycle destination rather than the new action. This is a source-level
+integration gap, not a reproduced live failure or a completed repair.
+
+B `8151770` publishes a pure re-check disposition, not an event or a new queue
+stage. F must consume G's revision-bound action/selector integration before
+showing paper ready to release or automatic corrected-EPS release. The earlier
+human referral remains historical even when the later release is automatic.
+ACK preparation and navigation cannot themselves submit, release or fabricate
+the simultaneous C8 month. No browser or timed acceptance ran for this audit.
+
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
 at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.

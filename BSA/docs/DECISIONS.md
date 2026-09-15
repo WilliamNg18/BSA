@@ -2421,6 +2421,14 @@ No private API, function-valued trace override or unsupported describe-level
 worker option is used. This changes optional artifact collection, not runtime
 behaviour, and does not relabel any prior deadline failure.
 
+## 2026-09-15: Task 40 F contract-first cross-view extension
+
+Question: wire provisional ACK/re-check states now? Choice: audit main and published branches, then wait for G/W/B's integrated event and display contracts rather than create local business state or stubs; tie-breakers: one authoritative state and source fidelity.
+
+Question: how should Follow describe correction and re-check? Choice: distinguish actual acknowledgement, withdrawal and audit events; retain historical human referral attribution while consuming a new code-origin EPS release or paper waiting-for-operator state; tie-breakers: explicit human authority and truthful recorded provenance.
+
+Question: may Follow manufacture a plausible simultaneous pharmacy month? Choice: no, read G's real four-ID seed histories and leave tiles to P; tie-breakers: one state and the smallest owned change. New one-second proof stays with V, not inferred from synchronous selectors.
+
 ## 2026-09-15: Stream V adopts live-first publication
 
 Question: how should V publish verified but incomplete work under the standing rule? Choice: push draft #94 at STATUS and at least every thirty minutes, update all five registers in the same commit, and keep completion blocked until merged green-deployed work is observed live; tie-breaker: the latest explicit instruction and truthful evidence.
