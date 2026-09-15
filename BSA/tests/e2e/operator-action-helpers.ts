@@ -1,12 +1,7 @@
 import type { Locator, Page } from "@playwright/test";
 import { expect } from "./fixtures";
 
-export const cases = [
-  { id: "EX-24107", title: "Valid and complete" },
-  { id: "EX-24112", title: "Missing or insufficient information" },
-  { id: "SYN-FQ123-MISMATCH", title: "Complete format, wrong pack" },
-  { id: "EX-24123", title: "Deliberate failure and abstention" },
-];
+export { cases } from "../support/case-view-catalog";
 export const automaticCaseIds = ["EX-24107"];
 export type OperatorOutcome = "ACCEPT" | "REFER_BACK" | "REQUEST_INFORMATION" | "ESCALATE";
 const labels = {

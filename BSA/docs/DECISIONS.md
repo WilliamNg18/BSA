@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how should 25 stale route-heading failures be repaired? Choice: share a test catalog projected from the actual canonical four cases, preserving exact heading assertions and IDs instead of accepting broad title matches or restoring retired case labels; tie-breaker: one source of truth and unchanged coverage.
+
 - Question: how should existing browser Apply lookups follow the new layout? Choice: add an exact direct-child operator-advice locator and migrate only advice/Apply consumers, leaving human fields and release scope intact; tie-breaker: actual authority boundaries without a legacy fallback.
 - Question: what proves a locator-only patch did not discard coverage? Choice: retain parser signatures for action/assertion arguments and order, plus compare native IDs/titles before and after all three inventories; tie-breaker: verify unchanged coverage rather than infer it from counts alone.
 - Question: may old partial CI failures be aggregated with new source results? Choice: preserve df22 shard 3's 50/215 and canceled peers separately, then classify its actual selectors and axe findings; tie-breaker: source-pinned evidence without invented passes.

@@ -4,6 +4,14 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+V replaced the two stale browser title catalogs with one projection of the
+actual four `PLAYABLE_CASES`. This corrects B's paper and M's strength
+heading expectations underlying the 25 retained route failures, without
+editing route assertions or restoring old source labels. Typecheck/lint and
+13 targeted units pass. Native IDs/titles remain identical before/after:
+1,068 ordinary, 44 state and 75 live entries, zero executions. Browser
+resolution of the historical failures has not yet been claimed.
+
 V migrated operator-advice lookups in 19 existing browser/helper files to the
 actual direct sibling under `data-operator-workspace`, retaining the human
 decision scope for fields and release actions. No legacy-layout fallback was

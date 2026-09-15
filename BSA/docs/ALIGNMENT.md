@@ -4,6 +4,11 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Stale B/M heading expectations are removed from duplicated test catalogs.
+The actual canonical titles are shared by route and operator consumers;
+new units pin the four expected entries and shared exports. Native identity
+comparison passes unchanged, but no route browser pass is inferred.
+
 Operator advice is now selected through its actual sibling workspace in
 existing V browser consumers. Static action/assertion signatures and native
 IDs/titles remain identical before/after (1,068 / 44 / 75). These checks

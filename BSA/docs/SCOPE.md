@@ -4,6 +4,11 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The route-title compatibility patch changes only shared test metadata:
+fixtures and operator helpers now use the same current canonical catalog.
+All four IDs/order, exact heading checks and native test identities remain.
+It does not change source, scenario actions, state snapshots or timing.
+
 The advice-locator patch changes only test lookup scope, not action order,
 expectations, deadlines or source. It preserves native ordinary/state/live
 identities across the patch and excludes A's settlement hunk, O's new

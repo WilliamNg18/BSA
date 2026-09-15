@@ -146,12 +146,7 @@ export const timedTest = test.extend({ trace: THIN_TIMED_TRACE, timedArtifactsEx
 
 export { expect };
 
-export const cases = [
-  { id: "EX-24107", title: "Valid and complete" },
-  { id: "EX-24112", title: "Missing or insufficient information" },
-  { id: "SYN-FQ123-MISMATCH", title: "Complete format, wrong pack" },
-  { id: "EX-24123", title: "Deliberate failure and abstention" },
-];
+export { cases } from "../support/case-view-catalog";
 
 export const staticRoutes = [
   { path: "", title: "Most items need no person" },
