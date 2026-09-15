@@ -4,6 +4,22 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Part A replaces the global notice, not source evidence
+
+- Question: must the complete hosted matrix be duplicated on a contended local machine? Choice: by explicit coordinator instruction, use all-green exact-source CI `35015057336` as the authoritative complete 176-test matrix; stop the duplicate local run by its owned handle, retain interruption and the Task 13 timeout, and run that exact failed control once plus bounded 1440px motion/captures. Tie-breaker: first-merge priority with unchanged coverage and timing budgets, not a failure waiver.
+- Question: may incomplete axe or unavailable image reads become acceptance? Choice: retain every incomplete rule occurrence and disclose the second-image tool limit; zero violations does not mean full manual accessibility or dark visual certification. Tie-breaker: truthful evidence.
+
+- Question: how to integrate the master Parts A-C classification? Choice: adopt coordinator `b005bbb` with exact MEMORY and union the independent status sections; preserve Part A-only runtime ownership. Tie-breaker: newest scope authority without duplicating W/B domain implementation.
+
+- Question: retain the older mandatory amber notice? Choice: remove its bar, collapse control and local `disclaimerOpen` state; put exactly "All data is synthetic" once in the existing small muted footer, removing "Synthetic cases" duplication. Tie-breaker: the newest explicit Part A instruction supersedes the amber-bar constraint.
+- Question: does notice removal require a shared-store change? Choice: no; inspected main and active published contexts have only AppShell-local presentation state. Tie-breaker: one state and smaller scope; no domain mutation or G-owned file change.
+- Question: where and how does the principle appear? Choice: one exact "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides." line only On, directly below TopNav and before Follow/Demo controls, centred on actual content. Use normal 16px text, no clipping or scale transform, a 150ms opacity fade and a 100ms reduced-motion crossfade; remove the whole region Off after fading. Tie-breaker: the newest visible-outcome requirement without changing authority.
+- Question: what survives the notice change? Choice: preserve per-item "(synthetic)" and source/evidence labels, governing/action tags, footer no-payment wording, one Agent control and existing measured sticky/focus/reset/route safeguards. Tie-breaker: governing principle and clinical/source safety.
+- Question: when is Part A complete? Choice: only after the coordinator merges exact-green CI, the normal deployment passes and the exact served change is observed live. Unit/browser outputs remain developer artifacts, never a backup. Tie-breaker: Live first.
+- Question: how to repair the initial 240-second aggregate browser timeout? Choice: register each ordinary route independently under the existing 30-second deadline, keeping both modes, all perspectives/widths, exact bounds and unrestricted axe; do not raise the aggregate timeout or omit surfaces. Tie-breaker: bounded, attributable verification without weakening assertions. Automatic 1280px failure screenshots are disabled in the new tests; intentional captures remain 1440px only.
+
+- Question: what replaces a deleted notice button in existing control tests? Choice: use the surviving header Agent switch for genuine outside-menu dismissal and assert its action/focus; include optional Outcome height in pinned rail/follow assertions, never wait for bounds on an absent Off node. Tie-breaker: preserve the real behaviour while updating only directly coupled presentation assumptions.
+
 ## 2026-09-15: Parts A-C and the Tasks 39-40 authority boundary
 
 - Question: does the new master policy change synthetic-source restrictions or require proposed gates for Today pricing? Choice: preserve the original no-real-Tariff-text rule and explicitly separate Today EPS, assisted EPS and paper release in Vision/current contracts. Tie-breaker: change only the authorised scope and remove contradictory blanket wording.

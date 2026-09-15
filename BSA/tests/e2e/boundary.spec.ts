@@ -31,7 +31,8 @@ test("a view failure preserves the shell, logs its pathname and resets on naviga
   await page.goto("case/EX-24112");
   expect(injected).toBe(true);
   await expect(page.getByRole("heading", { name: "This view could not be loaded", exact: true })).toBeVisible();
-  await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
+  await expect(page.getByRole("contentinfo")).toContainText("All data is synthetic");
+  await expect(page.locator("[data-disclaimer]")).toHaveCount(0);
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   await expect(page.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await page.getByRole("switch", { name: "Agent: Off", exact: true }).click();
