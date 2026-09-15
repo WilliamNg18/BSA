@@ -341,7 +341,7 @@ export const useAppStore = create<AppState>((set, get) => {
       const s = get(), revision = s.caseRevisions[caseId].at(-1)!;
       if (draft.revision !== revision.number) throw new Error("Pharmacy correction draft is stale; reopen the current item.");
       set({ pharmacyDrafts: immutable({ ...s.pharmacyDrafts, [caseId]: {
-        ...synchronisePharmacyDraft(draft, revision), revision: revision.number, appliedSuggestion: false,
+        ...synchronisePharmacyDraft(draft, revision), revision: revision.number, appliedSuggestion: false, appliedFields: undefined,
       } }) });
     },
     applySuggestionToDecision: (caseId) => {

@@ -35,6 +35,7 @@ export interface PharmacyCorrectionDraft {
   readonly paperDeclaration?: PaperDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly appliedSuggestion: boolean;
+  readonly appliedFields?: readonly ("endorsementText" | "brandManufacturer" | "packSize" | "form")[];
   readonly confirmation?: string;
 }
 
