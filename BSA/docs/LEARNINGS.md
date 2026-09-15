@@ -383,6 +383,12 @@ ready label and human release. Screenshot delivery allowed only B-On visual
 inspection and blocked the other requested image. Lease 4342 was released;
 no browser or server remains from P's run.
 
+After all released canonical/unit handoffs and the ES2022 follow-up, the full
+local suite passed 1,990/1,990 in 41.0s with two workers on `1b8ab30`; check
+also passed. The headline guard initially found five stale reference-page
+phrases, resolved by S's source commits without a guard waiver. This is one
+complete run, not a sum of prior partial results, and not live acceptance.
+
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
 records and retains B's later readable-blank fix, with no canonical store,

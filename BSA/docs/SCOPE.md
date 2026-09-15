@@ -245,6 +245,10 @@ The granted P browser scope is complete: four bounded 1440 checks on clean
 perspective matrices, deadline coverage, independent accessibility/visual
 acceptance and hosted validation remain V/coordinator gates.
 
+The complete staged unit/check gate is now green: 1,990 tests in one run on
+`1b8ab30`, with no exclusions or weakened headline guard. This removes the
+previous local full-suite blocker, not the independent CI/live release gates.
+
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
 and both modes. The combined seven-file selection passes 91 units and check.

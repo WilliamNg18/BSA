@@ -140,6 +140,11 @@ failures remain retained. Only the B-On ready screenshot was visually inspected;
 image delivery for the other requested image was blocked. No image limitation
 is converted to Pass. Live acceptance remains open.
 
+Source `1b8ab30` passes check and the entire 1,990-test/116-file Vitest suite
+with two workers in one coherent 41.0s run. S's actual active-source repair,
+not an exemption, clears the new retired-headline check. All earlier red
+results remain retained. No hosted CI or live status is inferred from this pass.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 B final bounded proof is pinned to G

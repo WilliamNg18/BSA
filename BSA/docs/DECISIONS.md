@@ -2653,6 +2653,8 @@ Question: how should P display ready paper consistently? Choice: pass the actual
 
 Question: how should a bounded source-immutability browser assertion compare text? Choice: capture and compare with the same innerText API, retain the initial failed textContent comparison, and rerun all four unchanged cases on the same artifact; tie-breaker: exact measurement without weakening the source assertion.
 
+Question: how should the new headline guard's reference-page failures be resolved? Choice: adopt S's already-published strength/scanner content alignment instead of disabling or exempting the guard; tie-breaker: actual source compliance.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

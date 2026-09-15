@@ -414,6 +414,14 @@ or test scope. Both runs and four 1440 PNGs remain in session artifacts.
 was delivered for visual inspection; the image tool blocked the other request.
 This is not V's timed matrix, a full visual/axe audit or live acceptance.
 
+Canonical integration now passes the complete local gate on source `1b8ab30`:
+`npm run check` including the fail-closed headline guard, then one full
+two-worker Vitest run with 1,990/1,990 tests across 116 files (41.0s).
+This adopts G's corrected ES2022-compatible migration, V's guard/fixture
+handoffs, S's reference alignment and O's released concise status. Earlier
+failed runs remain historical. Fresh hosted CI, final V/browser acceptance,
+coordinator merge and observed green live deployment are still required.
+
 ## B40 canonical verification branch integration
 
 The migrated B matrix now passes 91 combined units and check on G `4765770`.
