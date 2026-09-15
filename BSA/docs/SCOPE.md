@@ -58,6 +58,15 @@ Required acceptance includes exact immutable submissions, independent captures,
 revision-bound correction acknowledgement, field/rule-only outbound notes,
 automatic eligible EPS rechecks and exclusively human paper releases.
 No task in this new scope is complete until merged, green-deployed and seen live.
+## Task 39 N optional numbers addition: WIP
+
+The independent mismatch helper uses all submitted claims, not the referral
+subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
+With share times volume labelled estimate, unchanged existing totals, verified
+study-only chapter 1 wording, same-store Reset and 1280/1440 browser coverage.
+The helper is implemented; consumer/state integration and exact-main live
+verification remain pending. This does not reopen historical Task 28.
+
 ## 2026-09-15: Task 39 W foundation, not live completion
 
 The latest owner brief replaces the playable EPS error with wrong strength:

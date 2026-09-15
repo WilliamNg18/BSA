@@ -139,6 +139,15 @@ These guards preserve source identity without treating an edit as attestation.
 | Corrected resubmission | Drifted against new requirement | G wires B revision-bound accuracy acknowledgement and channel-specific recheck rules | Existing shared resubmit has no explicit accuracy acknowledgement |
 | Main and active branches | Audit in progress | B coordinates published/open-branch audit; G supplies canonical model facts | No blanket branch alignment or live pass claimed |
 | Live completion | Unverified for new scope | Coordinator tracks deployment; no branch build is the product or backup | Last coordinator-reported live SHA `08f4d399`; no new live observation in this checkpoint |
+## Task 39 N numbers alignment: WIP on main baseline `6418151`
+
+| Requirement | Current evidence and remaining work |
+| --- | --- |
+| Study context separate from NHSBSA claim rates | W `fe0a521` supplies verified abstract copy and an explicit study-only label; no unverified wrong-strength ranking will be rendered |
+| Optional mismatch percentage | New pure helper converts UI percent to fractional share and validates decimal bounds; G same-store draft/Reset integration pending |
+| Correct denominator and unchanged totals | Uses total submitted-claim volume; separate non-additive result does not alter the existing referral-loop shape, cohorts or hours |
+| Completion authority | Consumer/browser integration and merged, green-deployed live observation pending; no branch artifact is a product or backup |
+
 ## 2026-09-15: Task 39 W source comparison and integration boundary
 
 W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.

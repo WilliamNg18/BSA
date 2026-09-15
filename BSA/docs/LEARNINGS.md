@@ -140,6 +140,16 @@ mode-specific routing that G is implementing.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
+### Task 39 N percent and denominator boundary
+
+The existing monthly model uses a referral subset for its hours but exposes
+total submitted items separately. Reusing that subset for mismatch prevalence
+would understate the requested comparison. UI percentages and fractional
+shares also differ by 100: default text 1 must become numeric 0.01, not 1.
+The new helper retains fractional expected counts without inventing rounding
+or subtracting them from referral cohorts. W's 1.6% study context supplies no
+NHSBSA prevalence estimate. Consumer and live acceptance remain pending.
+
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
 at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.

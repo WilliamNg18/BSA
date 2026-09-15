@@ -145,6 +145,15 @@ This is published WIP, not completion or a local backup. The coordinator's last
 reported live artifact was `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observation
 does not establish deployment or live acceptance of Tasks 39/40.
+### Task 39 N numbers: published WIP, not live completion
+
+N reactivated on main `6418151` for the additive mismatch estimate, not a rerun
+of Task 28. The pure helper consumes W's evidence constants, converts UI 1%
+to numeric share 0.01, and multiplies total submitted claims. Existing monthly
+cohorts and 297.5-hour total remain unchanged. G owns the new same-store draft
+and Reset integration; chapter views and browser coverage are in progress.
+This branch is incomplete work, not a product or backup. No browser, deployment
+or live acceptance is claimed. Owner actions for me: none.
 
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
