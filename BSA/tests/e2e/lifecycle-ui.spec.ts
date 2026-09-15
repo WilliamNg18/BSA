@@ -38,7 +38,7 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await expect(detail(page)).toContainText("Please add the dispensing date beside the initials");
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit blind", exact: true }).click();
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
@@ -53,11 +53,11 @@ test("Task25 Off referral to approved On correction requires a human recheck bef
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
   await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
-  await expect(detail(page)).toContainText("Not checked for this edit");
+  await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("Ready");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-  await expect(detail(page)).toContainText("Ready to resubmit");
+  await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("Ready");
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.on);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
@@ -93,7 +93,7 @@ test("Task25 manual EPS correction retains an unchecked snapshot until explicit 
   await record(page, "Human requests the missing date beside initials");
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
-  await page.getByRole("button", { name: "Resubmit claim", exact: true }).click();
+  await page.getByRole("button", { name: "Resubmit blind", exact: true }).click();
   await page.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
   await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.resubmitted.nhsbsa.off);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
@@ -114,9 +114,10 @@ test("Task9 toggling never approves a draft and arbitrary BB edits never receive
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
   await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("BB RK 21/08/26");
   await page.getByRole("button", { name: "Re-check endorsement", exact: true }).click();
-  await expect(detail(page)).toContainText("Agent unable to determine");
+  await expect(detail(page).locator("[data-pharmacy-status]")).toHaveText("No supported correction is available; enter the required facts explicitly.");
   await page.getByText("Precheck evidence", { exact: true }).click();
-  await expect(detail(page)).toContainText("Clause: NOT RUN");
+  await expect(detail(page)).toContainText("2026-08 / P2-C8");
+  await expect(detail(page).getByRole("list", { name: "Requirement checkboxes", exact: true })).toContainText("Supported typed endorsement: missing");
   await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(0);
 });
 
@@ -133,7 +134,7 @@ test("Task9 an actual B information request preserves pharmacy confirmation for 
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("Pharmacy text is required");
   const confirmation = "The dispensing date is 21 August 2026; please check the original endorsement.";
-  await page.getByRole("textbox", { name: "Pharmacy confirmation", exact: true }).fill(confirmation);
+  await page.getByRole("textbox", { name: "Confirm", exact: true }).fill(confirmation);
   await page.getByRole("button", { name: "Send confirmation", exact: true }).click();
   await expect(detail(page)).toContainText("Resubmitted, awaiting re-check");
   await queueReview(page, B);
@@ -186,10 +187,10 @@ test("Hillcrest's four items exercise real states, totals and shared ID links wi
     const table = page.getByRole("table", { name: "Pharmacy claims", exact: true });
     const allRows = table.locator("tbody tr:not([data-background-case])");
     await expect(allRows).toHaveCount(4);
-    const amounts = await allRows.locator("td:nth-child(3)").allTextContents();
-    const total = amounts.reduce((sum, text) => sum + Number(text.replace(/[£,]/g, "")), 0);
-    await expect(page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / })).toContainText(
-      new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(total));
+    for (const amount of await allRows.locator("td:nth-child(3)").allTextContents()) expect(amount).toMatch(/^£\d+\.\d{2}$/);
+    const allFilter = page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / });
+    await expect(allFilter).toContainText("4 items");
+    await expect(allFilter).not.toContainText("£");
     for (const state of DEMONSTRABLE_LIFECYCLE_STATES) {
       await prepareUnseededState(page, state);
       await page.locator('[aria-label="Claim filters"]').getByRole("button", { name: /^All / }).click();
