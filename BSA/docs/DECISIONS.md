@@ -18,6 +18,9 @@ ms.date: 2026-09-15
 - G integration: correction acknowledgement requires both exact current payload metadata and its explicit pharmacy event, preventing a fabricated fingerprint from substituting for the checkbox action; tie-breaker: real human authority.
 - G integration: Off wrong-strength audit is an explicit operator reopening that preserves previous pricing history, never an automatic mismatch check or navigation side effect; tie-breaker: the owner's specified Today behaviour.
 - G integration: pharmacy suggestions come from the pharmacy's own source records, not from an operator-approved value-containing note; communication approval remains separate provenance; tie-breaker: C5/C6 separation.
+- Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
+- Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.
+- Question: how does the Today wrong-strength round trip reopen? Choice: G must provide an explicit later audit/query action after existing pricing; an On-failure-then-Off toggle is not the required Today demonstration. Tie-breaker: latest owner clarification and truthful history.
 
 - Question: who edits common state? Choice: G alone integrates types/store/lifecycle/seeds; B supplies new pure modules/tests and owners adapt their screens. Tie-breaker: one authoritative state and no parallel overwrite.
 - Question: how does Off acknowledge corrections? Choice: the same explicit accuracy checkbox is required after manual editing, with no hidden agent call. Tie-breaker: human accuracy responsibility is independent of assistance.

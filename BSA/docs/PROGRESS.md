@@ -37,6 +37,13 @@ round trips, screenshots, main merge, green deployment and observed live
 behaviour remain integration work. Owner actions for me: none.
 ## 2026-09-15: B40 domain foundation, published incomplete
 
+Foundation `c433f4546f50d9ecb09d3da5699ef5fd48365234` is pushed and handed to
+G for integration. A bounded follow-up adds original-source identity validation,
+explicit raw-versus-human-confirmed reconciliation basis, pharmacy-amendment
+provenance and invalid field-value rejection. All 51 focused units and check
+passed. Store wiring and actual new-case state-transition evidence are pending
+G's canonical runtime; this branch has made no live completion claim.
+
 B owns only new submission-fidelity, correction-acknowledgement, referral-wording,
 paper-reconciliation and submission-recheck modules and their unit files.
 G owns canonical types, store, lifecycle, seeds and their integration; screen

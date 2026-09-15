@@ -56,6 +56,17 @@ including fabricated/stale/withdrawn acknowledgements, mode/perspective parity
 and explicit later audit reopening. The previous full source-foundation suite
 passed 1,630 tests in 93 files; that earlier pass predates new mandatory ACK
 enforcement and must not be reused as final consumer compatibility evidence.
+The source-provenance follow-up passed 51 focused units and check. Readable
+scan fields that are blank cannot be silently supplied by matching OCR or an
+operator projection. A poor source supported by human confirmation must disclose
+that effective basis while retaining the original confidence figures and scan.
+Non-finite numeric field values are rejected explicitly rather than treated
+as agreeing input. A replica also rejects a scan from another template.
+
+Newly published A/W/G changes were inspected at exact SHAs in ALIGNMENT.
+The first A inspection requested a non-existent header filename and failed;
+the actual `header-outcome.tsx` was then read at the same exact source. No
+successful read or live/header test was inferred from that failed lookup.
 
 At main `641815137b36ab3e925dcc98c4738d0b150a75d1`, the existing revision
 and capture history already preserve useful evidence, but the operator view

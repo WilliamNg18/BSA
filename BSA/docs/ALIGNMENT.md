@@ -6,6 +6,31 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+### Refreshed published-source snapshot after the B foundation
+
+Actual main remains `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+The new open-PR query found W #102; its subsequent fetched published head is
+`4f3bc3a6356ca42c1a1613d1d717c193ab4217bc`. Inspection of the exact head shows
+pure strength/evidence modules and a retired-headline checker, not integrated
+store gates or C UI. A's newly published
+`1080ff7cd72eac58fbe6d3976800378ee1a8091a` changes only header/shell and
+related tests/docs; its exact outcome component was inspected, but no C runtime
+implementation or browser-centering acceptance is inferred.
+
+G's exact `ca0a48e3c554dfdd56cc369453810774f60206f8` adds canonical ACK
+types, independent EPS supply records, retained-source validation and optional
+paper brand/pack/form propagation through declaration/capture comparisons.
+Those changes address contract gaps but do not yet implement C6 ACK actions,
+corrected automatic release, C4 view or C8 seeds. B's published
+`c433f4546f50d9ecb09d3da5699ef5fd48365234` supplies five pure contracts only.
+The other active heads remain as pinned below. No requirement becomes runtime
+aligned solely because those source modules now exist.
+
+The follow-up explicitly exposes `reconciliationBasis` and amendment provenance,
+rejects another template's paper scan, and rejects non-finite field values.
+Fifty-one focused units and check passed; all actual store-cycle/live rows remain
+unverified until canonical integration and owning-screen adoption.
+
 Source baseline: actual fetched main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
 Two fresh `gh pr list --state open` queries returned no open PRs. All named
 active published streams were checked with exact heads and `main..head` ancestry,
