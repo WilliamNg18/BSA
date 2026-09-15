@@ -6,6 +6,20 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Stream S follow-up: Tasks 39-40
+
+S owns only the How it works reference, its full SYSTEM-DESIGN counterpart,
+related tests and this contemporaneous five-register status. W owns the
+canonical wrong-strength/public evidence module; B/G own scanner and submission
+authority. This published reference preparation does not implement their gates
+or change store, demo, operator or pharmacy controls.
+
+The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
+paper case and scanner/field-only-referral boundaries. Reuse of W/B constants,
+the public NHSBSA quotation/link, foundation integration, exact-head CI and
+main/deployment/live observation remain pending. Do not treat WIP as the live
+product or an exact-main backup.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

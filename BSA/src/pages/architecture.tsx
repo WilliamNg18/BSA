@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { DESIGN_DATE, DESIGN_LABELS, DESIGN_PRINCIPLE, DESIGN_SECTIONS, DESIGN_TITLE, REFERENCE_EXPLANATION, type DesignTable } from "@/components/how-it-works/content";
-import { CaseBSequenceDiagram, ComponentDiagram } from "@/components/how-it-works/diagrams";
+import { CaseWSequenceDiagram, ComponentDiagram } from "@/components/how-it-works/diagrams";
 import { REFERENCE_MAPPING } from "@/components/how-it-works/reference-mapping";
 
 function ReferenceTable({ table, reference = false }: { table: DesignTable; reference?: boolean }) {
@@ -54,7 +54,7 @@ export function ArchitecturePage() {
               </article>)}
             </div>
             {section.table && <ReferenceTable table={section.table} />}
-            {section.id === "architecture" && <><ComponentDiagram /><CaseBSequenceDiagram /></>}
+            {section.id === "architecture" && <><ComponentDiagram /><CaseWSequenceDiagram /></>}
           </section>)}
           <section aria-labelledby="reference-mapping" className="space-y-4" data-design-section="reference-mapping">
             <h2 id="reference-mapping" tabIndex={-1} className="scroll-mt-6 text-xl font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{REFERENCE_MAPPING.caption}</h2>

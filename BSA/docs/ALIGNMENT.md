@@ -6,6 +6,16 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Stream S Tasks 39-40 follow-up
+
+| Reference item | Alignment in this change | Remaining evidence |
+| --- | --- | --- |
+| Retired EPS date headline and Case B diagram | Replaced in active S copy with W wrong-strength EPS and its unchanged-Send sequence | W/G integrated source review |
+| Four playable cases | Complete EPS, wrong-strength EPS, unreadable paper and paper missing brand, with existing IDs | Canonical G seed integration |
+| Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
+| Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate | B canonical labels/import and integration |
+| Evidence and completion | Check plus 12 scoped units passed; full document parity retained | Canonical NHSBSA citation rendering, exact-head CI, green main deployment and observed live change |
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

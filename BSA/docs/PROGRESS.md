@@ -4,6 +4,22 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## Stream S: Tasks 39-40 reference alignment, published WIP
+
+S prepared the How it works follow-up on actual main `6418151`. Four-case
+copy and the sequence now describe W's wrong-strength EPS and P's paper
+missing-brand example, rather than the retired date headline. The fourteenth
+FAQ explains independent prescription/supply/claim evidence. B's proposed
+scanner reconciliation separates declaration, hypothetical character-recognition
+fields/confidence, original scan and revision-bound human capture. Paper stays
+human-final; corrected EPS requires both gates before code-only release.
+
+Check and 12 focused reference units passed. The 49 prose panels have at most
+54 words, informational only. Canonical W/B imports, public citation rendering
+and actual integrated behaviour review await G's foundation integration.
+No new browser, hosted or complete Task 39-40 result is claimed. The paired
+SYSTEM-DESIGN document matches the reference text in this change.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.
