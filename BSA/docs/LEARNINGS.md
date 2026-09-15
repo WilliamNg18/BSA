@@ -4,6 +4,30 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: B40 actual-source audit and foundation boundary
+
+At main `641815137b36ab3e925dcc98c4738d0b150a75d1`, the existing revision
+and capture history already preserve useful evidence, but the operator view
+does not expose an exact full submission replica. `store.ts` restricts automatic
+verification release to a new submission, and explicitly routes every correction
+to human recheck. `recommendations.ts` composes outbound notes from factual
+disagreement findings, including source values. Those findings must remain as
+evidence, not be silently stripped or reused as a value-bearing outbound note.
+
+The paper preparation buttons exist and Post has no disabled prop, but current
+paper advice is NCSO-only and the source UI lacks a three-column field-confidence
+reconciliation. Seeds show Paid/referred/in-review, not an actual corrected
+recheck alongside the other states. Older passing checks therefore cannot
+establish C1-C8. The pinned branch classification is in ALIGNMENT.
+
+This worktree initially lacked TypeScript; the failed typecheck was a
+missing-dependency result. Restoring the existing lockfile added no dependency
+change. All 48 units in the five new files passed, then check passed source-copy,
+all TypeScript projects, lint and the production build. These tests cover
+exact replica equality, stale/payload ACK rejection, value-leak guards,
+paper three-source conflicts/Type 1 ordering and all 36 channel/gate/reconciliation
+combinations. They do not claim actual store-action or browser completion.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
