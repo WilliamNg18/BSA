@@ -4,6 +4,49 @@ description: Eleven shared-state steps, source-bound verification, explicit huma
 ms.date: 2026-09-15
 ---
 
+## Task 39 wrong-strength integration contract
+
+The latest Part B brief supersedes the older active date/pack examples below.
+Four playable identities remain: A `EX-24107` complete EPS; W
+`SYN-FQ123-MISMATCH` wrong-strength EPS; D `EX-24123` unreadable paper;
+P `EX-24112` brand-missing paper. Dates in current sources, declarations,
+images and claim messages are correct; historical records are preserved.
+
+W's source contract keeps prescribed Amlodipine 10mg tablets/28 in
+`prescribedCode`, `product`, `strength`, `form`, `quantity`; a separate
+`supplyRecord` corroborates the actual 10mg/28 supply. The selected claim uses
+`dispensedCode/dispensedName` for Amlodipine 5mg tablets/28. The 5mg/28 pack
+is an ordinary known priced synthetic catalogue entry.
+
+Today models pricing of the selected pack without an operator, reimbursement
+as endorsed rather than supplied, and a mismatch not surfaced by that path.
+On, Gate 1 and independent Gate 2 both fail while the selected strength is
+wrong. The concrete suggestion is "Select Amlodipine 10mg tablets, 28".
+Its preview and explicit Apply share one source-backed claim-only patch.
+No source record, date, other claim field, acknowledgement or lifecycle state
+changes on Apply. Send is separate. An uncorrected Send creates a built
+operator case and never automatically releases; a corrected EPS Send or
+acknowledged Resubmit rechecks before automatic release to existing pricing.
+G/B own canonical integration of these actions.
+
+The card shows prescribed, selected and actually supplied products/strengths,
+the proposed matching rule informed by the public NHSBSA source, the plain
+mismatch, suggested pack, corrected preview and existing five structural
+confidence signals. Keep "the agent verifies and advises; a person decides"
+and "this is the proof the agent does not rubber-stamp".
+NHSBSA outbound notes name the field and rule without the 10mg correction;
+only the pharmacy's own source-bound card proposes the exact value.
+
+P/V's browser contract is both toggle states, Both and single-side
+perspectives, 1280 and 1440 px, no Reset mid-cycle. Assert exact card and
+preview values; Apply changes selected code/name to 10mg while all source
+fields remain; uncorrected On Send enters the operator case, Refer back
+reaches Action needed with a value-free note, Apply plus required accuracy
+acknowledgement enables Resubmit, and successful EPS recheck releases
+without a queue row or operator press. Today original submission is automatic,
+not an artificial referral just to exercise the loop. Screenshot and
+demo-script updates belong to their consuming owners.
+
 ## 1. Purpose and authority
 
 The current scope is Tasks 31-38, the owner's four-case Vision and its
