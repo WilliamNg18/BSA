@@ -32,6 +32,11 @@ scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
 
+The first full integration inventory is not green: 210 failed / 1,575 passed
+tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.
+New targeted paper, source-image and note guards pass, but this is not release
+acceptance. Strength trace/rule-authority findings are active merge blockers.
+
 Functional checkpoint: the four new cases and channel-specific actual actions
 are wired. `EX-24112` has an acknowledged historical paper amendment awaiting
 human release, while complete EPS is Paid and wrong-strength EPS awaits pharmacy
