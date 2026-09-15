@@ -36,6 +36,8 @@ function QueueWorklist() {
   const targetLane = targetCaseId && lifecycles[targetCaseId] && processes[targetCaseId]
     ? staffLane(lifecycles[targetCaseId], processes[targetCaseId]) : null;
   const [filter, setFilter] = useState<WorkFilter>(() => targetLane ?? "all");
+  const [focusRequest, setFocusRequest] = useState(0);
+  const previousTarget = useRef({ id: targetCaseId, lane: targetLane });
   const [handoff, setHandoff] = useState<string | null>(null);
   const focusedCapture = useRef<string | null>(null);
   const worklistHeading = useRef<HTMLHeadingElement>(null);
@@ -72,11 +74,11 @@ function QueueWorklist() {
   useEffect(() => {
     if (focusedCapture.current && !rows.some((row) => row.id === focusedCapture.current && row.type1)) {
       setHandoff(focusedCapture.current);
-      setFilter("all");
+      if (!targetCaseId) setFilter("all");
       focusedCapture.current = null;
-      worklistHeading.current?.focus();
+      if (!targetCaseId) worklistHeading.current?.focus();
     }
-  }, [rows]);
+  }, [rows, targetCaseId]);
   const invalid = Object.values(lifecycles).some(({ caseId }) => !processes[caseId] || processes[caseId].revision !== revisions[caseId]?.at(-1)?.number);
   const tiles: { key: WorkFilter; label: string; count: number }[] = [
     { key: "type1", label: "Type 1 capture lane", count: rows.filter((r) => r.type1).length },
@@ -91,8 +93,14 @@ function QueueWorklist() {
   const targetRevision = targetCaseId ? revisions[targetCaseId]?.at(-1)?.number : undefined;
   const targetState = targetCaseId ? lifecycles[targetCaseId]?.state : undefined;
   useLayoutEffect(() => {
+    const previous = previousTarget.current;
+    if (previous.id === targetCaseId && previous.lane === targetLane) return;
+    previousTarget.current = { id: targetCaseId, lane: targetLane };
+    if (targetCaseId && targetLane && (previous.id !== targetCaseId || filter === previous.lane)) setFilter(targetLane);
+  }, [targetCaseId, targetLane, filter]);
+  useLayoutEffect(() => {
     if (!targetCaseId) return;
-    const signature = `${targetCaseId}:${targetRevision}:${targetState}:${active}`;
+    const signature = `${targetCaseId}:${targetRevision}:${targetState}:${active}:${focusRequest}`;
     if (lastFocused.current === signature) return;
     const element = stateElements.current.get(targetCaseId);
     if (!element) return;
@@ -102,7 +110,15 @@ function QueueWorklist() {
     if (bounds.bottom > window.innerHeight || bounds.top < 0) {
       element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
     }
-  }, [targetCaseId, targetRevision, targetState, active]);
+    const visibleBounds = element.getBoundingClientRect();
+    if (visibleBounds.bottom > window.innerHeight - 8) {
+      window.scrollBy({ top: Math.ceil(visibleBounds.bottom - window.innerHeight + 8), behavior: "instant" });
+    }
+  }, [targetCaseId, targetRevision, targetState, active, focusRequest]);
+  function selectFilter(next: WorkFilter) {
+    setFilter(next);
+    setFocusRequest((request) => request + 1);
+  }
   function stateRef(id: string, element: HTMLElement | null) {
     if (element) stateElements.current.set(id, element);
     else stateElements.current.delete(id);
@@ -141,13 +157,13 @@ function QueueWorklist() {
       <h2 className="font-semibold">Actual synthetic session items</h2>
       <div className="grid gap-2 grid-cols-2 lg:grid-cols-4">
         {tiles.map((tile) => <Button key={tile.key} variant="outline" aria-pressed={active === tile.key}
-          className="h-auto justify-between gap-3 whitespace-normal p-4 text-left" onClick={() => setFilter(tile.key)}>
+          className="h-auto justify-between gap-3 whitespace-normal p-4 text-left" onClick={() => selectFilter(tile.key)}>
           <span>{tile.label}</span><span className="text-xl tabular-nums">{tile.count}</span>
         </Button>)}
       </div>
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" aria-pressed={active === "all"} onClick={() => setFilter("all")}>All staff items ({rows.length})</Button>
-        <Button variant="outline" aria-pressed={active === "new"} onClick={() => setFilter("new")}>New submissions ({rows.filter((r) => r.fresh).length})</Button>
+        <Button variant="outline" aria-pressed={active === "all"} onClick={() => selectFilter("all")}>All staff items ({rows.length})</Button>
+        <Button variant="outline" aria-pressed={active === "new"} onClick={() => selectFilter("new")}>New submissions ({rows.filter((r) => r.fresh).length})</Button>
       </div>
     </section>
     {handoff && <p role="status" className="text-sm">{handoff}: capture recorded. Follow the current routing; no Type 2 decision was made.</p>}
