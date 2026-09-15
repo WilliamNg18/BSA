@@ -97,8 +97,10 @@ and all four simultaneous seed states are exercised by 53 passing owned units.
 These tests use real store actions, not injected lifecycle states.
 
 F identified a stale-revision mismatch in G's readiness helper and requested
-the shared fix rather than adding a local gate. Final readiness depends on
-that fix and approved domain-first integration. No browser timing, deployment
+the shared fix rather than adding a local gate. G `cdd436b` now requires the
+last actual history revision, and F's actual new paper cycle checks that the
+older ready process cannot label the new revision ready. Approved domain-first
+integration and full acceptance remain pending. No browser timing, deployment
 or live observation for Task 40 is claimed by the consumer implementation.
 
 Audit base: published main `641815137b36ab3e925dcc98c4738d0b150a75d1`.

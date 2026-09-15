@@ -23,7 +23,8 @@ Current status: source audit published against main `6418151`; bounded consumer
 implementation uses published G `4765770` and has 53 passing owned units.
 The current status consumes canonical process metadata; historical transitions
 retain their own history prefixes without retroactive current-process readiness.
-G's stale-readiness fix and merged-domain integration are still required.
+G's `cdd436b` stale-readiness fix is consumed, with a real new-revision
+regression; merged-domain integration and final acceptance are still required.
 Check passes; the early full suite is not green (1,576 passed, 201 failed).
 V owns new C7 deadlines and
 cross-view acceptance. Complete only after the change reaches main, deployment
