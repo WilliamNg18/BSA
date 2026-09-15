@@ -102,7 +102,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
       <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction recommendationVisible={enabled} />
       {enabled && <>
-        <PharmacyRecommendationPanel caseId={caseId} draft={draft} compact={compact} endorsementId="claim-endorsement"
+        <PharmacyRecommendationPanel caseId={caseId} draft={{ ...draft, purpose: draft.purpose ?? "correction" }} compact={compact} endorsementId="claim-endorsement"
           onApply={approved && canApply ? () => act(() => {
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
