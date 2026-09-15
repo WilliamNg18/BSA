@@ -1414,3 +1414,6 @@ does not produce image reads. The audience card now communicates those
 non-applicable signals explicitly while still displaying exact prescription,
 selection and supply evidence. Its passing targeted tests are not proof that
 the independent canonical trace has been repaired; that work remains G-owned.
+
+Browser test discovery confirms the same eight R trace cases after migration.
+It is a source/inventory check only, not browser execution or live verification.
