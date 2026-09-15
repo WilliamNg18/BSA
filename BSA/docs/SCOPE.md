@@ -55,6 +55,14 @@ The remaining assembled-unit gap is narrowed to four operator-view compatibility
 checks after correcting the citation-denominator expectation. Proposed matching
 guidance is not counted as a retrieved Tariff provision. No release completion
 is claimed while these cases and exact-head CI/live gates remain pending.
+V's shared paper-selection adapter now covers D and brand-missing B using
+the actual P controls. Fresh B is posted as paper, not a retired EPS date
+scenario. This is phased test preparation: old consumer expectations, full
+cycles, timings and current-live coverage remain incomplete.
+
+The capture unrelated-global assertion now includes the actual
+`mismatchSharePercent` string draft. No new seed, snapshot filtering or
+domain mutation is introduced; N's schema-assertion hunk is untouched.
 
 The canonical migration's test-only ES2023 API incompatibility is repaired
 without widening the supported runtime; full assembled validation continues.
