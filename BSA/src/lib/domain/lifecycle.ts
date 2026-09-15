@@ -75,6 +75,7 @@ export interface HistoryEvent {
   tariffVersion?: string;
   exactFix?: string;
   revision?: number;
+  sourceRevision?: number;
   recordId?: string;
   decision?: HumanDecision;
   recommendation?: Recommendation;
@@ -119,6 +120,7 @@ export interface LifecycleDecisionRecord extends DecisionRecord {
 /** Each pharmacy action retains its own text and advisory snapshot forever. */
 export interface CaseRevision {
   readonly number: number;
+  readonly sourceRevision?: number;
   readonly at: string;
   readonly kind: "seed" | "submission" | "resubmission" | "confirmation";
   readonly templateCaseId: string;
@@ -144,6 +146,7 @@ export interface PaperSubmissionSource {
 }
 export interface Type1Capture {
   readonly revision: number;
+  readonly sourceRevision?: number;
   readonly confirmedAt: string;
   readonly operator: string;
   readonly fields: DeclaredItemFields;

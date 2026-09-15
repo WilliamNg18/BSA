@@ -7,6 +7,7 @@ import { immutable } from "./lifecycle-model";
 import { createPaperSubmissionSource } from "./paper-source";
 import { correctionFingerprint } from "./correction-acknowledgement";
 import { buildReferralNote } from "./referral-wording";
+import { evaluateItemVerification } from "./verification";
 
 const canonicalStates: LifecycleState[] = ["paid", "referred_back", "information_requested", "in_review", "paid", "referred_back"];
 const templates: Record<LifecycleState, number> = { submitted: 1, in_review: 3, information_requested: 2, referred_back: 1, resubmitted: 1, paid: 0, escalated: 3, released_to_pricing: 0 };
@@ -116,9 +117,15 @@ export function seededLifecycleSession(): ReturnType<typeof historicalLifecycleF
       channel, precheck: null, confirmation: null, declaration, paperDeclaration,
       ...(channel === "eps" ? { epsPrescription: { ...(c.epsPrescription ?? createEpsPrescription(c)), claimMessageState: "submitted" } } : {}) };
     if (channel === "paper") revision = { ...revision, paperSource: createPaperSubmissionSource(c, revision) };
+    if (id === "SYN-FQ123-MISMATCH") revision = { ...revision, verificationEnabled: true };
     const row: CaseLifecycle = { caseId: id, pharmacyCode: HILLCREST_PHARMACY.contractorCode, state: "submitted",
       history: [{ at, actor: "pharmacy", from: null, to: "submitted", revision: 1, channel, processStep: "submission",
         message: "Synthetic pharmacy submission retained exactly." }] };
+    if (revision.verificationEnabled) {
+      const assessment = evaluateItemVerification(c, revision, true);
+      row.history.push({ at, actor: "code", from: "submitted", to: "submitted", revision: 1,
+        processStep: "verification", verification: assessment.verification, message: assessment.reason });
+    }
     if (id === "EX-24107") {
       row.history.push({ at, actor: "code", from: "submitted", to: "paid", revision: 1, channel,
         processStep: "automatic_pricing", message: "Priced by NHSBSA's existing rules engine, no person involved." });
@@ -153,6 +160,9 @@ export function seededLifecycleSession(): ReturnType<typeof historicalLifecycleF
           revision: 1, processStep: "correction_acknowledged", correctionAcknowledgement: acknowledgement, message: "Pharmacy confirmed the corrected brand information is accurate." },
         { at: resubmitted.at, actor: "pharmacy", from: "referred_back", to: "resubmitted", revision: 2,
           processStep: "resubmission", message: "Acknowledged paper amendment resubmitted; operator release remains required." },
+        { at: resubmitted.at, actor: "code", from: "resubmitted", to: "resubmitted", revision: 2,
+          processStep: "verification", verification: evaluateItemVerification(c, resubmitted, true).verification,
+          message: "Corrected paper evidence rechecked; ready for the operator's release." },
       );
       row.state = "resubmitted";
     }
