@@ -82,6 +82,10 @@ export async function runTimedCaseJourney(
     name: name("send-post"), action: page.locator('[data-pharmacy-action="submit"]'), followedId: id,
     destination: "NHSBSA", originState: initialState,
     originRequiredText: [{ locator: page.getByRole("region", { name: "Submission receipt", exact: true }).getByText(`${id}:2`, { exact: true }), text: `${id}:2` }],
+    preQueueRequiredText: automatic ? [{
+      locator: caseState(),
+      text: enabled ? LIFECYCLE_LABELS.released_to_pricing.nhsbsa.on : LIFECYCLE_LABELS.paid.nhsbsa.off,
+    }] : undefined,
     queue: queueTarget(automatic), destinationState: queueRow(automatic),
     destinationText: automatic ? `${id}: read-only record` : LIFECYCLE_LABELS.submitted.nhsbsa.on, stateMatch: "contains",
     lastEventText: automatic ? enabled ? "Released to existing pricing" : "Existing rules engine priced item" : enabled ? "Verification recorded" : "Pharmacy submitted item",

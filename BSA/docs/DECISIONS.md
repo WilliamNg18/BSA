@@ -2317,3 +2317,11 @@ before navigation, collects after the original outcome and adds no awaited
 steps inside the existing one-second actions. Browser records cover only
 the final or failing document; earlier document evidence remains in traces.
 Record caps, dropped observations and added overhead stay explicit.
+
+Question: does the automatic queue's read-only link establish destination
+state? Choice: no. A's timed hand-off must verify the actual NHSBSA shared
+case status immediately after Follow navigation and before returning to the
+queue. This exact Off/On state check uses the same original one-second
+deadline, viewport and opacity assertions; the queue count and link remain
+additional checks. No state column, proxy, extra navigation or runtime change
+is introduced. Earlier timing results did not include this added observation.

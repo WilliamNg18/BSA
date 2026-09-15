@@ -2,6 +2,12 @@ import type { Locator, Page, TestInfo } from "@playwright/test";
 import { captureJson, expect } from "./fixtures";
 import { TransitionDeadline } from "../support/transition-deadline";
 
+type RequiredText = { locator: Locator; text: string };
+type QueueTarget = { link: Locator; tile: Locator; expectedTileText: string; select?: Locator; expand?: Locator };
+type TransitionDestination =
+  | { destination: "NHSBSA"; queue: QueueTarget; preQueueRequiredText?: RequiredText[] }
+  | { destination: "NHSBSA" | "Pharmacy"; queue?: undefined; preQueueRequiredText?: never };
+
 async function readFailureGeometry(locator: Locator) {
   return locator.evaluateAll((elements) => elements.map((element) => {
     const ancestors = [];
@@ -47,17 +53,18 @@ export async function assertVisibleHandoffWithinOneSecond(
     name: string;
     action: Locator;
     followedId: string;
-    destination: "Pharmacy" | "NHSBSA";
     originState: string;
     originRequiredText?: { locator: Locator; text: string }[];
     destinationState: Locator;
     destinationText: string;
     stateMatch?: "exact" | "contains";
-    queue?: { link: Locator; tile: Locator; expectedTileText: string; select?: Locator; expand?: Locator };
     requiredText?: { locator: Locator; text: string }[];
     lastEventText: string;
-  },
+  } & TransitionDestination,
 ) {
+  if (input.preQueueRequiredText && (!input.queue || input.destination !== "NHSBSA")) {
+    throw new Error("Pre-queue state requirements need an NHSBSA queue destination.");
+  }
   await expect(input.action).toBeVisible();
   await expect(input.action).toBeEnabled();
   if (input.queue && input.destination !== "NHSBSA") throw new Error("Queue timing requires the NHSBSA destination.");
@@ -84,6 +91,10 @@ export async function assertVisibleHandoffWithinOneSecond(
     await expect(page).toHaveURL((url) => input.destination === "Pharmacy"
       ? url.pathname === "/pharmacy/claims" && (url.searchParams.get("case") ?? url.searchParams.get("caseId")) === input.followedId
       : url.pathname === `/case/${encodeURIComponent(input.followedId)}`, { timeout: deadline.remainingMs() });
+    for (const requirement of input.preQueueRequiredText ?? []) {
+      await visibleWithinDeadline(requirement.locator, deadline);
+      await expect(requirement.locator).toHaveText(requirement.text, { timeout: deadline.remainingMs() });
+    }
     if (input.queue) {
       await input.queue.link.click({ timeout: deadline.remainingMs() });
       await expect(page).toHaveURL((url) => url.pathname === "/queue", { timeout: deadline.remainingMs() });
@@ -110,6 +121,7 @@ export async function assertVisibleHandoffWithinOneSecond(
     const requiredTextGeometry = observedElapsedMs === null
       ? await Promise.all([
         ...(input.originRequiredText ?? []).map((requirement) => ({ ...requirement, phase: "origin" })),
+        ...(input.preQueueRequiredText ?? []).map((requirement) => ({ ...requirement, phase: "pre-queue" })),
         ...(input.requiredText ?? []).map((requirement) => ({ ...requirement, phase: "destination" })),
       ].map(async (requirement) => ({
         phase: requirement.phase, expectedText: requirement.text,
