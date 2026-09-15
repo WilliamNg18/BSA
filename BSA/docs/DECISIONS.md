@@ -5,6 +5,10 @@ ms.date: 2026-09-15
 ---
 
 ## 2026-09-15: B40 fidelity and communication contract choices
+
+- Question: should a later information response bypass the scanner revision guard? Choice: keep the guard strict and use G's facade pinned to the last actual submission, proving it with real request/response actions; tie-breaker: exact source identity without inferred replacement evidence.
+- Question: does green CI on the first scanner WIP validate G's later integrated runtime? Choice: retain exact source hashes and test the new facades separately; do not transfer earlier CI or live acceptance; tie-breaker: source-pinned evidence.
+- Question: how should an SVG title include the source ID without React warnings? Choice: one template-string child, retaining the same accessible name; tie-breaker: reliable native semantics without changing evidence.
 - Question: how can B test real actions without a duplicate store? Choice: merge G's exact published canonical lineage into B's verification branch, preserve its shared files byte-for-byte and add only new B tests/helpers. Tie-breaker: one authoritative implementation and executable fidelity rather than simulation.
 - Question: does null OCR mean a known blank? Choice: no; null is Unknown and empty string is Blank, matching the scanner component. Type 1 remains required for unknown extraction, while a confidently known blank is missing information for Type 2. Tie-breaker: do not claim to have read absent source evidence.
 - Question: can current action tests establish the new four-case baseline? Choice: source-pin them to G `9b41cc2` and rerun/adapt after canonical new seed/source publication. Tie-breaker: exact requirement verification, not proxy coverage.

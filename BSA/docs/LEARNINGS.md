@@ -6,6 +6,19 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 actual-source audit and foundation boundary
 
+G's published source facade keeps a later information-only response separate
+from the actual paper submission. U's five real-store render tests preserve
+the strict matching revision, compare all three original columns before and
+after Type 1/release, and retain earlier source objects after acknowledged
+amendment. Combined scanner coverage is 25 passing tests with typecheck.
+The earlier `e45e0be` WIP passed four remote CI shards in `35015056421`, despite
+the recorded local subprocess deadline failures; no timeouts were weakened.
+Neither result establishes mounted browser geometry or live acceptance.
+
+An SVG title mixing a text child and an expression can trigger React's title
+child warning. One source-derived string preserves its accessible content and
+is covered by a no-console-error rendering assertion.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

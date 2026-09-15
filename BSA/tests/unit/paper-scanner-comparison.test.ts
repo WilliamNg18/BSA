@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { PaperScannerComparison } from "../../src/components/demo/paper-scanner-comparison";
 import { characterRecognitionConfidence, scanTextBlocks, wrapScanText } from "../../src/components/demo/paper-scanner-model";
 import { caseById } from "../../src/lib/domain/cases";
@@ -143,6 +143,16 @@ describe("three independent immutable scanner sources", () => {
 });
 
 describe("synthetic source image presentation", () => {
+  it("renders a single-string SVG title without React child warnings", () => {
+    const warning = vi.spyOn(console, "error");
+    try {
+      const html = renderToStaticMarkup(createElement(PaperScannerComparison, source()));
+      expect(html).toContain(">Synthetic submitted paper scan: EX-24123</title>");
+      expect(warning).not.toHaveBeenCalled();
+    } finally {
+      warning.mockRestore();
+    }
+  });
   it("draws source regions only, preserving uncertain glyphs and source date", () => {
     const scan = source().submission.paperScan!;
     const blocks = scanTextBlocks(scan);

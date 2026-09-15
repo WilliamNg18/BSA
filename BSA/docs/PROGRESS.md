@@ -6,6 +6,18 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: U40 scanner comparison WIP, not live acceptance
 
+U integrated G's published functional `4765770` and B's explicit null/blank
+contract `d581326` without editing canonical source actions. Five new tests
+render the actual G facades for both paper cases through capture, final human
+release, information response and acknowledged amendment. All 25 scanner tests
+and typecheck pass. The prior WIP `e45e0be` independently passed all four CI
+shards in run `35015056421`; that is not proof for this later integration.
+Local deadline failures remain preserved. Actual O mounting and approved
+desktop/browser/live acceptance remain pending.
+
+O's integration reported a React title-child warning. U changes the SVG title
+to a single source-derived string and adds an explicit no-console-warning unit.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store
