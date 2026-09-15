@@ -656,3 +656,9 @@ adding explicit operator-audience and no-proposed-preview assertions.
 
 Canonical signal applicability is now consumed from G, preserving all five
 visible signals and existing paper thresholds without audience-based overrides.
+
+O's executed four-test browser scope covers explicit later EPS audit and
+seeded paper one-press Release at1280/1440, with unrestricted axe. It does
+not replace U's scanner proof, V's strict timing/full-cycle procedure,
+latest-main hosted acceptance or clean offline recovery. Subsequent copy
+edits are not relabelled as the tested9d5502 artifact.

@@ -1862,3 +1862,18 @@ object-key count is no longer the signal count. Updated tests assert the five
 underlying facts and exactly five rendered rows, plus canonical non-applicability
 for typed strength records and the unchanged unreadable-paper quality threshold.
 The full owned/current-runtime selection passes 85 tests with check.
+
+## O browser and copy evidence remain separately scoped
+
+The approved four-test O run at9d5502 passed in32.26278s with no retries,
+skips or flaky results; all four unrestricted axe assertions passed. The
+initial external identity request arrived after the runner stopped and was
+refused. A separately labelled Node-only check of the unchanged artifact
+returned HTTP200 and the clean9d5502 identity; no browser was rerun.
+
+V's exact two confirmed-paper prose cases pass after removing redundant
+status words. A new seeded-ready counter that aggregates the mandatory
+nested card with operator help still measures34 On-mode words. This is a
+different scope from the D fixture and is not called a pass or concealed by
+markup changes. The local browser evidence does not settle that copy
+interpretation or the outstanding deployed/offline acceptance gates.

@@ -699,3 +699,10 @@ G `c3f69f2` resolves the previously reported canonical strength authority and
 false-agreement defects. R consumes the repaired metadata directly; 85 targeted
 contracts and check pass. This supersedes the earlier unresolved canonical
 rows only for this published source, not for unverified deployments.
+
+O audit and ready-paper controls now have a pinned four-test local browser
+pass with full-page axe. The duplicate status instruction was shortened
+without altering the canonical paper summary, required reason or action.
+The existing D prose regression passes, while a separate aggregate of the
+seeded-ready wrapper plus its nested mandatory card still requires a
+per-panel scope decision. No text is hidden or excluded to assert a pass.

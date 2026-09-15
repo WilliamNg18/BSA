@@ -2618,3 +2618,7 @@ Question: does code-prefilled corrected paper contradict an initially empty manu
 - Question: how does a proposed cross-record check use the five-signal layout? Choice: retain every row but label retrieved provision, independent readings and image quality not applicable; preserve actual source reconciliation and coverage rather than infer a pass; tie-breaker: truthful authority.
 - Question: what should operator trace regression assert after C5? Choice: exact source strengths remain visible, but correction proposals and previews are absent; keep all original widths, test identities and unrestricted axe; tie-breaker: evidence fidelity and audience authority.
 - Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
+
+Question: how should the ready-paper status remain concise? Choice: retain the actual state label and use "Press Release.", preserving the explicit human action and unchanged prose limit; tie-breaker: clear, concise operator control.
+
+Question: can a copy counter justify shortening the mandated paper recommendation or hiding reason help? Choice: no; preserve both, record the nested-panel aggregate counterexample and resolve its actual per-panel scope before claiming copy compliance; tie-breaker: latest explicit content and truthful evidence.

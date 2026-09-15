@@ -2691,3 +2691,24 @@ consumes its typed provision/reading/image applicability directly; the temporary
 Card-context signal switch is removed. Check and 85 owned/current-runtime
 tests pass. The canonical trace no longer needs a Card-only correction, but
 whole-application migration, CI, deployment and live acceptance remain pending.
+
+## O focused operator browser result: source 9d5502
+
+The four allocated audit/ready-paper browser tests passed at clean published
+`9d5502cb08fc8ebf63af21652ea76b49a3130b63`: one worker, zero retries,
+32.26278 seconds, four unrestricted axe assertions with zero violations.
+Both 1280 and 1440 widths retain the exact submitted record through the
+explicit action. Portable evidence is in
+`docs/screens/task40-operator/9d5502/verification.json`.
+
+The runner had already stopped before an external identity probe; a brief
+Node-only server then verified the unchanged tested artifact as clean 9d5502.
+That is explicitly a post-run identity check, not an in-test observation or
+browser rerun. Port4333 was closed and released.
+
+The later duplicate status phrase is shortened to "Press Release." without
+changing roles, controls or the word limit. V's two exact confirmed-paper
+prose cases pass. A separate seeded-ready aggregate counter includes the
+mandatory nested Recommendation card and measures34 words; its per-panel
+interpretation remains unresolved. No full copy, activation or live pass is
+claimed, and the independent offline backup proof is still pending.
