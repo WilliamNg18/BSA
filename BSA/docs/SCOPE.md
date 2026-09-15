@@ -47,6 +47,12 @@ scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
 
+Strength matching now has explicit proposed/public-guidance authority, not an
+invented monthly Tariff clause. Current trace and both gates retain genuine
+disagreement; no self-corroborating equality or fabricated readings remain in
+the strength-specific path. The supporting check is a targeted result, not a
+blanket merge or live acceptance claim.
+
 The first full integration inventory is not green: 210 failed / 1,575 passed
 tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.
 New targeted paper, source-image and note guards pass, but this is not release
