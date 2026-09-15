@@ -388,6 +388,12 @@ source. Explicit source-revision links keep the original capture's real
 revision/time rather than relabelling it. C8 review also found ready status
 without a shared decision draft or recorded recheck; seed events and draft
 initialisation now agree, with 21 targeted runtime tests passing.
+
+Historical extraction used TypeScript statement boundaries, not a global
+word replacement. Original CASES and HISTORY initializer text compares exactly
+against the preceding commit after line-ending normalisation. Seventy-seven
+targeted source/fidelity tests pass; the remaining headline findings are owner
+UI/reference copy, not permission to weaken the guard or rewrite history.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

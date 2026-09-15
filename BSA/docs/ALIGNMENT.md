@@ -375,6 +375,12 @@ main actions or updated four-case historical seeds.
 
 ### Canonical action integration
 
+Historical fixture extraction preserves exact original case/history initializer
+text after line-ending normalisation, including old evidence that must not be
+rewritten. Current scenario dates are correct. The standalone headline scan now
+reports only nine D/S-owned literals; activation of the CI hook awaits those
+owner changes. No blanket archive or source-file allowance was introduced.
+
 C1/C8 follow-up: a confirmation revision now explicitly links its unchanged
 source revision, retaining the existing human capture instead of routing back
 to Type 1. Seeded failed strength checks and successful paper rechecks are
