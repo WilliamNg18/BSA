@@ -2544,6 +2544,8 @@ Question: how should the required checkbox be tested without a browser lease? Ch
 
 Question: how should P adopt R's fail-closed Card audience default? Choice: publish an isolated explicit pharmacy audience prop in the real shared pharmacy wrapper for early foundation import; tie-breaker: preserve genuine controls without exposing pharmacy proposals on NHSBSA screens.
 
+Question: may P manufacture an incomplete B draft from the completed C8 seed? Choice: request a canonical source-bound new-submission initializer from G while retaining current claim drafts and immutable receipts; tie-breaker: one state, source fidelity and truthful scenario selection.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

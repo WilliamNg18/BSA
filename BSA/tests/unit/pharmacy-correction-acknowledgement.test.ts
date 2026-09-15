@@ -17,7 +17,7 @@ vi.mock("@/lib/store", async (importOriginal) => {
   ) };
 });
 
-const id = "EX-24112";
+const id = "SYN-FQ123-MISMATCH";
 const store = () => useAppStore.getState();
 const initial = () => initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id].at(-1)!);
 const renderClaim = () => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(PharmacyClaimActionPanel, { caseId: id })));

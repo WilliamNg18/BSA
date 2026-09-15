@@ -126,6 +126,21 @@ invalidation, presentation retention, explicit conversion of demonstration
 intent and stale action errors. These are handler/store proofs, not DOM,
 viewport or live acceptance.
 
+R's audience-safe Card is imported; P explicitly selects `audience="pharmacy"`
+in its shared wrapper, preserving real Apply and invoice controls. Check and
+24 focused consumer units passed. The partial integration's full two-worker
+run was 1,665 passing / 65 failing across 105 files, principally old ACK,
+Card/audience and retired scenario assumptions. It is retained as failed
+evidence, not accepted full-suite or live proof.
+
+P now consumes functional G `4765770` and R paper preview `634dda6`.
+The canonical validity selector replaces the temporary fingerprint comparison.
+Typecheck and 31 focused tests pass, including actual strength Apply/Send,
+On and Today-later-audit referral/ACK/Resubmit, two-field paper preparation,
+paper preview/Apply equality and human-only release. Paper Apply highlights
+restored fields using shared changed-field metadata. Existing pharmacy-unit
+migration continues separately; no browser or live completion is claimed.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper

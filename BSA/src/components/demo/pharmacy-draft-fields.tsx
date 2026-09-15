@@ -34,9 +34,9 @@ export function PharmacyDraftFields({ draft, original, channel, update, correcti
       <dt>Demo prescriber (declared)</dt><dd>{declaration.fields.prescriber}</dd>
     </dl>}
     {channel === "paper" && paper && <div className="grid grid-cols-2 gap-3">
-      <label className="grid gap-1">Declared product<Input id="paper-typedProduct" value={paper.typedProduct} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.typedProduct, paper.typedProduct)}
+      <label className="grid gap-1">Declared product<Input id="paper-typedProduct" value={paper.typedProduct} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.typedProduct, paper.typedProduct, "typedProduct")}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, typedProduct: e.target.value } })} /></label>
-      <label className="grid gap-1">Declared quantity<Input id="paper-quantity" type="number" min="1" step="1" value={paper.quantity ?? ""} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.quantity, paper.quantity)}
+      <label className="grid gap-1">Declared quantity<Input id="paper-quantity" type="number" min="1" step="1" value={paper.quantity ?? ""} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.quantity, paper.quantity, "quantity")}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, quantity: e.target.value === "" ? null : Number(e.target.value) } })} /></label>
       <label className="grid gap-1">Declared dispensing date<Input type="date" value={paper.dispensingDate} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.dispensingDate, paper.dispensingDate)}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, dispensingDate: e.target.value } })} /></label>

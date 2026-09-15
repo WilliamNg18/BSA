@@ -8,11 +8,10 @@ import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
 import { PharmacyRecommendationPanel } from "./pharmacy-recommendation-panel";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
-import { useAppStore } from "@/lib/store";
+import { getCorrectionAcknowledgementValid, useAppStore } from "@/lib/store";
 import { itemStateLabel, NO_VERIFICATION, type CaseLifecycle } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { isPlayableCase } from "@/lib/domain/cases";
-import { correctionFingerprint } from "@/lib/domain/correction-acknowledgement";
 import { PharmacyCorrectionAcknowledgement } from "./pharmacy-correction-acknowledgement";
 
 export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }) {
@@ -41,9 +40,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
   const response = row.history.filter((event) => event.actor === "operator" && (event.revision ?? 1) === revision.number &&
     (event.to === "referred_back" || event.to === "information_requested")).at(-1);
   const approved = response?.approvedDraft;
-  const acknowledgement = draft.correctionAcknowledgement;
-  const acknowledged = acknowledgement?.revision === revision.number &&
-    acknowledgement.fingerprint === correctionFingerprint(draft);
+  const acknowledged = getCorrectionAcknowledgementValid(caseId);
   const replayText = revision.declaration?.fields.endorsementText ?? revision.endorsementText;
   const draftSignature = JSON.stringify(draft);
   const revisionNumber = revision.number;

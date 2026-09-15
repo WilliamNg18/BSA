@@ -86,6 +86,15 @@ P's five focused accuracy-checkbox handler tests now pass in both modes,
 including invalidation and stale-input rejection. Wider canonical integration
 and existing pharmacy-suite migration remain open.
 
+The minimal explicit pharmacy Card audience adapter is published separately
+for R/G foundation integration; no shared Card edit or store fallback is used.
+
+Actual new pharmacy control cycles now run against G's functional four-case
+contracts. Remaining source questions: an ordinary B new-submission preview
+must show its original incomplete scenario rather than the completed C8 seed,
+and source-backed missing paper pack/form corrections need canonical support.
+These are raised with G, not implemented as pharmacy-local domain forks.
+
 ### G39/40 explicit-action checkpoint
 
 Current-source linking and seeded readiness provenance are implemented:
