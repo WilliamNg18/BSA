@@ -91,7 +91,7 @@ describe("explicit recommendation audience boundary", () => {
   });
 
   it("acknowledgement or Apply alone cannot fabricate operator-approved communication in an audience projection", () => {
-    const r = deriveRecommendation(store(), "EX-24112");
+    const r = deriveRecommendation(store(), "SYN-FQ123-MISMATCH");
     const pharmacy = recommendationForAudience(r, "pharmacy");
     expect(pharmacy.operatorApproved).toBe(false);
     expect(pharmacy.preview).not.toBeNull();
