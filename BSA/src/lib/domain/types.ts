@@ -27,6 +27,11 @@ export interface EpsPrescription {
   readonly dispenserEndorsement: string;
   readonly exemptionStatus: "exempt" | "chargeable" | "not_recorded";
   readonly claimMessageState: "draft" | "submitted";
+  /** Pharmacy's actual supply record, independent of the selected claim code. */
+  readonly supplyRecord?: {
+    readonly productCode: string;
+    readonly quantity: number;
+  };
   readonly supplyEvidence?: {
     readonly ruleId: "SYN-EPS-SUPPLY";
     readonly brandManufacturer: string;
@@ -42,6 +47,9 @@ export interface PaperDeclaration {
   readonly endorsementText: string;
   readonly dispensingDate: string;
   readonly declaredByPharmacy: true;
+  readonly brandManufacturer?: string;
+  readonly packSize?: number | null;
+  readonly form?: string;
 }
 
 export interface DeclaredItemFields {
@@ -50,6 +58,9 @@ export interface DeclaredItemFields {
   readonly endorsementText: string;
   /** Required for a complete confirmed capture when the original prescriber is unreadable. */
   readonly prescriber?: string | null;
+  readonly brandManufacturer?: string;
+  readonly packSize?: number | null;
+  readonly form?: string;
 }
 
 export interface PharmacyDeclaration {

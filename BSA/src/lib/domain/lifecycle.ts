@@ -26,6 +26,12 @@ export interface OperatorDecisionDraft {
   readonly appliedSuggestion: boolean;
 }
 
+/** Explicit human attestation to the exact corrected payload, not a UI preference. */
+export interface CorrectionAcknowledgement {
+  readonly revision: number;
+  readonly fingerprint: string;
+}
+
 export interface PharmacyCorrectionDraft {
   readonly revision: number;
   readonly channel?: ItemChannel;
@@ -35,8 +41,9 @@ export interface PharmacyCorrectionDraft {
   readonly paperDeclaration?: PaperDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly appliedSuggestion: boolean;
-  readonly appliedFields?: readonly ("endorsementText" | "brandManufacturer" | "packSize" | "form")[];
+  readonly appliedFields?: readonly ("endorsementText" | "brandManufacturer" | "packSize" | "form" | "dispensedCode")[];
   readonly confirmation?: string;
+  readonly correctionAcknowledgement?: CorrectionAcknowledgement;
 }
 
 /** Human-invoked controls. The agent must never invoke these actions. */
@@ -121,6 +128,7 @@ export interface CaseRevision {
   readonly paperDeclaration?: PaperDeclaration;
   /** Captured at explicit Send/Post, never inferred from a later header toggle. */
   readonly verificationEnabled?: boolean;
+  readonly correctionAcknowledgement?: CorrectionAcknowledgement;
 }
 
 export interface Type1Capture {
@@ -154,6 +162,7 @@ export interface ProcessSubmission {
   epsPrescription?: EpsPrescription;
   paperDeclaration?: PaperDeclaration;
   precheck?: PharmacyPrecheckSnapshot;
+  correctionAcknowledgement?: CorrectionAcknowledgement;
 }
 
 export interface ConfirmType1Input {

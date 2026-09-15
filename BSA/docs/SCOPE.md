@@ -13,6 +13,15 @@ human capture supports effective reconciliation. Its result explicitly names
 that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
 amendment is labelled separately, and unrelated template scans are rejected.
 The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
+The first additive contract checkpoint introduces independent pharmacy supply
+records and correction acknowledgement metadata without enabling new release
+behaviour. It is not a completed Task 39 or Task 40 implementation.
+
+The latest authorised scope replaces the active wrong-pack EPS example with
+prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
+`EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:
+`EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123`, and `EX-24112`.
+All active dates remain correct; C/F remain unclickable historical background.
 
 New pure contracts cover C1 exact last-submission replication, C5 safe note
 generation and final-note validation, C6 revision/payload acknowledgement and
