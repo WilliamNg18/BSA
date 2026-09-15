@@ -2269,3 +2269,9 @@ The eight R trace-browser cases now compile for current operator audiences:
 exact prescribed/selected strengths remain visible, proposed correction previews
 are absent, and paper retains the explicit operator-press wording. Inventory
 is eight at 1280/1440; execution awaits a browser allocation and is not claimed.
+
+G `c3f69f2` now supplies the canonical strength-rule and signal repair. R
+consumes its typed provision/reading/image applicability directly; the temporary
+Card-context signal switch is removed. Check and 85 owned/current-runtime
+tests pass. The canonical trace no longer needs a Card-only correction, but
+whole-application migration, CI, deployment and live acceptance remain pending.

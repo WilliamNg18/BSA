@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { createElement } from "react";
 import { RecommendationCard } from "../../src/components/demo/recommendation-card";
+import { SignalList } from "../../src/components/demo/signals";
 import { deriveRecommendation } from "../../src/lib/domain/recommendations";
 import { PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
@@ -57,5 +58,18 @@ describe("always-visible shared recommendation", () => {
     const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, headingLevel }));
     expect(html).toContain(`</h${headingLevel}>`);
     expect(html).toContain(`<h${headingLevel + 1} class="font-medium">`);
+  });
+
+  it("renders the five canonical signals with typed non-applicability, without a Card context override", () => {
+    const strength = deriveRecommendation(useAppStore.getState(), "SYN-FQ123-MISMATCH");
+    const html = renderToStaticMarkup(createElement(SignalList, { signals: strength.signals }));
+    expect(html.match(/<li /g)).toHaveLength(5);
+    expect(html).toContain("Not applicable: proposed matching check");
+    expect(html).toContain("Not applicable: typed records");
+    expect(html).toContain("Not applicable: no image");
+    expect(html).toContain("Conflict");
+    expect(html).not.toContain("0.00 (threshold");
+    const paper = deriveRecommendation(useAppStore.getState(), "EX-24123");
+    expect(renderToStaticMarkup(createElement(SignalList, { signals: paper.signals }))).toContain("0.31 (threshold 0.60)");
   });
 });
