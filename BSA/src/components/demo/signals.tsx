@@ -16,12 +16,12 @@ export function CompositeBadge({ composite, className }: { composite: Composite;
   return <Badge className={cn("whitespace-normal border-transparent", meta.cls, className)}>{meta.label}</Badge>;
 }
 
-export function SignalList({ signals, compact = false, crossRecordOnly = false }: { signals: Signals; compact?: boolean; crossRecordOnly?: boolean }) {
+export function SignalList({ signals, compact = false }: { signals: Signals; compact?: boolean }) {
   const rows: { label: string; value: string; ok: boolean | null; status?: string }[] = [
-    { label: "Provision found", value: crossRecordOnly ? "Not applicable: proposed matching check" : signals.provisionFound ? "Yes" : "No", ok: crossRecordOnly ? null : signals.provisionFound },
-    { label: "Readings agree", value: crossRecordOnly ? "Not applicable: typed records" : signals.sampleAgreement.total ? `${signals.sampleAgreement.agree} of ${signals.sampleAgreement.total}` : "n/a", ok: crossRecordOnly ? null : signals.sampleAgreement.total ? signals.sampleAgreement.agree >= 2 : null },
+    { label: "Provision found", value: signals.provisionStatus === "not_applicable" ? "Not applicable: proposed matching check" : signals.provisionFound ? "Yes" : "No", ok: signals.provisionStatus === "not_applicable" ? null : signals.provisionFound },
+    { label: "Readings agree", value: signals.readingStatus === "not_applicable" ? "Not applicable: typed records" : signals.sampleAgreement.total ? `${signals.sampleAgreement.agree} of ${signals.sampleAgreement.total}` : "n/a", ok: signals.readingStatus === "not_applicable" ? null : signals.sampleAgreement.total ? signals.sampleAgreement.agree >= 2 : null },
     { label: "Sources reconcile", value: signals.reconciliation === "agree" ? "Comparable fields agree" : signals.reconciliation === "conflict" ? "Conflict" : signals.reconciliation === "not_established" ? "Not established" : "n/a", ok: signals.reconciliation === "agree" ? true : signals.reconciliation === "conflict" ? false : null, status: signals.reconciliation === "not_established" ? ", not established" : undefined },
-    { label: "Image quality", value: crossRecordOnly ? "Not applicable: no image" : `${signals.imageQuality.toFixed(2)} (threshold ${QUALITY_THRESHOLD.toFixed(2)})`, ok: crossRecordOnly ? null : signals.imageQuality >= QUALITY_THRESHOLD },
+    { label: "Image quality", value: signals.imageStatus === "not_applicable" ? "Not applicable: no image" : `${signals.imageQuality.toFixed(2)} (threshold ${QUALITY_THRESHOLD.toFixed(2)})`, ok: signals.imageStatus === "not_applicable" ? null : signals.imageQuality >= QUALITY_THRESHOLD },
     { label: "In validated coverage", value: signals.inCoverage ? "Yes" : "No", ok: signals.inCoverage },
   ];
   return (

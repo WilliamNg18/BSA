@@ -465,3 +465,9 @@ changing the historical missing brand, scan, OCR or communication provenance.
 The Card differentiates retrieved Tariff authority from the proposed
 cross-record matching check. Its five structural signals remain visible, with
 non-applicable evidence explicitly labelled rather than fabricated as passed.
+
+R's bounded trace browser retains all eight identities and unrestricted axe,
+adding explicit operator-audience and no-proposed-preview assertions.
+
+Canonical signal applicability is now consumed from G, preserving all five
+visible signals and existing paper thresholds without audience-based overrides.
