@@ -8,6 +8,8 @@ export const PAPER_RECONCILIATION_LABELS = {
   scan: "Scan as the high-speed scanner sees it",
   characterRecognition: "Extracted by character recognition (hypothetical)",
   synthetic: "synthetic; illustrates what NHSBSA's capture would produce",
+  humanCapture: "Human-confirmed effective evidence; the original scan and hypothetical extraction are unchanged",
+  amendment: "Explicit pharmacy amendment (synthetic); previous submission evidence retained",
   release: "Release to existing pricing recommended; both gates satisfied; requires the operator's press because paper was scanned",
 } as const;
 
@@ -26,7 +28,11 @@ export interface PaperFieldRuleCheck {
 export interface PaperReconciliationInput {
   readonly revision: number;
   readonly declaration: PaperEvidenceValues;
-  readonly scan: { readonly readable: boolean; readonly fields: PaperEvidenceValues };
+  readonly scan: {
+    readonly readable: boolean;
+    readonly fields: PaperEvidenceValues;
+    readonly provenance?: "original_scan" | "acknowledged_pharmacy_amendment";
+  };
   readonly characterRecognition: readonly CharacterRecognitionField[];
   readonly tariffChecks: readonly PaperFieldRuleCheck[];
   readonly verification: ItemVerification;
@@ -42,6 +48,7 @@ export interface PaperReconciliation {
   readonly requiresType1: boolean;
   readonly requiresOperatorRelease: true;
   readonly automaticRelease: false;
+  readonly reconciliationBasis: "raw_sources" | "human_confirmed_capture" | "not_established";
   readonly outcome: "TYPE1_CONFIRMATION" | "REFER_BACK" | "REQUEST_INFORMATION" | "RELEASE_RECOMMENDED";
   readonly requests: readonly ReferralRequest[];
   readonly note: string | null;
@@ -51,11 +58,22 @@ export interface PaperReconciliation {
 const missing = (value: PaperFieldValue | undefined) => value === null || value === undefined ||
   typeof value === "string" && !value.trim();
 
+function validateValues(values: PaperEvidenceValues): void {
+  for (const value of Object.values(values)) {
+    if (value !== null && value !== undefined && typeof value !== "string" &&
+      !(typeof value === "number" && Number.isFinite(value))) throw new Error("Paper evidence contains an invalid field value.");
+  }
+}
+
 /** Capture may explain low-confidence OCR; it cannot erase readable contradictory source evidence. */
 export function reconcilePaperEvidence(input: PaperReconciliationInput): PaperReconciliation {
   if (!Number.isSafeInteger(input.revision) || input.revision < 1) throw new Error("A current paper revision is required.");
+  validateValues(input.declaration);
+  validateValues(input.scan.fields);
+  if (input.capture) validateValues(input.capture.fields);
   const ocr = new Map<ReferralField, CharacterRecognitionField>();
   for (const observation of input.characterRecognition) {
+    validateValues({ [observation.field]: observation.value });
     if (!Number.isFinite(observation.confidence) || observation.confidence < 0 || observation.confidence > 1) {
       throw new Error("Synthetic character-recognition confidence must be between zero and one.");
     }
@@ -93,6 +111,7 @@ export function reconcilePaperEvidence(input: PaperReconciliationInput): PaperRe
   const informationOnly = requests.every((request) => request.rule === "readable_evidence_required");
   return immutable({
     labels: PAPER_RECONCILIATION_LABELS, evidence: input, requiresType1, requiresOperatorRelease: true, automaticRelease: false,
+    reconciliationBasis: !release ? "not_established" : capture ? "human_confirmed_capture" : "raw_sources",
     outcome: requiresType1 ? "TYPE1_CONFIRMATION" : release ? "RELEASE_RECOMMENDED" : informationOnly ? "REQUEST_INFORMATION" : "REFER_BACK",
     requests, note: requests.length ? buildReferralNote(requests) : null,
     summary: requiresType1 ? "Confirm or correct Type 1 capture before Type 2 review."

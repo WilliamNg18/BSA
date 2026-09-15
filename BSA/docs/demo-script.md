@@ -164,7 +164,8 @@ Historical [Task 30 evidence](screens/task30/README.md) remains historical.
 Its interrupted independent image review is unverified. Mobile/tablet files
 were withdrawn from the active checkout by explicit owner request; original
 Git evidence is not rehashed or relabelled as new desktop acceptance.
-# Task 40 contract overlay, 15 September 2026
+
+## Task 40 contract overlay, 15 September 2026
 
 Use this overlay after G's domain integration and each screen owner's adoption;
 it is not a claim that the current live walkthrough already passes. Keep the
