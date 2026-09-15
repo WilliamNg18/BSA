@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page, TestInfo } from "@playwright/test";
-import { captureJson, expect, test } from "./fixtures";
+import { captureJson, expect, test } from "../e2e/fixtures";
 
 test.use({ screenshot: "off" });
 
