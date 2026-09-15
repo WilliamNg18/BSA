@@ -36,7 +36,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await captureCheckpoint(page, testInfo, "pharmacy-before-date");
   await page.getByRole("button", { name: "Apply suggested correction", exact: true }).click();
   await expect(field).toBeFocused();
-  await expect(field).toHaveValue("NCSO  RK 21/08/26");
+  await expect(field).toHaveValue("NCSO RK 21/08/26");
   await expect(status).toHaveText("Ready");
   await captureCheckpoint(page, testInfo, "pharmacy-after-date");
   await field.fill("NCSO  RK");
