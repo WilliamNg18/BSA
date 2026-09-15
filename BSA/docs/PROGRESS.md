@@ -125,6 +125,13 @@ is inserted into the monthly Tariff corpus. The legacy EPS field checker uses
 the same independent check. Typecheck and 47 targeted tests pass; full legacy
 consumer migration and live acceptance remain incomplete.
 
+The next canonical checkpoint retains actual source-linked Type 1 capture
+across information-only responses without inventing a new capture event.
+Ready paper seeds now contain their recorded code recheck and a real shared
+decision draft; the wrong-strength referral seed records its original failed
+On checks. Typecheck and 21 targeted runtime tests pass. A's header merge is
+now available on main `5b75e5f`; it will be incorporated before candidate CI.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the

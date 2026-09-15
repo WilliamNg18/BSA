@@ -25,12 +25,24 @@ describe("Task 39/40 actual shared domain integration", () => {
     expect(s().lifecycles[strength].state).toBe("referred_back");
     expect(s().lifecycles[paper].state).toBe("resubmitted");
     expect(s().itemProcesses[paper].readyToRelease).toBe(true);
+    expect(s().itemVerification[paper]).toMatchObject({ gate1: "pass", gate2: "pass", released: false });
+    expect(s().itemVerification[strength]).toMatchObject({ gate1: "fail", gate2: "fail", released: false });
+    expect(s().operatorDrafts[paper]).toMatchObject({ outcome: "ACCEPT", revision: 2 });
     expect(isPaperReadyToRelease(s().lifecycles[paper], s().itemProcesses[paper])).toBe(true);
     expect(isPaperReadyToRelease({ ...s().lifecycles[paper], history: [...s().lifecycles[paper].history,
       { ...s().lifecycles[paper].history.at(-1)!, revision: 3 }] }, s().itemProcesses[paper])).toBe(false);
     const before = getDomainSnapshot();
     s().setPerspective("pharmacy"); s().setAgentEnabled(true); s().setDemoStep(5);
     expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it("releases a seeded ready paper item with one explicit human press and restores its ready draft on Reset", () => {
+    s().releaseToPricing(paper);
+    expect(s().lifecycles[paper].state).toBe("released_to_pricing");
+    expect(s().lifecycles[paper].history.at(-1)?.actor).toBe("operator");
+    s().resetDemo();
+    expect(s().lifecycles[paper].state).toBe("resubmitted");
+    expect(s().operatorDrafts[paper].note.length).toBeGreaterThan(8);
   });
 
   it("prices the selected wrong-strength EPS pack Today until an explicit human audit", () => {
@@ -211,5 +223,22 @@ describe("Task 39/40 actual shared domain integration", () => {
     expect(imageText).toContain("Demo manufacturer (synthetic)");
     expect(imageText).toContain("Pack size 21");
     expect(imageText).toContain("capsules");
+  });
+
+  it("retains source-linked human capture after an information-only response", () => {
+    s().setAgentEnabled(false);
+    const draft = preparePaperDemoDraft(sessionCase(unreadable)!, s().caseRevisions[unreadable][0], "complete");
+    s().submitItem({ ...draft, caseId: unreadable, channel: "paper" });
+    s().confirmType1({ caseId: unreadable, revision: 2, fields: s().caseRevisions[unreadable].at(-1)!.declaration!.fields,
+      provenance: "pharmacy_declaration", declarationReconciled: true });
+    const before = getAsSubmitted(s(), unreadable), capture = structuredClone(s().itemProcesses[unreadable].capture);
+    s().requestInformation(unreadable, "Please confirm the recorded information is accurate.");
+    s().sendConfirmation(unreadable, "The pharmacy confirms the recorded information is accurate.");
+    expect(s().caseRevisions[unreadable].at(-1)?.sourceRevision).toBe(2);
+    expect(s().itemProcesses[unreadable].capture).toEqual(capture);
+    expect(s().itemProcesses[unreadable].routing.outcome).toBe("type2_endorsement");
+    expect(getAsSubmitted(s(), unreadable)).toEqual(before);
+    expect(getPaperReconciliation(s(), unreadable)?.reconciliationBasis).toBe("human_confirmed_capture");
+    expect(s().lifecycles[unreadable].history.filter((event) => event.capture)).toHaveLength(1);
   });
 });
