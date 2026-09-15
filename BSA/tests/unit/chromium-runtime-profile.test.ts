@@ -145,15 +145,18 @@ it("marks trace data loss as incomplete even when files were collected", async (
 it("caps trace output and hashes only the exact retained prefix", async () => {
   const directory = await destination();
   const { transport } = mockTransport();
-  transport.readStream.mockResolvedValue({ data: "x".repeat(262144), eof: false });
+  const prefix = '{"traceEvents":[';
+  transport.readStream
+    .mockResolvedValueOnce({ data: prefix, eof: false })
+    .mockResolvedValueOnce({ data: "x".repeat(PROFILE_LIMITS.traceBytes), eof: false });
   const profile = await startRuntimeProfile(async () => transport, directory, "about:blank", commit, source);
   const manifest = await profile.collect();
   expect(manifest.complete).toBe(false);
   expect(manifest.trace.capped).toBe(true);
-  expect(manifest.trace.bytes).toBe(PROFILE_LIMITS.traceBytes);
-  expect(transport.readStream).toHaveBeenCalledTimes(PROFILE_LIMITS.traceBytes / 262144 + 1);
+  expect(manifest.trace.bytes).toBe(Buffer.byteLength(prefix));
+  expect(transport.readStream).toHaveBeenCalledTimes(2);
   const bytes = await readFile(join(directory, "chromium-trace.json"));
-  expect(bytes.length).toBe(PROFILE_LIMITS.traceBytes);
+  expect(bytes.toString()).toBe(prefix);
   expect(manifest.trace.sha256).toBe(createHash("sha256").update(bytes).digest("hex"));
 });
 
