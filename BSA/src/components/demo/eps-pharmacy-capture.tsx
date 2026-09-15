@@ -14,7 +14,8 @@ import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { useAppStore } from "@/lib/store";
 import { PLAYABLE_CASES, playableCaseChannel } from "@/lib/domain/cases";
-import { EPS_STRENGTH_CASE_ID } from "@/lib/domain/eps-strength";
+import { EPS_STRENGTH_CASE_ID, EPS_STRENGTH_SELECTED_CODE } from "@/lib/domain/eps-strength";
+import { EPS_ERROR_EVIDENCE, EPS_STRENGTH_COPY } from "@/lib/domain/eps-error-evidence";
 
 const SCENARIOS = PLAYABLE_CASES.filter((c) => playableCaseChannel(c.id) === "eps").map((c) => ({
   id: c.id, label: c.id === "EX-24107" ? "Complete endorsement" : "Wrong medication strength",
@@ -46,6 +47,13 @@ function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact
     </section>}
     <BoundaryTag cls="human" />
     <dl className="text-sm"><dt>Submission purpose</dt><dd>New demonstration attempt; history retained.</dd></dl>
+    {!enabled && caseId === EPS_STRENGTH_CASE_ID && eps.items[0]?.dispensedCode === EPS_STRENGTH_SELECTED_CODE &&
+      <section aria-label="Today pricing rule" className="space-y-2 rounded-lg border p-3">
+        <h3 className="font-semibold">Today: pricing as endorsed</h3>
+        <p className="text-sm">{EPS_STRENGTH_COPY.today}</p>
+        <blockquote cite={EPS_ERROR_EVIDENCE.nhsbsa.url}>{EPS_ERROR_EVIDENCE.nhsbsa.quotation}</blockquote>
+        <cite className="text-xs not-italic">{EPS_ERROR_EVIDENCE.nhsbsa.label}</cite>
+      </section>}
     {!compact && <label className="grid gap-1">Dispensing date
       <input id="eps-dispensing-date" type="date" className="rounded-md border bg-background p-2" value={eps.dispensingDate}
         onChange={(e) => update({ ...draft, epsPrescription: { ...eps, dispensingDate: e.target.value } })} />

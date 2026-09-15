@@ -48,8 +48,8 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
         }) : undefined} />
       <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")} />
     </> : <p data-paper-narrative className="text-sm">{poorScan
-      ? "Type 1 keys; Type 2 judges. RB2B delays are illustrative, not inevitable."
-      : "Type 1 keys; complete capture reaches existing pricing."}</p>}
+      ? "Type 1 keys; Type 2 judges. Paper requires the operator's release; RB2B delays are illustrative, not inevitable."
+      : "Readable paper still requires operator review and release; incomplete endorsements can require pharmacy correction."}</p>}
     {!enabled && <PainMarker resolved={false} pain="Possible later correction" resolution="Declaration checked" />}
     <Button data-pharmacy-action="submit" onClick={() => act(() => {
       const text = enabled ? draft.endorsementText : revision.endorsementText;

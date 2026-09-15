@@ -27,6 +27,14 @@ an omitted caller remains safely operator-only. Local check and 24 focused
 consumer units passed; full partial-integration run retained 65 failures
 (1,665 passing), so canonical acceptance remains open.
 
+After G `4765770` plus R `634dda6`, 31 focused P units and typecheck pass.
+Actual handler cycles prove retained source, separate acknowledgement and
+channel-specific recheck outcomes. C8's completed B seed exposes a remaining
+ordinary-submission initialisation issue: current-revision projection is correct
+for claims but cannot pretend the original brand-missing example is complete.
+G owns the new-submission factory; source-backed paper pack/form completion
+is also requested. Browser, fresh full suite and deployment remain open.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Refreshed published-source snapshot after the B foundation
