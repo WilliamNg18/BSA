@@ -3013,3 +3013,9 @@ that its workspace-wide text was not hidden to reduce the count. The old
 26/34 aggregate findings remain recorded. Ten desktop browser cases are
 discovered for the changed layout, including B-ready/D-confirmed in both
 modes and Apply-to-note focus; none has yet run on this layout.
+
+The same ten tests now request named B-ready and D-confirmed checkpoints
+through the existing 1440-only capture helper. B is captured before Release;
+D after the asserted note focus. At1280 the helper records capture scope,
+not a named PNG, while all functional checks still execute. G owns the
+single allocated assembled-candidate run; O will not duplicate it.

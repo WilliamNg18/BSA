@@ -974,3 +974,8 @@ D, On and Off, retain all required copy while each applicable panel stays
 below25 prose/help words. The combined workspace can still exceed25, which
 the tests explicitly preserve; it is no longer represented as one bordered
 decision panel. Fresh browser/focus/geometry proof is pending.
+
+Checkpoint calls preserve all ten expanded test identities, 37 parsed
+expectation expressions and 19 parsed functional-action expressions.
+Only the existing guarded artifact helper is added; actual image production
+and browser outcomes remain pending G's one coordinated execution.

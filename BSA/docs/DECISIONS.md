@@ -2721,3 +2721,5 @@ Question: how should the mandatory advice and human-help text coexist under the 
 Question: where does Apply live after separation? Choice: in the actual advice card, still invoking the same guarded G action and focusing the same visible human note; final disposition controls remain in the human panel; tie-breaker: explicit authority and preserved functionality.
 
 Question: how is a rejected proposed-value note explained concisely? Choice: display a precise field/rule-and-accuracy message only after G's actual rejection, preserve the draft and unknown error text, and never validate or rewrite the note locally; tie-breaker: clear human help without a second authority.
+
+Question: how should the single operator validation run retain named visual evidence? Choice: call the existing 1440-only checkpoint helper before B's final Release and after D's note-focus checks, keeping all actions/assertions and the normal failure policy unchanged; tie-breaker: scoped evidence without a duplicate run.

@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Locator, Page } from "@playwright/test";
-import { test, expect } from "./fixtures";
+import { test, expect, captureCheckpoint } from "./fixtures";
 
 async function panelProse(panel: Locator) {
   return panel.evaluate((element) => [...element.querySelectorAll("p, span.text-xs.text-muted-foreground")]
@@ -67,7 +67,7 @@ for (const width of [1280, 1440]) {
   });
 
   for (const enabled of [false, true]) {
-  test(`Task40 ready paper uses its actual prepared decision and one operator Release at ${width}px${enabled ? " Agent On" : ""}`, async ({ page }) => {
+  test(`Task40 ready paper uses its actual prepared decision and one operator Release at ${width}px${enabled ? " Agent On" : ""}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/case/EX-24112");
     if (enabled) await page.getByRole("banner").getByRole("switch").click();
@@ -80,6 +80,7 @@ for (const width of [1280, 1440]) {
     await expect(panel.getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     const release = panel.getByRole("button", { name: "Release to pricing", exact: true });
     await expect(release).toBeEnabled();
+    await captureCheckpoint(page, info, `operator40-B-ready-${enabled ? "On" : "Off"}`);
     await release.click();
     const record = page.getByRole("region", { name: "Release record", exact: true });
     await expect(record).toBeVisible();
@@ -90,7 +91,7 @@ for (const width of [1280, 1440]) {
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   });
 
-  test(`Task40 confirmed paper keeps advice and human focus separate at ${width}px Agent ${enabled ? "On" : "Off"}`, async ({ page }) => {
+  test(`Task40 confirmed paper keeps advice and human focus separate at ${width}px Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/case/EX-24123");
     if (enabled) await page.getByRole("banner").getByRole("switch").click();
@@ -124,6 +125,7 @@ for (const width of [1280, 1440]) {
     await expect(note).toBeInViewport({ ratio: 1 });
     await expect(source.locator("pre")).toHaveText(original);
     await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
+    await captureCheckpoint(page, info, `operator40-D-confirmed-${enabled ? "On" : "Off"}-focused`);
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   });
   }
