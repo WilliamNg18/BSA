@@ -448,3 +448,9 @@ scanner/store tests pass without domain mutation on render. This supersedes
 the earlier "not mounted" observation for those ordinary O routes only.
 Canonical source/guard follow-ups, existing-unit migration, compact D placement,
 browser accessibility/geometry and latest-main live acceptance remain pending.
+
+The four O-owned legacy unit files now exercise actual acknowledged paper
+resubmission, wrong-strength manual audit and immutable unknown-prescriber
+submissions instead of retired seed assumptions. Safe operator-preview checks
+retain exact prescribed/selected/supplied facts while forbidding pharmacy-only
+target proposals. All 66 pass; no assertion or deadline is skipped.

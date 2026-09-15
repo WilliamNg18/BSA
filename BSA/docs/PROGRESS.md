@@ -2365,3 +2365,10 @@ Existing O unit-fixture migration is still in progress; no full suite or
 browser pass is claimed. G's reported seeded-ready draft and final-note
 guard follow-ups remain integration dependencies. Compact demo evidence
 still needs D's full-width placement; no half-width three-column claim.
+
+O's four existing unit files are now migrated to the real paper, wrong-strength,
+explicit-audit and acknowledgement contracts: all 66 tests pass. A single
+coherent run including those files, new fidelity/scanner checks and the backup
+verifier passed 132 tests across eight files; typecheck and targeted lint pass.
+Four new desktop browser regressions for audit and one-press paper Release
+are discovered but not executed. Their seeded-ready prerequisite is G-owned.

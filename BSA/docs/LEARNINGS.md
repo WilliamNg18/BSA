@@ -1503,3 +1503,10 @@ tests and 27 U scanner/store tests pass, with typecheck and targeted lint.
 These checks do not establish browser geometry, full accessibility or live
 completion. Existing fixtures based on retired missing-date/EPS-paper seeds
 and pre-acknowledgement resubmission APIs are being migrated separately.
+
+That four-file migration now passes all 66 original test cases. The coherent
+eight-file O/scanner/backup selection passes 132 tests in one run, rather than
+an aggregate assembled from partial runs. Typed prescriber evidence is not
+illegible-image inference: unknown-prescriber tests explicitly submit null
+through the canonical pharmacy action and retain the source object unchanged.
+The new browser regressions are listed only; no execution result is claimed.

@@ -2564,3 +2564,5 @@ Question: how is full submission fidelity inspectable without changing the sourc
 Question: can a ready paper item's alternative decision buttons call actions that require an active review? Choice: allow the existing one-press Release directly and expose Start review for another disposition, rather than silently entering a review or calling an invalid action; tie-breaker: every human action remains explicit and real.
 
 Question: should a legacy case-pack draft remain beside the new safe operator note? Choice: remove that duplicate proposed outbound draft and keep R/G's exact safe preview/application path; read-only source facts and historical records remain unchanged; tie-breaker: C5 and one decision authority.
+
+Question: how should old unit fixtures follow the new four-case contract? Choice: use real paper submissions and acknowledgement actions, explicit later EPS audit and canonical Release, while retaining all state/history and negative assertions; tie-breaker: test actual behaviour rather than bypassing new guards.

@@ -491,6 +491,11 @@ all domain/store authority, R the recommendation card/derivation, U the
 pure three-column component, and P pharmacy correction/acknowledgement.
 The compact scanner comparison requires a full-width evidence placement;
 it must not be compressed into the existing half-width editor.
+
+O's existing unit migration retains all 66 cases and negative/state-equality
+checks. New `operator40-fidelity.spec.ts` contributes four ordinary desktop
+browser tests; V's existing browser/live files and protected state suite are
+not edited. Source discovery is not an executed browser pass.
 ## Tasks 39/40 R audience scope
 
 In progress: explicit Card audience, pharmacy-only concrete value/preview,
