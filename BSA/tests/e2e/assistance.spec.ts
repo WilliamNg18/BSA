@@ -1,14 +1,13 @@
 import { captureCheckpoint, expect, navigatePrimary, test } from "./fixtures";
-import { choosePaperExample, choosePharmacyRadio, openPharmacyPrecheck, openPharmacyReceipt, startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
+import { choosePaperExample, choosePharmacyRadio, openPharmacyPrecheck, openPharmacyReceipt } from "./pharmacy-scenario-helpers";
+import { decisionNote, operatorRadio, performDecision, startDemonstrationReview } from "./operator-action-helpers";
 
 test("actual worklist hides advice without changing evidence, routing or human decisions", async ({ page }) => {
-  await page.goto("/pharmacy");
-  await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await startBReviewFromPharmacy(page);
-  await page.getByRole("radio", { name: /^Refer back/ }).check();
-  await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Reviewed the missing dispensing date");
+  await startDemonstrationReview(page, "EX-24112", true);
+  await operatorRadio(page, "REFER_BACK").check();
+  await decisionNote(page).fill("Reviewed the missing dispensing date");
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await performDecision(page, "REFER_BACK");
   await page.getByRole("link", { name: "Back to queue", exact: true }).click();
   const rows = page.locator("[data-case-id]");
   for (const id of ["EX-24112", "SYN-FQ123-MISMATCH"]) await expect(page.locator(`[data-case-id="${id}"]`)).toBeVisible();
