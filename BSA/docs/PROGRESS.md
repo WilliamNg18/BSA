@@ -26,6 +26,22 @@ the standalone headline guard after G/S/P/D migrate active source, with no
 whole-file or history exemption. UI, real both-mode/both-gate lifecycle tests,
 round trips, screenshots, main merge, green deployment and observed live
 behaviour remain integration work. Owner actions for me: none.
+## 2026-09-15: B40 domain foundation, published incomplete
+
+B owns only new submission-fidelity, correction-acknowledgement, referral-wording,
+paper-reconciliation and submission-recheck modules and their unit files.
+G owns canonical types, store, lifecycle, seeds and their integration; screen
+owners retain their UI. The modules preserve exact submission snapshots, bind
+human acknowledgement to the exact correction payload, generate field/rule-only
+referrals, reconcile three separate synthetic paper evidence sources and never
+automatically release paper. They do not yet change any production store action.
+
+Initial typecheck could not start because this worktree lacked `tsc`; `npm ci`
+restored the unchanged lockfile. All 48 new contract units and `npm run check`
+(source-copy, typecheck, lint, production build) passed before publication.
+No browser, live, deployment or backup verification is claimed.
+G integrates W+B after the independent header change; no self-merge or deployment.
+Owner actions for me: none.
 
 ## Current release gate: live first, exact local backup
 

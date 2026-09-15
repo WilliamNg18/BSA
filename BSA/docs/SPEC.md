@@ -55,6 +55,41 @@ Requirements 1-5 addition.
 interpretation; [PROGRESS](PROGRESS.md) owns actual acceptance and deployment.
 This specification describes required behaviour, not a passing release verdict.
 
+### Task 40 shared-contract addition
+
+Part C supersedes conflicting older manual EPS-recheck and active-fixture wording
+in this specification. The operator's **As submitted by the pharmacy** block is
+an immutable deep-equal replica of the pharmacy's latest actual submission,
+not a captured-field projection. Original typed paper and its synthetic scan
+are retained per revision; an explicit acknowledged pharmacy amendment may
+create a new source snapshot, never overwrite an earlier one.
+
+The paper operator view has three simultaneous columns: **Pharmacy's declaration
+(as typed)**, **Scan as the high-speed scanner sees it**, and **Extracted by
+character recognition (hypothetical)**. Field values and confidence remain
+separate from any human capture and carry the label **synthetic; illustrates what
+NHSBSA's capture would produce**. Type 1 precedes Type 2 when source capture is
+unreadable/uncertain; field agreement plus actual passing Tariff gates recommends,
+but never performs, the final paper release.
+
+NHSBSA's outbound note uses structured field/rule requests, not exact-fix values.
+The final referral/information action also validates manual notes and displays
+an error if a proposed-value alias appears. It never strips facts from retained
+source evidence or silently rewrites a human draft. Concrete suggestions and
+their previews appear on the pharmacy side with **your agent's suggestion from
+your records**.
+
+Every corrected resubmission requires **I confirm the corrected information is
+accurate** for the current revision and exact corrected payload. Changes and
+Apply invalidate the checkbox. This also applies to Off/manual corrections.
+Both actual passing gates and reconciliation permit automatic EPS release to
+existing pricing; paper instead returns **Resubmitted, ready to release** for
+one operator press. A pure disposition result alone creates no store event.
+
+These contracts are published foundation work; actual actions, all four new
+seeded cases, owning-screen integration and current-main live proof remain
+required. Source-pinned gaps are recorded in ALIGNMENT.
+
 The agent verifies and advises; a person decides. Deterministic code checks
 requirements, reconciles evidence, validates citations and releases eligible
 items to existing pricing. The prototype calculates or approves no payment

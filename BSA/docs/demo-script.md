@@ -164,3 +164,29 @@ Historical [Task 30 evidence](screens/task30/README.md) remains historical.
 Its interrupted independent image review is unverified. Mobile/tablet files
 were withdrawn from the active checkout by explicit owner request; original
 Git evidence is not rehashed or relabelled as new desktop acceptance.
+# Task 40 contract overlay, 15 September 2026
+
+Use this overlay after G's domain integration and each screen owner's adoption;
+it is not a claim that the current live walkthrough already passes. Keep the
+existing eleven-step navigation and one authoritative shared state.
+
+On the wrong-strength EPS round trip, NHSBSA refers with a field/rule request,
+never a proposed pack value. Pharmacy opens Action needed, sees that exact note
+and its own records-based suggestion/preview, applies it, checks **I confirm the
+corrected information is accurate**, then Resubmits. Off performs the correction
+manually with the same required acknowledgement. When both gates reconcile the
+corrected EPS message it is released to existing pricing, no operator action.
+
+On the paper-incomplete round trip, show the exact typed declaration, actual
+synthetic scan, and hypothetical extraction with field confidence together.
+Retain **synthetic; illustrates what NHSBSA's capture would produce**. Type 1
+confirmation precedes Type 2 for an unreadable source. A paper referral names
+the missing field/rule only. Pharmacy correction and acknowledgement create a
+new revision; a passing recheck is **Resubmitted, ready to release**, and the
+operator presses Release once. No paper is auto-released.
+
+Follow the same item on both sides without Reset; each business action, reason
+and actor must be real store history, not a navigation-created demo state.
+The four historical seed identities supply simultaneous Paid, Action needed and
+recheck examples. Verify these exact flows at 1280 and 1440 px in both modes
+after integration; do not substitute older passing screenshots or timings.

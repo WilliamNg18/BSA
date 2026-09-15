@@ -52,6 +52,18 @@ The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
 Source and passing units do not establish implemented lifecycle routing or
 live acceptance. No price, medicine-selection advice or NHSBSA error-rate
 estimate is introduced by this module.
+## B40 bounded foundation scope, 15 September
+
+New pure contracts cover C1 exact last-submission replication, C5 safe note
+generation and final-note validation, C6 revision/payload acknowledgement and
+EPS-only automatic recheck disposition, and C4 paper field/scan/hypothetical-OCR
+reconciliation. Explicit human capture stays separate from original submission.
+Canonical actions and historical seeds remain G-owned; C3/C7/C8 and the
+consumer UI/desktop/live proof remain integration obligations, not delivered
+behaviour from these standalone modules. This branch is published WIP, not a
+product or local backup. Current-main deployment observation remains required.
+The bounded foundation passed 48 units and check; these are not store-action
+or screen acceptance and do not satisfy the integrated C7 timing requirement.
 
 ## Live-first release and backup obligations
 
