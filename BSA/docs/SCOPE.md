@@ -6,6 +6,25 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## 2026-09-15: Task 39 W foundation, not live completion
+
+The latest owner brief replaces the playable EPS error with wrong strength:
+prescribed and actually supplied Amlodipine 10mg tablets, 28; selected claim
+Amlodipine 5mg tablets, 28; all other fields and dates correct. Today models
+automatic pricing of the selected priced pack; On must fail both independently
+performed gates while wrong. A source-backed Apply changes the selected claim
+only; a separate human Send or acknowledged Resubmit is required.
+
+This W increment supplies the pure check/correction, verified public-evidence
+copy and isolated source-headline guard with 33 passing focused units and check.
+G owns shared integration; B owns acknowledgement/fidelity/referral contracts;
+P/D/S/N/V own their consuming surfaces, calculations and browser evidence.
+The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` (paper, brand missing). Historical records are not rewritten.
+Source and passing units do not establish implemented lifecycle routing or
+live acceptance. No price, medicine-selection advice or NHSBSA error-rate
+estimate is introduced by this module.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

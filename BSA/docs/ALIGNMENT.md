@@ -6,6 +6,30 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## 2026-09-15: Task 39 W source comparison and integration boundary
+
+W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+`gh pr list --state open` returned no open PRs at this initial comparison;
+in-flight G/B/A branches were separately coordinated, not mistaken for main.
+G's subsequently published `30d211f` and `ca0a48e` add canonical source fields
+and the 5mg reference; W's standalone types remain structurally compatible.
+
+| Requirement | Inspected evidence and current state |
+| --- | --- |
+| Wrong strength rather than wrong pack/date | Main still has the old case/step contract. W's new source-bound module and content are implemented; G owns active seeds and gates, consumers own screens |
+| Independent prescription, supplied record and selected claim | G/W froze prescribed `product/strength/form/prescribedCode/quantity`, actual `supplyRecord`, and editable selected `dispensedCode/dispensedName`; W never rewrites source |
+| Today automatic selected-pack pricing | Verified NHSBSA condition: selected AMPP has a dm+d price. G must replace the old wrong-pack human route, not reuse a failed original-ledger comparison as today's rule |
+| On both gates, Apply and no uncorrected auto-release | W checks/patch units pass; actual store tests and mode-specific routing remain with G |
+| Public evidence | NHSBSA page and study abstract/bibliography confirmed 15 September; 39/44/34 counts and ranking unverified, omitted from asserted screen copy |
+| Headline migration guard | Standalone checker/tests implemented; active main still contains retired copy in G/S/P/D-owned files. V activates the root guard only after migration, not by weakening it |
+| Browser and live outcome | No W browser lease or execution; P/V must verify both perspectives at 1280/1440 and wrong-strength refer/apply/acknowledge/resubmit/recheck paths on integrated main |
+
+The source-copy scan found active matches in `demo-steps.ts`,
+`step-layouts.tsx`, `eps-pharmacy-capture.tsx`, How-it-works content/diagrams,
+and legacy case/reference/history/readout material. Historical evidence must
+be retained, not edited to invent correct old outcomes. The guard's only
+exception is the actual NCSO Tariff clause text, never whole files.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the
