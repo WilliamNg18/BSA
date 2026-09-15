@@ -55,6 +55,14 @@ baseline. The unchanged two-view landmark uniqueness check found a new
 unqualified supply-record label; prefixing it with the existing context fixed
 the defect without removing the assertion or evidence section.
 
+After G's truthful matching authority and R's test/Card handoffs, P's entire
+194-test scope passes in one run and check passes. The full integration result
+is 1,664 pass / 144 fail; all remaining files are outside the current P scope.
+The legacy generic EPS field test uses its isolated historical source rather
+than mutating the new wrong-strength identity. Main `5b75e5f` contains Part A,
+not this pharmacy integration. No hosted observation or complete verdict is
+claimed for this working branch.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Refreshed published-source snapshot after the B foundation
