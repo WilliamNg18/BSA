@@ -46,6 +46,12 @@ value. The full Off wrong-strength cycle first prices the endorsed pack and
 then uses a real explicit human audit/query reopening; toggling never discovers
 or reopens the mismatch.
 
+The pure `epsStrengthForAudience` adapter enforces the proposed-value split
+without changing the source assessment: operator `suggestion` is always null;
+pharmacy proposals retain the exact own-records caption. G integrates it into
+the shared recommendation projection; views must not bypass it by rendering
+the raw assessment's proposal on the operator side.
+
 ## Purpose and principle
 
 Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit

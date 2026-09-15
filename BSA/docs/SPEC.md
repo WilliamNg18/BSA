@@ -40,6 +40,12 @@ and "this is the proof the agent does not rubber-stamp".
 NHSBSA outbound notes name the field and rule without the 10mg correction;
 only the pharmacy's own source-bound card proposes the exact value.
 
+`epsStrengthForAudience(assessment, "pharmacy" | "operator")` supplies this
+read-only projection. It copies the factual records/checks and labels the
+matching rule; only its pharmacy branch can contain a suggestion. The operator
+branch has `suggestion: null`, not a hidden-but-present preview. It does not
+generate an outbound note, decide a gate, or modify any business state.
+
 P/V's browser contract is both toggle states, Both and single-side
 perspectives, 1280 and 1440 px, no Reset mid-cycle. Assert exact card and
 preview values; Apply changes selected code/name to 10mg while all source
