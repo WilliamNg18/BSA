@@ -6,6 +6,10 @@ ms.date: 2026-09-15
 
 # Scope register
 
+V's verification branch now imports G `cdd436b` as a development dependency,
+not a release or backup. Source remains G/consumer-owned; V may strengthen
+existing capture preservation against the actual new snapshot shape.
+
 ## Tasks 39/40 extension: verification pending
 
 Published G `4765770` establishes callable canonical contracts, not completed
@@ -35,6 +39,142 @@ The observed live baseline is clean `641815137b36ab3e925dcc98c4738d0b150a75d1`
 at `2026-09-15T18:59:23.9424369Z`; #94's green CI does not establish these
 new contracts. Final completion requires Tasks 25-40 on main, green deployment,
 actual current-live acceptance and the assigned exact-backup evidence.
+
+C1's B proof now includes all-four information-request/response transitions
+using actual store actions. A response is not a corrected claim submission,
+so the exact last submitted object remains unchanged. The 19 passing fidelity
+tests still run on G's pre-new-seed canonical snapshot, not final live scope.
+
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+## B40 readable-blank scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
+### G39/40 explicit-action checkpoint
+
+The first full integration inventory is not green: 210 failed / 1,575 passed
+tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.
+New targeted paper, source-image and note guards pass, but this is not release
+acceptance. Strength trace/rule-authority findings are active merge blockers.
+
+Functional checkpoint: the four new cases and channel-specific actual actions
+are wired. `EX-24112` has an acknowledged historical paper amendment awaiting
+human release, while complete EPS is Paid and wrong-strength EPS awaits pharmacy
+action. No navigation creates these states. Twelve targeted actual-store tests
+pass; complete current-consumer and live verification remain required.
+
+W/B pure foundations and revision-bound ACK/audit store controls are integrated
+as published WIP. Every corrected resubmission now requires accurate-current-
+payload acknowledgement in both modes. A human may explicitly reopen priced
+EPS for a later audit; toggling or navigating never does so. No new paper or
+strength workflow is declared live-complete from this checkpoint.
+
+## Tasks 39/40 shared-model integration: in progress
+
+The first additive contract checkpoint introduces independent pharmacy supply
+records and correction acknowledgement metadata without enabling new release
+behaviour. It is not a completed Task 39 or Task 40 implementation.
+
+Known mismatched EPS selections can now be represented for gate evaluation
+without rewriting the prescription or supply record. Paper supply fields are
+preserved across source-copy validation. This preparatory change does not claim
+the new wrong-strength scenario, acknowledgement or recheck flow is complete.
+
+Source identity is enforced on editable drafts as well as submissions.
+Acknowledgement metadata supplied through ordinary edits is cleared; an
+explicit acknowledgement action and runtime resubmission enforcement follow
+with B's module integration.
+
+The latest authorised scope replaces the active wrong-pack EPS example with
+prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
+`EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:
+`EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123`, and `EX-24112`.
+All active dates remain correct; C/F remain unclickable historical background.
+
+G alone integrates canonical state, types, lifecycle and seeds. W and B deliver
+isolated domain modules first; presentation owners follow the merged contracts.
+Required acceptance includes exact immutable submissions, independent captures,
+revision-bound correction acknowledgement, field/rule-only outbound notes,
+automatic eligible EPS rechecks and exclusively human paper releases.
+No task in this new scope is complete until merged, green-deployed and seen live.
+## Task 39 N optional numbers addition: WIP
+
+The independent mismatch helper uses all submitted claims, not the referral
+subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
+With share times volume labelled estimate, unchanged existing totals, verified
+study-only chapter 1 wording, same-store Reset and 1280/1440 browser coverage.
+The helper is implemented; consumer/state integration and exact-main live
+verification remain pending. This does not reopen historical Task 28.
+
+## 2026-09-15: Task 39 W foundation, not live completion
+
+The latest owner brief replaces the playable EPS error with wrong strength:
+prescribed and actually supplied Amlodipine 10mg tablets, 28; selected claim
+Amlodipine 5mg tablets, 28; all other fields and dates correct. Today models
+automatic pricing of the selected priced pack; On must fail both independently
+performed gates while wrong. A source-backed Apply changes the selected claim
+only; a separate human Send or acknowledged Resubmit is required.
+
+This W increment supplies the pure check/correction, verified public-evidence
+copy and isolated source-headline guard with 33 passing focused units and check.
+G owns shared integration; B owns acknowledgement/fidelity/referral contracts;
+P/D/S/N/V own their consuming surfaces, calculations and browser evidence.
+The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` (paper, brand missing). Historical records are not rewritten.
+Source and passing units do not establish implemented lifecycle routing or
+live acceptance. No price, medicine-selection advice or NHSBSA error-rate
+estimate is introduced by this module.
+## B40 bounded foundation scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
+
+New pure contracts cover C1 exact last-submission replication, C5 safe note
+generation and final-note validation, C6 revision/payload acknowledgement and
+EPS-only automatic recheck disposition, and C4 paper field/scan/hypothetical-OCR
+reconciliation. Explicit human capture stays separate from original submission.
+Canonical actions and historical seeds remain G-owned; C3/C7/C8 and the
+consumer UI/desktop/live proof remain integration obligations, not delivered
+behaviour from these standalone modules. This branch is published WIP, not a
+product or local backup. Current-main deployment observation remains required.
+The bounded foundation passed 48 units and check; these are not store-action
+or screen acceptance and do not satisfy the integrated C7 timing requirement.
+
+The later coordinator clarification narrows the card contract: proposed pack
+values and previews belong only to the pharmacy; operator findings may show
+the facts but advice and outbound notes name the field/rule without suggesting
+the correct value. Required Off round-trip coverage must start with actual
+Today pricing and a later explicit human audit/query reopening, not an invented
+queue row or a toggle-generated transition.
+
+W additionally supplies the G-requested pure audience adapter, preserving
+the existing evaluation/correction API. Source facts remain identical across
+the pharmacy/operator projections; a typed operator projection contains no
+proposed patch or preview. Four new authority regressions pass; consumer
+mounting and whole-flow live evidence are not claimed by these unit results.
 
 ## Live-first release and backup obligations
 
@@ -304,3 +444,16 @@ here identify the same commits, not additional unpushed work.
 No scope row is Not started. Owner-authorised work resumes from this preserved
 checkpoint. Do not merge empty checkpoint commits from completed streams as
 new features or claim a browser inventory is an executed pass.
+
+## Tasks 39/40 R audience scope
+
+In progress: explicit Card audience, pharmacy-only concrete value/preview,
+field/rule-only operator draft notes and unmodified read-only source facts.
+R's new audience unit contracts cover the projection, default operator boundary,
+source identity and absence of fabricated approval. Existing canonical actions
+remain G-owned; P/O wire their real components. Full four-case integration,
+exact-head CI, main deployment and live observations are still required.
+
+Prepared paper correction values now use the same before/after draft contract
+as EPS supply values; R supplies no replacement source data or independent
+correction algorithm. Actual paper seed/source preparation stays with G.
