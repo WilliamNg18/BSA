@@ -1,11 +1,12 @@
 import type { Page, TestInfo } from "@playwright/test";
 import { captureJson, expect } from "./fixtures";
 import { choosePerspective, flag } from "./perspective-helpers";
+import type { CycleActionOptions } from "../support/desktop-matrix";
 
 type Side = "Pharmacy" | "NHSBSA";
 export type DomainSnapshot = ReturnType<typeof import("../../src/lib/store").getDomainSnapshot>;
 type Checkpoint = { action: string; state: unknown };
-export type DomainAction = (label: string, side: Side, perform: () => Promise<void>) => Promise<DomainSnapshot>;
+export type DomainAction = (label: string, side: Side, perform: () => Promise<void>, options?: CycleActionOptions) => Promise<DomainSnapshot>;
 const epoch = Date.parse("2026-09-13T12:00:00.000Z");
 
 export function expectHumanRelease(before: DomainSnapshot, after: DomainSnapshot, id: string) {
@@ -71,10 +72,10 @@ export async function verifyPerspectiveEquivalence(
     const initial = await readDomainState(page);
     checkpoints.push({ action: "initial", state: initial });
     if (mode === "switched") expect(initial, "Both and switched runs must start from identical complete seeds").toEqual(both[0].state);
-    const action: DomainAction = async (label, side, perform) => {
+    const action: DomainAction = async (label, side, perform, options) => {
       const before = await readDomainState(page);
       const agentBefore = await flag(page).isChecked();
-      if (mode === "switched") {
+      if (mode === "switched" && !options?.preservePerspective) {
         for (const perspective of [side === "Pharmacy" ? "NHSBSA" : "Pharmacy", side] as const) {
           await choosePerspective(page, perspective);
           const state = await readDomainState(page);

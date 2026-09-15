@@ -2287,6 +2287,55 @@ combining the mounted tests. The numerical counter patch is already covered by
 main and is not duplicated. Adopt only V's immutable navigation helper and its
 small data dependency, not the full foreign proof branch.
 
+## 2026-09-15: Reconstruct verification without replacing merged owner work
+
+Question: how should the final verification branch incorporate the merged
+desktop runtime? Choice: retain the merged runtime, owner unit regressions,
+all 36 state checks and governance documents, then apply only the reviewed
+verification inventory, reporter, new requirement checks and documentation.
+Preserve the earlier branch ancestry and external reports rather than replaying
+its mixed implementation snapshots.
+
+Question: how are superseded live declarations retained? Choice: keep their
+assertion bodies unchanged and give them a frozen legacy inventory import.
+The active configuration selects exactly five current files and 75 names;
+historical declarations are neither deleted nor counted as new acceptance.
+
+Question: how can the new four-case parity checks retain temporary Follow
+context? Choice: add an optional presentation-preservation flag to the action
+helper. Existing callers keep identical default switching and complete
+snapshot/clock behaviour. The read-only observer and human-release provenance
+checks are unchanged.
+
+Question: what can passing subsets or diagnostic observers establish? Choice:
+retain partial selection as an overall failed full checklist, keep every
+failed predecessor, and require a new whole run. Route diagnostics are separate
+from acceptance, do not change the original deadline or subtract overhead,
+and do not turn post-verdict geometry or animation frames into paint evidence.
+
+Question: should the strict source-copy check be weakened for an existing
+hosting comment? Choice: retain the checker unchanged and replace only
+"Azure hosting" with "production hosting" in App.tsx's site-root comment.
+This is the sole approved source-byte exception; executable tokens, routing
+and hosting behaviour remain unchanged.
+
+Question: where should route-commit instrumentation run? Choice: a separate
+local diagnostic configuration enables a typed test fixture, retains both
+traces and labels its JSON report as diagnostic rather than acceptance.
+The normal 75-check configurations leave the observer inactive. It installs
+before navigation, collects after the original outcome and adds no awaited
+steps inside the existing one-second actions. Browser records cover only
+the final or failing document; earlier document evidence remains in traces.
+Record caps, dropped observations and added overhead stay explicit.
+
+Question: does the automatic queue's read-only link establish destination
+state? Choice: no. A's timed hand-off must verify the actual NHSBSA shared
+case status immediately after Follow navigation and before returning to the
+queue. This exact Off/On state check uses the same original one-second
+deadline, viewport and opacity assertions; the queue count and link remain
+additional checks. No state column, proxy, extra navigation or runtime change
+is introduced. Earlier timing results did not include this added observation.
+
 ## 2026-09-15: Focus only the committed demo route
 
 Question: why can Jump lose focus immediately after entering demo? Choice:
@@ -2301,3 +2350,86 @@ the committed route owns one heading-focus action. Keep intentional step,
 Back/Next and Follow navigation focus, all motion and the single store unchanged.
 No forced synchronous rendering, delay, retry or weakened focus assertion.
 Tie-breakers: preserve user focus and fix the demonstrated duplicate side effect.
+
+## 2026-09-15: Settle independent visibility reads without changing obligations
+
+Question: may independent visibility predicates share their observation
+window? Choice: launch only the existing visible, full-viewport and cumulative
+opacity predicates concurrently within each visibility helper invocation.
+Each uses the same original deadline. An all-settled barrier waits for every
+observation, including synchronous guard failures, before propagating the
+original single error or an aggregate containing all original failures.
+
+Text checks, origin and destination stages, actual A pre-queue state, queue
+counts, selections, links and navigation remain ordered exactly as before.
+The final deadline check still follows every required observation. No extra
+clock, timeout, state proxy or overhead subtraction is introduced.
+This is protocol read-scheduling efficiency, not a proven runtime fix.
+The prior standard D 1,008.3189 ms failure and diagnostic A 1,006.67 ms failure
+remain failed evidence; the changed procedure requires fresh verification.
+
+## 2026-09-15: Profile runtime costs without changing acceptance
+
+Question: what follows the failed serial and concurrent-read procedures?
+Choice: stop further harness adjustments and prepare one explicitly labelled
+local CPU/timeline profile of the existing full 1280 On matrix. Preserve
+all actions, ordering, strong automatic-state checks and the one-second
+deadline. Profiling starts before the test and is collected after its
+original outcome, without route DOM observers or application instrumentation.
+
+Require a new output directory, exclusive files, complete chunk writes,
+actual CPU/trace hashes, exact build/entry-asset identity and explicit
+duration/buffer/output caps. Errors, caps or lost data make capture incomplete
+and are surfaced separately from the original functional result. No repeated
+run, overhead subtraction, guessed source mapping or speculative runtime
+patch follows from incomplete samples.
+
+## 2026-09-15: Profile the original first journey in a shorter window
+
+Question: how can the first action be profiled without increasing capture
+caps or discarding required preconditions? Choice: a separate diagnostic
+specification calls the unchanged first A/On/Both journey at 1280 px once.
+A and Both are already first in the full matrix; the helper retains the real
+submission, verified NHSBSA state, queue checks, both-side visits and final
+normal-pricing assertions. Collection ends after that original journey.
+
+The existing profiler, sampling, buffer/output limits, single deadline and
+standard matrix files are unchanged. The shorter diagnostic is not a matrix
+or 75-check pass and does not repair or relabel earlier failures. If it is
+again capped or insufficient, stop without another profiling attempt.
+
+## 2026-09-15: Isolate optional trace snapshots from timed verification
+
+Question: can optional trace-recorder work be excluded without changing the
+required measurements? Choice: use the installed public Playwright literal
+worker trace option only for the eight timing declarations. Keep the actual
+callbacks, helpers, action order, predicates and deadline unchanged. Preserve
+API/source traces and attachments, but explicitly lose continuous DOM,
+screencast and HAR resource/payload coverage for those tests.
+
+Validate the actual resolved option before the body, record it after every
+outcome, and retain failure HTML/ARIA only after the verdict. Existing named
+screenshots, axe audits, network/CSP/error assertions and failure geometry
+remain independent and unchanged. Do not add a network collector to claim
+parity or subtract any estimated observation cost.
+
+Global and untimed/state tracing stays unchanged. Separate diagnostic matrix
+wrappers use the base full-trace fixture and the exact original callback
+tokens. Worker grouping and shard membership may change, but all original
+test IDs must remain in the four-shard union without loss or duplication.
+No private API, function-valued trace override or unsupported describe-level
+worker option is used. This changes optional artifact collection, not runtime
+behaviour, and does not relabel any prior deadline failure.
+
+## 2026-09-15: Stream V adopts live-first publication
+
+Question: how should V publish verified but incomplete work under the standing rule? Choice: push draft #94 at STATUS and at least every thirty minutes, update all five registers in the same commit, and keep completion blocked until merged green-deployed work is observed live; tie-breaker: the latest explicit instruction and truthful evidence.
+
+Question: what do the retained branch runs represent? Choice: developer test artifacts only, never a separate product or backup; only the current-main payload verified on the live URL can be the backup, with D owning implementation and O its independent verification; tie-breaker: one release authority.
+
+Status source `c091d47269665e12af69a2a82cb3733747209eeb` is published WIP.
+The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f`. The controlled 132-transition
+pass does not bridge that release gap or replace full live acceptance.
+
+Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.

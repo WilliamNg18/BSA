@@ -3,7 +3,7 @@ import { navigatePrimary } from "../e2e/fixtures";
 import { openHistory } from "../e2e/perspective-helpers";
 import { EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
-import { LIVE_CHECKS } from "./inventory";
+import { LIVE_CHECKS } from "./legacy-inventory";
 
 test(LIVE_CHECKS.genericCorrection, async ({ page }, info) => {
   const id = "SYN-FQ123-TYPE2";

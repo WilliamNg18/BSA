@@ -19,6 +19,33 @@ two-matrix run passed 132 transitions with unchanged one-second assertions,
 but it is a partial, pre-rule branch diagnostic and is not a live release or
 backup. Earlier failed runs remain failed evidence.
 
+### Stream V STATUS: published WIP, not live completion
+
+Implementation `c091d47269665e12af69a2a82cb3733747209eeb` is pushed to draft
+#94. Its clean check and 1,626 unit tests passed. The controlled two-matrix
+developer check passed 132 transitions with a maximum of 873.0287 ms and
+verified the actual thin trace policy. It remains a partial test artifact,
+not a full 75-check result, deployed product or local backup.
+
+At `2026-09-15T18:24:10.7144775Z`, the live root and `/build-info.json` both
+returned HTTP 200; identity was `08f4d399ca658cae2aaf16a10d4f9cae8431621f`,
+`dirty: false`. This HTTP observation does not
+claim that the unpublished V changes have been seen live or that UI acceptance
+is complete.
+
+V adopts the standing rule in the same change as all five status registers.
+Every future code/status change updates those registers and is pushed at
+STATUS and at least every thirty minutes of activity. D owns release guards
+and exact-main backup implementation; O owns independent offline verification.
+V does not change those files or describe any branch diagnostic as a backup.
+
+The first published c091 CI (`35006154532`) failed on the callback-integrity
+unit: its standalone TypeScript scanner produced different hashes for the
+same template-containing callback under LF and CRLF. This change uses actual
+parser token leaves, with an immutable-original fingerprint plus LF/CRLF and
+changed-value/template negatives. Callback bodies, runtime and deadlines are
+unchanged. Fresh CI is required; the original failed CI is not relabelled.
+
 | Release obligation | Owner | Current state |
 | --- | --- | --- |
 | Record and relay the live-first rule; keep all five tracking documents contemporaneous | Coordinator and every stream | Rule recorded in this change; active branches must be pushed at STATUS and at least every thirty minutes |

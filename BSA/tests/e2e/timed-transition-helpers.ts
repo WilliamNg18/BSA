@@ -1,22 +1,52 @@
 import type { Locator, Page, TestInfo } from "@playwright/test";
 import { captureJson, expect } from "./fixtures";
 import { TransitionDeadline } from "../support/transition-deadline";
+import { settleIndependentChecks } from "../support/independent-checks";
 
-async function visibleWithinDeadline(locator: Locator, deadline: TransitionDeadline) {
-  await expect(locator).toBeVisible({ timeout: deadline.remainingMs() });
-  await expect(locator).toBeInViewport({ ratio: 1, timeout: deadline.remainingMs() });
-  await expect.poll(async () => locator.evaluate((element) => {
-    let opacity = 1;
+type RequiredText = { locator: Locator; text: string };
+type QueueTarget = { link: Locator; tile: Locator; expectedTileText: string; select?: Locator; expand?: Locator };
+type TransitionDestination =
+  | { destination: "NHSBSA"; queue: QueueTarget; preQueueRequiredText?: RequiredText[] }
+  | { destination: "NHSBSA" | "Pharmacy"; queue?: undefined; preQueueRequiredText?: never };
+
+async function readFailureGeometry(locator: Locator) {
+  return locator.evaluateAll((elements) => elements.map((element) => {
+    const ancestors = [];
     for (let node: Element | null = element; node; node = node.parentElement) {
       const style = getComputedStyle(node);
-      opacity *= Number(style.opacity);
-      if (style.visibility !== "visible" || style.display === "none") return false;
+      ancestors.push({
+        tag: node.tagName, id: node.id, className: node.getAttribute("class"),
+        rect: node.getBoundingClientRect().toJSON(),
+        overflowX: style.overflowX, overflowY: style.overflowY, opacity: style.opacity,
+        clientWidth: node.clientWidth, clientHeight: node.clientHeight,
+        scrollLeft: node.scrollLeft, scrollTop: node.scrollTop,
+      });
     }
-    return Number.isFinite(opacity) && opacity >= 0.99;
-  }, undefined, { timeout: deadline.remainingMs() }), {
-    timeout: deadline.remainingMs(), intervals: [16],
-    message: "The observed transition must be painted, not only present in a hidden/fading DOM node.",
-  }).toBe(true);
+    return {
+      locatorRole: element.getAttribute("role"), text: element.textContent,
+      focused: element === document.activeElement,
+      viewport: { width: innerWidth, height: innerHeight }, ancestors,
+    };
+  }));
+}
+
+async function visibleWithinDeadline(locator: Locator, deadline: TransitionDeadline) {
+  await settleIndependentChecks([
+    () => expect(locator).toBeVisible({ timeout: deadline.remainingMs() }),
+    () => expect(locator).toBeInViewport({ ratio: 1, timeout: deadline.remainingMs() }),
+    () => expect.poll(async () => locator.evaluate((element) => {
+      let opacity = 1;
+      for (let node: Element | null = element; node; node = node.parentElement) {
+        const style = getComputedStyle(node);
+        opacity *= Number(style.opacity);
+        if (style.visibility !== "visible" || style.display === "none") return false;
+      }
+      return Number.isFinite(opacity) && opacity >= 0.99;
+    }, undefined, { timeout: deadline.remainingMs() }), {
+      timeout: deadline.remainingMs(), intervals: [16],
+      message: "The observed transition must be painted, not only present in a hidden/fading DOM node.",
+    }).toBe(true),
+  ]);
 }
 
 export async function assertVisibleHandoffWithinOneSecond(
@@ -26,17 +56,18 @@ export async function assertVisibleHandoffWithinOneSecond(
     name: string;
     action: Locator;
     followedId: string;
-    destination: "Pharmacy" | "NHSBSA";
     originState: string;
     originRequiredText?: { locator: Locator; text: string }[];
     destinationState: Locator;
     destinationText: string;
     stateMatch?: "exact" | "contains";
-    queue?: { link: Locator; tile: Locator; expectedTileText: string; select?: Locator; expand?: Locator };
     requiredText?: { locator: Locator; text: string }[];
     lastEventText: string;
-  },
+  } & TransitionDestination,
 ) {
+  if (input.preQueueRequiredText && (!input.queue || input.destination !== "NHSBSA")) {
+    throw new Error("Pre-queue state requirements need an NHSBSA queue destination.");
+  }
   await expect(input.action).toBeVisible();
   await expect(input.action).toBeEnabled();
   if (input.queue && input.destination !== "NHSBSA") throw new Error("Queue timing requires the NHSBSA destination.");
@@ -63,6 +94,10 @@ export async function assertVisibleHandoffWithinOneSecond(
     await expect(page).toHaveURL((url) => input.destination === "Pharmacy"
       ? url.pathname === "/pharmacy/claims" && (url.searchParams.get("case") ?? url.searchParams.get("caseId")) === input.followedId
       : url.pathname === `/case/${encodeURIComponent(input.followedId)}`, { timeout: deadline.remainingMs() });
+    for (const requirement of input.preQueueRequiredText ?? []) {
+      await visibleWithinDeadline(requirement.locator, deadline);
+      await expect(requirement.locator).toHaveText(requirement.text, { timeout: deadline.remainingMs() });
+    }
     if (input.queue) {
       await input.queue.link.click({ timeout: deadline.remainingMs() });
       await expect(page).toHaveURL((url) => url.pathname === "/queue", { timeout: deadline.remainingMs() });
@@ -82,15 +117,33 @@ export async function assertVisibleHandoffWithinOneSecond(
     observedElapsedMs = deadline.finish();
     milestones.push({ label: "actual destination and required reason visible", elapsedMs: observedElapsedMs });
   } finally {
+    const elapsedMs = observedElapsedMs ?? deadline.elapsedMs();
+    const failureGeometry = observedElapsedMs === null
+      ? await readFailureGeometry(input.destinationState)
+      : undefined;
+    const requiredTextGeometry = observedElapsedMs === null
+      ? await Promise.all([
+        ...(input.originRequiredText ?? []).map((requirement) => ({ ...requirement, phase: "origin" })),
+        ...(input.preQueueRequiredText ?? []).map((requirement) => ({ ...requirement, phase: "pre-queue" })),
+        ...(input.requiredText ?? []).map((requirement) => ({ ...requirement, phase: "destination" })),
+      ].map(async (requirement) => ({
+        phase: requirement.phase, expectedText: requirement.text,
+        locator: requirement.locator.toString(),
+        geometry: await readFailureGeometry(requirement.locator),
+      })))
+      : undefined;
     await captureJson(info, `timing-${input.name}`, {
       name: input.name, caseId: input.followedId, budgetMs: 1000,
-      elapsedMs: observedElapsedMs ?? deadline.elapsedMs(),
+      elapsedMs,
       status: observedElapsedMs === null ? "FAIL" : "PASS",
       milestones, url: page.url(),
       clock: "Node monotonic wall-clock, independent of the controlled domain timestamp",
       startsBefore: "Actual human button click; includes visible origin and destination assertions and Follow navigation",
       visibility: "Viewport intersection and cumulative ancestor opacity, not DOM text alone",
       priorEvent,
+      failureGeometry,
+      requiredTextGeometry,
+      geometryBoundary: failureGeometry ? "Read only after the outcome; not used to establish latency or change the verdict." : undefined,
     });
   }
 }

@@ -23,6 +23,26 @@ instructions and actual verification results belong in the same change as the
 implementation they describe. No backup equality or ten-minute recovery result
 has yet been established.
 
+### Stream V current obligation
+
+Draft #94 now publishes implementation `c091d47269665e12af69a2a82cb3733747209eeb`.
+The reviewed trace-artifact policy preserves required measurements and all
+existing test identities; its controlled On-only result is 2/2 and 132
+transitions, not current-main live acceptance. Optional DOM/screencast/HAR
+trace loss remains explicit, with no waiver of network/CSP/error assertions.
+
+V remains incomplete until the work is merged, required CI and deployment are
+green, and the actual current live URL is observed with full required evidence.
+Current live identity observed at `2026-09-15T18:24:10.7144775Z` is
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f`, not the WIP branch. Existing local
+test outputs are developer artifacts only. Backup, deployment-guard and clean
+offline verification work remains with its assigned owners.
+
+The current CI repair is limited to the callback-integrity unit's cross-platform
+token parsing. It retains the exact original parsed-token fingerprint and
+rejects real callback changes; it does not relax any measurement or release
+gate. This code change and all five status documents are published together.
+
 ## Current scope: Tasks 25-38, four-case desktop vision
 
 The 14 September owner brief supersedes the previous closeout. Supported
