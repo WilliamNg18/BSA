@@ -61,6 +61,7 @@ export interface DiagnosticFollowUp {
 }
 
 export interface ItemRecommendation {
+  readonly ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check" | "unavailable";
   readonly strength?: EpsStrengthAssessment;
   readonly paper?: PaperReconciliation;
   readonly caseId: string;
@@ -178,7 +179,7 @@ export function deriveRecommendation(
   const clauseId = context.kind === "draft" || !capture ? assessment.clauseId : assessment.sourceClauseId;
   const typedFacts = interpretPharmacyText(text);
   const unsupportedSpecial = typedFacts.type === "UNKNOWN" && /^\s*SP\b/i.test(text);
-  const clause = version?.clauses.find((entry) => unsupportedSpecial ? entry.endorsementType === "SP" : entry.id === clauseId) ?? null;
+  const clause = strength ? null : version?.clauses.find((entry) => unsupportedSpecial ? entry.endorsementType === "SP" : entry.id === clauseId) ?? null;
   const sourceKnown = channel === "eps" || Boolean(capture) || context.kind === "draft" || Boolean(declared);
   const effectiveChecks = capture ? assessment.gate2Checks : assessment.gate1Checks;
   const requirements: RecommendationRequirement[] = (clause?.requirements ?? []).map((requirement) => {
@@ -186,11 +187,19 @@ export function deriveRecommendation(
     return { id: requirement.id, label: requirement.label,
       status: !sourceKnown || !checked ? "not_established" : checked.pass ? "met" : "not_met" };
   });
+  if (strength) {
+    requirements.push({ id: "selected_pack_matches", label: "Selected pack matches prescription and supply",
+      status: strength.complete ? "met" : "not_met" });
+    for (const [index, check] of strength.checks.entries()) requirements.push({
+      id: `strength-${index}`, label: check.name, status: check.pass ? "met" : "not_met", basis: "received_source",
+    });
+  }
   for (const [index, check] of (paper?.evidence.tariffChecks ?? []).entries()) {
     if (check.met !== true) requirements.push({ id: `paper-${index}`, label: REFERRAL_FIELD_LABELS[check.field],
       status: check.met === null ? "not_established" : "not_met", basis: "declared_format" });
   }
-  const sourceGap = !clause ? "Governing provision unavailable for this source and dispensing date."
+  const sourceGap = strength ? (!version ? "No dispensing-month reference is available; manual review is required." : null)
+    : !clause ? "Governing provision unavailable for this source and dispensing date."
     : unsupportedSpecial ? "Unsupported input: SP is outside validated coverage; manual review only." : null;
   if (sourceGap) requirements.push({ id: clause ? "coverage" : "provision", label: clause ? "Validated interpretation coverage" : "Applicable provision", status: "not_established" });
   const unreadable = channel === "paper" && original.imageQuality < QUALITY_THRESHOLD;
@@ -240,11 +249,14 @@ export function deriveRecommendation(
   const clauseLabel = clause?.title.split(":")[0] ?? "Unavailable provision";
   return immutable({
     caseId, revision: revision.number, context: context.kind, dispensingDate: date,
+    ruleAuthority: strength ? "proposed_cross_record_check" : clause ? "retrieved_tariff" : "unavailable",
     ...(strength ? { strength } : {}),
     ...(paper ? { paper } : {}),
     clause, version: version?.version ?? null, versionLabel: version?.label ?? null, requirements, missing,
     suggestions: complete ? [] : suggestions, preview: complete ? null : preview, outcome,
-    summary: paperRelease ? paper.summary : complete ? `Complete against ${clauseLabel}, Version ${version?.label}; nothing to add.` :
+    summary: strength ? (complete ? "Complete against the proposed prescription and supply matching check; nothing to add."
+      : "Prescription, selected claim and supply records require reconciliation.")
+      : paperRelease ? paper.summary : complete ? `Complete against ${clauseLabel}, Version ${version?.label}; nothing to add.` :
       diagnostic ? "Safe human follow-up; verification remains unsuccessful." : sourceGap ?? "Correction required before the submission is complete.",
     signals: { ...pack.signals, provisionFound: Boolean(clause), inCoverage: unsupportedSpecial ? false : pack.signals.inCoverage,
       sampleAgreement: context.kind === "draft" ? { agree: 0, total: 0 } : pack.signals.sampleAgreement,
