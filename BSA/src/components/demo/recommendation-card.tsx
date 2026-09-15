@@ -27,6 +27,7 @@ export function RecommendationCard({
         <div><dt className="text-muted-foreground">Tariff version</dt><dd>{r.versionLabel ?? "Unavailable"}{r.version && ` (${r.version})`}</dd></div>
         <div><dt className="text-muted-foreground">Dispensing date</dt><dd>{r.dispensingDate.split("-").reverse().join("/")}</dd></div>
         <div><dt className="text-muted-foreground">Evidence</dt><dd>{r.context === "recorded" ? "Recorded" : r.context === "draft" ? "Draft" : "Current"} revision {r.revision}</dd></div>
+        {r.context === "recorded" && <div><dt>Assessment basis</dt><dd>Read-only reassessment of recorded sources, not a historical agent action.</dd></div>}
       </dl>
       <div className="text-sm">
         {r.missing.length > 0 && <h4 className="font-medium">Missing or unresolved</h4>}

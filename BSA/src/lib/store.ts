@@ -270,7 +270,7 @@ export const useAppStore = create<AppState>((set, get) => {
         const operatorDraft = s.operatorDrafts[c.id];
         if (!applied?.diagnostic || !operatorDraft?.appliedSuggestion || operatorDraft.revision !== revision ||
           operatorDraft.outcome !== input.decision || operatorDraft.note !== draft || reason !== draft ||
-          operatorDraft.rbCode !== (rbCode ?? "")) throw new Error("No explicitly applied safe human follow-up is available for approval.");
+          operatorDraft.rbCode !== (rbCode ?? "")) throw new Error("No validated, explicitly applied safe human follow-up is available for approval.");
         diagnostic = validateDiagnosticFollowUp(s, c.id, applied.diagnostic);
         if (diagnostic.outcome !== input.decision || diagnostic.note !== draft || diagnostic.rbCode !== (rbCode ?? "") ||
           input.recommendation !== diagnostic.kernelRecommendation) throw new Error("Diagnostic approval does not match the applied follow-up.");
@@ -280,7 +280,7 @@ export const useAppStore = create<AppState>((set, get) => {
     const clauseId = diagnostic?.clauseId ?? (input.tariffVersion === pack.tariffVersion && input.recommendation !== "NONE" ? pack.clause?.id : undefined);
     const approvedDraft = draft === undefined ? undefined : { text: draft, approvedAt: at, approvedBy: "Demo operator", decision: input.decision,
       tariffVersion: diagnostic?.tariffVersion ?? pack.tariffVersion, clauseId: diagnostic ? diagnostic.clauseId : pack.clause!.id,
-      provenance: diagnostic?.provenance ?? "verified_findings" as const, ...(diagnostic ? { diagnostic } : {}) };
+      ...(diagnostic ? { provenance: diagnostic.provenance, diagnostic } : {}) };
     const diagnosticEvidence = diagnostic ? {
       inputs: [...pack.evidence.map((entry) => entry.value), ...diagnostic.findings],
       sources: [...new Set(pack.evidence.map((entry) => entry.origin))], checks: pack.gate.checks,
