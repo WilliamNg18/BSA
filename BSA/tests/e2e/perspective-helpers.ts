@@ -18,13 +18,20 @@ export async function openHistory(page: Page) {
   if (await disclosure.getAttribute("open") === null) await disclosure.locator(":scope > summary").click();
 }
 
-async function historyIdentity(page: Page) {
+export async function historyIdentity(page: Page) {
   return history(page).getByRole("list", { name: "Lifecycle events", exact: true }).locator(":scope > li").evaluateAll((items) => items.map((item) => ({
     fields: Array.from(item.querySelectorAll("dl > div"))
       .filter((field) => ["Time / actor", "Attempt / record"].includes(field.querySelector("dt")?.textContent ?? ""))
       .map((field) => field.textContent),
     message: item.querySelector(":scope > p")?.textContent,
   })));
+}
+
+export async function dismissDecisionNotification(page: Page) {
+  const notice = page.getByRole("complementary", { name: "Decision notifications", exact: true });
+  await expect(notice.locator('[data-decision-notice="success"]')).toContainText("Decision recorded");
+  await notice.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+  await expect(notice.locator("[data-decision-notice]")).toHaveCount(0);
 }
 
 export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
@@ -37,12 +44,19 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await choosePerspective(page, "Pharmacy");
     await navigatePrimary(page, "Pharmacy check");
     await flag(page).setChecked(enabled);
-    await page.getByRole("radio", { name: "NCSO missing date", exact: true }).check();
-    await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+    const missingDate = page.getByRole("radio", { name: "NCSO missing date", exact: true });
+    await missingDate.click();
+    await expect(missingDate).toBeChecked();
+    await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
+    await expect(page.getByRole("radio", { name: "EPS", exact: true })).toBeChecked();
+    await expect(page).toHaveURL(/\/pharmacy$/);
+    if (enabled) await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
+    else await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
     const endorsement = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();
     await page.getByRole("button", { name: "Send claim", exact: true }).click();
     const receipt = page.getByRole("region", { name: "Submission receipt", exact: true });
     await expect(receipt).toContainText(`EX-24112:${enabled ? 3 : 2}`);
+    await receipt.getByText("Recorded submission", { exact: true }).click();
     await expect(receipt).toContainText(endorsement);
     const submitted = receipt.getByRole("link", { name: "View submitted claim", exact: true });
     const href = await submitted.getAttribute("href");
@@ -99,10 +113,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
     await page.getByRole("button", { name: "Record decision", exact: true }).click();
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
-    const notice = page.getByRole("complementary", { name: "Decision notifications", exact: true });
-    await expect(notice.locator('[data-decision-notice="success"]')).toContainText("Decision recorded");
-    await notice.getByRole("button", { name: "Dismiss notification", exact: true }).click();
-    await expect(notice.locator("[data-decision-notice]")).toHaveCount(0);
+    await dismissDecisionNotification(page);
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]);
     await openHistory(page);
     const decisionEvents = history(page).getByRole("list", { name: "Lifecycle events", exact: true });

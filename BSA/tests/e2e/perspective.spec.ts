@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureCheckpoint, confirmReset, expect, navigatePrimary, test } from "./fixtures";
-import { choosePerspective, flag, perspectiveGuard, perspectiveRoundTrips } from "./perspective-helpers";
+import { choosePerspective, flag, history, historyIdentity, openHistory, perspectiveGuard, perspectiveRoundTrips } from "./perspective-helpers";
+import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 
 test("Pharmacy submit to NHSBSA decision to Pharmacy same decision, Off then On without Reset", async ({ page }, info) => {
   await perspectiveRoundTrips(page, info);
@@ -10,23 +11,46 @@ test("caught-before-submission records only a completed human-applied correction
   await page.goto("/pharmacy");
   await choosePerspective(page, "Pharmacy");
   await flag(page).setChecked(true);
+  await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
   const endorsement = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
+  const seed = await endorsement.inputValue();
   const metric = page.getByRole("region", { name: "Selected pharmacy this month", exact: true })
     .locator(":scope > dl > div").filter({ has: page.getByText("Caught before submission", { exact: true }) }).getByRole("definition");
   await endorsement.fill("NCSO RK 21/08/26");
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
   await navigatePrimary(page, "Pharmacy claims");
   await expect(metric).toHaveText("0");
   await navigatePrimary(page, "Pharmacy check");
+  await expect(endorsement).toHaveValue("NCSO RK 21/08/26");
+  await endorsement.fill(seed);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+  await page.locator('[data-pharmacy-action="apply-correction"]').click();
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+  const corrected = await endorsement.inputValue();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
+  await navigatePrimary(page, "Pharmacy claims");
+  await expect(metric).toHaveText("1");
+  await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
+    .filter({ hasText: "EX-24112" }).getByRole("button").click();
+  await openHistory(page);
+  await expect(history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li")).toHaveCount(1);
+  await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
+  await flag(page).setChecked(false);
+  await expect(metric).toHaveCount(0);
+  await flag(page).setChecked(true);
+  await expect(metric).toHaveText("1");
+  await navigatePrimary(page, "Pharmacy check");
+  await expect(endorsement).toHaveValue(corrected);
+  await expect(page.locator('[data-pharmacy-action="apply-correction"]')).toHaveCount(0);
   await navigatePrimary(page, "Pharmacy claims");
   await expect(metric).toHaveText("1");
   await navigatePrimary(page, "Pharmacy check");
+  await endorsement.fill(seed);
   await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
-  await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Complete: will flow to automated pricing, no person involved");
+  await page.locator('[data-pharmacy-action="apply-correction"]').click();
+  await expect(endorsement).toHaveValue(corrected);
+  await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
   await navigatePrimary(page, "Pharmacy claims");
   await expect(metric).toHaveText("1");
   await confirmReset(page);
@@ -34,29 +58,73 @@ test("caught-before-submission records only a completed human-applied correction
   await expect(metric).toHaveText("0");
 });
 
-for (const cancellation of ["edit", "scenario", "Agent Off", "leave page", "Reset", "submit"] as const) {
-  test(`unfinished correction evidence is cancelled by ${cancellation}`, async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.clock.install({ time: new Date("2026-09-12T12:00:00Z") });
-    await page.clock.pauseAt(new Date("2026-09-12T12:00:10Z"));
+for (const boundary of ["edit", "scenario", "Agent Off", "leave page", "Reset", "submit"] as const) {
+  test(`applied correction retains audit evidence without implicit submission across ${boundary}`, async ({ page }) => {
     await page.goto("/pharmacy");
     await choosePerspective(page, "Pharmacy");
     await flag(page).setChecked(true);
-    await page.clock.runFor(3000);
+    await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", "EX-24112");
+    const endorsement = page.getByRole("textbox", { name: "Dispenser endorsement", exact: true });
+    const seed = await endorsement.inputValue();
     await expect(page.locator("[data-pharmacy-status]")).toHaveText("Information missing");
-    await page.getByRole("button", { name: "Apply correction", exact: true }).click();
-    if (cancellation === "edit") await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO XY 21/08/26");
-    if (cancellation === "scenario") await page.getByRole("radio", { name: "Complete endorsement", exact: true }).check();
-    if (cancellation === "Agent Off") await flag(page).setChecked(false);
-    if (cancellation === "leave page") await navigatePrimary(page, "Pharmacy claims");
-    if (cancellation === "Reset") await confirmReset(page);
-    if (cancellation === "submit") await page.getByRole("button", { name: "Send claim", exact: true }).click();
-    await page.clock.runFor(3000);
+    await page.locator('[data-pharmacy-action="apply-correction"]').click();
+    await expect(page.locator("[data-pharmacy-status]")).toHaveText("Ready");
+    const corrected = await endorsement.inputValue();
+    expect(corrected).not.toBe(seed);
+    await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
+    if (boundary === "edit") await endorsement.fill("NCSO XY 21/08/26");
+    if (boundary === "scenario") {
+      for (const [name, caseId] of [["Complete endorsement", "EX-24107"], ["NCSO missing date", "EX-24112"]] as const) {
+        const scenario = page.getByRole("radio", { name, exact: true });
+        await scenario.click();
+        await expect(scenario).toBeChecked();
+        await expect(page.locator("[data-pharmacy-case]")).toHaveAttribute("data-pharmacy-case", caseId);
+        await expect(page).toHaveURL((url) => url.pathname === "/pharmacy"
+          && url.searchParams.get("case") === caseId && url.searchParams.get("channel") === "eps");
+      }
+      await expect(endorsement).toHaveValue(corrected);
+    }
+    if (boundary === "Agent Off") {
+      await flag(page).setChecked(false);
+      await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
+      await expect(endorsement).toHaveValue(corrected);
+    }
+    if (boundary === "leave page") {
+      await navigatePrimary(page, "Pharmacy claims");
+      await navigatePrimary(page, "Pharmacy check");
+      await expect(endorsement).toHaveValue(corrected);
+    }
+    if (boundary === "Reset") {
+      await confirmReset(page);
+      await expect(endorsement).toHaveValue(seed);
+    }
+    if (boundary === "submit") {
+      await page.getByRole("button", { name: "Send claim", exact: true }).click();
+      await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24112:2");
+    }
     await navigatePrimary(page, "Pharmacy claims");
     await flag(page).setChecked(true);
     const metric = page.getByRole("region", { name: "Selected pharmacy this month", exact: true })
       .locator(":scope > dl > div").filter({ has: page.getByText("Caught before submission", { exact: true }) }).getByRole("definition");
-    await expect(metric).toHaveText("0");
+    await expect(metric).toHaveText(boundary === "Reset" ? "0" : "1");
+    await page.getByRole("group", { name: "Claim filters", exact: true }).getByRole("button", { name: /^All / }).click();
+    await page.getByRole("table", { name: "Pharmacy claims", exact: true }).getByRole("row")
+      .filter({ hasText: "EX-24112" }).getByRole("button").click();
+    await openHistory(page);
+    const events = await historyIdentity(page);
+    const applied = events.filter((event) => event.message === "Suggested correction applied by the pharmacy to a new submission draft; not sent.");
+    expect(applied).toHaveLength(boundary === "Reset" ? 0 : 1);
+    if (boundary !== "Reset") expect(applied[0].fields[0]).toContain("pharmacy");
+    const attempts = history(page).getByRole("list", { name: "Immutable pharmacy attempts", exact: true }).locator(":scope > li");
+    await expect(attempts).toHaveCount(boundary === "submit" ? 2 : 1);
+    await expect(attempts.first().locator("dl > div")
+      .filter({ has: page.getByText("Endorsement snapshot", { exact: true }) }).locator("dd")).toHaveText(seed);
+    await expect(history(page).getByRole("status")).toHaveText(boundary === "submit"
+      ? LIFECYCLE_LABELS.released_to_pricing.pharmacy : LIFECYCLE_LABELS.referred_back.pharmacy);
+    if (boundary === "submit") {
+      await expect(attempts.last().locator("dl > div")
+        .filter({ has: page.getByText("Endorsement snapshot", { exact: true }) }).locator("dd")).toHaveText(corrected);
+    }
   });
 }
 
