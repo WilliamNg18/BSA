@@ -4,8 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { PharmacyClaimsPage } from "@/pages/pharmacy-claims";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
-import { checkPharmacy, pharmacySnapshot } from "@/lib/domain/pharmacy-check";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { MANUAL_LOOP_MONTH_DEFAULTS, formatProcessHours, formatProcessItems, monthModel } from "@/lib/domain/baseline";
 import { useAppStore } from "@/lib/store";
 
@@ -25,6 +25,14 @@ function recordedClaims() {
   return renderClaims().split('aria-label="Shared monthly process projection"')[0];
 }
 
+function applyStrengthCorrection() {
+  const s = useAppStore.getState(), id = "SYN-FQ123-MISMATCH";
+  const c = caseForLifecycle(id, s.lifecycles, s.caseRevisions, s.itemProcesses)!;
+  const draft = initialisePharmacyDraft(c, s.caseRevisions[id].at(-1)!);
+  s.setPharmacyDraft(id, { ...draft, purpose: "new_submission" });
+  s.applySuggestedCorrection(id);
+}
+
 beforeEach(() => {
   useAppStore.getState().resetDemo();
   useAppStore.getState().setPerspective("both");
@@ -39,21 +47,25 @@ describe("claims presentation uses recorded events separately from monthly proje
     expect(markup.match(/scope="col"/g)).toHaveLength(5);
     expect(recordedClaims()).not.toContain("Caught before submission");
     useAppStore.getState().setAgentEnabled(true);
-    expect(renderClaims()).toContain("Read the operator-approved fix, correct the endorsement, then explicitly resubmit.");
+    expect(renderClaims()).toContain("Correct, confirm accuracy, then resubmit.");
+    const workload = markup.split('aria-label="Current pharmacy workload"')[1].split('aria-label="Selected pharmacy this month"')[0];
+    expect(workload).toMatch(/aria-label="Action needed"[^]*?SYN-FQ123-MISMATCH/);
+    expect(workload).toMatch(/aria-label="Waiting on NHSBSA"[^]*?EX-24112/);
+    expect(workload).toMatch(/aria-label="Paid this month"[^]*?EX-24107/);
   });
 
   it("reads caught counts from explicit pharmacy events, not ready revisions or projections", () => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
-    const c = caseForLifecycle("EX-24112", store.lifecycles, store.caseRevisions)!;
-    const before = pharmacySnapshot(c.extracted.endorsementText, c.extracted.dispensingDate, "scripted",
-      checkPharmacy(c, c.extracted.endorsementText), new Date().toISOString());
-    const text = `${c.extracted.endorsementText} 21/08/26`;
-    const after = pharmacySnapshot(text, c.extracted.dispensingDate, "scripted", checkPharmacy(c, text), new Date().toISOString());
+    const before = structuredClone(store.caseRevisions);
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);
-    store.recordPharmacyCorrection(c.id, before, after, 2);
+    applyStrengthCorrection();
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
-    store.recordPharmacyCorrection(c.id, before, after, 2);
+    applyStrengthCorrection();
+    expect(useAppStore.getState().caseRevisions).toEqual(before);
+    expect(useAppStore.getState().lifecycles["SYN-FQ123-MISMATCH"].history.at(-1)).toMatchObject({
+      actor: "pharmacy", processStep: "correction_applied",
+    });
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>1<\/dd>/);
     store.setManualLoopInput("preventionPercent", "30");
     const projection = monthModel({ ...MANUAL_LOOP_MONTH_DEFAULTS, preventionPercent: 30 });
@@ -74,12 +86,7 @@ describe("claims presentation uses recorded events separately from monthly proje
   it("excludes another pharmacy and another month from actual catch counts", () => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
-    const c = caseForLifecycle("EX-24112", store.lifecycles, store.caseRevisions)!;
-    const before = pharmacySnapshot(c.extracted.endorsementText, c.extracted.dispensingDate, "scripted",
-      checkPharmacy(c, c.extracted.endorsementText), new Date().toISOString());
-    const text = `${c.extracted.endorsementText} 21/08/26`;
-    const after = pharmacySnapshot(text, c.extracted.dispensingDate, "scripted", checkPharmacy(c, text), new Date().toISOString());
-    store.recordPharmacyCorrection(c.id, before, after, 2);
+    applyStrengthCorrection();
     const event = useAppStore.getState().pharmacyCorrections[0];
     useAppStore.setState({ pharmacyCorrections: [{ ...event, pharmacyCode: "FH774" }, { ...event, at: "2000-01-01T00:00:00Z" }] });
     expect(recordedClaims()).toMatch(/Caught before submission<\/dt><dd[^>]*>0<\/dd>/);

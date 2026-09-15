@@ -2504,6 +2504,8 @@ Question: should an outdated compact B/EPS invocation create a phantom example? 
 
 Question: how should the workbench use G's original-scenario factory? Choice: use it only for unsaved new-submission projection, never current claim correction or an existing shared pharmacist draft; tie-breaker: honest scenario replay without source or draft loss.
 
+Question: how should duplicate supply-record landmarks be repaired? Choice: use the existing contextLabel prefix in the real section, retaining both complete source views and the uniqueness assertion; tie-breaker: accessible source fidelity.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

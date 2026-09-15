@@ -26,7 +26,8 @@ describe("four-case compatibility with operator and pharmacy panels", () => {
   it.each([false, true])("renders only supported EPS controls without absent-source crashes, enabled=%s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     const before = getDomainSnapshot(), html = render(EpsPharmacyCapture);
-    for (const label of ["Complete endorsement", "NCSO missing date", "Wrong pack size"]) expect(html).toContain(label);
+    for (const label of ["Complete endorsement", "Wrong medication strength"]) expect(html).toContain(label);
+    for (const retired of ["NCSO missing date", "Wrong pack size", "EX-24112"]) expect(html).not.toContain(retired);
     expect(html).not.toContain("SYN-FQ123-TYPE2");
     expect(html).not.toContain("Generic missing brand");
     expect(getDomainSnapshot()).toEqual(before);
@@ -62,7 +63,7 @@ describe("four-case compatibility with operator and pharmacy panels", () => {
   });
 
   it("retains both evidence views with unique contextual EPS landmarks", () => {
-    const c = sessionCase("EX-24112")!, before = getDomainSnapshot();
+    const c = sessionCase("SYN-FQ123-MISMATCH")!, before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(MemoryRouter, null,
       createElement("div", null, createElement(RawCaseFields, { c }),
         createElement(RawCaseFields, { c, contextLabel: "Manual comparison" }))));

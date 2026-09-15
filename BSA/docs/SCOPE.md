@@ -37,6 +37,12 @@ The original-scenario and paper pack/form dependencies are resolved by G
 an existing pharmacist draft takes precedence. Off paper still posts without
 an invented declaration and its later correction requires manual entry.
 
+P's eight existing UI-unit migrations and five newer suites pass all 140 tests,
+and check passes. The full shared integration is not green; other owned legacy
+consumers still need migration. G additionally hands P the two pharmacy-domain
+unit files `pharmacy.test.ts` and `pharmacy-correction-events.test.ts`; no other
+domain test or production ownership changes.
+
 ### G39/40 explicit-action checkpoint
 
 The first full integration inventory is not green: 210 failed / 1,575 passed

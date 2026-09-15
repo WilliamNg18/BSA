@@ -6,6 +6,7 @@ import { PharmacyClaimActionPanel } from "@/components/demo/claim-detail";
 import { PharmacySubmissionPanel } from "@/components/demo/pharmacy-workbench";
 import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
+import { caseById } from "@/lib/domain/cases";
 import { getDomainSnapshot, useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -26,7 +27,8 @@ beforeEach(() => useAppStore.getState().resetDemo());
 function approveReferralAfterConfirmation() {
   const s = useAppStore.getState();
   s.setAgentEnabled(true);
-  s.submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+  const paperDeclaration = caseById(id)!.paperDeclaration!;
+  s.submitItem({ caseId: id, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
   s.arriveInQueue(id);
   s.requestInformation(id, "Please confirm the current synthetic evidence for EX-24112.");
   s.sendConfirmation(id, "The pharmacy confirms its recorded evidence for EX-24112; a human must reconcile it.");
@@ -62,7 +64,7 @@ it("shows existing current-revision approval before any pharmacy edit after requ
 it("never labels a new-submission workbench recommendation as an approved referral", () => {
   approveReferralAfterConfirmation();
   const before = getDomainSnapshot();
-  const html = render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "eps" }));
+  const html = render(createElement(PharmacySubmissionPanel, { caseId: id, channel: "paper" }));
   expect(html).toContain('data-recommendation-case="EX-24112"');
   expect(html).not.toContain(approvalLabel);
   expect(getDomainSnapshot()).toEqual(before);
@@ -83,7 +85,8 @@ it.each(["seed", "manual", "older approved revision"] as const)("does not infer 
   s.setAgentEnabled(true);
   if (source === "older approved revision") approveReferralAfterConfirmation();
   if (source !== "seed") {
-    s.submitItem({ caseId: id, channel: "eps", endorsementText: "NCSO RK" });
+    const paperDeclaration = caseById(id)!.paperDeclaration!;
+    s.submitItem({ caseId: id, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
     s.arriveInQueue(id);
     s.referBack(id, "SYN-NCSO", "Human reason only; no generated pharmacy note was approved.");
   }

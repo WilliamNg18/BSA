@@ -49,6 +49,12 @@ required human-entered fields before acknowledgement. The exact canonical
 pharmacy-suggestion caption is treated as a label under the stated prose
 exemption; other panel prose remains below 25 words. No screen is hidden.
 
+Stable P check passes and 140/140 owned tests pass in one run. The same source
+integration's full Vitest result is 1,637 pass / 170 fail, not an accepted
+baseline. The unchanged two-view landmark uniqueness check found a new
+unqualified supply-record label; prefixing it with the existing context fixed
+the defect without removing the assertion or evidence section.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Refreshed published-source snapshot after the B foundation

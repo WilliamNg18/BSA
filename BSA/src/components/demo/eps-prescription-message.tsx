@@ -47,7 +47,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true, context
         </>}
       </dl>
     </section>}
-    {prescription.supplyRecord && <section aria-label="Retained pharmacy supply record" className="space-y-2 border-t pt-3">
+    {prescription.supplyRecord && <section aria-label={contextLabel ? `${contextLabel}: Retained pharmacy supply record` : "Retained pharmacy supply record"} className="space-y-2 border-t pt-3">
       <h4 className="font-semibold">Retained pharmacy supply record</h4>
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <KeyValue k="Supplied product code" v={prescription.supplyRecord.productCode} />

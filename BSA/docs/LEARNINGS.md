@@ -45,6 +45,12 @@ so its manual correction must supply brand, pack, form and prescriber rather
 than borrowing an Agent-On declaration. Actual button/callback tests cover that
 path and its operator-only release; 36 focused P tests pass.
 
+The eight-file migration retained 104 tests and exposed one new real UI defect:
+the shared supply-record section needed its existing evidence-context prefix
+when two messages render. After that repair, 140 tests in all 13 P suites pass
+together and check passes. Full Vitest still reports 170 failures / 1,637 passes;
+those shared migration failures remain preserved and assigned, never waived.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
