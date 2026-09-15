@@ -2285,3 +2285,9 @@ Eight unique axe reports have zero violations; the two strength reports each
 retain one incomplete finding. No screenshots were generated. Port 4337 is
 released. This closes bounded R development coverage only, not the failed
 whole integration suite, deployment, live acceptance or backup parity.
+
+P's actual ready-paper screen exposed future-tense provenance after successful
+reconciliation. R now derives completed provenance from the existing paper
+outcome and reconciliation basis, distinguishing recorded scan/OCR from
+human-confirmed capture. Draft text remains prospective. Typecheck and 48
+targeted recommendation tests pass; no source evidence or gates changed.

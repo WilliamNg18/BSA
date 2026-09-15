@@ -1437,3 +1437,9 @@ attachment copies) have zero violations. Both wrong-strength audits retain
 one incomplete finding; the other six have none. All report URLs are on
 localhost:4337, audit timestamps span 20:41:07Z to 20:41:40Z, no screenshots
 were produced, and the port was verified closed after the run.
+
+P's bounded browser observation found contradictory future-tense provenance
+below a successfully reconciled paper result. The repair uses existing
+`RELEASE_RECOMMENDED` and `reconciliationBasis`, not inferred approval. Tests
+cover ready raw sources, ready human capture and still-pending drafts;
+typecheck and all 48 selected recommendation tests pass.
