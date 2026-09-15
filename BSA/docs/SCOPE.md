@@ -34,6 +34,22 @@ O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
 
 # Scope register
 
+## Temporary F ownership: Home and eleven-step case compatibility
+
+The coordinator assigned F the Home case-only slice, `step-layouts.tsx` case
+projections/current-label callers, presentation definitions in `demo-steps.ts`
+and directly related demo/Home units. G/N/S/V were notified before edits;
+N chapter 1/2 arithmetic, S design, header layout, shared store/types/seeds,
+source authority and D backup/workflows remain outside this change.
+
+The published repair retains eleven steps, all four IDs, actual Send/referral/
+ACK/re-check actions and complete history/navigation-purity assertions.
+Home shows current unmet requirements; steps 4/5 use one wrong-strength item
+on its two sides; step 9 uses paper B unless a real operator-step referral is
+being followed. Check and 231 bounded units pass. Shared migration failures,
+S headline integration, green deployment and observed live acceptance remain
+open; this checkpoint is not Task 39/40 completion.
+
 B's bounded contract/test handoff is ready: 111 selected tests and typecheck
 pass; check passed on the same canonical runtime before the test-only additions.
 The current store matrix has 27 cases, including C8's real historical authority

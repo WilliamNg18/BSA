@@ -406,6 +406,24 @@ main actions or updated four-case historical seeds.
 # Vision alignment
 
 ## Task 40 F contract audit: C7 and C8
+## Bounded Home and eleven-step compatibility over G `05fc421`
+
+The coordinator temporarily assigned the D-owned case-context slice to F.
+This source change does not include D's backup/workflow work, N's chapter 1/2
+numbers, S's design page, header styling or any domain/state authority change.
+
+| Item | Result at this published checkpoint |
+| --- | --- |
+| Home paper B incorrectly offers a date fix | Replaced the scenario-name shortcut with actual unmet requirement labels. V's negative assertion remains; a new test checks field guidance without a proposed supplier value or state write. |
+| Steps 4/5 retain retired EPS case assumptions | Step 4 is the wrong-strength pharmacy action; step 5 opens that same item's NHSBSA case. Both gates fail on ignored strength mismatch; corrected values remain pharmacy-side. |
+| Paper B and D route/channel context | Steps 6/7 retain D's separate paper hand-offs; step 9 defaults to paper B and preserves an actual referral handed off from step 8. All eleven steps and all four IDs remain. |
+| Current readiness and Follow comparisons | Case summaries and the small step queue consume the shared process-aware label. Follow projections choose the correct case/side, including paper B; no new operational state is created. |
+| Validation | Check and 231 bounded units pass. Standalone retired-headline scan has no D/Home hits and still reports five S-owned hits on this base; S's published repair is a separate integration. Full suite: 1,886 pass, 98 fail in 13 other-owner files. No browser/live result is claimed. |
+
+All source and test edits are isolated from the G baseline merge for owner
+integration. This is published incomplete work, not a live release or backup.
+
+### Canonical action integration
 
 Historical fixture extraction preserves exact original case/history initializer
 text after line-ending normalisation, including old evidence that must not be

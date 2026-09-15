@@ -2578,6 +2578,14 @@ Question: fix stale readiness locally? Choice: report the differing current-revi
 
 Question: how is the stale-process repair established? Choice: consume G `cdd436b` and pass the earlier seed process alongside a later actual paper resubmission in a pure presentation regression, rather than inject lifecycle state or add another predicate; tie-breakers: real-action evidence and one model.
 
+## 2026-09-15: Assigned Home and eleven-step case compatibility
+
+Question: infer a correction from scenario B's name? Choice: render actual unmet requirement labels, never the retired hardcoded date fix or a proposed supplier value on a general overview; tie-breakers: truthful evidence and pharmacy-only correction authority.
+
+Question: how should eleven steps retain the revised four cases? Choice: steps 4/5 show wrong strength at Pharmacy/NHSBSA, 6/7 retain unreadable paper hand-offs, 9 defaults to paper B while preserving an actual step-8 referral, and other step order stays intact; tie-breakers: the latest four-case contract and visible same-item continuity.
+
+Question: do readiness or route changes need a second state? Choice: pass current process metadata to the existing label helper and retain presentation-only navigation; test complete snapshots and unchanged histories through real actions; tie-breaker: one authoritative store.
+
 ## 2026-09-15: Stream V adopts live-first publication
 
 Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits canonical types, store, lifecycle, references and seeds; W and B contribute isolated typed domain modules, then UI owners consume the merged contracts after the header change; tie-breaker: one store and the newest explicit ownership instruction.
