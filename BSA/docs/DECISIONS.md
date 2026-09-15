@@ -4,6 +4,9 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: what replaces the removed duplicate declaration assertion? Choice: inspect the canonical scanner declaration column, require its exact revision/endorsement and forbid duplicate legacy evidence while retaining consent/immutability checks; tie-breaker: exact C4 source fidelity without reintroducing old UI.
+- Question: how is the parent's Home ownership transfer coordinated? Choice: F may change its bounded source and the specific Home-case assertion block if needed, preserving the existing negative and state guards; V freezes that block and retains all other unit work. Tie-breaker: explicit handoff without parallel edits.
+
 - Question: may V promote earlier P-only unit evidence after U/O integration? Choice: rerun on exact G `815278f`, migrate the retired duplicate-declaration selector and report remaining real source failures; tie-breaker: current source fidelity without weakening functional or quality assertions.
 
 - Question: how does the Off keyboard test resubmit current paper? Choice: enter all required pharmacy-owned fields from the canonical supply record, then explicitly acknowledge accuracy and press Resubmit; tie-breaker: actual UI actions and no synthetic hidden correction.

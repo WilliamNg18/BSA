@@ -4,6 +4,16 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Migrating only the declaration evidence selector resolves all three stale
+cases. New assertions also require one canonical scanner, no duplicate legacy
+declaration, the exact source revision and exact typed endorsement. The
+72/74 result retains the Home date and operator prose failures; typecheck
+and lint pass. This is unit evidence only, not repeated U browser geometry.
+
+The Home blocker was transferred from D to F by the parent. Its exact
+source/input/assertion was handed over; the existing test already catches
+the defect, so no parallel broad file rewrite is needed.
+
 The G `815278f` consumer merge preserved source exactly and unioned five
 document conflicts. Its 69/74 unit selection exposes the expected removal
 of the duplicate Original pharmacy declaration view. The replacement is the

@@ -4,6 +4,15 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+V's declaration assertions now use U/O's canonical scanner instead of the
+removed duplicate view, preserving exact source identity, endorsement,
+consent, footer and immutable-state checks. Remaining source failures stay
+open; no timing or visual evidence is inferred from unit success.
+
+F now owns the bounded Home/11-step source repair and, by explicit handoff,
+only the corresponding Home assertion block if needed. This does not transfer
+V's other unit files or waive the false-date negative.
+
 G `815278f` is now V's unified consumer dependency. N's schema/capture
 assertions and all owner code are preserved. New source versions require
 fresh verification; earlier P-stage results are not transferred to this head.

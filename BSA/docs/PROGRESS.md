@@ -4,6 +4,20 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+The V scanner follow-up now selects the canonical declaration column and
+asserts one scanner, no retired duplicate, exact submitted revision and exact
+typed endorsement. All three migrated declaration cases pass. The six-file
+selection is 72/74 on G `815278f`; Home's false date instruction and O's
+ready-paper prose are the only failures. Typecheck and targeted lint pass.
+O has announced an equivalent shorter suffix; verification awaits its
+published source. No browser/scanner geometry run was duplicated.
+
+Parent transferred the bounded Home/step source repair to F. V supplied the
+exact counterexample and agreed only that Home-case assertion block may be
+adjusted if necessary; its existing negative, Type 2 and read-only guards
+must remain. V retains the other unit migrations and is not editing that
+block concurrently.
+
 V integrates exact G `815278f` with the published P/U/O/N/F/R consumers.
 Only the five tracking documents conflicted; both sides were retained and
 owner source was not changed. The six-test-file rerun is 69/74: three old
