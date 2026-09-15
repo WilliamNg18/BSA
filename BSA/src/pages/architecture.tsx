@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { DESIGN_DATE, DESIGN_LABELS, DESIGN_PRINCIPLE, DESIGN_SECTIONS, DESIGN_TITLE, REFERENCE_EXPLANATION, type DesignTable } from "@/components/how-it-works/content";
+import { DESIGN_DATE, DESIGN_LABELS, DESIGN_PRINCIPLE, DESIGN_SECTIONS, DESIGN_TITLE, PICK_LIST_SOURCE, REFERENCE_EXPLANATION, type DesignTable } from "@/components/how-it-works/content";
 import { CaseWSequenceDiagram, ComponentDiagram } from "@/components/how-it-works/diagrams";
 import { REFERENCE_MAPPING } from "@/components/how-it-works/reference-mapping";
 
@@ -55,6 +55,17 @@ export function ArchitecturePage() {
             </div>
             {section.table && <ReferenceTable table={section.table} />}
             {section.id === "architecture" && <><ComponentDiagram /><CaseWSequenceDiagram /></>}
+            {section.id === "questions" && <article className="space-y-2 rounded-lg border p-4 text-sm" data-public-evidence>
+              <h3 className="font-semibold">Public evidence for the pick-list example</h3>
+              <p className="font-medium">{PICK_LIST_SOURCE.label}</p>
+              <a href={PICK_LIST_SOURCE.url} className="inline-block rounded underline underline-offset-4 hover:decoration-2 focus-visible:outline-2 focus-visible:outline-offset-2">
+                {PICK_LIST_SOURCE.title}
+              </a>
+              <p className="text-muted-foreground">Checked <time dateTime={PICK_LIST_SOURCE.checkedOn}>{PICK_LIST_SOURCE.checkedLabel}</time>; publication date not stated.</p>
+              <blockquote className="border-l-2 pl-3">{PICK_LIST_SOURCE.quotation}</blockquote>
+              <p>{PICK_LIST_SOURCE.scope}</p>
+              <p className="font-medium">{PICK_LIST_SOURCE.boundary}</p>
+            </article>}
           </section>)}
           <section aria-labelledby="reference-mapping" className="space-y-4" data-design-section="reference-mapping">
             <h2 id="reference-mapping" tabIndex={-1} className="scroll-mt-6 text-xl font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{REFERENCE_MAPPING.caption}</h2>

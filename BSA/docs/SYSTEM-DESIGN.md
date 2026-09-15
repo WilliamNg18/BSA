@@ -146,7 +146,7 @@ Identity, least privilege, secrets management, private networking and approved U
 3. Pharmacy → Ingress: this sequence follows explicit unchanged Send, not the available Apply correction path. Retain the selected 5 mg claim and independent 10 mg source records.
 4. Ingress → Case builder: receive the submitted revision and gather the original prescription, actual-supply record and product catalogue separately.
 5. Case builder → Code gate: Gate 2 independently compares the received claim against those sources; it does not trust Gate 1's result or enrich the submitted copy.
-6. Case builder → Operator: the mismatch fails reconciliation. Build a case with prescribed and selected strengths, evidence, field/rule and safe referral or information advice, not a proposed correction value. Block automatic release. This is the proof the agent does not rubber-stamp.
+6. Case builder → Operator: the mismatch fails reconciliation. Build a case with prescribed and selected strengths, evidence, field/rule and safe referral or information advice, not a proposed correction value. Block automatic release: this is the proof the agent does not rubber-stamp.
 7. Operator → Pharmacy: a person explicitly requests correction or refers back with a field-and-rule-only explanation. Concrete correction values come from the pharmacy's own records, not the outbound NHSBSA note.
 8. Pharmacy → Ingress: review the pharmacy's 10 mg pack suggestion, explicitly Apply, acknowledge and Resubmit a corrected claim revision; retain prior attempts and independent source evidence.
 9. Ingress → Case builder: validate the corrected revision again against the prescribed and actual-supply records, catalogue and applicable requirements; missing or disputed evidence still blocks release.
@@ -185,7 +185,13 @@ Accept the pharmacy declaration, scanner-captured values and per-field confidenc
 
 Assumption to validate with NHSBSA
 
-The scanner comparison labels its prepared output "Extracted by character recognition (hypothetical)" and "synthetic; illustrates what NHSBSA’s capture would produce". These are illustrative field values and confidence, not a real character-recognition service or model result. Keep the original scan and human capture provenance visible.
+The scanner comparison labels its prepared output "Extracted by character recognition (hypothetical)" and "synthetic; illustrates what NHSBSA's capture would produce". These are illustrative field values and confidence, not a real character-recognition service or model result. Keep the original scan and human capture provenance visible.
+
+### Human capture does not improve the original scan
+
+Proposed for production
+
+"Human-confirmed effective evidence; the original scan and hypothetical extraction are unchanged". Distinguish raw-source agreement from human-confirmed effective evidence. A later correction is an "Explicit pharmacy amendment (synthetic); previous submission evidence retained". Neither attestation nor amendment makes an unreadable original legible or rewrites earlier submissions.
 
 ### A referral describes the gap, not the answer
 
@@ -403,6 +409,20 @@ Two weeks of operator time data and fifty de-identified items judged blind by tw
 Assumption to validate with NHSBSA
 
 No safe data access, no trustworthy dated evidence, material accuracy harm or no net preparation benefit. Reshape to rules or workflow if they suffice. Agree measurable stop thresholds before rollout; no sunk-cost justification for keeping a model.
+
+### Public evidence for the pick-list example
+
+public, NHSBSA
+
+[Endorsing correctly in EPS: actual medicinal product pack](https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack)
+
+Checked 15 September 2026; publication date not stated.
+
+> what you have endorsed and not what you have supplied
+
+When the selected actual medicinal product pack has a dm+d price, processing is automatic. Incorrect endorsements can also cause referred backs and payment delays.
+
+Proposed matching check, informed by public NHSBSA endorsement guidance
 
 ## Reference mapping, one example
 

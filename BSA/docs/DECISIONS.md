@@ -2668,3 +2668,5 @@ Question: does code-prefilled corrected paper contradict an initially empty manu
 Question: retain the date-based reference sequence or explain the new case? Choice: use W's unchanged wrong-strength Send, independent Gate 2, field/rule-only operator referral and pharmacy-owned correction, then both-gate EPS release; tie-breaker: newest explicit case scope and unchanged human/source authority.
 
 Question: duplicate W/B evidence constants before G integrates them? Choice: publish bounded reference WIP and reuse the canonical modules after integration; tie-breaker: one authoritative evidence source, not a second bibliography or invented capture result.
+
+Question: may S finish citation integration before G's runtime merge? Choice: consume G's explicitly approved isolated W/B foundation commits unchanged, keep both sides of tracking conflicts, and import their canonical evidence/labels; actual built-runtime and live acceptance remain pending; tie-breaker: independent progress without competing domain implementations.
