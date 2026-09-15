@@ -121,6 +121,11 @@ advice for Apply; C5 correctly separates approval provenance from pharmacy's
 own source-backed correction. The existing comparison unit exposed that old
 API during typecheck and was updated with the consumer change.
 
+The native accuracy checkbox can be exercised as its own controlled component
+without replacing the store or manufacturing acknowledgement metadata. Five
+focused tests passed, covering positive/negative binding and stale events.
+No browser was launched; source/handler checks are not a live verdict.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
