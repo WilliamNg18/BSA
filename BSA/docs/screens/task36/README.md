@@ -112,6 +112,41 @@ Artifacts remain under `req38-smoke-82fd`. A preceding startup-only failure
 was a config-relative server working directory, repaired before any browser
 probe ran. No source file changed during the four-probe run.
 
+### Subsequent bounded repairs, not whole-inventory acceptance
+
+The next original four-probe run at clean
+`b5d5516d0734d642c7d81f9432a18daa150f715a` passed **3/4**, with one worker
+and no retries. The actual unsupported SP Send repair passed, but B's whole
+queue state cell remained partially visible (ratio `0.8245614171028137`).
+That timing failed at 1,015.275 ms. Artifacts remain in `req38-smoke-b5d`;
+no exact cell rectangle was recorded in that run.
+
+After O's explicit filter-reselection/focus repair, clean
+`a887b6c738e7522e4c9668ed71ac1ebba41e429f` passed check and all **1,551
+unit tests in 83 files**. The same original four browser probes passed
+**3/4 in 87.196 seconds**, one worker, no retries or skipped tests.
+Recommendation visibility, concrete previews including actual SP Send, and
+the complete missing-declaration D round trip passed. The visibility probe
+recorded 31 axe audits with zero violations; 17 retain incomplete findings.
+
+The B journey now passed Send to the actual whole queue state cell at
+**744.1842 ms**, including the original strict viewport/opacity, Follow,
+URL and count assertions. Its next action, Request information, failed:
+the exact human question in Requested confirmation had viewport ratio zero,
+and the unchanged deadline failed at **1,027.2606 ms** (human click
+63.2883 ms). The claim state was visible at the correct pharmacy URL.
+Post-verdict diagnostics measured that state paragraph at y895, height24,
+bottom919, scrollY821; these are not the question's coordinates.
+
+Artifacts remain in `req38-smoke-a887` and `req38-smoke-a887-report.json`.
+Port 4336 was released after the run. P owns the communication-placement
+repair; V does not replace the real question with a proxy or extend the
+deadline. Additional failure-only geometry now identifies origin/destination
+required-text locators after the outcome. The next authorised sequence is
+the exact failing B journey, then a fresh whole four-probe run once that
+journey completes. Neither these partial runs nor individual transition
+passes establish whole 75-check or hosted acceptance.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.

@@ -2,6 +2,27 @@ import type { Locator, Page, TestInfo } from "@playwright/test";
 import { captureJson, expect } from "./fixtures";
 import { TransitionDeadline } from "../support/transition-deadline";
 
+async function readFailureGeometry(locator: Locator) {
+  return locator.evaluateAll((elements) => elements.map((element) => {
+    const ancestors = [];
+    for (let node: Element | null = element; node; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      ancestors.push({
+        tag: node.tagName, id: node.id, className: node.getAttribute("class"),
+        rect: node.getBoundingClientRect().toJSON(),
+        overflowX: style.overflowX, overflowY: style.overflowY, opacity: style.opacity,
+        clientWidth: node.clientWidth, clientHeight: node.clientHeight,
+        scrollLeft: node.scrollLeft, scrollTop: node.scrollTop,
+      });
+    }
+    return {
+      locatorRole: element.getAttribute("role"), text: element.textContent,
+      focused: element === document.activeElement,
+      viewport: { width: innerWidth, height: innerHeight }, ancestors,
+    };
+  }));
+}
+
 async function visibleWithinDeadline(locator: Locator, deadline: TransitionDeadline) {
   await expect(locator).toBeVisible({ timeout: deadline.remainingMs() });
   await expect(locator).toBeInViewport({ ratio: 1, timeout: deadline.remainingMs() });
@@ -84,20 +105,17 @@ export async function assertVisibleHandoffWithinOneSecond(
   } finally {
     const elapsedMs = observedElapsedMs ?? deadline.elapsedMs();
     const failureGeometry = observedElapsedMs === null
-      ? await input.destinationState.evaluateAll((elements) => elements.map((element) => {
-        const ancestors = [];
-        for (let node: Element | null = element; node; node = node.parentElement) {
-          const style = getComputedStyle(node);
-          ancestors.push({
-            tag: node.tagName, id: node.id, className: node.getAttribute("class"),
-            rect: node.getBoundingClientRect().toJSON(),
-            overflowX: style.overflowX, overflowY: style.overflowY, opacity: style.opacity,
-            clientWidth: node.clientWidth, clientHeight: node.clientHeight,
-            scrollLeft: node.scrollLeft, scrollTop: node.scrollTop,
-          });
-        }
-        return { viewport: { width: innerWidth, height: innerHeight }, ancestors };
-      }))
+      ? await readFailureGeometry(input.destinationState)
+      : undefined;
+    const requiredTextGeometry = observedElapsedMs === null
+      ? await Promise.all([
+        ...(input.originRequiredText ?? []).map((requirement) => ({ ...requirement, phase: "origin" })),
+        ...(input.requiredText ?? []).map((requirement) => ({ ...requirement, phase: "destination" })),
+      ].map(async (requirement) => ({
+        phase: requirement.phase, expectedText: requirement.text,
+        locator: requirement.locator.toString(),
+        geometry: await readFailureGeometry(requirement.locator),
+      })))
       : undefined;
     await captureJson(info, `timing-${input.name}`, {
       name: input.name, caseId: input.followedId, budgetMs: 1000,
@@ -109,6 +127,7 @@ export async function assertVisibleHandoffWithinOneSecond(
       visibility: "Viewport intersection and cumulative ancestor opacity, not DOM text alone",
       priorEvent,
       failureGeometry,
+      requiredTextGeometry,
       geometryBoundary: failureGeometry ? "Read only after the outcome; not used to establish latency or change the verdict." : undefined,
     });
   }
