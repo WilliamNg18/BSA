@@ -4,7 +4,7 @@ import { interpretPharmacyText } from "./pharmacy-check";
 import { PHARMACIES, PRODUCTS, productByCode } from "./reference";
 import { versionForDate } from "./tariff";
 import type { CaseLifecycle, CaseRevision, HistoryEvent, ItemProcess, PharmacyPrecheckSnapshot, ProcessSubmission, Type1Capture } from "./lifecycle";
-import type { DeclaredItemFields, ExceptionCase, PaperDeclaration } from "./types";
+import type { DeclaredItemFields, EpsPrescription, ExceptionCase, PaperDeclaration } from "./types";
 
 /** Clone before recursively freezing: caller-owned objects and fixtures stay untouched. */
 export function immutable<T>(value: T): T {
@@ -49,14 +49,35 @@ function requireDate(date: string): void {
 /** Exact synthetic catalogue lookup, never an inferred reading of the image. */
 export function paperDeclarationFields(paper: PaperDeclaration): DeclaredItemFields {
   if (!paper || typeof paper.typedProduct !== "string" || typeof paper.endorsementText !== "string" ||
-    paper.declaredByPharmacy !== true || paper.quantity !== null && (!Number.isSafeInteger(paper.quantity) || paper.quantity <= 0)) {
+    paper.declaredByPharmacy !== true || paper.quantity !== null && (!Number.isSafeInteger(paper.quantity) || paper.quantity <= 0) ||
+    paper.brandManufacturer !== undefined && typeof paper.brandManufacturer !== "string" ||
+    paper.form !== undefined && typeof paper.form !== "string" ||
+    paper.packSize !== undefined && paper.packSize !== null && (!Number.isSafeInteger(paper.packSize) || paper.packSize <= 0)) {
     throw new Error("Invalid paper declaration.");
   }
   requireDate(paper.dispensingDate);
   const text = paper.typedProduct.trim();
   const product = PRODUCTS.find((item) => item.code === text || item.name.toLowerCase() === text.toLowerCase());
   if (text.startsWith("SYN-") && !product) throw new Error("Unknown synthetic product code.");
-  return { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText };
+  return { productCode: product?.code ?? null, quantity: paper.quantity, endorsementText: paper.endorsementText,
+    ...(paper.brandManufacturer !== undefined ? { brandManufacturer: paper.brandManufacturer } : {}),
+    ...(paper.packSize !== undefined ? { packSize: paper.packSize } : {}),
+    ...(paper.form !== undefined ? { form: paper.form } : {}),
+  };
+}
+
+/** Corrections change claim selection, never the separately recorded prescription or supply. */
+export function validateRetainedEpsSources(previous: EpsPrescription | undefined, next: EpsPrescription | undefined): void {
+  if (!previous?.supplyRecord) return;
+  if (!next?.supplyRecord) throw new Error("The original EPS supply record must be retained.");
+  const sources = (eps: EpsPrescription) => ({
+    prescriber: eps.prescriber, patientLabel: eps.patientLabel, prescriptionDate: eps.prescriptionDate,
+    dispensingDate: eps.dispensingDate, prescriberEndorsement: eps.prescriberEndorsement,
+    supplyRecord: eps.supplyRecord, items: eps.items.map(({ dispensedCode: _code, dispensedName: _name, ...prescribed }) => prescribed),
+  });
+  if (JSON.stringify(sources(previous)) !== JSON.stringify(sources(next))) {
+    throw new Error("A claim correction cannot alter the original prescription or pharmacy supply record.");
+  }
 }
 
 /** Validate source copies before any state write. Advice cannot replace source fields. */
@@ -78,13 +99,17 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     const presentation = prescribedName ? /^(.*?)\s+([\d/]+(?:mg|mcg)?)\s+(tablets|capsules)(?: \(generic synthetic\))?$/.exec(prescribedName) : null;
     const composedName = item ? `${item.product} ${item.strength} ${item.form}` : "";
     if (!item || !productByCode(item.prescribedCode) || !productByCode(item.dispensedCode) ||
-      item.prescribedCode !== item.dispensedCode ||
+      !eps.supplyRecord && item.prescribedCode !== item.dispensedCode ||
       prescribedName !== item.product && prescribedName?.replace(" (generic synthetic)", "") !== composedName ||
       !presentation || item.strength !== presentation[2] || item.form !== presentation[3] ||
       productByCode(item.dispensedCode)?.name !== item.dispensedName ||
       !Number.isSafeInteger(item.quantity) || item.quantity <= 0 ||
       [item.strength, item.form, item.dose].some((value) => typeof value !== "string")) throw new Error("Invalid synthetic EPS item or product copy.");
     const supply = eps.supplyEvidence;
+    if (eps.supplyRecord !== undefined && (!eps.supplyRecord || !productByCode(eps.supplyRecord.productCode) ||
+      !Number.isSafeInteger(eps.supplyRecord.quantity) || eps.supplyRecord.quantity <= 0)) {
+      throw new Error("Invalid independent pharmacy supply record.");
+    }
     if (supply !== undefined && (!supply || supply.ruleId !== "SYN-EPS-SUPPLY" ||
       typeof supply.brandManufacturer !== "string" || typeof supply.form !== "string" ||
       supply.packSize !== null && (!Number.isSafeInteger(supply.packSize) || supply.packSize <= 0))) {
@@ -96,7 +121,9 @@ export function validateSubmissionSources(submission: ProcessSubmission, expecte
     const fields = paperDeclarationFields(paper);
     if (paper.endorsementText !== endorsementText || declaration &&
       (declaration.fields.productCode !== fields.productCode || declaration.fields.quantity !== fields.quantity ||
-        declaration.fields.endorsementText !== fields.endorsementText)) throw new Error("Paper declaration copies do not match.");
+        declaration.fields.endorsementText !== fields.endorsementText ||
+        declaration.fields.brandManufacturer !== fields.brandManufacturer || declaration.fields.packSize !== fields.packSize ||
+        declaration.fields.form !== fields.form)) throw new Error("Paper declaration copies do not match.");
   }
 }
 

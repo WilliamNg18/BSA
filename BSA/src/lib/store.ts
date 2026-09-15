@@ -41,7 +41,7 @@ import type { CaseState, DecisionRecord, HumanDecision, Recommendation } from "@
 import { NO_VERIFICATION, type HumanActionSlice, type CaseRevision, type HistoryEvent, type LifecycleDecisionRecord, type LifecycleSlice, type LifecycleState, type PharmacyPrecheckSnapshot, type ProcessSlice, type ProcessSubmission, type ItemProcess, type ItemVerification, type PharmacyCorrectionDraft } from "@/lib/domain/lifecycle";
 import { DEMO_STEPS, type DemoModeSlice } from "@/lib/domain/demo-steps";
 import { seededLifecycleSession } from "@/lib/domain/lifecycle-seed";
-import { appendHistory, captureForRevision, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
+import { appendHistory, captureForRevision, caseForLifecycle, immutable, paperDeclarationFields, requireLifecycle, requireText, validatePrecheck, validateRetainedEpsSources, validateSubmissionSources } from "@/lib/domain/lifecycle-model";
 import { runAgent } from "@/lib/domain/agent";
 import { checkPharmacy, pharmacySnapshot, type PharmacyCheckOptions } from "@/lib/domain/pharmacy-check";
 import { validateEpsCorrection, type EpsCorrectionSources } from "@/lib/domain/eps-correction";
@@ -196,6 +196,7 @@ export const useAppStore = create<AppState>((set, get) => {
       ? previous.epsPrescription?.dispenserEndorsement ?? previous.paperDeclaration?.endorsementText ??
         previous.declaration?.fields.endorsementText ?? previous.endorsementText : text;
     validateSubmissionSources({ ...submission, caseId, channel, endorsementText: submittedText, epsPrescription, paperDeclaration, declaration }, previous.number);
+    if (channel === "eps") validateRetainedEpsSources(previous.epsPrescription, epsPrescription);
     validatePrecheck(precheck, submittedText, epsPrescription?.dispensingDate ?? paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate);
     if (declaration) validateDeclaredFields(declaration.fields);
     if (declaration && (channel !== "paper" || declaration.provenance !== "pharmacy_declaration" || !Number.isFinite(Date.parse(declaration.declaredAt)) ||

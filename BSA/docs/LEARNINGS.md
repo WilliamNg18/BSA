@@ -1155,6 +1155,11 @@ The additive field contract passes the existing consumer typecheck. This is
 useful for parallel module work but is not runtime enforcement: an optional
 acknowledgement type alone cannot prevent a stale or unacknowledged resubmission.
 
+Source preparation passes 43 targeted tests. Shape validity and reconciliation
+are different: a known 5mg selection may be structurally valid while disagreeing
+with a retained 10mg prescription and supply record. Reject malformed copies,
+but leave the genuine supported mismatch visible to the independent gates.
+
 CI `35006154532` found one callback-integrity unit failure in all four jobs.
 The unchanged original callback produced scanner hash `4542a736...` under
 CRLF and `bcbecf2c...` under LF. A standalone scanner's repeated `scan()`

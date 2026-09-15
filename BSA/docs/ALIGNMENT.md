@@ -13,6 +13,11 @@ paper brand/pack/form and exact-payload acknowledgement metadata. Runtime
 validation remains drifted until the W/B modules and canonical state actions
 are integrated; no gate or live status is inferred from type availability.
 
+Source-adapter update: the retained-record guard and selected-code shape checks
+are implemented, with synthetic 5mg catalogue evidence and paper supply-field
+propagation. Typecheck and 43 targeted tests pass. Active scenario outcomes,
+W/B module integration and live acceptance remain pending.
+
 | Item | Alignment | Change / ownership | Evidence |
 | --- | --- | --- | --- |
 | Current main model | Drifted against newly authorised scope | G integrates sole canonical state/types; W strength modules and B fidelity modules are separate owners | Read main `6418151`; existing mismatch remains pack-based and `EX-24112` remains missing-date EPS |

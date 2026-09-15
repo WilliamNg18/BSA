@@ -3,6 +3,10 @@ import type { EpsPrescription, PaperDeclaration, DeclaredItemFields } from "../.
 import type { CorrectionAcknowledgement, PharmacyCorrectionDraft, ProcessSubmission } from "../../src/lib/domain/lifecycle";
 import { CASES } from "../../src/lib/domain/cases";
 import { createEpsPrescription } from "../../src/lib/domain/eps-check";
+import { paperDeclarationFields, validateRetainedEpsSources, validateSubmissionSources } from "../../src/lib/domain/lifecycle-model";
+import { sameDeclaredFields } from "../../src/lib/domain/capture-evidence";
+import { synchronisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { seededLifecycleSession } from "../../src/lib/domain/lifecycle-seed";
 
 describe("Tasks 39/40 additive domain contracts", () => {
   it("represents prescribed, supplied and selected codes independently", () => {
@@ -16,6 +20,13 @@ describe("Tasks 39/40 additive domain contracts", () => {
     expect(claim.supplyRecord).toEqual({ productCode: "SYN-AMLO10-28", quantity: 28 });
     expect(claim.items[0].dispensedCode).toBe("SYN-AMLO5-28");
     expect(original.items[0].dispensedCode).toBe("SYN-AMLO10-28");
+    expect(() => validateSubmissionSources({ caseId: "SYN-FQ123-MISMATCH", channel: "eps",
+      endorsementText: claim.dispenserEndorsement, epsPrescription: { ...claim, claimMessageState: "submitted" } }, 1)).not.toThrow();
+    const corrected = { ...claim, items: [{ ...claim.items[0], dispensedCode: "SYN-AMLO10-28", dispensedName: "Amlodipine 10mg tablets" }] };
+    expect(() => validateRetainedEpsSources(claim, corrected)).not.toThrow();
+    expect(() => validateRetainedEpsSources(claim, { ...corrected, supplyRecord: { productCode: "SYN-AMLO5-28", quantity: 28 } })).toThrow("original prescription");
+    expect(() => validateRetainedEpsSources(claim, { ...corrected, supplyRecord: undefined })).toThrow("retained");
+    expect(() => validateRetainedEpsSources(claim, { ...corrected, items: [{ ...corrected.items[0], quantity: 56 }] })).toThrow("original prescription");
   });
 
   it("carries paper supply facts without making them a scan reading", () => {
@@ -29,6 +40,13 @@ describe("Tasks 39/40 additive domain contracts", () => {
     };
     expect(paper.brandManufacturer).toBe("");
     expect(captured.brandManufacturer).not.toBe(paper.brandManufacturer);
+    expect(paperDeclarationFields(paper)).toMatchObject({ brandManufacturer: "", packSize: 21, form: "capsules" });
+    const revision = seededLifecycleSession().caseRevisions["EX-24123"][0];
+    const draft = synchronisePharmacyDraft({ revision: 1, channel: "paper", endorsementText: paper.endorsementText, paperDeclaration: paper }, revision);
+    expect(draft.declaration?.fields).toMatchObject({ brandManufacturer: "", packSize: 21, form: "capsules" });
+    expect(sameDeclaredFields(captured, { ...captured, brandManufacturer: "" })).toBe(false);
+    expect(() => validateSubmissionSources({ caseId: "EX-24112", channel: "paper", endorsementText: paper.endorsementText,
+      paperDeclaration: paper, declaration: { fields: captured, declaredAt: revision.at, provenance: "pharmacy_declaration" } }, 1)).toThrow("copies do not match");
   });
 
   it("carries revision-bound acknowledgement through draft and submission without changing existing signatures", () => {

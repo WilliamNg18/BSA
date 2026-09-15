@@ -22,6 +22,13 @@ The header change merges first, then the shared domain integration, then its
 UI consumers. Contract coordination is active; no new runtime behaviour is
 implemented or accepted by this checkpoint. No browser lease has been used.
 
+Source preparation now validates a known claim-selection code independently
+when a separate supply record exists, rejects edits to that retained original
+record and prescribed fields, and preserves paper supply fields through
+declaration/capture adapters. The synthetic 5mg catalogue entry is available.
+Typecheck and 43 targeted source/capture tests pass; active seed and gate
+behaviour are not yet switched to Tasks 39/40.
+
 This is published WIP, not completion or a local backup. The coordinator's last
 reported live artifact was `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observation
