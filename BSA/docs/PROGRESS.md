@@ -2253,3 +2253,9 @@ current-store file: actual referral, own-record correction, acknowledgement
 and resubmission leave the pinned original triad and approved record unchanged.
 Full early CI `35016926570` remains failed (1,600 passed, 185 failed across
 legacy integration tests); owners are migrating those files without waivers.
+
+R's proposed matching-check authority is now explicit: strength cards expose
+no invented Tariff clause, retain a dispensing-month reference, and mark image,
+sample-reading and retrieved-provision signals not applicable. Forty-seven
+targeted authority/current-card tests pass. G still owns the corresponding
+canonical kernel/trace correction; this presentation fix does not certify it.

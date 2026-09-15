@@ -383,3 +383,7 @@ Current card evidence must not substitute for those wider repairs.
 R's new history regression covers the actual refer/correct/acknowledge/resubmit
 sequence, not only a constructed immutable object. Final full-suite, deployment
 and live acceptance remain unaligned while G/P/O/V integration is unfinished.
+
+The R strength card no longer presents `SYN-EPS-STRENGTH` as a retrieved Tariff
+clause. It uses W's proposed public-guidance-informed matching authority.
+Canonical kernel/trace attribution remains G's separate unresolved repair.

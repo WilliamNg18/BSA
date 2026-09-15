@@ -13,7 +13,7 @@ describe("always-visible shared recommendation", () => {
     const before = getDomainSnapshot(), apply = vi.fn();
     const r = deriveRecommendation(useAppStore.getState(), id);
     const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, onApply: apply, compact: true }));
-    for (const text of ["Recommendation", "Clause", "Tariff version", "Requirement results", "Recommended outcome",
+    for (const text of ["Recommendation", "Clause", r.ruleAuthority === "proposed_cross_record_check" ? "Dispensing-month reference" : "Tariff version", "Requirement results", "Recommended outcome",
       "Confidence signals", "Kernel outcome and gate retained", "the agent verifies and advises; a person decides"]) expect(html).toContain(text);
     expect(html).toContain(`data-recommendation-case="${id}"`);
     expect(html).not.toMatch(/<details|\shidden(?:=|\s|>)|aria-expanded/);
@@ -27,6 +27,11 @@ describe("always-visible shared recommendation", () => {
     expect(html).toContain("Corrected preview");
     expect(html).toContain("Select Amlodipine 10mg tablets, 28");
     expect(html).toContain("Corrected claim line preview");
+    expect(html).toContain("Not applicable: proposed matching check");
+    expect(html).toContain("Not applicable: typed records");
+    expect(html).toContain("Not applicable: no image");
+    expect(html).not.toContain("SYN-EPS-STRENGTH");
+    expect(html).not.toContain("3 of 3");
     expect(html).toContain("21/08/2026");
     expect(html).toContain("Not met");
   });
