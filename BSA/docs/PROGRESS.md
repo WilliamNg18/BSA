@@ -70,6 +70,12 @@ tests. The pharmacy test now reads the actual immutable submitted date instead
 of requiring the duplicate legacy declaration heading. No browser has started;
 4342 is queued behind the coordinator's existing lease, not yet allocated.
 
+V/F identified a missing current-process argument in P's claim status. P now
+passes the canonical process to current claim/list/tile labels and gates the
+receipt's ready status by its own revision. Twenty-three targeted tests and
+typecheck pass, including historical-receipt non-borrowing. This repair is
+published before freezing the newly granted bounded 4342 browser artifact.
+
 ## B40 canonical verification branch integration
 
 **B-owned implementation and verification handoff:** 111 selected tests and

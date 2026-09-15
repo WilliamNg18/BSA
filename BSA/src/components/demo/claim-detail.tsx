@@ -24,6 +24,7 @@ export function ClaimDetail({ c, row }: { c: ExceptionCase; row: CaseLifecycle }
 export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: string; compact?: boolean }) {
   const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId);
   const row = useAppStore((s) => s.lifecycles[caseId]);
+  const process = useAppStore((s) => s.itemProcesses[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]) ?? NO_VERIFICATION;
   const [message, setMessage] = useState<{ caseId: string; revision: number; draft: string; text: string } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -49,7 +50,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
   }
   return <div data-pharmacy-case={caseId} className="space-y-3">
     <h2 ref={heading} tabIndex={-1} className="rounded-sm text-lg font-semibold focus-visible:outline-2">Claim detail: {caseId}</h2>
-    <p role="status">{itemStateLabel(row, "pharmacy", enabled)}</p>
+    <p role="status">{itemStateLabel(row, "pharmacy", enabled, process)}</p>
     {row.state === "released_to_pricing" && <p>Paid on the normal schedule (synthetic).</p>}
     {requested && <section aria-label="Requested confirmation" className="space-y-3">
       <dl><dt className="font-semibold">Question</dt><dd>{response?.reason ?? "No question recorded."}</dd>

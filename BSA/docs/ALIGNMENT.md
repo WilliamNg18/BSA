@@ -93,6 +93,10 @@ actual as-submitted heading/date and unchanged domain snapshot rather than an
 obsolete duplicate date label. The subsequent three-file selection passes 30
 tests; it is not a replacement full-suite, browser or live verdict.
 
+V/F's source-reported P readiness gap is fixed in the actual claim, tiles and
+current receipt, with a negative historical-receipt assertion. Twenty-three
+tests and typecheck pass; the bounded browser check still has not run.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 B final bounded proof is pinned to G

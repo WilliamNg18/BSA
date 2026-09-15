@@ -2623,6 +2623,8 @@ Question: how should strength precheck show authority without a retrieved clause
 
 Question: how should P verify Type 1 after O replaces duplicate declaration evidence? Choice: assert the actual immutable as-submitted date and read-only store snapshot while retaining unchecked human reconciliation and prescriber assertions; tie-breaker: real source fidelity, not obsolete label compatibility.
 
+Question: how should P display ready paper consistently? Choice: pass the actual current process to the shared label helper, and require matching revision before a receipt shows that readiness; tie-breaker: one source of truth without retrospective history changes.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

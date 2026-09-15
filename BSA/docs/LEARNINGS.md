@@ -84,6 +84,11 @@ test was the remaining P failure in the 1,839/122 full run. It now checks that
 real date and unchanged domain state; all 30 selected source/operator tests
 pass. Imported handoffs did not modify shared models or other owners' logic.
 
+The claim's three-argument status call omitted the canonical ready-paper
+metadata even after F fixed Follow/history. P now wires that same fourth
+argument across its current views; historical receipt status remains pinned.
+Twenty-three targeted tests and typecheck pass before the browser artifact.
+
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
 records and retains B's later readable-blank fix, with no canonical store,
