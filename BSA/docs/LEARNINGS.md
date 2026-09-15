@@ -4,6 +4,32 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: New evidence, scenarios and immutable-source contracts
+
+W verified the Um/Clough/Tan article's PubMed record (PMID 37848350,
+DOI 10.1016/j.sapharm.2023.10.003), 62 studies, January 2010-September 2023
+search interval and pooled 1.6 per cent prevalence (95 per cent CI 1.2-2.1).
+Its abstract does not independently establish the supplied error-subtype
+counts/ranking; 44 hospital studies must not be relabelled as 44 studies of
+wrong medication. W is pursuing public primary/full-text evidence without
+bypassing access controls. The prevalence is not an NHSBSA claim-error rate.
+
+The NHSBSA actual-medicinal-product-pack page was independently read by W/S:
+https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack.
+Its automatically priced endorsed-pack mechanism supports the synthetic
+wrong-strength example, not a measured NHSBSA error frequency.
+
+Task 40 audits found that projected case fields are not proof of exact
+submission fidelity. Raw submission, scan/OCR and subsequent human capture
+must remain distinct. A high-confidence blank is a missing requirement, not
+necessarily unreadable capture. The new acknowledgement must bind the whole
+current correction, and operator note validation must be separate from the
+pharmacy's own concrete suggestion.
+
+The earlier 75-check and timing results cover the former cases and contracts.
+They remain historical; no new wrong-strength/paper-incomplete live cycle,
+header centring, backup equality or clean offline recovery is claimed here.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
