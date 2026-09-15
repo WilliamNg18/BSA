@@ -16,7 +16,7 @@ function expectOtherCasesUnchanged(before: DomainSnapshot, after: DomainSnapshot
       if (id !== D) expect(after[key][id], `${key}: unrelated ${id} remains exact`).toEqual(before[key][id]);
     }
   }
-  for (const key of ["baselineInputs", "processInputs", "manualLoopInputs", "pharmacyCorrections", "todayMinutes"] as const) {
+  for (const key of ["baselineInputs", "processInputs", "manualLoopInputs", "pharmacyCorrections", "todayMinutes", "mismatchSharePercent"] as const) {
     expect(after[key], `Capture cannot alter ${key}`).toEqual(before[key]);
   }
 }

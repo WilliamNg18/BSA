@@ -4,6 +4,7 @@ import { MANUAL_LOOP_ASSUMPTIONS_LINE, MANUAL_LOOP_METRICS, manualLoopRatio, man
 import { useAppStore } from "@/lib/store";
 import { MonthlyNumber } from "./monthly-number";
 import { ProcessAssumptions } from "./process-assumptions";
+import { MismatchEstimatePanel } from "./mismatch-estimate";
 
 export function BaselineCalculator() {
   const enabled = useAppStore((s) => s.agentEnabled);
@@ -52,5 +53,6 @@ export function BaselineCalculator() {
       {result ? manualLoopSummary(result) : "Calculator estimates unavailable: check the highlighted inputs."}
     </p>
     <p className="text-sm font-medium">{MANUAL_LOOP_ASSUMPTIONS_LINE}</p>
+    <MismatchEstimatePanel />
   </section>;
 }

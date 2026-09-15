@@ -4,6 +4,7 @@ import { useAppStore } from "@/lib/store";
 import { formatProcessHours, formatProcessItems } from "@/lib/domain/baseline";
 import { SceneEstimateNumber } from "./scene-estimate-number";
 import { ProcessFigure } from "./process-figure";
+import { EPS_ERROR_EVIDENCE } from "@/lib/domain/eps-error-evidence";
 
 export function BaselineScene() {
   const { result } = useManualLoopMonth();
@@ -11,6 +12,10 @@ export function BaselineScene() {
   const column = result && (enabled ? result.withAgent : result.today);
   return <section aria-label="Shared scenario estimates" className="space-y-3 rounded-xl border bg-card p-5" data-scene-estimates>
     <h2 className="font-semibold">A month across the process</h2>
+    <div className="space-y-1" data-dispensing-error-study>
+      <p className="text-sm">{EPS_ERROR_EVIDENCE.study.chapterOneLine}</p>
+      <p className="text-xs text-muted-foreground">{EPS_ERROR_EVIDENCE.study.label}</p>
+    </div>
     <p className="text-sm text-muted-foreground">Whole-service context and a separate referral-loop estimate. Not observed activity; staff streams can overlap.</p>
     {result && column ? <dl className="grid gap-4 text-sm grid-cols-2 lg:grid-cols-3">
       {([
