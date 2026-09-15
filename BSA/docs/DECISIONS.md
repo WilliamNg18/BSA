@@ -2469,6 +2469,12 @@ Question: how should Follow describe correction and re-check? Choice: distinguis
 
 Question: may Follow manufacture a plausible simultaneous pharmacy month? Choice: no, read G's real four-ID seed histories and leave tiles to P; tie-breakers: one state and the smallest owned change. New one-second proof stays with V, not inferred from synchronous selectors.
 
+Question: how should Follow expose the published Task 40 actions? Choice: use `itemStateLabel` with current process metadata and G's paper-readiness selector, name recorded ACK/withdrawal/audit events explicitly, and keep the existing navigation unchanged; tie-breakers: source fidelity and one authoritative state.
+
+Question: should current paper readiness be projected into older history rows? Choice: no, keep event-prefix history labels independent of today's process metadata, preserving prior human referral and later automatic release attribution; tie-breaker: immutable historical truth.
+
+Question: fix stale readiness locally? Choice: report the differing current-revision predicates to G and consume its shared repair instead of duplicating a business gate in F; tie-breaker: single model ownership.
+
 ## 2026-09-15: Stream V adopts live-first publication
 
 Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits canonical types, store, lifecycle, references and seeds; W and B contribute isolated typed domain modules, then UI owners consume the merged contracts after the header change; tie-breaker: one store and the newest explicit ownership instruction.

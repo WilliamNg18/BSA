@@ -8,6 +8,7 @@ import { useAppStore } from "@/lib/store";
 export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmacy?: boolean }) {
   const row = useAppStore((s) => s.lifecycles[id]);
   const revisions = useAppStore((s) => s.caseRevisions[id]);
+  const process = useAppStore((s) => s.itemProcesses[id]);
   const enabled = useAppStore((s) => s.agentEnabled);
   const perspective = useAppStore((s) => s.perspective);
   const followed = useAppStore((s) => s.followedCaseId);
@@ -16,7 +17,7 @@ export function LifecycleHistory({ id, pharmacy = false }: { id: string; pharmac
   const actor = row.history.at(-1)?.actor;
   return <section aria-label="Shared case history" className={pharmacy ? "space-y-3 border-t pt-4" : "space-y-3 rounded-xl border bg-card p-4"}>
     <h2 className="font-semibold">Shared case history</h2>
-    <p role="status">{itemStateLabel(row, pharmacy ? "pharmacy" : "nhsbsa", enabled)}</p>
+    <p role="status">{itemStateLabel(row, pharmacy ? "pharmacy" : "nhsbsa", enabled, process)}</p>
     <div className="flex flex-wrap items-center gap-2">
       <BoundaryTag cls={actor === "code" ? "deterministic" : actor === "agent" ? "agent" : "human"} />
       <Button variant="outline" aria-pressed={followed === id} onClick={() => follow(followed === id ? null : id)}>{followed === id ? "Stop following this case" : "Follow this case"}</Button>

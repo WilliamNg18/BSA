@@ -87,6 +87,20 @@ main actions or updated four-case historical seeds.
 
 ## Task 40 F contract audit: C7 and C8
 
+Consumer implementation now uses the exact published G `4765770` contracts
+on this incomplete development branch. Follow and current shared-history
+status pass G's process metadata into `itemStateLabel`; location consumes
+`isPaperReadyToRelease`. Explicit ACK, withdrawal and audit event labels replace
+the old lifecycle fallback. Actual Off wrong-strength pricing/audit, On failed
+submission, referral/correction/ACK/re-check, paper waiting for a human release
+and all four simultaneous seed states are exercised by 53 passing owned units.
+These tests use real store actions, not injected lifecycle states.
+
+F identified a stale-revision mismatch in G's readiness helper and requested
+the shared fix rather than adding a local gate. Final readiness depends on
+that fix and approved domain-first integration. No browser timing, deployment
+or live observation for Task 40 is claimed by the consumer implementation.
+
 Audit base: published main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
 This is source inspection, not a new deployment or timed live verdict.
 
@@ -104,6 +118,9 @@ The source audit also inspected published B `8151770` and G `6054408`,
 which were not open pull requests at inspection. No shared types, store, queue,
 pharmacy views or header were changed by F. Consumer code waits for the actual
 G/W/B integration; unpublished plans and helper exports are not a live product.
+The early consumer checkpoint passes check and 53 owned units, but the full
+integration has 1,576 passing and 201 failing units. This is not a green
+whole-application or live acceptance gate.
 
 ### Canonical action integration
 

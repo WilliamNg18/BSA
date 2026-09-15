@@ -19,8 +19,13 @@ release and paper readiness for an operator. A new code release must not erase
 an earlier human referral. Paper readiness must not claim release or payment.
 Do not invent a C8 stage: the simultaneous month comes from G seed histories.
 
-Current status: source audit published against main `6418151`; consumer
-implementation awaits authoritative exports. V owns new C7 deadlines and
+Current status: source audit published against main `6418151`; bounded consumer
+implementation uses published G `4765770` and has 53 passing owned units.
+The current status consumes canonical process metadata; historical transitions
+retain their own history prefixes without retroactive current-process readiness.
+G's stale-readiness fix and merged-domain integration are still required.
+Check passes; the early full suite is not green (1,576 passed, 201 failed).
+V owns new C7 deadlines and
 cross-view acceptance. Complete only after the change reaches main, deployment
 is green and the actual live URL serves and demonstrates that commit.
 
