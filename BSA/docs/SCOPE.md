@@ -34,6 +34,9 @@ O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
 
 # Scope register
 
+The canonical migration's test-only ES2023 API incompatibility is repaired
+without widening the supported runtime; full assembled validation continues.
+
 G's twelve canonical regression files now pass 194 scoped tests with the
 authorised new outcomes. This completes that bounded migration, not Tasks
 39/40 release acceptance. The next gate is the exact assembled full suite and

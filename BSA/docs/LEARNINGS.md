@@ -529,6 +529,10 @@ boundary is not changing expectations in isolation: tests prepare valid current
 sources, acknowledge exact corrections and use the explicit human audit path
 after Today pricing. Historical data stays available without becoming a hidden
 operational case set.
+
+Runtime tests alone missed one `findLast` use outside the configured ES2022
+library. The assembled typecheck caught it; using `filter(...).at(-1)` repaired
+the test without a source change or library-target expansion.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

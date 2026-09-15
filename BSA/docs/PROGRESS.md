@@ -484,6 +484,10 @@ F's four-file demo compatibility passes 231 tests and the standalone retired-
 headline guard now reports zero source violations. Full candidate validation,
 CI, deployment and observed live identity remain outstanding.
 
+The first assembled typecheck found one unsupported test-only `findLast` call.
+It now uses the repository's ES2022-compatible `filter(...).at(-1)` pattern;
+typecheck passes without changing target libraries or application behaviour.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the

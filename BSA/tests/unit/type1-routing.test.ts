@@ -51,7 +51,7 @@ describe("Type 1 manual capture retains a separate human release", () => {
     expect(store().records).toBe(records);
     expect(store().caseRevisions[D.id]).toBe(revisions);
     expect(store().lifecycles[D.id].history.slice(0, history.length)).toEqual(history);
-    expect(store().lifecycles[D.id].history.findLast((event) => event.capture)?.capture).toMatchObject({
+    expect(store().lifecycles[D.id].history.filter((event) => event.capture).at(-1)?.capture).toMatchObject({
       revision: input.revision, fields: input.fields, provenance: "human_capture", declarationReconciled: false,
     });
     expect(store().lifecycles[D.id].history.at(-1)?.message).not.toContain("no person involved");
