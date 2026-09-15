@@ -252,5 +252,31 @@ describe("submission fidelity through actual store actions", () => {
     expect(getPaperReconciliation(store(), id)).toEqual(reconciled);
     expect(store().lifecycles[id].history.filter((event) => event.capture)).toEqual(captures);
     expect(store().itemProcesses[id].routing.outcome).not.toBe("type1_capture");
+    submitCurrent(id);
+    expect(currentReplica(id).asSubmitted.number).toBeGreaterThan(revision.number);
+    expect(getPaperReconciliation(store(), id)?.requiresType1).toBe(true);
+    expect(getPaperReconciliation(store(), id)?.evidence.capture).toBeUndefined();
+    expect(store().itemProcesses[id].capture).toBeNull();
+    expect(store().lifecycles[id].history.filter((event) => event.capture)).toEqual(captures);
+  });
+
+  it("backs simultaneous month states with actual recorded code checks and human acknowledgement", () => {
+    const paper = "EX-24112", strength = "SYN-FQ123-MISMATCH";
+    expect(store().lifecycles["EX-24107"].state).toBe("paid");
+    expect(store().lifecycles[strength].state).toBe("referred_back");
+    expect(store().lifecycles[paper].state).toBe("resubmitted");
+    for (const id of [paper, strength]) {
+      const revision = store().caseRevisions[id].at(-1)!;
+      const verification = store().lifecycles[id].history.filter((event) => event.revision === revision.number &&
+        event.actor === "code" && event.processStep === "verification").at(-1);
+      expect(verification?.verification).toEqual(store().itemVerification[id]);
+      expect(revision.verificationEnabled).toBe(true);
+    }
+    expect(store().itemVerification[strength]).toMatchObject({ gate1: "fail", gate2: "fail", released: false });
+    expect(store().itemVerification[paper]).toEqual({ gate1: "pass", gate2: "pass", reconciled: true, released: false });
+    expect(store().operatorDrafts[paper]).toMatchObject({ revision: 2, outcome: "ACCEPT", appliedSuggestion: false });
+    expect(store().lifecycles[paper].history.some((event) => event.actor === "pharmacy" &&
+      event.processStep === "correction_acknowledged" &&
+      event.correctionAcknowledgement?.fingerprint === store().caseRevisions[paper][1].correctionAcknowledgement?.fingerprint)).toBe(true);
   });
 });

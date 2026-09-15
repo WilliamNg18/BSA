@@ -12,6 +12,10 @@ ms.date: 2026-09-15
 - Question: which source validates queue absence and payment presentation? Choice: assert the actual `staffLane` and `receiptPricingLabel` adapters after real actions, with no paper Paid receipt before the operator press. Tie-breaker: verify the required presentation contract rather than only a routing flag.
 - Question: who repairs newly reproduced canonical source/note defects? Choice: publish B's failing regression evidence and send G the exact repairs; do not patch the shared store or manufacture scan fields in U's renderer. Tie-breaker: one canonical owner and faithful source images.
 - Question: may an information-only answer force recapture of unchanged paper? Choice: retain human capture by explicit submission-source identity, with no new human capture event; a genuinely new submission still invalidates it. Tie-breaker: truthful human history and no unnecessary repeat work.
+- Question: how is the C4/C5 repair accepted? Choice: rerun the original nine assertions unchanged against exact G `cdd436b`, record their pass separately from the still-failing source-link test and master release gates. Tie-breaker: reproducible evidence and no silent waiver.
+- Question: how is newly merged main adopted while G owns the domain? Choice: preserve main's header and master Process model, retain B's explicit final-note error rule and both streams' historical records, with no canonical runtime edits. Tie-breaker: latest authority and ownership-safe integration.
+- Question: how does the final source-link repair gain acceptance? Choice: require the exact previously failing capture assertion to pass, then rerun the full bounded matrix and check; do not invent a new capture event or weaken the source equality assertion. Tie-breaker: original symptom verified against changed canonical code.
+- Question: where does B's handoff end? Choice: deliver verified pure contracts and actual-store regressions, retaining the distinct owner-controlled UI/browser/main/live gates. Tie-breaker: completed bounded ownership without claiming another stream's unexecuted release evidence.
 
 ## 2026-09-15: B40 readable-blank decision
 

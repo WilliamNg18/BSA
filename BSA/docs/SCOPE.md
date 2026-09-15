@@ -6,6 +6,27 @@ ms.date: 2026-09-15
 
 # Scope register
 
+B's bounded contract/test handoff is ready: 111 selected tests and typecheck
+pass; check passed on the same canonical runtime before the test-only additions.
+The current store matrix has 27 cases, including C8's real historical authority
+and invalidation of capture on a new source. B does not declare the wider
+Task 40 product or live release complete.
+
+G's explicit source-revision repair now passes B's original capture-retention
+assertion unchanged. All 110 selected B/runtime tests and check pass on
+`99abdd4`, including the ten formerly failing assertions. This completes the
+bounded canonical defect verification, not the overall Task 40 live release.
+
+B now inherits merged main `5b75e5f`, including the master Tasks 25-40 rules
+and Part A. Its 72 header-policy units and typecheck pass. Two older demo-shell
+expectations require D's new seed/gate migration; B did not edit those tests.
+No live or browser validation was performed by B.
+
+G `cdd436b` repairs are verified: the nine exact C4/C5 negative checks pass
+without assertion changes. B's selected matrix remains 107/108 because an
+information-only paper response still creates a second Type 1 task. Check
+passes; source-link repair and master integration/live gates remain pending.
+
 G's requested C1 information-response capture test now pins another concrete
 gap: unchanged submitted paper must retain its original human capture, not
 create a second Type 1 task. The new targeted assertion currently fails and

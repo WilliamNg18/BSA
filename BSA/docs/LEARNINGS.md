@@ -41,6 +41,36 @@ once against `4765770`; the prior 25 cases were not rerun in that targeted
 reproduction. G is introducing source-revision linkage rather than copying a
 previous capture into a new human event.
 
+G's bounded `cdd436b` patch adds presentation/pack protected aliases and actual
+supplier scan regions. B reran the exact negative checks once against that
+published repair; all nine pass unchanged. The combined eight-file result is
+107 passed and one failed (information-response Type 1 routing). Source-copy,
+typecheck, lint and production build pass. Canonical G/R source files are
+retained during B merge resolution; B's newer tests and historical failures
+are preserved instead of reverting to the older copied test version.
+
+Main `5b75e5f` integration changed header and requirement documentation, not
+G's domain. The full existing demo-shell file passed 102/104; its two failures
+use old B revision 1 and wrong-pack Gate 1 pass expectations. The exact new
+Part A policy selection then passed 72 tests, and typecheck passed. D and the
+coordinator received those separate outcomes; no test expectations were changed
+or whole-file/browser/live acceptance inferred by B.
+
+The final canonical source-link repair passed the exact previously failing
+assertion on its first rerun. All 110 tests in the eight-file B/runtime
+selection then passed, followed by check. The retained capture keeps its
+original revision, timestamp and human actor while information responses link
+to that source; no capture is replayed as a new event. This resolves the tenth
+negative without altering its expectation or the original failure record.
+
+The final test-only additions establish the inverse source-link condition:
+a new Post invalidates the old Type 1 evidence while retaining its historical
+event. C8's simultaneous states also have matching recorded code checks and
+pharmacy acknowledgement rather than computed-only labels. All 111 selected
+tests and typecheck pass. Check previously passed on that unchanged canonical
+runtime. This is B's green integration handoff, not browser timing, global
+legacy-consumer acceptance, current-main deployment or live completion.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly

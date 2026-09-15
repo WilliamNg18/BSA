@@ -6,6 +6,34 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+**B-owned implementation and verification handoff:** 111 selected tests and
+typecheck pass after the final test-only additions; the unchanged canonical
+runtime also passed check. The 27 actual-store fidelity cases now additionally
+prove a new Post invalidates earlier capture while an information-only answer
+retains it, and C8's ready/referral seeds carry actual code verification and
+pharmacy acknowledgement history. No B-owned failing regression remains.
+Overall Task 40 still requires the owning UI integrations, V's exact browser
+timing/accessibility matrix, merge/deployment and observed live acceptance.
+
+B verified G source-link repair `c03ab213d97392e0769c3de1546c1c224563c6f8`
+through integrated `99abdd467d7885b387248d11bccc8c5c647e9fb2`.
+The exact remaining negative passes unchanged, then all 110 selected tests
+and check pass. All ten previously reproduced source/note/capture failures
+are now resolved on the canonical branch. Browser timing, consumer-wide
+migration, main merge/deployment and live acceptance remain separate gates.
+
+B safely incorporates actual main `5b75e5f7711bf599b02ff9fab752781fa0685b00`
+(Part A and the master requirements). G's domain and main's header remain
+unchanged. All 72 new global notice-policy assertions and typecheck pass.
+The broader demo-shell file's two old seed/Gate 1 expectations remain failed
+consumer migrations (102/104), not header defects or waived failures.
+
+B verified G `cdd436b906f397a1d210603e4cef3794812c0a59`: all nine
+previously failing note/image regressions now pass unchanged. The full selected
+matrix is 107 passed, one failed; the remaining failure is G's requested
+information-response source-linked capture routing. Check passes. The C4/C5
+repairs are bounded branch proof, not current-main or browser/live acceptance.
+
 G requested one further source-link regression: after D's actual Type 1 capture,
 an information-only response preserves the facade/capture but incorrectly routes
 back to Type 1. That targeted test fails on `4765770`; G is adding explicit
