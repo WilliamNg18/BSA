@@ -2387,3 +2387,26 @@ The existing profiler, sampling, buffer/output limits, single deadline and
 standard matrix files are unchanged. The shorter diagnostic is not a matrix
 or 75-check pass and does not repair or relabel earlier failures. If it is
 again capped or insufficient, stop without another profiling attempt.
+
+## 2026-09-15: Isolate optional trace snapshots from timed verification
+
+Question: can optional trace-recorder work be excluded without changing the
+required measurements? Choice: use the installed public Playwright literal
+worker trace option only for the eight timing declarations. Keep the actual
+callbacks, helpers, action order, predicates and deadline unchanged. Preserve
+API/source traces and attachments, but explicitly lose continuous DOM,
+screencast and HAR resource/payload coverage for those tests.
+
+Validate the actual resolved option before the body, record it after every
+outcome, and retain failure HTML/ARIA only after the verdict. Existing named
+screenshots, axe audits, network/CSP/error assertions and failure geometry
+remain independent and unchanged. Do not add a network collector to claim
+parity or subtract any estimated observation cost.
+
+Global and untimed/state tracing stays unchanged. Separate diagnostic matrix
+wrappers use the base full-trace fixture and the exact original callback
+tokens. Worker grouping and shard membership may change, but all original
+test IDs must remain in the four-shard union without loss or duplication.
+No private API, function-valued trace override or unsupported describe-level
+worker option is used. This changes optional artifact collection, not runtime
+behaviour, and does not relabel any prior deadline failure.

@@ -1,4 +1,4 @@
-import { audit, captureJson, test } from "./fixtures";
+import { audit, captureJson, test, timedTest } from "./fixtures";
 import { DEMO_MODES, DESKTOP_WIDTHS, PLAYABLE_CYCLES } from "../support/desktop-matrix";
 import { verifyRecommendationViews } from "../e2e/recommendation-view-helpers";
 import { extendedRequirementTitle } from "./inventory";
@@ -39,7 +39,7 @@ for (const width of DESKTOP_WIDTHS) for (const enabled of DEMO_MODES) {
     await audit(page, info, `extended-guided-paper-${width}`, enabled, width === 1440);
   });
 
-  test(extendedRequirementTitle("transition", width, enabled), async ({ page }, info) => {
+  timedTest(extendedRequirementTitle("transition", width, enabled), async ({ page }, info) => {
     test.setTimeout(600_000);
     await page.setViewportSize({ width, height: 1000 });
     for (const item of PLAYABLE_CYCLES) for (const perspective of REQUIRED_PERSPECTIVES) {

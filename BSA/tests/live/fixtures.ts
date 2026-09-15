@@ -9,6 +9,7 @@ import { installRouteCommitDiagnostics, routeDiagnosticsEnabled } from "../suppo
 import {
   runtimeProfileEnabled, RuntimeProfileSetupError, startChromiumRuntimeProfile, type RuntimeProfileManifest,
 } from "../support/chromium-runtime-profile";
+import { THIN_TIMED_TRACE } from "../support/timed-trace-policy";
 
 async function verifyBuild(request: APIRequestContext, info: TestInfo, phase: string) {
   const response = await request.get("/build-info.json");
@@ -103,6 +104,8 @@ export const test = existingTest.extend<{ buildIdentity: void; routeDiagnostics:
     try { await use(); } finally { await collect(); }
   }, { auto: true }],
 });
+
+export const timedTest = test.extend({ trace: THIN_TIMED_TRACE, timedArtifactsExpected: true });
 
 async function dismissDecisionNotice(page: Page) {
   const notices = page.getByRole("complementary", { name: "Decision notifications", exact: true });

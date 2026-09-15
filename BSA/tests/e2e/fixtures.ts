@@ -1,4 +1,5 @@
 import { test as base, expect, type Page, type TestInfo } from "@playwright/test";
+import { collectTimedFailureArtifacts, THIN_TIMED_TRACE, TIMED_TRACE_LOSSES, verifyResolvedTracePolicy } from "../support/timed-trace-policy";
 import { writeFile } from "node:fs/promises";
 
 export async function captureJson(testInfo: TestInfo, name: string, value: unknown) {
@@ -83,7 +84,8 @@ export async function openCaseFromQueueOrClaim(page: Page, id: string) {
   await expect(page).toHaveURL(new RegExp(`/case/${id}$`));
 }
 
-export const test = base.extend<{ browserErrors: string[] }>({
+export const test = base.extend<{ browserErrors: string[]; timedArtifactsExpected: boolean; traceArtifactPolicy: void }>({
+  timedArtifactsExpected: [false, { option: true }],
   browserErrors: [async ({ page }, use) => {
     const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(`pageerror: ${error.message}`));
@@ -97,7 +99,50 @@ export const test = base.extend<{ browserErrors: string[] }>({
     await use(errors);
     expect(errors, "Production browser errors must not be swallowed by an error boundary").toEqual([]);
   }, { auto: true }],
+  traceArtifactPolicy: [async ({ page, trace, timedArtifactsExpected }, use, info) => {
+    const diagnostic = info.config.metadata.routeDiagnostics === true || info.config.metadata.runtimeProfile === true;
+    if (!timedArtifactsExpected && !diagnostic) {
+      await use();
+      return;
+    }
+    const expected = timedArtifactsExpected ? "thin-timed" : "full-diagnostic";
+    let resolved: ReturnType<typeof verifyResolvedTracePolicy>;
+    try {
+      if (timedArtifactsExpected && diagnostic) throw new Error("Diagnostics must use the full-trace base test, not timedTest.");
+      resolved = verifyResolvedTracePolicy(trace, expected);
+    } catch (error) {
+      await captureJson(info, "trace-artifact-policy-error", {
+        originalStatus: "not-run", expected, resolvedOption: trace,
+        message: error instanceof Error ? error.message : String(error),
+      });
+      throw error;
+    }
+    const collect = async () => {
+      const originalStatus = info.status ?? "not-reported";
+      await captureJson(info, "trace-artifact-policy", {
+        originalStatus, expected, resolvedOption: trace, resolved,
+        losses: timedArtifactsExpected ? TIMED_TRACE_LOSSES : [],
+        boundary: "Artifact policy only; required assertions and the original deadline are unchanged.",
+      });
+      if (timedArtifactsExpected && ["failed", "timedOut", "interrupted"].includes(originalStatus)) {
+        try {
+          await collectTimedFailureArtifacts({
+            html: () => page.content(),
+            aria: () => page.locator("body").ariaSnapshot(),
+          }, (name, body, contentType) => info.attach(name, { body, contentType }));
+        } catch (error) {
+          await captureJson(info, "timed-failure-artifact-error", {
+            originalStatus, message: error instanceof Error ? error.message : String(error),
+          });
+          throw error;
+        }
+      }
+    };
+    try { await use(); } finally { await collect(); }
+  }, { auto: true }],
 });
+
+export const timedTest = test.extend({ trace: THIN_TIMED_TRACE, timedArtifactsExpected: true });
 
 export { expect };
 

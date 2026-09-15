@@ -123,6 +123,40 @@ Even a complete local PASS is rehearsal, not deployment acceptance. A dirty
 development run is weaker again and must retain its actual dirty identity.
 The final latest-main URL check must be less than ten minutes old.
 
+## Timed-test artifact policy
+
+Only the four ordinary and four live timing declarations use the module-level
+`timedTest` variant. Its supported literal worker option retains failing
+API/source traces and attachments, but disables optional trace DOM snapshots
+and screencast frames. Disabling DOM snapshots also removes HAR resource and
+network-payload collection; this is an explicit loss of historical diagnostic
+coverage, not network-artifact parity.
+
+The resolved worker option is validated before the test body. A mismatch
+fails before measured actions run. Every completed timed test attaches its
+resolved policy after the original outcome. Failures additionally retain
+current HTML and ARIA snapshots after the verdict, alongside the unchanged
+timing failure geometry. Artifact errors remain errors. These later snapshots
+cannot establish what was visible earlier.
+
+Required network, CSP, browser-error, state, text, full-viewport, opacity and
+one-second assertions are unchanged. Explicit named PNG captures and axe
+audits are unchanged. No custom network observer replaces the lost HAR data,
+and no estimated artifact cost is subtracted from elapsed time.
+
+Global trace configuration and untimed/state tests keep their existing full
+trace defaults. Full-trace diagnostic configurations select a separate base-
+fixture matrix wrapper with the original callback tokens and ordering; the
+first-A profile also keeps the base fixture. Use those explicit configurations
+for full diagnostics rather than assuming a global trace switch overrides a
+timed test's literal option.
+
+The worker-scoped option can change worker grouping and shard membership.
+The four-shard union must still contain every original test ID exactly once,
+and the standard live inventory remains the same 75 leaf names in five files.
+This is optional artifact isolation, not an application performance fix or
+a retroactive pass for earlier failed runs.
+
 ## Separate route-commit diagnostics
 
 `route-diagnostic.config.ts` selects only the two complete Agent-On timing
