@@ -61,4 +61,34 @@ describe("shared recommendation contract", () => {
     expect(deriveRecommendation(store(), id).outcome).toBe("COMPLETE");
     expect(() => deriveRecommendation(store(), id, { kind: "recorded", revision: 100 })).toThrow("unavailable");
   });
+
+  it("a complete-looking EPS ledger mismatch cannot claim nothing to add", () => {
+    const id = "EX-24107", revision = store().caseRevisions[id][0];
+    const eps = revision.epsPrescription!;
+    store().submitItem({ caseId: id, channel: "eps", endorsementText: eps.dispenserEndorsement,
+      epsPrescription: { ...eps, items: [{ ...eps.items[0], quantity: 56 }] } });
+    const r = deriveRecommendation(store(), id);
+    expect(r.outcome).not.toBe("COMPLETE");
+    expect(r.missing).toContain("Independent claim product and quantity agree");
+    expect(r.summary).not.toContain("nothing to add");
+  });
+
+  it("edited draft date resolves its own provision, requirements and kernel input", () => {
+    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, purpose: "new_submission",
+      epsPrescription: { ...draft.epsPrescription!, dispensingDate: "2026-07-21", prescriptionDate: "2026-07-21" } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r.version).toBe("2026-07");
+    expect(r.requirements.some((entry) => entry.id === "dated")).toBe(false);
+    expect(r.kernelRecommendation).not.toBe("REFER_BACK");
+  });
+
+  it("an unavailable dispensing-date provision is an explicit gap, never a fabricated clause", () => {
+    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!, dispensingDate: "2027-01-21" } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r).toMatchObject({ clause: null, version: null, outcome: "ABSTAIN", preview: null });
+    expect(r.requirements).toContainEqual({ id: "provision", label: "Applicable provision", status: "not_established" });
+    expect(r.nextStep).toContain("Request");
+  });
 });

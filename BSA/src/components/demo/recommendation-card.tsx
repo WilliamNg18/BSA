@@ -28,16 +28,21 @@ export function RecommendationCard({
         <div><dt className="text-muted-foreground">Dispensing date</dt><dd>{r.dispensingDate.split("-").reverse().join("/")}</dd></div>
         <div><dt className="text-muted-foreground">Evidence</dt><dd>{r.context === "recorded" ? "Recorded" : r.context === "draft" ? "Draft" : "Current"} revision {r.revision}</dd></div>
       </dl>
-      <ul aria-label="Requirement results" className="space-y-1 text-sm">
-        {r.requirements.map((entry) => <li key={entry.id}>{entry.label}: <strong>{entry.status === "met" ? "Met" : entry.status === "not_met" ? "Not met" : "Not established"}</strong></li>)}
-      </ul>
+      <div className="text-sm">
+        {r.missing.length > 0 && <h4 className="font-medium">Missing or unresolved</h4>}
+        <ul aria-label="Requirement results" className="space-y-1">
+          {r.requirements.map((entry) => <li key={entry.id}>
+            {entry.basis === "declared_format" ? "Declared format: " : entry.basis === "received_source" ? "Received source: " : ""}
+            {entry.label}: <strong>{entry.status === "met" ? "Met" : entry.status === "not_met" ? "Not met" : "Not established"}</strong>
+          </li>)}
+        </ul>
+      </div>
       <p className="text-sm font-medium">{r.summary}</p>
-      {r.missing.length > 0 && <div className="text-sm"><h4 className="font-medium">Missing or unresolved</h4><ul className="list-disc pl-5">{r.missing.map((entry, i) => <li key={i}>{entry}</li>)}</ul></div>}
       {r.suggestions.length > 0 && <div className="space-y-2 text-sm">
         <h4 className="font-medium">Suggested values</h4>
         {r.suggestions.map((entry) => <div key={entry.field}>
-          <p>{entry.label}{entry.value !== null && <>: <strong>{entry.value}</strong></>}</p>
-          <p className="text-muted-foreground">{entry.source}</p>
+          <dl><dt>{entry.label}</dt><dd>{entry.value !== null ? <strong>{entry.value}</strong> : "Needs human input"}</dd>
+            <dt className="text-muted-foreground">Source</dt><dd>{entry.source}</dd></dl>
           {entry.status === "needs-human-input" && onFocusField && <Button type="button" variant="outline" size="sm" onClick={() => onFocusField(entry.focusTarget)}>Enter invoice price</Button>}
         </div>)}
       </div>}
@@ -50,13 +55,20 @@ export function RecommendationCard({
           <div><dt>Form</dt><dd>{r.preview.epsPrescription.supplyEvidence.form}</dd></div>
         </dl>}
       </div>}
+      {r.operatorPreview && r.context === "current" && r.operatorApplyAllowed && <dl className="space-y-1 text-sm">
+        <dt className="font-medium">Operator draft preview</dt>
+        <dd>{r.operatorPreview.outcome === "ACCEPT" ? "Sufficient" : r.operatorPreview.outcome === "REFER_BACK" ? "Refer back" : "Request information"}</dd>
+        {r.operatorPreview.rbCode && <><dt>RB code</dt><dd>{r.operatorPreview.rbCode}</dd></>}
+        <dt>Note</dt><dd className="whitespace-pre-wrap">{r.operatorPreview.note}</dd>
+      </dl>}
       <dl className="text-sm">
         <dt className="font-medium">Recommended outcome</dt>
-        <dd>{r.outcome === "COMPLETE" ? "Complete" : r.outcome === "REFER_BACK" ? "Refer back" : r.outcome === "REQUEST_INFORMATION" ? "Request information" : "Abstain"}</dd>
-        {r.diagnostic && <><dt className="font-medium">Safe human follow-up</dt><dd>{r.diagnostic.rbCode && `${r.diagnostic.rbCode}: `}{r.diagnostic.note}</dd><dt>Kernel outcome and gate retained</dt><dd>{r.kernelRecommendation}; {r.kernelGate}</dd></>}
+        <dd>{r.outcome === "COMPLETE" ? r.operatorApplyAllowed ? "Sufficient recommended" : "Complete" : r.outcome === "REFER_BACK" ? "Refer back" : r.outcome === "REQUEST_INFORMATION" ? "Request information" : "Abstain"}</dd>
+        {r.diagnostic && <><dt className="font-medium">Safe human follow-up</dt><dd>{r.diagnostic.provenance === "reconciliation_failed" ? "Reconciliation failed" : "Unverified evidence"}</dd></>}
+        <dt>Kernel outcome and gate retained</dt><dd>{r.kernelRecommendation}; {r.kernelGate}</dd>
+        <dt>Next step</dt><dd>{r.nextStep}</dd>
+        <dt>Source provenance</dt><dd>{r.provenance}</dd>
       </dl>
-      <p className="text-sm">{r.nextStep}</p>
-      <p className="text-sm text-muted-foreground">{r.provenance}</p>
       {r.operatorApproved && <p className="text-sm">Operator-approved; the agent verified and advised.</p>}
       <SignalList signals={r.signals} compact={compact} />
       {onApply && r.context !== "recorded" && <Button type="button" variant="outline" onClick={onApply}>{applyLabel}</Button>}
