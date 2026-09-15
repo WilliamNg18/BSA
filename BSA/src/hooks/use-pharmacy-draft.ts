@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { useLifecycleCase } from "./use-lifecycle-case";
 import { useAppStore } from "@/lib/store";
-import { initialisePharmacyDraft, checkPharmacyCorrection, suggestedPharmacyCorrection } from "@/lib/domain/pharmacy-correction";
+import { initialisePharmacyDraft, initialisePharmacySubmissionDraft, checkPharmacyCorrection, suggestedPharmacyCorrection } from "@/lib/domain/pharmacy-correction";
 import type { PharmacyCorrectionDraft } from "@/lib/domain/lifecycle";
 import type { PharmacyCheck } from "@/lib/domain/pharmacy-check";
 import type { ItemChannel } from "@/lib/domain/types";
 
-export function usePharmacyDraft(caseId: string, channel?: ItemChannel) {
+export function usePharmacyDraft(caseId: string, channel?: ItemChannel, purpose: "correction" | "new_submission" = "correction") {
   const c = useLifecycleCase(caseId);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const saved = useAppStore((s) => s.pharmacyDrafts[caseId]);
   const enabled = useAppStore((s) => s.agentEnabled);
   const [failure, setFailure] = useState<{ caseId: string; revision: number | undefined; message: string } | null>(null);
   const error = failure?.caseId === caseId && failure.revision === revision?.number ? failure.message : "";
-  const original = c && revision ? initialisePharmacyDraft(c, revision, channel) : null;
+  const original = c && revision ? (purpose === "new_submission" ? initialisePharmacySubmissionDraft : initialisePharmacyDraft)(c, revision, channel) : null;
   const draft = original && saved?.revision === revision?.number && (!channel || saved.channel === channel) ? saved : original;
   let result: PharmacyCheck | null = null;
   let validationError = "";

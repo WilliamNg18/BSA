@@ -158,12 +158,12 @@ for (const colorScheme of ["light", "dark"] as const) {
       await page.keyboard.press("End"); await expect(items.last()).toBeFocused();
       await page.keyboard.press("Escape"); await expect(trigger).toBeFocused();
       await trigger.press("Space"); await expect(items.first()).toBeFocused();
-      const outside = page.getByRole("button", { name: /Synthetic demonstration data throughout/ });
+      const outside = page.getByRole("banner").getByRole("switch");
       await outside.click();
       await expect(menu).toHaveCount(0);
       // Non-modal navigation must preserve the outside control's action/focus.
       await expect(outside).toBeFocused();
-      await expect(outside).toHaveAttribute("aria-expanded", "false");
+      await expect(outside).toBeChecked();
       await trigger.press("Enter"); await expect(items.first()).toBeFocused();
       await items.first().press("Enter");
       await expect(page).toHaveURL(/\/pharmacy$/);

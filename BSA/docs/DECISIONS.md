@@ -4,6 +4,53 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: B40 fidelity and communication contract choices
+- Question: how can V distinguish stale dependency failures from test defects without resolving others' source conflicts? Choice: run the identical six owned tests on an isolated exact published P checkout, with source/package diffs empty and no browser/build; tie-breaker: source-pinned evidence and no duplicate source writer.
+- Question: should a correctly dated B satisfy an old Home date-correction assertion? Choice: assert absence of that false instruction and keep the failure assigned to D; tie-breaker: current source truth, not a green legacy fixture.
+- Question: how is the discovered P/V four-case unit overlap resolved? Choice: retain P's two EPS labels, all retired-case negatives and actual-M landmarks, then add the explicit unavailable-EPS negative; tie-breaker: union meaningful assertions rather than overwrite owner work.
+
+- Question: which legacy unit failures may V migrate? Choice: the six files explicitly assigned by G after O confirmed no overlap, preserving historical pure-domain cases while replacing active retired-fixture setup with canonical actions; tie-breaker: precise ownership and truthful current behaviour.
+
+- Question: how should legacy B review setup adopt the new case? Choice: select the real brand-missing paper control and press Post, preserving the canonical factory's data instead of clearing fields or relabelling the old EPS fixture; tie-breaker: actual submission fidelity.
+- Question: may V resolve conflicting canonical P/G recommendation and paper source while importing controls? Choice: abort the clean-start merge and prepare only owned test adapters against published controls; tie-breaker: one source owner and no speculative integration repairs.
+
+- Question: should Type 1 capture affect the mismatch assumption? Choice: assert exact before/after equality for its actual string draft in V's existing unrelated-global loop; tie-breaker: capture changes only its own operational evidence, without duplicate N or store edits.
+
+- Question: how should V strengthen capture preservation for the new assumption? Choice: import G's exact published `cdd436b` dependency rather than cast around the old snapshot type, duplicate the producer or fabricate the property; tie-breaker: real source compatibility and one owner per implementation.
+
+## 2026-09-15: V canonical handoff and fresh-scenario fidelity
+
+- Question: may verification create missing brand data by mutating the ready-to-release C8 seed? Choice: use only the real original-scenario factory and visible preparation controls when published; retain the dependency meanwhile. Tie-breaker: exact source fidelity and no fabricated operational state.
+- Question: who adds the new assumption to state verification? Choice: preserve N's `15f9562` exact-key hunk and separately strengthen V's capture preservation list in its next source-compatible patch. Tie-breaker: one writer per hunk and complete observer coverage.
+- Question: do canonical store and handler passes establish C7 or current-live acceptance? Choice: retain them as bounded evidence only; require real UI cycles and the original timing assertions after coherent integration. Tie-breaker: truthful evidence and live-first authority.
+
+- Question: should a later information response bypass the scanner revision guard? Choice: keep the guard strict and use G's facade pinned to the last actual submission, proving it with real request/response actions; tie-breaker: exact source identity without inferred replacement evidence.
+- Question: does green CI on the first scanner WIP validate G's later integrated runtime? Choice: retain exact source hashes and test the new facades separately; do not transfer earlier CI or live acceptance; tie-breaker: source-pinned evidence.
+- Question: how should an SVG title include the source ID without React warnings? Choice: one template-string child, retaining the same accessible name; tie-breaker: reliable native semantics without changing evidence.
+- Question: should U rewrite other owners' 207 failing tests after integrating a shared scenario change? Choice: report the exact broad CI failure, retain U's 26 passing scanner tests and route migration to canonical/current screen owners; tie-breaker: coordinated ownership without weakened acceptance.
+- Question: should an empty source region be drawn as unreadable text? Choice: leave its image value blank and retain original synthetic patient/pharmacy identity, while the separate OCR column explains Blank versus Unknown; tie-breaker: do not invent ink or uncertainty in original evidence.
+- Question: how should the scanner show newly acknowledged brand/pack/form evidence? Choice: consume G's new immutable amendment regions and assert their actual image-column rendering, never inject declaration values in the UI; tie-breaker: source fidelity and single ownership.
+- Question: how should scanner legibility be verified without a proxy page? Choice: integrate O's published full-width mount, use actual case routes at 1280/1440 with U's shared geometry helper, and run only under the coordinator's reserved lease; tie-breaker: measure the real requirement without duplicate workflows.
+- Question: can four passing scanner browser cases and eight clean axe audits imply live or full visual acceptance? Choice: source-pin the local proof and retain both screenshots, disclose the second-image delivery limit, and leave integrated/live release gates open; tie-breaker: truthful verification boundaries.
+- Question: can completed Part A and later G source-link fixes inherit the earlier scanner browser timestamp? Choice: integrate the published code, rerun 63 targeted cases and typecheck, and retain the older browser proof under its actual hash until a final integration run; tie-breaker: source-pinned release evidence.
+- Question: should active paper capture tests compare against historical incomplete-date fixtures? Choice: under G's explicit two-file handoff, resolve active cases through `caseById` while preserving exact image/confidence checks and requiring human release for every new paper attempt; tie-breaker: latest source/authority contract without changing canonical code.
+- Question: how can B test real actions without a duplicate store? Choice: merge G's exact published canonical lineage into B's verification branch, preserve its shared files byte-for-byte and add only new B tests/helpers. Tie-breaker: one authoritative implementation and executable fidelity rather than simulation.
+- Question: does null OCR mean a known blank? Choice: no; null is Unknown and empty string is Blank, matching the scanner component. Type 1 remains required for unknown extraction, while a confidently known blank is missing information for Type 2. Tie-breaker: do not claim to have read absent source evidence.
+- Question: can current action tests establish the new four-case baseline? Choice: source-pin them to G `9b41cc2` and rerun/adapt after canonical new seed/source publication. Tie-breaker: exact requirement verification, not proxy coverage.
+- Question: does an information-only pharmacy answer replace As submitted? Choice: no; retain the last actual submission and separately record the response revision, requiring explicit source linkage in the scanner facade. Tie-breaker: no invented corrected claim or erased provenance.
+- Question: should B retain a second capture call after G's acknowledged paper amendment is already reconciled? Choice: test readiness and one final human Release instead; earlier capture and old scan remain immutable. Tie-breaker: the explicit corrected-paper contract, without unnecessary operator work.
+- Question: which source validates queue absence and payment presentation? Choice: assert the actual `staffLane` and `receiptPricingLabel` adapters after real actions, with no paper Paid receipt before the operator press. Tie-breaker: verify the required presentation contract rather than only a routing flag.
+- Question: who repairs newly reproduced canonical source/note defects? Choice: publish B's failing regression evidence and send G the exact repairs; do not patch the shared store or manufacture scan fields in U's renderer. Tie-breaker: one canonical owner and faithful source images.
+- Question: may an information-only answer force recapture of unchanged paper? Choice: retain human capture by explicit submission-source identity, with no new human capture event; a genuinely new submission still invalidates it. Tie-breaker: truthful human history and no unnecessary repeat work.
+- Question: how is the C4/C5 repair accepted? Choice: rerun the original nine assertions unchanged against exact G `cdd436b`, record their pass separately from the still-failing source-link test and master release gates. Tie-breaker: reproducible evidence and no silent waiver.
+- Question: how is newly merged main adopted while G owns the domain? Choice: preserve main's header and master Process model, retain B's explicit final-note error rule and both streams' historical records, with no canonical runtime edits. Tie-breaker: latest authority and ownership-safe integration.
+- Question: how does the final source-link repair gain acceptance? Choice: require the exact previously failing capture assertion to pass, then rerun the full bounded matrix and check; do not invent a new capture event or weaken the source equality assertion. Tie-breaker: original symptom verified against changed canonical code.
+- Question: where does B's handoff end? Choice: deliver verified pure contracts and actual-store regressions, retaining the distinct owner-controlled UI/browser/main/live gates. Tie-breaker: completed bounded ownership without claiming another stream's unexecuted release evidence.
+
+## 2026-09-15: B40 readable-blank decision
+
+- Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
+
 ## 2026-09-15: Task 39 source-backed wrong-strength contract
 
 - Question: why replace the date headline? Choice: the owner's explicit new wrong-strength scenario makes a plausible, complete-looking pick-list error visible while keeping all current dates correct. Tie-breaker: newest instruction; historical audit evidence remains unchanged.
@@ -23,7 +70,18 @@ ms.date: 2026-09-15
 - G integration: keep N's optional mismatch input in the same store and exact domain snapshot, separate from the unchanged manual-loop defaults; tie-breaker: one state and non-additive assumptions.
 - G correction: emit brand/pack/form from the acknowledged amendment into its actual synthetic scan regions, and reject those proposed aliases in all outbound note paths; tie-breaker: the reproduced C4/C5 source and communication failures.
 - G correction: initialise a new workbench attempt from the original scenario source but keep its current revision binding; never rewrite the current ready amendment merely by opening a page; tie-breaker: C8 fidelity and explicit human submission.
+- G correction: strength matching uses proposed cross-record authority informed by the verified public guidance, never a fabricated monthly Tariff provision. Real 10mg/5mg disagreements stay visible and structured reading/image signals are not applicable; tie-breaker: W's reproduced source/provenance failures.
+- G correction: information-only responses link the original submission revision and retain its actual capture event; no new scan or human confirmation is manufactured. New submissions and acknowledged amendments invalidate that link; tie-breaker: C1 fidelity and B's reproduced duplicate-Type-1 failure.
+- G correction: simultaneous ready/referral seeds include actual historical verification events and the same ready-decision draft as a real recheck, not status flags alone; tie-breaker: C8 truthful history and O's one-press release requirement.
+- G migration: move original case/history/lifecycle fixtures mechanically to archival modules and retain public historical exports, rather than falsifying old dates to satisfy current headline scope; tie-breaker: immutable evidence and the owner's new active-case requirements.
+- G integration: consume bounded owner-authored pharmacy, scanner, operator, recommendation, follow and numeric compatibility before activation; do not deploy new seeds under broken old controls or import unrelated backup work; tie-breaker: one coherent live product.
 - Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
+- Question: how should U render three paper sources without a second state authority? Choice: a pure component consuming B's replica/reconciliation through G's facade, mounted by O; tie-breaker: one state and source fidelity.
+- Question: can confirmed values improve the scanner column? Choice: draw only immutable source-region strings and original source date; display current human evidence below the three columns; tie-breaker: provenance and human authority.
+- Question: how can a narrow landscape scan remain readable in three desktop columns? Choice: a wrapped portrait synthetic source drawing with 16-unit text and no ellipsis, hidden content or scrollbox; tie-breaker: first-time-viewer clarity, with actual desktop measurement still required.
+- Question: does an unknown OCR date mean a deliberately wrong prescription date? Choice: display Unknown at the supplied confidence while preserving the correct source/declaration date; tie-breaker: no invented evidence.
+- Question: can high confidence turn null into a known blank? Choice: preserve B's explicit null/empty-string distinction and associate each displayed value with its source description; tie-breaker: truthful uncertainty rather than implied readability.
+- Question: may display rounding promote a confidence below one to certainty? Choice: retain sufficient decimal precision so it does not display as 100 per cent; tie-breaker: never improve source confidence through presentation.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
 - Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.
@@ -39,14 +97,51 @@ ms.date: 2026-09-15
 - Question: may the operator card show W's proposed corrected pack? Choice: show source/submission facts on both sides, but the exact proposal and preview only in the pharmacy's own-records card. Operator advice and notes are field/rule based with no proposed value. Tie-breaker: coordinator's later explicit C5 override.
 - Question: how is the full Off wrong-strength cycle entered? Choice: automatic pricing as endorsed, then a real explicit human audit/query reopening owned by G, never a silently manufactured queue row or a toggle transition. An On failure followed by Off is additional mixed-mode coverage only. Tie-breaker: truthful Today mechanism and the latest coordinator instruction.
 - Question: where is the card audience split implemented? Choice: G requested one pure W helper returning copied facts/checks for both audiences and a proposal only for the pharmacy. Its discriminated operator result has `suggestion: null`; no duplicate store, outbound-note generator or routing function is introduced. Tie-breaker: one shared interpretation with explicit presentation authority.
+## 2026-09-15: Part A replaces the global notice, not source evidence
+
+- Question: must the complete hosted matrix be duplicated on a contended local machine? Choice: by explicit coordinator instruction, use all-green exact-source CI `35015057336` as the authoritative complete 176-test matrix; stop the duplicate local run by its owned handle, retain interruption and the Task 13 timeout, and run that exact failed control once plus bounded 1440px motion/captures. Tie-breaker: first-merge priority with unchanged coverage and timing budgets, not a failure waiver.
+- Question: may incomplete axe or unavailable image reads become acceptance? Choice: retain every incomplete rule occurrence and disclose the second-image tool limit; zero violations does not mean full manual accessibility or dark visual certification. Tie-breaker: truthful evidence.
+
+- Question: how to integrate the master Parts A-C classification? Choice: adopt coordinator `b005bbb` with exact MEMORY and union the independent status sections; preserve Part A-only runtime ownership. Tie-breaker: newest scope authority without duplicating W/B domain implementation.
+
+- Question: retain the older mandatory amber notice? Choice: remove its bar, collapse control and local `disclaimerOpen` state; put exactly "All data is synthetic" once in the existing small muted footer, removing "Synthetic cases" duplication. Tie-breaker: the newest explicit Part A instruction supersedes the amber-bar constraint.
+- Question: does notice removal require a shared-store change? Choice: no; inspected main and active published contexts have only AppShell-local presentation state. Tie-breaker: one state and smaller scope; no domain mutation or G-owned file change.
+- Question: where and how does the principle appear? Choice: one exact "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides." line only On, directly below TopNav and before Follow/Demo controls, centred on actual content. Use normal 16px text, no clipping or scale transform, a 150ms opacity fade and a 100ms reduced-motion crossfade; remove the whole region Off after fading. Tie-breaker: the newest visible-outcome requirement without changing authority.
+- Question: what survives the notice change? Choice: preserve per-item "(synthetic)" and source/evidence labels, governing/action tags, footer no-payment wording, one Agent control and existing measured sticky/focus/reset/route safeguards. Tie-breaker: governing principle and clinical/source safety.
+- Question: when is Part A complete? Choice: only after the coordinator merges exact-green CI, the normal deployment passes and the exact served change is observed live. Unit/browser outputs remain developer artifacts, never a backup. Tie-breaker: Live first.
+- Question: how to repair the initial 240-second aggregate browser timeout? Choice: register each ordinary route independently under the existing 30-second deadline, keeping both modes, all perspectives/widths, exact bounds and unrestricted axe; do not raise the aggregate timeout or omit surfaces. Tie-breaker: bounded, attributable verification without weakening assertions. Automatic 1280px failure screenshots are disabled in the new tests; intentional captures remain 1440px only.
+
+- Question: what replaces a deleted notice button in existing control tests? Choice: use the surviving header Agent switch for genuine outside-menu dismissal and assert its action/focus; include optional Outcome height in pinned rail/follow assertions, never wait for bounds on an absent Off node. Tie-breaker: preserve the real behaviour while updating only directly coupled presentation assumptions.
+
+## 2026-09-15: Parts A-C and the Tasks 39-40 authority boundary
+
+- Question: does the new master policy change synthetic-source restrictions or require proposed gates for Today pricing? Choice: preserve the original no-real-Tariff-text rule and explicitly separate Today EPS, assisted EPS and paper release in Vision/current contracts. Tie-breaker: change only the authorised scope and remove contradictory blanket wording.
+- Question: do the new case and release instructions require another permission question? Choice: apply the owner's explicit replacement now, preserving the governing principle and immutable historical evidence. Tie-breaker: the newest instruction already authorises the outcome changes.
+- Question: which work merges first? Choice: Part A's own header branch first, then W/B shared model changes through G, then owning consumers; backup/recovery and verification preparation continue in parallel. Tie-breaker: explicit merge order without stopping unrelated streams.
+- Question: how do four examples remain four? Choice: retain the four IDs; use `SYN-FQ123-MISMATCH` for wrong-strength EPS and repurpose `EX-24112` for paper with a missing brand/manufacturer and correct NCSO date. Tie-breaker: the smaller user-approved paper alternative and no fifth case.
+- Question: may the operator's card or note reveal a proposed correction value? Choice: no; preserve factual original evidence, but proposed values/previews belong only to the pharmacy's own-record recommendation. Tie-breaker: C5's explicit audience boundary.
+- Question: how does an Off wrong-strength item reach the required correction cycle after automatic pricing? Choice: an explicit human audit/query action with retained pricing history, never a toggle or invented queue transition. Tie-breaker: keep Today truthful and every action real.
+- Question: can a corrected paper revision make old unreadable evidence look readable? Choice: only a new, explicitly labelled acknowledged pharmacy amendment may supply new scan/OCR evidence; preserve prior snapshots and do not recycle old capture as a new action. Tie-breaker: submission fidelity and honest provenance.
+- Question: which evidence is publishable as independently checked? Choice: use W's verified abstract and NHSBSA mechanism; keep unverified subtype counts/rank explicit until a primary source confirms them. Tie-breaker: evidence accuracy over apparent completeness.
+- Question: how is the mismatch input interpreted? Choice: one per cent of total submitted claims, a separate non-additive assumption/estimate, never 1.6 per cent as an NHSBSA rate or a percentage of the referral subset. Tie-breaker: preserve existing model arithmetic and honest denominators.
+- Question: should O wait indefinitely for D's backup schema? Choice: use the coordinator-frozen runtime/docs/data/README/manifest/serve contract and independently verify actual files, so both streams proceed. Tie-breaker: simpler parallel delivery without fabricated backup proof.
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
 ### Task 39 N optional numbers decisions
 
+- Question: how should N validate before canonical main is merged? Choice: temporarily rebase onto exact G `4765770`, drop duplicated foundation/helper commits and preserve N consumers/formatter; reduce the final PR against actual canonical main later. Tie-breaker: sole canonical owner and approved domain-first order.
+- Question: what changes in the exact observer inventory? Choice: add `mismatchSharePercent` alongside every existing key, never strip it for equality. Tie-breaker: one authoritative state and truthful equivalence evidence.
+- Question: how should the mistaken default-port diagnostic be reported? Choice: retain its 4/4 result separately and cite one explicit-port 4340 corrective run, also 4/4, without counting eight unique tests or changing retries/deadlines. Tie-breaker: accurate execution evidence and coordinator lease discipline.
+- Question: does N's passing browser diagnostic complete Task 39? Choice: no; it validates only N's owned views against a temporary canonical checkpoint, before actual main/deployment/live gates. Tie-breaker: live-first release authority.
+- Question: how should V's exact preservation hunk enter N? Choice: apply its single assertion-list addition and record N's own evidence boundary, avoiding unrelated documentation context from V's newer dependency chain. Tie-breaker: surgical ownership-preserving integration.
+
 - Question: which volume and units drive mismatches? Choice: total submitted claims times a fractional share; UI 1% converts to 0.01, independently of the study's 1.6%. Tie-breaker: explicit latest denominator and evidence authority.
 - Question: should the new assumption change the frozen referral estimate? Choice: use a separate optional result and independently validated draft in the same store, leaving all existing cohorts and hours unchanged until overlap is defined. Tie-breaker: preserve truthful accounting.
 - Question: what does Today none mean? Choice: no catch modelled in this synthetic comparison, never observed absence of real NHSBSA detection. Tie-breaker: governing principle and truthful provenance.
+- Question: how is the new optional estimate presented? Choice: a separate chapter 2 disclosure, explicit all-modelled-mismatches catch assumption and no additions to existing cohorts/hours; chapter 1 imports only W's verified study text. Tie-breaker: smaller scope and clear Today/With provenance.
+- Question: may authored browser contracts count as acceptance? Choice: no; publish them as WIP while the G store handoff and coordinator browser lease are pending. Tie-breaker: live-first verification authority.
+- Question: may a valid tiny positive expected count display as zero? Choice: use one significant-digit formatter with scientific notation for tiny counts, rather than four-decimal truncation; leave arithmetic unchanged. Tie-breaker: truthful evidence and no invented absence of mismatches.
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.
 
@@ -2503,3 +2598,66 @@ The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
+
+Question: must pharmacy corrections wait for an NHSBSA note containing the answer? Choice: use only shared pharmacy-record suggestions, show the actual field/rule operator note without an exact-fix field, and require a separate payload-bound accuracy acknowledgement in both modes; tie-breaker: current C5/C6 authority and explicit human action.
+
+Question: how should simultaneous pharmacy tiles become plausible? Choice: project all actual lifecycle cohorts side by side and let G own seed/history state, never populate tiles by navigation; tie-breaker: one authoritative state.
+
+Question: how should the required checkbox be tested without a browser lease? Choice: execute its actual native-input callback against the canonical store and retain SSR as a separate read-only assertion, without claiming browser or timing acceptance; tie-breaker: exact evidence and owner-controlled browser slots.
+
+Question: how should P adopt R's fail-closed Card audience default? Choice: publish an isolated explicit pharmacy audience prop in the real shared pharmacy wrapper for early foundation import; tie-breaker: preserve genuine controls without exposing pharmacy proposals on NHSBSA screens.
+
+Question: may P manufacture an incomplete B draft from the completed C8 seed? Choice: request a canonical source-bound new-submission initializer from G while retaining current claim drafts and immutable receipts; tie-breaker: one state, source fidelity and truthful scenario selection.
+
+Question: can the EPS selection label imply what was actually supplied? Choice: label it endorsed product/pack and show the independently retained supply facts separately, under O's explicit shared-component handoff; tie-breaker: submission fidelity.
+
+Question: should an outdated compact B/EPS invocation create a phantom example? Choice: show an explicit channel error with no submission control; tie-breaker: canonical four-case identity and source integrity.
+
+Question: how should the workbench use G's original-scenario factory? Choice: use it only for unsaved new-submission projection, never current claim correction or an existing shared pharmacist draft; tie-breaker: honest scenario replay without source or draft loss.
+
+Question: how should duplicate supply-record landmarks be repaired? Choice: use the existing contextLabel prefix in the real section, retaining both complete source views and the uniqueness assertion; tie-breaker: accessible source fidelity.
+
+Question: should legacy date/generic-domain regressions change current playable source to remain green? Choice: retain isolated historical source fixtures and all their assertions while current UI tests use the canonical four cases; tie-breaker: preserve coverage without inventing a live fifth example.
+
+Question: how should strength precheck show authority without a retrieved clause? Choice: consume G's ruleAuthority and label the proposed cross-record check with Tariff clause not applicable; tie-breaker: no fabricated Tariff evidence.
+
+Question: how should P verify Type 1 after O replaces duplicate declaration evidence? Choice: assert the actual immutable as-submitted date and read-only store snapshot while retaining unchecked human reconciliation and prescriber assertions; tie-breaker: real source fidelity, not obsolete label compatibility.
+
+## Tasks 39/40 R audience decisions
+
+- Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
+- Question: does NHSBSA supply a corrected value to the pharmacy? Choice: no; B's structured field/rule requests generate the canonical operator note, while the pharmacy derives its own values from records; tie-breaker: explicit C5 separation.
+- Question: can an audience change approve or acknowledge a correction? Choice: no; it is an immutable projection with no store writes, and actual same-revision human provenance is retained; tie-breaker: one state and human authority.
+- Question: who edits current recommendation derivation? Choice: R exclusively; G retains canonical types/store/lifecycle/seeds/source facade, W the strength module and B the fidelity/referral/paper modules; tie-breaker: isolated file ownership.
+- Question: can a failed generic amount check imply a concession rule? Choice: no; use a source-agreement request unless the finding or typed paper rule explicitly establishes a concession; tie-breaker: no invented citation.
+- Question: may the Card compute a different operator note from the one Apply writes? Choice: verify equality between the audience projection and the canonical operator draft actually copied by the store; tie-breaker: exact human preview/application contract.
+- Question: which paper evidence does a recorded card reconcile? Choice: G's pure facade receives the selected revision and its recorded capture, never the latest mutable process; tie-breaker: pinned source fidelity.
+- Question: can readable paper imply automatic release? Choice: no; all paper recommendations require the operator's press, while a resubmitted ready item uses its existing prepared decision rather than inventing another Apply; tie-breaker: C4/C6 channel authority.
+- Question: should old tests recreate the retired operational date-gap case? Choice: no; use current strength/brand cases for playable journeys and explicit edited EPS values for calendar-validation negatives; tie-breaker: newest four-case scope while retaining safeguards.
+- Question: can a Card-only signal override repair a false kernel trace? Choice: no; the canonical owner repairs the kernel and rule authority, then R consumes those facts; tie-breaker: one truthful source of evidence.
+- Question: does a new acknowledged paper amendment update the old recommendation evidence? Choice: no; regression compares the entire original recorded recommendation after the actual resubmit action, including original triad and approval; tie-breaker: immutable historical fidelity.
+- Question: how does a proposed cross-record check use the five-signal layout? Choice: retain every row but label retrieved provision, independent readings and image quality not applicable; preserve actual source reconciliation and coverage rather than infer a pass; tie-breaker: truthful authority.
+- Question: what should operator trace regression assert after C5? Choice: exact source strengths remain visible, but correction proposals and previews are absent; keep all original widths, test identities and unrestricted axe; tie-breaker: evidence fidelity and audience authority.
+- Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
+
+## Task 40 operator mounting
+
+Question: how is full submission fidelity inspectable without changing the source? Choice: render the canonical submitted fields and an exact read-only revision disclosure, with U's paper comparison separate from human effective capture; tie-breaker: immutable source fidelity.
+
+Question: can a ready paper item's alternative decision buttons call actions that require an active review? Choice: allow the existing one-press Release directly and expose Start review for another disposition, rather than silently entering a review or calling an invalid action; tie-breaker: every human action remains explicit and real.
+
+Question: should a legacy case-pack draft remain beside the new safe operator note? Choice: remove that duplicate proposed outbound draft and keep R/G's exact safe preview/application path; read-only source facts and historical records remain unchanged; tie-breaker: C5 and one decision authority.
+
+Question: how should old unit fixtures follow the new four-case contract? Choice: use real paper submissions and acknowledgement actions, explicit later EPS audit and canonical Release, while retaining all state/history and negative assertions; tie-breaker: test actual behaviour rather than bypassing new guards.
+
+Question: does an information response require another Type1 capture merely because its revision number changed? Choice: display G's source-linked recorded capture when its canonical lookup returns one, keeping unknown values and the answer separate; tie-breaker: preserve existing human evidence without invented work.
+
+Question: should a proposed cross-record check say that Tariff retrieval failed? Choice: use G's explicit authority metadata to label the provision not applicable, preserving real matching evidence and all five signal rows; tie-breaker: truthful source authority.
+
+Question: does code-prefilled corrected paper contradict an initially empty manual decision? Choice: test the initial manual review separately from the acknowledged, code-checked resubmission, then require one actual operator Release; tie-breaker: preserve C6's explicit human authority and truthful current state.
+- Question: should old tests recreate the retired operational date-gap case? Choice: no; use current strength/brand cases for playable journeys and explicit edited EPS values for calendar-validation negatives; tie-breaker: newest four-case scope while retaining safeguards.
+- Question: can a Card-only signal override repair a false kernel trace? Choice: no; the canonical owner repairs the kernel and rule authority, then R consumes those facts; tie-breaker: one truthful source of evidence.
+- Question: does a new acknowledged paper amendment update the old recommendation evidence? Choice: no; regression compares the entire original recorded recommendation after the actual resubmit action, including original triad and approval; tie-breaker: immutable historical fidelity.
+- Question: how does a proposed cross-record check use the five-signal layout? Choice: retain every row but label retrieved provision, independent readings and image quality not applicable; preserve actual source reconciliation and coverage rather than infer a pass; tie-breaker: truthful authority.
+- Question: what should operator trace regression assert after C5? Choice: exact source strengths remain visible, but correction proposals and previews are absent; keep all original widths, test identities and unrestricted axe; tie-breaker: evidence fidelity and audience authority.
+- Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
