@@ -249,6 +249,11 @@ wraps source strings without completing unknown characters or truncating lines.
 Eighteen focused render tests and typecheck pass. The reusable desktop browser
 contract is authored but not executed: no browser lease or hosted check is claimed.
 
+The first scanner checkpoint passed `npm run check`. The source-description
+follow-up passes 20 focused units: each declaration/OCR value has an associated
+provenance description, known blank strings remain Blank, null remains Unknown,
+and a confidence below one cannot round up to 100 per cent.
+
 Base main is `6418151`. This branch is incomplete work, not a backup or live
 product. G integration, O mounting, 1280/1440 verification, main merge and an
 observed green deployment remain required.

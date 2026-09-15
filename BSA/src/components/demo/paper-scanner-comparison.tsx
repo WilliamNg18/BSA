@@ -41,10 +41,10 @@ export function PaperScannerComparison({ submission, reconciliation }: PaperScan
         {declaration.length ? <dl className="space-y-4 text-base">
           {declaration.map(({ label, value }) => <div key={label} className="space-y-1">
             <dt className="font-medium">{label}</dt>
-            <dd className="whitespace-pre-wrap break-words">{scannerValue(value)}</dd>
+            <dd aria-describedby={`${id}-declaration-source`} className="whitespace-pre-wrap break-words">{scannerValue(value)}</dd>
           </div>)}
         </dl> : <p>No declaration accompanied this paper.</p>}
-        {declaration.length > 0 && <p className="text-sm text-muted-foreground">{PAPER_DECLARATION_PROVENANCE}</p>}
+        {declaration.length > 0 && <p id={`${id}-declaration-source`} className="text-sm text-muted-foreground">{PAPER_DECLARATION_PROVENANCE}</p>}
       </section>
       <section aria-labelledby={`${id}-scan`} className="min-w-0 space-y-4 rounded-xl border bg-card p-4" data-paper-source="scan">
         <h3 id={`${id}-scan`} className="text-base font-semibold">{labels.scan}</h3>
@@ -53,11 +53,11 @@ export function PaperScannerComparison({ submission, reconciliation }: PaperScan
       </section>
       <section aria-labelledby={`${id}-ocr`} className="min-w-0 space-y-4 rounded-xl border bg-card p-4" data-paper-source="character-recognition">
         <h3 id={`${id}-ocr`} className="text-base font-semibold">{labels.characterRecognition}</h3>
-        <p className="text-sm text-muted-foreground">{labels.synthetic}</p>
+        <p id={`${id}-ocr-source`} className="text-sm text-muted-foreground">{labels.synthetic}</p>
         {evidence.characterRecognition.length ? <dl className="space-y-4 text-base">
           {evidence.characterRecognition.map((observation) => <div key={observation.field} className="space-y-1" data-ocr-field={observation.field}>
             <dt className="font-medium">{REFERRAL_FIELD_LABELS[observation.field]}</dt>
-            <dd className="whitespace-pre-wrap break-words" data-ocr-value>{observation.value === null ? "Unknown" : observation.value === "" ? "Blank" : scannerValue(observation.value)}</dd>
+            <dd aria-describedby={`${id}-ocr-source`} className="whitespace-pre-wrap break-words" data-ocr-value>{observation.value === null ? "Unknown" : observation.value === "" ? "Blank" : scannerValue(observation.value)}</dd>
             <dd className="tabular-nums">Confidence: {characterRecognitionConfidence(observation.confidence)}</dd>
           </div>)}
         </dl> : <p>No hypothetical extraction supplied.</p>}
