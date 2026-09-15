@@ -87,6 +87,31 @@ the earlier eight-check source identity is not silently changed to match it.
 These local results do not satisfy the remaining latest-main CI, deployment,
 hosted checklist and fresh-URL gates. No hosted capture has been authorised.
 
+## Task 38 bounded diagnostic execution
+
+After the reviewed R/P/O/D mounts, real Card action markers and unchanged
+strict unit gates were integrated, four approved probes executed at clean
+`82fda530ce338bf03a6536c93fa4469203a693d6`: **two passed and two failed**,
+with one worker and no retries. This is not full 75-check acceptance.
+
+- Visible recommendations on all twenty item routes plus eleven demo steps,
+  Agent On at 1440 px, passed with unrestricted axe.
+- The missing-declaration paper round trip, Both/On, passed through actual
+  referral, correction, resubmission and human release.
+- The preview flow passed date, product, operator, referred-back correction
+  and safe SP invoice-focus assertions. Explicit SP Send then failed with
+  `Invalid or stale pharmacy precheck snapshot.` R owns the shared helper
+  repair and P the actual Send regression; the validator is not waived.
+- The B On/Both timing probe recorded the human click at 82.04 ms and reached
+  the correct queue, count and state, but the state cell had viewport ratio
+  zero. The one-second result correctly failed at 1,018.94 ms; DOM presence
+  is not visible acceptance. Queue visibility/focus remediation is with the
+  source owners, not an increased timeout.
+
+Artifacts remain under `req38-smoke-82fd`. A preceding startup-only failure
+was a config-relative server working directory, repaired before any browser
+probe ran. No source file changed during the four-probe run.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
