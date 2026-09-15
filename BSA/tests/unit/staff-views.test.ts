@@ -7,13 +7,14 @@ import { DecisionRecordPage } from "../../src/pages/decision-record";
 import { CasePackPage } from "../../src/pages/case-pack";
 import { CaseTracePage } from "../../src/pages/case-trace";
 import { NotificationContext } from "../../src/hooks/use-notification";
-import { sessionCase, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
 import { formatProcessItems, monthModel, MANUAL_LOOP_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "../../src/lib/domain/manual-loop-presentation";
 import { staffLane } from "../../src/lib/case-presentation";
 import { itemStateLabel, LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { CaseSourceEvidence, ConfirmedCaptureEvidence, OriginalPaperDeclaration, RawCaseFields } from "../../src/components/demo/case-presentation";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, caseById } from "../../src/lib/domain/cases";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
 import type { EpsPrescription } from "../../src/lib/domain/types";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -46,6 +47,36 @@ function trace(id: string) {
     createElement(Routes, null, createElement(Route, { path: "/case/:id/trace", element: createElement(CaseTracePage) }))));
 }
 
+function openPaperReview(enabled = false) {
+  const store = useAppStore.getState();
+  store.setAgentEnabled(enabled);
+  const paperDeclaration = caseById("EX-24112")!.paperDeclaration!;
+  store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
+  store.arriveInQueue("EX-24112");
+}
+
+function resubmitCorrectedPaper() {
+  const store = useAppStore.getState();
+  const revision = store.caseRevisions["EX-24112"].at(-1)!;
+  const draft = initialisePharmacyDraft(sessionCase("EX-24112")!, revision);
+  store.setPharmacyDraft("EX-24112", { ...draft, purpose: "correction", paperDeclaration: {
+    ...draft.paperDeclaration!, brandManufacturer: caseById("EX-24112")!.pharmacySupplyRecord!.brandManufacturer,
+  } });
+  store.setCorrectionAcknowledgement("EX-24112", revision.number, true);
+  store.resubmit("EX-24112");
+}
+
+function openStrengthReview() {
+  const store = useAppStore.getState();
+  store.setAgentEnabled(false);
+  const caseId = "SYN-FQ123-MISMATCH";
+  const epsPrescription = caseById(caseId)!.epsPrescription!;
+  store.submitItem({ caseId, channel: "eps", endorsementText: epsPrescription.dispenserEndorsement, epsPrescription });
+  expect(useAppStore.getState().lifecycles[caseId].state).toBe("paid");
+  store.reopenForAudit(caseId, useAppStore.getState().caseRevisions[caseId].at(-1)!.number,
+    "Later human audit queries the endorsed strength.");
+}
+
 describe("Task 29 current-revision staff presentation", () => {
   it.each([false, true])("separates automatic pricing, Type 1 and Type 2 without writing state, agent %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
@@ -56,14 +87,16 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(table).not.toContain("EX-24107");
     expect(table).not.toContain("EX-24101");
     expect(table).not.toContain("EX-24123");
-    expect(table).toContain("SYN-FQ123-MISMATCH");
+    expect(table).toContain("EX-24112");
+    expect(table).not.toContain("SYN-FQ123-MISMATCH");
+    expect(html).toContain('data-case-id="SYN-FQ123-MISMATCH"');
     expect(table).not.toContain("EX-24119");
     expect(table).not.toContain("EX-24088");
     for (const lifecycle of Object.values(before.lifecycles)) {
       const process = before.itemProcesses[lifecycle.caseId];
-      if (staffLane(lifecycle, process) === "type2") expect(table).toContain(lifecycle.caseId);
+      if (staffLane(lifecycle, process) === "type2" && !["referred_back", "information_requested", "paid", "released_to_pricing"].includes(lifecycle.state)) expect(table).toContain(lifecycle.caseId);
       else expect(table).not.toContain(`data-case-id="${lifecycle.caseId}"`);
-      if (staffLane(lifecycle, process)) expect(html).toContain(itemStateLabel(lifecycle, "nhsbsa", enabled));
+      if (staffLane(lifecycle, process)) expect(html).toContain(itemStateLabel(lifecycle, "nhsbsa", enabled, process));
     }
     expect(html).toContain('data-type1-case="EX-24123"');
     expect(html).toContain("Priced automatically this month, no person involved:");
@@ -85,9 +118,12 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it("excludes a newly auto-routed revision rather than retaining a stale staff row", () => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB dated 12/08/2026" });
-    expect(useAppStore.getState().itemProcesses["EX-24112"].routing.outcome).toBe("auto_priced");
-    expect(queue()).not.toContain('data-case-id="EX-24112"');
+    const caseId = "SYN-FQ123-MISMATCH";
+    expect(queue()).toContain(`data-case-id="${caseId}"`);
+    const epsPrescription = caseById(caseId)!.epsPrescription!;
+    store.submitItem({ caseId, channel: "eps", endorsementText: epsPrescription.dispenserEndorsement, epsPrescription });
+    expect(useAppStore.getState().itemProcesses[caseId].routing.outcome).toBe("auto_priced");
+    expect(queue()).not.toContain(`data-case-id="${caseId}"`);
   });
 
   it("withholds stale routing with an explicit error", () => {
@@ -100,7 +136,7 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it("opens the followed item's actual lane without expanding unrelated capture work or changing state", () => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+    openPaperReview();
     store.followCase("EX-24112");
     store.setAgentEnabled(true);
     const before = useAppStore.getState();
@@ -122,18 +158,20 @@ describe("Task 29 current-revision staff presentation", () => {
   });
 
   it("shows manual Tariff lookup and a mandatory human reason for Type 2", () => {
-    useAppStore.getState().submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
-    useAppStore.getState().arriveInQueue("EX-24112");
-    const html = casePack("EX-24112");
+    openStrengthReview();
+    const before = getDomainSnapshot();
+    const html = casePack("SYN-FQ123-MISMATCH");
     expect(html).toContain("Tariff to look up unaided");
     expect(html).toContain('id="reason"');
     expect(html).toContain('aria-required="true"');
     expect(html).toContain("EPS claim message");
     expect(html).toContain("EPS has no image");
     expect(html).not.toContain("Prescription image");
-    expect(html).toContain("NCSO initialled AB");
+    expect(html).toContain("SYN-AMLO5-28");
+    expect(html).toContain("SYN-AMLO10-28");
     expect(html).toContain("RB code list");
     expect(html).toContain("RB2B");
+    expect(getDomainSnapshot()).toEqual(before);
   });
 
   it("does not fabricate agent assembly controls for automatic items", () => {
@@ -168,15 +206,13 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it.each([false, true])("retains actual B decision reasons and cited history in mode %s", (enabled) => {
     const store = useAppStore.getState();
-    store.setAgentEnabled(true);
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
-    store.arriveInQueue("EX-24112");
+    openPaperReview(true);
     store.applySuggestionToDecision("EX-24112");
     const draft = useAppStore.getState().operatorDrafts["EX-24112"];
     store.referBack("EX-24112", draft.rbCode, draft.note);
-    store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
-    store.arriveInQueue("EX-24112");
-    store.releaseToPricing("EX-24112", "Human checked the corrected endorsement.");
+    resubmitCorrectedPaper();
+    expect(useAppStore.getState().lifecycles["EX-24112"].state).toBe("resubmitted");
+    store.releaseToPricing("EX-24112", "Human checked the corrected brand evidence.");
     store.setAgentEnabled(enabled);
     const before = useAppStore.getState();
     const original = before.records.find((entry) => entry.caseId === "EX-24112")!;
@@ -191,14 +227,13 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it("does not invent a rule or approved draft when a manual record is viewed with assistance", () => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
-    store.arriveInQueue("EX-24112");
+    openPaperReview();
     store.recordType2Decision({ caseId: "EX-24112", decision: "REFER_BACK",
-      reason: "Human found the dispensing date missing", rbCode: "SYN-NCSO" });
+      reason: "Human found the brand or manufacturer missing", rbCode: "RB2B" });
     const original = useAppStore.getState().records.at(-1)!;
     store.setAgentEnabled(true);
     const html = record("EX-24112");
-    expect(html).toContain("Human found the dispensing date missing");
+    expect(html).toContain("Human found the brand or manufacturer missing");
     expect(html).toContain("Not recorded together for this decision");
     expect(html).not.toContain("Operator-approved explanation");
     expect(original).toMatchObject({ tariffVersion: "n/a", recommendation: "NONE" });
@@ -208,10 +243,17 @@ describe("Task 29 current-revision staff presentation", () => {
 
   it("keeps human-completed Type 2 decisions visible without moving them into the automatic aggregate", () => {
     const store = useAppStore.getState();
-    store.resubmitFromPharmacy("EX-24112", "NCSO AB 21/08/26");
+    openPaperReview();
+    store.referBack("EX-24112", "RB2B", "Please confirm the brand or manufacturer supplied.");
+    resubmitCorrectedPaper();
     store.arriveInQueue("EX-24112");
-    store.recordType2Decision({ caseId: "EX-24112", decision: "ACCEPT",
-      reason: "Human completed the independent evidence review" });
+    expect(useAppStore.getState().itemProcesses["EX-24112"].readyToRelease).toBe(true);
+    expect(getReleaseEligibility("EX-24112").allowed).toBe(true);
+    store.releaseToPricing("EX-24112", "Human completed the independent evidence review");
+    expect(useAppStore.getState().records.at(-1)).toMatchObject({ caseId: "EX-24112", decision: "ACCEPT" });
+    expect(useAppStore.getState().lifecycles["EX-24112"].history.at(-1)).toMatchObject({
+      actor: "operator", to: "released_to_pricing", releaseOrigin: "human_decision",
+    });
     expect(useAppStore.getState().itemProcesses["EX-24112"].routing).toMatchObject({
       outcome: "type2_endorsement", requiresHuman: false,
     });
@@ -223,7 +265,8 @@ describe("Task 29 current-revision staff presentation", () => {
   it.each([false, true])("keeps paper evidence and shared operational state in mode %s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     const html = casePack("EX-24123");
-    expect(html).toContain("Prescription image");
+    expect(html).toContain('aria-label="Paper scanner comparison"');
+    expect(html).toContain("Synthetic submitted paper scan: EX-24123");
     expect(html).not.toContain("EPS claim message");
     expect(html).toContain(LIFECYCLE_LABELS[useAppStore.getState().lifecycles["EX-24123"].state].pharmacy);
   });
@@ -264,7 +307,7 @@ describe("Task 29 current-revision staff presentation", () => {
   });
 
   it("distinguishes repeated EPS comparison landmarks without changing their evidence", () => {
-    const c = sessionCase("EX-24112")!;
+    const c = sessionCase("SYN-FQ123-MISMATCH")!;
     const before = useAppStore.getState();
     const html = renderToStaticMarkup(createElement("div", null,
       createElement(CaseSourceEvidence, { c }),
@@ -296,13 +339,13 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(declared).toContain(c.paperDeclaration.endorsementText);
   });
 
-  it.each([false, true])("uses the current paper revision rather than B's original EPS claim, agent %s", (enabled) => {
+  it.each([false, true])("uses the current paper revision rather than M's original EPS claim, agent %s", (enabled) => {
     const store = useAppStore.getState();
-    store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: "NCSO RK 21/08/26",
+    store.submitItem({ caseId: "SYN-FQ123-MISMATCH", channel: "paper", endorsementText: "NCSO RK 21/08/26",
       paperDeclaration: { typedProduct: "SYN-AMLO10-28", quantity: 28, endorsementText: "NCSO RK 21/08/26",
         dispensingDate: "2026-08-21", declaredByPharmacy: true } });
     store.setAgentEnabled(enabled);
-    const c = sessionCase("EX-24112")!;
+    const c = sessionCase("SYN-FQ123-MISMATCH")!;
     expect(c.channel).toBe("Paper FP10");
     expect(c.claim.submittedVia).toBe("EPS claim message");
     const before = useAppStore.getState();
@@ -311,7 +354,8 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(evidence).not.toContain("EPS claim message");
     expect(evidence).not.toContain("EPS has no image");
     const pack = casePack(c.id);
-    expect(pack).toContain("Prescription image");
+    expect(pack).toContain('aria-label="Paper scanner comparison"');
+    expect(pack).toContain("Synthetic submitted paper scan: SYN-FQ123-MISMATCH");
     expect(pack).not.toContain("EPS has no image");
     expect(useAppStore.getState()).toBe(before);
   });

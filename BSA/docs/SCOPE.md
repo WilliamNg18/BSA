@@ -637,6 +637,36 @@ No scope row is Not started. Owner-authorised work resumes from this preserved
 checkpoint. Do not merge empty checkpoint commits from completed streams as
 new features or claim a browser inventory is an executed pass.
 
+## Standing-rule backup: independent verifier boundary
+
+O's standalone verifier is test tooling, not a backup producer or a second
+release authority. It runs from outside the self-contained backup, uses only
+Node built-ins for file/HTTP checks, and can load Playwright from separately
+provided tooling. A successful offline claim requires no external network
+interfaces; a normal connected developer machine does not qualify.
+
+D retains backup core, root commands, workflow and deployed-artifact parity
+ownership. The clean offline container proof, actual recovery timing and
+main/live observation are still pending. No Azure deletion, recreation,
+provisioning, runtime feature change or browser-matrix replacement is included.
+
+Recovery requires a newly started backup process. A pre-existing listener is
+an explicit failure, not a substitute for the clean-container startup test.
+
+The verifier must not alter its input backup, including through an aliased
+parent directory used in the report or backup path.
+
+Task 40 O owns operator action-panel, case-pack and Type1 presentation
+integration plus directly related shared wrapper exports/tests. G retains
+all domain/store authority, R the recommendation card/derivation, U the
+pure three-column component, and P pharmacy correction/acknowledgement.
+The compact scanner comparison requires a full-width evidence placement;
+it must not be compressed into the existing half-width editor.
+
+O's existing unit migration retains all 66 cases and negative/state-equality
+checks. New `operator40-fidelity.spec.ts` contributes four ordinary desktop
+browser tests; V's existing browser/live files and protected state suite are
+not edited. Source discovery is not an executed browser pass.
 ## Tasks 39/40 R audience scope
 
 In progress: explicit Card audience, pharmacy-only concrete value/preview,

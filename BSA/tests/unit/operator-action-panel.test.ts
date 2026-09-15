@@ -6,7 +6,9 @@ import { OperatorActionPanel } from "../../src/components/demo/operator-action-p
 import { AutomatedCaseRecords, ReleaseRecord } from "../../src/components/demo/release-record";
 import { Type1Capture } from "../../src/components/demo/type1-capture";
 import { QueuePage } from "../../src/pages/queue";
-import { getDomainSnapshot, getReleaseEligibility, useAppStore } from "../../src/lib/store";
+import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
+import { caseById } from "../../src/lib/domain/cases";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
 import * as agent from "../../src/lib/domain/agent";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -26,8 +28,21 @@ const escaped = (text: string) => text.replaceAll("&", "&amp;").replaceAll("<", 
 function openReview(enabled: boolean, caseId = "EX-24112") {
   const store = useAppStore.getState();
   store.setAgentEnabled(enabled);
-  store.submitItem({ caseId, channel: "eps", endorsementText: "NCSO initialled AB" });
+  const paperDeclaration = caseById(caseId)!.paperDeclaration!;
+  store.submitItem({ caseId, channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
   store.arriveInQueue(caseId);
+}
+
+function resubmitCorrectedPaper() {
+  const store = useAppStore.getState();
+  const caseId = "EX-24112";
+  const revision = store.caseRevisions[caseId].at(-1)!;
+  const draft = initialisePharmacyDraft(sessionCase(caseId)!, revision);
+  store.setPharmacyDraft(caseId, { ...draft, purpose: "correction", paperDeclaration: {
+    ...draft.paperDeclaration!, brandManufacturer: caseById(caseId)!.pharmacySupplyRecord!.brandManufacturer,
+  } });
+  store.setCorrectionAcknowledgement(caseId, revision.number, true);
+  store.resubmit(caseId);
 }
 
 describe("shared operator action panel", () => {
@@ -85,9 +100,11 @@ describe("shared operator action panel", () => {
     const store = useAppStore.getState();
     store.setOperatorDraft("EX-24112", { revision: store.caseRevisions["EX-24112"].at(-1)!.number,
       outcome: "ACCEPT", rbCode: "", note: "Independent human review does not repair missing evidence." });
+    const before = getDomainSnapshot();
     expect(getReleaseEligibility("EX-24112").allowed).toBe(false);
     expect(renderPanel()).toMatch(/<button[^>]*disabled=""[^>]*>Release to pricing<\/button>/);
     expect(() => store.releaseToPricing("EX-24112")).toThrow();
+    expect(getDomainSnapshot()).toEqual(before);
   });
 
   it("names the unresolved source gaps when the agent abstains after manual capture", () => {
@@ -118,8 +135,13 @@ describe("shared operator action panel", () => {
 
   it.each([false, true])("preserves applied sufficient advice in the release record with final mode %s", (enabled) => {
     const store = useAppStore.getState();
-    store.setAgentEnabled(true);
-    store.resubmitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK 21/08/26" });
+    openReview(true);
+    store.applySuggestionToDecision("EX-24112");
+    const referral = useAppStore.getState().operatorDrafts["EX-24112"];
+    store.referBack("EX-24112", referral.rbCode, referral.note);
+    resubmitCorrectedPaper();
+    expect(useAppStore.getState().lifecycles["EX-24112"].state).toBe("resubmitted");
+    expect(useAppStore.getState().itemProcesses["EX-24112"].readyToRelease).toBe(true);
     store.arriveInQueue("EX-24112");
     store.applySuggestionToDecision("EX-24112");
     const note = useAppStore.getState().operatorDrafts["EX-24112"].note;
@@ -137,7 +159,7 @@ describe("shared operator action panel", () => {
   it.each(["REQUEST_INFORMATION", "ESCALATE"] as const)("records %s as a distinct human action", (decision) => {
     openReview(false);
     const store = useAppStore.getState();
-    if (decision === "REQUEST_INFORMATION") store.requestInformation("EX-24112", "Please confirm the dispensing date.");
+    if (decision === "REQUEST_INFORMATION") store.requestInformation("EX-24112", "Please confirm the brand or manufacturer supplied.");
     else store.recordType2Decision({ caseId: "EX-24112", decision, reason: "Senior evidence review is required." });
     const last = useAppStore.getState().lifecycles["EX-24112"].history.at(-1)!;
     expect(last.actor).toBe("operator");
@@ -193,7 +215,7 @@ describe("shared operator action panel", () => {
     useAppStore.setState({ lifecycles: { ...store.lifecycles, "EX-24112": {
       ...row, state: "released_to_pricing", history: [...row.history, {
         at: "2026-09-14T12:00:00Z", actor: "code", from: row.state, to: "released_to_pricing",
-        revision: 1, processStep: "release_to_pricing", releaseOrigin: "human_decision", message: "Conflicting attribution",
+        revision: store.caseRevisions["EX-24112"].at(-1)!.number, processStep: "release_to_pricing", releaseOrigin: "human_decision", message: "Conflicting attribution",
         verification: { gate1: "none", gate2: "none", reconciled: false, released: true },
       }],
     } } });
@@ -220,7 +242,12 @@ describe("compact Type 1 declaration confirmation", () => {
   });
 
   it("shows immutable declaration values and an empty unknown prescriber beside the poor scan", () => {
-    useAppStore.getState().setAgentEnabled(true);
+    const store = useAppStore.getState();
+    store.setAgentEnabled(true);
+    const source = store.caseRevisions["EX-24123"].at(-1)!;
+    store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: source.endorsementText,
+      paperDeclaration: source.paperDeclaration,
+      declaration: { ...source.declaration!, fields: { ...source.declaration!.fields, prescriber: null } } });
     const before = getDomainSnapshot();
     const declaration = before.caseRevisions["EX-24123"].at(-1)!.paperDeclaration!;
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123", compact: true }));
