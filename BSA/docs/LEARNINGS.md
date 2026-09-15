@@ -13,6 +13,14 @@ checkpoints at 1440 px while retaining the exact ten scenarios.
 Neither local units nor test discovery proves the pending browser or live
 gates.
 
+The first assembled ten-case browser run exposed behavior that structural
+units cannot prove: D Apply fills the reason but loses focus, and an Off
+filled reason is only about 80 percent in the viewport at both desktop
+widths. Six other cases pass with unrestricted axe. These four failures
+occur before D's axe/checkpoint calls, so neither a ten-case accessibility
+pass nor D screenshot acceptance exists. The exact served clean SHA, JSON
+and failure traces were retained before releasing the leased port.
+
 The last two G unit failures were caused by searching for Apply inside the
 new human panel. V now asserts the real adjacent advice/human structure,
 checks both full panel narratives and keeps the human controls scoped.

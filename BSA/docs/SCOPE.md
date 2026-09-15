@@ -11,6 +11,12 @@ width guard. This is not browser or live acceptance. G owns the single
 coordinator-cleared 4335 run; O's separate queued run is superseded, not
 additional coverage. No timed-matrix, backup or infrastructure work is added.
 
+That run has now executed on `491a808`: six passes and four D focus/viewport
+failures. O receives the exact traces for source repair; G does not relax
+focus, full-viewport or accessibility assertions. The four D axe checks and
+named screenshots were not reached. Any repaired-candidate rerun needs a
+new coordinated lease; 4335 is released.
+
 V's sibling-panel assertion migration changes only its review-repair unit
 file and these tracking records. Apply belongs to advice; all human choice,
 reason and release assertions remain in the actual human panel. Both panel

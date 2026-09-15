@@ -5,6 +5,13 @@ ms.date: 2026-09-15
 ---
 
 G integrated the isolated O structural, V assertion and O capture handoffs.
+
+Fresh assembled browser evidence is not green: exact clean served `491a808`
+produced six passes and four failures in O's ten cases, one worker and no
+retries. Both widths fail D On focus retention and D Off full note visibility.
+Only the six passing audit/ready cases completed axe. O owns repair; no
+parallel browser or G-owned domain change is justified by these findings.
+
 Full check and 1,995 units pass on `612df97`; the subsequent capture-only
 `7ed760a` changes neither source authority nor unit behavior. The pending
 single ten-case 4335 run requires coordinator clearance and a clean published

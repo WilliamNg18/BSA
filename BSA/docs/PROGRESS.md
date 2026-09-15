@@ -6,6 +6,20 @@ ms.date: 2026-09-15
 
 ## G assembled authority-panel checkpoint
 
+The authorised single operator run on clean published `491a808` completed:
+six passed, four failed, no skips or retries, 67.16 seconds. Both EPS audit
+and all four ready-B cases passed, including unrestricted axe. All four D
+cases failed before their axe checks: On Apply populated the note without
+retaining focus; Off kept focus but exposed only 0.8008/0.8120 of the
+textarea at 1280/1440. O owns the concrete focus/visibility repair.
+
+The production server returned HTTP 200 with the exact full `491a808` SHA
+and `dirty: false`. JSON, logs and traces are retained in G session artifacts
+under `operator40-491a808-*`. Both B 1440 named checkpoints were reached;
+D checkpoints were not. Existing failure capture also retained 1280 PNGs,
+which are diagnostic failures, not new named visual acceptance. Port 4335
+has no listener after completion. No automatic rerun or browser pass is claimed.
+
 On `612df97`, the full check and all 1,995 unit tests in 116 files pass.
 This incorporates O's genuine sibling panels and V's actual-panel assertions,
 resolving the two retained Apply-scope failures on `4ac77a5`.
