@@ -4,6 +4,24 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The canonical scanner assertion migration resolves three stale selectors:
+the same six-file selection is now 72/74 on G `815278f`. Exact submitted
+values and duplicate absence are checked, not replaced with a broad text
+match. Home and operator prose remain distinct unresolved source findings.
+Parent has reassigned the bounded Home/step repair to F; O retains its prose
+repair. V supplied the exact Home failure and retains all unrelated assertions.
+
+Exact G `815278f` integrates the consumer contracts without V source edits.
+The new six-file unit result is 69/74, not the earlier P-stage 73/74:
+canonical scanner selectors require migration and the new operator prose
+exceeds the existing target. Both source and assertion obligations stay open.
+
+Claims keyboard assertions now reflect actual current paper fields, ACK
+gating and payload-edit invalidation, without changing their two leaf names.
+P's claim status must consume the current ItemProcess to match F's published
+ready-paper label. That source integration dependency is not waived by static
+typecheck/lint/discovery, and no browser result is claimed.
+
 ## 2026-09-15: P consumer source checkpoint
 
 Main `6418151` still used the retired EPS headline and lacked the required

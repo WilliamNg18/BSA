@@ -4,6 +4,35 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Migrating only the declaration evidence selector resolves all three stale
+cases. New assertions also require one canonical scanner, no duplicate legacy
+declaration, the exact source revision and exact typed endorsement. The
+72/74 result retains the Home date and operator prose failures; typecheck
+and lint pass. This is unit evidence only, not repeated U browser geometry.
+
+The Home blocker was transferred from D to F by the parent. Its exact
+source/input/assertion was handed over; the existing test already catches
+the defect, so no parallel broad file rewrite is needed.
+
+The G `815278f` consumer merge preserved source exactly and unioned five
+document conflicts. Its 69/74 unit selection exposes the expected removal
+of the duplicate Original pharmacy declaration view. The replacement is the
+canonical scanner declaration column, not an absent source or a new fixture.
+An additional 26-word ready-paper operator explanation is a separate O
+quality finding; the word limit and functional assertions were not relaxed.
+
+The claims keyboard flow has an additional real tab stop: required accuracy
+acknowledgement precedes Resubmit. For current paper, On Apply focuses the
+changed manufacturer field rather than an already-correct endorsement date.
+Editing that field invalidates ACK but must not delete its historical event.
+Both old keyboard test names and axe checks remain, with typecheck, lint and
+two-test discovery passing; neither browser case has been executed by V.
+
+F's ready-paper label requires ItemProcess, not merely lifecycle state.
+Reading P `b236e8d` exposed a three-argument claim status call; P/F were
+notified so the actual UI can agree with the shared history. No source shim
+or looser expected label was introduced.
+
 Migrating setup rather than removing assertions reduced V's six-file baseline
 from 15 failures to three on G `99abdd4`. Real ACK actions preserve all prior
 paper attempts; a ready paper revision still requires explicit human release.
