@@ -254,7 +254,8 @@ for (const path of ["/pharmacy", "/pharmacy/claims?caseId=EX-24112", "/queue", "
     const disallowed = right === "Pharmacy" ? /^\/(?:queue|case\/)/ : /^\/pharmacy(?:\/|$)/;
     const links = await page.getByRole("main").getByRole("link").evaluateAll((elements) => elements.map((element) => element.getAttribute("href") ?? ""));
     expect(links.filter((href) => disallowed.test(href))).toEqual([]);
-    await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Follow this case", exact: true })).toHaveCount(path.toLowerCase().includes("ex-24112") ? 1 : 0);
+    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
   });
 }
 
@@ -268,7 +269,8 @@ for (const hash of ["scene", "month", "pipeline", "cases", "two-places", "close"
         const disallowed = side === "Pharmacy" ? /^\/(?:queue|case\/)/ : /^\/pharmacy(?:\/|$)/;
         const links = await page.getByRole("main").locator("a").evaluateAll((elements) => elements.map((element) => element.getAttribute("href") ?? ""));
         expect(links.filter((href) => disallowed.test(href))).toEqual([]);
-        await expect(page.getByRole("button", { name: /^Follow this/ })).toHaveCount(0);
+        await expect(page.getByRole("button", { name: "Follow this item", exact: true })).toHaveCount(hash === "cases" ? 4 : hash === "two-places" ? 1 : 0);
+        await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
       }
     }
   });
