@@ -90,8 +90,10 @@ test("Task22 an explicit incomplete submission becomes New and opens the same ca
   await expect(page).toHaveURL(/\/case\/EX-24112$/);
   await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
   await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toHaveCount(0);
+  await expect(operatorDecision(page).getByRole("button", { name: "Refer back", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Start review", exact: true }).click();
   await expect(operatorDecision(page).getByRole("radiogroup", { name: "Decision", exact: true })).toBeVisible();
+  await expect(operatorDecision(page).getByRole("button", { name: "Refer back", exact: true })).toBeVisible();
 });
 
 for (const width of [1280, 1440]) for (const colorScheme of ["light", "dark"] as const) for (const enabled of [false, true]) {

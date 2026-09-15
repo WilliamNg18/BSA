@@ -38,13 +38,15 @@ for (const c of cases.filter((item) => item.id === "EX-24112")) {
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(`Operator case pack: ${c.title}`);
     await expect(page.getByRole("alert")).toContainText("Recommendation withheld by the compliance gate");
     await expect(page.getByText("Gate: FAIL", { exact: true })).toBeVisible();
-    await expect(operatorDecision(page).getByRole("region", { name: "Suggestion", exact: true }).getByText("No recommendation", { exact: true })).toBeVisible();
+    const recommendation = operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true });
+    await expect(recommendation.getByText("NONE; FAIL", { exact: true })).toBeVisible();
+    await expect(recommendation.getByText("Operator draft preview", { exact: true })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Evidence", exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Draft explanation to the pharmacy" })).toHaveCount(0);
     await expect(page.getByText(/^Alternative considered:/)).toHaveCount(0);
     await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
     await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
-    await expect(operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true })).toBeDisabled();
+    await expect(operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     for (const rec of ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"] as const) {
       await expect(page.getByText(REC_META[rec].label, { exact: true })).toHaveCount(0);
     }

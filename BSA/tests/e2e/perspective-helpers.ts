@@ -1,6 +1,7 @@
 import type { Page, TestInfo } from "@playwright/test";
 import { captureCheckpoint, captureJson, expect, navigatePrimary } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
+import { decisionNote, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 export const perspectiveGuard = "This view belongs to the other side; switch perspective to see it";
 export const flag = (page: Page) => page.getByRole("banner").getByRole("switch");
@@ -106,12 +107,18 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(reviewingIdentity.slice(submittedIdentity.length).map((event) => event.message)).toEqual(enabled
       ? ["Arrived for review.", "Scripted case built; human decision required."]
       : ["Arrived for review."]);
-    await page.getByRole("radio", { name: /^Refer back / }).check();
+    await operatorRadio(page, "REFER_BACK").check();
     await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-    if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-    const reason = `Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`;
-    await page.getByRole("textbox", { name: /^Reason/ }).fill(reason);
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    let reason = `Perspective ${enabled ? "On" : "Off"}: add the dispensing date beside the initials`;
+    await decisionNote(page).fill(reason);
+    if (enabled) {
+      await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
+      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      reason = await decisionNote(page).inputValue();
+      await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+      await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);
+    }
+    await performDecision(page, "REFER_BACK");
     await expect(page).toHaveURL(new RegExp(`/case/${id}/record$`));
     await dismissDecisionNotification(page);
     await expect(history(page).getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]);
@@ -124,7 +131,11 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     await expect(lastDecision).toContainText(reason);
     const stableEvents = await historyIdentity(page);
     expect(stableEvents.slice(0, reviewingIdentity.length)).toEqual(reviewingIdentity);
-    expect(stableEvents).toHaveLength(reviewingIdentity.length + 1);
+    expect(stableEvents).toHaveLength(reviewingIdentity.length + (enabled ? 2 : 1));
+    if (enabled) {
+      expect(stableEvents.at(-2)!.fields[0]).toContain("operator");
+      expect(stableEvents.at(-2)!.message).toBe("applied by the operator from the agent's suggestion");
+    }
     expect(stableEvents.at(-1)!.fields[0]).toContain("operator");
     await expect(lastDecision).toContainText(`${LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]} → ${LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]}`);
     await choosePerspective(page, "Pharmacy");

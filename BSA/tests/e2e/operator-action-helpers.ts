@@ -25,6 +25,10 @@ export const operatorAction = (page: Page, outcome: OperatorOutcome) =>
 export const decisionNote = (page: Page, outcome: OperatorOutcome = "ESCALATE") =>
   operatorDecision(page).getByRole("textbox", { name: outcome === "REQUEST_INFORMATION" ? "Question (required)" : "Reason (required)", exact: true });
 export const reasonError = "Enter a reason of at least eight characters.";
+export const humanReleaseLabel = (verified: boolean, side: "pharmacy" | "nhsbsa") =>
+  side === "pharmacy"
+    ? `${verified ? "Verified and released" : "Released"} to pricing after operator review (synthetic)`
+    : `${verified ? "Verified and released" : "Released"} to existing pricing after operator review`;
 
 export async function openAuditRecord(page: Page) {
   await page.getByRole("navigation", { name: "Case views", exact: true })
