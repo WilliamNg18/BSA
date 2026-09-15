@@ -5,6 +5,67 @@ ms.date: 2026-09-15
 ---
 
 ## 2026-09-15: U40 scanner comparison WIP, not live acceptance
+The two V Apply assertions now target the actual advice sibling on G
+`4ac77a5`. The helper requires the real workspace, case-bound human panel,
+operator-audience advice, visible H2 markup, adjacent disjoint panels and
+unchanged authority/help text. Each complete panel is measured below 25
+words; nothing is excluded from the former nested layout.
+Typecheck/lint and 40 review/operator tests pass. This is the isolated fix
+for G's two remaining unit failures, not a full-suite or browser verdict.
+
+V imports exact G `4ac77a5`, including O's published genuine sibling panels.
+Owner source is unchanged; only tracking conflicts were unioned. The two
+remaining V Apply assertions will now move to the actual advice panel.
+
+## Exact G first-green native discovery
+
+On clean `d4f27ce8911536ac6977bd4a5ef7ac5fe8ec48cf`, native Playwright
+discovery lists 1,062 ordinary tests in 48 files, 44 state tests in eight
+files and 75 named live checks in five files. Each inventory has unique
+native IDs and zero executed results; reporter placeholder statuses are not
+passes. No browser or server started. The first live-list attempts used a
+nonexistent config name and then lacked the required commit setting; both
+failures remain recorded before the correctly configured discovery.
+
+The inventory is retained under `native-inventory-g-d4f27ce` in V session
+artifacts. It is not a runtime, timing, screenshot or acceptance result.
+A exclusively owns the demo-navigation final-state settlement/axe hunk;
+V will consume that patch without concurrent edits.
+
+## V EPS headline guard activation
+
+`npm run check:eps-headlines` now runs W's unchanged checker, and `npm run
+check` invokes it after source-copy checking and before typecheck/lint/build.
+The existing blocking check stage in `npm run verify` and all four CI shards
+therefore enforce it without a workflow or infrastructure change.
+
+W's `ecd4a934` negative/traversal tests are preserved; a new verification
+contract checks the actual package command and blocking CI path. Full
+`npm run check` and 67 targeted scanner/source-policy/verification units pass
+with two workers. No new source exception, historical-data change, browser
+run, deployment or backup is included. Full integration acceptance remains
+open.
+
+V imports G `e954aa1`, including F's Home/step repair and S's source-copy
+migration. The unchanged standalone W checker now reports zero findings
+against the actual working source. Root hook activation is authorised and
+is the next isolated V change; no exception or historical-data rewrite is
+needed. Owner source remains exact and document conflicts are unioned.
+
+V migrated the nine existing pharmacy-response checks to current B paper and
+C8 history. The seeded prior referral remains historical while corrected
+paper awaits release; current manual reasons never become approved notes.
+Pharmacy-owned Apply is independent of operator-note approval. Current-event
+assertions identify the actual decision before the presentation mode changes.
+Typecheck/lint and combined eleven-check discovery pass; no browser ran.
+
+Parent clarified prose measurement: O must first publish genuinely separate
+sibling advice and decision panels with visible headings/landmarks. Only
+then may each actual panel's cumulative prose be measured below 25 words,
+with mandatory R copy retained and structural separation asserted. The old
+26/34-word counterexamples remain recorded; no nested-content exclusion was
+introduced.
+
 The V scanner follow-up now selects the canonical declaration column and
 asserts one scanner, no retired duplicate, exact submitted revision and exact
 typed endorsement. All three migrated declaration cases pass. The six-file

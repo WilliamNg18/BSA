@@ -4,6 +4,22 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: where is Apply verified after genuine role separation? Choice: in the case-bound operator advice sibling, while human choices/reason/Release remain in the human panel; require disjoint adjacent panels, H2 advice and unchanged authority/help, measuring all prose in each below 25. Tie-breaker: the parent's implemented structural contract, not an assertion waiver.
+
+- Question: may the pending advice scope change proceed? Choice: consume exact G `4ac77a5` with O's genuine sibling source, then assert both real panels and scope Apply to advice; tie-breaker: the parent's explicit structural prerequisite is now implemented.
+
+- Question: how is the next browser migration baseline established without an unleased run? Choice: native `--list` on exact clean G `d4f27ce`, retain every ID and assert empty result arrays, using the real guarded local configuration for live-name discovery; tie-breaker: exact inventory without execution or fabricated passes.
+- Question: does the discovery reporter's placeholder status imply an actual skip/pass? Choice: classify entries only as listed and record zero executions; tie-breaker: observed evidence, not expected outcomes.
+
+- Question: how should the EPS source guard become blocking without duplicate CI logic? Choice: add `check:eps-headlines` to the existing `check` chain before compilation, preserving the shared fail-fast `verify` stage and four-shard workflow; tie-breaker: one canonical verification path and no infrastructure changes.
+- Question: may activation weaken W's scanner or its tests? Choice: import the exact published `ecd4a934` traversal/negative test file, leave checker/schema/source exceptions unchanged and add only a root-wiring regression; tie-breaker: actual source-clean readiness and fail-closed evidence.
+
+- Question: when may the EPS headline check enter the blocking root path? Choice: after exact G `e954aa1` and an independent zero-finding run of W's unchanged scanner, retaining every negative/traversal regression and the single AST-selected Tariff-text exception; tie-breaker: the authorised activation condition is now met without a waiver.
+
+- Question: does a seeded prior referral make corrected C8 paper actively editable? Choice: keep the prior note in history, require current ready-to-release status and no active response/resubmit controls; tie-breaker: actual revision and lifecycle authority.
+- Question: may pharmacy Apply depend on an operator supplying the correction? Choice: verify its own-records action for a current referral regardless of note approval, while checking approval metadata on the actual decision event; tie-breaker: C5 audience separation.
+- Parent decision: mandatory R summary and authority remain, and the numeric limit stays below 25. O must create genuine sibling advice and human-decision panels with distinct visible headings/landmarks. V then measures cumulative paragraphs and choice-help in each actual panel and asserts separation; no exclusion from the existing nested layout, hidden help or generic wrapper workaround.
+
 - Question: what replaces the removed duplicate declaration assertion? Choice: inspect the canonical scanner declaration column, require its exact revision/endorsement and forbid duplicate legacy evidence while retaining consent/immutability checks; tie-breaker: exact C4 source fidelity without reintroducing old UI.
 - Question: how is the parent's Home ownership transfer coordinated? Choice: F may change its bounded source and the specific Home-case assertion block if needed, preserving the existing negative and state guards; V freezes that block and retains all other unit work. Tie-breaker: explicit handoff without parallel edits.
 

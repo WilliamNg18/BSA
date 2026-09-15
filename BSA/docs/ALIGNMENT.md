@@ -4,6 +4,37 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The actual sibling layout now satisfies V's migrated review assertions:
+40 focused tests, typecheck and targeted lint pass. This uses O's implemented
+structure, not a nested-content exclusion. Whole-suite, focus/geometry and
+current-live validation remain separate gates.
+
+G `4ac77a5` supplies the actual parent-approved sibling implementation.
+Earlier nested-layout totals stay historical; no assertion-only exclusion
+was used to establish this dependency.
+
+Exact G `d4f27ce` native discovery retains 1,062 ordinary, 44 state and 75
+live entries without duplicate IDs or executed results. This is not browser
+green, and pending O sibling-layout and current-case test migrations must
+not inherit its discovery status as acceptance.
+
+Root guard activation is implemented: the unchanged EPS scanner participates
+in `check`, which is blocking in `verify` and every CI shard. W's traversal
+and negative cases remain active, and the package-to-CI path has a regression
+assertion. Check and all 67 selected units pass; no browser or deployed
+behaviour is inferred from this tooling result.
+
+The actual G `e954aa1` source passes the standalone EPS-headline scan with
+zero findings after F/S migration. The existing narrow Tariff-text exception
+is unchanged. This permits root check activation, not a new browser or
+deployed-behaviour pass.
+
+Current pharmacy-response assertions now distinguish a prior C8 referral from
+an active correction request and distinguish pharmacy advice from operator
+approval. Typecheck/lint/discovery are static evidence only. Prose measurement
+will change only after O's real sibling-panel implementation; existing
+functional and false-Home-correction gates remain intact meanwhile.
+
 The canonical scanner assertion migration resolves three stale selectors:
 the same six-file selection is now 72/74 on G `815278f`. Exact submitted
 values and duplicate absence are checked, not replaced with a broad text

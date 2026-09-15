@@ -5,6 +5,54 @@ ms.date: 2026-09-15
 ---
 
 ## 2026-09-15: B40 actual-source audit and foundation boundary
+The last two G unit failures were caused by searching for Apply inside the
+new human panel. V now asserts the real adjacent advice/human structure,
+checks both full panel narratives and keeps the human controls scoped.
+Typecheck, lint and all 40 focused review/operator tests pass. The old
+26/34-word examples stay historical; no source text or threshold was changed
+by this test patch.
+
+G `4ac77a5` imports O's real advice/decision separation. The V merge changed
+no owner source and preserved both sides' document records; the remaining
+Apply failures are now locator migrations against an implemented structure.
+
+Playwright discovery JSON contains expected outcomes and placeholder statuses
+even though result arrays are empty. V records 1,062 ordinary, 44 state and
+75 live entries on exact G `d4f27ce` as discovery only, with zero execution
+and unique native IDs. Two live-discovery startup mistakes are preserved
+separately; correcting the real config path and supplying its required exact
+commit/external-output settings produced the 75-name list without a server.
+The prior P unit-reproduction patch and failed reports were preserved before
+reusing that isolated checkout for the clean G discovery.
+
+The new guard needs no separate workflow step: every CI shard already runs
+the shared blocking `check` stage. An `&&`-chained EPS check therefore stops
+verification before typecheck/build on a finding. The new unit verifies this
+actual command path, while W's original negative and recursive traversal
+tests retain the narrow exception boundary.
+
+`npm run check` passed with zero EPS findings, and 67 targeted verification,
+source-policy and headline units passed with two workers. This build was
+developer verification only, not a local product, backup or deployment.
+Unrun full-suite and live acceptance gates remain unclaimed.
+
+Running the standalone W checker on imported G `e954aa1` now reports no
+retired date-error source outside its actual NCSO requirement-text exception.
+This is an actual source traversal, not a whitelist or historical manifest
+rehash. Root hook activation can proceed while other integration gates remain.
+
+Pharmacy history intentionally changes its presentation of human reasons and
+approved notes between modes. Capture the current decision's position while
+its reason is visible, then verify that same event's authority rather than
+searching all historical notes. Original attempts/messages and the complete
+Off-return history remain exact. Nine response checks and two keyboard checks
+are discoverable; typecheck/lint pass, but browser execution is still pending.
+
+The parent resolved the prose conflict through genuine role separation in
+the UI, not by shortening mandated R copy or excluding a nested card from
+the existing aggregate. The old 26/34 totals remain historical counterexamples
+until O publishes that source and V verifies both real panel boundaries.
+
 Migrating only the declaration evidence selector resolves all three stale
 cases. New assertions also require one canonical scanner, no duplicate legacy
 declaration, the exact source revision and exact typed endorsement. The
