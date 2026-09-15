@@ -161,6 +161,48 @@ current-main deployment/live acceptance remain with V and the coordinator.
 The B verification branch now includes exact G `4765770` new runtime. Initial
 73/75 proof retained two stale extra-Type-1 test failures after paper amendments;
 those owned tests require migration before a new pass may be claimed.
+V's shared paper-selection adapter now covers D and brand-missing B using
+the actual P controls. Fresh B is posted as paper, not a retired EPS date
+scenario. This is phased test preparation: old consumer expectations, full
+cycles, timings and current-live coverage remain incomplete.
+
+The capture unrelated-global assertion now includes the actual
+`mismatchSharePercent` string draft. No new seed, snapshot filtering or
+domain mutation is introduced; N's schema-assertion hunk is untouched.
+
+V's verification branch now imports G `cdd436b` as a development dependency,
+not a release or backup. Source remains G/consumer-owned; V may strengthen
+existing capture preservation against the actual new snapshot shape.
+
+## Tasks 39/40 extension: verification pending
+
+Published G `4765770` establishes callable canonical contracts, not completed
+screen integration. V will exercise wrong-strength Today through actual
+automatic pricing and a later explicit audit, never substitute an On failure.
+Fresh brand-missing paper must come from the real scenario control/factory,
+not from the completed C8 amendment or a hidden store write. That factory and
+the reported scan-region discrepancy remain source dependencies. N retains
+ownership of its exact snapshot-key hunk; V retains capture preservation
+coverage. Neither published store nor handler results close browser/live gates.
+
+The latest brief supersedes the prior missing-date and wrong-pack headline
+scenarios. The same mismatch ID becomes prescribed/supplied 10 mg versus
+selected 5 mg EPS; Today follows endorsed-pack automatic pricing, while
+uncorrected On evidence fails the two gates. EX-24112 becomes paper-incomplete
+evidence and all active dates remain correct. Exact model and UI contracts
+are owned by G/W/B and their assigned screen streams, not invented by tests.
+
+V must cover exact submitted-object fidelity, the three-column paper scanner
+view, referral notes without proposed values, pharmacy-side concrete
+suggestions and required acknowledgement, automatic eligible EPS re-check
+release, and explicit paper release. The full cycles must retain same-item
+state, timestamps, actors, both perspectives and the one-second requirement.
+The new footer/Outcome header contract also needs current-owner verification.
+
+The observed live baseline is clean `641815137b36ab3e925dcc98c4738d0b150a75d1`
+at `2026-09-15T18:59:23.9424369Z`; #94's green CI does not establish these
+new contracts. Final completion requires Tasks 25-40 on main, green deployment,
+actual current-live acceptance and the assigned exact-backup evidence.
 
 C1's B proof now includes all-four information-request/response transitions
 using actual store actions. A response is not a corrected claim submission,
