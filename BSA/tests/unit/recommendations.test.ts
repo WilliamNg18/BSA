@@ -3,6 +3,7 @@ import { PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
 import { deriveRecommendation } from "../../src/lib/domain/recommendations";
 import { initialisePharmacyDraft, suggestedPharmacyCorrection } from "../../src/lib/domain/pharmacy-correction";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
+import { concreteSuggestions } from "../../src/lib/domain/recommendation-suggestions";
 
 const store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
@@ -73,6 +74,17 @@ describe("shared recommendation contract", () => {
     expect(r.summary).not.toContain("nothing to add");
   });
 
+  it("a draft EPS mismatch does not borrow a complete submitted result", () => {
+    const id = "EX-24107", revision = store().caseRevisions[id][0];
+    const draft = initialisePharmacyDraft(sessionCase(id)!, revision), eps = draft.epsPrescription!;
+    store().setPharmacyDraft(id, { ...draft, purpose: "new_submission",
+      epsPrescription: { ...eps, items: [{ ...eps.items[0], quantity: 56 }] } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r.outcome).not.toBe("COMPLETE");
+    expect(r.missing).toContain("Independent claim product and quantity agree");
+    expect(r.kernelRecommendation).not.toBe("NONE");
+  });
+
   it("edited draft date resolves its own provision, requirements and kernel input", () => {
     const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, purpose: "new_submission",
@@ -90,5 +102,42 @@ describe("shared recommendation contract", () => {
     expect(r).toMatchObject({ clause: null, version: null, outcome: "ABSTAIN", preview: null });
     expect(r.requirements).toContainEqual({ id: "provision", label: "Applicable provision", status: "not_established" });
     expect(r.nextStep).toContain("Request");
+  });
+
+  it.each(["", "2026-02-30"])("invalid draft dispensing date %s shows an explicit diagnostic rather than stale success", (date) => {
+    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!, dispensingDate: date } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r).toMatchObject({ outcome: "ABSTAIN", operatorApplyAllowed: false, preview: null, kernelGate: "NOT_RUN" });
+    expect(r.missing.join(" ")).toContain("date");
+    expect(r.requirements[0].status).toBe("not_established");
+  });
+
+  it("an invalid EPS quantity remains an unvalidated draft, not a page crash", () => {
+    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!, items: [{ ...draft.epsPrescription!.items[0], quantity: -1 }] } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r).toMatchObject({ outcome: "ABSTAIN", operatorApplyAllowed: false, preview: null, provenance: "Unvalidated human draft" });
+  });
+
+  it("missing invoice suggests manual input only and never an amount from the claim", () => {
+    const revision = store().caseRevisions["EX-24112"][0], draft = initialisePharmacyDraft(sessionCase("EX-24112")!, revision);
+    const suggestions = concreteSuggestions([{ id: "invoice_price", label: "Invoice price stated", status: "not_met" }], draft, null, "2026-08-21");
+    expect(suggestions).toEqual([{
+      field: "invoice_price", label: "invoice price required; enter £x.xx", value: null, status: "needs-human-input",
+      source: "Invoice required; claim amount is not invoice evidence", focusTarget: "invoicePrice",
+    }]);
+    expect(draft.endorsementText).not.toContain("£");
+  });
+
+  it("supply corrections expose manufacturer, listed pack and dispensed form from the same patch", () => {
+    const id = "SYN-FQ123-MISMATCH", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!,
+      supplyEvidence: { ...draft.epsPrescription!.supplyEvidence!, brandManufacturer: "", packSize: null, form: "" } } });
+    const r = deriveRecommendation(store(), id, { kind: "draft" });
+    expect(r.suggestions.map((entry) => [entry.field, entry.value])).toEqual([
+      ["brand_manufacturer", "Demo manufacturer (synthetic)"], ["pack_size", 21], ["presentation", "capsules"],
+    ]);
+    expect(r.preview?.epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
   });
 });

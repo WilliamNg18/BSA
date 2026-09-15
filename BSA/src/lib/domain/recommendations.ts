@@ -164,7 +164,7 @@ export function deriveRecommendation(
   if (draft && !projectedDraft) throw new Error("Draft recommendation source could not be projected.");
   const packInput = projectedDraft && channel === "paper"
     ? { ...projectedDraft, extracted: fields, readings: [] } : projectedDraft ?? current;
-  const pack = runAgent(packInput, { agentEnabled: true });
+  const pack = runAgent(packInput, { agentEnabled: record ? record.recommendation !== "NONE" : true });
   const clauseId = context.kind === "draft" || !capture ? assessment.clauseId : assessment.sourceClauseId;
   const clause = version?.clauses.find((entry) => entry.id === clauseId) ?? null;
   const sourceKnown = channel === "eps" || Boolean(capture) || context.kind === "draft" || Boolean(declared);
@@ -174,15 +174,20 @@ export function deriveRecommendation(
   const sourceGap = !clause ? "Governing provision unavailable for this source and dispensing date." : null;
   if (sourceGap) requirements.push({ id: "provision", label: "Applicable provision", status: "not_established" });
   const unreadable = channel === "paper" && original.imageQuality < QUALITY_THRESHOLD;
-  const findings = unreadable && !assessment.verification.reconciled && context.kind !== "draft"
+  const findings = unreadable && (!assessment.verification.reconciled || assessment.verification.gate2 !== "pass") && context.kind !== "draft"
     ? disagreementFindings(original, candidate, capture) : [];
+  if (unreadable && capture && context.kind !== "draft") {
+    for (const check of assessment.gate2Checks.filter((entry) => !entry.pass)) {
+      if (["Prescriber present", "Product identified", "Quantity present", "Dated citation validated"].includes(check.name)) findings.push(`${check.name}: ${check.detail}.`);
+    }
+  }
   for (const [index, finding] of findings.entries()) requirements.push({ id: `source-${index}`, label: finding, status: capture ? "not_met" : "not_established" });
   for (const [index, check] of assessment.gate1Checks.entries()) {
     if (!check.pass && !requirements.some((entry) => entry.label === check.name)) requirements.push({
       id: `format-${index}`, label: check.name, status: "not_met", basis: "declared_format",
     });
   }
-  if (context.kind !== "draft") {
+  if (context.kind !== "draft" || channel === "eps") {
     for (const [index, check] of assessment.gate2Checks.entries()) {
       if (!check.pass && !requirements.some((entry) => entry.label === check.name)) requirements.push({
         id: `verification-${index}`, label: check.name,
@@ -192,7 +197,7 @@ export function deriveRecommendation(
   }
   const missing = requirements.filter((entry) => entry.status !== "met").map((entry) => entry.label);
   const baseDraft = draft ?? initialisePharmacyDraft(current, revision);
-  const preview = context.kind !== "recorded" ? previewPharmacyCorrection(current, revision, baseDraft) : null;
+  const preview = previewPharmacyCorrection(current, revision, baseDraft);
   const suggestions = concreteSuggestions(requirements, baseDraft, preview, date);
   const ordinary = pack.gate.result === "PASS";
   const fieldDisagreement = findings.some((finding) => finding.includes('"; '));

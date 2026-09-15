@@ -67,6 +67,19 @@ describe("safe human diagnostic follow-up", () => {
     expect(store().itemVerification[id].released).toBe(false);
   });
 
+  it("missing captured prescriber remains explicit and gets safe information advice, not sufficient", () => {
+    store().setAgentEnabled(true);
+    const draft = preparePaperDemoDraft(sessionCase(id)!, store().caseRevisions[id][0], "complete");
+    store().submitItem({ ...draft, channel: "paper", caseId: id });
+    store().confirmType1({ caseId: id, revision: 2, provenance: "human_capture", declarationReconciled: true,
+      fields: { ...draft.declaration!.fields, prescriber: "" } });
+    const r = deriveRecommendation(store(), id);
+    expect(r).toMatchObject({ outcome: "REQUEST_INFORMATION", diagnostic: { outcome: "REQUEST_INFORMATION" } });
+    expect(r.missing.join(" ")).toContain("Prescriber present");
+    expect(r.operatorApplyAllowed).toBe(true);
+    expect(getReleaseEligibility(id).allowed).toBe(false);
+  });
+
   it("complete demo declaration reaches sufficient only after confirmation and releases only after human final action", () => {
     store().setAgentEnabled(true);
     const original = sessionCase(id)!.extracted;
