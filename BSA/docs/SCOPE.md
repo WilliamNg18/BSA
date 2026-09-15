@@ -193,6 +193,77 @@ the existing evaluation/correction API. Source facts remain identical across
 the pharmacy/operator projections; a typed operator projection contains no
 proposed patch or preview. Four new authority regressions pass; consumer
 mounting and whole-flow live evidence are not claimed by these unit results.
+## Part A candidate acceptance boundary
+
+The complete 176-test header/Outcome route, perspective, width, eleven-step
+and motion matrix passed in all-green hosted CI `35015057336` on exact
+`393957c`. The coordinator selected this complete run as authoritative.
+The duplicate local run was stopped with its timeout/partial evidence retained;
+it is not a local full-matrix Pass. A single bounded recheck passed the exact
+timed-out Task 13 dark control test and two 1440px motion/capture tests,
+without changing any timeout. Header-specific audits have zero violations
+and zero incompletes; incomplete rules elsewhere remain explicitly recorded
+in LEARNINGS. Manual dark image inspection remains unavailable because the
+image tool limited the second read, not because of a waived review.
+
+The final adopted master `d8c14a2` restores the original no-real-Tariff-text
+restriction and clarifies channel/mode release authority without runtime or
+test changes. Fresh exact-head CI, main merge, deployment and observed live
+Outcome/footer behaviour are still required. The local browser lease is free.
+
+## Part A only: global shell notice policy
+
+This branch owns the global shell/header Outcome/footer, obsolete local
+notice state removal, and directly related unit/browser tests. It does not
+change Tasks 39/40, case seeds, pharmacy/operator content, shared domain
+actions, release workflows, dependencies or backup implementation.
+The older mandatory amber-banner presentation is expressly superseded;
+per-item synthetic/source labels and the no-payment boundary remain.
+
+The new bounded browser matrix checks every ordinary route and overview
+chapter, guarded perspectives and not-found recovery, plus all eleven demo
+steps in three perspectives at 1280/1440. It measures actual text bounds,
+one line at 16px or larger without clipping, at most 2px centre difference,
+direct header adjacency, Off zero reserved height and real opacity fades.
+Unrestricted axe results retain incompletes explicitly. Check and 1,699 units
+pass. The first browser run exceeded a 240-second aggregate route-test deadline
+in Both; its timeout and partial results remain incomplete. Each ordinary route
+now has its own normal 30-second test, retaining every original assertion and
+audit rather than raising the timeout. Browser completion, exact-head CI,
+main deployment and live observation remain pending.
+The related Task 13 outside-dismissal and tour sticky-stack regressions now
+exercise the surviving controls and optional Outcome height without dropping
+their focus, menu or pinned-layout assertions. New automatic screenshots are
+off at file scope; explicit 1440px captures remain.
+This is incomplete work, not a local alternative product or backup.
+Coordinator master `b005bbb` is adopted without changing its MEMORY or scope
+contracts. The final old-principle assertion in the product-header control
+test now verifies the exact Outcome and Off absence. No assertion is removed.
+
+## Latest required scope: Tasks 25-40
+
+Parts A-C supersede older conflicting case/header/re-check contracts. Part A
+has first-merge priority; W39 and B40 run alongside existing streams, with
+their domain changes integrated by G before their owning UI consumers.
+No previous local or live result establishes these new outcomes.
+The master-doc clarification does not relax the synthetic-only Tariff rule:
+assisted EPS automatic release, Today pricing as endorsed, and paper human
+release are distinct requirements, not one blanket automatic-gates rule.
+
+| Addition | Acceptance required | State |
+| --- | --- | --- |
+| A: global header/footer | Notice removed everywhere; footer synthetic text once; exact On-only Outcome line, one line and centred within 2 CSS pixels at both widths, all views/steps, motion and axe | In progress on own branch |
+| 39 W: evidence-based wrong strength | Prescribed/supplied 10mg versus selected 5mg, 28; Today priced as endorsed, On prevention and Gate 2 rejection, exact pharmacy-only correction, valid dates throughout | Published contracts; integration pending |
+| 39 N/S: evidence and estimates | Verified study/public-process labels, no NHSBSA-rate inference; separate optional one-per-cent total-claims assumption; design/FAQ updates | In progress |
+| 40 B/G: shared authority | Immutable exact submission, separate scan/OCR/human capture, field/rule-only notes, payload-bound acknowledgement, channel-specific re-check release and truthful mixed states | Published contracts; integration pending |
+| 40 P/O/U/D/F/R: live controls | Actual four-case surfaces, three-column paper evidence, real audit/reopen and correction cycles; no proposed values in operator notes or cards | Owner integration pending |
+| V: final live verification | Latest-main all-Pass checklist including wrong-strength and paper-incomplete full cycles in both modes, both widths and all perspectives; all verify rows aligned | Not yet executed |
+| Live/backup/recovery | Green current-main deploy/root/deep check, same-artifact backup/hash parity, clean offline proof and recovery guide | In progress, not waived |
+
+Stable active IDs remain `EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123` and
+`EX-24112`; the last becomes the paper-brand-missing example. C/F remain
+unclickable background. All source dates are correct; older incomplete-date
+examples remain only historical or Tariff-requirement regression evidence.
 
 ## Live-first release and backup obligations
 

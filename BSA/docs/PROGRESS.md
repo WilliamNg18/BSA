@@ -206,7 +206,99 @@ Four new authority tests bring W's focused total to 37; 120 combined new and
 existing EPS/correction/recommendation/gate regressions and check pass.
 This pure adapter still requires G/P/O wiring and live verification.
 
-## Current release gate: live first, exact local backup
+## Part A release candidate: full hosted matrix green, live pending
+
+Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four
+CI shards in [35015057336](https://github.com/WilliamNg18/BSA/actions/runs/35015057336),
+including check, 1,699 units and all 176 new header matrix tests.
+The coordinator explicitly selected this complete hosted matrix as authoritative
+instead of repeating it under local machine contention. No assertion, timeout,
+route, perspective, width or axe rule was removed.
+
+The duplicate local 190-test run remains interrupted, not Pass: its Task 13
+dark total-test deadline expired, with the final focus expectation successful
+in the retained trace. Its 238 recorded policy states have 0px centre difference,
+16px text and 834.53125px text width. Its 242 completed axe audits have zero
+violations and 98 incomplete rule occurrences; these are partial, not full
+manual accessibility acceptance.
+A single bounded unchanged-budget diagnostic then passed 3/3 in 41.4 seconds:
+that exact failed Task 13 dark test and both motion/1440px capture tests.
+The eight Outcome light/dark On/Off audits have no violations or incompletes;
+the two existing menu/tooltip audits retain three incomplete rule occurrences.
+Four 1440px screenshots were captured. Light was inspected; the image tool
+blocked the second image, so no manual dark-image review is claimed.
+
+The browser lease is released. Coordinator follow-up `d8c14a2` is adopted as
+`ac16ac5` with exact MEMORY and unchanged runtime/tests. This result-record
+commit needs fresh exact-head CI before coordinator-owned first merge, normal
+deployment and live observation of the actual served SHA at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+All local output remains developer evidence, never a product or backup.
+Owner actions for me: none.
+
+## Part A: implementation and retained earlier evidence
+
+Own branch: `williamng18-header-outcome-line`, based on actual main
+`641815137b36ab3e925dcc98c4738d0b150a75d1`. Only the shell's old notice,
+collapse state and global principle bar are replaced. The shared store,
+case content, source labels, gates, reset/focus plumbing and infrastructure
+are unchanged. The footer has one small muted "All data is synthetic" label.
+The exact Agent-On Outcome is directly below the header in the measured
+sticky stack; Off removes it after its short opacity-only crossfade.
+
+Check passed; all 1,699 units in 92 files passed with one worker, including
+72 new shell/perspective/demo policy cases. An earlier unchanged CLI subprocess
+unit timed out at five seconds under two-worker contention; that failed run
+is retained, not relabelled. The initial browser matrix is incomplete: its single 28-route Both test
+exceeded the aggregate 240-second test deadline after clean preceding checks.
+The run was stopped, retaining the timeout and partial evidence. This change
+registers each ordinary route separately under the normal 30-second deadline;
+all geometry, On/Off and unrestricted axe checks remain. New 1280px tests
+disable automatic screenshots; deliberate captures remain 1440px only.
+Initial #104 CI also exposed two missed compatibility assumptions: Task 13
+used the removed collapse button for outside-menu dismissal, and tour tests
+assumed the demo rail always immediately followed the header. They now use
+the real header Agent control for outside dismissal and measure the optional
+Outcome's height; an absent locator is never awaited for Off geometry.
+The coordinator granted sole local port 4332, one browser worker, no retries.
+Publication and local tests are developer evidence, not a product or backup.
+Main merge, normal green deployment and observation of the served SHA at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ remain pending.
+Owner actions for me: none.
+
+Coordinator master `b005bbb` is adopted as `e4151f7`, preserving both sets of
+tracking sections and exact MEMORY content. Initial CI's final missed old
+principle-text assertion is updated to the exact Outcome and Off absence.
+The source check/build and 176-case matrix inventory now pass; the retained
+initial CI and interrupted local matrix remain failed/incomplete evidence.
+
+## Latest scope: Parts A-C and Tasks 25-40
+
+The 15 September addition is active and does not pause release/backup work.
+At this classification, main is `641815137b36ab3e925dcc98c4738d0b150a75d1`
+after #94. Its CI `35009958003` and deployment `35009957918` passed; V observed
+the clean live identity at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ at 18:59 UTC.
+That is not acceptance of the new header, wrong-strength or NHSBSA contracts.
+The master-doc follow-up makes the Vision/current-desktop wording explicitly
+channel- and mode-specific and preserves the existing synthetic-only Tariff rule.
+
+| Work | Owner and publication | Current boundary |
+| --- | --- | --- |
+| Part A header Outcome/footer | Own branch `williamng18-header-outcome-line`, first merge | Implementation and route/geometry/axe verification in progress |
+| Task 39 wrong-strength EPS and evidence | W, with G canonical model integration | Published pure strength/evidence contracts; active scenario and consumer integration pending |
+| Task 40 fidelity, scanner, note wording, acknowledgement and re-check | B, with G canonical model integration | Published pure contracts; every verify item needs current-main and branch audit plus live proof |
+| Shared model, four seeds, real audit/re-check/acknowledgement | G | Sole shared types/store/lifecycle/seed writer; W/B domains merge here first after Part A |
+| Pharmacy/operator/scanner/demo/numbers/design/follow | P/O/U/D/N/S/F, shared card R | Owning views consume exact published contracts; no parallel operational store or local stubs |
+| Final verification | V | Earlier Task 25-38 counts remain historical; checklist must cover the latest full Tasks 25-40 |
+| Canonical backup and recovery | D and O | Continues independently; coordinator-frozen interface unblocks O's standalone verifier |
+
+Every active stream pushes at STATUS and at least every thirty minutes and
+updates all five tracking documents with its change. No stream is complete
+until merged, deployed green and observed live. ALL DONE also requires exact
+same-main backup parity and clean offline recovery evidence.
+
+## Earlier release checkpoint: live first, exact local backup
 
 ### Tasks 39/40: shared domain integration reactivated
 

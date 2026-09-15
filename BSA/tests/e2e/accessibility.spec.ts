@@ -22,9 +22,10 @@ for (const colorScheme of ["light", "dark"] as const) {
         if (name === "Decision record") await prepareDecisionRecord(page);
         await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
         await page.evaluate(() => document.fonts.ready);
-        const scope = page.getByRole("region", { name: "Demonstration scope and governing principle" });
-        await expect(scope.locator("#synthetic-disclaimer")).toBeVisible();
-        await expect(scope.locator("[data-principle]")).toBeVisible();
+        await expect(page.locator("[data-disclaimer], #synthetic-disclaimer, [data-principle]")).toHaveCount(0);
+        await expect(page.getByRole("contentinfo")).toContainText("All data is synthetic");
+        await expect(page.locator("[data-agent-outcome]")).toHaveCount(enabled ? 1 : 0);
+        if (enabled) await expect(page.locator("[data-agent-outcome]")).toHaveCSS("opacity", "1");
         const results = await new AxeBuilder({ page }).analyze();
         await captureJson(testInfo, "axe-results", results);
         expect(results.violations, JSON.stringify(results.violations.map((v) => ({
