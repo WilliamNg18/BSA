@@ -82,15 +82,34 @@ export async function assertVisibleHandoffWithinOneSecond(
     observedElapsedMs = deadline.finish();
     milestones.push({ label: "actual destination and required reason visible", elapsedMs: observedElapsedMs });
   } finally {
+    const elapsedMs = observedElapsedMs ?? deadline.elapsedMs();
+    const failureGeometry = observedElapsedMs === null
+      ? await input.destinationState.evaluateAll((elements) => elements.map((element) => {
+        const ancestors = [];
+        for (let node: Element | null = element; node; node = node.parentElement) {
+          const style = getComputedStyle(node);
+          ancestors.push({
+            tag: node.tagName, id: node.id, className: node.getAttribute("class"),
+            rect: node.getBoundingClientRect().toJSON(),
+            overflowX: style.overflowX, overflowY: style.overflowY, opacity: style.opacity,
+            clientWidth: node.clientWidth, clientHeight: node.clientHeight,
+            scrollLeft: node.scrollLeft, scrollTop: node.scrollTop,
+          });
+        }
+        return { viewport: { width: innerWidth, height: innerHeight }, ancestors };
+      }))
+      : undefined;
     await captureJson(info, `timing-${input.name}`, {
       name: input.name, caseId: input.followedId, budgetMs: 1000,
-      elapsedMs: observedElapsedMs ?? deadline.elapsedMs(),
+      elapsedMs,
       status: observedElapsedMs === null ? "FAIL" : "PASS",
       milestones, url: page.url(),
       clock: "Node monotonic wall-clock, independent of the controlled domain timestamp",
       startsBefore: "Actual human button click; includes visible origin and destination assertions and Follow navigation",
       visibility: "Viewport intersection and cumulative ancestor opacity, not DOM text alone",
       priorEvent,
+      failureGeometry,
+      geometryBoundary: failureGeometry ? "Read only after the outcome; not used to establish latency or change the verdict." : undefined,
     });
   }
 }
