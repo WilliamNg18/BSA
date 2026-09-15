@@ -53,5 +53,6 @@ describe("exact submission fidelity, independent of derived operator evidence", 
     expect(() => submissionReplica(revision)).toThrow(/scan is unavailable/);
     expect(() => submissionReplica({ ...revision, channel: undefined })).toThrow(/channel is unavailable/);
     expect(() => submissionReplica({ ...revision, channel: "eps" }, caseById("EX-24123")!)).toThrow(/no paper scan/);
+    expect(() => submissionReplica(revision, caseById("EX-24112")!)).toThrow(/different submission source/);
   });
 });
