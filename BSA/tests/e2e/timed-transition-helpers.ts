@@ -1,6 +1,7 @@
 import type { Locator, Page, TestInfo } from "@playwright/test";
 import { captureJson, expect } from "./fixtures";
 import { TransitionDeadline } from "../support/transition-deadline";
+import { settleIndependentChecks } from "../support/independent-checks";
 
 type RequiredText = { locator: Locator; text: string };
 type QueueTarget = { link: Locator; tile: Locator; expectedTileText: string; select?: Locator; expand?: Locator };
@@ -30,20 +31,22 @@ async function readFailureGeometry(locator: Locator) {
 }
 
 async function visibleWithinDeadline(locator: Locator, deadline: TransitionDeadline) {
-  await expect(locator).toBeVisible({ timeout: deadline.remainingMs() });
-  await expect(locator).toBeInViewport({ ratio: 1, timeout: deadline.remainingMs() });
-  await expect.poll(async () => locator.evaluate((element) => {
-    let opacity = 1;
-    for (let node: Element | null = element; node; node = node.parentElement) {
-      const style = getComputedStyle(node);
-      opacity *= Number(style.opacity);
-      if (style.visibility !== "visible" || style.display === "none") return false;
-    }
-    return Number.isFinite(opacity) && opacity >= 0.99;
-  }, undefined, { timeout: deadline.remainingMs() }), {
-    timeout: deadline.remainingMs(), intervals: [16],
-    message: "The observed transition must be painted, not only present in a hidden/fading DOM node.",
-  }).toBe(true);
+  await settleIndependentChecks([
+    () => expect(locator).toBeVisible({ timeout: deadline.remainingMs() }),
+    () => expect(locator).toBeInViewport({ ratio: 1, timeout: deadline.remainingMs() }),
+    () => expect.poll(async () => locator.evaluate((element) => {
+      let opacity = 1;
+      for (let node: Element | null = element; node; node = node.parentElement) {
+        const style = getComputedStyle(node);
+        opacity *= Number(style.opacity);
+        if (style.visibility !== "visible" || style.display === "none") return false;
+      }
+      return Number.isFinite(opacity) && opacity >= 0.99;
+    }, undefined, { timeout: deadline.remainingMs() }), {
+      timeout: deadline.remainingMs(), intervals: [16],
+      message: "The observed transition must be painted, not only present in a hidden/fading DOM node.",
+    }).toBe(true),
+  ]);
 }
 
 export async function assertVisibleHandoffWithinOneSecond(

@@ -2340,3 +2340,20 @@ the committed route owns one heading-focus action. Keep intentional step,
 Back/Next and Follow navigation focus, all motion and the single store unchanged.
 No forced synchronous rendering, delay, retry or weakened focus assertion.
 Tie-breakers: preserve user focus and fix the demonstrated duplicate side effect.
+
+## 2026-09-15: Settle independent visibility reads without changing obligations
+
+Question: may independent visibility predicates share their observation
+window? Choice: launch only the existing visible, full-viewport and cumulative
+opacity predicates concurrently within each visibility helper invocation.
+Each uses the same original deadline. An all-settled barrier waits for every
+observation, including synchronous guard failures, before propagating the
+original single error or an aggregate containing all original failures.
+
+Text checks, origin and destination stages, actual A pre-queue state, queue
+counts, selections, links and navigation remain ordered exactly as before.
+The final deadline check still follows every required observation. No extra
+clock, timeout, state proxy or overhead subtraction is introduced.
+This is protocol read-scheduling efficiency, not a proven runtime fix.
+The prior standard D 1,008.3189 ms failure and diagnostic A 1,006.67 ms failure
+remain failed evidence; the changed procedure requires fresh verification.
