@@ -1129,7 +1129,7 @@ result does not establish a full 75-check run, current-main live acceptance,
 visual certification or backup parity.
 
 The live root and build identity returned HTTP 200 at
-`2026-09-15T18:13:32.3959381Z`, serving clean
+`2026-09-15T18:24:10.7144775Z`, serving clean
 `08f4d399ca658cae2aaf16a10d4f9cae8431621f`. Record the served identity
 instead of inferring that a pushed branch is deployed. Keep old failures,
 profiling data and CI instrumentation labelled as test artifacts; do not
@@ -1140,3 +1140,15 @@ change and a push at each STATUS and at least every thirty minutes of active
 work. This policy adoption preserves MEMORY's verbatim rule. D's backup and
 deployment files remain outside V's ownership, and no recovery or equality
 result is claimed before the assigned implementation and independent proof.
+
+## 2026-09-15: Token fingerprints must use the parser's template boundaries
+
+CI `35006154532` found one callback-integrity unit failure in all four jobs.
+The unchanged original callback produced scanner hash `4542a736...` under
+CRLF and `bcbecf2c...` under LF. A standalone scanner's repeated `scan()`
+calls do not supply the parser's template-continuation rescanning context.
+Using actual parsed token leaves gives the same immutable-original hash,
+`1fe7771544abc7efec19aa4fd393c239a92009905e3037f06ed73c4d270e60c5`,
+on both platforms. Tests also reject changed numeric and template tokens.
+This repairs the integrity test, not application behaviour, and preserves
+the failed CI record until a new exact-head run succeeds.

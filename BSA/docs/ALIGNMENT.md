@@ -34,12 +34,18 @@ in #94. Its controlled thin-artifact timing comparison passed 2/2 with 132
 transitions, but this is historical partial developer evidence. It is not
 aligned to the completion gate merely because the branch is pushed.
 
-The product observation at `2026-09-15T18:13:32.3959381Z` returned HTTP 200
+The product observation at `2026-09-15T18:24:10.7144775Z` returned HTTP 200
 for the live root and build identity, serving clean
 `08f4d399ca658cae2aaf16a10d4f9cae8431621f`. No V branch build is a second
 product or local backup. Current-main live acceptance and exact-main backup
 parity remain open obligations; D's implementation and O's independent
 verification are not overwritten by this status adoption.
+
+Published CI exposed a platform-sensitive test fingerprint, not a changed
+callback: immutable source produced the same parser-token hash under LF and
+CRLF, while the prior standalone scanner mishandled template continuation.
+The unit now verifies parsed tokens and explicit mutation negatives. Full CI
+and current-main live acceptance remain pending, without deleting assertions.
 
 The latest owner brief extends Tasks 25-38 around four playable synthetic cases.
 This register distinguishes inspected source, implementation commitments and

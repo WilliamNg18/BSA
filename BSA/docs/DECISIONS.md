@@ -2428,6 +2428,8 @@ Question: how should V publish verified but incomplete work under the standing r
 Question: what do the retained branch runs represent? Choice: developer test artifacts only, never a separate product or backup; only the current-main payload verified on the live URL can be the backup, with D owning implementation and O its independent verification; tie-breaker: one release authority.
 
 Status source `c091d47269665e12af69a2a82cb3733747209eeb` is published WIP.
-The live HTTP observation at `2026-09-15T18:13:32.3959381Z` still served
+The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 `08f4d399ca658cae2aaf16a10d4f9cae8431621f`. The controlled 132-transition
 pass does not bridge that release gap or replace full live acceptance.
+
+Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
