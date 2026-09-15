@@ -18,6 +18,12 @@ desktop/browser/live acceptance remain pending.
 O's integration reported a React title-child warning. U changes the SVG title
 to a single source-derived string and adds an explicit no-console-warning unit.
 
+Integrated `e12ca94` passes check and all 26 scanner units. Its broad draft CI
+`35016956710` is not green: 207 legacy/domain/consumer tests fail after the
+coordinated scenario change (1,592 pass); neither new scanner test file fails.
+G and current UI owners retain migration responsibility. This is not a claim
+that every failure is only stale copy, and no acceptance assertion is removed.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store
