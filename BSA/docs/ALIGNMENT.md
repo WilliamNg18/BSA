@@ -6,6 +6,16 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Tasks 39/40 initial domain alignment checkpoint
+
+| Item | Alignment | Change / ownership | Evidence |
+| --- | --- | --- | --- |
+| Current main model | Drifted against newly authorised scope | G integrates sole canonical state/types; W strength modules and B fidelity modules are separate owners | Read main `6418151`; existing mismatch remains pack-based and `EX-24112` remains missing-date EPS |
+| Four operational identities | Preserve, repurpose content | G/W/B agree A complete EPS, M wrong-strength EPS, D unreadable paper, B paper brand missing | Contract coordination only; no new seed mutation published |
+| Corrected resubmission | Drifted against new requirement | G wires B revision-bound accuracy acknowledgement and channel-specific recheck rules | Existing shared resubmit has no explicit accuracy acknowledgement |
+| Main and active branches | Audit in progress | B coordinates published/open-branch audit; G supplies canonical model facts | No blanket branch alignment or live pass claimed |
+| Live completion | Unverified for new scope | Coordinator tracks deployment; no branch build is the product or backup | Last coordinator-reported live SHA `08f4d399`; no new live observation in this checkpoint |
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

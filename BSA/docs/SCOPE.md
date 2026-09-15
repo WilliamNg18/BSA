@@ -6,6 +6,21 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Tasks 39/40 shared-model integration: in progress
+
+The latest authorised scope replaces the active wrong-pack EPS example with
+prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
+`EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:
+`EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123`, and `EX-24112`.
+All active dates remain correct; C/F remain unclickable historical background.
+
+G alone integrates canonical state, types, lifecycle and seeds. W and B deliver
+isolated domain modules first; presentation owners follow the merged contracts.
+Required acceptance includes exact immutable submissions, independent captures,
+revision-bound correction acknowledgement, field/rule-only outbound notes,
+automatic eligible EPS rechecks and exclusively human paper releases.
+No task in this new scope is complete until merged, green-deployed and seen live.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

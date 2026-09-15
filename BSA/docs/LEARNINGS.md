@@ -1143,6 +1143,14 @@ result is claimed before the assigned implementation and independent proof.
 
 ## 2026-09-15: Token fingerprints must use the parser's template boundaries
 
+Tasks 39/40 integration checkpoint: an existing field named `dispensedCode`
+cannot safely serve both the immutable pharmacy supply record and the selected
+claim product when demonstrating a wrong-strength claim. Freeze explicit source
+and claim-selection semantics before wiring advice, Apply or reconciliation.
+Likewise, a revision number alone does not bind an accuracy acknowledgement to
+edited draft contents; acknowledgement must be invalidated on actual edits.
+These are contract findings, not implemented or deployed acceptance.
+
 CI `35006154532` found one callback-integrity unit failure in all four jobs.
 The unchanged original callback produced scanner hash `4542a736...` under
 CRLF and `bcbecf2c...` under LF. A standalone scanner's repeated `scan()`

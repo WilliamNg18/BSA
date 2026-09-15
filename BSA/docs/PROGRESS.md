@@ -6,6 +6,21 @@ ms.date: 2026-09-15
 
 ## Current release gate: live first, exact local backup
 
+### Tasks 39/40: shared domain integration reactivated
+
+G rebased its existing integration branch onto main
+`641815137b36ab3e925dcc98c4738d0b150a75d1`. It owns canonical shared types,
+store, lifecycle, references, seeds and model tests. W owns new EPS strength
+modules; B owns new submission, acknowledgement, referral and paper modules.
+The header change merges first, then the shared domain integration, then its
+UI consumers. Contract coordination is active; no new runtime behaviour is
+implemented or accepted by this checkpoint. No browser lease has been used.
+
+This is published WIP, not completion or a local backup. The coordinator's last
+reported live artifact was `08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/. That historical observation
+does not establish deployment or live acceptance of Tasks 39/40.
+
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
 main and the live build identity were verified as
