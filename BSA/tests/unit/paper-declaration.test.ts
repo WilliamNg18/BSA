@@ -1,12 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { CASES } from "../../src/lib/domain/cases";
+import { caseById } from "../../src/lib/domain/cases";
 import { checkPaperDeclaration, EMPTY_PAPER_DECLARATION, paperDeclarationAdvice, preparePaperDeclaration, WORKED_PAPER_DECLARATION } from "../../src/lib/domain/paper-declaration";
 import { prepareCaptureConfirmation, preparePaperCapture } from "../../src/lib/domain/paper-capture";
 import { runAgent } from "../../src/lib/domain/agent";
 import { paperImageEvidence } from "../../src/lib/domain/capture-evidence";
 import { sessionCase, useAppStore } from "../../src/lib/store";
+import { preparePaperDemoDraft } from "../../src/lib/domain/pharmacy-correction";
 
-const D = CASES.find((c) => c.scenario === "D")!;
+const D = caseById("EX-24123")!;
 const store = () => useAppStore.getState();
 beforeEach(() => store().resetDemo());
 
@@ -73,20 +74,25 @@ describe("proposed paper declaration checks", () => {
 });
 
 describe("immutable paper declaration to human-confirmed Type 2", () => {
-  it("treats ordinary workbench posting as a new attempt, distinct from correction of the seeded referral", () => {
-    const B = CASES[1];
-    expect(store().lifecycles[B.id].state).toBe("referred_back");
-    store().submitItem({ caseId: B.id, channel: "paper", endorsementText: "NCSO AB 12/08/26" });
+  it("treats ordinary paper posting as a new attempt without inheriting a previous recheck's release authority", () => {
+    const B = caseById("EX-24112")!;
+    expect(store().lifecycles[B.id].state).toBe("resubmitted");
+    const previous = store().caseRevisions[B.id].at(-1)!;
+    const history = structuredClone(store().lifecycles[B.id].history);
+    const draft = preparePaperDemoDraft(B, previous, "complete");
+    store().submitItem({ ...draft, caseId: B.id, channel: "paper" });
     const revision = store().caseRevisions[B.id].at(-1)!;
     expect(revision.kind).toBe("submission");
-    store().confirmType1({
-      caseId: B.id, revision: revision.number, provenance: "human_capture", declarationReconciled: false,
-      fields: { productCode: B.claim.productCode, quantity: B.claim.quantity, endorsementText: "NCSO AB 12/08/26", prescriber: "Dr Demo (synthetic)" },
-    });
+    expect(revision.number).toBe(previous.number + 1);
+    expect(revision.paperDeclaration).toEqual(draft.paperDeclaration);
+    expect(revision.paperDeclaration?.dispensingDate).toBe(B.extracted.dispensingDate);
+    expect(store().lifecycles[B.id].history.slice(0, history.length)).toEqual(history);
+    expect(store().itemProcesses[B.id].capture).toBeNull();
     expect(store().itemProcesses[B.id].routing).toMatchObject({
-      outcome: "type1_capture", requiresHuman: false, pricingAuthority: "existing_rules_engine",
+      outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null,
     });
-    expect(store().lifecycles[B.id].state).toBe("paid");
+    expect(store().itemVerification[B.id].released).toBe(false);
+    expect(store().lifecycles[B.id].state).toBe("submitted");
   });
   function submit() {
     const paper = preparePaperDeclaration(WORKED_PAPER_DECLARATION);

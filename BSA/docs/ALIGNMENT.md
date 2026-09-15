@@ -170,6 +170,37 @@ The portrait adapter now includes original synthetic patient/pharmacy labels
 and leaves empty source regions empty. It does not substitute a declaration
 value or an unreadability claim for a readable blank field.
 
+After G `cdd436b`, the actual amendment scan visibly includes brand, pack size
+and presentation. U's real-store renderer assertion reads those raw source
+regions, never the declaration; 46 scanner/runtime tests and typecheck pass.
+This closes the scoped source-visibility defect, not mounted/live acceptance.
+
+O `99c8d03` now supplies the actual full-width case-pack and Type 1 mount on this
+integration branch. Forty-two mounted/scanner units and typecheck pass. U's
+four actual-route desktop checks are authored for the coordinator's conditional
+4341 lease; no geometry, axe, screenshot or live result is asserted before execution.
+
+Executed C4 scope at clean `941933f`: 4/4 actual mounted tests pass at 1280/1440.
+The assertions measured three aligned columns at least 300 px wide, rendered
+value/image text at least 14 px, no horizontal overflow and exact original-source
+equality through mode changes and D capture. Eight scoped axe audits report zero
+violations. Exact build identity was checked over HTTP at local port 4341 before
+the run; the port is released. Two 1440 screenshots are preserved, but only D was
+delivered for visual inspection before the image tool's limit. No hosted or
+complete visual acceptance is inferred from this bounded proof.
+
+The subsequent integration includes main `5b75e5f` and G `c3f69f2`/`c03ab21`.
+Sixty-three targeted scanner/operator/runtime tests and typecheck pass with
+source-linked capture retained after information responses. The actual browser
+proof remains pinned to its earlier `941933f`, pending final integrated release.
+
+Explicit G handoff: the two pure paper test files previously mixed historical
+`CASES` with active `sessionCase` evidence. They now use `caseById` for active
+store assertions, without changing historical fixtures or source values.
+The ordinary-paper new-attempt test asserts preserved history, fresh revision,
+no inherited capture/release and required human judgement. Four reproduced
+failures are repaired; all 43 tests pass with no domain changes.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription
