@@ -499,3 +499,9 @@ Current-source integration now includes wrong-strength correction, brand-missing
 paper, unreadable capture and ready-to-release paper. Every paper result requires
 the operator's press; hypothetical OCR and original scans are not changed by
 confirmed capture. These are tested working-branch contracts, not a live release.
+
+O's compiled Task40 source includes immutable case evidence, operator audience,
+later-audit entry and paper-ready controls. It does not alter G's source,
+gate or final-action implementations. U remains owner of the scanner renderer.
+The ordinary source comparison is full-width; compact demo-shell placement
+belongs to D and cannot be inferred from this unmounted integration checkpoint.
