@@ -16,7 +16,7 @@ export function SyntheticPaperScan({ scan, readable }: { scan: ExceptionCase; re
   });
   return <figure className="rounded-lg border bg-white p-2" data-paper-scan>
     <svg viewBox={`0 0 340 ${nextY + 12}`} role="img" aria-labelledby={`${id}-title ${id}-description`} className="block w-full">
-      <title id={`${id}-title`}>Synthetic submitted paper scan: {scan.id}</title>
+      <title id={`${id}-title`}>{`Synthetic submitted paper scan: ${scan.id}`}</title>
       <desc id={`${id}-description`}>{readable ? "Readable" : "Unreadable"} synthetic source. Original source text, not a declaration or character-recognition result.</desc>
       <rect width="340" height={nextY + 12} rx="8" fill="#f0fdf4" />
       <text x="12" y="30" fontSize="18" fontWeight="700" fill="#14532d">SYNTHETIC PAPER SCAN</text>

@@ -91,6 +91,25 @@ The refreshed published-source audit now includes R/U/P consumer foundations
 and S's scanner production explanation. Their source-level progress is partial,
 not a current-main, browser or all-state acceptance claim.
 
+G's published source facade keeps a later information-only response separate
+from the actual paper submission. U's five real-store render tests preserve
+the strict matching revision, compare all three original columns before and
+after Type 1/release, and retain earlier source objects after acknowledged
+amendment. Combined scanner coverage is 25 passing tests with typecheck.
+The earlier `e45e0be` WIP passed four remote CI shards in `35015056421`, despite
+the recorded local subprocess deadline failures; no timeouts were weakened.
+Neither result establishes mounted browser geometry or live acceptance.
+
+An SVG title mixing a text child and an expression can trigger React's title
+child warning. One source-derived string preserves its accessible content and
+is covered by a no-console-error rendering assertion.
+
+U's scoped rendering tests prove that later human capture leaves all three
+original columns identical, unknown OCR dates never acquire the declaration's
+date, and stale/source-mismatched projections produce explicit errors. The
+portrait adapter retains uncertain source glyphs and wraps long values without
+ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
+1280/1440 legibility or replace the pending mounted browser and live checks.
 The real-store fidelity tests now pass alongside the domain/action suites:
 67 tests in eight files, followed by check. The assertions compare the entire
 last submission object after actual actions, retain prior revision arrays and

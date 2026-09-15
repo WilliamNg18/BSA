@@ -63,6 +63,16 @@ using actual store actions. A response is not a corrected claim submission,
 so the exact last submitted object remains unchanged. The 19 passing fidelity
 tests still run on G's pre-new-seed canonical snapshot, not final live scope.
 
+U40 integration now consumes G `4765770` and B `d581326`. Twenty-five scanner
+tests and typecheck pass against actual source facades and real store actions.
+Earlier WIP `e45e0be` has four green CI shards (`35015056421`), not later-source
+or deployed acceptance. O still owns full-width mounting and the coordinator
+owns browser leases, merge and observed live acceptance.
+
+The bounded SVG title fix preserves the source ID and accessible name while
+preventing React child warnings in O's mounted surface.
+
+## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
 Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
