@@ -464,6 +464,14 @@ proposed patch or preview. Four new authority regressions pass; consumer
 mounting and whole-flow live evidence are not claimed by these unit results.
 ## Reopened Part A scope: final-state audit/fade compatibility
 
+Verification is now bounded and complete for this test-only handoff: check,
+106 targeted units, four controlled native-frame negative regressions and
+four ordinary demo/header motion tests pass; ten representative related audits
+also pass at exact `0d0837a`. Ordinary proof stays separate from held-animation
+diagnostics. All production source, durations, case/domain state, packages,
+workflow and original audit rules/timeouts are unchanged. Parent integration
+and exact #109 CI are still pending; no full local/global matrix was repeated.
+
 Own only test synchronization for the existing 150ms Outcome fade and 100ms
 reduced-motion crossfade. Extract the established computed-opacity/unmounted
 assertions and reuse them at final-state audit boundaries. No arbitrary delay,

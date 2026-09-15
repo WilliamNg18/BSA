@@ -588,6 +588,28 @@ existing gate regressions protect the current base, not the unmerged new
 mode-specific routing that G is implementing.
 ## 2026-09-15: Reopened header fade audit diagnosis
 
+Final clean source `0d0837aa8a425372a8c4be6835935777a3de166a` passes check
+and 106 targeted shell/header units. The 8/8 bounded run consists of four
+controlled native-animation negatives and four ordinary demo/header tests.
+Each paused negative produces exactly one Outcome contrast violation, rejects
+the settlement helper while held, and resumes to a zero-violation final audit.
+Native durations remain 100ms reduced / 150ms normal; no hook ships in src/.
+The exact failed demo audit passes with actual, unmodified animation in both
+motion modes. A further 10/10 representative audit-consumer run passed.
+
+The fourteen ordinary tests produced 27 unrestricted axe results, zero
+violations, and eleven incomplete rule occurrences (`color-contrast` and
+`aria-prohibited-attr`). Separately, four held diagnostics intentionally have
+four contrast violations and four incomplete occurrences; four resumed
+diagnostic audits have zero violations and four incomplete occurrences.
+Neither deliberate negative violations nor incompletes are silently waived.
+Final artifacts are `files/outcome-settlement-final` and
+`files/outcome-settlement-related`; the earlier failed diagnostic directories
+remain preserved. The sole 4332 browser lease was explicitly released.
+No global/timed matrix was rerun. The final handoff changes no production,
+script, package, workflow, domain or case source from actual main `5b75e5f`;
+the parent owns #109 integration and its exact-head CI.
+
 The microtask hold works: both entry negatives passed, and exit frames were
 genuinely paused. However, a 95%-exit frame has opacity 0.00447462, which axe
 rounds to 1:1 and marks incomplete rather than violating. The exact diagnostics

@@ -663,6 +663,19 @@ No browser, main deployment, live observation or backup result is claimed.
 All five registers accompany this code/test commit and branch publication.
 ## Part A follow-up: settle the header before final-state axe
 
+Published test/source identity `0d0837aa8a425372a8c4be6835935777a3de166a`
+passed check and 106 targeted shell/header units. Bounded browsers passed
+8/8 (four held-native diagnostic regressions plus four ordinary demo/header
+motion tests), then 10/10 representative directly coupled audits, one worker,
+zero retries. The exact previously failing no-preference final-state audit
+passes with unmodified runtime animation. The four held negatives each produce
+one expected Outcome contrast finding, reject early settlement, then pass
+after the real animation resumes. They are diagnostics, not ordinary acceptance.
+The fourteen ordinary tests contain 27 unrestricted zero-violation axe audits;
+eleven incomplete rule occurrences remain explicit. The port 4332 lease is
+released. Parent integration into #109 and exact integrated CI remain pending;
+no new product, backup or live-completion claim is made.
+
 Reopened from inventory #109 source `6a238bc`, CI `35024931351`: its frontend
 is identical to main/live `5b75e5f`, but the demo final-state audit sampled the
 Outcome exit fade. Exact downloaded artifacts show `light-off-axe.json` failed
