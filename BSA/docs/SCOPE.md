@@ -57,6 +57,11 @@ Current pharmacy readiness labels now consume F/G's canonical ItemProcess;
 old receipt status never borrows readiness from a later revision. No new
 readiness rule or operational state is introduced in the view.
 
+The granted P browser scope is complete: four bounded 1440 checks on clean
+`0c3969d`, with real controls and no store observer/mutation. Final Both/single
+perspective matrices, deadline coverage, independent accessibility/visual
+acceptance and hosted validation remain V/coordinator gates.
+
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
 and both modes. The combined seven-file selection passes 91 units and check.

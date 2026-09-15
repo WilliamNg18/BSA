@@ -2586,6 +2586,8 @@ Question: how should P verify Type 1 after O replaces duplicate declaration evid
 
 Question: how should P display ready paper consistently? Choice: pass the actual current process to the shared label helper, and require matching revision before a receipt shows that readiness; tie-breaker: one source of truth without retrospective history changes.
 
+Question: how should a bounded source-immutability browser assertion compare text? Choice: capture and compare with the same innerText API, retain the initial failed textContent comparison, and rerun all four unchanged cases on the same artifact; tie-breaker: exact measurement without weakening the source assertion.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

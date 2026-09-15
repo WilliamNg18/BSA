@@ -88,6 +88,19 @@ receipt's ready status by its own revision. Twenty-three targeted tests and
 typecheck pass, including historical-receipt non-borrowing. This repair is
 published before freezing the newly granted bounded 4342 browser artifact.
 
+Bounded browser evidence: clean emitted `0c3969d1ca90bf4c8a89966a802ca167159666ca`,
+1440x1000, port 4342, one worker, zero retries. The coherent second run passed
+4/4 in 13.2s: M manual/On Apply and Send; B original-scenario Post, referral,
+manual/assisted correction, field focus in viewport, required ACK and edit
+invalidation, Resubmit ready status and final human release/Paid.
+The first same-source run retained two M harness failures from comparing
+innerText capture with textContent matching; both B tests passed. Using the
+same innerText API for both sides fixed that measurement, not product source
+or test scope. Both runs and four 1440 PNGs remain in session artifacts.
+4342 was released immediately and no listener remained. Only B-On's screenshot
+was delivered for visual inspection; the image tool blocked the other request.
+This is not V's timed matrix, a full visual/axe audit or live acceptance.
+
 ## B40 canonical verification branch integration
 
 The migrated B matrix now passes 91 combined units and check on G `4765770`.

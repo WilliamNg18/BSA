@@ -73,6 +73,14 @@ V/F's source-reported P readiness gap is fixed in the actual claim, tiles and
 current receipt, with a negative historical-receipt assertion. Twenty-three
 tests and typecheck pass; the bounded browser check still has not run.
 
+That pending bounded check now has an exact 4/4 pass on emitted `0c3969d`,
+1440x1000, one worker/zero retries, 13.2s. It proves actual correction focus,
+acknowledgement invalidation, ready status and B human-only release in the
+listed controls, not global one-second handoffs. The initial two M reader-API
+failures remain retained. Only the B-On ready screenshot was visually inspected;
+image delivery for the other requested image was blocked. No image limitation
+is converted to Pass. Live acceptance remains open.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 B's updated evidence on exact G `4765770` is 91 passing combined units plus
 check. The new 25-case store fidelity matrix uses `getAsSubmitted` and

@@ -70,6 +70,15 @@ metadata even after F fixed Follow/history. P now wires that same fourth
 argument across its current views; historical receipt status remains pinned.
 Twenty-three targeted tests and typecheck pass before the browser artifact.
 
+The bounded browser's original EPS comparison captured innerText but matched
+textContent; block separators differ even when every source value is unchanged.
+The first run's two M failures are retained. The corrected reader comparison
+passed all four cases coherently on unchanged clean `0c3969d` in 13.2s.
+Both B cycles proved the actual factory, manual/assisted fields, ACK invalidation,
+ready label and human release. Screenshot delivery allowed only B-On visual
+inspection and blocked the other requested image. Lease 4342 was released;
+no browser or server remains from P's run.
+
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
 records and retains B's later readable-blank fix, with no canonical store,
