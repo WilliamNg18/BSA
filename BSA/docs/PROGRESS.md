@@ -48,6 +48,14 @@ wrong explicit case/channel instead of fabricating an EPS version of B.
 Apply-after-acknowledgement is covered and correctly disables Resubmit until
 the pharmacist confirms the changed payload again.
 
+G `cdd436b` resolves the two source dependencies. Submission forms now use
+`initialisePharmacySubmissionDraft` only for their unsaved original-scenario
+projection; claim corrections retain current-revision initialisation and saved
+drafts always survive perspective changes. The actual B Post control now starts
+the brand-missing example without a hidden fixture edit. Missing paper pack and
+form use G's own-record patch. Thirty-six focused P tests pass; full existing
+suite migration and release gates remain open.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper

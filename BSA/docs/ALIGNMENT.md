@@ -41,6 +41,14 @@ product/quantity. The compact channel mismatch negative renders an explicit
 alert without any enabled submission control or state change. Bounded P
 coverage is now 34 passing tests, not whole-app or viewport acceptance.
 
+G `cdd436b` plus P's workbench-only initializer consumer closes the recorded B
+source-selection gap. Thirty-six focused tests now include the actual fresh
+brand-missing Post button in both modes, without blanking a hidden draft.
+Off preserves its absent declaration; the correction explicitly supplies all
+required human-entered fields before acknowledgement. The exact canonical
+pharmacy-suggestion caption is treated as a label under the stated prose
+exemption; other panel prose remains below 25 words. No screen is hidden.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Refreshed published-source snapshot after the B foundation

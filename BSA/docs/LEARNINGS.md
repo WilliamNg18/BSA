@@ -39,6 +39,12 @@ the record. Thirty-four focused P tests now pass; existing-suite migration
 remains active, so an intervening full check on a mid-edit test was not claimed
 as a stable result.
 
+The source-bound factory now makes fresh B Post genuinely incomplete even when
+its current C8 claim is ready for release. Off still has no typed declaration,
+so its manual correction must supply brand, pack, form and prescriber rather
+than borrowing an Agent-On declaration. Actual button/callback tests cover that
+path and its operator-only release; 36 focused P tests pass.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic

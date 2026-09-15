@@ -35,7 +35,7 @@ export function EpsPharmacyCapture({ caseId: fixedCaseId, onCaseChange, compact 
 }
 
 function EpsClaimEditor({ caseId, compact, controls }: { caseId: string; compact: boolean; controls: "submit" | "correct-and-submit" }) {
-  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId, "eps");
+  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId, "eps", "new_submission");
   if (!c || !revision || !draft?.epsPrescription || !original) return <p role="alert">EPS item unavailable.</p>;
   const eps = draft.epsPrescription;
   const receipt = revision.kind !== "seed";
