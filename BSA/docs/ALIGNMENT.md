@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+Actual main advanced to `5b75e5f7711bf599b02ff9fab752781fa0685b00` with
+Part A and master requirement documentation. B inspected that diff and safely
+merged it, preserving G's canonical domain and main's exact header code.
+The 72 new notice-policy unit cases and typecheck pass. The full demo-shell
+file reports 102/104: two old B revision/Gate 1 expectations remain known
+consumer migration work, not a passing whole-file result. C1-C9 runtime/live
+classification is unchanged by the header-only implementation on main.
+
 Repair verification at exact G `cdd436b906f397a1d210603e4cef3794812c0a59`:
 all eight form-value communication guards now reject atomically, in both
 modes and all four APIs; the actual amendment scan now contains its supplier
@@ -271,6 +279,98 @@ an operator card with `suggestion: null` and no serialised patch/preview, while
 retaining the identical factual records/checks. Its four new tests pass;
 the combined 120-regression run and check pass. G explicitly requested the
 helper and retains responsibility for integrating it into the canonical card.
+## Part A candidate verification, exact source
+
+Full all-route/three-perspective/eleven-step On/Off, 1280/1440, actual-bounds
+and unrestricted axe verification passed as 176 new tests within four green
+CI shards `35015057336`, source `393957c`. This hosted result is the
+coordinator-selected authoritative full matrix. The interrupted duplicate local
+run remains partial: 238 recorded states, centre difference 0px, normal 16px
+text 834.53125px wide, 242 zero-violation audits and 98 incomplete occurrences.
+The exact failed local control test passed once in the bounded recheck alongside
+two light/dark motion tests; unchanged budgets and original timeout retained.
+No browser errors were reported by passing fixtures.
+
+Source paths remain `src/components/app-shell.tsx` and
+`src/components/demo/header-outcome.tsx`; the domain store was never edited.
+Coordinator `d8c14a2` is adopted with exact MEMORY after the freeze. This final
+documentation-only candidate must pass fresh CI and be merged/deployed/observed
+before Part A is marked live aligned. No W/B/C verify clause is claimed here.
+
+## Part A header policy: inspected source, not live acceptance
+
+Actual main at inspection: `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+The fresh open-PR list was empty after #94 merged. Direct source comparison
+found the old `disclaimerOpen`, global principle and duplicate footer notice
+on each inspected published head below; none has a matching notice field
+in `src/lib/store.ts`. Only AppShell-local presentation state needs removal.
+
+| Published context | Inspected head |
+| --- | --- |
+| Main | `641815137b36ab3e925dcc98c4738d0b150a75d1` |
+| G model | `59efabf49e20c5b0d19b6b79c35a6bbc700ee4fb` |
+| V verification | `0ec6e424ef126aafbb5de30d600e6c6d4ae46931` |
+| Coordinator and O | `cd973d3c6cdf5282011e0a1dc0b293a4866f12a5` |
+| D demo/backup | `9fe65204ec5e6bc324871e57dd54c2958baa152d` |
+| P pharmacy | `2cefc0b60a6b94628ce1665cf062085532fb0434` |
+| R recommendations | `81a4f3e2c4eb06615b2d680cb51118b52eb5bc90` |
+| F follow | `71f8c9586beb11c2c45d8fad534e6a591b17f5e5` |
+| S design | `8b2bae47036f9110ce05cf3808ae37f8b9b6decc` |
+
+The coordinator reports new W/B branches active; no published heads for
+`williamng18-task-39-wrong-strength` or `williamng18-task-40-nhsbsa-fidelity`
+were returned by the first remote lookup. Their case verification belongs
+to those owners, not Part A. Recheck their publication before final handoff.
+Part A now implements the new policy on its own branch, with check and
+1,699 units passing. Actual geometry, browser/axe and current-main live
+alignment remain pending; no verify clause is marked live Pass yet.
+
+Subsequent published contexts were inspected directly: W #102 at
+`4f3bc3a6356ca42c1a1613d1d717c193ab4217bc`, B at
+`81517705102152b890ef1dd03cf78b81bb7659fc`, and S #103 at
+`260b70e7c1ff602823f46ae976ae9908caef0c34` retain the old shell; their
+changes do not supply the new Part A header. Part A is published as draft #104.
+The first local browser run timed out on the aggregate 28-route Both test,
+not a failed geometry or axe assertion. Retain it as incomplete evidence.
+Per-route registration now prevents aggregate audit duration from hiding
+unexecuted routes; each keeps the normal 30-second deadline and full assertions.
+Initial #104 CI additionally caught the retired notice button in Task 13 and
+two tour-layout assumptions about the header's next sibling. Those assertions
+now use the surviving Agent control and optional Outcome height, retaining
+outside action/focus, menu and sticky-position coverage. Fresh CI is required.
+The coordinator's exact master MEMORY is adopted with both sets of five-doc
+sections preserved. A final CI-located controls assertion still expected the
+old global principle; it now expects the exact Outcome and Off absence.
+
+## Latest Parts A-C verification register
+
+Authoritative audit baseline: main
+`641815137b36ab3e925dcc98c4738d0b150a75d1`. At startup the open-PR inventory
+was empty after #94 merged; W/B/G/A subsequently published independent work.
+Each owner must record the exact inspected main and active published branch
+heads for every "verify" requirement. The following rows are obligations and
+known gaps, not claims that unmerged contracts are live.
+Vision/current-desktop prose now distinguishes Today EPS pricing from assisted
+EPS verification and paper human release; this is policy alignment only.
+
+| Item | Classification at the baseline | Owner and required closure |
+| --- | --- | --- |
+| A notice/Outcome/footer | Misaligned: old notice and global principle remain | A: every route/perspective/step, exact text, no Off gap, centre within 2 px, accessible motion and live check |
+| W wrong-strength case/all dates | New explicit outcome/scenario replacement | W/G/P/D: prescribed/supplied 10mg, selected 5mg; correct source dates; no retired headline |
+| EPS error evidence | Study bibliography, 62 and 1.6%/CI and NHSBSA mechanism verified by W; subtype counts/rank not independently verified | W: preserve source URLs and evidence limitations; N/S use only properly attributed claims |
+| C1 exact submission fidelity | Partial: projected case fields cannot substitute for the original submission | B/G/O: read-only exact last submission across every case/state |
+| C2 satisfied EPS skips queue | Verify current and new strength paths | G/P/O/V: corrected message is identical at Gate 2, automatic record/count only, no operator row |
+| C3 paper declaration controls/Post | Existing controls need the new complete/two-missing-field contract with correct dates | P/G/B/V: actual draft actions, no implicit Post or premature release |
+| C4 three-column scanner reconciliation | New presentation and explicit source-confidence contract | B/G/U/O: raw typed/scan/OCR preserved, separate human-confirmed evidence, safe recommendation |
+| C5 operator notes contain no proposed value | Misaligned with the earlier exact-value referral contract | B/G/R/O/P: field/rule request, final validation, pharmacy-only concrete suggestion |
+| C6 acknowledgement and re-check | New acknowledgement; EPS re-check must no longer require the old blanket human release | B/G/P/O/F: current payload fingerprint, invalidation, real re-check, paper human press |
+| C7 complete live action cycles | Existing one-state base retained; new cases/outcomes need complete fresh proof | V/owners: wrong-strength and paper-incomplete refer/apply/ack/resubmit/re-check/release, no Reset/navigation mutation |
+| C8 simultaneous pharmacy states | Verify against actual four-case historical seeds and actions | G/P/F: Paid, Action needed and Waiting visible together without invented transitions |
+| C9 current documentation/screens | New contracts not covered by old descriptions/images | All owners/V: contemporaneous five documents, SPEC/script/design/source-pinned screens |
+| Live backup and recovery | Canonical producer/parity/clean offline proof not yet complete | D/O/coordinator: current-main/live exact payload and verified recovery |
+
+Historical Task 25-38 evidence remains intact but is not a substitute for this
+new register. A source-ready module is not an aligned live feature.
 
 ## Current live-first alignment
 

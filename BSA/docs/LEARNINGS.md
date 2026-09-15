@@ -49,6 +49,13 @@ typecheck, lint and production build pass. Canonical G/R source files are
 retained during B merge resolution; B's newer tests and historical failures
 are preserved instead of reverting to the older copied test version.
 
+Main `5b75e5f` integration changed header and requirement documentation, not
+G's domain. The full existing demo-shell file passed 102/104; its two failures
+use old B revision 1 and wrong-pack Gate 1 pass expectations. The exact new
+Part A policy selection then passed 72 tests, and typecheck passed. D and the
+coordinator received those separate outcomes; no test expectations were changed
+or whole-file/browser/live acceptance inferred by B.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
@@ -210,6 +217,117 @@ Four added cases pass, as do all 120 combined strength/evidence/headline and
 existing EPS/correction/recommendation/two-gate regressions and check. These
 existing gate regressions protect the current base, not the unmerged new
 mode-specific routing that G is implementing.
+## 2026-09-15: Part A complete hosted proof and bounded local follow-up
+
+Exact `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four CI shards
+in [35015057336](https://github.com/WilliamNg18/BSA/actions/runs/35015057336).
+This includes the complete 176-test new matrix and all existing blocking
+regressions, check and 1,699 units. The coordinator selected hosted proof as
+authoritative and instructed the duplicate local run to stop safely.
+That local run remains interrupted with one Task 13 dark total-test timeout.
+The retained trace's final focus expectation succeeded; fixture time continued
+past the test budget. No source fix or timeout increase was justified.
+
+The interrupted run retained 238 complete policy states with centre difference
+0px, ordinary 16px text 834.53125px wide, and 242 unrestricted axe results with
+zero violations. There are 98 incomplete rule occurrences across
+`aria-prohibited-attr`, `aria-valid-attr-value`, `color-contrast` and
+`th-has-data-cells`. This is partial developer evidence, not a full local pass.
+
+One bounded run at the same clean source passed 3/3 in 41.4 seconds, one worker,
+zero retries: the exact Task 13 dark test and the two reduced/full-motion
+Outcome tests. Eight Outcome light/dark On/Off audits have zero violations
+and zero incompletes. Existing tooltip/menu audits have zero violations but
+retain three incomplete rule occurrences: `aria-prohibited-attr`,
+`color-contrast` and `aria-valid-attr-value`. No manual clearance is inferred.
+The four 1440px captures include both themes/motion modes. The light image was
+visually inspected; the tool refused the second image because of its image
+limit, so dark inspection is explicitly incomplete. Two captures are attached
+to #104 with their exact source, not described as live images.
+
+Raw artifacts persist in the session's `files/part-a-393957c` and
+`files/part-a-393957c-bounded` directories. The earlier `part-a-1080ff7`
+aggregate timeout remains unchanged. Browser processes were stopped only by
+owned shell handles and the sole port 4332 lease was released.
+The subsequent `d8c14a2` adoption changes documentation only; MEMORY matches
+that master exactly and no runtime/test bytes changed after hosted proof.
+Fresh exact-head CI and actual-main live observation remain release gates.
+
+## 2026-09-15: Part A shell investigation and pre-browser evidence
+
+Coordinator master `b005bbb` was adopted as `e4151f7`; MEMORY is byte-identical
+to that source and both independent status-section sets are retained.
+CI's remaining controls failure was a literal old-principle text expectation,
+now replaced with exact Outcome text plus Off absence, not a waived check.
+
+The synthetic disclosure is local React state in `components/app-shell.tsx`,
+not a persisted or operational store field. Removing it does not require a
+store migration. Put the Outcome in the existing measured sticky stack so
+its changing height remains part of focus/scroll clearance. It is a named
+landmark, and only opacity animates; main route entrances are untouched.
+
+The initial check found missing TypeScript in this fresh worktree; `npm ci`
+restored the existing lockfile without changing dependencies. Check then
+passed. The first full unit run passed 1,698 cases but the existing actual-CLI
+usage subprocess exceeded its unchanged five-second limit. A fresh complete
+one-worker run passed all 1,699 tests in 92 files, including 72 new global
+policy combinations. The initial timeout remains failed developer evidence.
+
+No browser or live pass is claimed in this publication. The authored matrix
+measures actual rendered text and content bounds, not container text alignment
+or a screenshot proxy. It records unrestricted axe incompletes rather than
+calling zero violations a complete manual accessibility certification.
+Only the coordinator's port 4332 one-worker lease may run local browsers.
+No local branch build is the product or a backup.
+
+The first browser run on clean `1080ff7` established actual 16px text
+834.53125px wide, with zero centre difference in the completed geometry records,
+but it did not finish: 28 routes with two full axe audits each exceeded the
+240-second aggregate deadline in Both. The remaining run was stopped and all
+partial JSON/trace/error evidence retained. A failed automatic screenshot at
+1280px is historical diagnostic output, not an accepted capture. New tests
+explicitly disable that automatic capture at 1280px.
+Registering each ordinary route separately retains the full matrix while using
+the existing 30-second per-test bound. This is a harness repair, not a changed
+product threshold or a passing browser verdict; fresh execution is required.
+Initial CI found two missed references: the Task 13 outside-dismissal test
+clicked the deleted notice control and tour geometry assumed no intervening
+Outcome. Use a surviving actionable control and include the actual optional
+height. Playwright `boundingBox()` waits for an absent locator rather than
+immediately returning null, so Off must not call it. Playwright also requires
+the screenshot option at file scope; the new matrix disables automatic images
+there and retains deliberate 1440px captures.
+
+## 2026-09-15: New evidence, scenarios and immutable-source contracts
+
+The master-policy review found older Vision/current-desktop shorthand still
+implied every submission queues and every automatic release needs proposed
+gates. The clarification distinguishes channels and modes without changing
+historical evidence or the standing synthetic-only Tariff restriction.
+
+W verified the Um/Clough/Tan article's PubMed record (PMID 37848350,
+DOI 10.1016/j.sapharm.2023.10.003), 62 studies, January 2010-September 2023
+search interval and pooled 1.6 per cent prevalence (95 per cent CI 1.2-2.1).
+Its abstract does not independently establish the supplied error-subtype
+counts/ranking; 44 hospital studies must not be relabelled as 44 studies of
+wrong medication. W is pursuing public primary/full-text evidence without
+bypassing access controls. The prevalence is not an NHSBSA claim-error rate.
+
+The NHSBSA actual-medicinal-product-pack page was independently read by W/S:
+https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack.
+Its automatically priced endorsed-pack mechanism supports the synthetic
+wrong-strength example, not a measured NHSBSA error frequency.
+
+Task 40 audits found that projected case fields are not proof of exact
+submission fidelity. Raw submission, scan/OCR and subsequent human capture
+must remain distinct. A high-confidence blank is a missing requirement, not
+necessarily unreadable capture. The new acknowledgement must bind the whole
+current correction, and operator note validation must be separate from the
+pharmacy's own concrete suggestion.
+
+The earlier 75-check and timing results cover the former cases and contracts.
+They remain historical; no new wrong-strength/paper-incomplete live cycle,
+header centring, backup equality or clean offline recovery is claimed here.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
