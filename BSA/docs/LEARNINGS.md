@@ -4,6 +4,20 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Migrating setup rather than removing assertions reduced V's six-file baseline
+from 15 failures to three on G `99abdd4`. Real ACK actions preserve all prior
+paper attempts; a ready paper revision still requires explicit human release.
+Wrong-strength Today must actually price before its later audit. Historical
+pure-domain fixtures remain separate from these current-store actions.
+
+On an isolated P `b236e8d` checkout the identical six test sources pass 73/74.
+CRLF-normalised source equality was checked, and source/package diffs were
+empty. The remaining failure catches Home's hardcoded date fix on a correctly
+dated brand-missing submission. D received the exact counterexample; no
+expectation was weakened. Typecheck and targeted lint passed, and the final
+trace selection passed all nine tests. These are unit-only results, not a
+browser, production build, local backup or current-live acceptance result.
+
 The six assigned legacy unit files reproduce 15 failures and 59 passes on
 G `99abdd4`. Their failures include unacknowledged resubmission, treating
 readable paper as Type 1, obsolete EPS selections and wrong-strength Today

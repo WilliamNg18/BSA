@@ -4,6 +4,12 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The V six-file unit migration preserves 74 checks and the historical
+pure-domain regression cases. Current operational tests no longer fabricate
+date corrections, route readable B through Type 1, or treat capture as paper
+release. Completion is still blocked by actual UI integration: G-base 71/74,
+published P-base 73/74, with Home's false B date instruction still rejected.
+
 G assigned V six unit migrations: case-presentation, four-case-baseline-ui,
 lifecycle-ui-bridge, process-presentation, review-repair and trace-closing.
 O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.

@@ -4,6 +4,23 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## V six-file canonical unit migration
+
+The six assigned files now exercise current paper/strength actions: actual
+Today pricing then audit, payload-bound ACK before resubmission, original
+attempt retention, readable paper without invented Type 1, and explicit
+human release after paper capture/recheck. Historical pure-domain CASES and
+their July replay assertions remain unchanged. P's earlier
+`four-case-baseline-ui` assertions from `d97ccf4` are unioned, not overwritten.
+
+On exact G `99abdd4`, the selection improved from 59/74 to 71/74; the three
+failures are two absent P EPS-control updates and Home's false date correction
+for brand-missing B. A unit-only staging checkout of exact P `b236e8d` with
+identical six test sources passes 73/74. Its sole failure is the Home date
+instruction, reported to D. No staging source file was modified, no browser
+or build was launched, and no full-suite/live pass is claimed. Typecheck and
+targeted lint pass. Both earlier failed reports remain retained.
+
 V imports exact G `99abdd4` (including `c03ab21`, `c3f69f2` and merged
 Part A) without source conflict. G assigned six remaining unit files to V;
 O confirmed no overlapping writer. Their fresh two-worker baseline is

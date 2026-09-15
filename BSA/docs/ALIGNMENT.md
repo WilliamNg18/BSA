@@ -4,6 +4,13 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+V's assigned unit migration now preserves ACK, same-attempt history, Today
+audit and human paper release semantics. Exact P `b236e8d` resolves the two
+old EPS UI failures present on G `99abdd4`; the identical six tests reach
+73/74 on unchanged P source. Home still proposes adding a date to correctly
+dated brand-missing paper. That negative stays failing until D repairs the
+source. P's existing overlapping four-case assertions are retained in full.
+
 The fresh V six-file unit baseline against G `99abdd4` is 59 passed / 15
 failed. This establishes the migration starting point, not a full integration
 or browser result. The exact failed JSON is retained in session evidence.
