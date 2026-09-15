@@ -38,6 +38,14 @@ it is separate from the study rate and the referral-loop calculation.
 This W domain handoff is not live completion; G integrates the canonical
 four-case model before the consuming streams and live verification.
 
+Current C5 authority: operator and pharmacy views may show prescribed and
+selected source facts, but the exact proposed corrected pack and preview
+appear only in the pharmacy's "your agent's suggestion from your records"
+card. Operator advice and outbound notes name the field/rule with no proposed
+value. The full Off wrong-strength cycle first prices the endorsed pack and
+then uses a real explicit human audit/query reopening; toggling never discovers
+or reopens the mismatch.
+
 ## Purpose and principle
 
 Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit

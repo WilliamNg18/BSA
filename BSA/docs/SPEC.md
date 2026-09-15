@@ -29,10 +29,13 @@ operator case and never automatically releases; a corrected EPS Send or
 acknowledged Resubmit rechecks before automatic release to existing pricing.
 G/B own canonical integration of these actions.
 
-The card shows prescribed, selected and actually supplied products/strengths,
-the proposed matching rule informed by the public NHSBSA source, the plain
-mismatch, suggested pack, corrected preview and existing five structural
-confidence signals. Keep "the agent verifies and advises; a person decides"
+Both sides may show prescribed, selected and actually supplied product/strength
+facts, the proposed matching rule informed by the public NHSBSA source, the
+plain mismatch and existing five structural confidence signals. Only the
+pharmacy card shows the proposed corrected pack and preview, labelled
+"your agent's suggestion from your records". Operator advice names the field
+and rule without a proposed correct value. Keep
+"the agent verifies and advises; a person decides"
 and "this is the proof the agent does not rubber-stamp".
 NHSBSA outbound notes name the field and rule without the 10mg correction;
 only the pharmacy's own source-bound card proposes the exact value.
@@ -43,8 +46,11 @@ preview values; Apply changes selected code/name to 10mg while all source
 fields remain; uncorrected On Send enters the operator case, Refer back
 reaches Action needed with a value-free note, Apply plus required accuracy
 acknowledgement enables Resubmit, and successful EPS recheck releases
-without a queue row or operator press. Today original submission is automatic,
-not an artificial referral just to exercise the loop. Screenshot and
+without a queue row or operator press. Today original submission is automatic;
+the full Off cycle requires a later explicit human audit/query reopening in
+the shared store. Never create an artificial referral or silently detect a
+mismatch to exercise the loop. An On failed submission followed by Off may
+test mixed-mode continuity, but does not replace this complete Off path. Screenshot and
 demo-script updates belong to their consuming owners.
 
 ## 1. Purpose and authority

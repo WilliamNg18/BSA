@@ -25,6 +25,13 @@ Source and passing units do not establish implemented lifecycle routing or
 live acceptance. No price, medicine-selection advice or NHSBSA error-rate
 estimate is introduced by this module.
 
+The later coordinator clarification narrows the card contract: proposed pack
+values and previews belong only to the pharmacy; operator findings may show
+the facts but advice and outbound notes name the field/rule without suggesting
+the correct value. Required Off round-trip coverage must start with actual
+Today pricing and a later explicit human audit/query reopening, not an invented
+queue row or a toggle-generated transition.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

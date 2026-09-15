@@ -30,6 +30,15 @@ and legacy case/reference/history/readout material. Historical evidence must
 be retained, not edited to invent correct old outcomes. The guard's only
 exception is the actual NCSO Tariff clause text, never whole files.
 
+Follow-up alignment: the coordinator confirms C5 overrides the older wording
+that could imply showing proposed corrections on every card. The exact pack
+proposal/preview is pharmacy-only; G's shared adapter and P/O/V consumers must
+enforce that split. The full Off cycle needs a real human audit/query reopen
+after the selected pack is priced; W's earlier suggested mixed-mode test may
+be additional coverage only, not proof of the required complete Off path.
+Both obligations were relayed to G/S/V. No new source API or lifecycle action
+is introduced by this documentation-only clarification.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

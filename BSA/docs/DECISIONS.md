@@ -13,6 +13,8 @@ ms.date: 2026-09-15
 - Question: may unconfirmed study counts appear as facts? Choice: publish confirmed 62 studies and pooled 1.6% (95% CI 1.2-2.1) only; disclose that 39/44/34 and the ranking were not verified. Tie-breaker: truthful primary-source evidence.
 - Question: what feeds the mismatch estimate? Choice: a separate editable 1% assumption over total submitted claims, not the 1.6% dispensing-study prevalence or the 85,000 referral subset. Today none is a synthetic comparison, not a measured zero.
 - Question: how can W supply the CI guard without breaking other owners' work? Choice: publish the strict standalone checker and its negative tests; V hooks it into the existing root check after coordinated active-source migration. No broad whitelist and no historic record rewrite.
+- Question: may the operator card show W's proposed corrected pack? Choice: show source/submission facts on both sides, but the exact proposal and preview only in the pharmacy's own-records card. Operator advice and notes are field/rule based with no proposed value. Tie-breaker: coordinator's later explicit C5 override.
+- Question: how is the full Off wrong-strength cycle entered? Choice: automatic pricing as endorsed, then a real explicit human audit/query reopening owned by G, never a silently manufactured queue row or a toggle transition. An On failure followed by Off is additional mixed-mode coverage only. Tie-breaker: truthful Today mechanism and the latest coordinator instruction.
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
