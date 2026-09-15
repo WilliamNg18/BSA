@@ -7,7 +7,15 @@ steps, with 1280/1440 px functional coverage and new PNGs at 1440 px only.
 
 ## Current verification contracts
 
-Discovery confirms **55 live tests in four files**, not 55 executed passes:
+Requirements 1-5 extend the acceptance boundary to **75 names**. All names
+now discover, including always-visible recommendation fields, concrete
+previews, complete/missing/scanner/unreconciled paper, the actual guided
+handoff and one-second cross-side actions. The extended application paths
+have not yet passed against integrated R/P/O/D mounts. Invoice UI remains
+required and fail-closed pending the safe unsupported-input implementation;
+its unit contract is not a substitute.
+
+The pre-addition inventory contained **55 live tests in four files**:
 eight core checks, two system-design widths, three header perspectives,
 22 step/mode audits, four Back/Next walks and sixteen four-case cycles.
 The 1440 px On walk also executes the real operator-to-pharmacy hand-off:
