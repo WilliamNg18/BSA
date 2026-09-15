@@ -377,6 +377,9 @@ main actions or updated four-case historical seeds.
 
 # Vision alignment
 
+ES2022 compatibility is restored for the migrated capture test. This fixes a
+typecheck blocker only, not the pending full CI or live acceptance gates.
+
 Canonical legacy regression checkpoint: twelve G-owned files pass 194 tests
 after actual-action migration, and the integrated demo slice passes 231 tests.
 The retired-headline checker now has zero source findings. These scoped passes
