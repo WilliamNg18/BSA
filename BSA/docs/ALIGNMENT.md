@@ -31,6 +31,10 @@ and reduced motion). Its four hold regressions failed because Motion's
 initialization overwrote their pause. Correct the hold after initialization
 and assert native paused state; retain the original failed diagnostics rather
 than presenting them as proof of settlement or changing the product.
+Actual paused exit at 95% has opacity 0.00447462; axe reports the Outcome as
+a 1:1 incomplete rather than a violation. Both entry diagnostics passed.
+The exit diagnostic now samples 90%, preserving a real low-contrast frame
+above that rounding boundary; the two failed diagnostic expectations remain.
 
 ## Part A candidate verification, exact source
 

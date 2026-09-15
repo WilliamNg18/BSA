@@ -19,7 +19,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           // Motion sets startTime after animate returns, which unpauses WAAPI.
           queueMicrotask(() => {
             animation.pause();
-            animation.currentTime = Number(animation.effect!.getTiming().duration) * (entering ? 0.05 : 0.95);
+            animation.currentTime = Number(animation.effect!.getTiming().duration) * (entering ? 0.05 : 0.9);
             held.push(animation);
           });
         }
