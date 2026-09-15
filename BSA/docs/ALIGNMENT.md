@@ -4,6 +4,11 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Exact G `d4f27ce` native discovery retains 1,062 ordinary, 44 state and 75
+live entries without duplicate IDs or executed results. This is not browser
+green, and pending O sibling-layout and current-case test migrations must
+not inherit its discovery status as acceptance.
+
 Root guard activation is implemented: the unchanged EPS scanner participates
 in `check`, which is blocking in `verify` and every CI shard. W's traversal
 and negative cases remain active, and the package-to-CI path has a regression

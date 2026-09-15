@@ -4,6 +4,9 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how is the next browser migration baseline established without an unleased run? Choice: native `--list` on exact clean G `d4f27ce`, retain every ID and assert empty result arrays, using the real guarded local configuration for live-name discovery; tie-breaker: exact inventory without execution or fabricated passes.
+- Question: does the discovery reporter's placeholder status imply an actual skip/pass? Choice: classify entries only as listed and record zero executions; tie-breaker: observed evidence, not expected outcomes.
+
 - Question: how should the EPS source guard become blocking without duplicate CI logic? Choice: add `check:eps-headlines` to the existing `check` chain before compilation, preserving the shared fail-fast `verify` stage and four-shard workflow; tie-breaker: one canonical verification path and no infrastructure changes.
 - Question: may activation weaken W's scanner or its tests? Choice: import the exact published `ecd4a934` traversal/negative test file, leave checker/schema/source exceptions unchanged and add only a root-wiring regression; tie-breaker: actual source-clean readiness and fail-closed evidence.
 

@@ -4,6 +4,12 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The first-green G discovery baseline is 1,062 ordinary / 44 state / 75 live
+entries, with native identities retained and zero test execution. It starts
+the next compatibility comparison; the older scenario semantics are not
+certified by their continued registration. A's final-state demo-navigation
+audit-settlement hunk remains exclusively A-owned.
+
 The authorised EPS headline guard is now active in root checking and the
 existing four-shard CI verification path. Its scope remains executable
 source with only W's exact AST-selected NCSO requirement-text exception.
