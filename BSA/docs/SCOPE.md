@@ -6,6 +6,48 @@ ms.date: 2026-09-15
 
 # Scope register
 
+U40 integration now consumes G `4765770` and B `d581326`. Twenty-five scanner
+tests and typecheck pass against actual source facades and real store actions.
+Earlier WIP `e45e0be` has four green CI shards (`35015056421`), not later-source
+or deployed acceptance. O still owns full-width mounting and the coordinator
+owns browser leases, merge and observed live acceptance.
+
+The bounded SVG title fix preserves the source ID and accessible name while
+preventing React child warnings in O's mounted surface.
+
+## B40 bounded foundation scope, 15 September
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+U's reactivated Task 40 scope is the new read-only three-column scanner
+comparison, original-source image adapter, rendered units and desktop browser
+assertion helper. Historical Task 27 is not restarted. O owns full-width
+Type 1/case-pack insertion and G supplies the canonical source facade.
+Eighteen units and typecheck pass; actual desktop legibility, accessibility and
+observed deployed-main acceptance remain pending.
+
+U's bounded follow-up adds accessible per-value source descriptions and exact
+blank-versus-unknown confidence presentation. Twenty focused units pass;
+the first scanner checkpoint also passed check. Neither result is browser
+geometry, mounted functionality or live acceptance.
+
+Current full-suite boundary: 1,700 of 1,701 tests passed; one unchanged CLI
+subprocess exceeded its existing deadline. All 52 verification tests passed
+unchanged in isolation. Do not convert this into full-suite or live acceptance.
+
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
 ### G39/40 explicit-action checkpoint
 
 Functional checkpoint: the four new cases and channel-specific actual actions

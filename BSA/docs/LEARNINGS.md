@@ -4,6 +4,55 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: B40 actual-source audit and foundation boundary
+
+G's published source facade keeps a later information-only response separate
+from the actual paper submission. U's five real-store render tests preserve
+the strict matching revision, compare all three original columns before and
+after Type 1/release, and retain earlier source objects after acknowledged
+amendment. Combined scanner coverage is 25 passing tests with typecheck.
+The earlier `e45e0be` WIP passed four remote CI shards in `35015056421`, despite
+the recorded local subprocess deadline failures; no timeouts were weakened.
+Neither result establishes mounted browser geometry or live acceptance.
+
+An SVG title mixing a text child and an expression can trigger React's title
+child warning. One source-derived string preserves its accessible content and
+is covered by a no-console-error rendering assertion.
+
+U's scoped rendering tests prove that later human capture leaves all three
+original columns identical, unknown OCR dates never acquire the declaration's
+date, and stale/source-mismatched projections produce explicit errors. The
+portrait adapter retains uncertain source glyphs and wraps long values without
+ellipsis. Eighteen focused tests and typecheck pass; this does not prove actual
+1280/1440 legibility or replace the pending mounted browser and live checks.
+The real-store fidelity tests now pass alongside the domain/action suites:
+67 tests in eight files, followed by check. The assertions compare the entire
+last submission object after actual actions, retain prior revision arrays and
+scan evidence, and do not use test-only state replacement or navigation-created
+history. The source still uses G's pre-new-seed `9b41cc2` runtime; this limitation
+is explicit rather than assuming old four-case coverage proves new scenarios.
+
+U's raw scanner representation exposed ambiguity in B's earlier null-blank
+test: null denotes Unknown, not a positively observed omission. The refined
+regression uses empty string for a known blank, retains null as Type 1
+uncertainty even with a high confidence figure, and leaves typed declaration
+null distinct from extraction evidence. The earlier two-failure reproduction
+and subsequent results remain historical rather than being rewritten.
+
+## 2026-09-15: B40 readable-blank regression
+
+U/B coordination identified that null and an empty OCR string must not be
+interchangeable. Null remains Unknown; an empty string is a known Blank and
+does not itself claim an unreadable image. Supplied confidence is independent.
+The 20-test follow-up protects both meanings, per-value accessible source
+descriptions and sub-certain percentage display. The first scanner checkpoint
+passed check; desktop geometry and live acceptance remain separate gates.
+
+The full scanner-WIP run passed 1,700 tests but the unchanged verification
+subprocess test exceeded 5,000 ms (reported at 5,625 ms). All 52 tests in that
+file passed in a subsequent isolated 2.28-second run without edits. This is
+evidence of a run-sensitive deadline, not proof of a green full suite. No
+timeout, callback, application or unrelated tooling change was made.
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic

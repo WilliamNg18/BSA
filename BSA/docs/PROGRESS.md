@@ -4,6 +4,67 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: U40 scanner comparison WIP, not live acceptance
+
+U integrated G's published functional `4765770` and B's explicit null/blank
+contract `d581326` without editing canonical source actions. Five new tests
+render the actual G facades for both paper cases through capture, final human
+release, information response and acknowledged amendment. All 25 scanner tests
+and typecheck pass. The prior WIP `e45e0be` independently passed all four CI
+shards in run `35015056421`; that is not proof for this later integration.
+Local deadline failures remain preserved. Actual O mounting and approved
+desktop/browser/live acceptance remain pending.
+
+O's integration reported a React title-child warning. U changes the SVG title
+to a single source-derived string and adds an explicit no-console-warning unit.
+
+U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
+full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
+owns immutable revision sources and the state facade. No O/P screens, store
+actions, routing or source fixtures are edited by U.
+New `submission-fidelity-store.test.ts` exercises real store actions: all four
+current IDs Send and arrive, every perspective and Follow retain exact payloads,
+paper traverses capture/referral/draft/ACK/resubmission/release in both modes,
+and explicit EPS audit preserves prior submission and pricing history.
+The combined eight-file selection passes 67 tests; check also passes. The
+new Task 39/40 seed/source snapshot integration is still G-owned and pending,
+so this evidence is pinned to G `9b41cc2`, not the final four-case runtime.
+
+OCR semantics now match U's scanner: null is Unknown, empty string is a known
+Blank. A high-confidence blank goes to Type 2 when required; an unknown value
+still requires Type 1. Typed numeric null may mean omitted declaration, but the
+raw OCR must explicitly report an empty string to claim a known blank.
+
+B's verification branch now includes published G
+`9b41cc2a2f1a60ff324d2121e5781a253064ef07` without changing G's canonical
+store/types/lifecycle/seeds. The merge preserves both streams' documentation
+and B's readable-blank repair. It is a validation workstream, not a merge to
+main, deployment, backup or completed C7 acceptance.
+
+The three columns retain typed declaration, source scan and hypothetical
+character-recognition values/confidences independently. Human capture appears
+separately and cannot rewrite an original column. The portrait image renderer
+wraps source strings without completing unknown characters or truncating lines.
+Eighteen focused render tests and typecheck pass. The reusable desktop browser
+contract is authored but not executed: no browser lease or hosted check is claimed.
+
+The first scanner checkpoint passed `npm run check`. The source-description
+follow-up passes 20 focused units: each declaration/OCR value has an associated
+provenance description, known blank strings remain Blank, null remains Unknown,
+and a confidence below one cannot round up to 100 per cent.
+
+The published WIP's full two-worker suite ran 1,701 tests: 1,700 passed and
+the unchanged verification CLI subprocess test exceeded its 5,000 ms deadline.
+That file then passed all 52 tests in isolation without code or timeout changes;
+current typecheck also passed. The full run remains failed evidence, not a
+green full-suite claim. No browser or live acceptance has been performed by U.
+
+Base main is `6418151`. This branch is incomplete work, not a backup or live
+product. G integration, O mounting, 1280/1440 verification, main merge and an
+observed green deployment remain required.
+
+## 2026-09-15: B40 domain foundation, published incomplete
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper

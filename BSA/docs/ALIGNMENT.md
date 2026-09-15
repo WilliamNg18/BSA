@@ -6,6 +6,17 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+U's real-source integration test now confirms that G's facade pins the last
+actual submission through a later information response. The scanner's strict
+revision guard remains unchanged, and human confirmation/release leaves all
+three raw columns identical. Acknowledged amendments create a newly labelled
+source while earlier objects remain immutable. Twenty-five scanner units and
+typecheck pass on integrated G `4765770`/B `d581326`; desktop/live checks remain
+pending. Earlier WIP `e45e0be` passed all four CI shards, run `35015056421`.
+
+O's reported SVG title warning is repaired using one source-derived text child;
+the no-warning regression does not alter any source fields or reconciliation.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription
