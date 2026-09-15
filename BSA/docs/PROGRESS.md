@@ -2011,3 +2011,27 @@ files were cleaned up. An initial mock fixture scoping error was corrected in
 the test invocation, not hidden by a helper fallback. No Azure mutations, live
 requests, browser runs or recovery applies were performed by this stream.
 The coordinator owns actual what-if/apply and measured non-destructive results.
+
+## Offline backup verification: O handoff, not completed recovery
+
+O implements `scripts/verify-offline-backup.mjs` and its focused unit tests
+against the parent's frozen backup contract. It independently enumerates
+runtime/supporting files and verifies bytes, hashes, four seed IDs, clean build
+identity, provenance, strict HTTP behaviour and optional browser execution.
+D owns the producer, server wrapper, deployment parity and isolated CI job.
+
+No clean-machine recovery pass is claimed. Docker and Podman were unavailable
+in O's local environment; neither was installed. The required next proof uses
+a fresh hosted container with network disabled and separate browser tooling,
+then records its actual result here and in LEARNINGS. The verifier's elapsed
+time excludes production/download/extraction; CI must retain those timings and
+the combined recovery measurement. Main deployment and observed live parity
+remain completion gates, not inferred from local unit tests.
+
+Verifier handoff validation: 22 focused checks and the final full 1,649-unit
+run pass. The CLI accepts the frozen `--backup`, `--expected-commit`,
+`--live-url`, `--report`, `--port` arguments. Supply the additive
+`--playwright-module` absolute path from separate tooling for the browser
+proof; without it the report explicitly says browser execution was not
+performed. Reports are created outside the backup and never overwrite a
+previous result. D must require browser execution in the clean recovery job.

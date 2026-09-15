@@ -274,3 +274,16 @@ here identify the same commits, not additional unpushed work.
 No scope row is Not started. Owner-authorised work resumes from this preserved
 checkpoint. Do not merge empty checkpoint commits from completed streams as
 new features or claim a browser inventory is an executed pass.
+
+## Standing-rule backup: independent verifier boundary
+
+O's standalone verifier is test tooling, not a backup producer or a second
+release authority. It runs from outside the self-contained backup, uses only
+Node built-ins for file/HTTP checks, and can load Playwright from separately
+provided tooling. A successful offline claim requires no external network
+interfaces; a normal connected developer machine does not qualify.
+
+D retains backup core, root commands, workflow and deployed-artifact parity
+ownership. The clean offline container proof, actual recovery timing and
+main/live observation are still pending. No Azure deletion, recreation,
+provisioning, runtime feature change or browser-matrix replacement is included.

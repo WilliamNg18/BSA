@@ -2433,3 +2433,11 @@ The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
+
+## Independent offline verification contract
+
+Question: how can O verify D's backup without sharing its producer implementation? Choice: enumerate and hash actual runtime/auxiliary files independently, validate the frozen canonical manifest, then exercise the backup's own fresh Node server and externally supplied browser tooling; tie-breaker: one production authority with independent evidence.
+
+Question: can localhost-only requests on a connected developer machine count as clean offline recovery? Choice: no; require a fresh network-isolated hosted container and keep local unit fixtures separate, with production/download/extraction timings supplied by CI; tie-breaker: truthful verification of the exact requirement.
+
+Question: may an optional browser check silently appear as executed? Choice: no; report whether browser tooling was supplied and run, fail on observed external requests/errors, and retain D's separate live/artifact parity gate; tie-breaker: explicit evidence boundaries.

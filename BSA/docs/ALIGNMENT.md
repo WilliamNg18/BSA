@@ -120,3 +120,16 @@ live checklist. No manual WCAG certification is inferred from zero axe findings.
 
 All drifted rows have a current stream owner. No larger follow-up or human-only
 blocker has been identified at this checkpoint.
+
+## Offline verifier alignment
+
+The verifier checks the frozen `backup/{runtime,docs,data}` contract rather
+than rebuilding an application. Runtime hash canonicalisation sorts records
+by path and serialises only `path`, `bytes`, `sha256`, in that order, without
+a trailing newline. Actual file inventories must equal both manifest lists;
+symlinks, dependency folders, duplicate paths and unlisted files fail.
+
+Manifest self-consistency is not deployed-artifact parity: D's independent
+live/deployment comparison remains mandatory. Optional browser checks are
+explicitly marked performed or not performed. Local fixture tests do not
+constitute the clean offline recovery proof or the final live checklist.

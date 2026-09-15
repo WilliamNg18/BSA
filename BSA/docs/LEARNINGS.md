@@ -1152,3 +1152,26 @@ Using actual parsed token leaves gives the same immutable-original hash,
 on both platforms. Tests also reject changed numeric and template tokens.
 This repairs the integrity test, not application behaviour, and preserves
 the failed CI record until a new exact-head run succeeds.
+
+## Offline verifier preparation is not recovery proof
+
+Read-only inspection found no Docker or Podman executable in O's environment.
+No installer, administrator action or service change was attempted. A copied
+static-server unit fixture can validate HTTP contracts without repository
+dependencies in that fixture, but it is not a fresh network-isolated browser
+run. The actual hosted-container proof and its measured result remain pending.
+
+The standalone verifier rejects changed file bytes, extra files, traversal,
+symlinks, dependency folders, wrong build identity, invalid seed identity and
+weakened security policy. Its report distinguishes failure, actual network
+isolation and whether browser checks ran. A complete manifest match alone
+cannot certify that an artifact is currently live; retain the deployment-side
+comparison and the final live URL/served commit observation.
+
+The verifier's 22 focused unit checks pass, including a fresh child Node
+process serving only its copied fixture. The final complete unit run passes
+1,649 tests in 93 files with two workers. A preceding complete run had one
+5,000 ms timeout in the unchanged evidence-export test; its isolated recheck
+and the fresh complete run passed without altering that test or its deadline.
+These are developer checks, not the still-pending isolated production-backup
+browser proof. Check/typecheck/lint and the production build also passed.
