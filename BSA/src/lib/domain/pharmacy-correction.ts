@@ -105,5 +105,9 @@ export function preparePaperDemoDraft(current: ExceptionCase, revision: CaseRevi
       dispensingDate: date, declaredByPharmacy: true as const,
     },
   };
-  return immutable({ ...synchronisePharmacyDraft(draft, revision), appliedSuggestion: false });
+  const prepared = synchronisePharmacyDraft(draft, revision);
+  return immutable({ ...prepared, declaration: {
+    ...prepared.declaration!,
+    fields: { ...prepared.declaration!.fields, prescriber: "Dr Example (synthetic demo declaration)" },
+  }, appliedSuggestion: false });
 }
