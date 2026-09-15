@@ -399,6 +399,12 @@ shared fix. Current process readiness must not be replayed into historical
 event rows. Prior referrals remain human events even when a newer EPS revision
 is automatically released by code.
 
+G repaired that predicate in `cdd436b`: readiness now requires the last
+history event's revision to match the process. F's regression retains the
+seeded ready process, performs a real later paper referral/ACK/resubmission,
+and verifies that the old process cannot mark the newer revision ready.
+No operational fields are injected or reset during that cycle.
+
 The first full consumer integration passed check but reported 1,576 unit
 passes and 201 failures, including old scenario/action assumptions across
 shared owners and a static-server deadline failure. The 53 passing owned

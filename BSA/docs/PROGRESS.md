@@ -268,7 +268,10 @@ by explicit audit and paper ready-to-release waiting for the operator.
 Initial local checks caught an unused test import and obsolete old seed-date/
 paper-location expectations; these were corrected without weakening action or
 history assertions. Full integration validation and G's stale-readiness helper
-repair remain separate gates. `npm run check` passed; the full two-worker
+repair remain separate gates. G subsequently published `cdd436b`; F integrated
+the shared readiness repair without duplicating its predicate and added an
+actual older-process/new-resubmission regression. Check and the combined 72
+Follow/G runtime tests passed after that repair. The earlier full two-worker
 unit run passed 1,576 tests and failed 201 across 40 files against the early
 model integration. The affected old-case/action expectations belong to their
 shared owners; the static-server deadline failure is retained separately.

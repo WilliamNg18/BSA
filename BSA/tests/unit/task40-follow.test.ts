@@ -11,7 +11,7 @@ import { getAsSubmitted } from "../../src/lib/domain/submission-views";
 import { itemStateLabel } from "../../src/lib/domain/lifecycle";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import { followDestination, visitFollowedCase } from "../../src/lib/follow-navigation";
-import { followedLastEvent, historyStateLabel } from "../../src/lib/follow-presentation";
+import { followedLastEvent, followedLocation, historyStateLabel } from "../../src/lib/follow-presentation";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -151,6 +151,7 @@ describe("Task 40 Follow uses actual acknowledgements and channel-specific reche
     store().setAgentEnabled(enabled);
     store().setDemoStep(10);
     store().followCase(paper);
+    const priorReadyProcess = store().itemProcesses[paper];
     const source = caseById(paper)!;
     store().submitItem({ caseId: paper, channel: "paper", endorsementText: source.paperDeclaration!.endorsementText,
       paperDeclaration: source.paperDeclaration });
@@ -176,6 +177,7 @@ describe("Task 40 Follow uses actual acknowledgements and channel-specific reche
     expect(store().itemVerification[paper].released).toBe(false);
     expect(renderBanner()).toContain("Resubmitted, ready to release");
     expect(renderHistory(paper)).toContain("Resubmitted, ready to release");
+    expect(followedLocation(store().lifecycles[paper], priorReadyProcess)).toBe("Type 2: review");
     expect(renderBanner()).not.toContain("no operator action");
     visitEverySide(paper, "Type 2: awaiting operator release");
     store().releaseToPricing(paper, "Human checked the acknowledged paper amendment.");

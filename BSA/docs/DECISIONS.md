@@ -2520,6 +2520,8 @@ Question: should current paper readiness be projected into older history rows? C
 
 Question: fix stale readiness locally? Choice: report the differing current-revision predicates to G and consume its shared repair instead of duplicating a business gate in F; tie-breaker: single model ownership.
 
+Question: how is the stale-process repair established? Choice: consume G `cdd436b` and pass the earlier seed process alongside a later actual paper resubmission in a pure presentation regression, rather than inject lifecycle state or add another predicate; tie-breakers: real-action evidence and one model.
+
 ## 2026-09-15: Stream V adopts live-first publication
 
 Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits canonical types, store, lifecycle, references and seeds; W and B contribute isolated typed domain modules, then UI owners consume the merged contracts after the header change; tie-breaker: one store and the newest explicit ownership instruction.
