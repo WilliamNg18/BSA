@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { captureJson, confirmReset, expect, navigatePrimary, test } from "./fixtures";
 import {
   PROCESS_MONTH_DEFAULTS, calculateProcessMonth, expectSceneMetrics,
-  fillProcessInputs, formatProcessMetric, sceneMetrics,
+  fillProcessInputs, formatProcessMetric, sceneMetrics, chooseProcessChapter,
 } from "./process-model-helpers";
 
 const defaults = calculateProcessMonth(PROCESS_MONTH_DEFAULTS);
@@ -134,8 +134,7 @@ test.describe("scene estimate reduced motion", () => {
       await page.getByRole("link", { name: "Edit scenario assumptions" }).click();
       const input = { ...PROCESS_MONTH_DEFAULTS, monthlyItems, manualLoopItems: 0 };
       await fillProcessInputs(page, input);
-      // The scene link is the first chapter; avoid introducing navigation ownership.
-      await page.getByRole("navigation", { name: "Guided tour" }).getByRole("button", { name: "Back", exact: true }).click();
+      await chooseProcessChapter(page, 1);
       await expectFinal(page, input);
     }
     await page.clock.resume();

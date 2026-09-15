@@ -14,7 +14,7 @@ import { runAgent } from "@/lib/domain/agent";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { PLAYABLE_CASE_IDS } from "@/lib/domain/cases";
 import { SOURCES_FOOTER, TOUR_CONTENT } from "@/lib/domain/public-facts";
-import { TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
+import { TOUR_CHAPTERS, TOUR_STOPS, tourStopIndex } from "@/lib/tour-navigation";
 import { useAppStore } from "@/lib/store";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
@@ -84,6 +84,13 @@ export function HomePage() {
   const chapter = TOUR_CONTENT.chapters.find((item) => item.chapter === chapterNumber);
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6" data-tour-chapter={chapterNumber}>
+      <nav aria-label="Overview sections" className="flex flex-wrap gap-2 rounded-lg border bg-card p-3">
+        {TOUR_CHAPTERS.map((section) => <Link key={section.to} to={section.to}
+          aria-current={section.chapter === chapterNumber ? "page" : undefined}
+          className="rounded-md px-3 py-2 text-sm font-medium underline underline-offset-4 focus-visible:outline-2 aria-[current=page]:bg-muted">
+          {section.label}
+        </Link>)}
+      </nav>
       <div className="max-w-3xl space-y-3" data-tour-prose data-prose="chapter narrative">
         <h1 tabIndex={-1} data-tour-heading className="rounded-sm font-semibold tracking-tight focus-visible:outline-2 text-4xl">{chapter?.title ?? "A month of work"}</h1>
         <p className="text-muted-foreground">{chapter?.prose ?? "Compare manual and assisted workload using editable synthetic assumptions. The referral-subset volume is a scale proxy, not measured NHSBSA performance."}</p>

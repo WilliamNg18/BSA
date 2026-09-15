@@ -82,6 +82,29 @@ describe("focused desktop step layouts", () => {
     expect(html).not.toContain("Must not render");
   });
 
+  it.each(DEMO_STEPS.flatMap((step) => (["claim", "type1"] as const).flatMap((kind) =>
+    [false, true].map((enabled) => ({ step, kind, enabled })))))(
+    "opens the followed item from step $step.number on its $kind side, Agent $enabled, without losing the step",
+    ({ step, kind, enabled }) => {
+      useAppStore.getState().setDemoStep(step.number);
+      useAppStore.getState().setAgentEnabled(enabled);
+      useAppStore.getState().followCase("EX-24123");
+      const before = getDomainSnapshot();
+      const tasks: DemoTaskProps[] = [];
+      const html = render(kind === "claim" ? "/pharmacy/claims?case=EX-24123" : "/case/EX-24123", (props) => {
+        tasks.push(props);
+        return createElement("button", null, props.kind);
+      });
+      expect(tasks).toHaveLength(1);
+      expect(tasks[0]).toMatchObject({ kind, caseId: "EX-24123" });
+      expect(html).toContain(`data-demo-step="${step.number}"`);
+      expect(html).toContain('data-demo-live-case="EX-24123"');
+      expect(html).not.toContain("data-demo-month");
+      expect(html).not.toContain("data-demo-pipeline");
+      expect(html).not.toContain('data-demo-control="queue-filter"');
+      expect(getDomainSnapshot()).toEqual(before);
+    });
+
   it("keeps the entry visible in ordinary mode and the strip independent of perspective", () => {
     const strip = () => renderToStaticMarkup(createElement(MemoryRouter, null, createElement(DemoStrip)));
     expect(strip()).toContain("Enter demo mode");
@@ -96,5 +119,17 @@ describe("focused desktop step layouts", () => {
       expect(html).toContain("EX-24123");
       expect(html).toContain("Paper");
     }
+  });
+
+  it.each([false, true])("following A from a narrative step never invents operator work, Agent %s", (enabled) => {
+    useAppStore.getState().setDemoStep(1);
+    useAppStore.getState().setAgentEnabled(enabled);
+    useAppStore.getState().followCase("EX-24107");
+    const html = render("/case/EX-24107", () => createElement("span", null, "Recorded item"));
+    expect(html).toContain("Following EX-24107 from step 1");
+    expect(html).toContain(enabled ? "no person involved" : "no operator action");
+    expect(html).not.toContain("Manual correction and review");
+    expect(html).not.toContain("Type 1 confirms");
+    expect(html).not.toContain("Type 2 judges");
   });
 });

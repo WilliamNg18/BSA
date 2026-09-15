@@ -1,11 +1,12 @@
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Page, TestInfo } from "@playwright/test";
-import { captureJson, expect, staticRoutes, test as base } from "./fixtures";
+import { captureJson, expect, navigatePrimary, staticRoutes, test as base } from "./fixtures";
 import { PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { prepareDecisionRecord } from "./lifecycle-helpers";
 import { openQueueCapture } from "./paper-declaration-helpers";
+import { chooseProcessChapter } from "./process-model-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -95,7 +96,8 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await expect(flag).toHaveAccessibleDescription(/Off withholds recommendations/);
   await expect(flag).toHaveAttribute("title", /Off withholds recommendations/);
   await expect(page.getByRole("tooltip")).toHaveCount(0);
-  await page.goto("./#pipeline");
+  await chooseProcessChapter(page, 3);
+  await expect(flag).toBeChecked();
   const figure = page.getByRole("button", { name: "Monthly referrals: figure context", exact: true });
   await figure.focus();
   await expect(page.getByRole("tooltip")).toBeVisible();
@@ -104,18 +106,23 @@ test("keyboard navigation, menus and tooltip under real CSP", async ({ page }, i
   await page.keyboard.press("Escape");
   await expect(page.getByRole("tooltip")).toHaveCount(0);
   await expect(figure).toBeFocused();
-  const chapter = page.getByRole("button", { name: "Choose tour chapter" });
-  await chapter.press("ArrowDown");
-  await expect(page.getByRole("menuitem").first()).toBeFocused();
-  await audit(page, info, "chapter-menu-axe");
-  await page.keyboard.press("End");
-  await page.keyboard.press("Enter");
+  const sections = page.getByRole("navigation", { name: "Overview sections", exact: true });
+  await expect(sections.getByRole("link")).toHaveCount(6);
+  const close = sections.getByRole("link", { name: "The central bet", exact: true });
+  await close.focus();
+  await expect(close).toBeFocused();
+  await audit(page, info, "overview-sections-axe");
+  await close.press("Enter");
   await expect(page).toHaveURL(/#close$/);
   await expect(page.getByRole("heading", { level: 1, name: "The central bet", exact: true })).toBeFocused();
-  await page.keyboard.press("Alt+ArrowLeft");
+  const operations = page.getByRole("button", { name: "Operations", exact: true });
+  await operations.press("ArrowDown");
+  await expect(page.getByRole("menuitem").first()).toBeFocused();
+  await page.keyboard.press("ArrowDown");
+  await expect(page.getByRole("menuitem", { name: "Pharmacy claims", exact: true })).toBeFocused();
+  await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/pharmacy\/claims$/);
   await expect(page.getByRole("heading", { level: 1, name: "Pharmacy claims", exact: true })).toBeFocused();
-  const operations = page.getByRole("button", { name: "Operations", exact: true });
   await operations.focus();
   await expect(operations).toBeFocused();
   await operations.press("ArrowDown");
@@ -204,20 +211,36 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
     test("tour dismissal and restoration retain keyboard focus", async ({ page }) => {
       await page.goto("./#scene");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
-      const rail = page.getByRole("navigation", { name: "Guided tour", exact: true });
-      await page.getByRole("button", { name: "Dismiss tour", exact: true }).press("Enter");
-      await expect(rail).toHaveCount(0);
-      await expect(page.getByRole("main")).toBeFocused();
-      await page.getByRole("button", { name: "Restore tour", exact: true }).press("Enter");
-      const chapter = rail.getByRole("button", { name: "Choose tour chapter", exact: true });
-      await expect(chapter).toBeFocused();
-      await chapter.press("ArrowDown");
-      await expect(page.getByRole("menuitem").first()).toBeFocused();
+      const strip = page.getByTestId("demo-strip");
+      const screen = page.getByTestId("demo-step-screen");
+      await strip.getByRole("button", { name: "Enter demo mode", exact: true }).press("Enter");
+      await expect(screen).toHaveAttribute("data-demo-step", "1");
+      await expect(screen.getByRole("heading", { level: 1 })).toBeFocused();
+      const jump = strip.getByRole("combobox", { name: "Jump to demo step", exact: true });
+      await jump.focus();
+      await expect(jump).toBeFocused();
+      await expect(jump.getByRole("option")).toHaveCount(11);
+      await jump.press("Space");
       await page.keyboard.press("Escape");
-      await expect(chapter).toBeFocused();
-      for (const path of ["/queue", "/pharmacy/claims"] as const) {
+      await expect(jump).toBeFocused();
+      await expect(screen).toHaveAttribute("data-demo-step", "1");
+      await strip.getByRole("button", { name: "Next", exact: true }).press("Enter");
+      await expect(screen).toHaveAttribute("data-demo-step", "2");
+      await expect(screen.getByRole("heading", { level: 1 })).toBeFocused();
+      await strip.getByRole("button", { name: "Exit demo", exact: true }).press("Enter");
+      await expect(screen).toHaveCount(0);
+      await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+      await expect(page.getByRole("navigation", { name: "Overview sections", exact: true }).getByRole("link")).toHaveCount(6);
+      await strip.getByRole("button", { name: "Enter demo mode", exact: true }).press("Enter");
+      await expect(screen).toHaveAttribute("data-demo-step", "1");
+      await expect(screen.getByRole("heading", { level: 1 })).toBeFocused();
+      await strip.getByRole("button", { name: "Exit demo", exact: true }).press("Enter");
+      await expect(screen).toHaveCount(0);
+      await expect(page.getByRole("navigation", { name: "Guided tour", exact: true })).toHaveCount(0);
+      for (const [path, label] of [["/queue", "NHSBSA queue"], ["/pharmacy/claims", "Pharmacy claims"]] as const) {
         const stop = TOUR_STOPS.find((item) => item.to === path)!;
-        await page.goto(path);
+        await navigatePrimary(page, label);
+        await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
         const intro = page.getByRole("region", { name: `Tour chapter ${stop.chapter}`, exact: true });
         await expect(intro.getByRole("heading", { name: `${stop.chapter}. ${stop.label}`, exact: true })).toHaveCount(1);
       }

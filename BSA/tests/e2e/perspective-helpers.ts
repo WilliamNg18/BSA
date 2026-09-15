@@ -79,7 +79,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     if (previousDecision) {
       expect(events).toContain(previousDecision);
       expect(submittedIdentity.slice(0, previousIdentity.length)).toEqual(previousIdentity);
-      // G appends a code verification receipt as well as the explicit pharmacy submission.
+      // Verification is a code receipt, never an operator decision.
       expect(submittedIdentity).toHaveLength(previousEventCount + (enabled ? 2 : 1));
     }
     const submissionEvents = submittedIdentity.slice(enabled ? -2 : -1);
@@ -89,7 +89,9 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
       expect(submissionEvents[1].fields[0]).toContain("code");
       expect(submissionEvents[1].fields[1]).toContain("No decision record");
     }
-    await expect(page.getByRole("button", { name: "Follow this case", exact: true })).toBeVisible();
+    if (!enabled) await history(page).getByRole("button", { name: "Follow this case", exact: true }).click();
+    await expect(history(page).getByRole("button", { name: "Stop following this case", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toContainText(id);
     await choosePerspective(page, "NHSBSA");
     await expect(page.getByRole("heading", { name: perspectiveGuard, exact: true })).toBeVisible();
     await expect(flag(page)).toBeChecked({ checked: enabled });
@@ -160,8 +162,12 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     previousEventCount = eventCount;
     previousIdentity = stableEvents;
     await expect(page.getByRole("navigation", { name: "Guided tour" })).toHaveCount(0);
-    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Follow this case", exact: true })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Followed item", exact: true })).toContainText(id);
+    await expect(history(page).getByRole("button", { name: "Stop following this case", exact: true })).toHaveAttribute("aria-pressed", "true");
+    for (const side of ["Pharmacy", "NHSBSA"]) {
+      await expect(page.getByRole("region", { name: "Followed item", exact: true })
+        .getByRole("button", { name: `${side} view`, exact: true })).toBeVisible();
+    }
     await captureJson(info, `perspective-${enabled ? "on" : "off"}`, { id, endorsement, attempts, recordId, eventCount, stableEvents, reason });
     await captureCheckpoint(page, info, `perspective-decision-${enabled ? "on" : "off"}`);
   }

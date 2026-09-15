@@ -2151,3 +2151,128 @@ in either header mode. No payment is calculated or approved.
 - Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
 - Question: why did the first queue repair remain partially clipped? Choice: preserve the measured failure: the actual table cell was y945, height57, ending at1002 in a1000px viewport after a same-filter click. Explicit filter selections now request focus again, with a small viewport margin for the complete original cell; no span proxy, relaxed visibility ratio or deadline increase. Track actual target/lane changes separately without resetting a user's unchanged filter every render.
 - Question: why was a received answer above the viewport after Follow returned to its NHSBSA case? Choice: case routes need explicit entry focus because the chapter shell deliberately skips them. Focus the actual case heading without implicit scrolling, then align the complete case header below the existing sticky chrome. Run only on route/item changes, never field edits or mode changes; preserve the actual state, answer, card and unchanged one-second verifier.
+
+## 2026-09-14: Mount the real compact tasks, not hidden operational pages
+
+Question: how should the shell enter the new walkthrough? Choice: replace the
+chapter rail with Demo mode after the actual O/P task exports are available.
+The shell mounts exactly one compact submission, claim, Type 1 or operator
+panel in the current comparison column. Ordinary Outlet content is not mounted
+behind it. Exit returns that Outlet without changing operational state.
+Tie-breakers: one action authority and honest focused presentation.
+
+Question: can a perspective change hide the current step? Choice: no. The
+Follow banner remains directly under the header, followed by the separate demo
+strip. Demo layouts sit outside the ordinary opposite-side guard. Explicit
+follow links choose the same item's task surface; the step persists. Header
+Primary navigation and Reset return only after Exit, while the one Agent switch
+and perspective switch remain. Tie-breaker: a continuous shared demonstration.
+
+Question: what should Next focus? Choice: the new step heading, at the top of
+the page, on step or route changes only. Header mode and perspective changes
+do not steal focus. Frozen submission channels are passed to P's renderer,
+without rewriting an item's latest recorded channel. Tie-breakers: keyboard
+operability and truthful source presentation.
+
+## 2026-09-14: Demonstration refinements after vision review
+
+Question: must assumption editing break the walkthrough? Choice: no. Reuse the
+real shared ProcessAssumptions once, inside the active month's collapsed detail.
+Keep that editor mounted when values are invalid; never retain stale figures
+or force Exit to recover. Tie-breakers: shared authority and simpler exploration.
+
+Question: how should reduced motion crossfade without harming contrast? Choice:
+crossfade only the decorative assisted background for 150 ms. Text remains
+opaque and stationary; normal presentation still uses the two-second movement.
+No timing implies a model call. Tie-breakers: accessibility and truthful motion.
+
+Question: when is correction relevant? Choice: expose P's real supported fix
+on submission steps, not an invented fix. Step 5 first submits the unchanged
+wrong-pack scenario to demonstrate Gate 2's rejection, then permits explicit
+correction of that real attempt. Unknown paper facts remain unknown.
+Tie-breakers: demonstrate the gate and retain meaningful human controls.
+
+Question: which first test closes the demonstration? Choice: the latest vision's
+two weeks of operator-time data and fifty items, two operators, blind. The
+historical two-year referral-data request no longer substitutes for this test.
+Tie-breaker: latest explicit direction.
+
+## 2026-09-14: Follow links override every step's viewing surface
+
+Question: what should Follow do on the process, numbers or closing step?
+Choice: retain the demo step but show the selected item's real task surface,
+headed Following the item from that step. Its inactive comparison refers to
+the same item, never the displaced narrative or another fixture. Back/Next
+returns to the normal sequence. Tie-breakers: functional navigation and clarity.
+
+Question: should a pharmacy Follow visit retain queue controls? Choice: no.
+An explicit side visit shows only that item's side. Opening a normal step 8
+queue row instead updates the queue's case/channel query and keeps its one
+opened row. Both operations are presentation-only. Tie-breaker: one focus.
+
+Question: may a generic Follow comparison imply operator work for complete A?
+Choice: no. Reuse the existing case-specific scenario, with D's pharmacy or
+operator hand-off selected by side. A keeps its automatic/no-operator comparison.
+Tie-breaker: truthful attribution.
+
+Question: may the Off comparison use low-contrast muted text? Choice: no.
+The actual desktop axe run measured 4.34:1 on the muted background. Keep the
+grey panel and read-only label, but use darker light-theme text and lighter
+dark-theme text. Re-run the unchanged checks. Tie-breaker: accessibility.
+
+## 2026-09-14: Carry the actual operator response into step 9
+
+Question: should Next open fixed B after the operator refers a different item?
+Choice: on step 8 to 9 only, retain the followed playable item when it actually
+needs pharmacy action (referred back or information requested), with its recorded
+channel. Otherwise retain the frozen B default. The strip and live panel use
+that same destination; navigation appends no events and changes no drafts.
+Tie-breakers: a functional shared hand-off and preserved operational history.
+
+The regression explicitly corrects and sends B to automatic release, submits
+the wrong-pack EPS item, applies the operator suggestion and refers it back.
+Next must then open that actual referral with correction and resubmission
+controls, not B's completed record.
+
+## 2026-09-15: Paper walkthrough and a shared evidence companion
+
+Question: how should the unreadable-paper sequence start? Choice: step 7 opens
+the actual pharmacy workbench for D; its buttons prepare a draft and Post is
+explicit. Step 8 defaults to D's queue case, step 9 retains the actual actionable
+handoff, and step 10 opens D's current NHSBSA revision for recapture or release.
+Follow's pharmacy link remains the current claim, never an implicit new attempt.
+Tie-breakers: the latest paper path and one operational history.
+
+Question: can the compact Type 1 source be omitted to fit the screen? Choice:
+no. Render O's same-ID read-only scan and immutable declaration in the inactive
+comparison, labelled Shared original evidence, and use external evidence only
+when that companion is actually rendered. Keep exactly one live form. Without
+the companion renderer, keep inline evidence. Tie-breakers: visible evidence
+and a clearer side-by-side comparison.
+
+Question: how should the wrapper make room for mandatory advice? Choice: reduce
+spacing, put case/state together and keep channel, endorsement and recorded gates
+inline for Type 1. Preserve all facts and normal-size text, the full task renderer
+and its recommendation card. No clipping, internal scrolling or hidden card.
+Keep ordinary operations unchanged. Tie-breaker: required content before a height
+proxy; measure the complete R/O integration before claiming viewport acceptance.
+
+## 2026-09-15: Preserve ordinary overview navigation after mounting the demo
+
+Question: how are ordinary overview sections reachable after the chapter rail
+is replaced? Choice: a Home-only section navigation reuses the six existing
+chapter destinations as real router links. It is absent from the active demo
+because the ordinary Outlet is unmounted. No second tour state or Agent control
+is added. Tie-breakers: retain existing reachable views and use the smallest fix.
+
+Question: how should chapter tests navigate? Choice: exit demo when necessary,
+open Overview through the existing primary navigation, then activate its real
+section link and await both URL and heading focus. No reload, history injection,
+forced click or operational-state writes. All six links are tested against the
+complete read-only domain snapshot in both modes.
+
+Question: which old compatibility patches should replay? Choice: preserve
+current main's stronger P/O counter, source, approval and state assertions when
+combining the mounted tests. The numerical counter patch is already covered by
+main and is not duplicated. Adopt only V's immutable navigation helper and its
+small data dependency, not the full foreign proof branch.
