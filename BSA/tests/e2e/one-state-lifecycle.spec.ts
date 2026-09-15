@@ -115,12 +115,13 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
           await page.getByRole("textbox", { name: "Corrected endorsement", exact: true }).fill("NCSO  RK 21/08/26");
         });
       }
-      await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue("NCSO  RK 21/08/26");
+      const correctedText = approval === "approved" ? "NCSO RK 21/08/26" : "NCSO  RK 21/08/26";
+      await expect(page.getByRole("textbox", { name: "Corrected endorsement", exact: true })).toHaveValue(correctedText);
       const corrected = await readDomainState(page);
       expect(corrected.pharmacyDrafts[B]).toMatchObject({
         revision: referred.caseRevisions[B].at(-1)!.number, channel: "eps", purpose: "correction",
-        endorsementText: "NCSO  RK 21/08/26", appliedSuggestion: approval === "approved",
-        epsPrescription: { dispenserEndorsement: "NCSO  RK 21/08/26" },
+        endorsementText: correctedText, appliedSuggestion: approval === "approved",
+        epsPrescription: { dispenserEndorsement: correctedText },
       });
       const correctionEvent = corrected.lifecycles[B].history.at(-1)!;
       if (approval === "approved") expect(correctionEvent).toMatchObject({
@@ -140,7 +141,7 @@ for (const approval of ["manual", "unchecked", "approved"] as const) {
       expect(resubmitted.itemProcesses[B]).toMatchObject({ channel: "eps", routing: { outcome: "type2_endorsement", requiresHuman: true } });
       expect(resubmitted.records).toEqual(referred.records);
       expect(resubmitted.caseRevisions[B].at(-1)).toMatchObject({
-        channel: "eps", kind: "resubmission", endorsementText: "NCSO  RK 21/08/26",
+        channel: "eps", kind: "resubmission", endorsementText: correctedText,
         precheck: { status: enabled ? "ready" : "not_checked", mode: enabled ? "scripted" : "off" },
       });
       expectUnrelatedCases(referred, resubmitted, B);
