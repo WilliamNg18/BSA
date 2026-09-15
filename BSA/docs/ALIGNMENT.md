@@ -276,6 +276,23 @@ main actions or updated four-case historical seeds.
 
 ## Task 40 F contract audit: C7 and C8
 
+Historical fixture extraction preserves exact original case/history initializer
+text after line-ending normalisation, including old evidence that must not be
+rewritten. Current scenario dates are correct. The standalone headline scan now
+reports only nine D/S-owned literals; activation of the CI hook awaits those
+owner changes. No blanket archive or source-file allowance was introduced.
+
+C1/C8 follow-up: a confirmation revision now explicitly links its unchanged
+source revision, retaining the existing human capture instead of routing back
+to Type 1. Seeded failed strength checks and successful paper rechecks are
+recorded code events, reflected in current verification and shared ready drafts.
+Twenty-one runtime tests pass, including one-press seeded paper release.
+
+W's exact failed 476 trace probe is addressed by a distinct structured
+cross-record path: no `retrieve_tariff` call, no synthetic strength clause in
+the corpus, factual prescription/selection/supply conflicts and not-applicable
+image/readings/provision statuses. The existing EPS field helper no longer
+reports the wrong-strength source as ready. Forty-seven targeted tests pass.
 Consumer implementation now uses the exact published G `4765770` contracts
 on this incomplete development branch. Follow and current shared-history
 status pass G's process metadata into `itemStateLabel`; location consumes

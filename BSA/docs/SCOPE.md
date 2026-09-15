@@ -128,6 +128,11 @@ is green and the actual live URL serves and demonstrates that commit.
 
 ### G39/40 explicit-action checkpoint
 
+The activation candidate now includes bounded owner-authored consumer wiring,
+not a second store or transitional product. Original historical fixture values
+remain in archival modules. Source headline enforcement is still pending the
+D/S updates and full integration validation; no main/live completion is claimed.
+
 Current-source linking and seeded readiness provenance are implemented:
 information responses retain the same actual submission/capture, and seeded
 ready paper supports one real operator Release after Reset. These targeted

@@ -212,6 +212,13 @@ decision draft; the wrong-strength referral seed records its original failed
 On checks. Typecheck and 21 targeted runtime tests pass. A's header merge is
 now available on main `5b75e5f`; it will be incorporated before candidate CI.
 
+Owner-authored P/U/O/N/F/R compatibility is integrated before activation; no
+backup or static-server files were imported. The combined six-file functional
+consumer selection passes 66 tests. Historical case/history/lifecycle fixtures
+have been mechanically archived without changing their original values; 77
+targeted source/fidelity tests pass. Remaining retired headline literals are
+confined to D and S owner surfaces, with no guard exception added.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the
