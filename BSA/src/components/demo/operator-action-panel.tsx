@@ -156,13 +156,13 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
       </div>
       {error && <p ref={errorRef} tabIndex={-1} role="alert" className="rounded-md border border-destructive p-2 text-sm focus-visible:outline-2">{error}</p>}
       <div className="flex flex-wrap gap-2">
-        <Button type="button" disabled={!eligibility.allowed || draft.note.trim().length < 8} aria-describedby={!eligibility.allowed ? `${id}-release-gate` : undefined}
+        <Button type="button" disabled={!eligibility.allowed || draft.note.trim().length < 8} aria-describedby={!eligibility.allowed && !recommendation ? `${id}-release-gate` : undefined}
           onClick={() => decide("ACCEPT")}>Release to pricing</Button>
         <Button type="button" variant="outline" onClick={() => decide("REFER_BACK")}>Refer back</Button>
         <Button type="button" variant="outline" onClick={() => decide("REQUEST_INFORMATION")}>Request information</Button>
         <Button type="button" variant="outline" onClick={() => decide("ESCALATE")}>Escalate</Button>
       </div>
-      {!eligibility.allowed && <details>
+      {!eligibility.allowed && !recommendation && <details>
         <summary id={`${id}-release-gate`} className="cursor-pointer text-sm focus-visible:outline-2">Release unavailable: code gate</summary>
         <p className="mt-2 text-sm">{eligibility.reason}</p>
       </details>}
