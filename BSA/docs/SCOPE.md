@@ -4,6 +4,11 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The recommendation-view adapter preserves twenty canonical case routes and
+the complete demo-step walk while correcting B's submission channel. It does
+not waive the historical heading-order axe failure or certify the full cycle
+driver, whose scenario/action migration remains separate.
+
 The route-title compatibility patch changes only shared test metadata:
 fixtures and operator helpers now use the same current canonical catalog.
 All four IDs/order, exact heading checks and native test identities remain.

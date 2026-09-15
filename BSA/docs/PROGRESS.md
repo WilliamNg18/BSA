@@ -4,6 +4,13 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+Recommendation-view URLs now come from the canonical case channel rather
+than the still-pending legacy cycle-kind table. All four cases retain their
+five views and the eleven-step audit walk; B uses paper, not the obsolete
+B/EPS combination from the retained failures. Unknown/background IDs fail
+explicitly. Typecheck/lint, seven catalog units and four-check discovery
+pass. All recommendation/axe assertions remain unchanged and unexecuted.
+
 V replaced the two stale browser title catalogs with one projection of the
 actual four `PLAYABLE_CASES`. This corrects B's paper and M's strength
 heading expectations underlying the 25 retained route failures, without

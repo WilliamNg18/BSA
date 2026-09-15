@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: should recommendation audits continue using B's retired EPS channel until the cycle driver is migrated? Choice: build all five view URLs from the current canonical channel, reject unsupported IDs and keep the audit assertions unchanged; tie-breaker: actual current surfaces without an accessibility waiver or duplicate source policy.
+
 - Question: how should 25 stale route-heading failures be repaired? Choice: share a test catalog projected from the actual canonical four cases, preserving exact heading assertions and IDs instead of accepting broad title matches or restoring retired case labels; tie-breaker: one source of truth and unchanged coverage.
 
 - Question: how should existing browser Apply lookups follow the new layout? Choice: add an exact direct-child operator-advice locator and migrate only advice/Apply consumers, leaving human fields and release scope intact; tie-breaker: actual authority boundaries without a legacy fallback.

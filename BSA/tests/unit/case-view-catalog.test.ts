@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { expect, it } from "vitest";
-import { cases } from "../support/case-view-catalog";
+import { cases, caseViewRoutes } from "../support/case-view-catalog";
 import { PLAYABLE_CASES } from "../../src/lib/domain/cases";
 
 it("keeps the same four route identities with current canonical case titles", () => {
@@ -18,5 +18,22 @@ it("uses one catalog for route fixtures and operator view expectations", () => {
     const source = readFileSync(new URL(path, import.meta.url), "utf8");
     expect(source).toContain('export { cases } from "../support/case-view-catalog";');
     expect(source).not.toContain("export const cases =");
+  }
+});
+
+it.each([
+  ["EX-24107", "eps"], ["EX-24112", "paper"],
+  ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
+])("retains all five actual %s views with its canonical %s submission channel", (id, channel) => {
+  expect(caseViewRoutes(id)).toEqual([
+    `/pharmacy?case=${id}&channel=${channel}`,
+    `/pharmacy/claims?caseId=${id}`,
+    `/case/${id}`, `/case/${id}/trace`, `/case/${id}/record`,
+  ]);
+});
+
+it("rejects unknown or retired operational IDs instead of inventing an EPS route", () => {
+  for (const id of ["unknown", "EX-24119", "EX-24088"]) {
+    expect(() => caseViewRoutes(id)).toThrow("No canonical submission channel");
   }
 });

@@ -4,6 +4,11 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Recommendation audits now request the actual B paper route and both actual
+EPS routes through the canonical channel selector. Every five-view set is
+pinned by tests; all existing visibility and zero-violation assertions remain.
+This corrects setup, not the outcome of the retained browser failures.
+
 Stale B/M heading expectations are removed from duplicated test catalogs.
 The actual canonical titles are shared by route and operator consumers;
 new units pin the four expected entries and shared exports. Native identity

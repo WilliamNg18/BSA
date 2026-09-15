@@ -4,6 +4,12 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The retained recommendation failures started at B's obsolete EPS URL. Shared
+view routing now selects B paper directly from the canonical model, keeping
+all twenty case views and the eleven-step walk. Seven catalog tests,
+typecheck/lint and four-check discovery pass. The old axe failures remain
+recorded; no route has been skipped and no browser pass is inferred.
+
 The route tests and operator helpers had separate copies of the old B/M
 titles. A shared canonical catalog fixes that drift while retaining all
 exact header checks. Typecheck, lint and 13 focused units pass; native

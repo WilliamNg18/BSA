@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page, TestInfo } from "@playwright/test";
 import { captureJson, expect } from "./fixtures";
 import { DEMO_STEPS } from "../../src/lib/domain/demo-steps";
-import { PLAYABLE_CYCLES } from "../support/desktop-matrix";
+import { cases, caseViewRoutes } from "../support/case-view-catalog";
 import { assertVisibleRecommendation } from "./recommendation-contract-helpers";
 import { enterDesktopDemo } from "./desktop-step-helpers";
 
@@ -17,12 +17,8 @@ export async function verifyRecommendationViews(page: Page, info: TestInfo, widt
     });
     expect(result.violations).toEqual([]);
   };
-  for (const item of PLAYABLE_CYCLES) {
-    for (const route of [
-      `/pharmacy?case=${item.id}&channel=${item.channel}`,
-      `/pharmacy/claims?caseId=${item.id}`,
-      `/case/${item.id}`, `/case/${item.id}/trace`, `/case/${item.id}/record`,
-    ]) {
+  for (const item of cases) {
+    for (const route of caseViewRoutes(item.id)) {
       await page.goto(route);
       await page.getByRole("banner").getByRole("switch").setChecked(enabled);
       await assertVisibleRecommendation(page, item.id, enabled);
