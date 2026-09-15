@@ -178,6 +178,25 @@ released after each run; resubmission and release timing remain unreached.
 The sources passed check and respectively 1,554/84 and 1,560/85 unit
 tests/files. No individual transition is aggregated into a full-journey pass.
 
+The coherent real-card placement repair was then exercised at clean
+`34af0f9909e6aed689777f1635c281f39ad5d17f`: the unchanged **B Both/On,
+1440 px journey passed 1/1 in 22.9 seconds**, one worker, no retries.
+All six actual actions satisfied the original 1,000 ms deadline:
+
+| Action | Elapsed ms |
+| --- | ---: |
+| Send | 746.6483 |
+| Request information | 522.0421 |
+| Send confirmation | 474.3938 |
+| Refer back, including actual card approval, reason and RB code | 590.2204 |
+| Resubmit | 653.4616 |
+| Human release | 473.6139 |
+
+The source passed check and 1,560 units in 85 files. Build identity was clean
+and matched the full commit. `req38-b-34af` retains the six timing records;
+port 4336 was released. This is one complete bounded journey, not a fresh
+four-probe result, the broader 75-check matrix, or hosted acceptance.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
