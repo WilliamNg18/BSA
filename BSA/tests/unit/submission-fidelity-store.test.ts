@@ -18,9 +18,9 @@ function currentReplica(id: string) {
   expect(replica.asSubmitted).toEqual(revision);
   expect(replica.asSubmitted).toEqual(store().caseRevisions[id].filter((entry) => entry.kind !== "confirmation").at(-1));
   if (revision.channel === "paper") {
-  expect(replica.paperScan).toEqual(revision.paperSource!.scan);
-  expect(getPaperReconciliation(store(), id)?.evidence.revision).toBe(revision.number);
-  expect(getPaperReconciliation(store(), id)?.evidence.characterRecognition).toEqual(revision.paperSource!.characterRecognition);
+    expect(replica.paperScan).toEqual(revision.paperSource!.scan);
+    expect(getPaperReconciliation(store(), id)?.evidence.revision).toBe(revision.number);
+    expect(getPaperReconciliation(store(), id)?.evidence.characterRecognition).toEqual(revision.paperSource!.characterRecognition);
   }
   return replica;
 }

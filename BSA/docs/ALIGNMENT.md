@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+Repair verification at exact G `cdd436b906f397a1d210603e4cef3794812c0a59`:
+all eight form-value communication guards now reject atomically, in both
+modes and all four APIs; the actual amendment scan now contains its supplier
+fields. The nine original negative assertions are unchanged and pass. The
+combined selection is 107 passed, one failed: unchanged paper capture is still
+rerouted to Type 1 after an information-only response. Check passes. Original
+failed results above/below remain source-pinned history, not relabelled passes.
+
 C1 information-response refinement on `4765770`: the facade already preserves
 the exact submission, OCR and human-confirmed basis, but actual routing re-enters
 Type 1 after `sendConfirmation`. A new G-requested negative test reproduces
@@ -171,6 +179,12 @@ main actions or updated four-case historical seeds.
 # Vision alignment
 
 ### Canonical action integration
+
+Reported C4/C5 defects are fixed by source-level amendment regions and protected
+form/pack aliases, not by renderer backfill or silently rewriting notes. The
+workbench initializer now separates an original scenario draft from a seeded
+ready-to-release amendment. Nineteen targeted tests pass. W's reported false
+strength-agreement trace and Tariff authority remain explicit merge blockers.
 
 Functional G checkpoint now provides `getAsSubmitted`, `getPaperReconciliation`,
 `evaluatePaperSubmission`, `getCorrectionAcknowledgementValid` and paper-ready
@@ -372,3 +386,20 @@ live checklist. No manual WCAG certification is inferred from zero axe findings.
 
 All drifted rows have a current stream owner. No larger follow-up or human-only
 blocker has been identified at this checkpoint.
+
+## Tasks 39/40 R audience alignment
+
+Main's shared card exposed correction values without an audience distinction.
+The R checkpoint introduces an explicit pharmacy projection and a fail-closed
+operator default, reusing W's exact source-fact projection and B's outbound
+field/rule wording. No source strength, quantity or product is redacted from
+read-only evidence. Current consumer mounting, the new G seed/gate integration
+and real live acceptance remain drifted until their owning streams verify them.
+The unused earlier duplicate Card draft remains a NONINTEGRATED historical
+patch artifact and was not replayed onto current main.
+
+The R-only regression expectations now distinguish factual disagreements from
+outbound instructions: exact source quantities remain in diagnostic findings,
+while the operator note asks for accuracy without those values. Historical
+pharmacy preview tests explicitly select pharmacy audience. Fifty targeted
+contracts pass; this does not establish the current G/P/O integrated runtime.

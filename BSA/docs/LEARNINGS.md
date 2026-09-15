@@ -41,6 +41,14 @@ once against `4765770`; the prior 25 cases were not rerun in that targeted
 reproduction. G is introducing source-revision linkage rather than copying a
 previous capture into a new human event.
 
+G's bounded `cdd436b` patch adds presentation/pack protected aliases and actual
+supplier scan regions. B reran the exact negative checks once against that
+published repair; all nine pass unchanged. The combined eight-file result is
+107 passed and one failed (information-response Type 1 routing). Source-copy,
+typecheck, lint and production build pass. Canonical G/R source files are
+retained during B merge resolution; B's newer tests and historical failures
+are preserved instead of reverting to the older copied test version.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
@@ -135,6 +143,12 @@ amendment initially failed readiness because a known readable prescriber was
 dropped by draft initialisation. Preserving that existing source value, without
 inventing a value for unreadable paper, repaired the two-mode recheck tests.
 Earlier full-suite results do not cover the intentionally changed outcomes.
+
+The changed-scope full run passed check but failed 210 tests (1,575 passed);
+that failure remains recorded, not replaced by the 19 targeted runtime passes.
+Concrete review found missing amendment-image supplier regions and unprotected
+form aliases in outbound notes. Repairing the source data and final guards,
+rather than changing presentation evidence, closes those focused regressions.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.
@@ -1376,3 +1390,21 @@ Using actual parsed token leaves gives the same immutable-original hash,
 on both platforms. Tests also reject changed numeric and template tokens.
 This repairs the integrity test, not application behaviour, and preserves
 the failed CI record until a new exact-head run succeeds.
+
+## Tasks 39/40 R audience evidence boundary
+
+An audience-specific card cannot be implemented by redacting matching values
+from the entire object: prescribed and selected strengths are evidence, whereas
+the correction patch and preview are proposals. The projection therefore removes
+only the operator's proposal payload and reuses the cloned W source facts.
+Operator communication is generated from field/rule identifiers, never by
+interpolating the diagnostic finding text. New isolated unit contracts cover
+this distinction; broader G/P/O integration and live proof remain pending.
+
+The first targeted legacy run exposed three expected audience-contract shifts:
+two previews required an explicit pharmacy audience, and the old diagnostic
+test expected source quantities in outbound text. Updated tests keep exact
+quantities in the immutable findings while rejecting them from the note.
+All fifty targeted recommendation tests then passed. A missing supply record
+is a source-agreement problem, not proof of a strength mismatch; the note
+selection now distinguishes those cases without copying a proposed value.

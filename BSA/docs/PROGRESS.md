@@ -6,6 +6,12 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+B verified G `cdd436b906f397a1d210603e4cef3794812c0a59`: all nine
+previously failing note/image regressions now pass unchanged. The full selected
+matrix is 107 passed, one failed; the remaining failure is G's requested
+information-response source-linked capture routing. Check passes. The C4/C5
+repairs are bounded branch proof, not current-main or browser/live acceptance.
+
 G requested one further source-link regression: after D's actual Type 1 capture,
 an information-only response preserves the facade/capture but incorrectly routes
 back to Type 1. That targeted test fails on `4765770`; G is adding explicit
@@ -88,6 +94,14 @@ automatic eligible EPS rechecks, paper amendment snapshots and human-only paper
 release. The shared source facades and optional mismatch store input are
 callable. Existing consumer tests still require migration; this is published
 WIP, not main/live completion.
+
+Reported paper/consumer defects are repaired in the next checkpoint: outbound
+notes protect presentation and pack aliases, amendment scans visibly contain
+their recorded supplier fields, submission workbenches can initialise the
+original scenario without overwriting the latest recheck, and paper Apply
+uses known pack/form records. Typecheck and 19 targeted runtime regressions pass.
+The first full changed-scope inventory remains failed: 210 failures, 1,575
+passes across 106 files. No legacy gate is waived; owner migrations are pending.
 
 W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
 headline checker and 33 focused units from base main `6418151`. `npm run check`
@@ -2205,3 +2219,21 @@ files were cleaned up. An initial mock fixture scoping error was corrected in
 the test invocation, not hidden by a helper fallback. No Azure mutations, live
 requests, browser runs or recovery applies were performed by this stream.
 The coordinator owns actual what-if/apply and measured non-destructive results.
+
+## Tasks 39/40 R: audience-safe recommendation checkpoint
+
+R now owns recommendation derivation/content and the shared card, not G's
+canonical types, lifecycle, store or source evidence. The first checkpoint
+adds an explicit operator/pharmacy audience projection. Operator output omits
+proposed correction payloads; source facts stay exact. Pharmacy proposals carry
+the own-records caption. Canonical operator draft notes use B's field/rule
+generator, including diagnostic notes, rather than copying source values.
+W's published strength projection is reused. Consumers P/O and G's new four-case
+source/recheck integration remain pending. This branch is incomplete work,
+not a live release or backup; no browser or live result is claimed.
+
+The follow-up extends the same prepared-patch renderer to typed paper
+brand/manufacturer, pack and form fields. Fifty targeted recommendation units
+and typecheck pass, including exact canonical operator-preview/Apply equality
+and pharmacy-only paper values. G's canonical source facade and corrected
+four-case seeds remain dependencies, not reconstructed state in R.

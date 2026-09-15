@@ -303,6 +303,8 @@ export const useAppStore = create<AppState>((set, get) => {
         ...(strength?.suggestion && strength.prescribed ? [strength.prescribed.code, strength.prescribed.name, strength.prescribed.strength,
           String(revision.epsPrescription!.supplyRecord!.quantity)] : []),
         ...(own?.brandManufacturer ? [own.brandManufacturer] : []),
+        ...(own?.form ? [own.form] : []),
+        ...(own?.packSize !== null && own?.packSize !== undefined ? [String(own.packSize)] : []),
         ...(own?.productCode ? [own.productCode] : []),
         ...(own?.quantity !== null && own?.quantity !== undefined ? [String(own.quantity)] : []),
       ])];

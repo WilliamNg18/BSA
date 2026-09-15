@@ -12,6 +12,7 @@ ms.date: 2026-09-15
 - Question: which source validates queue absence and payment presentation? Choice: assert the actual `staffLane` and `receiptPricingLabel` adapters after real actions, with no paper Paid receipt before the operator press. Tie-breaker: verify the required presentation contract rather than only a routing flag.
 - Question: who repairs newly reproduced canonical source/note defects? Choice: publish B's failing regression evidence and send G the exact repairs; do not patch the shared store or manufacture scan fields in U's renderer. Tie-breaker: one canonical owner and faithful source images.
 - Question: may an information-only answer force recapture of unchanged paper? Choice: retain human capture by explicit submission-source identity, with no new human capture event; a genuinely new submission still invalidates it. Tie-breaker: truthful human history and no unnecessary repeat work.
+- Question: how is the C4/C5 repair accepted? Choice: rerun the original nine assertions unchanged against exact G `cdd436b`, record their pass separately from the still-failing source-link test and master release gates. Tie-breaker: reproducible evidence and no silent waiver.
 
 ## 2026-09-15: B40 readable-blank decision
 
@@ -34,6 +35,8 @@ ms.date: 2026-09-15
 - G integration: corrected paper creates a new acknowledged synthetic amendment scan/OCR snapshot rather than rewriting its earlier unreadable or blank source; the new paper still needs an operator release; tie-breaker: exact source fidelity and C6's one-press recheck.
 - G integration: the strength-case EPS contract contains no editable claim amount, so code validates a known selected pack price and the independent prescribed/supplied identity without inventing a payment amount during Apply; tie-breaker: no payment calculation.
 - G integration: keep N's optional mismatch input in the same store and exact domain snapshot, separate from the unchanged manual-loop defaults; tie-breaker: one state and non-additive assumptions.
+- G correction: emit brand/pack/form from the acknowledged amendment into its actual synthetic scan regions, and reject those proposed aliases in all outbound note paths; tie-breaker: the reproduced C4/C5 source and communication failures.
+- G correction: initialise a new workbench attempt from the original scenario source but keep its current revision binding; never rewrite the current ready amendment merely by opening a page; tie-breaker: C8 fidelity and explicit human submission.
 - Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
@@ -2498,3 +2501,12 @@ The live HTTP observation at `2026-09-15T18:24:10.7144775Z` still served
 pass does not bridge that release gap or replace full live acceptance.
 
 Question: how should callback integrity remain exact across Linux and Windows checkouts? Choice: hash TypeScript parser token leaves, using the immutable original callback as the reference and explicit LF/CRLF plus changed-value/template negatives, rather than a context-free scanner that mishandles template continuation; tie-breaker: correct evidence without weakening callback assertions.
+
+## Tasks 39/40 R audience decisions
+
+- Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
+- Question: does NHSBSA supply a corrected value to the pharmacy? Choice: no; B's structured field/rule requests generate the canonical operator note, while the pharmacy derives its own values from records; tie-breaker: explicit C5 separation.
+- Question: can an audience change approve or acknowledge a correction? Choice: no; it is an immutable projection with no store writes, and actual same-revision human provenance is retained; tie-breaker: one state and human authority.
+- Question: who edits current recommendation derivation? Choice: R exclusively; G retains canonical types/store/lifecycle/seeds/source facade, W the strength module and B the fidelity/referral/paper modules; tie-breaker: isolated file ownership.
+- Question: can a failed generic amount check imply a concession rule? Choice: no; use a source-agreement request unless the finding or typed paper rule explicitly establishes a concession; tie-breaker: no invented citation.
+- Question: may the Card compute a different operator note from the one Apply writes? Choice: verify equality between the audience projection and the canonical operator draft actually copied by the store; tie-breaker: exact human preview/application contract.

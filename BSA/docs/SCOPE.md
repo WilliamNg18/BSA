@@ -6,6 +6,11 @@ ms.date: 2026-09-15
 
 # Scope register
 
+G `cdd436b` repairs are verified: the nine exact C4/C5 negative checks pass
+without assertion changes. B's selected matrix remains 107/108 because an
+information-only paper response still creates a second Type 1 task. Check
+passes; source-link repair and master integration/live gates remain pending.
+
 G's requested C1 information-response capture test now pins another concrete
 gap: unchanged submitted paper must retain its original human capture, not
 create a second Type 1 task. The new targeted assertion currently fails and
@@ -51,6 +56,11 @@ retain Type 1 ordering. This 54-unit/check result does not establish the owning
 scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
+
+The first full integration inventory is not green: 210 failed / 1,575 passed
+tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.
+New targeted paper, source-image and note guards pass, but this is not release
+acceptance. Strength trace/rule-authority findings are active merge blockers.
 
 Functional checkpoint: the four new cases and channel-specific actual actions
 are wired. `EX-24112` has an acknowledged historical paper amendment awaiting
@@ -425,3 +435,16 @@ here identify the same commits, not additional unpushed work.
 No scope row is Not started. Owner-authorised work resumes from this preserved
 checkpoint. Do not merge empty checkpoint commits from completed streams as
 new features or claim a browser inventory is an executed pass.
+
+## Tasks 39/40 R audience scope
+
+In progress: explicit Card audience, pharmacy-only concrete value/preview,
+field/rule-only operator draft notes and unmodified read-only source facts.
+R's new audience unit contracts cover the projection, default operator boundary,
+source identity and absence of fabricated approval. Existing canonical actions
+remain G-owned; P/O wire their real components. Full four-case integration,
+exact-head CI, main deployment and live observations are still required.
+
+Prepared paper correction values now use the same before/after draft contract
+as EPS supply values; R supplies no replacement source data or independent
+correction algorithm. Actual paper seed/source preparation stays with G.
