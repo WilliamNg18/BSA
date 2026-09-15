@@ -11,4 +11,9 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   timeout: 240_000,
+  webServer: {
+    ...base.webServer,
+    command: "npm run build && node scripts/serve-production.mjs",
+    cwd: fileURLToPath(new URL("../..", import.meta.url)),
+  },
 });
