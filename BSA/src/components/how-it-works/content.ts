@@ -28,6 +28,19 @@ export interface DesignSection {
   table?: DesignTable;
 }
 
+export const PICK_LIST_SOURCE = {
+  title: EPS_ERROR_EVIDENCE.nhsbsa.title,
+  url: EPS_ERROR_EVIDENCE.nhsbsa.url,
+  label: EPS_ERROR_EVIDENCE.nhsbsa.label,
+  quotation: EPS_ERROR_EVIDENCE.nhsbsa.quotation,
+  checkedOn: EPS_ERROR_EVIDENCE.verifiedOn,
+  checkedLabel: new Intl.DateTimeFormat("en-GB", {
+    day: "numeric", month: "long", year: "numeric", timeZone: "UTC",
+  }).format(new Date(`${EPS_ERROR_EVIDENCE.verifiedOn}T00:00:00Z`)),
+  scope: EPS_ERROR_EVIDENCE.nhsbsa.scope,
+  boundary: EPS_STRENGTH_COPY.ruleLabel,
+} as const;
+
 export const DESIGN_SECTIONS: readonly DesignSection[] = [
   {
     id: "proof", title: "What this proof of concept actually is", status: "built",
@@ -93,7 +106,8 @@ export const DESIGN_SECTIONS: readonly DesignSection[] = [
       { title: "Adapters, not a replacement pricing system", status: "proposed", text: "Read-only adapters access the image store, captured fields, dm+d-aligned product master, claim ledger and case history. Existing exception routing triggers work. Ingest the Tariff monthly with effective dates, provenance and approved corrections. No adapter writes pricing; an operator's recorded decision hands back to today's pricing path." },
       { title: "Redaction before interpretation", status: "proposed", text: "Remove patient identity before every model request, including image regions, notes and telemetry. Use a pseudonymous item key for authorised joins. Confirm data minimisation, lawful basis, retention, deletion, residency and supplier terms with the CISO and information governance team. Current synthetic data is not evidence these controls are implemented." },
       { title: "Scanner reconciliation preserves separate sources", status: "proposed", text: "Accept the pharmacy declaration, scanner-captured values and per-field confidence, actual scan, and revision-bound Type 1 human capture separately. Reconcile them against deterministic Tariff requirements; never upgrade the scan because a declaration agrees. Paper always requires an explicit final operator Release; corrected EPS can release automatically only after both gates pass." },
-      { title: "Hypothetical capture, not working character recognition", status: "assumption", text: "The scanner comparison labels its prepared output \"Extracted by character recognition (hypothetical)\" and \"synthetic; illustrates what NHSBSA’s capture would produce\". These are illustrative field values and confidence, not a real character-recognition service or model result. Keep the original scan and human capture provenance visible." },
+      { title: "Hypothetical capture, not working character recognition", status: "assumption", text: `The scanner comparison labels its prepared output "${PAPER_RECONCILIATION_LABELS.characterRecognition}" and "${PAPER_RECONCILIATION_LABELS.synthetic}". These are illustrative field values and confidence, not a real character-recognition service or model result. Keep the original scan and human capture provenance visible.` },
+      { title: "Human capture does not improve the original scan", status: "proposed", text: `"${PAPER_RECONCILIATION_LABELS.humanCapture}". Distinguish raw-source agreement from human-confirmed effective evidence. A later correction is an "${PAPER_RECONCILIATION_LABELS.amendment}". Neither attestation nor amendment makes an unreadable original legible or rewrites earlier submissions.` },
       { title: "A referral describes the gap, not the answer", status: "proposed", text: "Outbound NHSBSA notes contain the missing field and governing rule only. Concrete correction values belong to a separately labelled pharmacy suggestion from its own records. Human Apply, acknowledgement and Resubmit are distinct actions; none invents an invoice, overwrites original evidence or releases paper without an operator decision." },
     ],
     table: {
@@ -191,7 +205,7 @@ export const CASE_W_SEQUENCE = [
   "Pharmacy → Ingress: this sequence follows explicit unchanged Send, not the available Apply correction path. Retain the selected 5 mg claim and independent 10 mg source records.",
   "Ingress → Case builder: receive the submitted revision and gather the original prescription, actual-supply record and product catalogue separately.",
   "Case builder → Code gate: Gate 2 independently compares the received claim against those sources; it does not trust Gate 1's result or enrich the submitted copy.",
-  "Case builder → Operator: the mismatch fails reconciliation. Build a case with prescribed and selected strengths, evidence, field/rule and safe referral or information advice, not a proposed correction value. Block automatic release. This is the proof the agent does not rubber-stamp.",
+  `Case builder → Operator: the mismatch fails reconciliation. Build a case with prescribed and selected strengths, evidence, field/rule and safe referral or information advice, not a proposed correction value. Block automatic release: ${EPS_STRENGTH_COPY.proof}.`,
   "Operator → Pharmacy: a person explicitly requests correction or refers back with a field-and-rule-only explanation. Concrete correction values come from the pharmacy's own records, not the outbound NHSBSA note.",
   "Pharmacy → Ingress: review the pharmacy's 10 mg pack suggestion, explicitly Apply, acknowledge and Resubmit a corrected claim revision; retain prior attempts and independent source evidence.",
   "Ingress → Case builder: validate the corrected revision again against the prescribed and actual-supply records, catalogue and applicable requirements; missing or disputed evidence still blocks release.",
@@ -212,6 +226,12 @@ export function systemDesignMarkdown(reference: DesignTable): string {
       `### ${panel.title}`, "", DESIGN_LABELS[panel.status], "", panel.text, "",
     ]),
     ...(section.table ? [table(section.table)] : []),
+    ...(section.id === "questions" ? [
+      "### Public evidence for the pick-list example", "", PICK_LIST_SOURCE.label, "",
+      `[${PICK_LIST_SOURCE.title}](${PICK_LIST_SOURCE.url})`, "",
+      `Checked ${PICK_LIST_SOURCE.checkedLabel}; publication date not stated.`, "",
+      `> ${PICK_LIST_SOURCE.quotation}`, "", PICK_LIST_SOURCE.scope, "", PICK_LIST_SOURCE.boundary, "",
+    ] : []),
     ...(section.id === "architecture" ? [
       "### Component diagram: proposed production boundary", "",
       ...COMPONENT_FLOW.map((step, index) => `${index + 1}. ${step}`), "",
@@ -226,3 +246,5 @@ export function systemDesignMarkdown(reference: DesignTable): string {
     table(reference),
   ].join("\n");
 }
+import { EPS_ERROR_EVIDENCE, EPS_STRENGTH_COPY } from "@/lib/domain/eps-error-evidence";
+import { PAPER_RECONCILIATION_LABELS } from "@/lib/domain/paper-reconciliation";

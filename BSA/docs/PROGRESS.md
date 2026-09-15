@@ -364,6 +364,28 @@ explicit. Check passes on this source. The latest full two-worker run remains
 failed: 1,664 passing / 144 failing, including three unrelated timeout cases.
 Actual fetched main is now Part A `5b75e5f`; G/R foundation merge and independent
 browser/live acceptance still block a final own-only pharmacy release.
+## Stream S: Tasks 39-40 reference alignment, published WIP
+
+S prepared the How it works follow-up on actual main `6418151`. Four-case
+copy and the sequence now describe W's wrong-strength EPS and P's paper
+missing-brand example, rather than the retired date headline. The fourteenth
+FAQ explains independent prescription/supply/claim evidence. B's proposed
+scanner reconciliation separates declaration, hypothetical character-recognition
+fields/confidence, original scan and revision-bound human capture. Paper stays
+human-final; corrected EPS requires both gates before code-only release.
+
+The follow-up consumes G-approved owner-authored W `fe0a521` and B `c433f45`
+plus `8151770` as isolated foundations, preserving all tracking entries.
+The public NHSBSA quote/link/check date and proposed-check label now reuse
+canonical W metadata. Scanner and human-capture/amendment labels reuse B's
+constants; no duplicated bibliography or improved-original-scan claim.
+
+Check and all 1,714 units in 100 files passed, including 13 S reference tests.
+The 50 prose panels have at most 54 words, informational only. SYSTEM-DESIGN
+matches the page text exactly. The new citation/retired-headline browser
+assertions have not run locally; no browser allocation or hosted claim exists.
+G's actual source/gate integration, exact-head CI, coordinator merge, green
+deployment and observed live change remain required for Task 39-40 completion.
 
 P's staging branch now imports the explicitly released F, U and O consumer
 commits without their model merges or backup lineage. Combined check passes.

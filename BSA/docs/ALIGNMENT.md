@@ -585,6 +585,12 @@ The expanded 87-test arithmetic/evidence regression passes. A direct typecheck
 confirms the remaining application errors are the absent canonical mismatch
 field/setter, not unrelated interface errors. Tiny positive count formatting
 is now covered explicitly; browser and live gates remain pending.
+| Retired EPS date headline and Case B diagram | Replaced in active S copy with W wrong-strength EPS and its unchanged-Send sequence | W/G integrated source review |
+| Four playable cases | Complete EPS, wrong-strength EPS, unreadable paper and paper missing brand, with existing IDs | Canonical G seed integration |
+| Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
+| Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate; B labels imported, raw-source versus human-confirmed basis explicit | Actual B/G runtime integration |
+| Public pick-list evidence | W's canonical public NHSBSA quotation, URL, checked date and proposed matching-check label render together; publication date remains unstated | No unverified study ranking or invented Tariff clause |
+| Evidence and completion | Check plus 1,714 full units passed, including 13 S tests; full document parity retained | Exact-head CI, G runtime integration, green main deployment and observed live change |
 
 ## 2026-09-15: Task 39 W source comparison and integration boundary
 
