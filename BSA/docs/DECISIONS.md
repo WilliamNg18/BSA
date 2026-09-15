@@ -2071,3 +2071,11 @@ Tie-breakers: preserved history and human decisions.
 ## 2026-09-15: Requirement 4 Follow scope extension
 
 - Question: does synchronous Follow navigation prove the new one-second cross-side requirement? Choice: retain the existing one-store navigation and neutral action labels, add request/confirmation and unchanged diagnostic-event contract coverage, and leave all-four-case browser deadlines to V after R integration; no timing or new-paper-path pass is claimed from unit tests. Tie-breakers: truthful evidence, explicit human decisions and no duplicated operational state.
+
+## 2026-09-15: Concrete pharmacy recommendation mounts
+
+- Question: which preview drives Apply? Choice: render R's shared draft recommendation and invoke the shared correction action; no separate UI correction algorithm or automatic action on toggle.
+- Question: what do paper demo controls change? Choice: explicit complete/missing buttons prepare R's labelled synthetic declaration, including the visible demo prescriber. Scanner presentation reveals the retained poor image without rewriting it; Post and capture remain separate human actions.
+- Question: what is filled for an unknown invoice price? Choice: nothing. The actual invoice control focuses the authoritative endorsement field for manual entry; no claimed amount becomes invoice evidence.
+- Question: which fields are highlighted? Choice: R's before/after applied-field metadata, including restored original values; not an inference from the original source alone.
+- Question: how does the demo recognise shared-card controls? Choice: an optional pharmacy-only prop marks the real Apply and invoice-focus buttons. No proxy controls or weakened absence checks.

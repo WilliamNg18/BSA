@@ -10,11 +10,15 @@ import { PharmacyReleasedCount, PharmacySubmissionReceipt } from "@/components/d
 import { useAppStore, getDomainSnapshot } from "@/lib/store";
 import { caseForLifecycle } from "@/lib/domain/lifecycle-model";
 import { initialisePharmacyDraft } from "@/lib/domain/pharmacy-correction";
+import { deriveRecommendation } from "@/lib/domain/recommendations";
 
 const controls = vi.hoisted(() => new Map<string, () => void>());
 vi.mock("@/components/ui/button", () => ({
   Button: ({ children, onClick, asChild, ...props }: ComponentProps<"button"> & { "data-pharmacy-action"?: string; asChild?: boolean }) => {
-    if (props["data-pharmacy-action"] && onClick) controls.set(props["data-pharmacy-action"], () => onClick({} as Parameters<NonNullable<typeof onClick>>[0]));
+    const action = props["data-pharmacy-action"] ?? (children === "Apply suggested correction" ? "apply-correction"
+      : children === "Declaration complete" ? "prepare-complete" : children === "Declaration missing information" ? "prepare-missing"
+        : children === "Enter invoice price" ? "focus-invoice" : undefined);
+    if (action && onClick) controls.set(action, () => onClick({} as Parameters<NonNullable<typeof onClick>>[0]));
     return createElement(asChild ? "span" : "button", props, children);
   },
 }));
@@ -63,7 +67,7 @@ describe("pharmacy panel human controls", () => {
     const html = render(createElement(PharmacyClaimActionPanel, { caseId: "EX-24112" }));
     expect(html).toContain("Operator-approved note");
     expect(html).toContain("Ready");
-    expect(html).toContain("Changed fields highlighted");
+    expect(html).toContain("Highlighted; not sent.");
     controls.get("resubmit")!();
     expect(useAppStore.getState().caseRevisions["EX-24112"].slice(0, -1)).toEqual(before);
     expect(useAppStore.getState().caseRevisions["EX-24112"].at(-1)).toMatchObject({ kind: "resubmission", number: before.at(-1)!.number + 1 });
@@ -331,6 +335,112 @@ describe("recorded receipt and release count", () => {
       expect(useAppStore.getState().followedCaseId).toBe(caseId);
       expect(useAppStore.getState().agentEnabled).toBe(true);
       expect(getDomainSnapshot()).toEqual(before);
+    });
+
+    describe("concrete pharmacy recommendation extension", () => {
+      it.each([
+        ["EX-24107", "eps"], ["EX-24112", "eps"], ["SYN-FQ123-MISMATCH", "eps"], ["EX-24123", "paper"],
+      ] as const)("always displays the current %s recommendation On without executing an action", (caseId, channel) => {
+        const s = useAppStore.getState();
+        const before = getDomainSnapshot();
+        expect(render(createElement(PharmacySubmissionPanel, { caseId, channel }))).not.toContain("data-recommendation-case");
+        s.setAgentEnabled(true);
+        const html = render(createElement(PharmacySubmissionPanel, { caseId, channel }));
+        expect(html).toContain(`data-recommendation-case="${caseId}"`);
+        for (const label of ["Recommendation", "Tariff version", "Requirement results", "Recommended outcome", "the agent verifies and advises; a person decides"]) expect(html).toContain(label);
+        expect(html).not.toMatch(/<details[^>]*>[^]*data-recommendation-case/);
+        expect(getDomainSnapshot()).toEqual(before);
+      });
+
+      it("applies the exact visible date preview, not a separately constructed correction", () => {
+        const s = useAppStore.getState(), caseId = "EX-24112";
+        s.setAgentEnabled(true);
+        const recommendation = deriveRecommendation(s, caseId, { kind: "draft" });
+        const html = render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+        expect(html).toContain("21/08/2026");
+        expect(html).toContain(recommendation.preview!.endorsementText);
+        const before = structuredClone(s.caseRevisions[caseId]);
+        controls.get("apply-correction")!();
+        expect(useAppStore.getState().pharmacyDrafts[caseId].endorsementText).toBe(recommendation.preview!.endorsementText);
+        expect(useAppStore.getState().caseRevisions[caseId]).toEqual(before);
+      });
+
+      it("highlights fields restored from a cleared draft even when the new values equal original evidence", () => {
+        const s = useAppStore.getState(), caseId = "SYN-FQ123-MISMATCH";
+        s.setAgentEnabled(true);
+        const draft = currentDraft(caseId, "eps");
+        s.setPharmacyDraft(caseId, { ...draft, epsPrescription: { ...draft.epsPrescription!,
+          supplyEvidence: { ...draft.epsPrescription!.supplyEvidence!, brandManufacturer: "", form: "" } } });
+        render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+        controls.get("apply-correction")!();
+        const after = render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+        for (const id of ["eps-manufacturer", "eps-pack", "eps-form"]) {
+          expect(after).toMatch(new RegExp(`<input(?=[^>]*id="${id}")(?=[^>]*ring-2)[^>]*>`));
+        }
+      });
+
+      it.each(["complete", "missing"] as const)("prepares the explicit %s paper declaration without posting or confirming capture", (variant) => {
+        const s = useAppStore.getState(), caseId = "EX-24123";
+        s.setAgentEnabled(true);
+        const before = getDomainSnapshot();
+        render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
+        controls.get(`prepare-${variant}`)!();
+        const after = getDomainSnapshot(), draft = after.pharmacyDrafts[caseId];
+        expect(draft).toMatchObject({ revision: 1, purpose: "new_submission", appliedSuggestion: false,
+          paperDeclaration: { quantity: 100, dispensingDate: "2026-08-27", declaredByPharmacy: true } });
+        expect(draft.declaration?.fields.prescriber).toBe("Dr Example (synthetic demo declaration)");
+        expect(draft.endorsementText.includes("27/08/26")).toBe(variant === "complete");
+        expect(after).toEqual({ ...before, pharmacyDrafts: { ...before.pharmacyDrafts, [caseId]: draft } });
+        const html = render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
+        expect(html).toContain("declared by the pharmacy, not read from the form");
+        expect(html).toContain("Dr Example (synthetic demo declaration)");
+        expect(html).toContain("Post paper with declaration");
+      });
+
+      it("renders invalid declaration evidence as explicit non-ready advice rather than a crash or stale preview", () => {
+        const s = useAppStore.getState(), caseId = "EX-24123";
+        s.setAgentEnabled(true);
+        const draft = currentDraft(caseId, "paper");
+        s.setPharmacyDraft(caseId, { ...draft, paperDeclaration: { ...draft.paperDeclaration!, quantity: -1 } });
+        const html = render(createElement(PharmacySubmissionPanel, { caseId, channel: "paper" }));
+        expect(html).toContain(`data-recommendation-case="${caseId}"`);
+        expect(html).toContain("Abstain");
+        expect(html).not.toContain("Complete against");
+        expect(html).not.toContain("Corrected preview");
+      });
+
+      it("focuses the authoritative endorsement for an unknown invoice price without inventing a value", () => {
+        const s = useAppStore.getState(), caseId = "EX-24112";
+        s.setAgentEnabled(true);
+        const draft = currentDraft(caseId, "eps");
+        s.setPharmacyDraft(caseId, { ...draft, endorsementText: "SP RK",
+          epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "SP RK" } });
+        const before = getDomainSnapshot(), focus = vi.fn();
+        const getElementById = vi.fn(() => ({ focus }));
+        vi.stubGlobal("document", { getElementById });
+        const html = render(createElement(PharmacySubmissionPanel, { caseId, channel: "eps" }));
+        expect(html).toContain("invoice price required; enter £x.xx");
+        expect(html).toContain("outside validated coverage");
+        expect(html).not.toContain('value="£');
+        controls.get("invoice-focus")!();
+        expect(getElementById).toHaveBeenCalledWith("endorsement");
+        expect(focus).toHaveBeenCalledOnce();
+        expect(getDomainSnapshot()).toEqual(before);
+        controls.get("submit")!();
+        const submitted = useAppStore.getState();
+        expect(submitted.caseRevisions[caseId]).toHaveLength(before.caseRevisions[caseId].length + 1);
+        expect(submitted.caseRevisions[caseId].at(-1)?.precheck).toMatchObject({
+          mode: "scripted", status: "unable", clauseId: null, facts: { type: "UNKNOWN", quotedText: "SP RK" },
+        });
+        expect(submitted.itemVerification[caseId]).toMatchObject({ gate1: "fail", released: false });
+      });
+
+      it("classifies the real shared-card pharmacy Apply button without adding a duplicate control", () => {
+        useAppStore.getState().setAgentEnabled(true);
+        const html = render(createElement(PharmacySubmissionPanel, { caseId: "EX-24112", channel: "eps" }));
+        expect(html.match(/data-pharmacy-action="apply-correction"/g)).toHaveLength(1);
+        expect(html).toMatch(/<button[^>]*data-pharmacy-action="apply-correction"[^>]*>Apply suggested correction<\/button>/);
+      });
     });
 
     it("supports existing caseId links and derives their canonical channel", () => {

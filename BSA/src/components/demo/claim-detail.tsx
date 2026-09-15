@@ -6,6 +6,7 @@ import { LifecycleHistory } from "./lifecycle-history";
 import { PharmacyDraftFields } from "./pharmacy-draft-fields";
 import { PharmacyDraftCheck } from "./pharmacy-draft-check";
 import { focusPharmacyCorrection } from "./pharmacy-draft-focus";
+import { PharmacyRecommendationPanel } from "./pharmacy-recommendation-panel";
 import { usePharmacyDraft } from "@/hooks/use-pharmacy-draft";
 import { useAppStore } from "@/lib/store";
 import { itemStateLabel, NO_VERIFICATION, type CaseLifecycle } from "@/lib/domain/lifecycle";
@@ -79,15 +80,18 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
       </dl>}
     </section>}
     {editable && <section aria-label="Correction and resubmission" className="space-y-3">
-      <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction />
-      {enabled && <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
-        apply={approved && canApply ? () => act(() => {
+      <PharmacyDraftFields draft={draft} original={original} channel={channel} update={(next) => update({ ...next, purpose: "correction" })} correction recommendationVisible={enabled} />
+      {enabled && <>
+        <PharmacyRecommendationPanel caseId={caseId} draft={draft} compact={compact} endorsementId="claim-endorsement"
+          onApply={approved && canApply ? () => act(() => {
           const store = useAppStore.getState();
           store.setPharmacyDraft(caseId, { ...draft, purpose: "correction" });
           store.applySuggestedCorrection(caseId);
           focusPharmacyCorrection(draft, useAppStore.getState().pharmacyDrafts[caseId], "claim-endorsement");
-        }) : undefined}
-        recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />}
+        }) : undefined} />
+        <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")}
+          recheck={() => act(() => { notify(result?.status === "ready" ? "Ready" : validationError || "Correction needs review."); })} />
+      </>}
       <ClaimsResubmissionComparison enabled={enabled} approved={Boolean(approved)} status={result?.status ?? null} />
       <Button data-pharmacy-action="resubmit" onClick={() => act(() => {
         const store = useAppStore.getState();
@@ -98,6 +102,7 @@ export function PharmacyClaimActionPanel({ caseId, compact = true }: { caseId: s
         notify("Resubmitted");
       })}>{enabled ? "Resubmit" : "Resubmit blind"}</Button>
     </section>}
+    {!editable && <PharmacyRecommendationPanel caseId={caseId} compact={compact} />}
     {requested && <section aria-label="Requested confirmation" className="space-y-3">
       <dl><dt>Question</dt><dd>{response?.reason ?? "No question recorded."}</dd>
         <dt>Captured form quantity</dt><dd>{c.extracted.quantity ?? "Unreadable"}</dd>
