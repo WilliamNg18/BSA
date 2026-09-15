@@ -2550,6 +2550,8 @@ Question: can the EPS selection label imply what was actually supplied? Choice: 
 
 Question: should an outdated compact B/EPS invocation create a phantom example? Choice: show an explicit channel error with no submission control; tie-breaker: canonical four-case identity and source integrity.
 
+Question: how should the workbench use G's original-scenario factory? Choice: use it only for unsaved new-submission projection, never current claim correction or an existing shared pharmacist draft; tie-breaker: honest scenario replay without source or draft loss.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

@@ -99,6 +99,11 @@ P owns the O-released minimal EPS message label/supply-fact clarification and
 compact channel guard. Neither change edits the operator case-pack source or
 canonical lifecycle. New focus targets map to actual existing pharmacy fields.
 
+The original-scenario and paper pack/form dependencies are resolved by G
+`cdd436b`, now consumed by P. No new-submission projection writes state on mount;
+an existing pharmacist draft takes precedence. Off paper still posts without
+an invented declaration and its later correction requires manual entry.
+
 ### G39/40 explicit-action checkpoint
 
 Current-source linking and seeded readiness provenance are implemented:

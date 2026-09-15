@@ -160,8 +160,12 @@ it.each(["EX-24112", "EX-24123"])("paper preparation restores exactly two non-da
 it.each([false, true])("readable paper uses own records, ACK and real Resubmit but only the operator releases, mode=%s", (enabled) => {
   s().setAgentEnabled(enabled);
   const original = sessionCase(paper)!;
-  s().submitItem({ caseId: paper, channel: "paper", endorsementText: original.paperDeclaration!.endorsementText,
-    paperDeclaration: { ...original.paperDeclaration!, brandManufacturer: "" } });
+  const existing = getDomainSnapshot();
+  const first = submission(paper);
+  expect(s().caseRevisions).toEqual(existing.caseRevisions);
+  expect(s().lifecycles).toEqual(existing.lifecycles);
+  if (enabled) expect(first).toMatch(/<input(?=[^>]*id="paper-brandManufacturer")(?=[^>]*value="")[^>]*>/);
+  click("submit");
   const before = getAsSubmitted(s(), paper);
   s().arriveInQueue(paper);
   s().referBack(paper, "RB2B", buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }]));
@@ -169,7 +173,10 @@ it.each([false, true])("readable paper uses own records, ACK and real Resubmit b
   if (enabled) click("apply-correction");
   else saveManual(paper, (draft) => ({ ...draft, paperDeclaration: { ...draft.paperDeclaration!,
     brandManufacturer: original.pharmacySupplyRecord!.brandManufacturer,
-  } }));
+    packSize: original.pharmacySupplyRecord!.packSize, form: original.pharmacySupplyRecord!.form,
+  }, declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields,
+    prescriber: original.pharmacySupplyRecord!.prescriber,
+  } } }));
   acknowledge(paper);
   claim(paper); click("resubmit");
   expect(s().lifecycles[paper].state).toBe("resubmitted");
@@ -181,4 +188,38 @@ it.each([false, true])("readable paper uses own records, ACK and real Resubmit b
   expect(html).toMatch(/[Oo]perator|human/);
   expect(html).not.toContain("no operator action");
   expect(s().itemProcesses[paper].releaseOrigin).toBe("human_decision");
+});
+
+it("new-submission rendering preserves an existing pharmacist draft across perspectives", () => {
+  s().setAgentEnabled(true);
+  submission(paper); click("missing");
+  const before = getDomainSnapshot();
+  for (const perspective of ["pharmacy", "both", "nhsbsa"] as const) {
+    s().setPerspective(perspective);
+    const html = submission(paper);
+    expect(html).toMatch(/<input(?=[^>]*id="paper-typedProduct")(?=[^>]*value="")[^>]*>/);
+    expect(getDomainSnapshot()).toEqual(before);
+  }
+});
+
+it("paper brand, pack and form suggestions use the actual supply record and never edit the submitted source", () => {
+  s().setAgentEnabled(true);
+  const before = getDomainSnapshot();
+  submission(paper); click("complete");
+  const complete = s().pharmacyDrafts[paper];
+  s().setPharmacyDraft(paper, { ...complete, paperDeclaration: { ...complete.paperDeclaration!,
+    brandManufacturer: "", packSize: null, form: "",
+  } });
+  submission(paper);
+  const preview = deriveRecommendation(s(), paper, { kind: "draft" }).preview!;
+  click("apply-correction");
+  const applied = s().pharmacyDrafts[paper];
+  expect(applied.paperDeclaration).toEqual(preview.paperDeclaration);
+  expect(applied.paperDeclaration).toMatchObject({
+    brandManufacturer: sessionCase(paper)!.pharmacySupplyRecord!.brandManufacturer,
+    packSize: sessionCase(paper)!.pharmacySupplyRecord!.packSize,
+    form: sessionCase(paper)!.pharmacySupplyRecord!.form,
+  });
+  expect(applied.appliedFields).toEqual(expect.arrayContaining(["brandManufacturer", "packSize", "form"]));
+  expect(s().caseRevisions).toEqual(before.caseRevisions);
 });

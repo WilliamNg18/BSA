@@ -5,6 +5,7 @@ import { PaperPharmacyCapture } from "../../src/components/demo/paper-pharmacy-c
 import { Type1Capture } from "../../src/components/demo/type1-capture";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
 import { MemoryRouter } from "react-router-dom";
+import { PHARMACY_SUGGESTION_LABEL } from "../../src/lib/domain/referral-wording";
 
 vi.mock("../../src/lib/store", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../src/lib/store")>();
@@ -95,7 +96,8 @@ describe("paper pharmacy and Type 1 surfaces", () => {
       const panels = receiptStart < 0 ? [compact] : [compact.slice(0, receiptStart), compact.slice(receiptStart)];
       for (const panel of panels) {
         const paragraphs = [...panel.matchAll(/<p[^>]*>(.*?)<\/p>/g)];
-        const prose = paragraphs.map((paragraph) => paragraph[1].replace(/<[^>]+>/g, "")).join(" ");
+        const prose = paragraphs.map((paragraph) => paragraph[1].replace(/<[^>]+>/g, ""))
+          .filter((text) => text !== PHARMACY_SUGGESTION_LABEL.replace("'", "&#x27;")).join(" ");
         expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
       }
       expect(html).not.toContain("will release");
