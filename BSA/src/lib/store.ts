@@ -189,10 +189,12 @@ export const useAppStore = create<AppState>((set, get) => {
         quantity: submission.declaration.fields.quantity, endorsementText: submission.declaration.fields.endorsementText,
       } : undefined);
     const at = timestamp(caseId);
-    const declaration = submission?.declaration ?? (paperDeclaration ? {
+    const declaration = submission?.declaration ?? (kind === "confirmation" ? previous.declaration : undefined) ?? (paperDeclaration ? {
       fields: paperDeclarationFields(paperDeclaration), declaredAt: at, provenance: "pharmacy_declaration" as const,
     } : undefined);
-    const submittedText = kind === "confirmation" ? previous.endorsementText : text;
+    const submittedText = kind === "confirmation"
+      ? previous.epsPrescription?.dispenserEndorsement ?? previous.paperDeclaration?.endorsementText ??
+        previous.declaration?.fields.endorsementText ?? previous.endorsementText : text;
     validateSubmissionSources({ ...submission, caseId, channel, endorsementText: submittedText, epsPrescription, paperDeclaration, declaration }, previous.number);
     validatePrecheck(precheck, submittedText, epsPrescription?.dispensingDate ?? paperDeclaration?.dispensingDate ?? c.extracted.dispensingDate);
     if (declaration) validateDeclaredFields(declaration.fields);

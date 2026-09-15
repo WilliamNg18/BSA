@@ -111,6 +111,24 @@ describe("safe human diagnostic follow-up", () => {
     expect(recommendation.missing.join(" ")).not.toContain("50");
   });
 
+  it("confirmation after a direct seeded paper diagnostic preserves the declaration and original scan separately", () => {
+    store().setAgentEnabled(true);
+    const original = sessionCase(id)!.extracted, attempt = store().caseRevisions[id][0];
+    store().confirmType1({ caseId: id, revision: 1, provenance: "human_capture", declarationReconciled: false,
+      fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
+    store().requestInformation(id, "Please confirm the missing paper source fields.");
+    store().sendConfirmation(id, "The pharmacy supplies this explicit confirmation for review.");
+    expect(store().caseRevisions[id][0]).toEqual(attempt);
+    expect(store().caseRevisions[id].at(-1)).toMatchObject({
+      endorsementText: attempt.paperDeclaration!.endorsementText,
+      paperDeclaration: attempt.paperDeclaration,
+      confirmation: "The pharmacy supplies this explicit confirmation for review.",
+    });
+    expect(sessionCase(id)!.extracted).toEqual(original);
+    expect(store().lifecycles[id].state).toBe("resubmitted");
+    expect(store().itemVerification[id].released).toBe(false);
+  });
+
   it("recorded diagnostic remains pinned after a corrected later attempt", () => {
     captureMismatch();
     store().applySuggestionToDecision(id);
