@@ -174,6 +174,12 @@ whole-application or live acceptance gate.
 
 ### Canonical action integration
 
+W's exact failed 476 trace probe is addressed by a distinct structured
+cross-record path: no `retrieve_tariff` call, no synthetic strength clause in
+the corpus, factual prescription/selection/supply conflicts and not-applicable
+image/readings/provision statuses. The existing EPS field helper no longer
+reports the wrong-strength source as ready. Forty-seven targeted tests pass.
+
 Reported C4/C5 defects are fixed by source-level amendment regions and protected
 form/pack aliases, not by renderer backfill or silently rewriting notes. The
 workbench initializer now separates an original scenario draft from a seeded

@@ -132,10 +132,10 @@ export function seededLifecycleSession(): ReturnType<typeof historicalLifecycleF
       const note = buildReferralNote([{ rule: id === "EX-24112" ? "brand_required_for_multiple_suppliers" : "strength_matches_prescription" }]);
       row.history.push({ at: "2026-09-14T09:01:00.000Z", actor: "operator", from: "in_review", to: "referred_back",
         revision: 1, channel, processStep: "referral", decision: "REFER_BACK", rbCode: "RB2B", reason: note, message: note,
-        clauseId: id === "EX-24112" ? "SYN-EPS-SUPPLY" : "SYN-EPS-STRENGTH", tariffVersion: "2026-08",
+        ...(id === "EX-24112" ? { clauseId: "SYN-EPS-SUPPLY", tariffVersion: "2026-08" } : {}),
         approvedDraft: { text: note, approvedAt: "2026-09-14T09:01:00.000Z", approvedBy: "Synthetic historical operator",
-          decision: "REFER_BACK", clauseId: id === "EX-24112" ? "SYN-EPS-SUPPLY" : "SYN-EPS-STRENGTH",
-          tariffVersion: "2026-08", provenance: "verified_findings" } });
+          decision: "REFER_BACK", clauseId: id === "EX-24112" ? "SYN-EPS-SUPPLY" : null,
+          tariffVersion: id === "EX-24112" ? "2026-08" : "not_applicable", provenance: "verified_findings" } });
       row.state = "referred_back";
     }
     caseRevisions[id] = [revision]; lifecycles[id] = row;

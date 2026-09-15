@@ -99,6 +99,13 @@ release. The shared source facades and optional mismatch store input are
 callable. Existing consumer tests still require migration; this is published
 WIP, not main/live completion.
 
+W's reproduced strength-trace blockers are repaired in the canonical layer:
+actual 10mg/5mg/supply disagreement is retained, conflict is explicit, repeated
+readings and image/provision signals are not applicable, and no matching rule
+is inserted into the monthly Tariff corpus. The legacy EPS field checker uses
+the same independent check. Typecheck and 47 targeted tests pass; full legacy
+consumer migration and live acceptance remain incomplete.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the
