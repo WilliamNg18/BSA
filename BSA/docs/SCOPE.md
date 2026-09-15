@@ -20,6 +20,10 @@ blank-versus-unknown confidence presentation. Twenty focused units pass;
 the first scanner checkpoint also passed check. Neither result is browser
 geometry, mounted functionality or live acceptance.
 
+Current full-suite boundary: 1,700 of 1,701 tests passed; one unchanged CLI
+subprocess exceeded its existing deadline. All 52 verification tests passed
+unchanged in isolation. Do not convert this into full-suite or live acceptance.
+
 The follow-up preserves unreadable raw scan/OCR evidence even when a current
 human capture supports effective reconciliation. Its result explicitly names
 that basis instead of claiming raw three-way agreement. An acknowledged pharmacy

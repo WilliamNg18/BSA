@@ -31,6 +31,11 @@ U retains that distinction, adds accessible source descriptions per value and
 does not round sub-certain confidence to 100 per cent. Twenty focused units pass;
 the first source checkpoint passed check. No new runtime integration is claimed.
 
+The current WIP full run is not green: 1,700/1,701 tests passed, with an unchanged
+5,000 ms CLI-process deadline failure. Its isolated 52-test file passes unchanged,
+and current typecheck passes. G's canonical runtime and O's actual mount are still
+required before browser or deployed alignment can be assessed.
+
 ### Refreshed published-source snapshot after the B foundation
 
 Actual main remains `641815137b36ab3e925dcc98c4738d0b150a75d1`.

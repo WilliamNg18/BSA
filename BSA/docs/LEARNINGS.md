@@ -20,6 +20,12 @@ The 20-test follow-up protects both meanings, per-value accessible source
 descriptions and sub-certain percentage display. The first scanner checkpoint
 passed check; desktop geometry and live acceptance remain separate gates.
 
+The full scanner-WIP run passed 1,700 tests but the unchanged verification
+subprocess test exceeded 5,000 ms (reported at 5,625 ms). All 52 tests in that
+file passed in a subsequent isolated 2.28-second run without edits. This is
+evidence of a run-sensitive deadline, not proof of a green full suite. No
+timeout, callback, application or unrelated tooling change was made.
+
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
 operator projection. A poor source supported by human confirmation must disclose

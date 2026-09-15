@@ -12,6 +12,7 @@ ms.date: 2026-09-15
 - Question: does an unknown OCR date mean a deliberately wrong prescription date? Choice: display Unknown at the supplied confidence while preserving the correct source/declaration date; tie-breaker: no invented evidence.
 - Question: can high confidence turn null into a known blank? Choice: preserve B's explicit null/empty-string distinction and associate each displayed value with its source description; tie-breaker: truthful uncertainty rather than implied readability.
 - Question: may display rounding promote a confidence below one to certainty? Choice: retain sufficient decimal precision so it does not display as 100 per cent; tie-breaker: never improve source confidence through presentation.
+- Question: should an unchanged CLI subprocess deadline be relaxed after a loaded full run? Choice: retain the failed 1,700/1,701 result, rerun its 52-test file unchanged in isolation and keep full acceptance pending; tie-breaker: truthful validation without weakening unrelated tests.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
 - Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.

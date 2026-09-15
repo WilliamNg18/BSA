@@ -23,6 +23,12 @@ follow-up passes 20 focused units: each declaration/OCR value has an associated
 provenance description, known blank strings remain Blank, null remains Unknown,
 and a confidence below one cannot round up to 100 per cent.
 
+The published WIP's full two-worker suite ran 1,701 tests: 1,700 passed and
+the unchanged verification CLI subprocess test exceeded its 5,000 ms deadline.
+That file then passed all 52 tests in isolation without code or timeout changes;
+current typecheck also passed. The full run remains failed evidence, not a
+green full-suite claim. No browser or live acceptance has been performed by U.
+
 Base main is `6418151`. This branch is incomplete work, not a backup or live
 product. G integration, O mounting, 1280/1440 verification, main merge and an
 observed green deployment remain required.
