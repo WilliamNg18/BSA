@@ -31,6 +31,11 @@ and presentation. U's real-store renderer assertion reads those raw source
 regions, never the declaration; 46 scanner/runtime tests and typecheck pass.
 This closes the scoped source-visibility defect, not mounted/live acceptance.
 
+O `99c8d03` now supplies the actual full-width case-pack and Type 1 mount on this
+integration branch. Forty-two mounted/scanner units and typecheck pass. U's
+four actual-route desktop checks are authored for the coordinator's conditional
+4341 lease; no geometry, axe, screenshot or live result is asserted before execution.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription

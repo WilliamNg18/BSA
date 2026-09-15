@@ -36,6 +36,12 @@ store/render test now finds each in the scan column after acknowledged
 resubmission. Forty-six selected tests and typecheck pass without a UI
 declaration-to-image fallback.
 
+O's isolated mount can be integrated without its backup-verifier lineage or
+unpublished unit migrations. The actual full-width scanner now compiles and
+passes the 42-test mounted/scanner selection. Four real-route browser checks
+are prepared, but a passing source renderer does not establish measured desktop
+geometry or axe acceptance. Conditional port 4341 is reserved by the coordinator.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

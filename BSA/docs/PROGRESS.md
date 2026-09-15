@@ -33,6 +33,14 @@ scan column contains the source brand, pack size and presentation, not values
 backfilled by U from a declaration. The 46-test scanner/runtime selection and
 typecheck pass; O's mounted desktop/browser and live gates are still pending.
 
+O's isolated published `99c8d03` mount and its bounded R dependencies are now
+integrated with G `cdd436b`. Forty-two mounted/scanner units and typecheck pass.
+U adds four actual-route scanner checks for both paper cases at 1280/1440,
+including Off/On source equality, scoped axe and unchanged raw columns after
+Type 1 confirmation. These browser checks are authored, not yet run.
+The coordinator conditionally reserved port 4341, one worker, zero retries;
+exact-head build and a clear strict/live-priority lease precede the run.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store

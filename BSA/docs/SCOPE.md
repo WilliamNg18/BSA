@@ -26,6 +26,12 @@ G `cdd436b` now supplies visible immutable amendment regions. U verifies their
 actual brand/pack/form rendering through the canonical facade and human
 acknowledgement/resubmission path: 46 selected tests and typecheck pass.
 
+O's actual full-width mount is integrated for U's first scanner browser proof,
+not replaced by a pure renderer or new route. Four new checks cover two paper
+cases at both desktop widths; 1440-only screenshots and scoped axe are planned.
+Browser execution and live acceptance remain pending, with conditional
+coordinator lease 4341 and no parallel duplicate verification by O/V.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
