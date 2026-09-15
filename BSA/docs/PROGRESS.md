@@ -34,7 +34,31 @@ Main merge, normal green deployment and observation of the served SHA at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ remain pending.
 Owner actions for me: none.
 
-## Current release gate: live first, exact local backup
+## Latest scope: Parts A-C and Tasks 25-40
+
+The 15 September addition is active and does not pause release/backup work.
+At this classification, main is `641815137b36ab3e925dcc98c4738d0b150a75d1`
+after #94. Its CI `35009958003` and deployment `35009957918` passed; V observed
+the clean live identity at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ at 18:59 UTC.
+That is not acceptance of the new header, wrong-strength or NHSBSA contracts.
+
+| Work | Owner and publication | Current boundary |
+| --- | --- | --- |
+| Part A header Outcome/footer | Own branch `williamng18-header-outcome-line`, first merge | Implementation and route/geometry/axe verification in progress |
+| Task 39 wrong-strength EPS and evidence | W, with G canonical model integration | Published pure strength/evidence contracts; active scenario and consumer integration pending |
+| Task 40 fidelity, scanner, note wording, acknowledgement and re-check | B, with G canonical model integration | Published pure contracts; every verify item needs current-main and branch audit plus live proof |
+| Shared model, four seeds, real audit/re-check/acknowledgement | G | Sole shared types/store/lifecycle/seed writer; W/B domains merge here first after Part A |
+| Pharmacy/operator/scanner/demo/numbers/design/follow | P/O/U/D/N/S/F, shared card R | Owning views consume exact published contracts; no parallel operational store or local stubs |
+| Final verification | V | Earlier Task 25-38 counts remain historical; checklist must cover the latest full Tasks 25-40 |
+| Canonical backup and recovery | D and O | Continues independently; coordinator-frozen interface unblocks O's standalone verifier |
+
+Every active stream pushes at STATUS and at least every thirty minutes and
+updates all five tracking documents with its change. No stream is complete
+until merged, deployed green and observed live. ALL DONE also requires exact
+same-main backup parity and clean offline recovery evidence.
+
+## Earlier release checkpoint: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote

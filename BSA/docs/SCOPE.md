@@ -32,6 +32,28 @@ their focus, menu or pinned-layout assertions. New automatic screenshots are
 off at file scope; explicit 1440px captures remain.
 This is incomplete work, not a local alternative product or backup.
 
+## Latest required scope: Tasks 25-40
+
+Parts A-C supersede older conflicting case/header/re-check contracts. Part A
+has first-merge priority; W39 and B40 run alongside existing streams, with
+their domain changes integrated by G before their owning UI consumers.
+No previous local or live result establishes these new outcomes.
+
+| Addition | Acceptance required | State |
+| --- | --- | --- |
+| A: global header/footer | Notice removed everywhere; footer synthetic text once; exact On-only Outcome line, one line and centred within 2 CSS pixels at both widths, all views/steps, motion and axe | In progress on own branch |
+| 39 W: evidence-based wrong strength | Prescribed/supplied 10mg versus selected 5mg, 28; Today priced as endorsed, On prevention and Gate 2 rejection, exact pharmacy-only correction, valid dates throughout | Published contracts; integration pending |
+| 39 N/S: evidence and estimates | Verified study/public-process labels, no NHSBSA-rate inference; separate optional one-per-cent total-claims assumption; design/FAQ updates | In progress |
+| 40 B/G: shared authority | Immutable exact submission, separate scan/OCR/human capture, field/rule-only notes, payload-bound acknowledgement, channel-specific re-check release and truthful mixed states | Published contracts; integration pending |
+| 40 P/O/U/D/F/R: live controls | Actual four-case surfaces, three-column paper evidence, real audit/reopen and correction cycles; no proposed values in operator notes or cards | Owner integration pending |
+| V: final live verification | Latest-main all-Pass checklist including wrong-strength and paper-incomplete full cycles in both modes, both widths and all perspectives; all verify rows aligned | Not yet executed |
+| Live/backup/recovery | Green current-main deploy/root/deep check, same-artifact backup/hash parity, clean offline proof and recovery guide | In progress, not waived |
+
+Stable active IDs remain `EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123` and
+`EX-24112`; the last becomes the paper-brand-missing example. C/F remain
+unclickable background. All source dates are correct; older incomplete-date
+examples remain only historical or Tariff-requirement regression evidence.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

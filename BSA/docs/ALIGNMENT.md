@@ -48,6 +48,34 @@ two tour-layout assumptions about the header's next sibling. Those assertions
 now use the surviving Agent control and optional Outcome height, retaining
 outside action/focus, menu and sticky-position coverage. Fresh CI is required.
 
+## Latest Parts A-C verification register
+
+Authoritative audit baseline: main
+`641815137b36ab3e925dcc98c4738d0b150a75d1`. At startup the open-PR inventory
+was empty after #94 merged; W/B/G/A subsequently published independent work.
+Each owner must record the exact inspected main and active published branch
+heads for every "verify" requirement. The following rows are obligations and
+known gaps, not claims that unmerged contracts are live.
+
+| Item | Classification at the baseline | Owner and required closure |
+| --- | --- | --- |
+| A notice/Outcome/footer | Misaligned: old notice and global principle remain | A: every route/perspective/step, exact text, no Off gap, centre within 2 px, accessible motion and live check |
+| W wrong-strength case/all dates | New explicit outcome/scenario replacement | W/G/P/D: prescribed/supplied 10mg, selected 5mg; correct source dates; no retired headline |
+| EPS error evidence | Study bibliography, 62 and 1.6%/CI and NHSBSA mechanism verified by W; subtype counts/rank not independently verified | W: preserve source URLs and evidence limitations; N/S use only properly attributed claims |
+| C1 exact submission fidelity | Partial: projected case fields cannot substitute for the original submission | B/G/O: read-only exact last submission across every case/state |
+| C2 satisfied EPS skips queue | Verify current and new strength paths | G/P/O/V: corrected message is identical at Gate 2, automatic record/count only, no operator row |
+| C3 paper declaration controls/Post | Existing controls need the new complete/two-missing-field contract with correct dates | P/G/B/V: actual draft actions, no implicit Post or premature release |
+| C4 three-column scanner reconciliation | New presentation and explicit source-confidence contract | B/G/U/O: raw typed/scan/OCR preserved, separate human-confirmed evidence, safe recommendation |
+| C5 operator notes contain no proposed value | Misaligned with the earlier exact-value referral contract | B/G/R/O/P: field/rule request, final validation, pharmacy-only concrete suggestion |
+| C6 acknowledgement and re-check | New acknowledgement; EPS re-check must no longer require the old blanket human release | B/G/P/O/F: current payload fingerprint, invalidation, real re-check, paper human press |
+| C7 complete live action cycles | Existing one-state base retained; new cases/outcomes need complete fresh proof | V/owners: wrong-strength and paper-incomplete refer/apply/ack/resubmit/re-check/release, no Reset/navigation mutation |
+| C8 simultaneous pharmacy states | Verify against actual four-case historical seeds and actions | G/P/F: Paid, Action needed and Waiting visible together without invented transitions |
+| C9 current documentation/screens | New contracts not covered by old descriptions/images | All owners/V: contemporaneous five documents, SPEC/script/design/source-pinned screens |
+| Live backup and recovery | Canonical producer/parity/clean offline proof not yet complete | D/O/coordinator: current-main/live exact payload and verified recovery |
+
+Historical Task 25-38 evidence remains intact but is not a substitute for this
+new register. A source-ready module is not an aligned live feature.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

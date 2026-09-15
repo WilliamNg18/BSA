@@ -15,6 +15,18 @@ ms.date: 2026-09-15
 
 - Question: what replaces a deleted notice button in existing control tests? Choice: use the surviving header Agent switch for genuine outside-menu dismissal and assert its action/focus; include optional Outcome height in pinned rail/follow assertions, never wait for bounds on an absent Off node. Tie-breaker: preserve the real behaviour while updating only directly coupled presentation assumptions.
 
+## 2026-09-15: Parts A-C and the Tasks 39-40 authority boundary
+
+- Question: do the new case and release instructions require another permission question? Choice: apply the owner's explicit replacement now, preserving the governing principle and immutable historical evidence. Tie-breaker: the newest instruction already authorises the outcome changes.
+- Question: which work merges first? Choice: Part A's own header branch first, then W/B shared model changes through G, then owning consumers; backup/recovery and verification preparation continue in parallel. Tie-breaker: explicit merge order without stopping unrelated streams.
+- Question: how do four examples remain four? Choice: retain the four IDs; use `SYN-FQ123-MISMATCH` for wrong-strength EPS and repurpose `EX-24112` for paper with a missing brand/manufacturer and correct NCSO date. Tie-breaker: the smaller user-approved paper alternative and no fifth case.
+- Question: may the operator's card or note reveal a proposed correction value? Choice: no; preserve factual original evidence, but proposed values/previews belong only to the pharmacy's own-record recommendation. Tie-breaker: C5's explicit audience boundary.
+- Question: how does an Off wrong-strength item reach the required correction cycle after automatic pricing? Choice: an explicit human audit/query action with retained pricing history, never a toggle or invented queue transition. Tie-breaker: keep Today truthful and every action real.
+- Question: can a corrected paper revision make old unreadable evidence look readable? Choice: only a new, explicitly labelled acknowledged pharmacy amendment may supply new scan/OCR evidence; preserve prior snapshots and do not recycle old capture as a new action. Tie-breaker: submission fidelity and honest provenance.
+- Question: which evidence is publishable as independently checked? Choice: use W's verified abstract and NHSBSA mechanism; keep unverified subtype counts/rank explicit until a primary source confirms them. Tie-breaker: evidence accuracy over apparent completeness.
+- Question: how is the mismatch input interpreted? Choice: one per cent of total submitted claims, a separate non-additive assumption/estimate, never 1.6 per cent as an NHSBSA rate or a percentage of the referral subset. Tie-breaker: preserve existing model arithmetic and honest denominators.
+- Question: should O wait indefinitely for D's backup schema? Choice: use the coordinator-frozen runtime/docs/data/README/manifest/serve contract and independently verify actual files, so both streams proceed. Tie-breaker: simpler parallel delivery without fabricated backup proof.
+
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.
