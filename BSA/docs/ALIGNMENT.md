@@ -46,6 +46,13 @@ retaining the identical factual records/checks. Its four new tests pass;
 the combined 120-regression run and check pass. G explicitly requested the
 helper and retains responsibility for integrating it into the canonical card.
 
+Run `35012808974` passed all four PR CI shards for exact source `66579e7`.
+An additional filesystem regression now verifies the headline checker's
+recursive production-source coverage and a real fail-to-pass migration,
+without scanning old test fixtures outside `src`. All 38 W units, typecheck
+and lint pass. Neither result removes the outstanding active-source findings
+or establishes the integrated Task 39 browser/live outcome.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

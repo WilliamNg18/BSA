@@ -41,6 +41,13 @@ Four new authority tests bring W's focused total to 37; 120 combined new and
 existing EPS/correction/recommendation/gate regressions and check pass.
 This pure adapter still requires G/P/O wiring and live verification.
 
+The exact `66579e7` PR CI run `35012808974` passed all four shards.
+W then added a real directory-walk regression for the headline checker:
+it finds a retired nested source heading, passes after migration and leaves
+historical test-only material outside `src` untouched. All 38 W units,
+typecheck and lint pass. The source guard remains unactivated until the
+assigned owners migrate active content; this is not a live result.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

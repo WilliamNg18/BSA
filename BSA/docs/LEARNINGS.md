@@ -70,6 +70,14 @@ existing EPS/correction/recommendation/two-gate regressions and check. These
 existing gate regressions protect the current base, not the unmerged new
 mode-specific routing that G is implementing.
 
+The exact `66579e7` CI run `35012808974` passed all four shards. A subsequent
+test-only addition exercises the real recursive headline-checker entry point
+against an isolated temporary fixture: one forbidden nested source heading
+is reported, replacing that heading clears it, actual NCSO text stays allowed,
+and historical test records outside `src` remain unscanned. The fixture is
+removed in a `finally` block. All 38 W units, strict typecheck and lint pass;
+there is no whole-file source exemption or new live/browser claim.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

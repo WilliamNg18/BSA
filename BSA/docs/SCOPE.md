@@ -38,6 +38,12 @@ the pharmacy/operator projections; a typed operator projection contains no
 proposed patch or preview. Four new authority regressions pass; consumer
 mounting and whole-flow live evidence are not claimed by these unit results.
 
+The guard now also has an actual filesystem-walk regression, not just parser
+examples: nested source fails before headline migration and passes afterwards,
+while historical test material outside `src` is retained. W's 38 focused tests,
+typecheck and lint pass; exact earlier source `66579e7` passed all four PR CI
+shards in run `35012808974`. Integration/live obligations remain open.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release
