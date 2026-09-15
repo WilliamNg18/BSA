@@ -44,7 +44,7 @@ describe("always-visible operator recommendations", () => {
     for (const page of ["pack", "trace", "record"] as const) {
       const html = renderRoute(id, page);
       expect(html.match(new RegExp(`data-recommendation-case="${id}"`, "g"))).toHaveLength(1);
-      for (const label of ["Tariff version", "Requirement results", "Recommended outcome", "Confidence signals",
+      for (const label of [id === "SYN-FQ123-MISMATCH" ? "Dispensing-month reference" : "Tariff version", "Requirement results", "Recommended outcome", "Confidence signals",
         "the agent verifies and advises; a person decides"]) expect(html).toContain(label);
     }
     expect(getDomainSnapshot()).toEqual(before);
@@ -163,7 +163,11 @@ describe("always-visible operator recommendations", () => {
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123", compact: true }));
     expect(html).toContain('data-pharmacy-confirmation="EX-24123"');
     expect(html).toContain(answer);
-    expect(html).toMatch(/<input[^>]*id="[^"]*-prescriber"[^>]*value=""/);
+    expect(html).toContain("Human capture confirmed");
+    expect(html).not.toContain("<form");
+    expect(html).toMatch(/<dt[^>]*>Prescriber<\/dt><dd>Unreadable or absent<\/dd>/);
+    expect(before.itemProcesses["EX-24123"].capture?.fields.prescriber).toBeNull();
+    expect(before.itemProcesses["EX-24123"].capture?.fields.endorsementText).toBe("");
     expect(getDomainSnapshot()).toEqual(before);
   });
 });

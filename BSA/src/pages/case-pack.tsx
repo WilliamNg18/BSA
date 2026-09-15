@@ -201,7 +201,10 @@ function CasePackContent() {
           </>}
 
           {clock.revealed >= 3 && <>
-          <PageSection title="Applicable Drug Tariff provision" description={pack.clause ? `Version in force on the dispensing date: ${pack.tariffLabel}.` : "No provision could be retrieved for this endorsement type and date."}>
+          <PageSection title={pack.ruleAuthority === "proposed_cross_record_check" ? "Proposed matching-check authority" : "Applicable Drug Tariff provision"}
+            description={pack.ruleAuthority === "proposed_cross_record_check"
+              ? "Structured record comparison, not a retrieved monthly Tariff provision."
+              : pack.clause ? `Version in force on the dispensing date: ${pack.tariffLabel}.` : "No provision could be retrieved for this endorsement type and date."}>
             {pack.clause ? (
               <Card>
                 <CardHeader className="pb-2">
@@ -220,6 +223,8 @@ function CasePackContent() {
                   </ul>
                 </CardContent>
               </Card>
+            ) : pack.ruleAuthority === "proposed_cross_record_check" ? (
+              <p className="text-sm text-muted-foreground">A Tariff clause is not applicable to this matching check.</p>
             ) : (
               <p className="text-sm text-muted-foreground">No citation from memory; no recommendation without a retrieved provision.</p>
             )}

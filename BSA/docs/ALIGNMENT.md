@@ -632,6 +632,26 @@ the triad equals G's pinned facade; confirmed capture retains original scan/OCR;
 ready paper recommends human release without an extra invented Apply. Previous
 legacy fixture tests still require the current four-case migration.
 
+O mounted-source update: C1's exact submitted record, C4's full-width ordinary
+scanner comparison, C5's operator-audience preview and C6's actual corrected
+paper prefill are now wired through G/R/U. Fifteen new O tests plus 27 U
+scanner/store tests pass without domain mutation on render. This supersedes
+the earlier "not mounted" observation for those ordinary O routes only.
+Canonical source/guard follow-ups, existing-unit migration, compact D placement,
+browser accessibility/geometry and latest-main live acceptance remain pending.
+
+The four O-owned legacy unit files now exercise actual acknowledged paper
+resubmission, wrong-strength manual audit and immutable unknown-prescriber
+submissions instead of retired seed assumptions. Safe operator-preview checks
+retain exact prescribed/selected/supplied facts while forbidding pharmacy-only
+target proposals. All 66 pass; no assertion or deadline is skipped.
+
+G's seeded ready-paper draft is now consumed directly in both modes and
+covered by O unit assertions. G's information-only response retains prior
+human capture linked to its original submission; O renders that record
+without a new capture form and without copying answer text into fields.
+Matching-only authority no longer receives a misleading missing-Tariff
+message in the case pack. Fresh check and 141 targeted tests pass.
 R's four older owned recommendation files have now migrated: all 47 cases
 pass on the current source. W identified separate canonical G defects in
 strength trace reconciliation and proposed-rule attribution; these remain

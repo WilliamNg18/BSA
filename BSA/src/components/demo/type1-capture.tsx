@@ -17,6 +17,7 @@ import type { CaseRevision, ConfirmType1Input } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
+import { captureForRevision } from "@/lib/domain/lifecycle-model";
 import { checkPaperDeclaration } from "@/lib/domain/paper-declaration";
 import {
   PAPER_DECLARATION_PROVENANCE,
@@ -37,10 +38,13 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
   const c = useLifecycleCase(caseId);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const process = useAppStore((s) => s.itemProcesses[caseId]);
+  const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const confirmType1 = useAppStore((s) => s.confirmType1);
   const heading = useRef<HTMLHeadingElement>(null);
-  const capture = process?.capture;
+  const capture = lifecycle && revision
+    ? captureForRevision(lifecycle, revision.number, revision.sourceRevision ?? revision.number)
+    : null;
   const previousCapture = useRef(capture);
   useEffect(() => {
     if (capture && capture !== previousCapture.current) heading.current?.focus();
@@ -50,7 +54,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
   if (!c || !revision || !process || process.revision !== revision.number) {
     return <p role="alert">Current capture evidence is unavailable. Reopen the item from the queue.</p>;
   }
-  if (capture?.revision === revision.number) {
+  if (capture) {
     return (
       <section aria-label={`Type 1 capture for ${caseId}`} className="space-y-3 rounded-xl border p-4">
         <h3 ref={heading} tabIndex={-1} className="font-semibold">Human capture confirmed</h3>
