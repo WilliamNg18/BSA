@@ -500,13 +500,15 @@ export const useAppStore = create<AppState>((set, get) => {
         ? capturedFieldsMatchSources(confirmedCase) : compatibleCapture(confirmedCase);
       const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !captureCompatible ||
         revision.kind === "resubmission" || !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) });
-      let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
-        revision: revision.number, channel: process.channel, processStep: "type1_capture", capture, message: "Human capture confirmed; code routed the captured fields." });
-      if (!routing.requiresHuman && routing.pricingAuthority) capturedRow = appendHistory(capturedRow, { at, actor: "code", from: "in_review", to: "paid",
-        revision: revision.number, channel: process.channel, processStep: "existing_pricing", message: routing.reason });
       const original = caseById(c.id) ?? caseById(revision.templateCaseId);
       if (!original) throw new Error("Original source evidence is unavailable.");
       const assessment = revision.verificationEnabled ? evaluateItemVerification(original, revision, true, capture) : null;
+      let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
+        revision: revision.number, channel: process.channel, processStep: "type1_capture", capture,
+        verification: assessment?.verification ?? { ...NO_VERIFICATION },
+        message: "Human capture confirmed; code routed the captured fields." });
+      if (!routing.requiresHuman && routing.pricingAuthority) capturedRow = appendHistory(capturedRow, { at, actor: "code", from: "in_review", to: "paid",
+        revision: revision.number, channel: process.channel, processStep: "existing_pricing", message: routing.reason });
       set({ itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, capture, routing } }),
         itemVerification: immutable({ ...s.itemVerification, [c.id]: assessment?.verification ?? { ...NO_VERIFICATION } }),
         caseStates: { ...s.caseStates, [c.id]: routing.requiresHuman ? "operator_review_required" : "cleared_by_rules" },

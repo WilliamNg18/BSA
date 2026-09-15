@@ -46,12 +46,15 @@ describe("shared recommendation contract", () => {
   it("paper declaration complete is distinct from unverified received paper", () => {
     const draft = deriveRecommendation(store(), "EX-24123", { kind: "draft" });
     expect(draft.outcome).toBe("COMPLETE");
+    expect(draft.sourceAssessment).toBeNull();
+    expect(draft.verification).toBeNull();
     expect(draft.provenance).toContain("declared by the pharmacy, not read from the form");
     const received = deriveRecommendation(store(), "EX-24123");
     expect(received.outcome).toBe("REQUEST_INFORMATION");
     expect(received.kernelRecommendation).toBe("ABSTAIN");
     expect(received.requiresOperatorRelease).toBe(true);
     expect(received.diagnostic?.provenance).toBe("unverified");
+    expect(received.sourceAssessment).toMatchObject({ gate1: "pass", gate2: "fail", reconciled: false });
     expect(store().itemVerification["EX-24123"].released).toBe(false);
   });
 
@@ -72,6 +75,14 @@ describe("shared recommendation contract", () => {
     expect(r.outcome).not.toBe("COMPLETE");
     expect(r.missing).toContain("Independent claim product and quantity agree");
     expect(r.summary).not.toContain("nothing to add");
+    store().arriveInQueue(id);
+    const current = deriveRecommendation(store(), id);
+    expect(current.operatorPreview?.outcome).not.toBe("ACCEPT");
+    if (current.operatorApplyAllowed) {
+      store().setAgentEnabled(true);
+      store().applySuggestionToDecision(id);
+      expect(store().operatorDrafts[id].outcome).toBe(current.outcome);
+    }
   });
 
   it("a draft EPS mismatch does not borrow a complete submitted result", () => {

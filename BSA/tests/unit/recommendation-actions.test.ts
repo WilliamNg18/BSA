@@ -89,7 +89,8 @@ describe("safe human diagnostic follow-up", () => {
     store().confirmType1({ caseId: id, revision: 2, provenance: "pharmacy_declaration", declarationReconciled: true,
       fields: draft.declaration!.fields });
     const r = deriveRecommendation(store(), id);
-    expect(r).toMatchObject({ outcome: "COMPLETE", kernelRecommendation: "SUFFICIENT", operatorApplyAllowed: true });
+    expect(r).toMatchObject({ outcome: "COMPLETE", kernelRecommendation: "SUFFICIENT", operatorApplyAllowed: true,
+      verification: { gate1: "pass", gate2: "pass", reconciled: true, released: false } });
     store().applySuggestionToDecision(id);
     expect(store().itemVerification[id].released).toBe(false);
     store().releaseToPricing(id);
