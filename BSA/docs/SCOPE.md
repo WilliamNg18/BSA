@@ -290,3 +290,6 @@ provisioning, runtime feature change or browser-matrix replacement is included.
 
 Recovery requires a newly started backup process. A pre-existing listener is
 an explicit failure, not a substitute for the clean-container startup test.
+
+The verifier must not alter its input backup, including through an aliased
+parent directory used in the report or backup path.

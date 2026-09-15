@@ -2039,3 +2039,7 @@ previous result. D must require browser execution in the clean recovery job.
 Fresh-start verification also refuses an already-listening local port before
 launching the backup, so another process cannot satisfy the readiness probe.
 The updated focused suite passes 23 tests; isolated production proof is pending.
+
+Canonical report-path protection is also covered: a parent-directory alias
+cannot redirect the report into the verified backup. All 24 focused tests and
+typecheck pass; the production-container and live gates remain pending.

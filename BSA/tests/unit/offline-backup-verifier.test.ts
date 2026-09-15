@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { copyFile, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, mkdtemp, readFile, readdir, rename, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -242,6 +242,26 @@ describe("standalone offline backup verification", () => {
       await expect(verifier.startBackup(root, address.port)).rejects.toThrow("already occupied");
     } finally {
       await new Promise<void>((done, reject) => existing.close((error) => error ? reject(error) : done()));
+    }
+  });
+
+  it("cannot write its report into a backup reached through a parent-directory alias", async () => {
+    const root = await fixture();
+    const wrapper = await mkdtemp(join(tmpdir(), "bsa-offline-alias-"));
+    temporary.push(wrapper);
+    const physical = join(wrapper, "physical");
+    await mkdir(physical);
+    await rename(root, join(physical, "backup"));
+    const alias = join(wrapper, "alias");
+    await symlink(physical, alias, process.platform === "win32" ? "junction" : "dir");
+    try {
+      await expect(verifier.verifyOfflineBackup({
+        backup: join(alias, "backup"), expectedCommit: commit, liveUrl,
+        report: join(physical, "backup", "result.json"), port: 4333,
+      })).rejects.toThrow("outside backup");
+      await expect(readFile(join(physical, "backup", "result.json"))).rejects.toThrow("ENOENT");
+    } finally {
+      await rm(alias);
     }
   });
 });

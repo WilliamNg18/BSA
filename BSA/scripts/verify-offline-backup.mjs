@@ -285,7 +285,8 @@ export async function verifyBrowserRuntime(base, verified, modulePath) {
 export async function verifyOfflineBackup(options) {
   assert(isAbsolute(options.backup) && isAbsolute(options.report), "Backup and report paths must be absolute");
   const reportDirectory = await realpath(dirname(options.report));
-  assert(!sameOrInside(join(reportDirectory, options.report.split(/[\\/]/).at(-1)), options.backup),
+  const backupDirectory = await realpath(options.backup);
+  assert(!sameOrInside(join(reportDirectory, options.report.split(/[\\/]/).at(-1)), backupDirectory),
     "Report must be outside backup");
   const started = performance.now();
   const report = {

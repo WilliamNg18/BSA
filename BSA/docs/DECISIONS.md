@@ -2443,3 +2443,5 @@ Question: can localhost-only requests on a connected developer machine count as 
 Question: may an optional browser check silently appear as executed? Choice: no; report whether browser tooling was supplied and run, fail on observed external requests/errors, and retain D's separate live/artifact parity gate; tie-breaker: explicit evidence boundaries.
 
 Question: can an existing listener satisfy the backup startup probe? Choice: reject an occupied port before launching the child process, rather than treating another server's response as recovery evidence; tie-breaker: verify the exact requirement.
+
+Question: may filesystem aliases allow a report to be written inside the backup? Choice: compare canonical backup and report-directory paths before execution and reject containment; tie-breaker: preserve the exact verified artifact.

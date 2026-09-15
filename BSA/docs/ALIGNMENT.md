@@ -136,3 +136,6 @@ constitute the clean offline recovery proof or the final live checklist.
 
 The startup readiness probe is preceded by a fail-closed port-availability
 check; a reachable existing server cannot be counted as fresh recovery.
+
+Both report and backup locations are compared as canonical filesystem paths
+before execution; report creation cannot add an unlisted file to the backup.

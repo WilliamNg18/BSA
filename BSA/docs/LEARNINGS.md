@@ -1181,3 +1181,8 @@ The verifier now checks that the requested port is unoccupied first; a focused
 negative test holds an actual TCP listener and verifies rejection. All 23
 focused checks and typecheck pass. This strengthens process identity without
 claiming that the pending production backup has been exercised offline.
+
+Lexical path comparison alone misses a backup reached through an aliased
+parent directory. The verifier now resolves the backup location before its
+report-containment check. A real junction/symlink fixture verifies rejection
+and absence of a created report; all 24 focused tests and typecheck pass.
