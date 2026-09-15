@@ -4,6 +4,26 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: P Tasks 39/40 consumer integration
+
+The published `ca0a48e` contract was additive and did not yet contain the ACK
+setter or W module. G `9b41cc2` includes both, so P develops against that exact
+published head without stubs. The old UI required operator-approved exact-value
+advice for Apply; C5 correctly separates approval provenance from pharmacy's
+own source-backed correction. The existing comparison unit exposed that old
+API during typecheck and was updated with the consumer change.
+
+The native accuracy checkbox can be exercised as its own controlled component
+without replacing the store or manufacturing acknowledgement metadata. Five
+focused tests passed, covering positive/negative binding and stale events.
+No browser was launched; source/handler checks are not a live verdict.
+
+R's new Card correctly defaults to the operator audience. The pharmacy wrapper
+must explicitly select pharmacy or its existing real Apply/invoice controls
+disappear. The isolated adapter preserves that boundary. Partial-integration
+check and 24 focused consumer units passed; full Vitest retained 65 failures
+and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic

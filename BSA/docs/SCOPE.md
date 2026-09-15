@@ -6,6 +6,22 @@ ms.date: 2026-09-15
 
 # Scope register
 
+### P Tasks 39/40 consumer checkpoint
+
+Owned scope: four-case pharmacy selectors, editable selected strength and paper
+supply facts, required current-payload acknowledgement, real submission actions,
+receipts and simultaneous actual-state workload columns. Shared domain/store,
+operator, header and verification harness files remain with their owners.
+Canonical integration, checks, browser acceptance, merge and observed green
+deployment remain pending; the UI checkpoint alone completes no requirement.
+
+P's five focused accuracy-checkbox handler tests now pass in both modes,
+including invalidation and stale-input rejection. Wider canonical integration
+and existing pharmacy-suite migration remain open.
+
+The minimal explicit pharmacy Card audience adapter is published separately
+for R/G foundation integration; no shared Card edit or store fallback is used.
+
 ### G39/40 explicit-action checkpoint
 
 Functional checkpoint: the four new cases and channel-specific actual actions
