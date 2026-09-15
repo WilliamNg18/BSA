@@ -42,6 +42,14 @@ claimed yet. PR #110 remains draft; main, deployment and observed live SHA
 are still release gates. The last coordinator-confirmed live baseline is
 `5b75e5f7711bf599b02ff9fab752781fa0685b00` at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, not this candidate.
+V replaced the two stale browser title catalogs with one projection of the
+actual four `PLAYABLE_CASES`. This corrects B's paper and M's strength
+heading expectations underlying the 25 retained route failures, without
+editing route assertions or restoring old source labels. Typecheck/lint and
+13 targeted units pass. Native IDs/titles remain identical before/after:
+1,068 ordinary, 44 state and 75 live entries, zero executions. Browser
+resolution of the historical failures has not yet been claimed.
+
 V migrated operator-advice lookups in 19 existing browser/helper files to the
 actual direct sibling under `data-operator-workspace`, retaining the human
 decision scope for fields and release actions. No legacy-layout fallback was

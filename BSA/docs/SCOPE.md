@@ -23,6 +23,11 @@ paper scenarios, use payload-bound ACK, preserve source-backed responses
 and target Apply in its real advice sibling. Timing primitives, runtime
 fades, rule authority and existing assertion thresholds remain unchanged.
 The remaining stale scenario expectations require their own explicit fixes.
+The route-title compatibility patch changes only shared test metadata:
+fixtures and operator helpers now use the same current canonical catalog.
+All four IDs/order, exact heading checks and native test identities remain.
+It does not change source, scenario actions, state snapshots or timing.
+
 The advice-locator patch changes only test lookup scope, not action order,
 expectations, deadlines or source. It preserves native ordinary/state/live
 identities across the patch and excludes A's settlement hunk, O's new

@@ -27,6 +27,12 @@ widths. Six other cases pass with unrestricted axe. These four failures
 occur before D's axe/checkpoint calls, so neither a ten-case accessibility
 pass nor D screenshot acceptance exists. The exact served clean SHA, JSON
 and failure traces were retained before releasing the leased port.
+The route tests and operator helpers had separate copies of the old B/M
+titles. A shared canonical catalog fixes that drift while retaining all
+exact header checks. Typecheck, lint and 13 focused units pass; native
+before/after IDs/titles are identical for 1,068 / 44 / 75 entries. This is
+source/registration validation, not execution of the 25 historical failures.
+
 Moving advice out of the human panel requires changing both action locators
 and advice-presence assertions. V's 19-file receiver migration retains all
 action/assertion arguments, order and registrations; native before/after

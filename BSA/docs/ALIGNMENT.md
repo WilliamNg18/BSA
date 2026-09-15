@@ -25,6 +25,11 @@ single ten-case 4335 run requires coordinator clearance and a clean published
 build. Previous CI and owner browser artifacts do not certify this layout.
 PR #110 remains WIP until exact candidate verification and coordinator-owned
 main/deployment/live acceptance.
+Stale B/M heading expectations are removed from duplicated test catalogs.
+The actual canonical titles are shared by route and operator consumers;
+new units pin the four expected entries and shared exports. Native identity
+comparison passes unchanged, but no route browser pass is inferred.
+
 Operator advice is now selected through its actual sibling workspace in
 existing V browser consumers. Static action/assertion signatures and native
 IDs/titles remain identical before/after (1,068 / 44 / 75). These checks
