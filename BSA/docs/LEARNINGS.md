@@ -56,6 +56,12 @@ including fabricated/stale/withdrawn acknowledgements, mode/perspective parity
 and explicit later audit reopening. The previous full source-foundation suite
 passed 1,630 tests in 93 files; that earlier pass predates new mandatory ACK
 enforcement and must not be reused as final consumer compatibility evidence.
+
+The first new-seed runtime pass has 12 successful actual-store tests. A paper
+amendment initially failed readiness because a known readable prescriber was
+dropped by draft initialisation. Preserving that existing source value, without
+inventing a value for unreadable paper, repaired the two-mode recheck tests.
+Earlier full-suite results do not cover the intentionally changed outcomes.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

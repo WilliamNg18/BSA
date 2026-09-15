@@ -57,7 +57,7 @@ export function evaluateRequirements(
   if (!clause) return [];
   return clause.requirements.map((requirement) => {
     let met: boolean | null = null;
-    if (["brand_manufacturer", "pack_size", "presentation"].includes(requirement.id)) {
+    if (["brand_manufacturer", "pack_size", "presentation", "selected_pack_matches"].includes(requirement.id)) {
       met = supplyChecks?.find((check) => check.id === requirement.id)?.met ?? false;
     } else if (!facts) met = null;
     else if (requirement.id === "endorsement_present") met = facts.present;

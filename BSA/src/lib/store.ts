@@ -55,6 +55,10 @@ import { checkPharmacyCorrection, initialisePharmacyDraft, suggestedPharmacyCorr
 import { deriveRecommendation, validateDiagnosticFollowUp, type DiagnosticFollowUp } from "@/lib/domain/recommendations";
 import { HISTORICAL_DECISION_RECORDS } from "../../data/archive/decision-records";
 import { assertCorrectionAcknowledged, correctionFingerprint } from "@/lib/domain/correction-acknowledgement";
+import { createMismatchSharePercent, type MismatchEstimateSlice } from "@/lib/domain/mismatch-estimate";
+import { createPaperSubmissionSource } from "@/lib/domain/paper-source";
+import { assertSafeOperatorNote } from "@/lib/domain/referral-wording";
+import { evaluateEpsStrength } from "@/lib/domain/eps-strength";
 
 // Session state for the prototype. Everything is in memory: the preview runs in
 // a sandboxed frame, so nothing is written to storage and Reset returns the
@@ -79,7 +83,7 @@ export interface PharmacyCorrectionEvent {
   readonly sourceVerification?: { readonly before: ItemVerification; readonly after: ItemVerification };
 }
 
-interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, ManualLoopModelSlice, DemoModeSlice, HumanActionSlice {
+interface AppState extends LifecycleSlice, ProcessSlice, ProcessModelSlice, ManualLoopModelSlice, DemoModeSlice, HumanActionSlice, MismatchEstimateSlice {
   temporaryFollowVisit: { caseId: string; origin: "pharmacy" | "nhsbsa" } | null;
   setTemporaryFollowVisit: (visit: { caseId: string; origin: "pharmacy" | "nhsbsa" } | null) => void;
   pharmacy: PharmacyState;
@@ -131,7 +135,10 @@ function seededProcesses(): Record<string, ItemProcess> {
     if (row.state === "information_requested") facts.type2Decision = "request_information";
     if (row.state === "resubmitted") facts.interpretationRequired = true;
     if (row.state === "paid" && c.scenario === "F") facts.type2Decision = "sufficient";
-    return [row.caseId, { revision: revision.number, channel, routing: routeSubmission(facts), capture: null,
+    const assessment = row.state === "resubmitted" && channel === "paper" ? evaluateItemVerification(caseById(row.caseId)!, revision, true) : null;
+    const routing = row.state === "resubmitted" && channel === "paper" ? { outcome: "type2_endorsement" as const,
+      requiresHuman: true, pricingAuthority: null, reason: assessment?.releaseEligible ? "Resubmitted, ready to release" : "Paper recheck requires operator review." } : routeSubmission(facts);
+    return [row.caseId, { revision: revision.number, channel, routing, capture: null, readyToRelease: assessment?.releaseEligible ?? false,
       rbCode: row.state === "referred_back" ? row.history.at(-1)?.rbCode ?? null : null }];
   })));
 }
@@ -216,10 +223,13 @@ export const useAppStore = create<AppState>((set, get) => {
         throw new Error("A current explicit pharmacy accuracy acknowledgement is required.");
       }
     }
-    const revision: CaseRevision = { number: previous.number + 1, at, kind, templateCaseId: previous.templateCaseId,
+    let revision: CaseRevision = { number: previous.number + 1, at, kind, templateCaseId: previous.templateCaseId,
       endorsementText: submittedText, precheck: precheck ?? null, confirmation: kind === "confirmation" ? text : null,
       channel, verificationEnabled: s.agentEnabled, ...(kind === "resubmission" ? { correctionAcknowledgement: acknowledgement } : {}),
       ...(declaration ? { declaration } : {}), ...(epsPrescription ? { epsPrescription } : {}), ...(paperDeclaration ? { paperDeclaration } : {}) };
+    const original = caseById(caseId) ?? caseById(previous.templateCaseId);
+    if (!original) throw new Error("Original source evidence is unavailable.");
+    if (channel === "paper") revision = { ...revision, paperSource: kind === "confirmation" ? previous.paperSource : createPaperSubmissionSource(original, revision) };
     const event: HistoryEvent = { at, actor: "pharmacy", from: current.state, to: kind === "submission" ? "submitted" : "resubmitted",
       message: kind === "submission" ? "Explicit demo submission; previous revisions retained." : kind === "confirmation" ? "Pharmacy confirmation received; human re-check required." : "Pharmacy correction resubmitted for re-check.",
       revision: revision.number, channel, processStep: kind === "submission" ? "submission" : "resubmission" };
@@ -227,13 +237,17 @@ export const useAppStore = create<AppState>((set, get) => {
     const projected = caseForLifecycle(caseId, s.lifecycles, revisions)!;
     const facts = routingFactsForCase(projected, channel);
     let routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || kind !== "submission" });
-    const original = caseById(caseId) ?? caseById(previous.templateCaseId);
-    if (!original) throw new Error("Original source evidence is unavailable.");
     const assessment = s.agentEnabled ? evaluateItemVerification(original, revision, true) : null;
-    const automatic = Boolean(assessment?.releaseEligible && kind === "submission");
+    const existingEpsRecheck = channel === "eps" && kind === "resubmission" && !s.agentEnabled &&
+      evaluateItemVerification(original, revision, false).releaseEligible;
+    if (existingEpsRecheck) routing = { outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine",
+      reason: "Existing code rechecked the acknowledged EPS correction and routed it to pricing." };
+    const automatic = channel === "eps" && Boolean(assessment?.releaseEligible && kind !== "confirmation");
+    const paperReady = channel === "paper" && kind === "resubmission" &&
+      evaluateItemVerification(original, revision, s.agentEnabled).releaseEligible;
     if (assessment && !automatic && routing.outcome !== "type1_capture") routing = {
       outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null,
-      reason: kind !== "submission" ? "Corrected evidence requires explicit human re-check." : assessment.reason,
+      reason: paperReady ? "Resubmitted, ready to release" : kind !== "submission" ? "Corrected evidence requires explicit human re-check." : assessment.reason,
     };
     let row = appendHistory(current, event);
     const verification = assessment ? { ...assessment.verification, released: automatic } : { ...NO_VERIFICATION };
@@ -242,15 +256,19 @@ export const useAppStore = create<AppState>((set, get) => {
       revision: revision.number, channel, processStep: automatic ? "release_to_pricing" : "verification",
       verification, ...(automatic ? { releaseOrigin: "automatic_verification" as const } : {}),
       ...(assessment.clauseId ? { clauseId: assessment.clauseId } : {}), ...(assessment.tariffVersion ? { tariffVersion: assessment.tariffVersion } : {}) });
-    if (!assessment && routing.outcome === "auto_priced") row = appendHistory(row, { at, actor: "code", from: row.state, to: "paid", message: routing.reason, revision: revision.number, channel, processStep: "automatic_pricing" });
+    if (!assessment && channel === "eps" && routing.outcome === "auto_priced") row = appendHistory(row, { at, actor: "code", from: row.state, to: "paid", message: routing.reason, revision: revision.number, channel, processStep: "automatic_pricing" });
+    if (channel === "paper" && routing.outcome !== "type1_capture") routing = { outcome: "type2_endorsement", requiresHuman: true,
+      pricingAuthority: null, reason: paperReady ? "Resubmitted, ready to release" : "Paper requires an explicit operator release." };
     const operatorDrafts = { ...s.operatorDrafts }, pharmacyDrafts = { ...s.pharmacyDrafts };
     delete operatorDrafts[caseId]; delete pharmacyDrafts[caseId];
+    if (paperReady) operatorDrafts[caseId] = { revision: revision.number, outcome: "ACCEPT", rbCode: "",
+      note: "The corrected paper evidence satisfies the code checks; operator release is required.", appliedSuggestion: false };
     set({ lifecycles: immutable({ ...s.lifecycles, [caseId]: row }),
       caseRevisions: revisions,
       itemVerification: immutable({ ...s.itemVerification, [caseId]: verification }), operatorDrafts: immutable(operatorDrafts), pharmacyDrafts: immutable(pharmacyDrafts),
       itemProcesses: immutable({ ...s.itemProcesses, [caseId]: { revision: revision.number, channel,
         routing: automatic ? { outcome: "auto_priced", requiresHuman: false, pricingAuthority: "existing_rules_engine", reason: "Verified and released to existing pricing; no payment calculated." } : routing,
-        capture: null, rbCode: null, ...(automatic ? { releaseOrigin: "automatic_verification" as const } : {}) } }),
+        capture: null, rbCode: null, readyToRelease: paperReady, ...(automatic ? { releaseOrigin: "automatic_verification" as const } : {}) } }),
       caseStates: { ...s.caseStates, [caseId]: automatic || routing.outcome === "auto_priced" ? "cleared_by_rules" : "operator_review_required" } });
   };
 
@@ -277,6 +295,20 @@ export const useAppStore = create<AppState>((set, get) => {
     const reason = input.overrideReason ?? "";
     if (typeof reason !== "string") throw new Error("Decision reason must be text.");
     if (!proposed || isOverride || to !== "paid") requireText(reason, "Decision reason", 8);
+    if (to === "referred_back" || to === "information_requested") {
+      const revision = get().caseRevisions[c.id].at(-1)!;
+      const strength = revision.epsPrescription?.supplyRecord ? evaluateEpsStrength(revision.epsPrescription) : null;
+      const own = (caseById(c.id) ?? caseById(revision.templateCaseId))?.pharmacySupplyRecord;
+      const protectedValues = [...new Set([
+        ...(strength?.suggestion && strength.prescribed ? [strength.prescribed.code, strength.prescribed.name, strength.prescribed.strength,
+          String(revision.epsPrescription!.supplyRecord!.quantity)] : []),
+        ...(own?.brandManufacturer ? [own.brandManufacturer] : []),
+        ...(own?.productCode ? [own.productCode] : []),
+        ...(own?.quantity !== null && own?.quantity !== undefined ? [String(own.quantity)] : []),
+      ])];
+      assertSafeOperatorNote(reason, protectedValues);
+      if (draft !== undefined) assertSafeOperatorNote(draft, protectedValues);
+    }
     if (to === "paid" && !assessCurrent(c.id).releaseEligible) throw new Error("Current source facts do not satisfy the release gate.");
     let diagnostic: DiagnosticFollowUp | undefined;
     if (draft !== undefined) {
@@ -325,6 +357,11 @@ export const useAppStore = create<AppState>((set, get) => {
   };
 
   return {
+    mismatchSharePercent: createMismatchSharePercent(),
+    setMismatchSharePercent: (value) => {
+      if (typeof value !== "string") throw new Error("Mismatch assumption must be a text draft.");
+      set({ mismatchSharePercent: value });
+    },
     temporaryFollowVisit: null,
     setTemporaryFollowVisit: (visit) => {
       if (visit) {
@@ -342,7 +379,7 @@ export const useAppStore = create<AppState>((set, get) => {
     operatorDrafts: {},
     pharmacyDrafts: {},
     setOperatorDraft: (caseId, draft) => {
-      const row = requireState(caseId, ["in_review", "escalated"]);
+      const row = requireState(caseId, ["in_review", "escalated", "resubmitted"]);
       if (draft.outcome !== null && !Object.hasOwn(targets, draft.outcome)) throw new Error("Choose a supported human outcome.");
       if (typeof draft.rbCode !== "string" || typeof draft.note !== "string") throw new Error("Decision fields must contain text.");
       const s = get();
@@ -426,7 +463,7 @@ export const useAppStore = create<AppState>((set, get) => {
       });
     },
     releaseToPricing: (caseId, reason) => {
-      const s = get(), row = requireState(caseId, ["in_review", "escalated"]);
+      const s = get(), row = requireState(caseId, ["in_review", "escalated", "resubmitted"]);
       const process = s.itemProcesses[caseId], assessment = assessCurrent(caseId);
       if (!assessment.releaseEligible || process.routing.outcome === "type1_capture" && process.routing.requiresHuman) throw new Error(assessment.reason);
       const draft = s.operatorDrafts[caseId], revision = s.caseRevisions[caseId].at(-1)!.number;
@@ -554,20 +591,19 @@ export const useAppStore = create<AppState>((set, get) => {
       const facts = routingFactsForCase({ ...confirmedCase, extracted: capturedFields(confirmedCase) }, process.channel, true);
       const captureCompatible = input.provenance === "human_capture" && c.scenario !== "D"
         ? capturedFieldsMatchSources(confirmedCase) : compatibleCapture(confirmedCase);
-      const routing = routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !captureCompatible ||
-        revision.kind === "resubmission" || !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) });
+      const routing = { ...routeSubmission({ ...facts, interpretationRequired: facts.interpretationRequired || !captureCompatible ||
+        revision.kind === "resubmission" || !mandatoryFieldsCheck(capturedFields(confirmedCase)).every((check) => check.pass) }),
+      outcome: "type2_endorsement" as const, requiresHuman: true, pricingAuthority: null };
       const original = caseById(c.id) ?? caseById(revision.templateCaseId);
       if (!original) throw new Error("Original source evidence is unavailable.");
-      const assessment = revision.verificationEnabled ? evaluateItemVerification(original, revision, true, capture) : null;
-      let capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
+      const assessment = evaluateItemVerification(original, revision, revision.verificationEnabled === true, capture);
+      const capturedRow = appendHistory(row, { at, actor: "operator", from: row.state, to: "in_review",
         revision: revision.number, channel: process.channel, processStep: "type1_capture", capture,
-        verification: assessment?.verification ?? { ...NO_VERIFICATION },
+        verification: assessment.verification,
         message: "Human capture confirmed; code routed the captured fields." });
-      if (!routing.requiresHuman && routing.pricingAuthority) capturedRow = appendHistory(capturedRow, { at, actor: "code", from: "in_review", to: "paid",
-        revision: revision.number, channel: process.channel, processStep: "existing_pricing", message: routing.reason });
-      set({ itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, capture, routing } }),
-        itemVerification: immutable({ ...s.itemVerification, [c.id]: assessment?.verification ?? { ...NO_VERIFICATION } }),
-        caseStates: { ...s.caseStates, [c.id]: routing.requiresHuman ? "operator_review_required" : "cleared_by_rules" },
+      set({ itemProcesses: immutable({ ...s.itemProcesses, [c.id]: { ...process, capture, routing, readyToRelease: assessment.releaseEligible } }),
+        itemVerification: immutable({ ...s.itemVerification, [c.id]: assessment.verification }),
+        caseStates: { ...s.caseStates, [c.id]: "operator_review_required" },
         lifecycles: immutable({ ...s.lifecycles, [c.id]: capturedRow }) });
     },
     recordType2Decision: ({ caseId, decision, reason, approvedDraft, rbCode }) => {
@@ -643,7 +679,7 @@ export const useAppStore = create<AppState>((set, get) => {
     setAgentEnabled: (agentEnabled) => set((s) => ({ agentEnabled, queue: { ...s.queue, sweep: [], phase: -1, sweeping: false, playing: false } })),
     // Preserve all three replacement identities used by existing reset subscribers.
     resetDemo: () => {
-      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), itemVerification: seededVerification(), operatorDrafts: {}, pharmacyDrafts: {}, demoStep: null, temporaryFollowVisit: null, processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), followedCaseId: null, caseStates: initialStates(), records: immutable([]), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
+      set((s) => ({ ...seededLifecycleSession(), itemProcesses: seededProcesses(), itemVerification: seededVerification(), operatorDrafts: {}, pharmacyDrafts: {}, demoStep: null, temporaryFollowVisit: null, processInputs: processDraft(), manualLoopInputs: createManualLoopDraft(), mismatchSharePercent: createMismatchSharePercent(), followedCaseId: null, caseStates: initialStates(), records: immutable([]), agentEnabled: false, baselineInputs: baselineDraft(BASELINE_DEFAULTS), todayMinutes: String(MONTH_TIME_ASSUMPTIONS.todayMinutes), pharmacyCorrections: immutable([]),
         pharmacy: { ...s.pharmacy, assumptions: { ...PHARMACY_ASSUMPTION_DEFAULTS }, receipts: [] },
         queue: { ...s.queue, position: 0, day: 0, playing: false, sweep: [], phase: -1, sweeping: false, revision: s.queue.revision + 1 },
       }));
@@ -657,11 +693,17 @@ export function sessionCase(caseId: string) {
   return caseForLifecycle(caseId, lifecycles, caseRevisions, itemProcesses);
 }
 
+export function getCorrectionAcknowledgementValid(caseId: string): boolean {
+  const state = useAppStore.getState(), revision = state.caseRevisions[caseId]?.at(-1), draft = state.pharmacyDrafts[caseId];
+  return Boolean(revision && draft && draft.revision === revision.number && draft.correctionAcknowledgement?.revision === revision.number &&
+    draft.correctionAcknowledgement.fingerprint === correctionFingerprint(draft));
+}
+
 /** Source-only eligibility; the human control also requires an explicit eight-character reason. */
 export function getReleaseEligibility(caseId: string): { allowed: boolean; reason: string } {
   const s = useAppStore.getState(), row = s.lifecycles[caseId], revision = s.caseRevisions[caseId]?.at(-1), process = s.itemProcesses[caseId];
   if (!row || !revision || !process) return { allowed: false, reason: "Unknown synthetic item." };
-  if (!["in_review", "escalated"].includes(row.state)) return { allowed: false, reason: "An active operator review is required." };
+  if (!["in_review", "escalated", "resubmitted"].includes(row.state)) return { allowed: false, reason: "An active operator review is required." };
   if (process.routing.outcome === "type1_capture" && process.routing.requiresHuman) return { allowed: false, reason: "Complete human Type 1 capture before release." };
   const original = caseById(caseId) ?? caseById(revision.templateCaseId);
   if (!original) return { allowed: false, reason: "Original source evidence is unavailable." };
@@ -675,6 +717,7 @@ export function getDomainSnapshot() {
   return immutable({ lifecycles: s.lifecycles, caseRevisions: s.caseRevisions, itemProcesses: s.itemProcesses, records: s.records,
     itemVerification: s.itemVerification, operatorDrafts: s.operatorDrafts, pharmacyDrafts: s.pharmacyDrafts,
     caseStates: s.caseStates, processInputs: s.processInputs, manualLoopInputs: s.manualLoopInputs, baselineInputs: s.baselineInputs, todayMinutes: s.todayMinutes,
+    mismatchSharePercent: s.mismatchSharePercent,
     pharmacyCorrections: s.pharmacyCorrections, pharmacy: { assumptions: s.pharmacy.assumptions, receipts: s.pharmacy.receipts } });
 }
 

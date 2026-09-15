@@ -147,6 +147,10 @@ export function caseForLifecycle(
   const original = caseById(caseId) ?? caseById(revision?.templateCaseId);
   if (!original || !revision) return null;
   let c = structuredClone(original);
+  if (revision.paperSource) {
+    const scan = revision.paperSource.scan;
+    c = { ...c, extracted: { ...scan.extracted }, regions: scan.regions, imageQuality: scan.imageQuality, imageStyle: scan.imageStyle };
+  }
   if (revision.channel) c.channel = revision.channel === "eps" ? "Electronic (EPS)" : "Paper FP10";
   if (c.id !== caseId) {
     const pharmacy = PHARMACIES.find((p) => p.contractorCode === lifecycles[caseId].pharmacyCode);
