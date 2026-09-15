@@ -4,6 +4,10 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: may a passing old-layout browser result certify the new sibling layout? Choice: no; run O's unchanged ten scenarios once on G's clean published assembled candidate after coordinator clearance, preserving full axe, focus, geometry and named 1440 px evidence. Tie-breaker: source-pinned proof without duplicate runs.
+
+- Question: how are the full-unit result and later evidence-only change attributed? Choice: record check plus 1,995 units on `612df97` separately from capture-only `7ed760a`; do not label pending browser execution or live deployment as passed. Tie-breaker: exact evidence provenance.
+
 - Question: where is Apply verified after genuine role separation? Choice: in the case-bound operator advice sibling, while human choices/reason/Release remain in the human panel; require disjoint adjacent panels, H2 advice and unchanged authority/help, measuring all prose in each below 25. Tie-breaker: the parent's implemented structural contract, not an assertion waiver.
 
 - Question: may the pending advice scope change proceed? Choice: consume exact G `4ac77a5` with O's genuine sibling source, then assert both real panels and scope Apply to advice; tie-breaker: the parent's explicit structural prerequisite is now implemented.

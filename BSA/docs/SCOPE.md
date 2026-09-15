@@ -4,6 +4,13 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+G's assembled sibling-panel runtime passes the complete check and 1,995
+units on `612df97`. O's later artifact-only `7ed760a` preserves the same ten
+browser scenarios and adds named 1440 px checkpoints using the existing
+width guard. This is not browser or live acceptance. G owns the single
+coordinator-cleared 4335 run; O's separate queued run is superseded, not
+additional coverage. No timed-matrix, backup or infrastructure work is added.
+
 V's sibling-panel assertion migration changes only its review-repair unit
 file and these tracking records. Apply belongs to advice; all human choice,
 reason and release assertions remain in the actual human panel. Both panel

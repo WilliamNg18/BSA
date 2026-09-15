@@ -4,6 +4,14 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+G integrated the isolated O structural, V assertion and O capture handoffs.
+Full check and 1,995 units pass on `612df97`; the subsequent capture-only
+`7ed760a` changes neither source authority nor unit behavior. The pending
+single ten-case 4335 run requires coordinator clearance and a clean published
+build. Previous CI and owner browser artifacts do not certify this layout.
+PR #110 remains WIP until exact candidate verification and coordinator-owned
+main/deployment/live acceptance.
+
 The actual sibling layout now satisfies V's migrated review assertions:
 40 focused tests, typecheck and targeted lint pass. This uses O's implemented
 structure, not a nested-content exclusion. Whole-suite, focus/geometry and

@@ -4,6 +4,22 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## G assembled authority-panel checkpoint
+
+On `612df97`, the full check and all 1,995 unit tests in 116 files pass.
+This incorporates O's genuine sibling panels and V's actual-panel assertions,
+resolving the two retained Apply-scope failures on `4ac77a5`.
+The subsequent `7ed760a` adds only O's bounded browser checkpoint captures
+and tracking records; it does not change runtime source or unit tests.
+
+The single ten-case operator browser run is assigned to G on port 4335,
+one worker and zero retries, after clean publication and the coordinator's
+explicit clearance following A's release. No new-layout browser result is
+claimed yet. PR #110 remains draft; main, deployment and observed live SHA
+are still release gates. The last coordinator-confirmed live baseline is
+`5b75e5f7711bf599b02ff9fab752781fa0685b00` at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, not this candidate.
+
 The two V Apply assertions now target the actual advice sibling on G
 `4ac77a5`. The helper requires the real workspace, case-bound human panel,
 operator-audience advice, visible H2 markup, adjacent disjoint panels and

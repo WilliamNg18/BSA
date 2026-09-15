@@ -4,6 +4,15 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The assembled structural candidate now passes all 1,995 units across 116
+files and the full check on `612df97`. Its previous two failures were
+specific Apply-scope assertions, repaired by V without relaxing copy limits
+or removing controls. Browser captures must also be intentionally placed:
+O's subsequent artifact-only patch adds ready-paper and focused-capture
+checkpoints at 1440 px while retaining the exact ten scenarios.
+Neither local units nor test discovery proves the pending browser or live
+gates.
+
 The last two G unit failures were caused by searching for Apply inside the
 new human panel. V now asserts the real adjacent advice/human structure,
 checks both full panel narratives and keeps the human controls scoped.
