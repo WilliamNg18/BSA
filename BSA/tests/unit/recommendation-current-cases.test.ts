@@ -27,6 +27,9 @@ describe("current four-case source-backed recommendations", () => {
     s().setPharmacyDraft(strengthId, { ...initialisePharmacyDraft(sessionCase(strengthId)!, revision), purpose: "new_submission" });
     const before = deriveRecommendation(s(), strengthId, { kind: "draft" });
     expect(before.strength?.gap).toBe("Strength mismatch: prescribed 10mg, selected 5mg");
+    expect(before.ruleAuthority).toBe("proposed_cross_record_check");
+    expect(before.clause).toBeNull();
+    expect(before.sourceGap).toBeNull();
     expect(before.requirements).toContainEqual(expect.objectContaining({ id: "selected_pack_matches", status: "not_met" }));
     expect(before.preview?.epsPrescription?.items[0].dispensedCode).toBe("SYN-AMLO10-28");
     expect(recommendationForAudience(before, "operator").operatorPreview?.note ?? "").not.toMatch(/10mg|5mg|\b28\b/);
