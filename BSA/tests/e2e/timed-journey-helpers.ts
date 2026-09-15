@@ -35,13 +35,14 @@ export async function runTimedCaseJourney(
   function queueTarget(automatic: boolean) {
     const summary = page.locator("[data-automated-records] > summary");
     const label = item.channel === "paper" ? "Type 1 capture lane" : "Type 2 worklist";
-    const tile = page.getByRole("region", { name: "Actual session work counts", exact: true })
-      .getByRole("button", { name: new RegExp(`^${label}`) }).locator("span").last();
+    const tileButton = page.getByRole("region", { name: "Actual session work counts", exact: true })
+      .getByRole("button", { name: new RegExp(`^${label}`) });
+    const tile = tileButton.locator("span").last();
     return {
       link: page.getByRole("link", { name: "Back to queue", exact: true }),
       tile: automatic ? summary : tile,
       expectedTileText: automatic ? "Automated session items (1)" : id === "EX-24112" ? "2" : "1",
-      ...(automatic ? { expand: summary } : {}),
+      ...(automatic ? { expand: summary } : { select: tileButton }),
     };
   }
   function queueRow(automatic: boolean) {
