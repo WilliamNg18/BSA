@@ -48,6 +48,11 @@ now has 194 passing tests in 15 suites; current check passes. Shared full-suite
 failures are not waived. No infrastructure, backup, workflow, operator or
 browser instrumentation work was added to P's scope.
 
+C1's B proof now includes all-four information-request/response transitions
+using actual store actions. A response is not a corrected claim submission,
+so the exact last submitted object remains unchanged. The 19 passing fidelity
+tests still run on G's pre-new-seed canonical snapshot, not final live scope.
+
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
 Sixty-seven combined units and check pass on integrated G `9b41cc2`. New

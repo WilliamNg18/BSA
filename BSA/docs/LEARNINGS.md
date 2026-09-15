@@ -65,6 +65,18 @@ records and retains B's later readable-blank fix, with no canonical store,
 type, lifecycle or seed differences from G. New store-level evidence will be
 published separately from this ownership-preserving source integration.
 
+Four additional real-store cases confirm that `sendConfirmation` appends an
+information response without replacing the actual submission replica. The
+19-unit fidelity selection passes. This exposed a consumer seam: U correctly
+requires matching submission/reconciliation revisions, while the current
+response increments lifecycle revision. G/U must explicitly link that response
+to its original submission source; simply accepting any revision would weaken
+fidelity. The concern was sent to both owners without editing their files.
+
+The refreshed published-source audit now includes R/U/P consumer foundations
+and S's scanner production explanation. Their source-level progress is partial,
+not a current-main, browser or all-state acceptance claim.
+
 The real-store fidelity tests now pass alongside the domain/action suites:
 67 tests in eight files, followed by check. The assertions compare the entire
 last submission object after actual actions, retain prior revision arrays and
