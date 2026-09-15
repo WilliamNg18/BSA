@@ -4,6 +4,12 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+Pharmacy-response migration retains nine checks; its obsolete seeded-manual
+case is now an explicit historical-referral/ready-paper check. C/F background,
+approval provenance, original attempts and Off-return history remain covered.
+Parent's prose-scope change requires real sibling panels, not a test-only
+exclusion or reduced mandatory advice.
+
 V's declaration assertions now use U/O's canonical scanner instead of the
 removed duplicate view, preserving exact source identity, endorsement,
 consent, footer and immutable-state checks. Remaining source failures stay

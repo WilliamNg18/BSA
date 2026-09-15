@@ -4,6 +4,12 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Current pharmacy-response assertions now distinguish a prior C8 referral from
+an active correction request and distinguish pharmacy advice from operator
+approval. Typecheck/lint/discovery are static evidence only. Prose measurement
+will change only after O's real sibling-panel implementation; existing
+functional and false-Home-correction gates remain intact meanwhile.
+
 The canonical scanner assertion migration resolves three stale selectors:
 the same six-file selection is now 72/74 on G `815278f`. Exact submitted
 values and duplicate absence are checked, not replaced with a broad text

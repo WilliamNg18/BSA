@@ -4,6 +4,10 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: does a seeded prior referral make corrected C8 paper actively editable? Choice: keep the prior note in history, require current ready-to-release status and no active response/resubmit controls; tie-breaker: actual revision and lifecycle authority.
+- Question: may pharmacy Apply depend on an operator supplying the correction? Choice: verify its own-records action for a current referral regardless of note approval, while checking approval metadata on the actual decision event; tie-breaker: C5 audience separation.
+- Parent decision: mandatory R summary and authority remain, and the numeric limit stays below 25. O must create genuine sibling advice and human-decision panels with distinct visible headings/landmarks. V then measures cumulative paragraphs and choice-help in each actual panel and asserts separation; no exclusion from the existing nested layout, hidden help or generic wrapper workaround.
+
 - Question: what replaces the removed duplicate declaration assertion? Choice: inspect the canonical scanner declaration column, require its exact revision/endorsement and forbid duplicate legacy evidence while retaining consent/immutability checks; tie-breaker: exact C4 source fidelity without reintroducing old UI.
 - Question: how is the parent's Home ownership transfer coordinated? Choice: F may change its bounded source and the specific Home-case assertion block if needed, preserving the existing negative and state guards; V freezes that block and retains all other unit work. Tie-breaker: explicit handoff without parallel edits.
 

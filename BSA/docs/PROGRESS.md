@@ -4,6 +4,20 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+V migrated the nine existing pharmacy-response checks to current B paper and
+C8 history. The seeded prior referral remains historical while corrected
+paper awaits release; current manual reasons never become approved notes.
+Pharmacy-owned Apply is independent of operator-note approval. Current-event
+assertions identify the actual decision before the presentation mode changes.
+Typecheck/lint and combined eleven-check discovery pass; no browser ran.
+
+Parent clarified prose measurement: O must first publish genuinely separate
+sibling advice and decision panels with visible headings/landmarks. Only
+then may each actual panel's cumulative prose be measured below 25 words,
+with mandatory R copy retained and structural separation asserted. The old
+26/34-word counterexamples remain recorded; no nested-content exclusion was
+introduced.
+
 The V scanner follow-up now selects the canonical declaration column and
 asserts one scanner, no retired duplicate, exact submitted revision and exact
 typed endorsement. All three migrated declaration cases pass. The six-file

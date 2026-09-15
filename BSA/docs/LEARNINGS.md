@@ -4,6 +4,18 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Pharmacy history intentionally changes its presentation of human reasons and
+approved notes between modes. Capture the current decision's position while
+its reason is visible, then verify that same event's authority rather than
+searching all historical notes. Original attempts/messages and the complete
+Off-return history remain exact. Nine response checks and two keyboard checks
+are discoverable; typecheck/lint pass, but browser execution is still pending.
+
+The parent resolved the prose conflict through genuine role separation in
+the UI, not by shortening mandated R copy or excluding a nested card from
+the existing aggregate. The old 26/34 totals remain historical counterexamples
+until O publishes that source and V verifies both real panel boundaries.
+
 Migrating only the declaration evidence selector resolves all three stale
 cases. New assertions also require one canonical scanner, no duplicate legacy
 declaration, the exact source revision and exact typed endorsement. The
