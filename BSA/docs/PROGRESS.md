@@ -5,6 +5,171 @@ ms.date: 2026-09-15
 ---
 
 ## 2026-09-15: U40 scanner comparison WIP, not live acceptance
+The V scanner follow-up now selects the canonical declaration column and
+asserts one scanner, no retired duplicate, exact submitted revision and exact
+typed endorsement. All three migrated declaration cases pass. The six-file
+selection is 72/74 on G `815278f`; Home's false date instruction and O's
+ready-paper prose are the only failures. Typecheck and targeted lint pass.
+O has announced an equivalent shorter suffix; verification awaits its
+published source. No browser/scanner geometry run was duplicated.
+
+Parent transferred the bounded Home/step source repair to F. V supplied the
+exact counterexample and agreed only that Home-case assertion block may be
+adjusted if necessary; its existing negative, Type 2 and read-only guards
+must remain. V retains the other unit migrations and is not editing that
+block concurrently.
+
+V integrates exact G `815278f` with the published P/U/O/N/F/R consumers.
+Only the five tracking documents conflicted; both sides were retained and
+owner source was not changed. The six-test-file rerun is 69/74: three old
+declaration selectors need V migration to the canonical scanner, while the
+false Home date instruction and a 26-word operator explanation remain
+reported D/O source findings. No browser or full-suite pass is claimed.
+
+V migrated the two existing claims-resubmission keyboard checks to fresh
+brand-missing paper. Off fills the actual pharmacy record fields and requires
+keyboard ACK before Resubmit; On verifies brand Apply/focus, exact retained
+attempts, ACK preservation across mode flips and invalidation after a brand
+edit. Both existing axe assertions and leaf names remain. Typecheck, targeted
+lint and two-name discovery pass; no browser execution is claimed.
+
+The expected ready-paper status depends on F's process-aware presentation.
+P `b236e8d` still omits ItemProcess from its claim status call; V reported
+that integration gap rather than accepting the older awaiting-recheck label.
+The live build identity was independently refreshed at
+`2026-09-15T20:48:03.1763254Z`, serving clean main
+`5b75e5f7711bf599b02ff9fab752781fa0685b00`. This verifies identity only.
+
+## V six-file canonical unit migration
+
+The six assigned files now exercise current paper/strength actions: actual
+Today pricing then audit, payload-bound ACK before resubmission, original
+attempt retention, readable paper without invented Type 1, and explicit
+human release after paper capture/recheck. Historical pure-domain CASES and
+their July replay assertions remain unchanged. P's earlier
+`four-case-baseline-ui` assertions from `d97ccf4` are unioned, not overwritten.
+
+On exact G `99abdd4`, the selection improved from 59/74 to 71/74; the three
+failures are two absent P EPS-control updates and Home's false date correction
+for brand-missing B. A unit-only staging checkout of exact P `b236e8d` with
+identical six test sources passes 73/74. Its sole failure is the Home date
+instruction, reported to D. No staging source file was modified, no browser
+or build was launched, and no full-suite/live pass is claimed. Typecheck and
+targeted lint pass. Both earlier failed reports remain retained.
+
+V imports exact G `99abdd4` (including `c03ab21`, `c3f69f2` and merged
+Part A) without source conflict. G assigned six remaining unit files to V;
+O confirmed no overlapping writer. Their fresh two-worker baseline is
+59 passed / 15 failed. Source/UI gaps remain failures, not compatibility
+passes, until the actual owner implementation and assertions agree.
+
+## V canonical dependency integration
+
+V's pharmacy scenario helper now explicitly selects either real paper radio
+and verifies its item ID; the default remains unreadable D. Starting B uses
+P `74cd4a8`'s factory-backed brand-missing paper selection and explicit Post,
+without clearing fields, resetting state or writing through an observer.
+Static contracts protect these helper choices; browser execution and the
+remaining B consumer assertions are still pending.
+
+Typecheck, targeted helper/unit lint and all three static helper regressions
+passed with two workers. These results establish no browser pass.
+
+Importing P's whole branch encountered conflicting canonical source, so that
+merge was aborted without retaining any source resolution. The test adapter
+targets P's published contract; it does not claim the current V runtime has
+all P/O/F consumer changes. B `55f8d28` subsequently passed the original nine
+negative assertions, but its 107/108 combined result still fails D's
+capture/information-response routing. G owns that remaining repair.
+
+The V-owned Type 1 capture preservation check now compares
+`mismatchSharePercent` before and after capture, alongside the existing global
+inputs. N's exact-key assertion file, observer producer and complete snapshot
+machinery remain unchanged. This is a source-compatible assertion addition;
+the migrated browser matrix has not run.
+
+Typecheck, targeted capture-spec lint and 49 canonical-runtime/mismatch units
+passed with at most two workers. State discovery remains 44 tests in eight
+files; discovery is not execution. No browser or server was started.
+
+V imports exact G `cdd436b906f397a1d210603e4cef3794812c0a59` for
+source-compatible verification work, preserving owner source and unioning
+both streams' tracking records. Its published fixes supersede the earlier
+source checkpoint; independent negative regression reruns, consumer integration
+and browser/live acceptance remain distinct gates. No browser was launched.
+
+P's staging branch now imports the explicitly released F, U and O consumer
+commits without their model merges or backup lineage. Combined check passes.
+The full cross-view unit run remains 1,839 pass / 122 fail. O's subsequent
+two-file compatibility and P's date/source-label integration pass 30 targeted
+tests. The pharmacy test now reads the actual immutable submitted date instead
+of requiring the duplicate legacy declaration heading. No browser has started;
+4342 is queued behind the coordinator's existing lease, not yet allocated.
+
+## B40 canonical verification branch integration
+
+**B-owned implementation and verification handoff:** 111 selected tests and
+typecheck pass after the final test-only additions; the unchanged canonical
+runtime also passed check. The 27 actual-store fidelity cases now additionally
+prove a new Post invalidates earlier capture while an information-only answer
+retains it, and C8's ready/referral seeds carry actual code verification and
+pharmacy acknowledgement history. No B-owned failing regression remains.
+Overall Task 40 still requires the owning UI integrations, V's exact browser
+timing/accessibility matrix, merge/deployment and observed live acceptance.
+
+B verified G source-link repair `c03ab213d97392e0769c3de1546c1c224563c6f8`
+through integrated `99abdd467d7885b387248d11bccc8c5c647e9fb2`.
+The exact remaining negative passes unchanged, then all 110 selected tests
+and check pass. All ten previously reproduced source/note/capture failures
+are now resolved on the canonical branch. Browser timing, consumer-wide
+migration, main merge/deployment and live acceptance remain separate gates.
+
+B safely incorporates actual main `5b75e5f7711bf599b02ff9fab752781fa0685b00`
+(Part A and the master requirements). G's domain and main's header remain
+unchanged. All 72 new global notice-policy assertions and typecheck pass.
+The broader demo-shell file's two old seed/Gate 1 expectations remain failed
+consumer migrations (102/104), not header defects or waived failures.
+
+B verified G `cdd436b906f397a1d210603e4cef3794812c0a59`: all nine
+previously failing note/image regressions now pass unchanged. The full selected
+matrix is 107 passed, one failed; the remaining failure is G's requested
+information-response source-linked capture routing. Check passes. The C4/C5
+repairs are bounded branch proof, not current-main or browser/live acceptance.
+
+G requested one further source-link regression: after D's actual Type 1 capture,
+an information-only response preserves the facade/capture but incorrectly routes
+back to Type 1. That targeted test fails on `4765770`; G is adding explicit
+source-revision linkage. This is a tenth pending negative assertion, separate
+from the nine note/image regressions and the previous passing matrix.
+
+Two additional integration defects are reproduced by nine new negative tests:
+missing-presentation paper notes can leak the correct `capsules` value through
+all four final communication APIs in Off and On, and the acknowledged paper
+amendment scan does not visibly contain its manufacturer even though its
+hypothetical OCR does. G, the canonical source/store owner, has the exact
+reproducers and repair request. These nine tests currently fail; the earlier
+91-test pass is not a claim that these additional requirements are satisfied.
+
+The migrated B matrix now passes 91 combined units and check on G `4765770`.
+It uses the canonical submission/scanner facades, all four new identities,
+and complete D, wrong-strength EPS and brand-missing paper cycles in Off/On
+across Both, Pharmacy and NHSBSA. Corrected EPS is absent from the actual
+`staffLane` queue projection; paper has no Paid receipt before one human
+Release. Every step preserves prior submissions, OCR, capture and human history.
+The two obsolete second-capture failures remain recorded below.
+
+B now incorporates G `4765770c37e3f063fe5d2678e361f115e03e13d4`, with
+new four-case seeds, revision-pinned paper sources and corrected channel routing.
+The first B run passed 73/75; two old tests incorrectly attempted a second
+Type 1 capture after an acknowledged paper amendment was already ready for
+human Release. B is updating its own proof to the canonical new contract,
+not changing the store or weakening the required final operator press.
+
+Four additional actual-store tests cover Request information and the pharmacy
+response for every current ID, proving that a confirmation answer does not
+replace the last submitted claim. The 19-unit fidelity selection passes; the
+updated all-active-published-head audit is pinned in ALIGNMENT. G/U own the
+identified scanner-facade submission-versus-response revision linkage.
 
 U integrated G's published functional `4765770` and B's explicit null/blank
 contract `d581326` without editing canonical source actions. Five new tests

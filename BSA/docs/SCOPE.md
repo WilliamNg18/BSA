@@ -4,6 +4,34 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+V's declaration assertions now use U/O's canonical scanner instead of the
+removed duplicate view, preserving exact source identity, endorsement,
+consent, footer and immutable-state checks. Remaining source failures stay
+open; no timing or visual evidence is inferred from unit success.
+
+F now owns the bounded Home/11-step source repair and, by explicit handoff,
+only the corresponding Home assertion block if needed. This does not transfer
+V's other unit files or waive the false-date negative.
+
+G `815278f` is now V's unified consumer dependency. N's schema/capture
+assertions and all owner code are preserved. New source versions require
+fresh verification; earlier P-stage results are not transferred to this head.
+
+The two existing 1440 px claims keyboard checks now prepare current paper
+corrections and exercise real required accuracy acknowledgement. Their
+history, focus and axe obligations remain; discovery alone does not satisfy
+them. No new screenshot, browser lease or live acceptance run was added.
+
+The V six-file unit migration preserves 74 checks and the historical
+pure-domain regression cases. Current operational tests no longer fabricate
+date corrections, route readable B through Type 1, or treat capture as paper
+release. Completion is still blocked by actual UI integration: G-base 71/74,
+published P-base 73/74, with Home's false B date instruction still rejected.
+
+G assigned V six unit migrations: case-presentation, four-case-baseline-ui,
+lifecycle-ui-bridge, process-presentation, review-repair and trace-closing.
+O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
+
 # Scope register
 
 U40 integration now consumes G `4765770` and B `d581326`. Twenty-five scanner

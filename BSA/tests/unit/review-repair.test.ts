@@ -87,7 +87,13 @@ it.each(["NCSO JB 27/08/26", "NCSO JB", "BB JB"])("keeps received declaration ad
   declare(endorsement);
   const before = getDomainSnapshot();
   const html = capture();
-  const check = section(html, 'aria-label="Original pharmacy declaration"');
+  const check = section(html, 'data-paper-source="declaration"');
+  expect(html.match(/aria-label="Paper scanner comparison"/g)).toHaveLength(1);
+  expect(html).not.toContain('aria-label="Original pharmacy declaration"');
+  expect(html).toContain(`data-as-submitted-revision="${before.caseRevisions["EX-24123"].at(-1)!.number}"`);
+  const submittedEndorsement = check.match(/<dt[^>]*>Endorsement<\/dt><dd[^>]*>([\s\S]*?)<\/dd>/)?.[1];
+  expect(submittedEndorsement).toBeDefined();
+  expect(text(submittedEndorsement!)).toBe(endorsement);
   const narrative = paragraphs(check).filter((p) => !p.startsWith("Declared dispensing-month Tariff:"));
   expect(words(narrative.join(" "))).toBeLessThan(25);
   const label = text(html.match(/<label class="flex items-start gap-2 text-sm">([\s\S]*?)<\/label>/)![1]);

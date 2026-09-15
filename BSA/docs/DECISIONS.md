@@ -4,6 +4,15 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: what replaces the removed duplicate declaration assertion? Choice: inspect the canonical scanner declaration column, require its exact revision/endorsement and forbid duplicate legacy evidence while retaining consent/immutability checks; tie-breaker: exact C4 source fidelity without reintroducing old UI.
+- Question: how is the parent's Home ownership transfer coordinated? Choice: F may change its bounded source and the specific Home-case assertion block if needed, preserving the existing negative and state guards; V freezes that block and retains all other unit work. Tie-breaker: explicit handoff without parallel edits.
+
+- Question: may V promote earlier P-only unit evidence after U/O integration? Choice: rerun on exact G `815278f`, migrate the retired duplicate-declaration selector and report remaining real source failures; tie-breaker: current source fidelity without weakening functional or quality assertions.
+
+- Question: how does the Off keyboard test resubmit current paper? Choice: enter all required pharmacy-owned fields from the canonical supply record, then explicitly acknowledge accuracy and press Resubmit; tie-breaker: actual UI actions and no synthetic hidden correction.
+- Question: should an edited approved correction remain submit-enabled? Choice: assert that the payload change clears the current ACK and disables Resubmit while preserving historical Apply/ACK events and every attempt; tie-breaker: payload-bound consent and immutable history.
+- Question: may a generic awaiting-recheck label stand in for ready paper? Choice: require F's exact ready label and report P's missing process argument; tie-breaker: consistent same-item state, not a relaxed text predicate.
+
 ## 2026-09-15: B40 fidelity and communication contract choices
 
 - Question: should a later information response bypass the scanner revision guard? Choice: keep the guard strict and use G's facade pinned to the last actual submission, proving it with real request/response actions; tie-breaker: exact source identity without inferred replacement evidence.

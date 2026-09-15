@@ -4,6 +4,113 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The canonical scanner assertion migration resolves three stale selectors:
+the same six-file selection is now 72/74 on G `815278f`. Exact submitted
+values and duplicate absence are checked, not replaced with a broad text
+match. Home and operator prose remain distinct unresolved source findings.
+Parent has reassigned the bounded Home/step repair to F; O retains its prose
+repair. V supplied the exact Home failure and retains all unrelated assertions.
+
+Exact G `815278f` integrates the consumer contracts without V source edits.
+The new six-file unit result is 69/74, not the earlier P-stage 73/74:
+canonical scanner selectors require migration and the new operator prose
+exceeds the existing target. Both source and assertion obligations stay open.
+
+Claims keyboard assertions now reflect actual current paper fields, ACK
+gating and payload-edit invalidation, without changing their two leaf names.
+P's claim status must consume the current ItemProcess to match F's published
+ready-paper label. That source integration dependency is not waived by static
+typecheck/lint/discovery, and no browser result is claimed.
+
+## 2026-09-15: P consumer source checkpoint
+
+Main `6418151` still used the retired EPS headline and lacked the required
+pharmacy acknowledgement. Published G `9b41cc2` supplies the real setter and
+W catalogue constants, but not final channel seeds/preparation/recheck wiring.
+P consumes those interfaces without a new store or duplicated correction rule.
+C5 removes the pharmacy display's exact-fix field from the operator note;
+own-record suggestions no longer require an approved exact-value note.
+C6 adds required checkbox and separate guarded Resubmit in both modes.
+C8 renders actual Paid, Action needed and Waiting rows concurrently; canonical
+seed coexistence and browser/live acceptance remain pending. No SSR result is
+claimed as viewport, timing or live acceptance.
+
+The real accuracy input's callback is covered by five handler/store tests.
+Rendering it creates no draft/event; explicit checking calls G's setter,
+manual editing clears the binding, and stale callbacks surface the action
+error without changing state. This closes only the bounded consumer seam.
+
+P's actual shared recommendation wrapper now declares the pharmacy audience;
+an omitted caller remains safely operator-only. Local check and 24 focused
+consumer units passed; full partial-integration run retained 65 failures
+(1,665 passing), so canonical acceptance remains open.
+
+After G `4765770` plus R `634dda6`, 31 focused P units and typecheck pass.
+Actual handler cycles prove retained source, separate acknowledgement and
+channel-specific recheck outcomes. C8's completed B seed exposes a remaining
+ordinary-submission initialisation issue: current-revision projection is correct
+for claims but cannot pretend the original brand-missing example is complete.
+G owns the new-submission factory; source-backed paper pack/form completion
+is also requested. Browser, fresh full suite and deployment remain open.
+
+The shared EPS evidence component no longer calls an endorsed 5mg selection
+the actually dispensed product. It separately displays unchanged supplied
+product/quantity. The compact channel mismatch negative renders an explicit
+alert without any enabled submission control or state change. Bounded P
+coverage is now 34 passing tests, not whole-app or viewport acceptance.
+
+G `cdd436b` plus P's workbench-only initializer consumer closes the recorded B
+source-selection gap. Thirty-six focused tests now include the actual fresh
+brand-missing Post button in both modes, without blanking a hidden draft.
+Off preserves its absent declaration; the correction explicitly supplies all
+required human-entered fields before acknowledgement. The exact canonical
+pharmacy-suggestion caption is treated as a label under the stated prose
+exemption; other panel prose remains below 25 words. No screen is hidden.
+
+Stable P check passes and 140/140 owned tests pass in one run. The same source
+integration's full Vitest result is 1,637 pass / 170 fail, not an accepted
+baseline. The unchanged two-view landmark uniqueness check found a new
+unqualified supply-record label; prefixing it with the existing context fixed
+the defect without removing the assertion or evidence section.
+
+After G's truthful matching authority and R's test/Card handoffs, P's entire
+194-test scope passes in one run and check passes. The full integration result
+is 1,664 pass / 144 fail; all remaining files are outside the current P scope.
+The legacy generic EPS field test uses its isolated historical source rather
+than mutating the new wrong-strength identity. Main `5b75e5f` contains Part A,
+not this pharmacy integration. No hosted observation or complete verdict is
+claimed for this working branch.
+V's assigned unit migration now preserves ACK, same-attempt history, Today
+audit and human paper release semantics. Exact P `b236e8d` resolves the two
+old EPS UI failures present on G `99abdd4`; the identical six tests reach
+73/74 on unchanged P source. Home still proposes adding a date to correctly
+dated brand-missing paper. That negative stays failing until D repairs the
+source. P's existing overlapping four-case assertions are retained in full.
+
+The fresh V six-file unit baseline against G `99abdd4` is 59 passed / 15
+failed. This establishes the migration starting point, not a full integration
+or browser result. The exact failed JSON is retained in session evidence.
+
+The V helper contract now follows P `74cd4a8`'s actual paper radios and Post
+control, with explicit case identity and no hidden draft mutation. Static
+helper tests are not DOM evidence. P's conflicting whole-branch merge was
+aborted; canonical source remains owner-controlled. B's newer nine-negative
+pass is separate from its still-failed 107/108 combined routing result.
+
+V's capture preservation list now protects `mismatchSharePercent`, closing
+the identified assertion omission without changing the producer or N's
+exact-key-list file. Execution of the migrated state matrix remains pending.
+
+V integrates exact published G `cdd436b` without modifying owner source.
+The earlier failure records below retain their original source boundaries.
+Dependency integration alone does not close those gates or verify the UI.
+
+The authorised F/U/O staging integration passes check, while full Vitest still
+has 122 failures (1,839 passing). A P-owned integration test now requires the
+actual as-submitted heading/date and unchanged domain snapshot rather than an
+obsolete duplicate date label. The subsequent three-file selection passes 30
+tests; it is not a replacement full-suite, browser or live verdict.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 U's real-source integration test now confirms that G's facade pins the last
