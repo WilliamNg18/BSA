@@ -668,3 +668,7 @@ nested card from the previous counter. Advice owns its Apply control;
 human disposition, reason, RB choice, state and error focus remain in the
 human panel. V owns existing locator migration; O owns the expanded ten-test
 operator regression file. No timing predicate or one-second clock changes.
+
+Named operator-panel screenshot checkpoints are artifact-only additions to
+the same ten cases. The standard failure-artifact policy is unchanged.
+No new scenario, action, predicate, retry or browser run is introduced.

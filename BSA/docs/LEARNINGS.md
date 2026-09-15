@@ -1885,3 +1885,9 @@ They also verify that the full mandatory copy remains in the workspace.
 Check and 53 targeted tests pass, with V's original two D cases passing
 separately. The ten changed-layout browser cases are inventory only, not
 an execution result; prior four-test9d5502 proof is not promoted.
+
+The named-checkpoint follow-up changes only artifact capture. An initial
+raw-text comparison differed across Git LF and Windows CRLF; comparing
+parsed TypeScript expressions confirms unchanged title templates,
+expectations and functional-action order. Typecheck and ten-test discovery
+pass. No new screenshot or browser result exists before the allocated run.
