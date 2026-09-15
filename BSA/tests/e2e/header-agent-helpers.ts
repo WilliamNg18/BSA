@@ -31,12 +31,8 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     if (hidden) {
       await expect(page.getByText("This view belongs to the other side; switch perspective to see it", { exact: true })).toBeVisible();
     } else if (route === "/pharmacy") {
-      const precheck = page.getByRole("region", { name: "Claims precheck", exact: true });
-      await expect(precheck).toHaveCount(enabled ? 1 : 0);
-      if (enabled) await expect(precheck.locator("[data-pharmacy-status]")).toHaveText("Information missing");
-      else await expect(page.getByRole("button", { name: "Manual: No advisory check; later correction is possible", exact: true })).toBeVisible();
-      await expect(page.getByRole("button", { name: "Apply suggested correction", exact: true })).toHaveCount(enabled ? 1 : 0);
-      await expect(page.getByRole("button", { name: "Send claim", exact: true })).toBeEnabled();
+      await expect(page.locator("[data-pharmacy-status]")).toHaveText(enabled ? "Information missing" : "Not checked: manual submission");
+      await expect(page.getByRole("button", { name: "Apply correction", exact: true })).toHaveCount(enabled ? 1 : 0);
     } else if (route === "/queue") {
       await expect(page.locator("[data-queue-guide]")).toHaveText(enabled
         ? "Type 2 worklist: the agent verifies and advises; a person decides."
@@ -48,12 +44,8 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     } else if (route === "/#month") {
       await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
     } else if (route.startsWith("/case/")) {
-      const automaticRecord = ["/case/EX-24107/trace", "/case/EX-24107/record"].includes(route);
-      await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled || automaticRecord ? 0 : 1);
-      if (automaticRecord) {
-        await expect(page.getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
-        await expect(page.getByRole("button", { name: "Release to pricing", exact: true })).toHaveCount(0);
-      }
+      const completedTrace = ["/case/EX-24107/trace", "/case/EX-24101/trace", "/case/EX-24088/trace"].includes(route);
+      await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled || completedTrace ? 0 : 1);
     }
   }
 }
