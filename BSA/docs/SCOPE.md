@@ -629,3 +629,8 @@ adding explicit operator-audience and no-proposed-preview assertions.
 
 Canonical signal applicability is now consumed from G, preserving all five
 visible signals and existing paper thresholds without audience-based overrides.
+O's compiled Task40 source includes immutable case evidence, operator audience,
+later-audit entry and paper-ready controls. It does not alter G's source,
+gate or final-action implementations. U remains owner of the scanner renderer.
+The ordinary source comparison is full-width; compact demo-shell placement
+belongs to D and cannot be inferred from this unmounted integration checkpoint.

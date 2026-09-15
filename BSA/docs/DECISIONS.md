@@ -2598,3 +2598,11 @@ Question: how should strength precheck show authority without a retrieved clause
 - Question: how does a proposed cross-record check use the five-signal layout? Choice: retain every row but label retrieved provision, independent readings and image quality not applicable; preserve actual source reconciliation and coverage rather than infer a pass; tie-breaker: truthful authority.
 - Question: what should operator trace regression assert after C5? Choice: exact source strengths remain visible, but correction proposals and previews are absent; keep all original widths, test identities and unrestricted axe; tie-breaker: evidence fidelity and audience authority.
 - Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
+
+## Task 40 operator mounting
+
+Question: how is full submission fidelity inspectable without changing the source? Choice: render the canonical submitted fields and an exact read-only revision disclosure, with U's paper comparison separate from human effective capture; tie-breaker: immutable source fidelity.
+
+Question: can a ready paper item's alternative decision buttons call actions that require an active review? Choice: allow the existing one-press Release directly and expose Start review for another disposition, rather than silently entering a review or calling an invalid action; tie-breaker: every human action remains explicit and real.
+
+Question: should a legacy case-pack draft remain beside the new safe operator note? Choice: remove that duplicate proposed outbound draft and keep R/G's exact safe preview/application path; read-only source facts and historical records remain unchanged; tie-breaker: C5 and one decision authority.

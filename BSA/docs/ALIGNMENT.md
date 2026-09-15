@@ -654,3 +654,10 @@ G `c3f69f2` resolves the previously reported canonical strength authority and
 false-agreement defects. R consumes the repaired metadata directly; 85 targeted
 contracts and check pass. This supersedes the earlier unresolved canonical
 rows only for this published source, not for unverified deployments.
+O mounted-source update: C1's exact submitted record, C4's full-width ordinary
+scanner comparison, C5's operator-audience preview and C6's actual corrected
+paper prefill are now wired through G/R/U. Fifteen new O tests plus 27 U
+scanner/store tests pass without domain mutation on render. This supersedes
+the earlier "not mounted" observation for those ordinary O routes only.
+Canonical source/guard follow-ups, existing-unit migration, compact D placement,
+browser accessibility/geometry and latest-main live acceptance remain pending.
