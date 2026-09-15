@@ -15,6 +15,13 @@ owns browser leases, merge and observed live acceptance.
 The bounded SVG title fix preserves the source ID and accessible name while
 preventing React child warnings in O's mounted surface.
 
+Integrated `e12ca94` check and 26 scanner units pass. Its broad CI reports
+207 failures outside the new scanner files and remains blocked on coordinated
+domain/consumer migration; no broad-suite or live acceptance is claimed.
+
+Source-image fidelity includes original synthetic patient/pharmacy identity and
+empty regions left empty, distinct from uncertain printed source characters.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.

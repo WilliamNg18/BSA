@@ -17,6 +17,15 @@ pending. Earlier WIP `e45e0be` passed all four CI shards, run `35015056421`.
 O's reported SVG title warning is repaired using one source-derived text child;
 the no-warning regression does not alter any source fields or reconciliation.
 
+Current integrated WIP `e12ca94`: check and all 26 scanner units pass, while
+CI `35016956710` has 207 domain/consumer failures outside the new scanner files.
+This source is not broadly aligned or accepted; G and current screen owners
+must complete their coordinated migrations before the final integrated gate.
+
+The portrait adapter now includes original synthetic patient/pharmacy labels
+and leaves empty source regions empty. It does not substitute a declaration
+value or an unreadability claim for a readable blank field.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription
