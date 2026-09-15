@@ -23,7 +23,7 @@ describe("always-visible shared recommendation", () => {
 
   it("shows the exact missing date and corrected text, with no duplicate date narration", () => {
     const r = deriveRecommendation(useAppStore.getState(), "EX-24112");
-    const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r }));
+    const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, audience: "pharmacy" }));
     expect(html).toContain("Corrected preview");
     expect(html).toContain("NCSO RK 21/08/26");
     expect(html).toContain("Add the dispensing date beside the initials");
@@ -41,7 +41,7 @@ describe("always-visible shared recommendation", () => {
 
   it("recorded preview is visible but never gets an Apply button", () => {
     const r = deriveRecommendation(useAppStore.getState(), "EX-24112", { kind: "recorded", revision: 1 });
-    const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, onApply: () => { throw new Error("No historical writes"); } }));
+    const html = renderToStaticMarkup(createElement(RecommendationCard, { recommendation: r, audience: "pharmacy", onApply: () => { throw new Error("No historical writes"); } }));
     expect(html).toContain("Recorded");
     expect(html).toContain("NCSO RK 21/08/26");
     expect(html).not.toContain("<button");
