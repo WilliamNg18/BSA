@@ -4,6 +4,29 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: W Task 39 domain and evidence handoff
+
+W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
+headline checker and 33 focused units from base main `6418151`. `npm run check`
+and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
+restored the existing lockfile without changing dependencies. No browser was
+started and no branch artifact is a backup.
+
+G/B/W froze A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` repurposed as brand-missing paper. G alone integrates canonical
+types, catalogue, seeds, gates and store actions. W's pure assessment compares
+prescribed and actually supplied 10mg/28 with selected 5mg/28; its correction
+copies only the selected claim code/name from the known 10mg catalogue entry.
+It does not submit, acknowledge, release, decide or calculate a payment.
+
+The NHSBSA endorsement guidance and the study bibliography/pooled prevalence
+are primary-source verified; error-type counts/ranking remain unverified.
+LEARNINGS and MEMORY record exact sources and limitations. V owns activating
+the standalone headline guard after G/S/P/D migrate active source, with no
+whole-file or history exemption. UI, real both-mode/both-gate lifecycle tests,
+round trips, screenshots, main merge, green deployment and observed live
+behaviour remain integration work. Owner actions for me: none.
+
 ## Current release gate: live first, exact local backup
 
 ### Tasks 39/40: shared domain integration reactivated

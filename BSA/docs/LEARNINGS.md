@@ -4,6 +4,52 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: EPS error evidence, primary-source verification
+
+Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
+review and meta-analysis.* Research in Social and Administrative Pharmacy.
+2024;20(1):1-9. DOI
+<https://doi.org/10.1016/j.sapharm.2023.10.003>; PMID 37848350.
+The original indexed abstract/bibliography was acquired as HTTP 200 XML:
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>.
+It confirms 62 included studies and pooled dispensing-error prevalence 1.6%
+(95% CI 1.2-2.1). January 2010 to September 2023 is the database-search
+period, not the dates of every underlying dispensing event. Settings and
+denominators differ; reported heterogeneity is I-squared 100%.
+
+Wrong-strength 39/62, wrong-medication 44 and wrong-quantity 34 are **unverified**,
+not established by the accessible abstract. The abstract's 44 is hospital-
+setting studies, not a verified wrong-medication count. Publisher full text at
+<https://www.sciencedirect.com/science/article/pii/S1551741123004552> returned
+403; public publisher API returned metadata only, and full-text view returned
+401. No access barrier was bypassed and no third-party snippet was accepted
+as source verification. The requested error-type ranking is therefore not
+asserted on screen. These proposed counts would be studies reporting types,
+not prevalence rates, even if later confirmed.
+
+Exact study label: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic".
+
+NHS Business Services Authority, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d., verified 15 September 2026:
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Direct HTTP 200 HTML. This is an unpaginated page, not a PDF. The opening
+paragraph confirms incorrect product/pack endorsements causing referred backs
+and payment delays. **Reimbursement**, paragraphs 1-2, explains that a selected
+AMPP with a dm+d price is processed automatically without processing-team
+review, and reimbursement follows what was endorsed, including an incorrect
+first pick-list selection, rather than what was supplied.
+
+Short verified quotations: "our processing team will not need to review your
+submission"; "what you have endorsed and not what you have supplied".
+Exact source label: "public, NHSBSA". The source does not provide a wrong-
+strength rate or describe this prototype's proposed two-gate matching check.
+
+W's implementation keeps the actual prescription/supply record separate from
+the selected claim. Its 33 focused units and `npm run check` pass. The missing
+TypeScript baseline was resolved by restoring the existing lockfile. No live,
+browser or backup result is inferred from these branch checks.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
