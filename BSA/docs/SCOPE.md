@@ -6,6 +6,24 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Part A candidate acceptance boundary
+
+The complete 176-test header/Outcome route, perspective, width, eleven-step
+and motion matrix passed in all-green hosted CI `35015057336` on exact
+`393957c`. The coordinator selected this complete run as authoritative.
+The duplicate local run was stopped with its timeout/partial evidence retained;
+it is not a local full-matrix Pass. A single bounded recheck passed the exact
+timed-out Task 13 dark control test and two 1440px motion/capture tests,
+without changing any timeout. Header-specific audits have zero violations
+and zero incompletes; incomplete rules elsewhere remain explicitly recorded
+in LEARNINGS. Manual dark image inspection remains unavailable because the
+image tool limited the second read, not because of a waived review.
+
+The final adopted master `d8c14a2` restores the original no-real-Tariff-text
+restriction and clarifies channel/mode release authority without runtime or
+test changes. Fresh exact-head CI, main merge, deployment and observed live
+Outcome/footer behaviour are still required. The local browser lease is free.
+
 ## Part A only: global shell notice policy
 
 This branch owns the global shell/header Outcome/footer, obsolete local

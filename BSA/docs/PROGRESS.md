@@ -4,7 +4,37 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
-## Part A: header Outcome and footer notice, published WIP
+## Part A release candidate: full hosted matrix green, live pending
+
+Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four
+CI shards in [35015057336](https://github.com/WilliamNg18/BSA/actions/runs/35015057336),
+including check, 1,699 units and all 176 new header matrix tests.
+The coordinator explicitly selected this complete hosted matrix as authoritative
+instead of repeating it under local machine contention. No assertion, timeout,
+route, perspective, width or axe rule was removed.
+
+The duplicate local 190-test run remains interrupted, not Pass: its Task 13
+dark total-test deadline expired, with the final focus expectation successful
+in the retained trace. Its 238 recorded policy states have 0px centre difference,
+16px text and 834.53125px text width. Its 242 completed axe audits have zero
+violations and 98 incomplete rule occurrences; these are partial, not full
+manual accessibility acceptance.
+A single bounded unchanged-budget diagnostic then passed 3/3 in 41.4 seconds:
+that exact failed Task 13 dark test and both motion/1440px capture tests.
+The eight Outcome light/dark On/Off audits have no violations or incompletes;
+the two existing menu/tooltip audits retain three incomplete rule occurrences.
+Four 1440px screenshots were captured. Light was inspected; the image tool
+blocked the second image, so no manual dark-image review is claimed.
+
+The browser lease is released. Coordinator follow-up `d8c14a2` is adopted as
+`ac16ac5` with exact MEMORY and unchanged runtime/tests. This result-record
+commit needs fresh exact-head CI before coordinator-owned first merge, normal
+deployment and live observation of the actual served SHA at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+All local output remains developer evidence, never a product or backup.
+Owner actions for me: none.
+
+## Part A: implementation and retained earlier evidence
 
 Own branch: `williamng18-header-outcome-line`, based on actual main
 `641815137b36ab3e925dcc98c4738d0b150a75d1`. Only the shell's old notice,

@@ -4,6 +4,42 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Part A complete hosted proof and bounded local follow-up
+
+Exact `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four CI shards
+in [35015057336](https://github.com/WilliamNg18/BSA/actions/runs/35015057336).
+This includes the complete 176-test new matrix and all existing blocking
+regressions, check and 1,699 units. The coordinator selected hosted proof as
+authoritative and instructed the duplicate local run to stop safely.
+That local run remains interrupted with one Task 13 dark total-test timeout.
+The retained trace's final focus expectation succeeded; fixture time continued
+past the test budget. No source fix or timeout increase was justified.
+
+The interrupted run retained 238 complete policy states with centre difference
+0px, ordinary 16px text 834.53125px wide, and 242 unrestricted axe results with
+zero violations. There are 98 incomplete rule occurrences across
+`aria-prohibited-attr`, `aria-valid-attr-value`, `color-contrast` and
+`th-has-data-cells`. This is partial developer evidence, not a full local pass.
+
+One bounded run at the same clean source passed 3/3 in 41.4 seconds, one worker,
+zero retries: the exact Task 13 dark test and the two reduced/full-motion
+Outcome tests. Eight Outcome light/dark On/Off audits have zero violations
+and zero incompletes. Existing tooltip/menu audits have zero violations but
+retain three incomplete rule occurrences: `aria-prohibited-attr`,
+`color-contrast` and `aria-valid-attr-value`. No manual clearance is inferred.
+The four 1440px captures include both themes/motion modes. The light image was
+visually inspected; the tool refused the second image because of its image
+limit, so dark inspection is explicitly incomplete. Two captures are attached
+to #104 with their exact source, not described as live images.
+
+Raw artifacts persist in the session's `files/part-a-393957c` and
+`files/part-a-393957c-bounded` directories. The earlier `part-a-1080ff7`
+aggregate timeout remains unchanged. Browser processes were stopped only by
+owned shell handles and the sole port 4332 lease was released.
+The subsequent `d8c14a2` adoption changes documentation only; MEMORY matches
+that master exactly and no runtime/test bytes changed after hosted proof.
+Fresh exact-head CI and actual-main live observation remain release gates.
+
 ## 2026-09-15: Part A shell investigation and pre-browser evidence
 
 Coordinator master `b005bbb` was adopted as `e4151f7`; MEMORY is byte-identical

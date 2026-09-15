@@ -6,6 +6,24 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Part A candidate verification, exact source
+
+Full all-route/three-perspective/eleven-step On/Off, 1280/1440, actual-bounds
+and unrestricted axe verification passed as 176 new tests within four green
+CI shards `35015057336`, source `393957c`. This hosted result is the
+coordinator-selected authoritative full matrix. The interrupted duplicate local
+run remains partial: 238 recorded states, centre difference 0px, normal 16px
+text 834.53125px wide, 242 zero-violation audits and 98 incomplete occurrences.
+The exact failed local control test passed once in the bounded recheck alongside
+two light/dark motion tests; unchanged budgets and original timeout retained.
+No browser errors were reported by passing fixtures.
+
+Source paths remain `src/components/app-shell.tsx` and
+`src/components/demo/header-outcome.tsx`; the domain store was never edited.
+Coordinator `d8c14a2` is adopted with exact MEMORY after the freeze. This final
+documentation-only candidate must pass fresh CI and be merged/deployed/observed
+before Part A is marked live aligned. No W/B/C verify clause is claimed here.
+
 ## Part A header policy: inspected source, not live acceptance
 
 Actual main at inspection: `641815137b36ab3e925dcc98c4738d0b150a75d1`.

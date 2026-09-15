@@ -6,6 +6,9 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Part A replaces the global notice, not source evidence
 
+- Question: must the complete hosted matrix be duplicated on a contended local machine? Choice: by explicit coordinator instruction, use all-green exact-source CI `35015057336` as the authoritative complete 176-test matrix; stop the duplicate local run by its owned handle, retain interruption and the Task 13 timeout, and run that exact failed control once plus bounded 1440px motion/captures. Tie-breaker: first-merge priority with unchanged coverage and timing budgets, not a failure waiver.
+- Question: may incomplete axe or unavailable image reads become acceptance? Choice: retain every incomplete rule occurrence and disclose the second-image tool limit; zero violations does not mean full manual accessibility or dark visual certification. Tie-breaker: truthful evidence.
+
 - Question: how to integrate the master Parts A-C classification? Choice: adopt coordinator `b005bbb` with exact MEMORY and union the independent status sections; preserve Part A-only runtime ownership. Tie-breaker: newest scope authority without duplicating W/B domain implementation.
 
 - Question: retain the older mandatory amber notice? Choice: remove its bar, collapse control and local `disclaimerOpen` state; put exactly "All data is synthetic" once in the existing small muted footer, removing "Synthetic cases" duplication. Tie-breaker: the newest explicit Part A instruction supersedes the amber-bar constraint.
