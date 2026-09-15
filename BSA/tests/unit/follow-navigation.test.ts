@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { endFollowVisit, followDestination, resolveFollowVisit, visitFollowedCase } from "../../src/lib/follow-navigation";
 import { getDomainSnapshot, useAppStore, type Perspective } from "../../src/lib/store";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 
 const store = () => useAppStore.getState();
 const id = "EX-24123";
@@ -31,7 +32,7 @@ describe("explicit same-item follow navigation", () => {
       declaration: seed.declaration, paperDeclaration: seed.paperDeclaration });
     store().confirmType1({ caseId: id, revision: store().caseRevisions[id].at(-1)!.number,
       fields: seed.declaration!.fields, provenance: "pharmacy_declaration", declarationReconciled: true });
-    store().referBack(id, "RB2B", "Human requires reconciled presentation evidence.");
+    store().referBack(id, "RB2B", buildReferralNote([{ rule: "readable_evidence_required" }]));
     store().setDemoStep(10);
     store().followCase(id);
     store().setPharmacyDraft(id, { revision: store().caseRevisions[id].at(-1)!.number, endorsementText: "NCSO JB 27/08/26" });

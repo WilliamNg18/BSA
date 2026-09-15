@@ -367,6 +367,43 @@ header centring, backup equality or clean offline recovery is claimed here.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
+### Task 40 Follow audit: new events must not fall through to old state labels
+
+At main `6418151`, Follow formats the actual last appended event and preserves
+release attribution using history prefixes. G's published `6054408` introduces
+`correction_acknowledged` for both acknowledgement and withdrawal, distinguished
+by the recorded payload, and `audit_reopened` for an explicit operator action.
+Without explicit consumer cases, the old formatter would describe the retained
+lifecycle destination rather than the new action. This is a source-level
+integration gap, not a reproduced live failure or a completed repair.
+
+B `8151770` publishes a pure re-check disposition, not an event or a new queue
+stage. F must consume G's revision-bound action/selector integration before
+showing paper ready to release or automatic corrected-EPS release. The earlier
+human referral remains historical even when the later release is automatic.
+ACK preparation and navigation cannot themselves submit, release or fabricate
+the simultaneous C8 month. No browser or timed acceptance ran for this audit.
+
+The published G `4765770` consumer integration demonstrates the new sequence
+through real actions: Off wrong-strength Send prices the selected pack before
+an explicit operator audit; acknowledged correction rechecks automatically,
+while paper remains ready for a human release. F's test uses both view buttons
+in all perspectives after each action and compares full domain snapshots and
+as-submitted evidence without dropping fields. It does not measure browser
+visibility or establish a one-second deadline result.
+
+Current paper status and location must agree on the latest revision. The first
+published readiness helper accepted any matching historical revision while the
+label checked the last event; F reported this stale-process risk to G for the
+shared fix. Current process readiness must not be replayed into historical
+event rows. Prior referrals remain human events even when a newer EPS revision
+is automatically released by code.
+
+The first full consumer integration passed check but reported 1,576 unit
+passes and 201 failures, including old scenario/action assumptions across
+shared owners and a static-server deadline failure. The 53 passing owned
+Follow tests do not replace that failed integration gate or live evidence.
+
 ### Task 39 N percent and denominator boundary
 
 The existing monthly model uses a referral subset for its hours but exposes

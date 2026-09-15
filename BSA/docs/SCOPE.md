@@ -82,6 +82,18 @@ a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
 retain Type 1 ordering. This 54-unit/check result does not establish the owning
 scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
+### F Task 40 cross-view checkpoint
+
+Current status: source audit published against main `6418151`; bounded consumer
+implementation uses published G `4765770` and has 53 passing owned units.
+The current status consumes canonical process metadata; historical transitions
+retain their own history prefixes without retroactive current-process readiness.
+G's stale-readiness fix and merged-domain integration are still required.
+Check passes; the early full suite is not green (1,576 passed, 201 failed).
+V owns new C7 deadlines and
+cross-view acceptance. Complete only after the change reaches main, deployment
+is green and the actual live URL serves and demonstrates that commit.
+
 ### G39/40 explicit-action checkpoint
 
 Current-source linking and seeded readiness provenance are implemented:

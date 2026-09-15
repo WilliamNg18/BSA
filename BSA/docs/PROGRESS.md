@@ -255,6 +255,34 @@ the two existing menu/tooltip audits retain three incomplete rule occurrences.
 Four 1440px screenshots were captured. Light was inspected; the image tool
 blocked the second image, so no manual dark-image review is claimed.
 
+### F Task 40 integration checkpoint
+
+The next consumer checkpoint integrates published G `4765770` for development
+and changes only Follow presentation, its two status consumers and owned units.
+Current paper readiness comes from G, not a new F business state. ACK and
+withdrawal remain distinct; audit reopening never erases earlier pricing;
+an automatic corrected-EPS release does not erase the human referral history.
+All 53 owned units pass, including actual wrong-strength Off pricing followed
+by explicit audit and paper ready-to-release waiting for the operator.
+
+Initial local checks caught an unused test import and obsolete old seed-date/
+paper-location expectations; these were corrected without weakening action or
+history assertions. Full integration validation and G's stale-readiness helper
+repair remain separate gates. `npm run check` passed; the full two-worker
+unit run passed 1,576 tests and failed 201 across 40 files against the early
+model integration. The affected old-case/action expectations belong to their
+shared owners; the static-server deadline failure is retained separately.
+All 53 owned Follow tests passed. No browser, deployment or live success is claimed.
+
+F resumed on main `641815137b36ab3e925dcc98c4738d0b150a75d1` and inspected
+all three open published branches (#102 W, #103 S, #104 Part A), plus G
+`6054408` and B `8151770`. C7/C8 classifications are recorded in ALIGNMENT.
+Main's Follow navigation/history foundation exists, but new ACK/audit event
+labels, corrected-EPS automatic re-check and paper ready-to-release displays
+await the authoritative G/W/B action and selector integration.
+
+### Part A retained evidence
+
 The browser lease is released. Coordinator follow-up `d8c14a2` is adopted as
 `ac16ac5` with exact MEMORY and unchanged runtime/tests. This result-record
 commit needs fresh exact-head CI before coordinator-owned first merge, normal
