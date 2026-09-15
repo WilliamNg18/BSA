@@ -23,6 +23,7 @@ export function submissionReplica(submission: CaseRevision, paperScan?: Exceptio
   if (submission.channel !== "eps" && submission.channel !== "paper") throw new Error("The submission channel is unavailable.");
   if (submission.channel === "paper" && !paperScan) throw new Error("The original synthetic paper scan is unavailable.");
   if (submission.channel === "eps" && paperScan) throw new Error("An EPS submission has no paper scan.");
+  if (paperScan && paperScan.id !== submission.templateCaseId) throw new Error("The paper scan belongs to a different submission source.");
   if (paperScan?.capturedEvidence) throw new Error("Use the original paper scan, not derived human capture.");
   return immutable({ heading: AS_SUBMITTED_HEADING, asSubmitted: submission, paperScan: paperScan ?? null });
 }

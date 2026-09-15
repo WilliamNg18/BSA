@@ -41,6 +41,12 @@ estimate is introduced by this module.
 
 ## B40 bounded foundation scope, 15 September
 
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
+
 New pure contracts cover C1 exact last-submission replication, C5 safe note
 generation and final-note validation, C6 revision/payload acknowledgement and
 EPS-only automatic recheck disposition, and C4 paper field/scan/hypothetical-OCR

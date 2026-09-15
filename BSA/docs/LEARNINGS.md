@@ -52,6 +52,18 @@ browser or backup result is inferred from these branch checks.
 
 ## 2026-09-15: B40 actual-source audit and foundation boundary
 
+The source-provenance follow-up passed 51 focused units and check. Readable
+scan fields that are blank cannot be silently supplied by matching OCR or an
+operator projection. A poor source supported by human confirmation must disclose
+that effective basis while retaining the original confidence figures and scan.
+Non-finite numeric field values are rejected explicitly rather than treated
+as agreeing input. A replica also rejects a scan from another template.
+
+Newly published A/W/G changes were inspected at exact SHAs in ALIGNMENT.
+The first A inspection requested a non-existent header filename and failed;
+the actual `header-outcome.tsx` was then read at the same exact source. No
+successful read or live/header test was inferred from that failed lookup.
+
 At main `641815137b36ab3e925dcc98c4738d0b150a75d1`, the existing revision
 and capture history already preserve useful evidence, but the operator view
 does not expose an exact full submission replica. `store.ts` restricts automatic
