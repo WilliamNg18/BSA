@@ -44,7 +44,12 @@ screen/route/pipeline audits, without changing their assertions or axe rules.
 Four controlled native-animation hold/resume regressions are authored as
 diagnostic negative controls, not ordinary visual acceptance. The sole port
 4332 lease is granted for one-worker, zero-retry bounded verification only.
-Ordinary unmodified-animation proof is pending. No runtime, source, case,
+On clean `e3df041`, both ordinary unmodified-animation final-state tests passed.
+The four new diagnostic tests failed because their initial native pause was
+overwritten by Motion's subsequent `startTime` assignment; recorded animations
+were still running. The diagnostic now pauses in the next microtask after that
+same initialization stack and explicitly asserts paused state. Those failures
+remain recorded; corrected diagnostic proof is pending. No runtime, source, case,
 domain, package, workflow or payment/clinical authority changes are included.
 Prior Part A release proof stays historical and is not relabelled by this
 newly open audit-compatibility finding. Owner actions for me: none.

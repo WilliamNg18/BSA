@@ -36,6 +36,15 @@ The provenance checks also reject a non-string commit rather than letting
 regular-expression coercion accept an array containing a SHA.
 ## 2026-09-15: Reopened header fade audit diagnosis
 
+The first clean `e3df041` bounded run passed both ordinary final-state tests
+but failed its four new diagnostic controls. Recorded `playState` was running:
+Motion's `NativeAnimationExtended` sets `startTime` after `Element.animate`
+returns, and its own source notes that this unpauses WAAPI. An immediate
+intercepted pause is therefore not a controlled frame. Queue the pause in the
+next microtask after that initialization and explicitly require paused state.
+No diagnostic failure is relabelled; `files/outcome-settlement-e3df041` retains
+the original output and both genuine ordinary passes.
+
 The inventory #109 failure at `6a238bc` initially looked like an entering On
 fade. Downloading exact `browser-test-results-1` from CI `35024931351` corrects
 that hypothesis: `light-on-axe.json` passed and `light-off-axe.json` failed on
