@@ -2246,3 +2246,10 @@ explicit edited EPS input, not a playable date-gap headline. Wrong-strength
 and paper-brand corrections replace the retired seed expectations. The
 canonical strength rule-authority/trace-signal defects reported by W remain
 G-owned blockers; R will not conceal them only in Card presentation.
+
+The complete owned selection passes check and 76 tests on the published
+checkpoint. A further recorded-paper regression now passes with the ten-case
+current-store file: actual referral, own-record correction, acknowledgement
+and resubmission leave the pinned original triad and approved record unchanged.
+Full early CI `35016926570` remains failed (1,600 passed, 185 failed across
+legacy integration tests); owners are migrating those files without waivers.
