@@ -7,6 +7,7 @@ import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { prepareDecisionRecord } from "./lifecycle-helpers";
 import { openQueueCapture } from "./paper-declaration-helpers";
 import { chooseProcessChapter } from "./process-model-helpers";
+import { expectHeaderOutcomeSettled } from "./header-outcome-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -38,6 +39,7 @@ test.setTimeout(60_000);
 
 async function audit(page: Page, info: TestInfo, name: string) {
   await page.evaluate(() => document.fonts.ready);
+  await expectHeaderOutcomeSettled(page, await page.getByRole("switch", { includeHidden: true }).isChecked());
   const results = await new AxeBuilder({ page }).analyze();
   await captureJson(info, name, results);
   expect(results.violations, JSON.stringify(results.violations.map((v) => ({
