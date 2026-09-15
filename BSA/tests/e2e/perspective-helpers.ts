@@ -136,7 +136,7 @@ export async function perspectiveRoundTrips(page: Page, info: TestInfo) {
     expect(stableEvents).toHaveLength(reviewingIdentity.length + (enabled ? 2 : 1));
     if (enabled) {
       expect(stableEvents.at(-2)!.fields[0]).toContain("operator");
-      expect(stableEvents.at(-2)!.message).toBe("applied by the operator from the agent's suggestion");
+      expect(stableEvents.at(-2)!.message).toBe("Applied by the operator from the agent's suggestion.");
     }
     expect(stableEvents.at(-1)!.fields[0]).toContain("operator");
     await expect(lastDecision).toContainText(`${LIFECYCLE_LABELS.in_review.nhsbsa[enabled ? "on" : "off"]} → ${LIFECYCLE_LABELS.referred_back.nhsbsa[enabled ? "on" : "off"]}`);
