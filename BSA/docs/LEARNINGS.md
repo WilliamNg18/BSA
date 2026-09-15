@@ -113,6 +113,35 @@ store/render test now finds each in the scan column after acknowledged
 resubmission. Forty-six selected tests and typecheck pass without a UI
 declaration-to-image fallback.
 
+O's isolated mount can be integrated without its backup-verifier lineage or
+unpublished unit migrations. The actual full-width scanner now compiles and
+passes the 42-test mounted/scanner selection. Four real-route browser checks
+are prepared, but a passing source renderer does not establish measured desktop
+geometry or axe acceptance. Conditional port 4341 is reserved by the coordinator.
+
+The real full-width mount passed all four desktop cases in 30.6 seconds at
+clean `941933f`, with actual scaled-font and column geometry checks rather than
+CSS-class proxies. Eight scoped axe audits report zero violations; raw sources
+remain identical after mode changes and explicit D capture. The local server's
+build identity matched the clean source and port 4341 was released. Full JSON
+audits and both named 1440 screenshots are retained; the image tool delivered D
+but blocked the second image at its limit. Do not describe that as both images
+visually accepted or as evidence of hosted release.
+
+Completed Part A `5b75e5f` and G's source-linked capture fixes
+`c3f69f2`/`c03ab21` integrate without changing U's raw-source renderer.
+Sixty-three scanner/operator/runtime tests and typecheck pass on this newer
+source. The earlier browser screenshots and audit timestamps remain pinned
+to `941933f`, not silently promoted to the new integration.
+
+The transferred two-file regression run initially failed four tests because
+active store evidence was compared with historical `CASES`, and ordinary paper
+was still expected to inherit an old automatic-pricing path. Active `caseById`
+lookup preserves the exact corrected underlying source dates while leaving
+historical records untouched. New-attempt assertions now verify immutable
+history, fresh revision and mandatory human judgement. All 43 tests pass;
+unknown fields, raw OCR confidence and no-inferred-image checks are retained.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

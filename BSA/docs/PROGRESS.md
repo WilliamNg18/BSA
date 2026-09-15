@@ -96,6 +96,39 @@ scan column contains the source brand, pack size and presentation, not values
 backfilled by U from a declaration. The 46-test scanner/runtime selection and
 typecheck pass; O's mounted desktop/browser and live gates are still pending.
 
+O's isolated published `99c8d03` mount and its bounded R dependencies are now
+integrated with G `cdd436b`. Forty-two mounted/scanner units and typecheck pass.
+U adds four actual-route scanner checks for both paper cases at 1280/1440,
+including Off/On source equality, scoped axe and unchanged raw columns after
+Type 1 confirmation. These browser checks are authored, not yet run.
+The coordinator conditionally reserved port 4341, one worker, zero retries;
+exact-head build and a clear strict/live-priority lease precede the run.
+
+The first actual mounted scanner run passed 4/4 in 30.6 seconds on clean
+`941933f0bb4b9bd6aa44ee09f7a2c6a7fe7ab97e`, local port 4341, one worker,
+zero retries. Both paper cases passed 1280/1440 geometry, Off/On raw-source
+equality, and D's unchanged raw columns after human confirmation. All eight
+scoped axe audits have zero violations; no browser errors occurred. Two named
+1440 screenshots and full axe reports are retained in
+`docs/screens/task40-scanner/941933f/`. D's screenshot was delivered for inspection;
+the second image delivery was blocked by the tool limit, so complete visual
+acceptance is not claimed. Port 4341 was confirmed released.
+This is not a hosted release or final integrated gate.
+
+Later integration now includes completed Part A main `5b75e5f` and G's
+`c3f69f2`/`c03ab21` source-linked capture repairs. The 63-test scanner,
+operator-fidelity and runtime selection plus typecheck pass. No browser rerun
+is claimed for this later source: the retained `941933f` proof stays immutable.
+
+G explicitly transferred only `paper-capture.test.ts` and
+`paper-declaration.test.ts` for a bounded compatibility repair. Four failures
+were reproduced: three compared active source evidence with a historical
+incomplete-date fixture, and one expected the superseded automatic paper path.
+The tests now resolve active cases through `caseById`, retain exact raw-image
+and confidence assertions, and require a new paper attempt to retain history
+without inheriting prior recheck/release authority. All 43 tests pass; no
+domain source or P-owned paper UI tests changed.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store

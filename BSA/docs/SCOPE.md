@@ -72,6 +72,27 @@ G `cdd436b` now supplies visible immutable amendment regions. U verifies their
 actual brand/pack/form rendering through the canonical facade and human
 acknowledgement/resubmission path: 46 selected tests and typecheck pass.
 
+O's actual full-width mount is integrated for U's first scanner browser proof,
+not replaced by a pure renderer or new route. Four new checks cover two paper
+cases at both desktop widths; 1440-only screenshots and scoped axe are planned.
+Browser execution and live acceptance remain pending, with conditional
+coordinator lease 4341 and no parallel duplicate verification by O/V.
+
+Bounded U scanner browser acceptance now passes on clean `941933f`: four
+actual-route tests, eight scoped axe audits with zero violations, both desktop
+widths and both modes. Raw D evidence remains unchanged after capture. Evidence
+is source-pinned in `docs/screens/task40-scanner/941933f`; this does not establish
+full C7 transitions, two-image visual acceptance, hosted release or backup parity.
+
+The completed Part A header and G's later source-linked capture repairs are
+integrated; 63 targeted scanner/operator/runtime tests and typecheck pass.
+Prior `941933f` browser evidence is not relabelled as a later-head run.
+
+G's bounded test-only handoff covers two files: `paper-capture.test.ts` and
+`paper-declaration.test.ts`. Their 43 tests pass after active-source lookup and
+current all-paper human-release expectations are applied. Raw confidence,
+unknown-field, stale-revision and image-immutability checks remain intact.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
