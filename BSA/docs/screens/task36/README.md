@@ -239,6 +239,21 @@ required. `req38-preintegration-75/checklist.json` and its traces retain the
 complete failed run. Port 4336 was released; this is not latest-main or
 hosted acceptance.
 
+The corrected two Agent On timing checks then passed **2/2** at clean
+`35f7ecce912f79aaecfe33553c4a368209e91e24` in 187.688 seconds, one worker
+and no retries. Both widths completed every case/perspective journey:
+132 actual transitions passed, with maximum elapsed time 943.3975 ms.
+The records cover A 6, B 36, wrong-pack EPS 36 and D 54 transitions; all four
+before/after identity checks passed. The strict checklist correctly remains
+**FAIL, partial selection, 73 missing checks**. This cannot be combined with
+the earlier 73 passing checks to claim a full run.
+
+Artifacts remain in `req38-onmatrix-35f7-selected`. The preceding
+`req38-onmatrix-35f7` attempt selected zero tests because an anchored grep
+did not match Playwright's project-prefixed titles; it performed no browser
+checks and is preserved separately. Port 4336 was released after the two
+actual checks. A fresh complete 75-name run remains required.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
