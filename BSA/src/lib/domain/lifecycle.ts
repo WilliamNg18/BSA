@@ -211,6 +211,7 @@ export interface CaseLifecycle {
 
 /** Optional advisory snapshot. No completed check is represented by null facts/version/time. */
 export interface PharmacyPrecheckSnapshot {
+  readonly ruleAuthority?: "retrieved_tariff" | "proposed_cross_record_check";
   readonly typedText: string;
   readonly dispensingDate: string;
   readonly facts: Readonly<EndorsementFacts> | null;

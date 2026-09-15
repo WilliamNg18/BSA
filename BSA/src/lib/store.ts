@@ -316,7 +316,7 @@ export const useAppStore = create<AppState>((set, get) => {
     if (draft !== undefined) {
       requireText(draft, "Approved draft");
       if (!get().agentEnabled || (to !== "referred_back" && to !== "information_requested")) throw new Error("No validated pharmacy draft available for approval.");
-      if (!proposed || pack.gate.result !== "PASS" || !pack.clause || !pack.draftToPharmacy) {
+      if (!proposed || pack.gate.result !== "PASS" || (!pack.clause && pack.ruleAuthority !== "proposed_cross_record_check") || !pack.draftToPharmacy) {
         const s = get(), revision = s.caseRevisions[c.id].at(-1)!.number;
         const applied = current.history.filter((event) => event.revision === revision && event.actor === "operator" &&
           event.processStep === "suggestion_applied").at(-1)?.appliedSuggestionEvidence;
@@ -332,13 +332,14 @@ export const useAppStore = create<AppState>((set, get) => {
     const s = get(), at = timestamp(c.id), revision = s.caseRevisions[c.id].at(-1)!.number;
     const clauseId = diagnostic?.clauseId ?? (input.tariffVersion === pack.tariffVersion && input.recommendation !== "NONE" ? pack.clause?.id : undefined);
     const approvedDraft = draft === undefined ? undefined : { text: draft, approvedAt: at, approvedBy: "Demo operator", decision: input.decision,
-      tariffVersion: diagnostic?.tariffVersion ?? pack.tariffVersion, clauseId: diagnostic ? diagnostic.clauseId : pack.clause!.id,
+      tariffVersion: diagnostic?.tariffVersion ?? pack.tariffVersion, clauseId: diagnostic ? diagnostic.clauseId : pack.clause?.id ?? null,
       ...(diagnostic ? { provenance: diagnostic.provenance, diagnostic } : {}) };
     const diagnosticEvidence = diagnostic ? {
       inputs: [...pack.evidence.map((entry) => entry.value), ...diagnostic.findings],
       sources: [...new Set(pack.evidence.map((entry) => entry.origin))], checks: pack.gate.checks,
     } : {};
     const record = immutable<LifecycleDecisionRecord>({ ...input, ...diagnosticEvidence, id: `DR-${String(Math.max(872, ...s.records.map((entry) => Number(entry.id.slice(3)))) + 1).padStart(6, "0")}`,
+      ...(input.recommendation !== "NONE" && pack.ruleAuthority ? { ruleAuthority: pack.ruleAuthority } : {}),
       timestamp: at, operator: "Demo operator", synthetic: true, isOverride, overrideReason: reason.trim() || null,
       reason: reason.trim(), revision, clauseId, ...(rbCode ? { rbCode } : {}), ...(approvedDraft ? { approvedDraft } : {}) });
     const event: HistoryEvent = { at, actor: "operator", from: current.state, to, message: "Human decision recorded (synthetic).",
