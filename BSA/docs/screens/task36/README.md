@@ -254,6 +254,41 @@ did not match Playwright's project-prefixed titles; it performed no browser
 checks and is preserved separately. Port 4336 was released after the two
 actual checks. A fresh complete 75-name run remains required.
 
+### Fresh complete rerun: different deadline failures
+
+A new full run at clean `655ff5e59761043df5bbc75bfa0cda38db4a66dd` also
+finished **73/75 passed**, in 20 minutes 57.690 seconds, one worker and no
+retries. All 75 names executed once; all 150 identity checks passed with no
+missing, unexpected or duplicate names. The 220 axe audits recorded zero
+violations and 147 audits with incomplete findings. Its 69 captures remain
+pending visual review.
+
+The stale A event expectation no longer failed. Instead, two later On
+transitions failed the unchanged deadline:
+
+| Check | First failing action | Recorded elapsed ms |
+| --- | --- | ---: |
+| 1280 px On matrix | D/Both resubmit: Back to queue click timed out | 2,224.0677 |
+| 1440 px On matrix | Wrong-pack EPS/Both confirmation: budget expired before the state viewport assertion | 1,413.7447 |
+
+There are 200 passing timing records and two failures, with remaining paths
+inside those failed matrix checks unreached. The prior isolated 132 passing
+On transitions do not override these full-run failures.
+
+Read-only trace inspection found the D Back to queue server call lasted
+732.466 ms against a supplied 704.7048 ms timeout, followed by a 1,198.779 ms
+gap before failure diagnostics. For the wrong-pack confirmation, the server's
+state-visibility assertion completed in 23.840 ms, followed by a 1,092.206 ms
+gap before diagnostics. Post-verdict state and answer rectangles were visible
+at y429/height24 and y623/height20, scrollTop146. These observations do not
+establish when all required pixels became visible or prove a runtime,
+obstruction or runner-latency root cause. The recorded deadline failures stand.
+
+Artifacts remain in `req38-preintegration-75-fresh/checklist.json` and its
+traces. Port 4336 was released. O owns read-only case-entry diagnosis; D's
+later mount/navigation changes are outside this frozen source and require
+fresh fully integrated verification. No full-75 or hosted PASS is claimed.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
