@@ -6,6 +6,16 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+Additional negative verification against G `4765770` finds C4/C5 still
+misaligned at two concrete points. For paper with `form: ""`, an outbound
+request containing the correct source presentation (`capsules`) is accepted
+through `referBack`, `requestInformation`, `recordType2Decision` and the legacy
+`recordOperatorDecision`, in both modes. The guard protects brand/code/quantity
+but omits presentation. Separately, the acknowledged seed's synthetic scan
+regions omit its manufacturer while hypothetical OCR claims the value.
+Nine regressions fail as expected before repair; G owns the canonical fixes.
+The earlier passing fidelity matrix does not override these new failures.
+
 B's updated evidence on exact G `4765770` is 91 passing combined units plus
 check. The new 25-case store fidelity matrix uses `getAsSubmitted` and
 `getPaperReconciliation`, deep-equals the whole actual submission including

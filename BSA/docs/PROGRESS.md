@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+Two additional integration defects are reproduced by nine new negative tests:
+missing-presentation paper notes can leak the correct `capsules` value through
+all four final communication APIs in Off and On, and the acknowledged paper
+amendment scan does not visibly contain its manufacturer even though its
+hypothetical OCR does. G, the canonical source/store owner, has the exact
+reproducers and repair request. These nine tests currently fail; the earlier
+91-test pass is not a claim that these additional requirements are satisfied.
+
 The migrated B matrix now passes 91 combined units and check on G `4765770`.
 It uses the canonical submission/scanner facades, all four new identities,
 and complete D, wrong-strength EPS and brand-missing paper cycles in Off/On
