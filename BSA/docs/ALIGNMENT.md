@@ -8,6 +8,11 @@ ms.date: 2026-09-15
 
 ## Tasks 39/40 initial domain alignment checkpoint
 
+Contract update: current consumers typecheck with optional EPS supply records,
+paper brand/pack/form and exact-payload acknowledgement metadata. Runtime
+validation remains drifted until the W/B modules and canonical state actions
+are integrated; no gate or live status is inferred from type availability.
+
 | Item | Alignment | Change / ownership | Evidence |
 | --- | --- | --- | --- |
 | Current main model | Drifted against newly authorised scope | G integrates sole canonical state/types; W strength modules and B fidelity modules are separate owners | Read main `6418151`; existing mismatch remains pack-based and `EX-24112` remains missing-date EPS |

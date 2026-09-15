@@ -8,6 +8,12 @@ ms.date: 2026-09-15
 
 ### Tasks 39/40: shared domain integration reactivated
 
+Additive contract foundation is now defined and typechecked against current
+consumers: independent EPS `supplyRecord`, paper brand/pack/form facts and a
+revision/fingerprint correction acknowledgement. Existing action signatures
+remain intact. The fields do not yet enforce new runtime behaviour; W/B module
+integration and live acceptance remain pending.
+
 G rebased its existing integration branch onto main
 `641815137b36ab3e925dcc98c4738d0b150a75d1`. It owns canonical shared types,
 store, lifecycle, references, seeds and model tests. W owns new EPS strength

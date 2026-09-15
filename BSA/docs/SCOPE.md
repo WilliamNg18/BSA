@@ -8,6 +8,10 @@ ms.date: 2026-09-15
 
 ## Tasks 39/40 shared-model integration: in progress
 
+The first additive contract checkpoint introduces independent pharmacy supply
+records and correction acknowledgement metadata without enabling new release
+behaviour. It is not a completed Task 39 or Task 40 implementation.
+
 The latest authorised scope replaces the active wrong-pack EPS example with
 prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
 `EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:

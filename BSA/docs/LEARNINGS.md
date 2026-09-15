@@ -1151,6 +1151,10 @@ Likewise, a revision number alone does not bind an accuracy acknowledgement to
 edited draft contents; acknowledgement must be invalidated on actual edits.
 These are contract findings, not implemented or deployed acceptance.
 
+The additive field contract passes the existing consumer typecheck. This is
+useful for parallel module work but is not runtime enforcement: an optional
+acknowledgement type alone cannot prevent a stale or unacknowledged resubmission.
+
 CI `35006154532` found one callback-integrity unit failure in all four jobs.
 The unchanged original callback produced scanner hash `4542a736...` under
 CRLF and `bcbecf2c...` under LF. A standalone scanner's repeated `scan()`
