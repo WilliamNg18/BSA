@@ -153,8 +153,12 @@ it("caps trace output and hashes only the exact retained prefix", async () => {
   const manifest = await profile.collect();
   expect(manifest.complete).toBe(false);
   expect(manifest.trace.capped).toBe(true);
+  expect(manifest.traceByteLimit).toBe(PROFILE_LIMITS.traceBytes);
+  expect(manifest.errors).toEqual([expect.objectContaining({ stage: "trace" })]);
   expect(manifest.trace.bytes).toBe(Buffer.byteLength(prefix));
   expect(transport.readStream).toHaveBeenCalledTimes(2);
+  expect(transport.closeStream).toHaveBeenCalledWith("stream-1");
+  expect(transport.detach).toHaveBeenCalledOnce();
   const bytes = await readFile(join(directory, "chromium-trace.json"));
   expect(bytes.toString()).toBe(prefix);
   expect(manifest.trace.sha256).toBe(createHash("sha256").update(bytes).digest("hex"));
