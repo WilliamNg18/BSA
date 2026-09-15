@@ -19,6 +19,7 @@ import { ASSISTED_SLOTS, caseViewState, traceSlotReady } from "@/lib/case-presen
 import { SignalList } from "@/components/demo/signals";
 import { REC_META } from "@/components/demo/label-meta";
 import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 
 // The key agentic screen: the observable workflow. Evidence, actions, tool
 // results and decision boundaries are shown. No private model reasoning is
@@ -62,8 +63,9 @@ export function CaseTracePage() {
         title={`How the case was built: ${c.title}`}
         intro="Inspect evidence, rule checks and human confirmation. The agent verifies and advises; a person decides."
       />
-      <ItemRecommendationPanel caseId={c.id} headingLevel={2} />
       <LifecycleHistory id={c.id} />
+      <PharmacyConfirmation caseId={c.id} />
+      <ItemRecommendationPanel caseId={c.id} headingLevel={2} />
       {c.paperDeclaration && (agentEnabled || process?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
       {process?.capture && process.capture.revision === revision && <ConfirmedCaptureEvidence capture={process.capture} />}
 
