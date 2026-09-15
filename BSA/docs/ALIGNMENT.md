@@ -415,6 +415,11 @@ perspectives and both toggle states. Two axe reports have no violations or
 incomplete results. This is not acceptance of pending A/G/W/B UI integration or
 an observation of actual canonical main on the live service.
 
+V handoff `195560f` adds the new field to the existing capture unrelated-global
+comparison. N carries that exact test line alongside its complete key inventory.
+Type compatibility is verified; actual capture-matrix execution remains V's
+integration gate, not part of N's four passed monthly browser cases.
+
 | Requirement | Current evidence and remaining work |
 | --- | --- |
 | Study context separate from NHSBSA claim rates | W `fe0a521` supplies verified abstract copy and an explicit study-only label; no unverified wrong-strength ranking will be rendered |

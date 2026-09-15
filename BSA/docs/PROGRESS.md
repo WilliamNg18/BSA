@@ -516,6 +516,12 @@ it is retained separately. The explicitly corrected leased-port 4340 run also
 passes 4/4 and is the cited development proof, not eight unique tests.
 These are branch diagnostics, not header acceptance, backup or live completion.
 
+V's isolated `195560f` handoff is now applied as the exact single capture-test
+line: the new mismatch draft must remain unchanged during Type 1 capture.
+N's exact snapshot-key assertion is preserved. Application typecheck passes;
+the instrumented capture matrix itself has not been run by N. The handoff's
+unrelated newer branch-document context was not imported into this checkpoint.
+
 N reactivated on main `6418151` for the additive mismatch estimate, not a rerun
 of Task 28. The pure helper consumes W's evidence constants, converts UI 1%
 to numeric share 0.01, and multiplies total submitted claims. Existing monthly

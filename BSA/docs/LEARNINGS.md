@@ -513,6 +513,12 @@ retries, unchanged deadlines, two clean axe reports and one inspected 1440 image
 Both servers shut down and ports were confirmed released. No application source
 changed between the runs, and no duplicate test count or live claim is made.
 
+An exact snapshot-key inventory proves inclusion, not preservation during an
+action. V's one-line capture assertion separately proves the mismatch input
+cannot change during Type 1 work. N imports that supplied test hunk without
+rewriting either the observer producer or V's broader matrix. Typechecking
+passes; executing that instrumented matrix remains a separate gate.
+
 The existing monthly model uses a referral subset for its hours but exposes
 total submitted items separately. Reusing that subset for mismatch prevalence
 would understate the requested comparison. UI percentages and fractional
