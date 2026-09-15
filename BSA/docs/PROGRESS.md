@@ -1,10 +1,37 @@
 ---
 title: Desktop demonstration implementation progress
 description: Authoritative task checklist, commit references and actual validation gates.
-ms.date: 2026-09-13
+ms.date: 2026-09-15
 ---
 
-## Active scope: Tasks 25-38, four-case desktop vision
+## Current release gate: live first, exact local backup
+
+The 15 September standing rule in MEMORY applies immediately to every stream.
+Runtime work through #100 is merged. Before this policy change, both remote
+main and the live build identity were verified as
+`08f4d399ca658cae2aaf16a10d4f9cae8431621f` at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/, with `dirty: false`.
+Main CI `34951218967` and deployment `34951218991` passed. This is a source and
+deployment baseline, not final acceptance of Tasks 25-38.
+
+The current verification branch remains incomplete. Its latest controlled
+two-matrix run passed 132 transitions with unchanged one-second assertions,
+but it is a partial, pre-rule branch diagnostic and is not a live release or
+backup. Earlier failed runs remain failed evidence.
+
+| Release obligation | Owner | Current state |
+| --- | --- | --- |
+| Record and relay the live-first rule; keep all five tracking documents contemporaneous | Coordinator and every stream | Rule recorded in this change; active branches must be pushed at STATUS and at least every thirty minutes |
+| Verify root, deep link and the actual current main identity after every deployment | Release implementation | Existing HTTP checks cover the workflow SHA; stronger current-main and rendered-page guards are pending |
+| Provide canonical `npm run backup` and `npm run backup:serve` with deployed file-list/hash parity in main CI | Release implementation | In progress; no backup equality result is claimed |
+| Demonstrate clean-machine/container offline recovery and document it with the implementation | Release verification | Pending; no recovery-duration or clean-environment pass is claimed |
+| Complete current-main live verification, visual review and final provenance | V and Coordinator | Pending; no ALL DONE declaration |
+
+Only merged, green-deployed work seen on the live URL is complete. Completion
+STATUS includes that URL and the served commit. A deployment failure takes
+priority for its merging stream; no later completion claim may outrun live.
+
+## Historical integration checkpoint: Tasks 25-38, four-case desktop vision
 
 The recommendation/paper addition is classified in ALIGNMENT. New Stream R owns
 the shared always-visible concrete recommendation contract/card and safe

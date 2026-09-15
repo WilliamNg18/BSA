@@ -1,7 +1,7 @@
 ---
 title: Durable project facts
 description: Read first at each task; correct facts in place rather than appending history.
-ms.date: 2026-09-13
+ms.date: 2026-09-15
 ---
 
 ## Purpose and principle
@@ -80,6 +80,24 @@ ALIGNMENT and verified on the latest deployed main before completion.
 2. Ask me only if: (i) a decision would change the governing principle or one of the six case outcomes; (ii) an action needs a credential, permission or payment only I hold (an Azure or GitHub setting, a token, billing); or (iii) an instruction I gave says in so many words "check with me before" or "double check". Nothing else qualifies. If unsure whether a question qualifies, it does not; decide and record.
 3. When you post a question that does qualify, post it as STATUS with the exact steps or the exact choice, and keep every other stream building while you wait. Never pause a stream that is not blocked by that question.
 4. Default answers for questions that have already come up, so they are never asked again: naming and labels, use the words in docs/MEMORY.md "Words that must and must not appear" and the lifecycle label table; layout, desktop only at 1280 and 1440 px, side by side Today left and With the agent right; copy, under 25 words per panel, UK English, no em dashes; figures, every With figure tagged "estimate", every assumption editable and tagged; time model, the defaults in Task 28; ordering, the eleven demo steps in Task 31; scope, if a request is ambiguous build the smaller version that still shows the Today versus With difference and log the larger version as a follow-up issue; tests, keep only the blocking checks (npm run check, Vitest, crash and dead-control and six-outcome Playwright, axe) and make everything else informational; data, one pharmacy, Hillcrest, other pharmacies as unclickable background; motion, two-second sequence with reduced-motion crossfade; anything about mobile or tablet, out of scope, do not build or test.
+
+## Live first, local backup
+
+STANDING RULE: LIVE IS THE PRODUCT, LOCAL IS A BACKUP THAT MUST MATCH IT EXACTLY
+
+1. LIVE ALWAYS REFLECTS THE LATEST COMPLETED WORK. Every merge to main deploys to the live web app automatically. A task is not complete until its commit is on main, the deployment is green, and the change has been seen on the live URL. STATUS for any completed task includes the live URL and the commit hash it now serves. If the deployment fails, fixing it is the first priority of the stream that merged; nothing else is marked complete until the live site is back in step with main. Add a post-deploy check to the workflow that opens the root page and one deep link and fails loudly if the served build's commit hash does not match main.
+2. THE REPOSITORY IS ALWAYS UP TO DATE. No work sits only in a session or a working tree. Every stream pushes its branch at least every thirty minutes of activity and at every STATUS. docs/PROGRESS.md, docs/SCOPE.md, docs/ALIGNMENT.md, docs/DECISIONS.md and docs/LEARNINGS.md are updated in the same commit as the change they describe, never afterwards.
+3. THE LOCAL BACKUP IS AN EXACT COPY OF LIVE, NOT A SEPARATE VERSION. Nothing is developed locally that is not on main. Provide one command, npm run backup, that produces a self-contained folder containing: the production build of the current main (built with the same base path and settings as live), a copy of docs/, the four playable cases' seed data, and a one-line README with the commit hash, the build time and the live URL. Provide npm run backup:serve that serves that folder locally at the same routes as live, with the same deep-link fallback, so the demo can be run offline exactly as it runs online. Add a CI job on every push to main that builds the backup folder, compares its file list and content hashes against the deployed build, and fails if they differ. Record in docs/DECISIONS.md: "Live is the product; local is a backup built from the same commit; any difference is a defect."
+4. RECOVERY IN UNDER TEN MINUTES. docs/DEPLOYMENT.md gains a "Backup and recovery" section: how to produce the backup, how to run it offline, how to redeploy main to the web app by hand from the Actions tab, and how to recreate the web app from infra if it is ever lost. Test the offline backup once now on a clean machine or container and record the result in docs/LEARNINGS.md.
+5. STATE AT THE END. When ALL DONE is posted, it includes: the live URL and the main commit hash it serves; confirmation the deployment check passed; the backup command run on that same commit with its hash; and the line "live and backup are identical".
+
+Published working branches remain incomplete work, not an alternative product
+or an offline release. Only the current main artifact verified on the live URL
+may be packaged or described as the local backup. CI instrumentation and retained
+failed diagnostic artifacts are not backups or completion evidence.
+This rule applies to G, D, O, P, F, S, U, R and V and supersedes older
+candidate-first/local-release instructions. It does not alter Decision authority,
+the clinical/payment boundary, source provenance or protected rollback refs.
 
 ## Words that must and must not appear
 

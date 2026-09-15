@@ -4,6 +4,15 @@ This repository holds the **Prescription Exception Case Builder**, a proof of co
 
 ## The one rule that governs everything
 
+MEMORY's **Live first, local backup** standing rule applies to every stream.
+Live is the product. Working branches must be pushed at every STATUS and at
+least every thirty minutes; they remain incomplete until main is deployed
+green and the exact change is observed live. Update all five tracking documents
+with the same commit. A local backup may contain only the verified current-main
+production payload and same-commit supporting material, never a branch build.
+Deployment failure takes priority for the merging stream. Preserve the exact
+Decision authority exceptions and all existing clinical/source safeguards.
+
 Current work is Tasks 31-36: a desktop-only eleven-step demonstration, two
 verification gates, explicit operator/pharmacy actions and same-item follow
 navigation. Read the latest DECISIONS contract freeze and PROGRESS ownership.

@@ -1,8 +1,18 @@
 ---
 title: Architecture and product decisions
 description: Append-only decisions with reasons and rejected alternatives.
-ms.date: 2026-09-10
+ms.date: 2026-09-15
 ---
+
+## 2026-09-15: Live is the product; the local copy is a verified backup
+
+Live is the product; local is a backup built from the same commit; any difference is a defect.
+
+- Question: what establishes completion? Choice: main merge, green deployment and observation of that exact commit on the live URL; a branch or local diagnostic is incomplete work. Tie-breaker: the newest live-first instruction and truthful evidence.
+- Question: how do working branches coexist with the live-first rule? Choice: push incomplete branch work at each STATUS and at least every thirty minutes, but never present it as the product or package it as a backup. Only the current main artifact verified on live is eligible. Tie-breaker: preserve the established merge order without a separate local version.
+- Question: when are tracking documents updated? Choice: include PROGRESS, SCOPE, ALIGNMENT, DECISIONS and LEARNINGS in the same commit as each described change; retain historical results and state pending gates explicitly. Tie-breaker: the newest repository-currency instruction.
+- Question: may a previously running frozen diagnostic become backup proof? Choice: preserve its original outcome and source boundary only; it cannot establish live completion or backup equality. Tie-breaker: immutable evidence and the new release rule.
+- Question: what is implemented by this policy change? Choice: record and relay the standing rule now; mark deployment freshness, canonical backup/parity and clean-environment recovery implementation pending rather than claiming unrun checks. Tie-breaker: truthful scope and no false completion.
 
 ## 2026-09-11: Issue 27 scene-only estimate count-in
 

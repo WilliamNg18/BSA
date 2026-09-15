@@ -1,8 +1,27 @@
 ---
 title: Implementation learnings
 description: Append-only dated findings, repairs and verification evidence.
-ms.date: 2026-09-10
+ms.date: 2026-09-15
 ---
+
+## 2026-09-15: Live-first policy adoption and the current evidence boundary
+
+At adoption, a fresh remote-main lookup and live `/build-info.json` response
+both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
+at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
+The existing deployment workflow already checks the workflow commit, root,
+deep-link fallback and strict headers. It does not yet prove that its commit
+is still the latest main or provide a canonical backup/parity job.
+
+A controlled two-matrix branch diagnostic reported 132 passing transitions
+after optional trace-artifact isolation, but its partial inventory and
+pre-rule local build are not live acceptance or an offline backup. Retain the
+earlier failed timing runs rather than retrospectively relabelling them.
+
+No clean-machine/container backup test has run for the new standing rule yet.
+No backup equality or sub-ten-minute recovery claim is made in this commit.
+The release implementation must record its actual clean-environment outcome,
+commands, artifact identity and limitations with the change it verifies.
 
 ## 2026-09-11: Issue 27 count-in isolation
 
