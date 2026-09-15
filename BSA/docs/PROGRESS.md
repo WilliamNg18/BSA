@@ -485,6 +485,24 @@ No new browser, hosted or complete Task 39-40 result is claimed. The paired
 SYSTEM-DESIGN document matches the reference text in this change.
 
 ## Current release gate: live first, exact local backup
+
+### F's assigned D/Home compatibility checkpoint
+
+Against exact coherent G `05fc421`, the Home case slice now renders actual
+unmet requirement guidance instead of B's hardcoded date fix. The eleven-step
+definitions use wrong strength at Pharmacy then NHSBSA, retain both unreadable
+paper hand-offs, and default the pharmacy-action step to paper brand case B.
+Current ready labels use the shared process argument; Follow comparisons remain
+case-specific. Navigation still changes only presentation, never source/history.
+
+`npm run check` and 231 tests across the four bounded Home/demo unit files pass.
+The exact V Home failure is repaired without removing its negative assertion.
+Two development assertions were corrected: cloned unchanged paper history
+requires deep equality, and an inactive assisted projection has its own text.
+The full two-worker run has 1,886 passes and 98 failures in 13 other-owner files;
+the standalone headline scan retains five S-owned hits, not waived.
+No browser, main deployment, live observation or backup result is claimed.
+All five registers accompany this code/test commit and branch publication.
 ## Part A release candidate: full hosted matrix green, live pending
 
 Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four

@@ -215,6 +215,21 @@ describe("whole-process presentation", () => {
     expect(useAppStore.getState()).toBe(before);
   });
 
+  it("shows the current unmet paper requirement, never a guessed date or corrected supplier value", () => {
+    const store = useAppStore.getState();
+    const id = "EX-24112", original = caseById(id)!;
+    store.setAgentEnabled(true);
+    store.submitItem({ caseId: id, channel: "paper", endorsementText: original.paperDeclaration!.endorsementText,
+      paperDeclaration: original.paperDeclaration });
+    const before = useAppStore.getState();
+    const card = tourCard(render(HomePage, "/#cases"), "B");
+    expect(card).toContain("Review requirement:");
+    expect(card).toContain("not met");
+    expect(card).not.toContain("Fix: add the date beside the initials.");
+    expect(card).not.toContain(original.pharmacySupplyRecord!.brandManufacturer);
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it.each([
     { name: "Wrong-strength EPS Off after explicit audit", id: "SYN-FQ123-MISMATCH", scenario: "E", paper: false, enabled: false, declared: false },
     { name: "B readable paper Off", id: "EX-24112", scenario: "B", paper: true, enabled: false, declared: false },
