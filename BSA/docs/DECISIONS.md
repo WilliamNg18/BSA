@@ -2233,3 +2233,26 @@ The regression explicitly corrects and sends B to automatic release, submits
 the wrong-pack EPS item, applies the operator suggestion and refers it back.
 Next must then open that actual referral with correction and resubmission
 controls, not B's completed record.
+
+## 2026-09-15: Paper walkthrough and a shared evidence companion
+
+Question: how should the unreadable-paper sequence start? Choice: step 7 opens
+the actual pharmacy workbench for D; its buttons prepare a draft and Post is
+explicit. Step 8 defaults to D's queue case, step 9 retains the actual actionable
+handoff, and step 10 opens D's current NHSBSA revision for recapture or release.
+Follow's pharmacy link remains the current claim, never an implicit new attempt.
+Tie-breakers: the latest paper path and one operational history.
+
+Question: can the compact Type 1 source be omitted to fit the screen? Choice:
+no. Render O's same-ID read-only scan and immutable declaration in the inactive
+comparison, labelled Shared original evidence, and use external evidence only
+when that companion is actually rendered. Keep exactly one live form. Without
+the companion renderer, keep inline evidence. Tie-breakers: visible evidence
+and a clearer side-by-side comparison.
+
+Question: how should the wrapper make room for mandatory advice? Choice: reduce
+spacing, put case/state together and keep channel, endorsement and recorded gates
+inline for Type 1. Preserve all facts and normal-size text, the full task renderer
+and its recommendation card. No clipping, internal scrolling or hidden card.
+Keep ordinary operations unchanged. Tie-breaker: required content before a height
+proxy; measure the complete R/O integration before claiming viewport acceptance.

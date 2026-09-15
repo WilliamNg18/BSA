@@ -22,6 +22,7 @@ export interface DemoTaskProps {
   caseId: string;
   allowCorrection: boolean;
   channel: ItemChannel | null;
+  evidencePlacement?: "external";
 }
 export type DemoTaskRenderer = (props: DemoTaskProps) => ReactNode;
 
@@ -60,19 +61,19 @@ const CASE_COMPARISONS: Readonly<Record<number, { today: readonly string[]; assi
   },
 };
 
-export function DemoComparison({ enabled, today, assisted, activeLabel = "Current mode · Shared operational item" }: { enabled: boolean; today: ReactNode; assisted: ReactNode; activeLabel?: string }) {
+export function DemoComparison({ enabled, today, assisted, compact = false, activeLabel = "Current mode · Shared operational item" }: { enabled: boolean; today: ReactNode; assisted: ReactNode; compact?: boolean; activeLabel?: string }) {
   return <div className="grid grid-cols-2 items-start gap-6" data-demo-comparison>
-    <section aria-labelledby="demo-today-heading" data-testid="demo-today" data-readonly={enabled} className="min-w-0 space-y-4 rounded-xl border bg-card p-5">
-      <div className="border-b pb-3"><h2 id="demo-today-heading" className="text-xl font-semibold">Today</h2>
+    <section aria-labelledby="demo-today-heading" data-testid="demo-today" data-readonly={enabled} className={cn("min-w-0 rounded-xl border bg-card", compact ? "space-y-3 p-4" : "space-y-4 p-5")}>
+      <div className={cn("border-b", compact ? "flex flex-wrap items-baseline justify-between gap-x-3 pb-2" : "pb-3")}><h2 id="demo-today-heading" className="text-xl font-semibold">Today</h2>
         <p className="mt-1 text-xs font-medium">{enabled ? "Read-only scenario projection" : activeLabel}</p></div>
       {today}
     </section>
     <section key={enabled ? "on" : "off"} aria-labelledby="demo-assisted-heading" data-testid="demo-assisted" data-readonly={!enabled}
-      className={cn("relative isolate min-w-0 space-y-4 rounded-xl border p-5", enabled
+      className={cn("relative isolate min-w-0 rounded-xl border", compact ? "space-y-3 p-4" : "space-y-4 p-5", enabled
         ? "border-teal-700 bg-card ring-1 ring-teal-700 motion-safe:animate-in motion-safe:slide-in-from-bottom-[6px] motion-safe:duration-[2000ms]"
         : "border-dashed bg-muted text-neutral-700 dark:text-neutral-300")}>
       {enabled && <span aria-hidden="true" data-demo-motion="background" className="pointer-events-none absolute inset-0 -z-10 rounded-xl bg-teal-50 dark:bg-teal-950 motion-reduce:animate-in motion-reduce:fade-in-0 motion-reduce:duration-150" />}
-      <div className="border-b pb-3"><h2 id="demo-assisted-heading" className="text-xl font-semibold">With the agent</h2>
+      <div className={cn("border-b", compact ? "flex flex-wrap items-baseline justify-between gap-x-3 pb-2" : "pb-3")}><h2 id="demo-assisted-heading" className="text-xl font-semibold">With the agent</h2>
         <p className="mt-1 text-xs font-medium">{enabled ? activeLabel : "Read-only scenario projection · Agent Off"}</p></div>
       {assisted}
     </section>
@@ -196,7 +197,7 @@ function DemoQueue({ caseId, children }: { caseId: string; children: ReactNode }
   </div>;
 }
 
-function LiveItem({ step, caseId, kind, renderTask, showQueue = false }: { step: DemoStepDefinition; caseId: string; kind: DemoTaskKind; renderTask: DemoTaskRenderer; showQueue?: boolean }) {
+function LiveItem({ step, caseId, kind, renderTask, showQueue = false, externalEvidence = false }: { step: DemoStepDefinition; caseId: string; kind: DemoTaskKind; renderTask: DemoTaskRenderer; showQueue?: boolean; externalEvidence?: boolean }) {
   const item = useLifecycleCase(caseId);
   const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const verification = useAppStore((s) => s.itemVerification[caseId]);
@@ -205,22 +206,28 @@ function LiveItem({ step, caseId, kind, renderTask, showQueue = false }: { step:
   const enabled = useAppStore((s) => s.agentEnabled);
   if (!item || !lifecycle || !process) return <p role="alert">Operational item unavailable: {caseId}. No replacement case has been selected.</p>;
   const task = kind === "operator" && process.routing.outcome === "type1_capture" && process.routing.requiresHuman ? "type1" : kind;
-  const content = <div className="space-y-4" data-demo-live-case={caseId} data-demo-live-kind={task}>
-    <div className="space-y-2">
-      <h3 className="text-lg font-semibold">{caseId}</h3>
+  const compactCapture = task === "type1" && externalEvidence;
+  const content = <div className={compactCapture ? "space-y-3" : "space-y-4"} data-demo-live-case={caseId} data-demo-live-kind={task}>
+    <div className={compactCapture ? "space-y-1" : "space-y-2"} data-demo-case-summary>
+      <div className={compactCapture ? "flex flex-wrap items-baseline gap-x-3" : "space-y-2"}>
+      <h3 className={cn("font-semibold", compactCapture ? "text-base" : "text-lg")}>{caseId}</h3>
       <p className="text-sm" data-item-state>{itemStateLabel(lifecycle, kind === "operator" ? "nhsbsa" : "pharmacy", enabled)}</p>
-      <dl className="grid grid-cols-2 gap-3 text-sm">
+      </div>
+      <dl className={cn("text-sm", compactCapture ? "flex flex-wrap gap-x-4 gap-y-1 [&>div]:flex [&>div]:gap-2" : "grid grid-cols-2 gap-3")}>
         <div><dt className="font-medium">{kind === "submission" ? "Submission channel" : "Channel"}</dt><dd>{(kind === "submission" ? step.channel : process.channel) === "eps" ? "EPS" : "Paper"}</dd></div>
         <div><dt className="font-medium">Current endorsement</dt><dd>{item.extracted.endorsementText || "None"}</dd></div>
       </dl>
     </div>
-    {enabled && verification && <dl aria-label="Recorded verification, not a scenario forecast" className="grid grid-cols-3 gap-2 rounded-lg border p-3 text-sm">
+    {enabled && verification && <dl aria-label="Recorded verification, not a scenario forecast" className={cn("rounded-lg border text-sm", compactCapture
+      ? "flex flex-wrap gap-x-4 gap-y-1 px-3 py-2 [&>div]:flex [&>div]:gap-2"
+      : "grid grid-cols-3 gap-2 p-3")}>
       <div><dt>Gate 1</dt><dd>{verification.gate1 === "none" ? "Not performed" : verification.gate1}</dd></div>
       <div><dt>Gate 2</dt><dd>{verification.gate2 === "none" ? "Not performed" : verification.gate2}</dd></div>
       <div><dt>Reconciliation</dt><dd>{verification.reconciled ? "Agrees" : "Not established"}</dd></div>
     </dl>}
     <div data-demo-control={task === "operator" ? "operator" : task === "type1" ? "type1-capture" : undefined}>
-      {renderTask({ kind: task, caseId, allowCorrection: step.number !== 5 || Boolean(revision && revision.kind !== "seed"), channel: kind === "submission" ? step.channel : process.channel })}
+      {renderTask({ kind: task, caseId, allowCorrection: step.number !== 5 || Boolean(revision && revision.kind !== "seed"), channel: kind === "submission" ? step.channel : process.channel,
+        ...(compactCapture ? { evidencePlacement: "external" } : {}) })}
     </div>
     {step.number === 10 && <details data-demo-control="history" className="rounded-lg border p-3">
       <summary className="cursor-pointer font-medium">Same-item history</summary>
@@ -232,10 +239,11 @@ function LiveItem({ step, caseId, kind, renderTask, showQueue = false }: { step:
   return showQueue ? <DemoQueue caseId={caseId}>{content}</DemoQueue> : content;
 }
 
-export function DemoStepLayout({ renderTask }: { renderTask: DemoTaskRenderer }) {
+export function DemoStepLayout({ renderTask, renderType1Evidence }: { renderTask: DemoTaskRenderer; renderType1Evidence?: (caseId: string) => ReactNode }) {
   const number = useAppStore((s) => s.demoStep);
   const enabled = useAppStore((s) => s.agentEnabled);
   const followedId = useAppStore((s) => s.followedCaseId);
+  const processes = useAppStore((s) => s.itemProcesses);
   const { pathname, search, hash } = useLocation();
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -248,26 +256,36 @@ export function DemoStepLayout({ renderTask }: { renderTask: DemoTaskRenderer })
   const explicitSide = pathname.startsWith("/case/") ? "operator" : pathname === "/pharmacy/claims" ? "claim" : null;
   const caseId = routeCase && (step.number === 8 || step.number === 10 || routeCase === followedId) ? routeCase : step.caseId;
   const kind: DemoTaskKind = explicitSide ?? (step.number === 8 ? "operator" : step.number === 9 ? "claim" : "submission");
+  const process = caseId ? processes[caseId] : undefined;
+  const externalCapture = Boolean(renderType1Evidence && caseId && kind === "operator"
+    && process?.routing.outcome === "type1_capture" && process.routing.requiresHuman);
   const followOverride = Boolean(explicitSide && routeCase === followedId
     && (!step.caseId || routeCase !== step.caseId || pathname !== step.path.split("#")[0]));
   function panel(assisted: boolean) {
     const active = assisted === enabled;
+    if (!active && externalCapture && caseId && renderType1Evidence) return <div className="space-y-4">
+      <ScenarioProjection step={getDemoStep(7)} caseId={caseId} assisted={assisted} />
+      <section aria-label={`Shared original evidence for ${caseId}`} data-demo-shared-evidence={caseId} className="space-y-3 border-t pt-3">
+        <h3 className="font-semibold">Shared original evidence (read-only)</h3>
+        {renderType1Evidence(caseId)}
+      </section>
+    </div>;
     if (followOverride && caseId) return active
-      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} />
+      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} externalEvidence={externalCapture} />
       : <FollowProjection caseId={caseId} assisted={assisted} kind={kind} />;
     if (step.number === 1) return <ProcessPanel assisted={assisted} />;
     if (step.number === 2) return <MonthPanel assisted={assisted} active={active} />;
     if (step.number === 11) return <ClosingPanel assisted={assisted} />;
     return active && caseId
-      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} showQueue={step.number === 8} />
+      ? <LiveItem step={step} caseId={caseId} kind={kind} renderTask={renderTask} showQueue={step.number === 8} externalEvidence={externalCapture} />
       : <ScenarioProjection step={step} caseId={caseId} assisted={assisted} />;
   }
-  return <div className="mx-auto w-full max-w-7xl space-y-5" data-testid="demo-step-screen" data-demo-step={step.number} data-demo-case={caseId ?? undefined}>
-    <h1 ref={heading} tabIndex={-1} className="rounded-sm text-3xl font-semibold tracking-tight focus-visible:outline-2">
+  return <div className={cn("mx-auto w-full max-w-7xl", externalCapture ? "space-y-3" : "space-y-5")} data-testid="demo-step-screen" data-demo-step={step.number} data-demo-case={caseId ?? undefined}>
+    <h1 ref={heading} tabIndex={-1} className={cn("rounded-sm font-semibold tracking-tight focus-visible:outline-2", externalCapture ? "text-2xl" : "text-3xl")}>
       {followOverride ? `Following ${caseId} from step ${step.number}` : `${step.number}. ${step.title}`}
     </h1>
     {followOverride && <p className="text-sm font-medium" data-demo-follow-context>{caseId} · {kind === "claim" ? "Pharmacy view" : "NHSBSA view"}</p>}
-    <DemoComparison enabled={enabled} today={panel(false)} assisted={panel(true)}
+    <DemoComparison enabled={enabled} today={panel(false)} assisted={panel(true)} compact={externalCapture}
       activeLabel={caseId ? undefined : step.number === 2 ? "Current mode · Shared assumptions" : "Current mode · Process illustration"} />
   </div>;
 }
