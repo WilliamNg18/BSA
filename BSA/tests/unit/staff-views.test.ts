@@ -98,6 +98,29 @@ describe("Task 29 current-revision staff presentation", () => {
     expect(queue()).not.toContain('data-case-id="EX-24112"');
   });
 
+  it("opens the followed item's actual lane without expanding unrelated capture work or changing state", () => {
+    const store = useAppStore.getState();
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+    store.followCase("EX-24112");
+    store.setAgentEnabled(true);
+    const before = useAppStore.getState();
+    const html = queue();
+    expect(html).toContain('data-case-id="EX-24112"');
+    expect(html).not.toContain('data-type1-case="EX-24123"');
+    expect(html.indexOf("data-type2-worklist")).toBeLessThan(html.indexOf('aria-label="Background cases"'));
+    expect(useAppStore.getState()).toBe(before);
+  });
+
+  it("keeps the followed paper state in the real open capture summary", () => {
+    useAppStore.getState().followCase("EX-24123");
+    const before = useAppStore.getState();
+    const html = queue();
+    expect(html).toMatch(/<details[^>]*open=""[^>]*data-type1-case="EX-24123"/);
+    expect(html).toMatch(/<summary[\s\S]*?<span[^>]*data-item-state="true"/);
+    expect(html).not.toContain('data-case-id="SYN-FQ123-MISMATCH"');
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it("shows manual Tariff lookup and a mandatory human reason for Type 2", () => {
     useAppStore.getState().submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO initialled AB" });
     useAppStore.getState().arriveInQueue("EX-24112");

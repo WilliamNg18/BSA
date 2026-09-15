@@ -2233,3 +2233,5 @@ inline for Type 1. Preserve all facts and normal-size text, the full task render
 and its recommendation card. No clipping, internal scrolling or hidden card.
 Keep ordinary operations unchanged. Tie-breaker: required content before a height
 proxy; measure the complete R/O integration before claiming viewport acceptance.
+
+- Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
