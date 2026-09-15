@@ -62,6 +62,13 @@ returning Ready for the wrong selection. ALIGNMENT records exact outputs;
 G/P/R received the findings. Shared repair and verification remain pending,
 so W does not treat the integration as accepted.
 
+G subsequently published `c3f69f2`. W independently reran the exact probe:
+all three earlier trace/authority/precheck findings are corrected. Wrong
+strength remains a conflict; the guidance is no longer a fabricated monthly
+Tariff clause; the old checker now says Missing. Explicit N/A signal states
+replace invented image/reading/provision evidence. P/R still own rendering
+those states and V/coordinator own full integrated live acceptance.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

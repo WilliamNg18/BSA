@@ -107,6 +107,18 @@ matching rule to an August Tariff retrieval. Shared lifecycle assertions alone
 miss these surface contradictions. G/P/R were notified; a later repaired
 source must be checked separately, without relabelling this failed finding.
 
+The same probe on G `c3f69f25f12db1e1440571e15a18e8cd8f954440` passed:
+reconciliation is `conflict`, the medium composite cites the exact 10mg/5mg
+mismatch, and the deterministic reconciliation trace lists prescription,
+selected claim and pharmacy supply separately with failing status.
+Provisions/readings/images are typed not-applicable; sample agreement is 0/0.
+The public NHSBSA source URL and proposed-check label replace the invented
+monthly clause, with no `retrieve_tariff` call. `checkEpsFields` returns
+`missing` and the precise mismatch. Assertions checked these outputs and
+absence of both the false equality and the strength clause in every Tariff
+version. The isolated fixture was removed afterwards. No browser, payment
+calculation, shared-source edit or full integrated acceptance was involved.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

@@ -57,6 +57,11 @@ Ready while Send fails Gate 1. The gate/store workflow tests do not cover
 those surfaced claims. Canonical repairs belong to G, with P/R consuming
 the repaired contracts; W has not expanded into shared implementation or UI.
 
+W's bounded recheck of G `c3f69f2` passes the three exact failed observations.
+The repaired source is separate evidence, not a retrospective pass for
+`4765770`. Current UI, complete regressions and main/live verification remain
+outside this bounded probe and are not marked complete.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

@@ -82,6 +82,17 @@ needed its static build environment defined before it could execute; only
 the successful execution above is evidence. These findings are pinned to
 `4765770`, not claims about a later repaired commit or a deployed site.
 
+W reran the same bounded Node probe against G repair
+`c3f69f25f12db1e1440571e15a18e8cd8f954440`; all three findings are corrected.
+Wrong 5mg/10mg now produces reconciliation `conflict`, a medium composite
+with the precise mismatch, and a failing trace listing all three records.
+Reading, image and Tariff-provision statuses are explicitly not applicable,
+with 0/0 scripted readings. Guidance is labelled as the proposed matching
+check with the actual public NHSBSA URL; there is no strength Tariff clause
+or `retrieve_tariff` call. The EPS checker returns `missing` with the exact
+strength mismatch. The prior failed finding remains preserved above.
+This is bounded source verification, not a full-suite, UI or live verdict.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the
