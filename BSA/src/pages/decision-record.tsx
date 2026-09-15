@@ -17,6 +17,7 @@ import { MissingAssistedSlots } from "@/components/demo/case-presentation";
 import { caseViewState, recordHasRule, recordHasRuleAndReason } from "@/lib/case-presentation";
 import { ReleaseRecord } from "@/components/demo/release-record";
 import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 
 // Auditability and reconstructability, shown plainly: what was used, which rule
 // version, which agent version, which checks, what was recommended, what the
@@ -66,6 +67,7 @@ function DecisionRecordContent() {
         intro="Review evidence, versions, checks and the recorded human decision. Replay compares synthetic rule versions without changing history."
       />
       <LifecycleHistory id={c.id} />
+      <PharmacyConfirmation caseId={c.id} />
       <ReleaseRecord caseId={c.id} />
       <ItemRecommendationPanel caseId={c.id} context={latest
         ? { kind: "recorded", revision: latest.revision ?? 1, recordId: latest.id }

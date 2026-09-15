@@ -8,6 +8,7 @@ import { BoundaryTag } from "@/components/demo/labels";
 import { PrescriptionForm } from "@/components/demo/prescription-form";
 import { PainMarker } from "@/components/demo/pain-marker";
 import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
@@ -24,11 +25,12 @@ import {
 } from "@/lib/domain/paper-capture";
 
 /** Q embeds this same store-connected surface in the lane and case pack. */
-export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline", showRecommendation = true }: {
+export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline", showRecommendation = true, showConfirmation = true }: {
   caseId: string;
   compact?: boolean;
   evidencePlacement?: "inline" | "external";
   showRecommendation?: boolean;
+  showConfirmation?: boolean;
 }) {
   const c = useLifecycleCase(caseId);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
@@ -50,6 +52,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
     return (
       <section aria-label={`Type 1 capture for ${caseId}`} className="space-y-3 rounded-xl border p-4">
         <h3 ref={heading} tabIndex={-1} className="font-semibold">Human capture confirmed</h3>
+        {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
         {showRecommendation && <ItemRecommendationPanel caseId={caseId} compact={compact} />}
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
@@ -76,6 +79,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
     return <p className="text-sm">This item is not awaiting Type 1 capture.</p>;
   }
   return <>
+    {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
     {showRecommendation && <ItemRecommendationPanel caseId={caseId} compact={compact} />}
     <CaptureForm
       key={`${caseId}:${revision.number}:${revision.at}:${agentEnabled}`}

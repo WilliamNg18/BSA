@@ -25,6 +25,7 @@ import { abstentionReasonLabel } from "@/lib/abstention-display";
 import { OperatorActionPanel } from "@/components/demo/operator-action-panel";
 import { ReleaseRecord } from "@/components/demo/release-record";
 import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 
 export function CasePackPage() {
   const { id } = useParams();
@@ -72,6 +73,7 @@ function CasePackContent() {
         intro="Review the evidence, monthly rule and checks. The agent verifies and advises; a person decides."
       />
       <LifecycleHistory id={c.id} />
+      <PharmacyConfirmation caseId={c.id} />
       {released && <ReleaseRecord caseId={c.id} />}
       {(automatic || released || captureCompleted) && <ItemRecommendationPanel caseId={c.id} />}
       {!awaitingCapture && c.paperDeclaration && (agentEnabled || currentProcess?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
@@ -79,7 +81,7 @@ function CasePackContent() {
         Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
       </p>}
       {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
-      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} showRecommendation={awaitingCapture} />}
+      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} showRecommendation={awaitingCapture} showConfirmation={false} />}
       {automatic && !released && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
         <BoundaryTag cls="deterministic" />
         <p>priced by NHSBSA's existing rules engine, no person involved</p>
@@ -89,7 +91,7 @@ function CasePackContent() {
         <p>Historical case view. Submit another demonstration attempt at the pharmacy before starting a new review.</p>
         {perspective !== "nhsbsa" && <Button asChild variant="outline" className="h-auto max-w-full whitespace-normal"><Link to={`/pharmacy/claims?caseId=${encodeURIComponent(c.id)}`}>Open pharmacy claim for another attempt</Link></Button>}
       </section>}
-      {!awaitingCapture && !captureCompleted && !automatic && !released && <OperatorActionPanel caseId={c.id} />}
+      {!awaitingCapture && !captureCompleted && !automatic && !released && <OperatorActionPanel caseId={c.id} showConfirmation={false} />}
 
       {!pack.agentInvoked && (
         <Alert>

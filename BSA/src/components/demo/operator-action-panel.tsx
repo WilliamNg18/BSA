@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { NativeRadioGroup, NativeRadioItem } from "@/components/ui/native-radio-group";
 import { BoundaryTag } from "@/components/demo/labels";
 import { RecommendationCard } from "@/components/demo/recommendation-card";
+import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 import { RawCaseFields } from "@/components/demo/case-presentation";
 import { ReleaseRecord } from "@/components/demo/release-record";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
@@ -23,14 +24,14 @@ const OUTCOMES: { value: HumanDecision; label: string }[] = [
   { value: "ESCALATE", label: "Escalate" },
 ];
 
-export function OperatorActionPanel({ caseId, compact = false }: { caseId: string; compact?: boolean }) {
+export function OperatorActionPanel({ caseId, compact = false, showConfirmation = true }: { caseId: string; compact?: boolean; showConfirmation?: boolean }) {
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const reset = useAppStore((s) => s.queue.revision);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
-  return <OperatorActions key={`${caseId}:${revision?.number}:${reset}:${agentEnabled}`} caseId={caseId} compact={compact} />;
+  return <OperatorActions key={`${caseId}:${revision?.number}:${reset}:${agentEnabled}`} caseId={caseId} compact={compact} showConfirmation={showConfirmation} />;
 }
 
-function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean }) {
+function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string; compact: boolean; showConfirmation: boolean }) {
   const id = useId();
   const c = useLifecycleCase(caseId);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
@@ -65,6 +66,7 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
     const event = lifecycle.history.filter((entry) => entry.actor === "operator" && entry.revision === revision.number).at(-1);
     return <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
+      {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
       {recommendationError && <p role="alert">{recommendationError}</p>}
       {recommendation && <RecommendationCard recommendation={recommendation} compact={compact} />}
       {compact ? lifecycle.state === "released_to_pricing" ? <ReleaseRecord caseId={caseId} /> : <>
@@ -110,6 +112,7 @@ function OperatorActions({ caseId, compact }: { caseId: string; compact: boolean
     <div className="flex items-center justify-between gap-2">
       <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
     </div>
+    {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
     {recommendationError && <p role="alert" className="text-sm text-destructive">{recommendationError}</p>}
     {recommendation && <RecommendationCard recommendation={recommendation} compact={compact} applyLabel="Apply suggestion"
       onApply={reviewing && recommendation.operatorApplyAllowed

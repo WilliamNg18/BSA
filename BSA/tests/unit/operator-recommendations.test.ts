@@ -107,4 +107,44 @@ describe("always-visible operator recommendations", () => {
     expect(html).toContain("Current revision");
     expect(html).toContain(">Apply suggestion</button>");
   });
+
+  it.each([false, true])("shows the exact current pharmacy answer immediately on every case surface, Agent %s", (enabled) => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(enabled);
+    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
+    store.arriveInQueue("EX-24112");
+    store.requestInformation("EX-24112", "Please confirm the endorsement date.");
+    const answer = "The pharmacy confirms the supplied date needs correction.";
+    store.sendConfirmation("EX-24112", answer);
+    const before = getDomainSnapshot();
+    for (const page of ["pack", "trace", "record"] as const) {
+      const html = renderRoute("EX-24112", page);
+      expect(html.match(/data-pharmacy-confirmation="EX-24112"/g)).toHaveLength(1);
+      const confirmation = html.match(/<section aria-label="Pharmacy confirmation"[\s\S]*?<\/section>/)?.[0];
+      expect(confirmation).toContain(answer);
+      expect(confirmation).toContain('role="status"');
+      expect(confirmation).not.toContain("<details");
+    }
+    expect(getDomainSnapshot()).toEqual(before);
+  });
+
+  it("shows a received Type 1 answer without treating free text as captured prescriber evidence", () => {
+    const store = useAppStore.getState();
+    store.setAgentEnabled(true);
+    const source = store.caseRevisions["EX-24123"].at(-1)!;
+    store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: source.paperDeclaration!.endorsementText,
+      paperDeclaration: source.paperDeclaration, declaration: source.declaration });
+    const revision = useAppStore.getState().caseRevisions["EX-24123"].at(-1)!.number;
+    store.confirmType1({ caseId: "EX-24123", revision, provenance: "human_capture", declarationReconciled: false,
+      fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
+    store.requestInformation("EX-24123", "Please confirm the prescriber against readable evidence.");
+    const answer = "Prescriber confirmation supplied separately by the pharmacy.";
+    store.sendConfirmation("EX-24123", answer);
+    const before = getDomainSnapshot();
+    const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123", compact: true }));
+    expect(html).toContain('data-pharmacy-confirmation="EX-24123"');
+    expect(html).toContain(answer);
+    expect(html).toMatch(/<input[^>]*id="[^"]*-prescriber"[^>]*value=""/);
+    expect(getDomainSnapshot()).toEqual(before);
+  });
 });
