@@ -605,6 +605,36 @@ Four added cases pass, as do all 120 combined strength/evidence/headline and
 existing EPS/correction/recommendation/two-gate regressions and check. These
 existing gate regressions protect the current base, not the unmerged new
 mode-specific routing that G is implementing.
+## 2026-09-15: Actual Part A live observation and inventory implementation
+
+Part A main `5b75e5f7711bf599b02ff9fab752781fa0685b00` deployed successfully
+in workflow `35019037216`, with green main CI `35019036998`. The coordinator
+opened the actual live root at 1440px and case trace at 1280px at
+20:30-20:34 UTC. Both modes, footer-only notice, exact 16px single-line Outcome,
+centre differences below 0.006px and zero Off gap were observed. The trace's
+Outcome had cumulative opacity 1 and no clipping. No browser console messages
+were recorded. The earlier dark reduced-motion 1440px overview was also
+actually viewed by the coordinator; A's light review is separately attributed.
+This is bounded header verification, not full-site manual visual acceptance.
+
+The first live diagnostic mistakenly read `aria-checked` from the native
+checkbox and selected an inner source footer; inspection corrected it to
+native `checked` and the global footer. The browser tool also rejected an
+artifact path outside its allowed roots. Those are retained probe/tool issues,
+not application failures. Successful JSON records are in the coordinator's
+`.playwright-mcp/part-a-live-5b75-*.json`; #104 comment 5687884022 records closeout.
+
+The new inventory endpoint's first two positive tests returned 500 at the
+pre-read path/handle metadata comparison on Windows. The implementation now
+checks file identity before reading and uses the opened handle for its content
+snapshot, retaining byte-count/during-read/final consistency guards. All 41
+static-server tests and the full source-policy/type/lint/build check pass, including the 29 existing delivery
+regressions. Fresh content/membership, private hashes, HEAD parity, strict
+headers and explicit rejection of unsafe entries/invalid provenance are covered.
+No actual production inventory, backup parity or clean offline recovery is
+claimed before this change and the producer reach main and are exercised.
+The provenance checks also reject a non-string commit rather than letting
+regular-expression coercion accept an array containing a SHA.
 ## 2026-09-15: Reopened header fade audit diagnosis
 
 Final clean source `0d0837aa8a425372a8c4be6835935777a3de166a` passes check

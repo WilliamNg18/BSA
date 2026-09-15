@@ -516,6 +516,20 @@ the existing evaluation/correction API. Source facts remain identical across
 the pharmacy/operator projections; a typed operator projection contains no
 proposed patch or preview. Four new authority regressions pass; consumer
 mounting and whole-flow live evidence are not claimed by these unit results.
+## Current release and bounded inventory scope
+
+Part A is delivered on live main `5b75e5f` after green candidate/main CI and
+deployment, with actual coordinator root/deep-link On/Off/footer observation.
+The older candidate records below retain their original evidence boundaries.
+
+The coordinator's inventory change is delivery metadata only, not a
+business/model API. `GET`/`HEAD /release-manifest.json` returns
+`{schemaVersion: 1, commit, builtAt, files: [{path, bytes, sha256, public}]}`.
+Paths are relative, slash-separated and sorted. Actual private runtime files
+are hashed without exposing their contents; the virtual endpoint is not a
+file entry. No dependencies, CSP changes, scenario changes or infrastructure
+changes are added. Producer/backup commands, parity CI and clean recovery
+remain D/O work and are not satisfied by this endpoint's unit tests.
 ## Reopened Part A scope: final-state audit/fade compatibility
 
 Verification is now bounded and complete for this test-only handoff: check,

@@ -685,6 +685,31 @@ The full two-worker run has 1,886 passes and 98 failures in 13 other-owner files
 the standalone headline scan retains five S-owned hits, not waived.
 No browser, main deployment, live observation or backup result is claimed.
 All five registers accompany this code/test commit and branch publication.
+## Current delivery: Part A live, backup inventory in progress
+
+Part A #104 merged first at `5b75e5f7711bf599b02ff9fab752781fa0685b00`.
+Exact-candidate CI `35017383272`, main CI `35019036998` and normal deployment
+`35019037216` are green. The coordinator actually opened
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ at 1440px and
+`/case/EX-24112/trace` at 1280px, checking On/Off and the global footer.
+Observations at 20:30-20:34 UTC served that clean SHA: one readable 16px line,
+centre differences 0.00521/0.00525px, no old notice, one footer notice and
+zero reserved Off height. Browser console had no errors or warnings.
+This closes Part A only, not Tasks 39-40 or backup acceptance.
+
+The coordinator now owns the bounded virtual `/release-manifest.json` server
+endpoint and its direct tests. It reports actual runtime paths, byte counts,
+SHA-256 hashes and public/private classification, with clean build provenance,
+strict headers and no-store. Forty-one static-server tests and the full
+source-policy/type/lint/build check pass, including the 29 retained delivery
+checks. This implementation is not yet on main or live.
+D retains the canonical producer, launcher, build seeds, workflow and recovery
+guide; O retains independent offline verification. No backup parity or clean
+offline recovery has been demonstrated.
+F now owns the bounded D Home/eleven-step case-context compatibility and its
+direct legacy assertions, coordinated with G/N/S/V; D's backup work continues.
+
+## Earlier Part A release candidate: full hosted matrix green, live pending
 ## Part A follow-up: settle the header before final-state axe
 
 Published test/source identity `0d0837aa8a425372a8c4be6835935777a3de166a`
