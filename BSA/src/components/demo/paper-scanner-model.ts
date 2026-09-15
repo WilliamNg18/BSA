@@ -49,5 +49,5 @@ export function scannerValue(value: string | number | null | undefined): string 
 
 export function characterRecognitionConfidence(confidence: number): string {
   if (!Number.isFinite(confidence) || confidence < 0 || confidence > 1) throw new Error("Character-recognition confidence must be between zero and one.");
-  return new Intl.NumberFormat("en-GB", { style: "percent", maximumFractionDigits: 6 }).format(confidence);
+  return new Intl.NumberFormat("en-GB", { style: "percent", maximumFractionDigits: 20 }).format(confidence);
 }
