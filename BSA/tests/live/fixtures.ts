@@ -5,6 +5,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { captureJson, test as existingTest, expect } from "../e2e/fixtures";
 import { isBuildInfo } from "./settings";
+import { installRouteCommitDiagnostics, routeDiagnosticsEnabled } from "../support/route-commit-diagnostics";
 
 async function verifyBuild(request: APIRequestContext, info: TestInfo, phase: string) {
   const response = await request.get("/build-info.json");
@@ -24,11 +25,39 @@ async function verifyBuild(request: APIRequestContext, info: TestInfo, phase: st
   expect(body.dirty, "A release must be built from a clean commit").toBe(false);
 }
 
-export const test = existingTest.extend<{ buildIdentity: void }>({
+export const test = existingTest.extend<{ buildIdentity: void; routeDiagnostics: void }>({
   buildIdentity: [async ({ request }, use, info) => {
     await verifyBuild(request, info, "before");
     await use();
     await verifyBuild(request, info, "after");
+  }, { auto: true }],
+  routeDiagnostics: [async ({ page }, use, info) => {
+    if (!routeDiagnosticsEnabled(info.config.metadata, info.project.use.baseURL)) {
+      await use();
+      return;
+    }
+    const diagnostics = await installRouteCommitDiagnostics(page);
+    diagnostics.mark("test-start");
+    const collect = async () => {
+      const originalStatus = info.status;
+      diagnostics.mark(`test-outcome:${originalStatus}`);
+      try {
+        await captureJson(info, "route-commit-diagnostics", {
+          originalStatus, expectedCommit: process.env.EXPECTED_BUILD_COMMIT,
+          ...await diagnostics.collect(),
+        });
+      } catch (error) {
+        await captureJson(info, "route-commit-diagnostic-error", {
+          originalStatus, message: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
+    };
+    try {
+      await use();
+    } finally {
+      await collect();
+    }
   }, { auto: true }],
 });
 

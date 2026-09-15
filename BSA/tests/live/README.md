@@ -123,6 +123,32 @@ Even a complete local PASS is rehearsal, not deployment acceptance. A dirty
 development run is weaker again and must retain its actual dirty identity.
 The final latest-main URL check must be less than ten minutes old.
 
+## Separate route-commit diagnostics
+
+`route-diagnostic.config.ts` selects only the two complete Agent-On timing
+matrices, using the same original actions, assertions and one-second budget.
+It requires the local rehearsal variables and an allocated browser slot:
+
+```powershell
+npx playwright test --config tests\live\route-diagnostic.config.ts
+```
+
+This configuration produces `route-diagnostic-results.json`, explicitly
+labelled **route-commit diagnostic, not acceptance**, and retains both traces.
+Only its metadata enables the fixture observer; normal live and rehearsal
+runs install no route diagnostics. Installation is before the test's first
+navigation and collection is after the original outcome. No awaited observer
+calls are added inside timed actions.
+
+Browser mutation, animation-frame and timer observations cover the current
+document only. Each journey's `page.goto` starts a new browser buffer; the
+client navigation/timer stream spans the whole fixture and original traces
+retain earlier documents. Each buffer is capped at 20,000 records with an
+explicit dropped count. Animation frames are not proof of compositor paint.
+Observers add overhead that is never subtracted from a failed deadline.
+Collection errors are attached separately and rethrown, not converted into
+functional success. A diagnostic pass is not uninstrumented acceptance.
+
 ## Full-state equivalence is separate
 
 `one-state.config.ts` builds a separate instrumented artifact with a read-only

@@ -2308,3 +2308,12 @@ hosting comment? Choice: retain the checker unchanged and replace only
 "Azure hosting" with "production hosting" in App.tsx's site-root comment.
 This is the sole approved source-byte exception; executable tokens, routing
 and hosting behaviour remain unchanged.
+
+Question: where should route-commit instrumentation run? Choice: a separate
+local diagnostic configuration enables a typed test fixture, retains both
+traces and labels its JSON report as diagnostic rather than acceptance.
+The normal 75-check configurations leave the observer inactive. It installs
+before navigation, collects after the original outcome and adds no awaited
+steps inside the existing one-second actions. Browser records cover only
+the final or failing document; earlier document evidence remains in traces.
+Record caps, dropped observations and added overhead stay explicit.
