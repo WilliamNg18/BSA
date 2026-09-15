@@ -4,6 +4,11 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The actual sibling layout now satisfies V's migrated review assertions:
+40 focused tests, typecheck and targeted lint pass. This uses O's implemented
+structure, not a nested-content exclusion. Whole-suite, focus/geometry and
+current-live validation remain separate gates.
+
 G `4ac77a5` supplies the actual parent-approved sibling implementation.
 Earlier nested-layout totals stay historical; no assertion-only exclusion
 was used to establish this dependency.

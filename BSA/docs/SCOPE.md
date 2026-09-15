@@ -4,6 +4,11 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+V's sibling-panel assertion migration changes only its review-repair unit
+file and these tracking records. Apply belongs to advice; all human choice,
+reason and release assertions remain in the actual human panel. Both panel
+limits, mandatory authority and structural separation are checked.
+
 O's real sibling layout is available through G `4ac77a5`. V may now verify
 each actual panel and migrate Apply selectors without changing source or limits.
 

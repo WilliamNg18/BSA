@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: where is Apply verified after genuine role separation? Choice: in the case-bound operator advice sibling, while human choices/reason/Release remain in the human panel; require disjoint adjacent panels, H2 advice and unchanged authority/help, measuring all prose in each below 25. Tie-breaker: the parent's implemented structural contract, not an assertion waiver.
+
 - Question: may the pending advice scope change proceed? Choice: consume exact G `4ac77a5` with O's genuine sibling source, then assert both real panels and scope Apply to advice; tie-breaker: the parent's explicit structural prerequisite is now implemented.
 
 - Question: how is the next browser migration baseline established without an unleased run? Choice: native `--list` on exact clean G `d4f27ce`, retain every ID and assert empty result arrays, using the real guarded local configuration for live-name discovery; tie-breaker: exact inventory without execution or fabricated passes.

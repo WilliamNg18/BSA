@@ -4,6 +4,14 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+The two V Apply assertions now target the actual advice sibling on G
+`4ac77a5`. The helper requires the real workspace, case-bound human panel,
+operator-audience advice, visible H2 markup, adjacent disjoint panels and
+unchanged authority/help text. Each complete panel is measured below 25
+words; nothing is excluded from the former nested layout.
+Typecheck/lint and 40 review/operator tests pass. This is the isolated fix
+for G's two remaining unit failures, not a full-suite or browser verdict.
+
 V imports exact G `4ac77a5`, including O's published genuine sibling panels.
 Owner source is unchanged; only tracking conflicts were unioned. The two
 remaining V Apply assertions will now move to the actual advice panel.

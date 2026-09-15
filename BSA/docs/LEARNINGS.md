@@ -4,6 +4,13 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The last two G unit failures were caused by searching for Apply inside the
+new human panel. V now asserts the real adjacent advice/human structure,
+checks both full panel narratives and keeps the human controls scoped.
+Typecheck, lint and all 40 focused review/operator tests pass. The old
+26/34-word examples stay historical; no source text or threshold was changed
+by this test patch.
+
 G `4ac77a5` imports O's real advice/decision separation. The V merge changed
 no owner source and preserved both sides' document records; the remaining
 Apply failures are now locator migrations against an implemented structure.
