@@ -9,6 +9,7 @@ export interface RecommendationCardProps {
   onApply?: () => void;
   onFocusField?: (target: ConcreteSuggestion["focusTarget"]) => void;
   applyLabel?: string;
+  pharmacyAction?: "apply-correction";
   compact?: boolean;
   headingLevel?: 2 | 3 | 4;
   className?: string;
@@ -16,7 +17,7 @@ export interface RecommendationCardProps {
 
 /** Presentation only: the containing human control owns Apply and error reporting. */
 export function RecommendationCard({
-  recommendation: r, onApply, onFocusField, applyLabel = "Apply suggested correction", compact = false, headingLevel = 3, className,
+  recommendation: r, onApply, onFocusField, applyLabel = "Apply suggested correction", pharmacyAction, compact = false, headingLevel = 3, className,
 }: RecommendationCardProps) {
   const headingId = useId();
   const Heading = headingLevel === 2 ? "h2" : headingLevel === 3 ? "h3" : "h4";
@@ -47,7 +48,8 @@ export function RecommendationCard({
         {r.suggestions.map((entry) => <div key={entry.field}>
           <dl><dt>{entry.label}</dt><dd>{entry.value !== null ? <strong>{entry.value}</strong> : "Needs human input"}</dd>
             <dt className="text-muted-foreground">Source</dt><dd>{entry.source}</dd></dl>
-          {entry.status === "needs-human-input" && onFocusField && <Button type="button" variant="outline" size="sm" onClick={() => onFocusField(entry.focusTarget)}>Enter invoice price</Button>}
+          {entry.status === "needs-human-input" && onFocusField && <Button type="button" variant="outline" size="sm"
+            data-pharmacy-action={pharmacyAction ? "invoice-focus" : undefined} onClick={() => onFocusField(entry.focusTarget)}>Enter invoice price</Button>}
         </div>)}
       </div>}
       {r.preview && <div className="space-y-1 text-sm">
@@ -79,7 +81,7 @@ export function RecommendationCard({
       </dl>
       {r.operatorApproved && <p className="text-sm">Operator-approved; the agent verified and advised.</p>}
       <SignalList signals={r.signals} compact={compact} />
-      {onApply && r.context !== "recorded" && <Button type="button" variant="outline" onClick={onApply}>{applyLabel}</Button>}
+      {onApply && r.context !== "recorded" && <Button type="button" variant="outline" data-pharmacy-action={pharmacyAction} onClick={onApply}>{applyLabel}</Button>}
     </section>
   );
 }

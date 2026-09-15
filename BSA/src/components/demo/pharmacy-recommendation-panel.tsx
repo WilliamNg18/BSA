@@ -37,5 +37,5 @@ export function PharmacyRecommendationPanel({ caseId, draft, compact = false, on
     document.getElementById(field)?.focus();
   }
   return <RecommendationCard recommendation={result.recommendation} compact={compact}
-    onApply={result.recommendation.preview ? onApply : undefined} onFocusField={draft ? focus : undefined} />;
+    pharmacyAction="apply-correction" onApply={result.recommendation.preview ? onApply : undefined} onFocusField={draft ? focus : undefined} />;
 }

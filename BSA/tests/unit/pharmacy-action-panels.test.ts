@@ -422,10 +422,17 @@ describe("recorded receipt and release count", () => {
         expect(html).toContain("invoice price required; enter £x.xx");
         expect(html).toContain("outside validated coverage");
         expect(html).not.toContain('value="£');
-        controls.get("focus-invoice")!();
+        controls.get("invoice-focus")!();
         expect(getElementById).toHaveBeenCalledWith("endorsement");
         expect(focus).toHaveBeenCalledOnce();
         expect(getDomainSnapshot()).toEqual(before);
+      });
+
+      it("classifies the real shared-card pharmacy Apply button without adding a duplicate control", () => {
+        useAppStore.getState().setAgentEnabled(true);
+        const html = render(createElement(PharmacySubmissionPanel, { caseId: "EX-24112", channel: "eps" }));
+        expect(html.match(/data-pharmacy-action="apply-correction"/g)).toHaveLength(1);
+        expect(html).toMatch(/<button[^>]*data-pharmacy-action="apply-correction"[^>]*>Apply suggested correction<\/button>/);
       });
     });
 
