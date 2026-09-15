@@ -56,6 +56,8 @@ for (const width of [1280, 1440]) {
       await expect(optional.locator("[data-mismatch-with]")).toHaveText("0 (estimate)");
       await share.fill("100");
       await expect(optional.locator("[data-mismatch-with]")).toHaveText("120,000,000 (estimate)");
+      await share.fill(".00000000001");
+      await expect(optional.locator("[data-mismatch-with]")).toHaveText("1.2E-5 (estimate)");
       for (const invalid of ["", "-1", "100.00000000000000001", "1e2"]) {
         await share.fill(invalid);
         await expect(share).toHaveAttribute("aria-invalid", "true");

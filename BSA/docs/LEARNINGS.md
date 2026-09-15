@@ -513,6 +513,11 @@ actually underflows during division by 100. The model was not weakened.
 Affected-file lint passes; rendered-state/browser coverage is authored only
 until the canonical-store handoff lands.
 
+The original four-decimal display could make a valid small positive expectation
+look like zero. The mismatch-only formatter now preserves significant digits,
+using scientific notation below 0.0001. This presentation repair is distinct
+from rejecting an input that actually underflows during percent conversion.
+
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
 at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.

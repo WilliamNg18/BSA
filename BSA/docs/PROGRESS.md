@@ -513,6 +513,12 @@ affected-file lint pass. Rendered-state units and four desktop browser contracts
 are authored, but cannot establish acceptance until G's isolated store addition
 is integrated; no browser lease or execution is claimed.
 
+Further validation passes 87 tests across the independent mismatch helper,
+the retained monthly contracts and W's evidence constants. Actual application
+typechecking finds only the three expected references to G's pending same-store
+field/setter. A small-count display repair prevents valid positive estimates
+being rounded to a misleading zero; its browser assertion remains unexecuted.
+
 The 15 September standing rule in MEMORY applies immediately to every stream.
 Runtime work through #100 is merged. Before this policy change, both remote
 main and the live build identity were verified as

@@ -19,6 +19,13 @@ export interface MismatchEstimateSelection {
 
 export const createMismatchSharePercent = () => String(EPS_MISMATCH_ESTIMATE.defaultShare * 100);
 
+const countFormat = new Intl.NumberFormat("en-GB", { maximumSignificantDigits: 15 });
+const tinyCountFormat = new Intl.NumberFormat("en-GB", { maximumSignificantDigits: 15, notation: "scientific" });
+
+export function formatMismatchEstimate(value: number): string {
+  return (value > 0 && value < 0.0001 ? tinyCountFormat : countFormat).format(value);
+}
+
 /** Independent coverage scenario, never a subtraction from the referral-loop cohorts. */
 export function calculateMismatchEstimate(submittedClaimVolume: number, share: number): MismatchEstimate {
   if (!Number.isSafeInteger(submittedClaimVolume) || submittedClaimVolume < 0 || submittedClaimVolume > 1_000_000_000) {
