@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-09-15T22:40:01.572Z",
+  "origin": "https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net",
+  "scope": "Read-only follow-up after inventory HTTP500; no runtime mutation or offline proof",
+  "results": [
+    {
+      "path": "/build-info.json",
+      "status": 200,
+      "contentType": "application/json; charset=utf-8",
+      "cacheControl": "no-store",
+      "build": {
+        "commit": "a10b000a4aff97aafb17663479cc97583ec28bab",
+        "builtAt": "2026-09-15T22:30:06.382Z",
+        "dirty": false
+      }
+    },
+    {
+      "path": "/release-manifest.json",
+      "status": 500,
+      "contentType": null,
+      "cacheControl": "no-store",
+      "body": "Static request failed"
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "no-store",
+      "hasAppRoot": true
+    }
+  ],
+  "publicFileHashComparisonPerformed": false,
+  "offlineRecoveryPerformed": false,
+  "interpretation": "The application root and build identity respond, but the inventory endpoint blocks independent runtime parity verification. The endpoint owner was notified."
+}

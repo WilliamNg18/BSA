@@ -1958,3 +1958,12 @@ unchanged capture data, viewport-margin behaviour and no domain mutation
 from reveal. No timer, forced click, resize cap or assertion waiver is used.
 The A helper copied for final-state audit readiness exactly matches its
 published Git blob `26ac2a001931c6226ea6edd6faa6231be54275d1`.
+
+## Independent live inventory probe: a10b000
+
+O's read-only probe stopped at HTTP500 from `/release-manifest.json`;
+a follow-up retained the plain response `Static request failed` with
+no-store. The root remained200 and build-info identified clean a10b000,
+built at `2026-09-15T22:30:06.382Z`. This distinguishes the endpoint
+failure from a general outage. No public-file hash comparison, backup
+production or isolated recovery result is claimed. Parent owns the fix.

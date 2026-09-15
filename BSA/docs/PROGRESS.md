@@ -2815,3 +2815,10 @@ heading. The focused note is revealed wholly on focus and after its value
 changes, using instant nearest scrolling and the existing viewport-margin
 pattern, without resizing or hiding controls. Check and 52 targeted tests
 pass. The fresh full-ten browser run still requires allocation.
+
+Independent backup-contract HTTP verification found a deployed blocker:
+at `2026-09-15T22:40:01.572Z`, live build-info returned clean a10b000 and
+the app root returned200, but `/release-manifest.json` returned500
+`Static request failed`. The endpoint owner was notified immediately.
+Evidence is in `docs/verification/backup/live-inventory-a10.json`;
+no file-hash comparison or offline recovery pass was possible.

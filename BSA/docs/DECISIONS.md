@@ -2654,3 +2654,5 @@ Question: what should trigger capture-confirmation focus? Choice: a new case/rev
 Question: how should an edited operator note remain visible? Choice: reveal the actual focused textarea on focus and after its controlled value updates, retaining its size and a small viewport margin, rather than relaxing ratio1 or targeting a smaller proxy; tie-breaker: accessible, stable controls.
 
 Question: when should the final unrestricted accessibility audit run? Choice: use A's unchanged helper to observe the actual native Outcome state immediately before the audit, without suppressing animation or changing business-action timing; tie-breaker: truthful final-state evidence.
+
+Question: can a healthy root/build-info response substitute for a failed runtime-inventory endpoint? Choice: no; retain the HTTP500 evidence, notify its owner and keep parity/recovery incomplete; tie-breaker: live-first verification of the actual new feature.

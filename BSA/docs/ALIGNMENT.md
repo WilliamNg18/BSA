@@ -761,3 +761,8 @@ content and identical stable confirmation key. Off's existing failure image
 shows the note's lower edge outside the viewport; runtime focus/value
 handling now reveals the actual whole control. No browser pass is inferred
 from these source/unit checks.
+
+Live a10b000 exposes its clean build identity, but its release inventory
+failed the independent HTTP probe. Deployed-runtime hash parity and clean
+offline recovery remain unverified until the endpoint and producer/job
+are actually exercised successfully.

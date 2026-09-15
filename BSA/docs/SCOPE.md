@@ -712,3 +712,7 @@ adds targeted regressions. All ten browser identities, focus assertions,
 viewport ratio1 and unrestricted axe remain. A's exact final-state helper
 is reused before final audits; it observes native completion, not an
 animation override or a change to any one-second business deadline.
+
+A responding app root does not complete the new backup-inventory feature.
+O's live HTTP500 observation is a specific endpoint blocker, not a claim
+that the whole app is unavailable. Parent retains endpoint remediation.
