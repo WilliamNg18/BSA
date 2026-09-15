@@ -42,6 +42,15 @@ passes the 42-test mounted/scanner selection. Four real-route browser checks
 are prepared, but a passing source renderer does not establish measured desktop
 geometry or axe acceptance. Conditional port 4341 is reserved by the coordinator.
 
+The real full-width mount passed all four desktop cases in 30.6 seconds at
+clean `941933f`, with actual scaled-font and column geometry checks rather than
+CSS-class proxies. Eight scoped axe audits report zero violations; raw sources
+remain identical after mode changes and explicit D capture. The local server's
+build identity matched the clean source and port 4341 was released. Full JSON
+audits and both named 1440 screenshots are retained; the image tool delivered D
+but blocked the second image at its limit. Do not describe that as both images
+visually accepted or as evidence of hosted release.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

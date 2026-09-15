@@ -41,6 +41,17 @@ Type 1 confirmation. These browser checks are authored, not yet run.
 The coordinator conditionally reserved port 4341, one worker, zero retries;
 exact-head build and a clear strict/live-priority lease precede the run.
 
+The first actual mounted scanner run passed 4/4 in 30.6 seconds on clean
+`941933f0bb4b9bd6aa44ee09f7a2c6a7fe7ab97e`, local port 4341, one worker,
+zero retries. Both paper cases passed 1280/1440 geometry, Off/On raw-source
+equality, and D's unchanged raw columns after human confirmation. All eight
+scoped axe audits have zero violations; no browser errors occurred. Two named
+1440 screenshots and full axe reports are retained in
+`docs/screens/task40-scanner/941933f/`. D's screenshot was delivered for inspection;
+the second image delivery was blocked by the tool limit, so complete visual
+acceptance is not claimed. Port 4341 was confirmed released.
+This is not a hosted release or final integrated gate.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store

@@ -32,6 +32,12 @@ cases at both desktop widths; 1440-only screenshots and scoped axe are planned.
 Browser execution and live acceptance remain pending, with conditional
 coordinator lease 4341 and no parallel duplicate verification by O/V.
 
+Bounded U scanner browser acceptance now passes on clean `941933f`: four
+actual-route tests, eight scoped axe audits with zero violations, both desktop
+widths and both modes. Raw D evidence remains unchanged after capture. Evidence
+is source-pinned in `docs/screens/task40-scanner/941933f`; this does not establish
+full C7 transitions, two-image visual acceptance, hosted release or backup parity.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
