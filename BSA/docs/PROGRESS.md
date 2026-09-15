@@ -3044,3 +3044,18 @@ prose cases pass. A separate seeded-ready aggregate counter includes the
 mandatory nested Recommendation card and measures34 words; its per-panel
 interpretation remains unresolved. No full copy, activation or live pass is
 claimed, and the independent offline backup proof is still pending.
+
+## Task 40 authority-panel separation
+
+Under the parent's superseding layout decision, the actual Recommendation
+card and the bordered Operator decision controls are now separate sibling
+panels with visible level-two headings. No required recommendation text,
+state, reason help, source evidence or control is removed. Compact evidence
+also remains visible outside the human control panel.
+
+Check and 53 focused unit tests pass. The tests count each real panel,
+assert structural separation, retain the mandatory paper summary and verify
+that its workspace-wide text was not hidden to reduce the count. The old
+26/34 aggregate findings remain recorded. Ten desktop browser cases are
+discovered for the changed layout, including B-ready/D-confirmed in both
+modes and Apply-to-note focus; none has yet run on this layout.

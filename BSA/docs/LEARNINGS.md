@@ -2174,3 +2174,11 @@ There are now 50 explanatory panels (maximum 54 prose words), 14 FAQs and a
 separate source disclosure. The shared-content documentation is exact.
 No browser or hosted run occurred; passing pure owner-foundation tests is
 not a claim that G's new store/seed/gates or the live product are integrated.
+
+The aggregate copy failures were not resolved by dropping text or raising
+the threshold. The parent required real sibling panels; source tests now
+check both structural separation and cumulative prose/help within each.
+They also verify that the full mandatory copy remains in the workspace.
+Check and 53 targeted tests pass, with V's original two D cases passing
+separately. The ten changed-layout browser cases are inventory only, not
+an execution result; prior four-test9d5502 proof is not promoted.

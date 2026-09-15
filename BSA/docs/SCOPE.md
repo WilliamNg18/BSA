@@ -939,3 +939,9 @@ seeded paper one-press Release at1280/1440, with unrestricted axe. It does
 not replace U's scanner proof, V's strict timing/full-cycle procedure,
 latest-main hosted acceptance or clean offline recovery. Subsequent copy
 edits are not relabelled as the tested9d5502 artifact.
+
+The authority separation is a real layout change, not an exclusion of a
+nested card from the previous counter. Advice owns its Apply control;
+human disposition, reason, RB choice, state and error focus remain in the
+human panel. V owns existing locator migration; O owns the expanded ten-test
+operator regression file. No timing predicate or one-second clock changes.

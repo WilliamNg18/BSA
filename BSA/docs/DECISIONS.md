@@ -2706,3 +2706,9 @@ Question: retain the date-based reference sequence or explain the new case? Choi
 Question: duplicate W/B evidence constants before G integrates them? Choice: publish bounded reference WIP and reuse the canonical modules after integration; tie-breaker: one authoritative evidence source, not a second bibliography or invented capture result.
 
 Question: may S finish citation integration before G's runtime merge? Choice: consume G's explicitly approved isolated W/B foundation commits unchanged, keep both sides of tracking conflicts, and import their canonical evidence/labels; actual built-runtime and live acceptance remain pending; tie-breaker: independent progress without competing domain implementations.
+
+Question: how should the mandatory advice and human-help text coexist under the per-panel limit? Choice: genuinely separate sibling Recommendation and Operator decision panels, each visibly headed and independently counted below25; no advice remains nested inside the bordered human panel and no text is hidden; tie-breaker: the parent's superseding Task40 authority-separation decision.
+
+Question: where does Apply live after separation? Choice: in the actual advice card, still invoking the same guarded G action and focusing the same visible human note; final disposition controls remain in the human panel; tie-breaker: explicit authority and preserved functionality.
+
+Question: how is a rejected proposed-value note explained concisely? Choice: display a precise field/rule-and-accuracy message only after G's actual rejection, preserve the draft and unknown error text, and never validate or rewrite the note locally; tie-breaker: clear human help without a second authority.
