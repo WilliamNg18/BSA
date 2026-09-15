@@ -6,6 +6,82 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## 2026-09-15: Task 39 W source comparison and integration boundary
+
+W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+`gh pr list --state open` returned no open PRs at this initial comparison;
+in-flight G/B/A branches were separately coordinated, not mistaken for main.
+G's subsequently published `30d211f` and `ca0a48e` add canonical source fields
+and the 5mg reference; W's standalone types remain structurally compatible.
+
+| Requirement | Inspected evidence and current state |
+| --- | --- |
+| Wrong strength rather than wrong pack/date | Main still has the old case/step contract. W's new source-bound module and content are implemented; G owns active seeds and gates, consumers own screens |
+| Independent prescription, supplied record and selected claim | G/W froze prescribed `product/strength/form/prescribedCode/quantity`, actual `supplyRecord`, and editable selected `dispensedCode/dispensedName`; W never rewrites source |
+| Today automatic selected-pack pricing | Verified NHSBSA condition: selected AMPP has a dm+d price. G must replace the old wrong-pack human route, not reuse a failed original-ledger comparison as today's rule |
+| On both gates, Apply and no uncorrected auto-release | W checks/patch units pass; actual store tests and mode-specific routing remain with G |
+| Public evidence | NHSBSA page and study abstract/bibliography confirmed 15 September; 39/44/34 counts and ranking unverified, omitted from asserted screen copy |
+| Headline migration guard | Standalone checker/tests implemented; active main still contains retired copy in G/S/P/D-owned files. V activates the root guard only after migration, not by weakening it |
+| Browser and live outcome | No W browser lease or execution; P/V must verify both perspectives at 1280/1440 and wrong-strength refer/apply/acknowledge/resubmit/recheck paths on integrated main |
+
+The source-copy scan found active matches in `demo-steps.ts`,
+`step-layouts.tsx`, `eps-pharmacy-capture.tsx`, How-it-works content/diagrams,
+and legacy case/reference/history/readout material. Historical evidence must
+be retained, not edited to invent correct old outcomes. The guard's only
+exception is the actual NCSO Tariff clause text, never whole files.
+
+Follow-up alignment: the coordinator confirms C5 overrides the older wording
+that could imply showing proposed corrections on every card. The exact pack
+proposal/preview is pharmacy-only; G's shared adapter and P/O/V consumers must
+enforce that split. The full Off cycle needs a real human audit/query reopen
+after the selected pack is priced; W's earlier suggested mixed-mode test may
+be additional coverage only, not proof of the required complete Off path.
+Both obligations were relayed to G/S/V. No new source API or lifecycle action
+is introduced by this documentation-only clarification.
+
+The next W source increment implements that audience projection rather than
+leaving it as a documentation-only promise. `epsStrengthForAudience` returns
+an operator card with `suggestion: null` and no serialised patch/preview, while
+retaining the identical factual records/checks. Its four new tests pass;
+the combined 120-regression run and check pass. G explicitly requested the
+helper and retains responsibility for integrating it into the canonical card.
+
+Run `35012808974` passed all four PR CI shards for exact source `66579e7`.
+An additional filesystem regression now verifies the headline checker's
+recursive production-source coverage and a real fail-to-pass migration,
+without scanning old test fixtures outside `src`. All 38 W units, typecheck
+and lint pass. Neither result removes the outstanding active-source findings
+or establishes the integrated Task 39 browser/live outcome.
+
+Final evidence follow-up: publisher-hosted supplementary DOCX returned HTTP
+200 and was inspected; the requested 39/44/34 counts/ranking were not
+confirmed. Institutional access attempts provided no readable accepted
+manuscript. Exact acquisition details are recorded in LEARNINGS, with one
+unchanged EPS-evidence status: verified abstract/NHSBSA subset, unverified
+error-type counts/ranking. No source or UI claim was silently strengthened.
+
+### W bounded integration review of G `4765770`
+
+An isolated Node probe of that exact Git source reproduced three remaining
+surface defects despite the new shared-store tests passing:
+
+- `runAgent(sessionCase("SYN-FQ123-MISMATCH"), { agentEnabled: true })` reports
+  reconciliation `agree` and a high composite while the selected code is 5mg
+  and the prescribed code is 10mg. Its trace prints
+  `Product SYN-AMLO5-28 = claim SYN-AMLO10-28` with status `ok`.
+- The new `SYN-EPS-STRENGTH` entry is returned by `retrieve_tariff` as an
+  August 2026 governing provision. This presents the proposed matching check
+  as a dated Tariff clause rather than the separately labelled public-guidance
+  informed check required by the owner.
+- `checkEpsFields` on that same wrong-strength item returns `ready` with gap
+  `None`, contradicting the actual Gate 1 failure on Send.
+
+G owns the canonical corrections; P and R received the affected helper/trace
+contracts. W changed no shared source and ran no browser. The initial probe
+needed its static build environment defined before it could execute; only
+the successful execution above is evidence. These findings are pinned to
+`4765770`, not claims about a later repaired commit or a deployed site.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

@@ -6,6 +6,57 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## 2026-09-15: Task 39 W foundation, not live completion
+
+The latest owner brief replaces the playable EPS error with wrong strength:
+prescribed and actually supplied Amlodipine 10mg tablets, 28; selected claim
+Amlodipine 5mg tablets, 28; all other fields and dates correct. Today models
+automatic pricing of the selected priced pack; On must fail both independently
+performed gates while wrong. A source-backed Apply changes the selected claim
+only; a separate human Send or acknowledged Resubmit is required.
+
+This W increment supplies the pure check/correction, verified public-evidence
+copy and isolated source-headline guard with 33 passing focused units and check.
+G owns shared integration; B owns acknowledgement/fidelity/referral contracts;
+P/D/S/N/V own their consuming surfaces, calculations and browser evidence.
+The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` (paper, brand missing). Historical records are not rewritten.
+Source and passing units do not establish implemented lifecycle routing or
+live acceptance. No price, medicine-selection advice or NHSBSA error-rate
+estimate is introduced by this module.
+
+The later coordinator clarification narrows the card contract: proposed pack
+values and previews belong only to the pharmacy; operator findings may show
+the facts but advice and outbound notes name the field/rule without suggesting
+the correct value. Required Off round-trip coverage must start with actual
+Today pricing and a later explicit human audit/query reopening, not an invented
+queue row or a toggle-generated transition.
+
+W additionally supplies the G-requested pure audience adapter, preserving
+the existing evaluation/correction API. Source facts remain identical across
+the pharmacy/operator projections; a typed operator projection contains no
+proposed patch or preview. Four new authority regressions pass; consumer
+mounting and whole-flow live evidence are not claimed by these unit results.
+
+The guard now also has an actual filesystem-walk regression, not just parser
+examples: nested source fails before headline migration and passes afterwards,
+while historical test material outside `src` is retained. W's 38 focused tests,
+typecheck and lint pass; exact earlier source `66579e7` passed all four PR CI
+shards in run `35012808974`. Integration/live obligations remain open.
+
+Evidence verification includes the publisher's accessible supplement and
+bounded institutional checks. None confirmed the requested error-type
+counts/ranking, so their unverified restriction is retained. The study's
+confirmed pooled prevalence and NHSBSA mechanism remain distinct usable
+context, not a measured claim-mismatch rate.
+
+The bounded W integration review of G `4765770` is not a pass: its current
+agent trace misstates source agreement, the proposed strength check appears
+as a retrieved monthly Tariff clause, and the old EPS field checker says
+Ready while Send fails Gate 1. The gate/store workflow tests do not cover
+those surfaced claims. Canonical repairs belong to G, with P/R consuming
+the repaired contracts; W has not expanded into shared implementation or UI.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

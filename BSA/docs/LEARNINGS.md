@@ -4,6 +4,109 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: EPS error evidence, primary-source verification
+
+Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
+review and meta-analysis.* Research in Social and Administrative Pharmacy.
+2024;20(1):1-9. DOI
+<https://doi.org/10.1016/j.sapharm.2023.10.003>; PMID 37848350.
+The original indexed abstract/bibliography was acquired as HTTP 200 XML:
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>.
+It confirms 62 included studies and pooled dispensing-error prevalence 1.6%
+(95% CI 1.2-2.1). January 2010 to September 2023 is the database-search
+period, not the dates of every underlying dispensing event. Settings and
+denominators differ; reported heterogeneity is I-squared 100%.
+
+Wrong-strength 39/62, wrong-medication 44 and wrong-quantity 34 are **unverified**,
+not established by the accessible abstract. The abstract's 44 is hospital-
+setting studies, not a verified wrong-medication count. Publisher full text at
+<https://www.sciencedirect.com/science/article/pii/S1551741123004552> returned
+403; public publisher API returned metadata only, and full-text view returned
+401. No access barrier was bypassed and no third-party snippet was accepted
+as source verification. The requested error-type ranking is therefore not
+asserted on screen. These proposed counts would be studies reporting types,
+not prevalence rates, even if later confirmed.
+
+The bounded follow-up acquired the legitimate publisher supplement:
+<https://ars.els-cdn.com/content/image/1-s2.0-S1551741123004552-mmc1.docx>,
+HTTP 200, valid 96,521-byte DOCX. Its inspected text covers Appendix 1
+(Embase search strategy), Appendix 2 (forest plots by denominator) and
+Appendix 3 (quality assessment), but did not confirm the requested counts
+or ranking. No page number is asserted. Alternative `mmc1.pdf` and
+`mmc2.docx` endpoints returned 404.
+
+The public institutional search
+<https://ses.library.usyd.edu.au/search?query=10.1016%2Fj.sapharm.2023.10.003>
+returned 403. The candidate profile URL
+<https://profiles.sydney.edu.au/en/publications/dispensing-error-rates-in-pharmacy-a-systematic-review-and-meta-anal>
+returned HTTP 200 but only a generic application shell, not a verified
+manuscript deposit. No access control was bypassed. Follow-up concluded
+15 September 2026 with all three error-type counts and the ranking still
+explicitly unverified. The confirmed abstract and NHSBSA evidence remain
+usable; no model or screen statistic was changed.
+
+Exact study label: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic".
+
+NHS Business Services Authority, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d., verified 15 September 2026:
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Direct HTTP 200 HTML. This is an unpaginated page, not a PDF. The opening
+paragraph confirms incorrect product/pack endorsements causing referred backs
+and payment delays. **Reimbursement**, paragraphs 1-2, explains that a selected
+AMPP with a dm+d price is processed automatically without processing-team
+review, and reimbursement follows what was endorsed, including an incorrect
+first pick-list selection, rather than what was supplied.
+
+Short verified quotations: "our processing team will not need to review your
+submission"; "what you have endorsed and not what you have supplied".
+Exact source label: "public, NHSBSA". The source does not provide a wrong-
+strength rate or describe this prototype's proposed two-gate matching check.
+
+W's implementation keeps the actual prescription/supply record separate from
+the selected claim. Its 33 focused units and `npm run check` pass. The missing
+TypeScript baseline was resolved by restoring the existing lockfile. No live,
+browser or backup result is inferred from these branch checks.
+
+The subsequent coordinator clarification distinguishes three concepts:
+submitted/source facts can be visible to the operator; the proposed exact
+correction belongs only to the pharmacy; the outbound operator note must
+contain no proposed value. A pure assessment may carry a source-backed
+suggestion, but its shared presentation adapter must enforce those audiences.
+Likewise, a full Off wrong-strength round trip cannot be demonstrated by
+inventing an initial operator row: Today first prices the endorsed pack, and
+an actual human audit/query must reopen it. A mixed-mode response test does
+not establish that separate path. These are handoffs, not implemented or
+observed-live claims.
+
+W's implemented audience adapter now tests that distinction directly. The
+operator projection keeps prescribed 10mg/selected 5mg as factual evidence
+but serialises no correction patch, claim-line preview or suggested-selection
+label. Projection data is copied so it cannot mutate the source assessment.
+Four added cases pass, as do all 120 combined strength/evidence/headline and
+existing EPS/correction/recommendation/two-gate regressions and check. These
+existing gate regressions protect the current base, not the unmerged new
+mode-specific routing that G is implementing.
+
+The exact `66579e7` CI run `35012808974` passed all four shards. A subsequent
+test-only addition exercises the real recursive headline-checker entry point
+against an isolated temporary fixture: one forbidden nested source heading
+is reported, replacing that heading clears it, actual NCSO text stays allowed,
+and historical test records outside `src` remain unscanned. The fixture is
+removed in a `finally` block. All 38 W units, strict typecheck and lint pass;
+there is no whole-file source exemption or new live/browser claim.
+
+W's exact `6e5d98e` CI run `35014962810` subsequently passed all four shards.
+The requested integration review of G `4765770` used an isolated archive and
+Node bundle, not another operational store in the application or a backup.
+After defining the ordinary static build environment, execution showed that
+an empty strength-conflict list caused `runAgent` to claim agreement and print
+the false equality `SYN-AMLO5-28 = SYN-AMLO10-28`; the old EPS checker also
+returned Ready with no gap. The trace additionally attributed the proposed
+matching rule to an August Tariff retrieval. Shared lifecycle assertions alone
+miss these surface contradictions. G/P/R were notified; a later repaired
+source must be checked separately, without relabelling this failed finding.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

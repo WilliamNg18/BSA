@@ -4,6 +4,22 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Task 39 source-backed wrong-strength contract
+
+- Question: why replace the date headline? Choice: the owner's explicit new wrong-strength scenario makes a plausible, complete-looking pick-list error visible while keeping all current dates correct. Tie-breaker: newest instruction; historical audit evidence remains unchanged.
+- Question: which four cases remain? Choice: preserve A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123`; repurpose `EX-24112` as brand-missing paper, not a fifth item. G/B/W agreed; G alone changes canonical shared definitions.
+- Question: what does Apply correct? Choice: only selected `dispensedCode/dispensedName`, from the known catalogue pack corroborated by immutable prescription and actual supply records. Missing or disagreeing records yield no proposed value. Tie-breaker: source authority and no medicine advice.
+- Question: is the matching rule a retrieved Tariff clause? Choice: label it a proposed cross-record matching check informed by public NHSBSA endorsement guidance; do not invent a provision or claim that the source describes this proposed gate.
+- Question: may unconfirmed study counts appear as facts? Choice: publish confirmed 62 studies and pooled 1.6% (95% CI 1.2-2.1) only; disclose that 39/44/34 and the ranking were not verified. Tie-breaker: truthful primary-source evidence.
+- Question: what feeds the mismatch estimate? Choice: a separate editable 1% assumption over total submitted claims, not the 1.6% dispensing-study prevalence or the 85,000 referral subset. Today none is a synthetic comparison, not a measured zero.
+- Question: how can W supply the CI guard without breaking other owners' work? Choice: publish the strict standalone checker and its negative tests; V hooks it into the existing root check after coordinated active-source migration. No broad whitelist and no historic record rewrite.
+- Question: may the operator card show W's proposed corrected pack? Choice: show source/submission facts on both sides, but the exact proposal and preview only in the pharmacy's own-records card. Operator advice and notes are field/rule based with no proposed value. Tie-breaker: coordinator's later explicit C5 override.
+- Question: how is the full Off wrong-strength cycle entered? Choice: automatic pricing as endorsed, then a real explicit human audit/query reopening owned by G, never a silently manufactured queue row or a toggle transition. An On failure followed by Off is additional mixed-mode coverage only. Tie-breaker: truthful Today mechanism and the latest coordinator instruction.
+- Question: where is the card audience split implemented? Choice: G requested one pure W helper returning copied facts/checks for both audiences and a proposal only for the pharmacy. Its discriminated operator result has `suggestion: null`; no duplicate store, outbound-note generator or routing function is introduced. Tie-breaker: one shared interpretation with explicit presentation authority.
+- Question: how is the headline guard's scope verified? Choice: add a real nested-directory regression that fails on source copy, passes after replacement and leaves historical test-only records outside `src` untouched. Preserve the narrow NCSO text exception and all existing checks. Tie-breaker: test the actual traversal and migration, not only a regex proxy.
+- Question: does the publicly accessible study supplement establish the requested type counts? Choice: no; inspected appendices did not confirm them and institutional attempts yielded no readable manuscript. Close the bounded search, retain exact acquisition evidence and the unverified restriction, and keep implementation moving with the confirmed subset. Tie-breaker: primary-source truthfulness without inventing or bypassing access.
+- Question: do passing new lifecycle tests establish complete strength integration? Choice: no; G `4765770` still produced false source-agreement and Ready claims plus a proposed rule presented as a dated Tariff provision. Record the exact isolated probe and route root repairs to G/P/R rather than hiding contradictions in one card or editing another owner's shared source. Tie-breaker: exact requirements, source authority and one model.
+
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.

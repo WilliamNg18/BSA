@@ -4,6 +4,64 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: W Task 39 domain and evidence handoff
+
+W publishes `eps-strength.ts`, `eps-error-evidence.ts`, a standalone retired-
+headline checker and 33 focused units from base main `6418151`. `npm run check`
+and the focused units passed. The initial typecheck lacked TypeScript; `npm ci`
+restored the existing lockfile without changing dependencies. No browser was
+started and no branch artifact is a backup.
+
+G/B/W froze A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` repurposed as brand-missing paper. G alone integrates canonical
+types, catalogue, seeds, gates and store actions. W's pure assessment compares
+prescribed and actually supplied 10mg/28 with selected 5mg/28; its correction
+copies only the selected claim code/name from the known 10mg catalogue entry.
+It does not submit, acknowledge, release, decide or calculate a payment.
+
+The NHSBSA endorsement guidance and the study bibliography/pooled prevalence
+are primary-source verified; error-type counts/ranking remain unverified.
+LEARNINGS and MEMORY record exact sources and limitations. V owns activating
+the standalone headline guard after G/S/P/D migrate active source, with no
+whole-file or history exemption. UI, real both-mode/both-gate lifecycle tests,
+round trips, screenshots, main merge, green deployment and observed live
+behaviour remain integration work. Owner actions for me: none.
+
+W's follow-up records the coordinator's later C5 clarification: only the
+pharmacy card displays the proposed corrected pack and preview. Operator views
+may show submitted/source facts but only field/rule-based correction advice.
+The complete Off wrong-strength cycle requires a real later audit/query
+reopening after automatic pricing; an On failure followed by Off is not a
+substitute. G owns the explicit action, P/O/V its presentation and proof.
+
+G requested and W now implements `epsStrengthForAudience(assessment, audience)`.
+Both audiences receive copied source facts and checks; only the pharmacy
+receives the proposed patch/preview. Operator `suggestion` is strictly null.
+Four new authority tests bring W's focused total to 37; 120 combined new and
+existing EPS/correction/recommendation/gate regressions and check pass.
+This pure adapter still requires G/P/O wiring and live verification.
+
+The exact `66579e7` PR CI run `35012808974` passed all four shards.
+W then added a real directory-walk regression for the headline checker:
+it finds a retired nested source heading, passes after migration and leaves
+historical test-only material outside `src` untouched. All 38 W units,
+typecheck and lint pass. The source guard remains unactivated until the
+assigned owners migrate active content; this is not a live result.
+
+The bounded primary-source follow-up is finished. The publisher's public
+supplement was acquired and inspected but did not confirm the 39/44/34
+error-type counts or ranking; public institutional attempts yielded no
+readable accepted manuscript. LEARNINGS/MEMORY record exact URLs and limits.
+The published verified subset and all source APIs remain unchanged.
+
+Exact W head `6e5d98e` passed all four CI shards in run `35014962810`.
+G's `4765770` then introduced the active strength workflow. W's requested
+bounded integration probe found false reconciliation/trace agreement, a
+proposed check presented as a dated Tariff provision, and an old EPS precheck
+returning Ready for the wrong selection. ALIGNMENT records exact outputs;
+G/P/R received the findings. Shared repair and verification remain pending,
+so W does not treat the integration as accepted.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

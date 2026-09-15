@@ -4,6 +4,60 @@ description: Read first at each task; correct facts in place rather than appendi
 ms.date: 2026-09-15
 ---
 
+## EPS error evidence
+
+Verified 2026-09-15: Um IS, Clough A, Tan ECK. *Dispensing error rates in
+pharmacy: a systematic review and meta-analysis.* Research in Social and
+Administrative Pharmacy. 2024;20(1):1-9.
+DOI <https://doi.org/10.1016/j.sapharm.2023.10.003>.
+The primary indexed abstract/bibliography at
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>
+confirms 62 studies, pooled prevalence 1.6% (95% CI 1.2-2.1) and database
+search January 2010-September 2023. The proposed 39/44/34 error-type study
+counts and ranking remain unverified; do not display them as established
+facts. The abstract's 44 refers to hospital-setting studies.
+The legitimate publisher supplement was also inspected on 2026-09-15:
+<https://ars.els-cdn.com/content/image/1-s2.0-S1551741123004552-mmc1.docx>.
+Its search-strategy, forest-plot and quality-assessment appendices did not
+confirm those counts. Public institutional attempts did not yield a readable
+accepted manuscript; LEARNINGS records the exact URLs and responses.
+The bounded source search is finished without upgrading their status.
+Label exactly: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic". It is not an NHSBSA claim rate.
+
+Verified 2026-09-15: NHSBSA, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d.,
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Opening paragraph and **Reimbursement**, paragraphs 1-2, support incorrect-
+endorsement referrals/delays and automatic processing when the selected AMPP
+has a dm+d price. Short quote: "what you have endorsed and not what you have
+supplied". Label exactly: "public, NHSBSA". Preserve that conditional context;
+do not invent a Tariff clause for the proposed strength reconciliation.
+LEARNINGS records acquisition limitations and the bibliographic details.
+
+Task 39's synthetic source is prescribed and actually supplied Amlodipine
+10mg tablets, 28, with 5mg/28 selected in the claim. The actual supply record
+does not come from the selected claim. Apply corrects only its code/name from
+corroborated source records, never submits or decides. An editable 1% assumed
+share over total submitted claims may estimate pre-pricing mismatch catches;
+it is separate from the study rate and the referral-loop calculation.
+This W domain handoff is not live completion; G integrates the canonical
+four-case model before the consuming streams and live verification.
+
+Current C5 authority: operator and pharmacy views may show prescribed and
+selected source facts, but the exact proposed corrected pack and preview
+appear only in the pharmacy's "your agent's suggestion from your records"
+card. Operator advice and outbound notes name the field/rule with no proposed
+value. The full Off wrong-strength cycle first prices the endorsed pack and
+then uses a real explicit human audit/query reopening; toggling never discovers
+or reopens the mismatch.
+
+The pure `epsStrengthForAudience` adapter enforces the proposed-value split
+without changing the source assessment: operator `suggestion` is always null;
+pharmacy proposals retain the exact own-records caption. G integrates it into
+the shared recommendation projection; views must not bypass it by rendering
+the raw assessment's proposal on the operator side.
+
 ## Purpose and principle
 
 Current scope is Tasks 25-38: a desktop-only eleven-step demonstration, explicit
