@@ -39,6 +39,7 @@ for (const enabled of [true, false]) {
     await enterDesktopDemo(page, enabled);
     const rail = page.getByTestId("demo-strip");
     const screen = page.getByTestId("demo-step-screen");
+    const firstDestination = new URL(demoStepDestination(DEMO_STEPS[0]), page.url()).href;
     // The native switch is an input; shortcuts deliberately ignore fields.
     await page.getByRole("heading", { level: 1 }).focus();
     // Real keyboard events, deliberately no screenshot, sleep or assertion
@@ -50,7 +51,7 @@ for (const enabled of [true, false]) {
       await expect(rail).toContainText("11 / 11");
       await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
       for (let step = 1; step < DEMO_STEPS.length; step++) await page.keyboard.press("Alt+ArrowLeft");
-      await expect(page).toHaveURL(/#scene$/);
+      await expect(page).toHaveURL(firstDestination);
       await expect(screen).toHaveAttribute("data-demo-step", "1");
       await expect(rail).toContainText("1 / 11");
     }
@@ -68,7 +69,7 @@ for (const enabled of [true, false]) {
       return `${location.pathname}${location.search}${location.hash}`;
     }), directions);
     expect(visited).toEqual(expected);
-    await expect(page).toHaveURL(/#scene$/);
+    await expect(page).toHaveURL(firstDestination);
     await expect(screen).toHaveAttribute("data-demo-step", "1");
     await rail.getByRole("button", { name: "Exit demo", exact: true }).press("Enter");
     await expect(screen).toHaveCount(0);
@@ -76,7 +77,7 @@ for (const enabled of [true, false]) {
     await navigatePrimary(page, "Pharmacy check");
     await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     await page.goBack();
-    await expect(page).toHaveURL(/#scene$/);
+    await expect(page).toHaveURL(firstDestination);
     await expect(screen).toHaveCount(0);
     await page.goForward();
     await expect(page).toHaveURL(/\/pharmacy$/);
