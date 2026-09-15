@@ -190,7 +190,8 @@ test("product header retains working controls without presentation UI", async ({
   const header = page.getByRole("banner");
   await expect(header).toContainText("Prescription Exception Case Builder");
   await expect(header.locator("svg.lucide-shield-check")).toBeVisible();
-  await expect(page.locator("[data-disclaimer]")).toContainText("Synthetic demonstration data throughout.");
+  await expect(page.getByRole("contentinfo")).toContainText("All data is synthetic");
+  await expect(page.locator("[data-disclaimer]")).toHaveCount(0);
   await expect(page.getByText("The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.", { exact: false })).toBeVisible();
   await expect(header.getByRole("switch")).toHaveCount(1);
   const nav = header.getByRole("navigation", { name: "Primary" });

@@ -6,6 +6,24 @@ ms.date: 2026-09-15
 
 # Scope register
 
+## Part A only: global shell notice policy
+
+This branch owns the global shell/header Outcome/footer, obsolete local
+notice state removal, and directly related unit/browser tests. It does not
+change Tasks 39/40, case seeds, pharmacy/operator content, shared domain
+actions, release workflows, dependencies or backup implementation.
+The older mandatory amber-banner presentation is expressly superseded;
+per-item synthetic/source labels and the no-payment boundary remain.
+
+The new bounded browser matrix checks every ordinary route and overview
+chapter, guarded perspectives and not-found recovery, plus all eleven demo
+steps in three perspectives at 1280/1440. It measures actual text bounds,
+one line at 16px or larger without clipping, at most 2px centre difference,
+direct header adjacency, Off zero reserved height and real opacity fades.
+Unrestricted axe results retain incompletes explicitly. Check and 1,699 units
+pass; browser, exact-head CI, main deployment and live observation are pending.
+This is incomplete work, not a local alternative product or backup.
+
 ## Live-first release and backup obligations
 
 MEMORY's 15 September "Live first, local backup" rule is a blocking release

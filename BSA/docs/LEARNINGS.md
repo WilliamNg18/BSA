@@ -4,6 +4,28 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Part A shell investigation and pre-browser evidence
+
+The synthetic disclosure is local React state in `components/app-shell.tsx`,
+not a persisted or operational store field. Removing it does not require a
+store migration. Put the Outcome in the existing measured sticky stack so
+its changing height remains part of focus/scroll clearance. It is a named
+landmark, and only opacity animates; main route entrances are untouched.
+
+The initial check found missing TypeScript in this fresh worktree; `npm ci`
+restored the existing lockfile without changing dependencies. Check then
+passed. The first full unit run passed 1,698 cases but the existing actual-CLI
+usage subprocess exceeded its unchanged five-second limit. A fresh complete
+one-worker run passed all 1,699 tests in 92 files, including 72 new global
+policy combinations. The initial timeout remains failed developer evidence.
+
+No browser or live pass is claimed in this publication. The authored matrix
+measures actual rendered text and content bounds, not container text alignment
+or a screenshot proxy. It records unrestricted axe incompletes rather than
+calling zero violations a complete manual accessibility certification.
+Only the coordinator's port 4332 one-worker lease may run local browsers.
+No local branch build is the product or a backup.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

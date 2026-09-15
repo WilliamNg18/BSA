@@ -6,6 +6,34 @@ ms.date: 2026-09-15
 
 # Vision alignment
 
+## Part A header policy: inspected source, not live acceptance
+
+Actual main at inspection: `641815137b36ab3e925dcc98c4738d0b150a75d1`.
+The fresh open-PR list was empty after #94 merged. Direct source comparison
+found the old `disclaimerOpen`, global principle and duplicate footer notice
+on each inspected published head below; none has a matching notice field
+in `src/lib/store.ts`. Only AppShell-local presentation state needs removal.
+
+| Published context | Inspected head |
+| --- | --- |
+| Main | `641815137b36ab3e925dcc98c4738d0b150a75d1` |
+| G model | `59efabf49e20c5b0d19b6b79c35a6bbc700ee4fb` |
+| V verification | `0ec6e424ef126aafbb5de30d600e6c6d4ae46931` |
+| Coordinator and O | `cd973d3c6cdf5282011e0a1dc0b293a4866f12a5` |
+| D demo/backup | `9fe65204ec5e6bc324871e57dd54c2958baa152d` |
+| P pharmacy | `2cefc0b60a6b94628ce1665cf062085532fb0434` |
+| R recommendations | `81a4f3e2c4eb06615b2d680cb51118b52eb5bc90` |
+| F follow | `71f8c9586beb11c2c45d8fad534e6a591b17f5e5` |
+| S design | `8b2bae47036f9110ce05cf3808ae37f8b9b6decc` |
+
+The coordinator reports new W/B branches active; no published heads for
+`williamng18-task-39-wrong-strength` or `williamng18-task-40-nhsbsa-fidelity`
+were returned by the first remote lookup. Their case verification belongs
+to those owners, not Part A. Recheck their publication before final handoff.
+Part A now implements the new policy on its own branch, with check and
+1,699 units passing. Actual geometry, browser/axe and current-main live
+alignment remain pending; no verify clause is marked live Pass yet.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

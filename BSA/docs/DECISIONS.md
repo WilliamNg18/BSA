@@ -4,6 +4,14 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+## 2026-09-15: Part A replaces the global notice, not source evidence
+
+- Question: retain the older mandatory amber notice? Choice: remove its bar, collapse control and local `disclaimerOpen` state; put exactly "All data is synthetic" once in the existing small muted footer, removing "Synthetic cases" duplication. Tie-breaker: the newest explicit Part A instruction supersedes the amber-bar constraint.
+- Question: does notice removal require a shared-store change? Choice: no; inspected main and active published contexts have only AppShell-local presentation state. Tie-breaker: one state and smaller scope; no domain mutation or G-owned file change.
+- Question: where and how does the principle appear? Choice: one exact "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides." line only On, directly below TopNav and before Follow/Demo controls, centred on actual content. Use normal 16px text, no clipping or scale transform, a 150ms opacity fade and a 100ms reduced-motion crossfade; remove the whole region Off after fading. Tie-breaker: the newest visible-outcome requirement without changing authority.
+- Question: what survives the notice change? Choice: preserve per-item "(synthetic)" and source/evidence labels, governing/action tags, footer no-payment wording, one Agent control and existing measured sticky/focus/reset/route safeguards. Tie-breaker: governing principle and clinical/source safety.
+- Question: when is Part A complete? Choice: only after the coordinator merges exact-green CI, the normal deployment passes and the exact served change is observed live. Unit/browser outputs remain developer artifacts, never a backup. Tie-breaker: Live first.
+
 ## 2026-09-15: Live is the product; the local copy is a verified backup
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.

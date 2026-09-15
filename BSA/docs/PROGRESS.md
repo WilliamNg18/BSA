@@ -4,6 +4,26 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## Part A: header Outcome and footer notice, published WIP
+
+Own branch: `williamng18-header-outcome-line`, based on actual main
+`641815137b36ab3e925dcc98c4738d0b150a75d1`. Only the shell's old notice,
+collapse state and global principle bar are replaced. The shared store,
+case content, source labels, gates, reset/focus plumbing and infrastructure
+are unchanged. The footer has one small muted "All data is synthetic" label.
+The exact Agent-On Outcome is directly below the header in the measured
+sticky stack; Off removes it after its short opacity-only crossfade.
+
+Check passed; all 1,699 units in 92 files passed with one worker, including
+72 new shell/perspective/demo policy cases. An earlier unchanged CLI subprocess
+unit timed out at five seconds under two-worker contention; that failed run
+is retained, not relabelled. The browser matrix is authored but not yet run.
+The coordinator granted sole local port 4332, one browser worker, no retries.
+Publication and local tests are developer evidence, not a product or backup.
+Main merge, normal green deployment and observation of the served SHA at
+https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ remain pending.
+Owner actions for me: none.
+
 ## Current release gate: live first, exact local backup
 
 The 15 September standing rule in MEMORY applies immediately to every stream.

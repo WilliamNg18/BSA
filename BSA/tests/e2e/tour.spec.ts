@@ -354,9 +354,8 @@ test("Exit preserves session presentation; re-entry starts step one; reload rest
   await page.getByRole("combobox", { name: "Jump to demo step" }).selectOption("4");
   const seed = await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).inputValue();
   await page.getByRole("textbox", { name: "Dispenser endorsement", exact: true }).fill("NCSO RK human draft");
-  await page.getByRole("button", { name: /Synthetic demonstration data throughout/ }).click();
-  await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
-  await expect(page.locator("[data-principle]")).toBeVisible();
+  await expect(page.locator("#synthetic-disclaimer, [data-disclaimer]")).toHaveCount(0);
+  await expect(page.locator("[data-agent-outcome]")).toBeVisible();
   await page.getByRole("button", { name: "Exit demo", exact: true }).click();
   await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
   const url = page.url();
@@ -367,10 +366,11 @@ test("Exit preserves session presentation; re-entry starts step one; reload rest
   await expect(page.getByTestId("demo-step-screen")).toHaveAttribute("data-demo-step", "1");
   await page.getByRole("combobox", { name: "Jump to demo step" }).selectOption("4");
   await expect(page.getByRole("textbox", { name: "Dispenser endorsement", exact: true })).toHaveValue("NCSO RK human draft");
-  await expect(page.locator("#synthetic-disclaimer")).toBeHidden();
-  await expect(page.locator("[data-principle]")).toBeVisible();
+  await expect(page.locator("#synthetic-disclaimer, [data-disclaimer]")).toHaveCount(0);
+  await expect(page.locator("[data-agent-outcome]")).toBeVisible();
   await page.reload();
-  await expect(page.locator("#synthetic-disclaimer")).toBeVisible();
+  await expect(page.locator("[data-agent-outcome], #synthetic-disclaimer, [data-disclaimer]")).toHaveCount(0);
+  await expect(page.getByRole("contentinfo")).toContainText("All data is synthetic");
   await expect(page.getByTestId("demo-step-screen")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Enter demo mode", exact: true })).toBeVisible();
   await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
@@ -544,11 +544,11 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
           }
           await expect.poll(async () => {
             const b = (await banner.boundingBox())!, r = (await rail.boundingBox())!;
-            return Math.abs(b.y - h.height) + Math.abs(r.y - b.y - b.height);
+            const outcome = await page.locator("[data-agent-outcome]").boundingBox();
+            return Math.abs(b.y - h.height - (outcome?.height ?? 0)) + Math.abs(r.y - b.y - b.height);
           }).toBeLessThan(1);
-          const r = (await rail.boundingBox())!;
-          expect((await page.locator("[data-disclaimer]").boundingBox())!.y).toBeGreaterThanOrEqual(r.y + r.height);
-          await expect(page.locator("[data-principle]")).toBeVisible();
+          await expect(page.locator("[data-disclaimer], [data-principle]")).toHaveCount(0);
+          await expect(page.locator("[data-agent-outcome]")).toHaveCount((await flag.isChecked()) ? 1 : 0);
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
         }
         await banner.getByRole("button", { name: "NHSBSA view", exact: true }).press("Enter");
