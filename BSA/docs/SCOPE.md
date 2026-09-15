@@ -667,6 +667,11 @@ O's existing unit migration retains all 66 cases and negative/state-equality
 checks. New `operator40-fidelity.spec.ts` contributes four ordinary desktop
 browser tests; V's existing browser/live files and protected state suite are
 not edited. Source discovery is not an executed browser pass.
+
+Source-linked Type1 confirmation and non-Tariff matching labels are O
+presentation consumers of G's canonical metadata. No source value, gate,
+capture authority or seeded draft is inferred by the UI. The four O audit
+and ready-release browser tests still require their own allocated execution.
 ## Tasks 39/40 R audience scope
 
 In progress: explicit Card audience, pharmacy-only concrete value/preview,

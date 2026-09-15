@@ -1699,6 +1699,32 @@ for source-backed correction. Re-evaluating clause requirements without G's
 specialised strength/paper checks falsely marked them unmet; R now projects
 the exact canonical check results and G's paper reconciliation facade.
 
+## Task 40 O first compiled mount
+
+New canonical-source tests caught an initial omission of the comparison in
+the ordinary pending-Type1 return path; it was corrected before publication.
+A test also initially mistook CSS `disabled:` classes for a disabled HTML
+attribute; it now checks the actual attribute. The resulting 15 O fidelity
+tests and 27 U scanner/store tests pass, with typecheck and targeted lint.
+These checks do not establish browser geometry, full accessibility or live
+completion. Existing fixtures based on retired missing-date/EPS-paper seeds
+and pre-acknowledgement resubmission APIs are being migrated separately.
+
+That four-file migration now passes all 66 original test cases. The coherent
+eight-file O/scanner/backup selection passes 132 tests in one run, rather than
+an aggregate assembled from partial runs. Typed prescriber evidence is not
+illegible-image inference: unknown-prescriber tests explicitly submit null
+through the canonical pharmacy action and retain the source object unchanged.
+The new browser regressions are listed only; no execution result is claimed.
+
+After G's source-linked-capture update, two old information-response
+expectations incorrectly demanded a fresh Type1 form. O's confirmation view
+now calls G's canonical capture lookup, and the tests assert the preserved
+null prescriber/empty endorsement, visible answer and absence of recapture.
+The earlier 139-pass/two-fail probe remains separate; the fresh nine-file
+run passes all 141 tests with check. U's pinned four-case scanner proof
+and eight scoped zero-violation axe results are separate from O's unexecuted
+audit/ready-release browsers and the still-pending backup recovery proof.
 The first current-seed regression run failed 22 of 47 old tests: most still
 treated paper B as EPS or expected the former date-gap preset. The migrated
 run passes all 47, preserving invalid-input, unsupported-SP receipt, original

@@ -2537,6 +2537,44 @@ four-case, audience and G runtime selection passes 29 tests plus typecheck.
 P's isolated explicit pharmacy audience prop is included; wider consumer
 migration and full CI/live acceptance remain pending.
 
+## Task 40 O mounted-source checkpoint
+
+O now mounts G's immutable submitted-revision facade in the case pack and U's
+three-column paper comparison in full-width case packs/ordinary Type1 views.
+The complete submitted revision remains available in a real read-only record
+disclosure; visible EPS fields distinguish endorsed products from actual supply.
+Operator cards explicitly use R's operator audience. The duplicate legacy
+outbound draft is removed, not the source evidence or historical records.
+
+Explicit later-audit controls call G with the current revision and a human
+reason. Actual corrected-paper resubmissions expose the canonical prefilled
+Release action; choosing another disposition requires Start review first.
+Current CaseHeader/queue labels receive G's process metadata.
+
+Typecheck, targeted source lint and 42 new fidelity/scanner tests pass.
+Existing O unit-fixture migration is still in progress; no full suite or
+browser pass is claimed. G's reported seeded-ready draft and final-note
+guard follow-ups remain integration dependencies. Compact demo evidence
+still needs D's full-width placement; no half-width three-column claim.
+
+O's four existing unit files are now migrated to the real paper, wrong-strength,
+explicit-audit and acknowledgement contracts: all 66 tests pass. A single
+coherent run including those files, new fidelity/scanner checks and the backup
+verifier passed 132 tests across eight files; typecheck and targeted lint pass.
+Four new desktop browser regressions for audit and one-press paper Release
+are discovered but not executed. Their seeded-ready prerequisite is G-owned.
+
+O has now integrated G's seeded-ready draft, source-linked capture and real
+matching-authority fixes with R's corresponding typed signal rendering and
+Part A main. The case pack labels matching checks as non-Tariff authority,
+and Type1's read-only confirmation uses G's capture lookup across information
+responses rather than forcing another capture. Check and a single nine-file
+selection of 141 O/scanner/current-domain tests pass.
+
+U independently ran the mounted scanner at its pinned `941933f` source:
+four desktop cases passed with eight scoped axe analyses reporting zero
+violations. That is scoped geometry/accessibility evidence, not a complete
+visual or current-main live claim. O has not repeated that browser run.
 The R-owned legacy regression migration now passes 47 tests across the four
 existing recommendation files. Date-sensitive validation remains tested as an
 explicit edited EPS input, not a playable date-gap headline. Wrong-strength
