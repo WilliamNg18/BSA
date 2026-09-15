@@ -159,6 +159,13 @@ describe("synthetic source image presentation", () => {
     expect(blocks[0].lines.join(" ")).toBe(scan.regions[0].text);
     expect(blocks.at(-1)?.lines).toEqual(["2026-08-27"]);
     expect(blocks.some((block) => block.lines.includes("Illegible"))).toBe(true);
+    expect(blocks.find((block) => block.label === "Synthetic patient label")?.lines.join(" ")).toBe(scan.patientLabel);
+    expect(blocks.find((block) => block.label === "Submitting pharmacy")?.lines.join(" ")).toContain(scan.pharmacy.contractorCode);
+  });
+  it("leaves an explicitly blank source region empty instead of labelling it unreadable", () => {
+    const scan = source(true).submission.paperScan!;
+    const blocks = scanTextBlocks({ ...scan, regions: [{ ...scan.regions[0], label: "Brand or manufacturer", text: "" }] });
+    expect(blocks[0]).toEqual({ label: "Brand or manufacturer", lines: [""] });
   });
   it("wraps long source strings without ellipsis, truncation or corrected values", () => {
     const text = "Original synthetic manufacturer with a deliberately long unchanged field value";

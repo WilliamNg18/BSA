@@ -24,6 +24,10 @@ coordinated scenario change (1,592 pass); neither new scanner test file fails.
 G and current UI owners retain migration responsibility. This is not a claim
 that every failure is only stale copy, and no acceptance assertion is removed.
 
+The scan adapter also retains the original synthetic patient/pharmacy identity.
+An explicitly empty source region stays empty instead of being labelled
+unreadable; this supports G's incoming brand/pack regions without inventing ink.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store

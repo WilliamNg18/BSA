@@ -25,6 +25,11 @@ scenario contract change. No new scanner test fails. Keep this distinct from
 the earlier four-shard green pre-integration WIP; route domain/consumer failures
 to their current owners rather than weakening them or claiming equivalence.
 
+A source region with an empty string is still a present region. Rendering
+"Not visible" inside it would invent a capture-uncertainty statement. U keeps
+that region visually empty and preserves the source's synthetic patient and
+pharmacy labels; OCR labels remain in their separate hypothetical column.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

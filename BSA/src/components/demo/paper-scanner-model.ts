@@ -29,7 +29,9 @@ export function wrapScanText(text: string, width = 30): string[] {
 export function scanTextBlocks(scan: ExceptionCase): ScanTextBlock[] {
   if (scan.capturedEvidence) throw new Error("Derived human capture cannot be rendered as the submitted scan.");
   return [
-    ...scan.regions.map((region) => ({ label: region.label, lines: wrapScanText(region.text || "Not visible") })),
+    ...scan.regions.map((region) => ({ label: region.label, lines: wrapScanText(region.text) })),
+    { label: "Synthetic patient label", lines: wrapScanText(scan.patientLabel) },
+    { label: "Submitting pharmacy", lines: wrapScanText(`${scan.pharmacy.name} (${scan.pharmacy.contractorCode})`) },
     { label: "Prescriber on source", lines: wrapScanText(scan.extracted.prescriber || "Not visible") },
     { label: "Source dispensing date", lines: wrapScanText(scan.extracted.dispensingDate || "Not visible") },
   ];
