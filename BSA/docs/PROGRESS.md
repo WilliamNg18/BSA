@@ -522,6 +522,13 @@ The first assembled typecheck found one unsupported test-only `findLast` call.
 It now uses the repository's ES2022-compatible `filter(...).at(-1)` pattern;
 typecheck passes without changing target libraries or application behaviour.
 
+The assembled run now passes check with 1,983 unit passes and five remaining
+failures. One stale baseline expectation wrongly counted the proposed strength
+check as a Tariff citation; it now expects one genuine citation among two
+assembly examples and asserts the strength authority explicitly. The source
+headline guard is activated in shared verification. Baseline/guard/runner
+selection: 314 tests pass; four operator-region/prose compatibility cases remain.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the

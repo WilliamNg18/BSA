@@ -51,6 +51,11 @@ O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
 
 # Scope register
 
+The remaining assembled-unit gap is narrowed to four operator-view compatibility
+checks after correcting the citation-denominator expectation. Proposed matching
+guidance is not counted as a retrieved Tariff provision. No release completion
+is claimed while these cases and exact-head CI/live gates remain pending.
+
 The canonical migration's test-only ES2023 API incompatibility is repaired
 without widening the supported runtime; full assembled validation continues.
 
