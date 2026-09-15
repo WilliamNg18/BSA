@@ -28,6 +28,7 @@ describe("four-case compatibility with operator and pharmacy panels", () => {
     const before = getDomainSnapshot(), html = render(EpsPharmacyCapture);
     for (const label of ["Complete endorsement", "Wrong medication strength"]) expect(html).toContain(label);
     for (const retired of ["NCSO missing date", "Wrong pack size", "EX-24112"]) expect(html).not.toContain(retired);
+    expect(html).not.toContain("EPS item unavailable");
     expect(html).not.toContain("SYN-FQ123-TYPE2");
     expect(html).not.toContain("Generic missing brand");
     expect(getDomainSnapshot()).toEqual(before);

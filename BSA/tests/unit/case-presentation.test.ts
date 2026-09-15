@@ -57,18 +57,23 @@ describe("Task 6 read-only presentation", () => {
     for (const slot of ASSISTED_SLOTS) expect(traceSlotReady(pack, 99, slot)).toBe(false);
   });
 
-  it("never auto-selects sufficient; records an explicit manual ACCEPT after queue arrival without a false override", () => {
+  it("never auto-selects sufficient; records an explicit human release after queue arrival without a false override", () => {
     expect(manualChoice(null)).toBe("ESCALATE");
     expect(manualChoice("AMEND")).toBe("ESCALATE");
     expect(manualChoice("ACCEPT")).toBe("ACCEPT");
     const before = useAppStore.getState();
-    before.resubmitFromPharmacy(CASES[1].id, "NCSO RK 21/08/26");
+    const revision = before.caseRevisions[CASES[1].id].at(-1)!.number;
+    expect(before.itemProcesses[CASES[1].id].readyToRelease).toBe(true);
     before.arriveInQueue(CASES[1].id);
-    const record = before.recordDecision({ caseId: CASES[1].id, tariffVersion: "n/a", agentVersion: "not invoked", inputs: ["Synthetic captured form"], sources: ["Existing capture"], checks: [], recommendation: "NONE", decision: "ACCEPT", overrideReason: "Human judgement on the captured evidence" });
-    expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, tariffVersion: "n/a", checks: [] });
-    expect(record.overrideReason).toBeTruthy();
+    before.releaseToPricing(CASES[1].id, "Human judgement on the captured evidence");
+    const record = useAppStore.getState().records.at(-1)!;
+    expect(record).toMatchObject({ recommendation: "NONE", decision: "ACCEPT", isOverride: false, agentVersion: "not invoked",
+      overrideReason: null, reason: "Human judgement on the captured evidence" });
+    expect(record.checks.length).toBeGreaterThan(0);
+    expect(record.checks.every((check) => check.pass)).toBe(true);
     expect(useAppStore.getState().records).toHaveLength(before.records.length + 1);
-    expect(useAppStore.getState().lifecycles[CASES[1].id]).toMatchObject({ state: "paid", history: expect.arrayContaining([expect.objectContaining({ actor: "operator", recordId: record.id, revision: 2 })]) });
+    expect(useAppStore.getState().lifecycles[CASES[1].id]).toMatchObject({ state: "released_to_pricing",
+      history: expect.arrayContaining([expect.objectContaining({ actor: "operator", recordId: record.id, revision, releaseOrigin: "human_decision" })]) });
   });
 
   it("July B counterfactual never rewrites recorded August history or state", () => {

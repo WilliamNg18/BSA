@@ -4,6 +4,80 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Migrating setup rather than removing assertions reduced V's six-file baseline
+from 15 failures to three on G `99abdd4`. Real ACK actions preserve all prior
+paper attempts; a ready paper revision still requires explicit human release.
+Wrong-strength Today must actually price before its later audit. Historical
+pure-domain fixtures remain separate from these current-store actions.
+
+On an isolated P `b236e8d` checkout the identical six test sources pass 73/74.
+CRLF-normalised source equality was checked, and source/package diffs were
+empty. The remaining failure catches Home's hardcoded date fix on a correctly
+dated brand-missing submission. D received the exact counterexample; no
+expectation was weakened. Typecheck and targeted lint passed, and the final
+trace selection passed all nine tests. These are unit-only results, not a
+browser, production build, local backup or current-live acceptance result.
+
+The six assigned legacy unit files reproduce 15 failures and 59 passes on
+G `99abdd4`. Their failures include unacknowledged resubmission, treating
+readable paper as Type 1, obsolete EPS selections and wrong-strength Today
+setup that omits the real later audit. No browser was used for this baseline.
+
+Selecting only the Paper channel no longer establishes D: there are now two
+real paper scenarios. The helper explicitly selects the required radio and
+asserts its case ID. B setup no longer types a missing-date EPS endorsement;
+the real new-submission factory prepares the incomplete paper revision.
+Static AST checks protect selection, explicit Post and absence of hidden
+fixture writes, but do not verify UI rendering or the browser journey.
+
+All three static regressions, typecheck and targeted lint passed. No browser,
+server, screenshot or live acceptance run was used for this adapter patch.
+
+P's published branch uses cherry-picked canonical lineage and conflicts with
+V's exact G dependency in owner source. The attempted merge was aborted from
+a clean tree; no guessed source resolution was retained.
+
+The exact schema assertion and unrelated-global preservation assertion have
+different purposes. N owns the first; V added the new mismatch input to the
+second so a capture-induced change cannot pass simply because the field is
+present. The source type is G's actual snapshot, with no cast or shim.
+
+The six-file compatibility patch passed typecheck, targeted lint and 49
+canonical-runtime/mismatch units with two workers. Playwright discovery
+retained all 44 state names in eight files without launching a browser.
+This verifies source compatibility, not the unrun capture matrix.
+
+V's `cdd436b` dependency merge conflicted only in the five tracking documents.
+Both sides' records were retained; no owner source was changed during
+resolution. This permits typed verification of the real new assumption
+without an observer shim, but is not browser or release evidence.
+
+## 2026-09-15: Canonical runtime and browser preparation are distinct
+
+Reading G `4765770` confirmed that wrong-strength Today first prices as
+endorsed and only an explicit audit reopens it. Acknowledged EPS corrections
+then recheck automatically; eligible paper amendments still need the operator's
+release. B's `95db18a` and P's `330675a` report store/handler evidence only.
+
+P identified a separate setup hazard: the current C8 ready-to-release paper
+revision is complete, while the real fresh brand-missing scenario must begin
+incomplete. Tests must await/use the original-scenario factory, not blank
+fields through a hidden observer mutation. B also identified missing amended
+scan regions for brand, pack and form despite populated OCR fields; those
+remain G/U work, not a visual pass. N's new global assumption belongs both in
+the exact snapshot schema and in unrelated-global capture preservation.
+
+The parent's newer B `dd07f91` pinpoints nine failing negative regressions:
+eight `own.form` leaks across four outbound APIs and both modes, plus one
+manufacturer region absent from the actual amended image. Positive fidelity
+tests do not supersede these failures. R `32e0a3`'s remote integration logs
+independently report 36 failed files and 185 failed / 1,600 passed tests;
+this is an earlier integration boundary, not evidence against later fixes.
+
+No V browser or profiler was launched for these handoffs. The live build
+identity remained clean `6418151` at `2026-09-15T20:04:12.9214878Z`; identity
+freshness alone does not verify the new behaviour.
+
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
 records and retains B's later readable-blank fix, with no canonical store,

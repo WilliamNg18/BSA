@@ -4,6 +4,64 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+## V six-file canonical unit migration
+
+The six assigned files now exercise current paper/strength actions: actual
+Today pricing then audit, payload-bound ACK before resubmission, original
+attempt retention, readable paper without invented Type 1, and explicit
+human release after paper capture/recheck. Historical pure-domain CASES and
+their July replay assertions remain unchanged. P's earlier
+`four-case-baseline-ui` assertions from `d97ccf4` are unioned, not overwritten.
+
+On exact G `99abdd4`, the selection improved from 59/74 to 71/74; the three
+failures are two absent P EPS-control updates and Home's false date correction
+for brand-missing B. A unit-only staging checkout of exact P `b236e8d` with
+identical six test sources passes 73/74. Its sole failure is the Home date
+instruction, reported to D. No staging source file was modified, no browser
+or build was launched, and no full-suite/live pass is claimed. Typecheck and
+targeted lint pass. Both earlier failed reports remain retained.
+
+V imports exact G `99abdd4` (including `c03ab21`, `c3f69f2` and merged
+Part A) without source conflict. G assigned six remaining unit files to V;
+O confirmed no overlapping writer. Their fresh two-worker baseline is
+59 passed / 15 failed. Source/UI gaps remain failures, not compatibility
+passes, until the actual owner implementation and assertions agree.
+
+## V canonical dependency integration
+
+V's pharmacy scenario helper now explicitly selects either real paper radio
+and verifies its item ID; the default remains unreadable D. Starting B uses
+P `74cd4a8`'s factory-backed brand-missing paper selection and explicit Post,
+without clearing fields, resetting state or writing through an observer.
+Static contracts protect these helper choices; browser execution and the
+remaining B consumer assertions are still pending.
+
+Typecheck, targeted helper/unit lint and all three static helper regressions
+passed with two workers. These results establish no browser pass.
+
+Importing P's whole branch encountered conflicting canonical source, so that
+merge was aborted without retaining any source resolution. The test adapter
+targets P's published contract; it does not claim the current V runtime has
+all P/O/F consumer changes. B `55f8d28` subsequently passed the original nine
+negative assertions, but its 107/108 combined result still fails D's
+capture/information-response routing. G owns that remaining repair.
+
+The V-owned Type 1 capture preservation check now compares
+`mismatchSharePercent` before and after capture, alongside the existing global
+inputs. N's exact-key assertion file, observer producer and complete snapshot
+machinery remain unchanged. This is a source-compatible assertion addition;
+the migrated browser matrix has not run.
+
+Typecheck, targeted capture-spec lint and 49 canonical-runtime/mismatch units
+passed with at most two workers. State discovery remains 44 tests in eight
+files; discovery is not execution. No browser or server was started.
+
+V imports exact G `cdd436b906f397a1d210603e4cef3794812c0a59` for
+source-compatible verification work, preserving owner source and unioning
+both streams' tracking records. Its published fixes supersede the earlier
+source checkpoint; independent negative regression reruns, consumer integration
+and browser/live acceptance remain distinct gates. No browser was launched.
+
 ## B40 canonical verification branch integration
 
 **B-owned implementation and verification handoff:** 111 selected tests and

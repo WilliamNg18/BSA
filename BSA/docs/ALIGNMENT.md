@@ -62,6 +62,30 @@ The legacy generic EPS field test uses its isolated historical source rather
 than mutating the new wrong-strength identity. Main `5b75e5f` contains Part A,
 not this pharmacy integration. No hosted observation or complete verdict is
 claimed for this working branch.
+V's assigned unit migration now preserves ACK, same-attempt history, Today
+audit and human paper release semantics. Exact P `b236e8d` resolves the two
+old EPS UI failures present on G `99abdd4`; the identical six tests reach
+73/74 on unchanged P source. Home still proposes adding a date to correctly
+dated brand-missing paper. That negative stays failing until D repairs the
+source. P's existing overlapping four-case assertions are retained in full.
+
+The fresh V six-file unit baseline against G `99abdd4` is 59 passed / 15
+failed. This establishes the migration starting point, not a full integration
+or browser result. The exact failed JSON is retained in session evidence.
+
+The V helper contract now follows P `74cd4a8`'s actual paper radios and Post
+control, with explicit case identity and no hidden draft mutation. Static
+helper tests are not DOM evidence. P's conflicting whole-branch merge was
+aborted; canonical source remains owner-controlled. B's newer nine-negative
+pass is separate from its still-failed 107/108 combined routing result.
+
+V's capture preservation list now protects `mismatchSharePercent`, closing
+the identified assertion omission without changing the producer or N's
+exact-key-list file. Execution of the migrated state matrix remains pending.
+
+V integrates exact published G `cdd436b` without modifying owner source.
+The earlier failure records below retain their original source boundaries.
+Dependency integration alone does not close those gates or verify the UI.
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
