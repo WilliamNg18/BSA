@@ -6,6 +6,15 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+**B-owned implementation and verification handoff:** 111 selected tests and
+typecheck pass after the final test-only additions; the unchanged canonical
+runtime also passed check. The 27 actual-store fidelity cases now additionally
+prove a new Post invalidates earlier capture while an information-only answer
+retains it, and C8's ready/referral seeds carry actual code verification and
+pharmacy acknowledgement history. No B-owned failing regression remains.
+Overall Task 40 still requires the owning UI integrations, V's exact browser
+timing/accessibility matrix, merge/deployment and observed live acceptance.
+
 B verified G source-link repair `c03ab213d97392e0769c3de1546c1c224563c6f8`
 through integrated `99abdd467d7885b387248d11bccc8c5c647e9fb2`.
 The exact remaining negative passes unchanged, then all 110 selected tests

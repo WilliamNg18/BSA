@@ -6,6 +6,12 @@ ms.date: 2026-09-15
 
 # Scope register
 
+B's bounded contract/test handoff is ready: 111 selected tests and typecheck
+pass; check passed on the same canonical runtime before the test-only additions.
+The current store matrix has 27 cases, including C8's real historical authority
+and invalidation of capture on a new source. B does not declare the wider
+Task 40 product or live release complete.
+
 G's explicit source-revision repair now passes B's original capture-retention
 assertion unchanged. All 110 selected B/runtime tests and check pass on
 `99abdd4`, including the ten formerly failing assertions. This completes the

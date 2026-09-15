@@ -6,6 +6,22 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
+B final bounded proof is pinned to G
+`99abdd467d7885b387248d11bccc8c5c647e9fb2` and actual main
+`5b75e5f7711bf599b02ff9fab752781fa0685b00`: 111 selected tests and
+typecheck pass, with check passed on the unchanged canonical runtime.
+The 27-case actual-store matrix preserves full submissions, revision scans/OCR,
+all human history, channel-specific release and source-linked capture in every
+required perspective/mode. C8 seeds have recorded code checks/current gate
+results and accurate pharmacy acknowledgement, not view-created completion.
+A genuinely new Post invalidates old capture; information-only responses do not.
+
+All B-owned negative regressions are resolved. C1/C2/C5/C6/C8 have bounded
+canonical-branch state evidence, not current-main live proof. C3/C4 screen
+adoption, C7 actual UI one-second matrix and C9 screenshots/release documentation
+remain assigned to their existing owners. No branch result is a local backup
+or an ALL DONE declaration.
+
 Exact G `99abdd467d7885b387248d11bccc8c5c647e9fb2` includes source-link
 repair `c03ab21` and Part A/main. B first reran the unchanged source-linked
 capture assertion (pass), then all eight selected files (110/110) and check

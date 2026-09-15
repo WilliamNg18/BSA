@@ -63,6 +63,14 @@ original revision, timestamp and human actor while information responses link
 to that source; no capture is replayed as a new event. This resolves the tenth
 negative without altering its expectation or the original failure record.
 
+The final test-only additions establish the inverse source-link condition:
+a new Post invalidates the old Type 1 evidence while retaining its historical
+event. C8's simultaneous states also have matching recorded code checks and
+pharmacy acknowledgement rather than computed-only labels. All 111 selected
+tests and typecheck pass. Check previously passed on that unchanged canonical
+runtime. This is B's green integration handoff, not browser timing, global
+legacy-consumer acceptance, current-main deployment or live completion.
+
 Four additional real-store cases confirm that `sendConfirmation` appends an
 information response without replacing the actual submission replica. The
 19-unit fidelity selection passes. This exposed a consumer seam: U correctly
