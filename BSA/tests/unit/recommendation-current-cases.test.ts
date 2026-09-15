@@ -67,6 +67,8 @@ describe("current four-case source-backed recommendations", () => {
       paper: { outcome: "RELEASE_RECOMMENDED", automaticRelease: false } });
     expect(result.summary).toContain("requires the operator's press because paper was scanned");
     expect(result.nextStep).not.toContain("Type 1");
+    expect(result.provenance).toBe("Pharmacy declaration reconciled with the recorded scan and hypothetical extraction.");
+    expect(result.provenance).not.toContain("will be verified");
     expect(result.operatorApplyAllowed).toBe(false);
     expect(s().itemVerification[paperId].released).toBe(false);
   });
@@ -85,6 +87,7 @@ describe("current four-case source-backed recommendations", () => {
       provenance: "pharmacy_declaration", declarationReconciled: true });
     const after = deriveRecommendation(s(), unreadableId);
     expect(after.paper).toMatchObject({ reconciliationBasis: "human_confirmed_capture", outcome: "RELEASE_RECOMMENDED" });
+    expect(after.provenance).toBe("Pharmacy declaration reconciled with human-confirmed capture; original scan and hypothetical extraction retained.");
     expect(after.paper?.evidence.scan).toEqual(before.paper?.evidence.scan);
     expect(after.paper?.evidence.characterRecognition).toEqual(before.paper?.evidence.characterRecognition);
     expect(getAsSubmitted(s(), unreadableId)).toEqual(submitted);
@@ -103,6 +106,7 @@ describe("current four-case source-backed recommendations", () => {
     expect(result.preview?.paperDeclaration?.dispensingDate).toBe(draft.paperDeclaration?.dispensingDate);
     expect(result.preview?.endorsementText).toBe(draft.endorsementText);
     expect(result.paper).toBeUndefined();
+    expect(result.provenance).toContain("will be verified against the scan at NHSBSA");
   });
 
   it("recorded paper triads and referrals cannot borrow a later acknowledged correction", () => {

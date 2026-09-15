@@ -2017,3 +2017,16 @@ an aggregate assembled from partial runs. Typed prescriber evidence is not
 illegible-image inference: unknown-prescriber tests explicitly submit null
 through the canonical pharmacy action and retain the source object unchanged.
 The new browser regressions are listed only; no execution result is claimed.
+On 15 September, clean `2df6549` was rebuilt and its build identity asserted
+before the allocated eight-case trace run. All eight passed in 42.3 seconds,
+with one worker and zero retries. The eight unique axe reports (excluding
+attachment copies) have zero violations. Both wrong-strength audits retain
+one incomplete finding; the other six have none. All report URLs are on
+localhost:4337, audit timestamps span 20:41:07Z to 20:41:40Z, no screenshots
+were produced, and the port was verified closed after the run.
+
+P's bounded browser observation found contradictory future-tense provenance
+below a successfully reconciled paper result. The repair uses existing
+`RELEASE_RECOMMENDED` and `reconciliationBasis`, not inferred approval. Tests
+cover ready raw sources, ready human capture and still-pending drafts;
+typecheck and all 48 selected recommendation tests pass.

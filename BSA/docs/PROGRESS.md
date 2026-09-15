@@ -2849,3 +2849,18 @@ coherent run including those files, new fidelity/scanner checks and the backup
 verifier passed 132 tests across eight files; typecheck and targeted lint pass.
 Four new desktop browser regressions for audit and one-press paper Release
 are discovered but not executed. Their seeded-ready prerequisite is G-owned.
+The coordinator-allocated R development run on clean published `2df6549`
+passed all eight recommendation-trace cases in 42.3 seconds, one worker and
+zero retries. The built identity matched that SHA with `dirty: false`; every
+audit URL used `http://localhost:4337/`. Four cases at 1280/1440 verified Card
+On/Off, exact operator source facts, no correction proposals and all-rule axe.
+Eight unique axe reports have zero violations; the two strength reports each
+retain one incomplete finding. No screenshots were generated. Port 4337 is
+released. This closes bounded R development coverage only, not the failed
+whole integration suite, deployment, live acceptance or backup parity.
+
+P's actual ready-paper screen exposed future-tense provenance after successful
+reconciliation. R now derives completed provenance from the existing paper
+outcome and reconciliation basis, distinguishing recorded scan/OCR from
+human-confirmed capture. Draft text remains prospective. Typecheck and 48
+targeted recommendation tests pass; no source evidence or gates changed.

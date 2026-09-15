@@ -820,3 +820,11 @@ later-audit entry and paper-ready controls. It does not alter G's source,
 gate or final-action implementations. U remains owner of the scanner renderer.
 The ordinary source comparison is full-width; compact demo-shell placement
 belongs to D and cannot be inferred from this unmounted integration checkpoint.
+
+Bounded R trace coverage executed on clean `2df6549`: 8/8 at the two desktop
+widths, zero retries, eight zero-violation axe reports. Two incomplete axe
+findings remain explicit. Full Task 39/40 release acceptance is still pending.
+
+Ready-paper provenance now describes the completed reconciliation basis rather
+than promising a future check. This is a phase-copy repair only, not a new
+verification event, operator approval or release.
