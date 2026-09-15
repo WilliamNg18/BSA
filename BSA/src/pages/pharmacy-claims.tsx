@@ -53,7 +53,7 @@ export function PharmacyClaimsPage() {
     <header className="space-y-2"><SyntheticTag /><h1 className="text-2xl font-semibold">Pharmacy claims</h1>
       <section aria-label="Referral cycle guide" className="space-y-2">
         <p>{agentEnabled
-          ? "Read the operator-approved fix, correct the endorsement, then explicitly resubmit. The agent verifies the submission and advises; a person decides."
+          ? "Read NHSBSA's note and your agent's suggestion. Correct, confirm accuracy, then resubmit. The agent verifies and advises; a person decides."
           : "Today: referred-back items appear in MYS Unpaid items with an RB code and the operator's reason. The pharmacy corrects and resubmits."}</p>
         <CompactTooltip><CompactTooltipTrigger asChild><Button variant="link" className="h-auto whitespace-normal p-0">What is assumed?</Button></CompactTooltipTrigger>
           <CompactTooltipContent>Owner-supplied public context: MYS Unpaid items and NHSmail notification; expiry after 18 months. Weeks of delay are illustrative. No notification is sent here.</CompactTooltipContent>
@@ -62,6 +62,19 @@ export function PharmacyClaimsPage() {
       <Button asChild variant="outline"><Link to="/pharmacy">Open pharmacy submission</Link></Button>
     </header>
     <p data-pharmacy-identity>{HILLCREST_PHARMACY.name} ({pharmacy}) · Synthetic pharmacy</p>
+    <section aria-label="Current pharmacy workload" className="grid grid-cols-3 gap-3">
+      {(["Action needed", "Waiting on NHSBSA", "Paid this month"] as const).map((name) => {
+        const matching = rows.filter((row) => matchesFilter(row, name, month));
+        return <section key={name} aria-label={name} className="space-y-2 rounded-xl border bg-card p-4">
+          <h2 className="font-semibold">{name}</h2>
+          <p>{matching.length} items</p>
+          {matching.length ? <ul className="space-y-2">{matching.map((row) => <li key={row.caseId}>
+            <Button variant="link" className="h-auto p-0" onClick={() => setParams({ caseId: row.caseId })}>{row.caseId}</Button>
+            <p className="text-sm">{itemStateLabel(row, "pharmacy", agentEnabled)}</p>
+          </li>)}</ul> : <p className="text-sm">No current items.</p>}
+        </section>;
+      })}
+    </section>
     <section aria-label="Selected pharmacy this month" className="space-y-2 rounded-xl border p-4">
       <h2 className="font-semibold">This pharmacy · {month}</h2>
       <p className="text-sm">Recorded UTC-month items; categories overlap. Paid includes release to existing pricing, not calculated payment.</p>

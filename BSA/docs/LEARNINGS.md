@@ -112,6 +112,14 @@ must explicitly select pharmacy or its existing real Apply/invoice controls
 disappear. The isolated adapter preserves that boundary. Partial-integration
 check and 24 focused consumer units passed; full Vitest retained 65 failures
 and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+## 2026-09-15: P Tasks 39/40 consumer integration
+
+The published `ca0a48e` contract was additive and did not yet contain the ACK
+setter or W module. G `9b41cc2` includes both, so P develops against that exact
+published head without stubs. The old UI required operator-approved exact-value
+advice for Apply; C5 correctly separates approval provenance from pharmacy's
+own source-backed correction. The existing comparison unit exposed that old
+API during typecheck and was updated with the consumer change.
 
 ## 2026-09-15: EPS error evidence, primary-source verification
 

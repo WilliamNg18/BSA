@@ -104,6 +104,21 @@ in its shared wrapper, preserving real Apply and invoice controls. Check and
 run was 1,665 passing / 65 failing across 105 files, principally old ACK,
 Card/audience and retired scenario assumptions. It is retained as failed
 evidence, not accepted full-suite or live proof.
+## 2026-09-15: P Tasks 39/40 consumer checkpoint, incomplete
+
+P rebased clean main `6418151`, then the published G contract head `9b41cc2`
+for local consumer development. Required accuracy acknowledgement calls G's
+real revision-bound action in both modes; Resubmit remains separate. Neutral
+catalogue selection edits only the selected EPS code/name. Paper supply inputs
+and receipt facts use canonical fields; the picker derives channel membership.
+Three concurrent workload columns project real lifecycle rows without seeds
+or navigation-driven transitions.
+
+G's new scenario seeds, source-bound corrections and recheck routing and R's
+audience-aware Card are still integration dependencies. The initial typecheck
+identified the old comparison unit API; its expectation now follows pharmacy
+records rather than approval of an NHSBSA correction value. No browser started.
+This branch is published WIP, not main/live completion or a backup.
 
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
