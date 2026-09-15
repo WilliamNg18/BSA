@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { CASES, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
-import { createEpsPrescription, EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
+import { CASES, PLAYABLE_CASE_IDS, caseById } from "../../src/lib/domain/cases";
+import { createEpsPrescription } from "../../src/lib/domain/eps-check";
 import { runAgent } from "../../src/lib/domain/agent";
 import { immutable, paperDeclarationFields } from "../../src/lib/domain/lifecycle-model";
 import { historicalLifecycleFixtures, seededLifecycleSession } from "../../src/lib/domain/lifecycle-seed";
@@ -9,15 +9,16 @@ import { routeSubmission, routingFactsForCase } from "../../src/lib/domain/routi
 import { pharmacySnapshot, checkPharmacy } from "../../src/lib/domain/pharmacy-check";
 import { getDomainSnapshot, historicalDecisionRecords, sessionCase, useAppStore } from "../../src/lib/store";
 import type { EpsPrescription, PaperDeclaration } from "../../src/lib/domain/types";
+import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
 
 const store = () => useAppStore.getState();
-const [A, B, , D, , F] = CASES;
+const A = CASES[0], B = caseById("EX-24112")!, D = caseById("EX-24123")!, F = CASES[5];
 const generic = "SYN-FQ123-MISMATCH";
 const paper: PaperDeclaration = { typedProduct: "Co-codamol 30/500 tablets", quantity: 100,
   endorsementText: "NCSO JB 27/08/26", dispensingDate: "2026-08-27", declaredByPharmacy: true };
-const eps = (id = B.id): EpsPrescription => ({ ...createEpsPrescription(sessionCase(id)!), claimMessageState: "submitted" });
-const submit = (prescription = eps()): ProcessSubmission => ({ caseId: B.id, channel: "eps",
-  endorsementText: prescription.dispenserEndorsement, epsPrescription: prescription, revision: store().caseRevisions[B.id].at(-1)!.number });
+const eps = (): EpsPrescription => ({ ...createEpsPrescription(sessionCase(A.id)!), claimMessageState: "submitted" });
+const submit = (prescription = eps()): ProcessSubmission => ({ caseId: A.id, channel: "eps",
+  endorsementText: prescription.dispenserEndorsement, epsPrescription: prescription, revision: store().caseRevisions[A.id].at(-1)!.number });
 beforeEach(() => { store().resetDemo(); vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-09-13T12:00:00Z")); });
 afterEach(() => vi.restoreAllMocks());
 
@@ -30,9 +31,10 @@ describe("single Hillcrest first-load cycle", () => {
     expect(s.lifecycles[A.id].state).toBe("paid");
     expect(s.records).toEqual([]);
     expect(s.itemProcesses[D.id].routing.outcome).toBe("type1_capture");
-    expect(s.itemProcesses[generic].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
-    expect(s.lifecycles[B.id].state).toBe("referred_back");
-    expect(s.itemProcesses[B.id].rbCode).toBe("SYN-NCSO");
+    expect(s.itemProcesses[generic].routing).toMatchObject({ outcome: "referred_back", requiresHuman: false });
+    expect(s.lifecycles[B.id].state).toBe("resubmitted");
+    expect(s.itemProcesses[B.id].readyToRelease).toBe(true);
+    expect(s.operatorDrafts[B.id]).toMatchObject({ outcome: "ACCEPT", revision: 2 });
     for (const map of [s.caseStates, s.caseRevisions, s.itemProcesses, s.itemVerification]) {
       expect(Object.keys(map).sort()).toEqual([...PLAYABLE_CASE_IDS].sort());
     }
@@ -64,28 +66,30 @@ describe("single Hillcrest first-load cycle", () => {
 describe("immutable source submission contracts", () => {
   it("copies the full EPS prescription, projects the source fields and selects July by dispensing date", () => {
     const prescription = { ...eps(), dispensingDate: "2026-07-21" };
-    const before = store().caseRevisions[B.id];
+    const before = store().caseRevisions[A.id];
     store().submitItem(submit(prescription));
-    const revision = store().caseRevisions[B.id].at(-1)!;
+    const revision = store().caseRevisions[A.id].at(-1)!;
     expect(revision.epsPrescription).toEqual(prescription);
     expect(revision.epsPrescription).not.toBe(prescription);
     expect(Object.isFrozen(revision.epsPrescription?.items[0])).toBe(true);
-    expect(sessionCase(B.id)).toMatchObject({ epsPrescription: prescription, extracted: {
+    expect(sessionCase(A.id)).toMatchObject({ epsPrescription: prescription, extracted: {
       dispensingDate: "2026-07-21", quantity: prescription.items[0].quantity, prescriber: prescription.prescriber.name,
     }, regions: [] });
-    expect(store().itemProcesses[B.id].routing.outcome).toBe("auto_priced");
-    expect(store().caseRevisions[B.id].slice(0, -1)).toEqual(before);
+    expect(runAgent(sessionCase(A.id)!).tariffVersion).toBe("2026-07");
+    expect(sessionCase(A.id)?.claim.amountClaimed).toBe(A.claim.amountClaimed);
+    expect(store().itemProcesses[A.id].routing.outcome).toBe("type2_endorsement");
+    expect(store().caseRevisions[A.id].slice(0, -1)).toEqual(before);
     prescription.dispensingDate = "2026-08-21";
     expect(revision.epsPrescription?.dispensingDate).toBe("2026-07-21");
   });
 
   it("validates advice against the newly submitted date rather than the old fixture date", () => {
     const prescription = { ...eps(), dispensingDate: "2026-07-21" };
-    const projected = { ...B, extracted: { ...B.extracted, dispensingDate: prescription.dispensingDate } };
+    const projected = { ...A, extracted: { ...A.extracted, dispensingDate: prescription.dispensingDate } };
     const precheck = pharmacySnapshot(prescription.dispenserEndorsement, prescription.dispensingDate, "scripted",
       checkPharmacy(projected, prescription.dispenserEndorsement), "2026-09-13T12:00:00Z");
     store().submitItem({ ...submit(prescription), precheck });
-    expect(store().caseRevisions[B.id].at(-1)?.precheck?.tariffVersion).toBe("2026-07");
+    expect(store().caseRevisions[A.id].at(-1)?.precheck?.tariffVersion).toBe("2026-07");
   });
 
   it.each([
@@ -135,26 +139,28 @@ describe("immutable source submission contracts", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
-  it("cannot bypass generic supply requirements by omitting the optional evidence, in either decision mode", () => {
+  it("omitting unrelated supply evidence cannot waive the selected-strength discrepancy in human review", () => {
     const prescription = { ...store().caseRevisions[generic][0].epsPrescription!, supplyEvidence: undefined };
     for (const enabled of [false, true]) {
       store().setAgentEnabled(enabled);
       store().submitItem({ caseId: generic, channel: "eps", endorsementText: "", epsPrescription: prescription });
-      expect(store().itemProcesses[generic].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
-      store().arriveInQueue(generic);
+      expect(store().itemProcesses[generic].routing).toMatchObject({ outcome: enabled ? "type2_endorsement" : "auto_priced", requiresHuman: enabled });
+      if (enabled) store().arriveInQueue(generic);
+      else store().reopenForAudit(generic, store().caseRevisions[generic].at(-1)!.number, "Human audit of the selected product.");
       const before = getDomainSnapshot();
       expect(() => store().recordType2Decision({ caseId: generic, decision: "ACCEPT", reason: "Cannot invent missing supply evidence." })).toThrow();
       expect(getDomainSnapshot()).toEqual(before);
     }
   });
 
-  it("complete generic supply is cleared by code with no human or model decision", () => {
-    const prescription = { ...store().caseRevisions[generic][0].epsPrescription!, supplyEvidence: {
-      ruleId: EPS_SUPPLY_RULE.id, brandManufacturer: EPS_SUPPLY_RULE.brandManufacturer, packSize: 21, form: "capsules",
-    } };
+  it.each([false, true])("corrected selected strength is cleared by code with no human decision, enabled=%s", (enabled) => {
+    const original = store().caseRevisions[generic][0].epsPrescription!;
+    const prescription = { ...original, items: original.items.map((item) => ({ ...item,
+      dispensedCode: "SYN-AMLO10-28", dispensedName: "Amlodipine 10mg tablets" })) };
     const records = store().records;
+    store().setAgentEnabled(enabled);
     store().submitItem({ caseId: generic, channel: "eps", endorsementText: "", epsPrescription: prescription });
-    expect(store().lifecycles[generic].state).toBe("paid");
+    expect(store().lifecycles[generic].state).toBe(enabled ? "released_to_pricing" : "paid");
     expect(store().itemProcesses[generic].routing.outcome).toBe("auto_priced");
     expect(store().records).toBe(records);
   });
@@ -167,13 +173,19 @@ describe("immutable source submission contracts", () => {
     });
   });
 
-  it("legacy correction retains EPS source and supply evidence instead of dropping the generic obligation", () => {
+  it("legacy text correction retains the selected product and independent supply record", () => {
     const before = store().caseRevisions[generic][0];
-    store().recordType2Decision({ caseId: generic, decision: "REFER_BACK", reason: "Human requires the correct supply pack.", rbCode: "RB2B" });
-    store().resubmitFromPharmacy(generic, "Pharmacy correction, supply pack still mismatched");
+    store().setAgentEnabled(true);
+    const draft = initialisePharmacyDraft(sessionCase(generic)!, before);
+    const text = "Pharmacy clarification";
+    store().setPharmacyDraft(generic, { ...draft, purpose: "correction", endorsementText: text,
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: text } });
+    store().setCorrectionAcknowledgement(generic, before.number, true);
+    store().resubmitFromPharmacy(generic, text);
     const latest = store().caseRevisions[generic].at(-1)!;
     expect(latest.epsPrescription).toEqual({ ...before.epsPrescription, dispenserEndorsement: latest.endorsementText });
-    expect(latest.epsPrescription?.supplyEvidence).toEqual(before.epsPrescription?.supplyEvidence);
+    expect(latest.epsPrescription?.supplyRecord).toEqual(before.epsPrescription?.supplyRecord);
+    expect(latest.epsPrescription?.items).toEqual(before.epsPrescription?.items);
     expect(store().itemProcesses[generic].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true });
     expect(store().caseRevisions[generic][0]).toEqual(before);
   });
@@ -212,12 +224,22 @@ it.each([false, true])("full cycle preserves every action in Both and switched p
     expect(store().itemProcesses[D.id].routing.outcome).toBe("type2_endorsement");
     act(() => store().recordType2Decision({ caseId: D.id, decision: "REFER_BACK", reason: "Human requires reconciled presentation evidence.", rbCode: "RB2B" }));
     const referral = immutable(store().lifecycles[D.id].history);
-    act(() => store().resubmitItem({ caseId: D.id, channel: "paper", endorsementText: paper.endorsementText, paperDeclaration: paper }));
+    act(() => {
+      const draft = initialisePharmacyDraft(sessionCase(D.id)!, store().caseRevisions[D.id].at(-1)!);
+      store().setPharmacyDraft(D.id, { ...draft, purpose: "correction",
+        declaration: { ...draft.declaration!, fields: { ...draft.declaration!.fields, prescriber: "Dr Demo (synthetic)" } } });
+    });
+    act(() => store().setCorrectionAcknowledgement(D.id, revision, true));
+    act(() => store().resubmit(D.id));
     expect(store().lifecycles[D.id].state).toBe("resubmitted");
-    act(() => store().confirmType1({ caseId: D.id, revision: store().itemProcesses[D.id].revision,
-      fields: { ...paperDeclarationFields(paper), prescriber: "Dr Demo (synthetic)" }, provenance: "human_capture", declarationReconciled: true }));
-    act(() => store().recordType2Decision({ caseId: D.id, decision: "ACCEPT", reason: "Human reconciled all corrected source evidence." }));
-    expect(store().lifecycles[D.id].state).toBe("paid");
+    expect(store().caseRevisions[D.id].at(-1)?.paperSource?.provenance).toBe("acknowledged_pharmacy_amendment");
+    expect(store().itemProcesses[D.id].capture).toBeNull();
+    expect(() => store().confirmType1({ caseId: D.id, revision: store().itemProcesses[D.id].revision,
+      fields: paperDeclarationFields(paper), provenance: "human_capture", declarationReconciled: true })).toThrow("Type 1");
+    act(() => store().arriveInQueue(D.id));
+    act(() => store().releaseToPricing(D.id, "Human reconciled all corrected source evidence."));
+    expect(store().lifecycles[D.id].state).toBe("released_to_pricing");
+    expect(store().itemProcesses[D.id].releaseOrigin).toBe("human_decision");
     expect(store().lifecycles[D.id].history.slice(0, referral.length)).toEqual(referral);
     expect(store().itemProcesses[D.id].routing).toMatchObject({ outcome: "type2_endorsement", pricingAuthority: "existing_rules_engine" });
     act(() => store().resetDemo());

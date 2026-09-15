@@ -377,6 +377,11 @@ main actions or updated four-case historical seeds.
 
 # Vision alignment
 
+Canonical legacy regression checkpoint: twelve G-owned files pass 194 tests
+after actual-action migration, and the integrated demo slice passes 231 tests.
+The retired-headline checker now has zero source findings. These scoped passes
+do not replace the pending full exact-head CI, deployment or live audit.
+
 ## Bounded Home and eleven-step compatibility over G `05fc421`
 
 The coordinator temporarily assigned the D-owned case-context slice to F.

@@ -399,6 +399,12 @@ word replacement. Original CASES and HISTORY initializer text compares exactly
 against the preceding commit after line-ending normalisation. Seventy-seven
 targeted source/fidelity tests pass; the remaining headline findings are owner
 UI/reference copy, not permission to weaken the guard or rewrite history.
+
+The twelve-file canonical migration now passes 194 tests. The important
+boundary is not changing expectations in isolation: tests prepare valid current
+sources, acknowledge exact corrections and use the explicit human audit path
+after Today pricing. Historical data stays available without becoming a hidden
+operational case set.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.

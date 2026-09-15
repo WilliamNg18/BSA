@@ -372,6 +372,14 @@ have been mechanically archived without changing their original values; 77
 targeted source/fidelity tests pass. Remaining retired headline literals are
 confined to D and S owner surfaces, with no guard exception added.
 
+The bounded G legacy-domain migration is complete: all 12 assigned files pass
+194 tests on the integrated source, using actual strength/audit, paper,
+acknowledgement and human-release actions. No hidden operational fixtures,
+source edits or skipped assertions were used to restore obsolete outcomes.
+F's four-file demo compatibility passes 231 tests and the standalone retired-
+headline guard now reports zero source violations. Full candidate validation,
+CI, deployment and observed live identity remain outstanding.
+
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
 their recorded supplier fields, submission workbenches can initialise the

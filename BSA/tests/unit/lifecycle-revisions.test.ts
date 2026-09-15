@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, expect, it } from "vitest";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, caseById } from "../../src/lib/domain/cases";
 import { historicalDecisionRecords, useAppStore, sessionCase } from "../../src/lib/store";
 import { historicalLifecycleFixtures } from "../../src/lib/domain/lifecycle-seed";
 import { runAgent } from "../../src/lib/domain/agent";
 import { pharmacySnapshot } from "../../src/lib/domain/pharmacy-check";
 
 const store = () => useAppStore.getState();
-const A = CASES[0], F = CASES[5], B = CASES[1];
+const A = CASES[0], F = CASES[5], B = caseById("EX-24112")!;
 beforeEach(() => store().resetDemo());
 afterEach(() => store().resetDemo());
 
@@ -44,10 +44,10 @@ it.each(["off", "pending", "unavailable"] as const)("retains an unperformed %s p
 
 it("a claimed ready snapshot cannot change a recommendation or pay a claim", () => {
   const text = B.extracted.endorsementText;
-  store().submitFromPharmacy(B.id, text, {
+  store().submitItem({ caseId: B.id, channel: "paper", endorsementText: text, paperDeclaration: B.paperDeclaration, precheck: {
     typedText: text, dispensingDate: B.extracted.dispensingDate, mode: "scripted", status: "ready", checkedAt: "2026-09-10T09:00:00Z",
     facts: { ...B.readings[0], quotedText: text, dated: true }, tariffVersion: "2026-08", clauseId: "P2-C9", checks: [{ id: "dated", label: "Dated", met: true }],
-  });
+  } });
   store().setAgentEnabled(true);
   store().arriveInQueue(B.id);
   expect(store().lifecycles[B.id].state).toBe("in_review");
