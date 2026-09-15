@@ -4,6 +4,11 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Running the standalone W checker on imported G `e954aa1` now reports no
+retired date-error source outside its actual NCSO requirement-text exception.
+This is an actual source traversal, not a whitelist or historical manifest
+rehash. Root hook activation can proceed while other integration gates remain.
+
 Pharmacy history intentionally changes its presentation of human reasons and
 approved notes between modes. Capture the current decision's position while
 its reason is visible, then verify that same event's authority rather than
@@ -124,6 +129,11 @@ block instead of the duplicate declaration heading. The pharmacy integration
 test was the remaining P failure in the 1,839/122 full run. It now checks that
 real date and unchanged domain state; all 30 selected source/operator tests
 pass. Imported handoffs did not modify shared models or other owners' logic.
+
+The claim's three-argument status call omitted the canonical ready-paper
+metadata even after F fixed Follow/history. P now wires that same fourth
+argument across its current views; historical receipt status remains pinned.
+Twenty-three targeted tests and typecheck pass before the browser artifact.
 
 B's verification merge of G `9b41cc2` encountered tracking-document and
 repeated-cherry-pick add/add conflicts. The resolution preserves both streams'
@@ -429,6 +439,12 @@ source. Explicit source-revision links keep the original capture's real
 revision/time rather than relabelling it. C8 review also found ready status
 without a shared decision draft or recorded recheck; seed events and draft
 initialisation now agree, with 21 targeted runtime tests passing.
+
+Historical extraction used TypeScript statement boundaries, not a global
+word replacement. Original CASES and HISTORY initializer text compares exactly
+against the preceding commit after line-ending normalisation. Seventy-seven
+targeted source/fidelity tests pass; the remaining headline findings are owner
+UI/reference copy, not permission to weaken the guard or rewrite history.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.
@@ -616,6 +632,22 @@ They remain historical; no new wrong-strength/paper-incomplete live cycle,
 header centring, backup equality or clean offline recovery is claimed here.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
+
+### Home scenario shortcuts can outlive the evidence they described
+
+The correctly dated paper B still received "Fix: add the date beside the
+initials" because Home keyed that advice on scenario B plus REFER_BACK.
+G `05fc421` already had the correct paper source and a negative V regression.
+The bounded F repair reads the actual unmet requirement labels instead; it
+does not change dates, source data, agent results or the retained regression.
+
+Step definitions also needed to follow the revised case channels. A paper B
+could not truthfully be the old EPS step, and an uncorrected strength error
+fails both gates rather than only format-independent reconciliation. The new
+real-action demo test acknowledges the correction before automatic EPS recheck,
+preserves paper history by deep value equality and checks navigation snapshots.
+Check plus 231 bounded units pass; 98 shared-suite failures and five S headline
+hits remain explicit. No browser timing, live result or backup is inferred.
 
 ### Task 40 Follow audit: new events must not fall through to old state labels
 
@@ -1989,3 +2021,30 @@ an aggregate assembled from partial runs. Typed prescriber evidence is not
 illegible-image inference: unknown-prescriber tests explicitly submit null
 through the canonical pharmacy action and retain the source object unchanged.
 The new browser regressions are listed only; no execution result is claimed.
+## 2026-09-15: S reference preparation for strength and scanner fidelity
+
+The NHSBSA AMPP page was read directly on 15 September. Its automatic-processing
+statement is conditional on the selected AMPP having a dm+d price; it does not
+prove that every incorrect claim is detected or automatically processed.
+The short quotation concerns what was endorsed versus supplied, not an
+additional Drug Tariff clause. W's canonical metadata will provide the page's
+public citation rather than a duplicated reference register.
+
+The first scoped S preparation passed check and all 12 reference units.
+Shared text generated SYSTEM-DESIGN exactly; 49 panels had at most 54 prose
+words and 14 FAQ topics. These are branch-development observations, not a
+new live, browser or backend implementation result. W/B/G foundation imports,
+the citation surface and integrated release evidence remain unfinished.
+
+The next S increment consumed G-approved canonical W/B foundations and added
+the real source link/quotation/check date and exact paper evidence labels.
+React's server renderer emits `dateTime`, while the browser DOM exposes
+`datetime`; the initial new unit expected the browser casing in SSR output.
+The fixed unit asserts SSR casing and the browser test separately asserts
+the DOM attribute. No date value, citation or assertion was removed.
+
+Check and all 1,714 units in 100 files passed, including 13 reference tests.
+There are now 50 explanatory panels (maximum 54 prose words), 14 FAQs and a
+separate source disclosure. The shared-content documentation is exact.
+No browser or hosted run occurred; passing pure owner-foundation tests is
+not a claim that G's new store/seed/gates or the live product are integrated.

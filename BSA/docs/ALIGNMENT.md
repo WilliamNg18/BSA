@@ -4,6 +4,11 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The actual G `e954aa1` source passes the standalone EPS-headline scan with
+zero findings after F/S migration. The existing narrow Tariff-text exception
+is unchanged. This permits root check activation, not a new browser or
+deployed-behaviour pass.
+
 Current pharmacy-response assertions now distinguish a prior C8 referral from
 an active correction request and distinguish pharmacy advice from operator
 approval. Typecheck/lint/discovery are static evidence only. Prose measurement
@@ -116,6 +121,10 @@ has 122 failures (1,839 passing). A P-owned integration test now requires the
 actual as-submitted heading/date and unchanged domain snapshot rather than an
 obsolete duplicate date label. The subsequent three-file selection passes 30
 tests; it is not a replacement full-suite, browser or live verdict.
+
+V/F's source-reported P readiness gap is fixed in the actual claim, tiles and
+current receipt, with a negative historical-receipt assertion. Twenty-three
+tests and typecheck pass; the bounded browser check still has not run.
 
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
@@ -435,7 +444,30 @@ No row is marked verified by this tracking update. The standalone headline
 guard must not gain whole-file exemptions or activate against an unmigrated
 runtime merely to create red foundation CI.
 
+## Bounded Home and eleven-step compatibility over G `05fc421`
+
+The coordinator temporarily assigned the D-owned case-context slice to F.
+This source change does not include D's backup/workflow work, N's chapter 1/2
+numbers, S's design page, header styling or any domain/state authority change.
+
+| Item | Result at this published checkpoint |
+| --- | --- |
+| Home paper B incorrectly offers a date fix | Replaced the scenario-name shortcut with actual unmet requirement labels. V's negative assertion remains; a new test checks field guidance without a proposed supplier value or state write. |
+| Steps 4/5 retain retired EPS case assumptions | Step 4 is the wrong-strength pharmacy action; step 5 opens that same item's NHSBSA case. Both gates fail on ignored strength mismatch; corrected values remain pharmacy-side. |
+| Paper B and D route/channel context | Steps 6/7 retain D's separate paper hand-offs; step 9 defaults to paper B and preserves an actual referral handed off from step 8. All eleven steps and all four IDs remain. |
+| Current readiness and Follow comparisons | Case summaries and the small step queue consume the shared process-aware label. Follow projections choose the correct case/side, including paper B; no new operational state is created. |
+| Validation | Check and 231 bounded units pass. Standalone retired-headline scan has no D/Home hits and still reports five S-owned hits on this base; S's published repair is a separate integration. Full suite: 1,886 pass, 98 fail in 13 other-owner files. No browser/live result is claimed. |
+
+All source and test edits are isolated from the G baseline merge for owner
+integration. This is published incomplete work, not a live release or backup.
+
 ### Canonical action integration
+
+Historical fixture extraction preserves exact original case/history initializer
+text after line-ending normalisation, including old evidence that must not be
+rewritten. Current scenario dates are correct. The standalone headline scan now
+reports only nine D/S-owned literals; activation of the CI hook awaits those
+owner changes. No blanket archive or source-file allowance was introduced.
 
 C1/C8 follow-up: a confirmation revision now explicitly links its unchanged
 source revision, retaining the existing human capture instead of routing back
@@ -565,6 +597,12 @@ The expanded 87-test arithmetic/evidence regression passes. A direct typecheck
 confirms the remaining application errors are the absent canonical mismatch
 field/setter, not unrelated interface errors. Tiny positive count formatting
 is now covered explicitly; browser and live gates remain pending.
+| Retired EPS date headline and Case B diagram | Replaced in active S copy with W wrong-strength EPS and its unchanged-Send sequence | W/G integrated source review |
+| Four playable cases | Complete EPS, wrong-strength EPS, unreadable paper and paper missing brand, with existing IDs | Canonical G seed integration |
+| Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
+| Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate; B labels imported, raw-source versus human-confirmed basis explicit | Actual B/G runtime integration |
+| Public pick-list evidence | W's canonical public NHSBSA quotation, URL, checked date and proposed matching-check label render together; publication date remains unstated | No unverified study ranking or invented Tariff clause |
+| Evidence and completion | Check plus 1,714 full units passed, including 13 S tests; full document parity retained | Exact-head CI, G runtime integration, green main deployment and observed live change |
 
 ## 2026-09-15: Task 39 W source comparison and integration boundary
 
@@ -697,6 +735,15 @@ EPS verification and paper human release; this is policy alignment only.
 
 Historical Task 25-38 evidence remains intact but is not a substitute for this
 new register. A source-ready module is not an aligned live feature.
+## Stream S Tasks 39-40 follow-up
+
+| Reference item | Alignment in this change | Remaining evidence |
+| --- | --- | --- |
+| Retired EPS date headline and Case B diagram | Replaced in active S copy with W wrong-strength EPS and its unchanged-Send sequence | W/G integrated source review |
+| Four playable cases | Complete EPS, wrong-strength EPS, unreadable paper and paper missing brand, with existing IDs | Canonical G seed integration |
+| Correction authority | Operator field/rule-only explanation; concrete value comes from pharmacy records; Apply, acknowledgement and Resubmit are separate | W/B/G integrated behaviour |
+| Scanner reconciliation | Original scan, declaration, hypothetical field values/confidence and revision-bound human capture remain separate | B canonical labels/import and integration |
+| Evidence and completion | Check plus 12 scoped units passed; full document parity retained | Canonical NHSBSA citation rendering, exact-head CI, green main deployment and observed live change |
 
 ## Current live-first alignment
 

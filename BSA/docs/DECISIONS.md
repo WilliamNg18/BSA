@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: when may the EPS headline check enter the blocking root path? Choice: after exact G `e954aa1` and an independent zero-finding run of W's unchanged scanner, retaining every negative/traversal regression and the single AST-selected Tariff-text exception; tie-breaker: the authorised activation condition is now met without a waiver.
+
 - Question: does a seeded prior referral make corrected C8 paper actively editable? Choice: keep the prior note in history, require current ready-to-release status and no active response/resubmit controls; tie-breaker: actual revision and lifecycle authority.
 - Question: may pharmacy Apply depend on an operator supplying the correction? Choice: verify its own-records action for a current referral regardless of note approval, while checking approval metadata on the actual decision event; tie-breaker: C5 audience separation.
 - Parent decision: mandatory R summary and authority remain, and the numeric limit stays below 25. O must create genuine sibling advice and human-decision panels with distinct visible headings/landmarks. V then measures cumulative paragraphs and choice-help in each actual panel and asserts separation; no exclusion from the existing nested layout, hidden help or generic wrapper workaround.
@@ -86,6 +88,8 @@ ms.date: 2026-09-15
 - G correction: strength matching uses proposed cross-record authority informed by the verified public guidance, never a fabricated monthly Tariff provision. Real 10mg/5mg disagreements stay visible and structured reading/image signals are not applicable; tie-breaker: W's reproduced source/provenance failures.
 - G correction: information-only responses link the original submission revision and retain its actual capture event; no new scan or human confirmation is manufactured. New submissions and acknowledged amendments invalidate that link; tie-breaker: C1 fidelity and B's reproduced duplicate-Type-1 failure.
 - G correction: simultaneous ready/referral seeds include actual historical verification events and the same ready-decision draft as a real recheck, not status flags alone; tie-breaker: C8 truthful history and O's one-press release requirement.
+- G migration: move original case/history/lifecycle fixtures mechanically to archival modules and retain public historical exports, rather than falsifying old dates to satisfy current headline scope; tie-breaker: immutable evidence and the owner's new active-case requirements.
+- G integration: consume bounded owner-authored pharmacy, scanner, operator, recommendation, follow and numeric compatibility before activation; do not deploy new seeds under broken old controls or import unrelated backup work; tie-breaker: one coherent live product.
 - Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 - Question: how should U render three paper sources without a second state authority? Choice: a pure component consuming B's replica/reconciliation through G's facade, mounted by O; tie-breaker: one state and source fidelity.
 - Question: can confirmed values improve the scanner column? Choice: draw only immutable source-region strings and original source date; display current human evidence below the three columns; tie-breaker: provenance and human authority.
@@ -2585,6 +2589,14 @@ Question: fix stale readiness locally? Choice: report the differing current-revi
 
 Question: how is the stale-process repair established? Choice: consume G `cdd436b` and pass the earlier seed process alongside a later actual paper resubmission in a pure presentation regression, rather than inject lifecycle state or add another predicate; tie-breakers: real-action evidence and one model.
 
+## 2026-09-15: Assigned Home and eleven-step case compatibility
+
+Question: infer a correction from scenario B's name? Choice: render actual unmet requirement labels, never the retired hardcoded date fix or a proposed supplier value on a general overview; tie-breakers: truthful evidence and pharmacy-only correction authority.
+
+Question: how should eleven steps retain the revised four cases? Choice: steps 4/5 show wrong strength at Pharmacy/NHSBSA, 6/7 retain unreadable paper hand-offs, 9 defaults to paper B while preserving an actual step-8 referral, and other step order stays intact; tie-breakers: the latest four-case contract and visible same-item continuity.
+
+Question: do readiness or route changes need a second state? Choice: pass current process metadata to the existing label helper and retain presentation-only navigation; test complete snapshots and unchanged histories through real actions; tie-breaker: one authoritative store.
+
 ## 2026-09-15: Stream V adopts live-first publication
 
 Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits canonical types, store, lifecycle, references and seeds; W and B contribute isolated typed domain modules, then UI owners consume the merged contracts after the header change; tie-breaker: one store and the newest explicit ownership instruction.
@@ -2638,6 +2650,8 @@ Question: how should strength precheck show authority without a retrieved clause
 
 Question: how should P verify Type 1 after O replaces duplicate declaration evidence? Choice: assert the actual immutable as-submitted date and read-only store snapshot while retaining unchecked human reconciliation and prescriber assertions; tie-breaker: real source fidelity, not obsolete label compatibility.
 
+Question: how should P display ready paper consistently? Choice: pass the actual current process to the shared label helper, and require matching revision before a receipt shows that readiness; tie-breaker: one source of truth without retrospective history changes.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.
@@ -2676,3 +2690,10 @@ Question: does code-prefilled corrected paper contradict an initially empty manu
 - Question: how does a proposed cross-record check use the five-signal layout? Choice: retain every row but label retrieved provision, independent readings and image quality not applicable; preserve actual source reconciliation and coverage rather than infer a pass; tie-breaker: truthful authority.
 - Question: what should operator trace regression assert after C5? Choice: exact source strengths remain visible, but correction proposals and previews are absent; keep all original widths, test identities and unrestricted axe; tie-breaker: evidence fidelity and audience authority.
 - Question: what determines non-applicable confidence signals after the canonical repair? Choice: G's typed signal metadata, not a Card context switch; remove the temporary presentation override while keeping five rows and paper thresholds; tie-breaker: one source of truth.
+## 2026-09-15: S reference follows the Task 39-40 evidence boundary
+
+Question: retain the date-based reference sequence or explain the new case? Choice: use W's unchanged wrong-strength Send, independent Gate 2, field/rule-only operator referral and pharmacy-owned correction, then both-gate EPS release; tie-breaker: newest explicit case scope and unchanged human/source authority.
+
+Question: duplicate W/B evidence constants before G integrates them? Choice: publish bounded reference WIP and reuse the canonical modules after integration; tie-breaker: one authoritative evidence source, not a second bibliography or invented capture result.
+
+Question: may S finish citation integration before G's runtime merge? Choice: consume G's explicitly approved isolated W/B foundation commits unchanged, keep both sides of tracking conflicts, and import their canonical evidence/labels; actual built-runtime and live acceptance remain pending; tie-breaker: independent progress without competing domain implementations.

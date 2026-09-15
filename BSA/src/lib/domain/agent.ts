@@ -282,7 +282,7 @@ export function runAgent(original: ExceptionCase, opts: RunOptions = {}): CasePa
     cls: "agent",
     summary: captured ? "Requirements checked against human-confirmed fields. Original image readings remain uncertain; the proposed declaration path does not improve image confidence." : `Three scripted readings: ${agreement.agree} of ${agreement.total} agree. Requirement checks use code, not model judgement.`,
     items: [
-      ...c.readings.map((r, i) => `Reading ${i + 1}: ${r.note} [${r.type}${r.initialled === null ? "" : r.initialled ? ", initialled" : ", not initialled"}${r.dated === null ? "" : r.dated ? ", dated" : ", not dated"}]`),
+      ...c.readings.map((r, i) => `Reading ${i + 1}: ${r.note} [${r.type}${r.initialled === null ? "" : r.initialled ? ", initialled" : ", not initialled"}${r.dated === null ? "" : r.dated ? ", dated" : ", date requirement unmet"}]`),
       ...requirementResults.map((r) => `${r.met === true ? "Met" : r.met === false ? "Not met" : "Unknown"}: ${r.requirement.label}`),
     ],
     toolCalls: [

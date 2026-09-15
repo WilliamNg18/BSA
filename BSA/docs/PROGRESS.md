@@ -4,6 +4,12 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+V imports G `e954aa1`, including F's Home/step repair and S's source-copy
+migration. The unchanged standalone W checker now reports zero findings
+against the actual working source. Root hook activation is authorised and
+is the next isolated V change; no exception or historical-data rewrite is
+needed. Owner source remains exact and document conflicts are unioned.
+
 V migrated the nine existing pharmacy-response checks to current B paper and
 C8 history. The seeded prior referral remains historical while corrected
 paper awaits release; current manual reasons never become approved notes.
@@ -118,6 +124,12 @@ two-file compatibility and P's date/source-label integration pass 30 targeted
 tests. The pharmacy test now reads the actual immutable submitted date instead
 of requiring the duplicate legacy declaration heading. No browser has started;
 4342 is queued behind the coordinator's existing lease, not yet allocated.
+
+V/F identified a missing current-process argument in P's claim status. P now
+passes the canonical process to current claim/list/tile labels and gates the
+receipt's ready status by its own revision. Twenty-three targeted tests and
+typecheck pass, including historical-receipt non-borrowing. This repair is
+published before freezing the newly granted bounded 4342 browser artifact.
 
 ## B40 canonical verification branch integration
 
@@ -352,6 +364,28 @@ explicit. Check passes on this source. The latest full two-worker run remains
 failed: 1,664 passing / 144 failing, including three unrelated timeout cases.
 Actual fetched main is now Part A `5b75e5f`; G/R foundation merge and independent
 browser/live acceptance still block a final own-only pharmacy release.
+## Stream S: Tasks 39-40 reference alignment, published WIP
+
+S prepared the How it works follow-up on actual main `6418151`. Four-case
+copy and the sequence now describe W's wrong-strength EPS and P's paper
+missing-brand example, rather than the retired date headline. The fourteenth
+FAQ explains independent prescription/supply/claim evidence. B's proposed
+scanner reconciliation separates declaration, hypothetical character-recognition
+fields/confidence, original scan and revision-bound human capture. Paper stays
+human-final; corrected EPS requires both gates before code-only release.
+
+The follow-up consumes G-approved owner-authored W `fe0a521` and B `c433f45`
+plus `8151770` as isolated foundations, preserving all tracking entries.
+The public NHSBSA quote/link/check date and proposed-check label now reuse
+canonical W metadata. Scanner and human-capture/amendment labels reuse B's
+constants; no duplicated bibliography or improved-original-scan claim.
+
+Check and all 1,714 units in 100 files passed, including 13 S reference tests.
+The 50 prose panels have at most 54 words, informational only. SYSTEM-DESIGN
+matches the page text exactly. The new citation/retired-headline browser
+assertions have not run locally; no browser allocation or hosted claim exists.
+G's actual source/gate integration, exact-head CI, coordinator merge, green
+deployment and observed live change remain required for Task 39-40 completion.
 
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
@@ -385,6 +419,13 @@ Ready paper seeds now contain their recorded code recheck and a real shared
 decision draft; the wrong-strength referral seed records its original failed
 On checks. Typecheck and 21 targeted runtime tests pass. A's header merge is
 now available on main `5b75e5f`; it will be incorporated before candidate CI.
+
+Owner-authored P/U/O/N/F/R compatibility is integrated before activation; no
+backup or static-server files were imported. The combined six-file functional
+consumer selection passes 66 tests. Historical case/history/lifecycle fixtures
+have been mechanically archived without changing their original values; 77
+targeted source/fidelity tests pass. Remaining retired headline literals are
+confined to D and S owner surfaces, with no guard exception added.
 
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
@@ -482,8 +523,41 @@ receives the proposed patch/preview. Operator `suggestion` is strictly null.
 Four new authority tests bring W's focused total to 37; 120 combined new and
 existing EPS/correction/recommendation/gate regressions and check pass.
 This pure adapter still requires G/P/O wiring and live verification.
+## Stream S: Tasks 39-40 reference alignment, published WIP
+
+S prepared the How it works follow-up on actual main `6418151`. Four-case
+copy and the sequence now describe W's wrong-strength EPS and P's paper
+missing-brand example, rather than the retired date headline. The fourteenth
+FAQ explains independent prescription/supply/claim evidence. B's proposed
+scanner reconciliation separates declaration, hypothetical character-recognition
+fields/confidence, original scan and revision-bound human capture. Paper stays
+human-final; corrected EPS requires both gates before code-only release.
+
+Check and 12 focused reference units passed. The 49 prose panels have at most
+54 words, informational only. Canonical W/B imports, public citation rendering
+and actual integrated behaviour review await G's foundation integration.
+No new browser, hosted or complete Task 39-40 result is claimed. The paired
+SYSTEM-DESIGN document matches the reference text in this change.
 
 ## Current release gate: live first, exact local backup
+
+### F's assigned D/Home compatibility checkpoint
+
+Against exact coherent G `05fc421`, the Home case slice now renders actual
+unmet requirement guidance instead of B's hardcoded date fix. The eleven-step
+definitions use wrong strength at Pharmacy then NHSBSA, retain both unreadable
+paper hand-offs, and default the pharmacy-action step to paper brand case B.
+Current ready labels use the shared process argument; Follow comparisons remain
+case-specific. Navigation still changes only presentation, never source/history.
+
+`npm run check` and 231 tests across the four bounded Home/demo unit files pass.
+The exact V Home failure is repaired without removing its negative assertion.
+Two development assertions were corrected: cloned unchanged paper history
+requires deep equality, and an inactive assisted projection has its own text.
+The full two-worker run has 1,886 passes and 98 failures in 13 other-owner files;
+the standalone headline scan retains five S-owned hits, not waived.
+No browser, main deployment, live observation or backup result is claimed.
+All five registers accompany this code/test commit and branch publication.
 ## Part A release candidate: full hosted matrix green, live pending
 
 Exact source `393957c0529449750e4ef18484d55edd6fdb3e45` passed all four

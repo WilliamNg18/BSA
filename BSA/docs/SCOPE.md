@@ -4,6 +4,11 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+G `e954aa1` closes the active-source headline migration dependency: V
+independently ran W's unchanged checker with zero findings. Root check/verify
+wiring may now be activated without a source waiver; live completion remains
+separate.
+
 Pharmacy-response migration retains nine checks; its obsolete seeded-manual
 case is now an explicit historical-referral/ready-paper check. C/F background,
 approval provenance, original attempts and Off-return history remain covered.
@@ -83,6 +88,22 @@ at `2026-09-15T18:59:23.9424369Z`; #94's green CI does not establish these
 new contracts. Final completion requires Tasks 25-40 on main, green deployment,
 actual current-live acceptance and the assigned exact-backup evidence.
 
+## Temporary F ownership: Home and eleven-step case compatibility
+
+The coordinator assigned F the Home case-only slice, `step-layouts.tsx` case
+projections/current-label callers, presentation definitions in `demo-steps.ts`
+and directly related demo/Home units. G/N/S/V were notified before edits;
+N chapter 1/2 arithmetic, S design, header layout, shared store/types/seeds,
+source authority and D backup/workflows remain outside this change.
+
+The published repair retains eleven steps, all four IDs, actual Send/referral/
+ACK/re-check actions and complete history/navigation-purity assertions.
+Home shows current unmet requirements; steps 4/5 use one wrong-strength item
+on its two sides; step 9 uses paper B unless a real operator-step referral is
+being followed. Check and 231 bounded units pass. Shared migration failures,
+S headline integration, green deployment and observed live acceptance remain
+open; this checkpoint is not Task 39/40 completion.
+
 B's bounded contract/test handoff is ready: 111 selected tests and typecheck
 pass; check passed on the same canonical runtime before the test-only additions.
 The current store matrix has 27 cases, including C8's real historical authority
@@ -118,6 +139,10 @@ F and O explicitly supplied bounded consumer/test handoffs, with O identifying
 the prerequisite U scanner commits. P imports those unchanged for coherent
 staging; their ownership and final acceptance remain separate. The only new P
 compatibility assertion follows the actual as-submitted Type 1 evidence block.
+
+Current pharmacy readiness labels now consume F/G's canonical ItemProcess;
+old receipt status never borrows readiness from a later revision. No new
+readiness rule or operational state is introduced in the view.
 
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
@@ -251,6 +276,11 @@ is green and the actual live URL serves and demonstrates that commit.
 
 ### G39/40 explicit-action checkpoint
 
+The activation candidate now includes bounded owner-authored consumer wiring,
+not a second store or transitional product. Original historical fixture values
+remain in archival modules. Source headline enforcement is still pending the
+D/S updates and full integration validation; no main/live completion is claimed.
+
 Current-source linking and seeded readiness provenance are implemented:
 information responses retain the same actual submission/capture, and seeded
 ready paper supports one real operator Release after Reset. These targeted
@@ -358,6 +388,16 @@ integration validation remain required before readiness or live acceptance.
 Positive fractional expected counts must remain visibly nonzero. The shared
 mismatch formatter uses significant digits and compact scientific notation
 for tiny values, without changing model arithmetic or existing figures.
+The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
+paper case and scanner/field-only-referral boundaries. It reuses the G-approved
+isolated W/B foundation constants for the public NHSBSA quotation/link/check
+date and hypothetical/human-capture labels. Check and 1,714 units passed;
+the exact document parity and 14 FAQ topics are covered.
+
+The owner-authored foundation commits remain dependency history, not new
+S-authored domain behaviour. Actual G runtime integration, fresh exact-head
+CI and main/deployment/live observation remain pending. Do not treat WIP as
+the live product or an exact-main backup.
 
 ## 2026-09-15: Task 39 W foundation, not live completion
 
@@ -485,6 +525,19 @@ Stable active IDs remain `EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123` and
 `EX-24112`; the last becomes the paper-brand-missing example. C/F remain
 unclickable background. All source dates are correct; older incomplete-date
 examples remain only historical or Tariff-requirement regression evidence.
+## Stream S follow-up: Tasks 39-40
+
+S owns only the How it works reference, its full SYSTEM-DESIGN counterpart,
+related tests and this contemporaneous five-register status. W owns the
+canonical wrong-strength/public evidence module; B/G own scanner and submission
+authority. This published reference preparation does not implement their gates
+or change store, demo, operator or pharmacy controls.
+
+The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
+paper case and scanner/field-only-referral boundaries. Reuse of W/B constants,
+the public NHSBSA quotation/link, foundation integration, exact-head CI and
+main/deployment/live observation remain pending. Do not treat WIP as the live
+product or an exact-main backup.
 
 ## Live-first release and backup obligations
 

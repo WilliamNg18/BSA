@@ -70,7 +70,7 @@ export function PharmacyClaimsPage() {
           <p>{matching.length} items</p>
           {matching.length ? <ul className="space-y-2">{matching.map((row) => <li key={row.caseId}>
             <Button variant="link" className="h-auto p-0" onClick={() => setParams({ caseId: row.caseId })}>{row.caseId}</Button>
-            <p className="text-sm">{itemStateLabel(row, "pharmacy", agentEnabled)}</p>
+            <p className="text-sm">{itemStateLabel(row, "pharmacy", agentEnabled, processes[row.caseId])}</p>
           </li>)}</ul> : <p className="text-sm">No current items.</p>}
         </section>;
       })}
@@ -108,7 +108,7 @@ export function PharmacyClaimsPage() {
           <th scope="row" className="break-words p-3 font-medium">{row.caseId}</th>
           <td className="p-3">{row.c?.extracted.dispensingDate ?? "Not recorded"}</td>
           <td className="p-3">{row.c ? money(row.c.claim.amountClaimed) : "Not recorded"}</td>
-          <td className="p-3">{row.state === "released_to_pricing" && <span className="block">Paid on the normal schedule (synthetic)</span>}{itemStateLabel(row, "pharmacy", agentEnabled)}</td>
+          <td className="p-3">{row.state === "released_to_pricing" && <span className="block">Paid on the normal schedule (synthetic)</span>}{itemStateLabel(row, "pharmacy", agentEnabled, processes[row.caseId])}</td>
           <td className="p-3"><Button variant="outline" className="relative h-auto whitespace-normal" onClick={() => { setParams({ caseId: row.caseId }); }}>
             {row.state === "referred_back" ? "Correct and resubmit" : row.state === "information_requested" ? "Send confirmation" : "View"}
             <span className="sr-only"> {row.caseId}</span>
