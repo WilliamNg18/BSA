@@ -25,6 +25,12 @@ props and full-width insertion. This is not a fresh audit of every open branch.
 Eighteen focused units and typecheck pass. G's source facade, O's mounted view,
 coordinator-approved browser verification and observed live deployment remain gates.
 
+Follow-up source alignment: B confirmed that null means Unknown and an empty
+string means known Blank, even when both have high supplied confidence.
+U retains that distinction, adds accessible source descriptions per value and
+does not round sub-certain confidence to 100 per cent. Twenty focused units pass;
+the first source checkpoint passed check. No new runtime integration is claimed.
+
 ### Refreshed published-source snapshot after the B foundation
 
 G `6054408f5573bf975089d81e9300d66ec656a0f2` was inspected at its exact

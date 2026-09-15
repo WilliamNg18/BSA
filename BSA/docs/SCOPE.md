@@ -29,6 +29,11 @@ Type 1/case-pack insertion and G supplies the canonical source facade.
 Eighteen units and typecheck pass; actual desktop legibility, accessibility and
 observed deployed-main acceptance remain pending.
 
+U's bounded follow-up adds accessible per-value source descriptions and exact
+blank-versus-unknown confidence presentation. Twenty focused units pass;
+the first scanner checkpoint also passed check. Neither result is browser
+geometry, mounted functionality or live acceptance.
+
 The follow-up preserves unreadable raw scan/OCR evidence even when a current
 human capture supports effective reconciliation. Its result explicitly names
 that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
