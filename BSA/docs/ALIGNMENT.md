@@ -34,6 +34,20 @@ Part A now implements the new policy on its own branch, with check and
 1,699 units passing. Actual geometry, browser/axe and current-main live
 alignment remain pending; no verify clause is marked live Pass yet.
 
+Subsequent published contexts were inspected directly: W #102 at
+`4f3bc3a6356ca42c1a1613d1d717c193ab4217bc`, B at
+`81517705102152b890ef1dd03cf78b81bb7659fc`, and S #103 at
+`260b70e7c1ff602823f46ae976ae9908caef0c34` retain the old shell; their
+changes do not supply the new Part A header. Part A is published as draft #104.
+The first local browser run timed out on the aggregate 28-route Both test,
+not a failed geometry or axe assertion. Retain it as incomplete evidence.
+Per-route registration now prevents aggregate audit duration from hiding
+unexecuted routes; each keeps the normal 30-second deadline and full assertions.
+Initial #104 CI additionally caught the retired notice button in Task 13 and
+two tour-layout assumptions about the header's next sibling. Those assertions
+now use the surviving Agent control and optional Outcome height, retaining
+outside action/focus, menu and sticky-position coverage. Fresh CI is required.
+
 ## Current live-first alignment
 
 The 15 September rule makes live the product and limits the local backup to the

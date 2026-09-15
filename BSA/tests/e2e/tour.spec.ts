@@ -47,11 +47,13 @@ for (const colorScheme of ["light", "dark"] as const) {
             expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
           }
           expect(Math.max(...centres) - Math.min(...centres)).toBeLessThanOrEqual(1);
-          expect((await rail.boundingBox())?.y).toBe(box!.height);
+          await expect(page.locator("[data-agent-outcome]")).toHaveCount(enabled ? 1 : 0);
+          const outcomeHeight = enabled ? (await page.locator("[data-agent-outcome]").boundingBox())!.height : 0;
+          expect((await rail.boundingBox())?.y).toBe(box!.height + outcomeHeight);
           for (const label of ["Pharmacy check", "Pharmacy claims", "NHSBSA queue", "Evaluation", "Boundary", "Assumptions", "Architecture", "Overview"]) await navigatePrimary(page, label);
           await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
           expect((await header.boundingBox())?.y).toBe(0);
-          expect((await rail.boundingBox())?.y).toBe(box!.height);
+          expect((await rail.boundingBox())?.y).toBe(box!.height + outcomeHeight);
           expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
         }
       });
@@ -542,9 +544,10 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             expect(b.x).toBeGreaterThanOrEqual(0);
             expect(b.x + b.width).toBeLessThanOrEqual(width);
           }
+          await expect(page.locator("[data-agent-outcome]")).toHaveCount(enabled ? 1 : 0);
           await expect.poll(async () => {
             const b = (await banner.boundingBox())!, r = (await rail.boundingBox())!;
-            const outcome = await page.locator("[data-agent-outcome]").boundingBox();
+            const outcome = enabled ? await page.locator("[data-agent-outcome]").boundingBox() : null;
             return Math.abs(b.y - h.height - (outcome?.height ?? 0)) + Math.abs(r.y - b.y - b.height);
           }).toBeLessThan(1);
           await expect(page.locator("[data-disclaimer], [data-principle]")).toHaveCount(0);

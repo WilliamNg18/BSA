@@ -26,6 +26,24 @@ calling zero violations a complete manual accessibility certification.
 Only the coordinator's port 4332 one-worker lease may run local browsers.
 No local branch build is the product or a backup.
 
+The first browser run on clean `1080ff7` established actual 16px text
+834.53125px wide, with zero centre difference in the completed geometry records,
+but it did not finish: 28 routes with two full axe audits each exceeded the
+240-second aggregate deadline in Both. The remaining run was stopped and all
+partial JSON/trace/error evidence retained. A failed automatic screenshot at
+1280px is historical diagnostic output, not an accepted capture. New tests
+explicitly disable that automatic capture at 1280px.
+Registering each ordinary route separately retains the full matrix while using
+the existing 30-second per-test bound. This is a harness repair, not a changed
+product threshold or a passing browser verdict; fresh execution is required.
+Initial CI found two missed references: the Task 13 outside-dismissal test
+clicked the deleted notice control and tour geometry assumed no intervening
+Outcome. Use a surviving actionable control and include the actual optional
+height. Playwright `boundingBox()` waits for an absent locator rather than
+immediately returning null, so Off must not call it. Playwright also requires
+the screenshot option at file scope; the new matrix disables automatic images
+there and retains deliberate 1440px captures.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response

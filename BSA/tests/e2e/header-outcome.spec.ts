@@ -7,6 +7,8 @@ import { DEMO_STEPS } from "../../src/lib/domain/demo-steps";
 const outcomeText = "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides.";
 const ordinaryRoutes = [...new Set([...agentRoutes, "/pharmacy/claims", "/missing-page"])];
 
+test.use({ screenshot: "off" });
+
 async function assertNoticePolicy(page: Page, enabled: boolean) {
   const line = page.locator("[data-agent-outcome]");
   await expect(page.locator("[data-disclaimer], #synthetic-disclaimer, [data-principle]")).toHaveCount(0);
@@ -75,19 +77,16 @@ for (const width of [1280, 1440]) {
   for (const perspective of Object.values(perspectiveNames)) {
     test.describe(`${width}px ${perspective} global Outcome`, () => {
       test.use({ viewport: { width, height: 1000 }, reducedMotion: "reduce" });
-      test("all ordinary routes, guarded views and recovery routes", async ({ page }, info) => {
-        test.setTimeout(240_000);
+      for (const route of ordinaryRoutes) test(`ordinary route ${route}`, async ({ page }, info) => {
         const measurements = [];
-        for (const route of ordinaryRoutes) {
-          await page.goto(route);
-          await page.getByRole("banner").getByRole("radio", { name: perspective, exact: true }).check();
-          await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
-          const flag = page.getByRole("banner").getByRole("switch");
-          for (const enabled of [true, false]) {
-            await flag.setChecked(enabled);
-            measurements.push({ route, enabled, geometry: await assertNoticePolicy(page, enabled) });
-            await audit(page, info, `route-${ordinaryRoutes.indexOf(route)}-${enabled}-axe`);
-          }
+        await page.goto(route);
+        await page.getByRole("banner").getByRole("radio", { name: perspective, exact: true }).check();
+        await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
+        const flag = page.getByRole("banner").getByRole("switch");
+        for (const enabled of [true, false]) {
+          await flag.setChecked(enabled);
+          measurements.push({ route, enabled, geometry: await assertNoticePolicy(page, enabled) });
+          await audit(page, info, `route-${ordinaryRoutes.indexOf(route)}-${enabled}-axe`);
         }
         await captureJson(info, "actual-content-bounds", measurements);
       });

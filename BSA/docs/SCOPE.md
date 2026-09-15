@@ -21,7 +21,15 @@ steps in three perspectives at 1280/1440. It measures actual text bounds,
 one line at 16px or larger without clipping, at most 2px centre difference,
 direct header adjacency, Off zero reserved height and real opacity fades.
 Unrestricted axe results retain incompletes explicitly. Check and 1,699 units
-pass; browser, exact-head CI, main deployment and live observation are pending.
+pass. The first browser run exceeded a 240-second aggregate route-test deadline
+in Both; its timeout and partial results remain incomplete. Each ordinary route
+now has its own normal 30-second test, retaining every original assertion and
+audit rather than raising the timeout. Browser completion, exact-head CI,
+main deployment and live observation remain pending.
+The related Task 13 outside-dismissal and tour sticky-stack regressions now
+exercise the surviving controls and optional Outcome height without dropping
+their focus, menu or pinned-layout assertions. New automatic screenshots are
+off at file scope; explicit 1440px captures remain.
 This is incomplete work, not a local alternative product or backup.
 
 ## Live-first release and backup obligations

@@ -17,7 +17,17 @@ sticky stack; Off removes it after its short opacity-only crossfade.
 Check passed; all 1,699 units in 92 files passed with one worker, including
 72 new shell/perspective/demo policy cases. An earlier unchanged CLI subprocess
 unit timed out at five seconds under two-worker contention; that failed run
-is retained, not relabelled. The browser matrix is authored but not yet run.
+is retained, not relabelled. The initial browser matrix is incomplete: its single 28-route Both test
+exceeded the aggregate 240-second test deadline after clean preceding checks.
+The run was stopped, retaining the timeout and partial evidence. This change
+registers each ordinary route separately under the normal 30-second deadline;
+all geometry, On/Off and unrestricted axe checks remain. New 1280px tests
+disable automatic screenshots; deliberate captures remain 1440px only.
+Initial #104 CI also exposed two missed compatibility assumptions: Task 13
+used the removed collapse button for outside-menu dismissal, and tour tests
+assumed the demo rail always immediately followed the header. They now use
+the real header Agent control for outside dismissal and measure the optional
+Outcome's height; an absent locator is never awaited for Off geometry.
 The coordinator granted sole local port 4332, one browser worker, no retries.
 Publication and local tests are developer evidence, not a product or backup.
 Main merge, normal green deployment and observation of the served SHA at
