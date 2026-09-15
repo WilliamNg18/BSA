@@ -57,6 +57,14 @@ Sixty-three scanner/operator/runtime tests and typecheck pass on this newer
 source. The earlier browser screenshots and audit timestamps remain pinned
 to `941933f`, not silently promoted to the new integration.
 
+The transferred two-file regression run initially failed four tests because
+active store evidence was compared with historical `CASES`, and ordinary paper
+was still expected to inherit an old automatic-pricing path. Active `caseById`
+lookup preserves the exact corrected underlying source dates while leaving
+historical records untouched. New-attempt assertions now verify immutable
+history, fresh revision and mandatory human judgement. All 43 tests pass;
+unknown fields, raw OCR confidence and no-inferred-image checks are retained.
+
 U's scoped rendering tests prove that later human capture leaves all three
 original columns identical, unknown OCR dates never acquire the declaration's
 date, and stale/source-mismatched projections produce explicit errors. The

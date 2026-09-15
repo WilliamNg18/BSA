@@ -42,6 +42,11 @@ The completed Part A header and G's later source-linked capture repairs are
 integrated; 63 targeted scanner/operator/runtime tests and typecheck pass.
 Prior `941933f` browser evidence is not relabelled as a later-head run.
 
+G's bounded test-only handoff covers two files: `paper-capture.test.ts` and
+`paper-declaration.test.ts`. Their 43 tests pass after active-source lookup and
+current all-paper human-release expectations are applied. Raw confidence,
+unknown-field, stale-revision and image-immutability checks remain intact.
+
 ## B40 bounded foundation scope, 15 September
 B's new real-store fidelity matrix covers all four currently seeded IDs and
 actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.

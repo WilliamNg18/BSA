@@ -50,6 +50,13 @@ Sixty-three targeted scanner/operator/runtime tests and typecheck pass with
 source-linked capture retained after information responses. The actual browser
 proof remains pinned to its earlier `941933f`, pending final integrated release.
 
+Explicit G handoff: the two pure paper test files previously mixed historical
+`CASES` with active `sessionCase` evidence. They now use `caseById` for active
+store assertions, without changing historical fixtures or source values.
+The ordinary-paper new-attempt test asserts preserved history, fresh revision,
+no inherited capture/release and required human judgement. Four reproduced
+failures are repaired; all 43 tests pass with no domain changes.
+
 ### U40 source-comparison implementation boundary
 
 Scoped inspection of main `6418151` found the existing landscape prescription

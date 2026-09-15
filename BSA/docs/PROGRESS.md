@@ -57,6 +57,15 @@ Later integration now includes completed Part A main `5b75e5f` and G's
 operator-fidelity and runtime selection plus typecheck pass. No browser rerun
 is claimed for this later source: the retained `941933f` proof stays immutable.
 
+G explicitly transferred only `paper-capture.test.ts` and
+`paper-declaration.test.ts` for a bounded compatibility repair. Four failures
+were reproduced: three compared active source evidence with a historical
+incomplete-date fixture, and one expected the superseded automatic paper path.
+The tests now resolve active cases through `caseById`, retain exact raw-image
+and confidence assertions, and require a new paper attempt to retain history
+without inheriting prior recheck/release authority. All 43 tests pass; no
+domain source or P-owned paper UI tests changed.
+
 U publishes `PaperScannerComparison({ submission, reconciliation })` for O's
 full-width case-pack insertion. B owns fidelity/reconciliation contracts; G
 owns immutable revision sources and the state facade. No O/P screens, store
