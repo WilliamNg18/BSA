@@ -530,3 +530,7 @@ later-audit entry and paper-ready controls. It does not alter G's source,
 gate or final-action implementations. U remains owner of the scanner renderer.
 The ordinary source comparison is full-width; compact demo-shell placement
 belongs to D and cannot be inferred from this unmounted integration checkpoint.
+The previous date-gap recommendation tests now exercise current strength and
+paper-brand cases, while invalid dates, unknown provisions and unsupported
+invoice input remain negative contracts on an existing EPS item. No test
+weakens the independent source or release guards.

@@ -1522,3 +1522,8 @@ an aggregate assembled from partial runs. Typed prescriber evidence is not
 illegible-image inference: unknown-prescriber tests explicitly submit null
 through the canonical pharmacy action and retain the source object unchanged.
 The new browser regressions are listed only; no execution result is claimed.
+The first current-seed regression run failed 22 of 47 old tests: most still
+treated paper B as EPS or expected the former date-gap preset. The migrated
+run passes all 47, preserving invalid-input, unsupported-SP receipt, original
+history and source-bound preview assertions. The original failed log remains
+a diagnostic artifact, not a passing result or release backup.

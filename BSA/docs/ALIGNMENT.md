@@ -466,3 +466,8 @@ resubmission, wrong-strength manual audit and immutable unknown-prescriber
 submissions instead of retired seed assumptions. Safe operator-preview checks
 retain exact prescribed/selected/supplied facts while forbidding pharmacy-only
 target proposals. All 66 pass; no assertion or deadline is skipped.
+R's four older owned recommendation files have now migrated: all 47 cases
+pass on the current source. W identified separate canonical G defects in
+strength trace reconciliation and proposed-rule attribution; these remain
+explicitly unaligned until repaired in the kernel and verification owner.
+Current card evidence must not substitute for those wider repairs.

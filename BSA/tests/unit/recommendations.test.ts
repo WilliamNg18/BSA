@@ -23,13 +23,13 @@ describe("shared recommendation contract", () => {
     expect(r.summary).toBe("Complete against Clause 9, Version August 2026; nothing to add.");
   });
 
-  it("previews and applies the actual dispensing date through exactly one helper", () => {
-    const id = "EX-24112", revision = store().caseRevisions[id][0], current = sessionCase(id)!;
+  it("previews and applies the actual selected pack through exactly one helper", () => {
+    const id = "SYN-FQ123-MISMATCH", revision = store().caseRevisions[id].at(-1)!, current = sessionCase(id)!;
     store().setAgentEnabled(true);
     store().setPharmacyDraft(id, { ...initialisePharmacyDraft(current, revision), purpose: "new_submission" });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
-    expect(r.suggestions[0]).toMatchObject({ field: "dated", value: "21/08/2026" });
-    expect(r.preview?.endorsementText).toBe("NCSO RK 21/08/26");
+    expect(r.suggestions[0]).toMatchObject({ field: "selected_pack_matches", value: "Amlodipine 10mg tablets, 28" });
+    expect(r.preview?.epsPrescription?.dispensingDate).toBe(revision.epsPrescription?.dispensingDate);
     expect(r.preview).toEqual(suggestedPharmacyCorrection(current, revision, store().pharmacyDrafts[id]));
     const attempts = store().caseRevisions[id];
     store().applySuggestedCorrection(id);
@@ -40,7 +40,7 @@ describe("shared recommendation contract", () => {
   it("wrong pack is not complete and proposes the actual registered pack", () => {
     const r = deriveRecommendation(store(), "SYN-FQ123-MISMATCH");
     expect(r.outcome).not.toBe("COMPLETE");
-    expect(r.suggestions).toContainEqual(expect.objectContaining({ field: "pack_size", value: 21 }));
+    expect(r.suggestions).toContainEqual(expect.objectContaining({ field: "selected_pack_matches", value: "Amlodipine 10mg tablets, 28" }));
   });
 
   it("paper declaration complete is distinct from unverified received paper", () => {
@@ -59,8 +59,8 @@ describe("shared recommendation contract", () => {
   });
 
   it("recorded attempts cannot borrow a later correction or a live draft", () => {
-    const id = "EX-24112", before = deriveRecommendation(store(), id, { kind: "recorded", revision: 1 });
-    store().submitFromPharmacy(id, "NCSO RK 21/08/26");
+    const id = "EX-24107", before = deriveRecommendation(store(), id, { kind: "recorded", revision: 1 });
+    store().submitFromPharmacy(id, "NCSO JB 14/08/26");
     expect(deriveRecommendation(store(), id, { kind: "recorded", revision: 1 })).toEqual(before);
     expect(deriveRecommendation(store(), id).outcome).toBe("COMPLETE");
     expect(() => deriveRecommendation(store(), id, { kind: "recorded", revision: 100 })).toThrow("unavailable");
@@ -97,7 +97,7 @@ describe("shared recommendation contract", () => {
   });
 
   it("edited draft date resolves its own provision, requirements and kernel input", () => {
-    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    const id = "EX-24107", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, purpose: "new_submission",
       epsPrescription: { ...draft.epsPrescription!, dispensingDate: "2026-07-21", prescriptionDate: "2026-07-21" } });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
@@ -107,7 +107,7 @@ describe("shared recommendation contract", () => {
   });
 
   it("an unavailable dispensing-date provision is an explicit gap, never a fabricated clause", () => {
-    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    const id = "EX-24107", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!, dispensingDate: "2027-01-21" } });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
     expect(r).toMatchObject({ clause: null, version: null, outcome: "ABSTAIN", preview: null });
@@ -116,7 +116,7 @@ describe("shared recommendation contract", () => {
   });
 
   it.each(["", "2026-02-30"])("invalid draft dispensing date %s shows an explicit diagnostic rather than stale success", (date) => {
-    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    const id = "EX-24107", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!, dispensingDate: date } });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
     expect(r).toMatchObject({ outcome: "ABSTAIN", operatorApplyAllowed: false, preview: null, kernelGate: "NOT_RUN" });
@@ -125,7 +125,7 @@ describe("shared recommendation contract", () => {
   });
 
   it("an invalid EPS quantity remains an unvalidated draft, not a page crash", () => {
-    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    const id = "EX-24107", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!, items: [{ ...draft.epsPrescription!.items[0], quantity: -1 }] } });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
     expect(r).toMatchObject({ outcome: "ABSTAIN", operatorApplyAllowed: false, preview: null, provenance: "Unvalidated human draft" });
@@ -141,8 +141,8 @@ describe("shared recommendation contract", () => {
     expect(draft.endorsementText).not.toContain("£");
   });
 
-  it("existing B accepts an unsupported SP draft for manual invoice guidance without widening kernel coverage", () => {
-    const id = "EX-24112", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+  it("an existing EPS item accepts an unsupported SP draft for manual invoice guidance without widening kernel coverage", () => {
+    const id = "EX-24107", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
     store().setPharmacyDraft(id, { ...draft, endorsementText: "SP RK",
       epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "SP RK" } });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
@@ -162,19 +162,18 @@ describe("shared recommendation contract", () => {
     }
   });
 
-  it("supply corrections expose manufacturer, listed pack and dispensed form from the same patch", () => {
-    const id = "SYN-FQ123-MISMATCH", revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
-    store().setPharmacyDraft(id, { ...draft, epsPrescription: { ...draft.epsPrescription!,
-      supplyEvidence: { ...draft.epsPrescription!.supplyEvidence!, brandManufacturer: "", packSize: null, form: "" } } });
+  it("paper correction exposes its recorded manufacturer and retains unchanged pack and form", () => {
+    const id = "EX-24112", revision = store().caseRevisions[id].at(-1)!, draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, paperDeclaration: { ...draft.paperDeclaration!, brandManufacturer: "" } });
     const r = deriveRecommendation(store(), id, { kind: "draft" });
     expect(r.suggestions.map((entry) => [entry.field, entry.value])).toEqual([
-      ["brand_manufacturer", "Demo manufacturer (synthetic)"], ["pack_size", 21], ["presentation", "capsules"],
+      ["brand_manufacturer", "Demo manufacturer (synthetic)"],
     ]);
-    expect(r.preview?.epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
-    expect(r.preview?.appliedFields).toEqual(["brandManufacturer", "packSize", "form"]);
+    expect(r.preview?.paperDeclaration).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
+    expect(r.preview?.appliedFields).toEqual(["brandManufacturer"]);
     store().setAgentEnabled(true);
     store().applySuggestedCorrection(id);
-    expect(store().pharmacyDrafts[id].appliedFields).toEqual(["brandManufacturer", "packSize", "form"]);
+    expect(store().pharmacyDrafts[id].appliedFields).toEqual(["brandManufacturer"]);
     store().setPharmacyDraft(id, { ...store().pharmacyDrafts[id], endorsementText: "" });
     expect(store().pharmacyDrafts[id].appliedFields).toBeUndefined();
   });
