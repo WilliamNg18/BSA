@@ -95,7 +95,12 @@ it("renders the new acknowledged pharmacy amendment while preserving the earlier
     paperDeclaration: { ...draft.paperDeclaration!, brandManufacturer: template.pharmacySupplyRecord!.brandManufacturer } });
   store().setCorrectionAcknowledgement(B, revision.number, true);
   store().resubmit(B);
-  expect(render(B)).toContain("Explicit pharmacy amendment (synthetic)");
+  const amendedHtml = render(B);
+  expect(amendedHtml).toContain("Explicit pharmacy amendment (synthetic)");
+  const scanColumn = rawColumns(amendedHtml)[1];
+  expect(scanColumn).toContain(template.pharmacySupplyRecord!.brandManufacturer);
+  expect(scanColumn).toContain(`Pack size ${template.pharmacySupplyRecord!.packSize}`);
+  expect(scanColumn).toContain(template.pharmacySupplyRecord!.form);
   expect(comparison(B).submission.asSubmitted.number).toBeGreaterThan(before.submission.asSubmitted.number);
   expect(before).toEqual(retained);
   expect(store().itemVerification[B].released).toBe(false);
