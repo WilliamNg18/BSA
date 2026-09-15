@@ -1,5 +1,5 @@
 import { captureCheckpoint, confirmReset, expect, test } from "./fixtures";
-import { cases, referMissingDate, selectEpsScenario, startDemonstrationReview } from "./operator-action-helpers";
+import { cases, operatorAction, operatorDecision, operatorRadio, performDecision, referMissingDate, selectEpsScenario, startDemonstrationReview } from "./operator-action-helpers";
 
 for (const caseId of ["EX-24112"]) {
 test(`${caseId} trace replay announces one step at a time, Show all and Clear work`, async ({ page }, testInfo) => {
@@ -38,6 +38,8 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(field).toBeFocused();
   await expect(field).toHaveValue("NCSO RK 21/08/26");
   await expect(status).toHaveText("Ready");
+  await expect(page.getByRole("status").filter({ hasText: "Highlighted; not sent." })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "pharmacy-after-date");
   await field.fill("NCSO  RK");
   await expect(status).toHaveText("Information missing");
@@ -48,6 +50,7 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(page.getByRole("radio", { name: "EPS", exact: true })).toBeChecked();
   await page.getByRole("radio", { name: "Paper", exact: true }).click();
   await expect(page.getByRole("radio", { name: "Paper", exact: true })).toBeChecked();
+  await expect(page).toHaveURL(/case=EX-24123&channel=paper$/);
   const paper = page.getByRole("region", { name: "Paper pharmacy submission", exact: true });
   await expect(paper).toHaveAttribute("data-pharmacy-case", "EX-24123");
   await expect(paper.getByRole("textbox", { name: "Declared endorsement", exact: true })).toHaveValue("NCSO JB 27/08/26");
@@ -57,6 +60,8 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await expect(status).toContainText(/date/i);
   await expect(status).not.toHaveText("Ready");
   await expect(page.getByRole("button", { name: "Post paper with declaration", exact: true })).toBeEnabled();
+  await expect(paper).toContainText("declared by the pharmacy, not read from the form");
+  await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
   const submit = page.getByRole("button", { name: "Send claim" });
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await page.getByRole("button", { name: "Post paper", exact: true }).click();
@@ -65,9 +70,11 @@ test("pharmacy is advisory for missing, corrected, complete, unreadable and head
   await page.getByRole("banner").getByRole("switch").setChecked(false);
   await expect(status).toHaveCount(0);
   await field.fill("NCSO RK");
+  await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);
   await expect(submit).toBeEnabled();
   await submit.click();
   await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("EX-24112:2");
+  await expect(page.getByRole("region", { name: "Submission receipt", exact: true })).toContainText("Human review pending.");
 });
 
 test("override requires eight trimmed characters then writes and preserves a human record", async ({ page }, testInfo) => {
@@ -76,18 +83,18 @@ test("override requires eight trimmed characters then writes and preserves a hum
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Missing or insufficient information");
   await captureCheckpoint(page, testInfo, "b-pack");
-  await page.getByRole("radio", { name: /^Escalate / }).click();
+  await operatorRadio(page, "ESCALATE").click();
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
   await expect(reason).toHaveAttribute("aria-required", "true");
   for (const value of ["", "1234567", "   1234567   "]) {
     await reason.fill(value);
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await operatorAction(page, "ESCALATE").click();
     await expect(page).toHaveURL(/\/case\/EX-24112$/);
-    await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters is required for this decision." })).toBeVisible();
+    await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
     if (value === "") await captureCheckpoint(page, testInfo, "b-rejected-empty-reason");
   }
   await reason.fill("12345678");
-  await page.getByRole("button", { name: "Record decision", exact: true }).click();
+  await performDecision(page, "ESCALATE");
   await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await expect(page.getByText("Yes. Reason: 12345678", { exact: true })).toBeVisible();
@@ -95,14 +102,14 @@ test("override requires eight trimmed characters then writes and preserves a hum
   await captureCheckpoint(page, testInfo, "b-escalation-override-record");
   await page.getByRole("navigation", { name: "Case views" }).getByRole("link", { name: "Operator case pack", exact: true }).click();
   await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Awaiting senior review");
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeEnabled();
+  await expect(operatorAction(page, "ESCALATE")).toBeEnabled();
 });
 
 test("recommended B decision replays under July; flag off applies to replay; Reset restores seed", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await expect(page.getByRole("radio", { name: /^Refer back \(as recommended\)/ })).toBeChecked();
+  await expect(operatorDecision(page).getByRole("radio", { checked: true })).toHaveCount(0);
   await referMissingDate(page, true);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   await captureCheckpoint(page, testInfo, "b-recommended-decision-record");
@@ -123,12 +130,12 @@ test("recommended B decision replays under July; flag off applies to replay; Res
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Open the case pack", exact: true }).click();
   await startDemonstrationReview(page);
-  await expect(page.getByRole("button", { name: "Record decision", exact: true })).toBeVisible();
+  await expect(operatorAction(page, "REFER_BACK")).toBeVisible();
   await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-  const background = page.locator("tr[data-background-case]");
+  const background = page.getByRole("table", { name: "Pharmacy claims", exact: true }).locator("tr[data-background-case]");
   await expect(background).toHaveCount(2);
   for (const id of ["EX-24119", "EX-24088"]) {
-    const row = background.filter({ hasText: id });
+    const row = background.filter({ has: page.getByRole("rowheader", { name: id, exact: true }) });
     await expect(row).toBeVisible();
     await expect(row).toContainText(/not playable/i);
     await expect(row.getByRole("link")).toHaveCount(0);
@@ -228,8 +235,15 @@ test("wrong-but-complete EPS retains conflicting source facts without creating a
   await expect(source.getByRole("heading", { name: "EPS claim message", exact: true })).toBeVisible();
   await expect(source.locator("figure")).toHaveCount(0);
   await expect(source).toContainText("SYN-AMOX500-GENERIC-21");
+  const claim = page.getByRole("region", { name: "Recorded dispenser claim", exact: true });
+  await expect(claim.locator("dl > div").filter({ has: page.getByText("Pack size dispensed", { exact: true }) }).getByRole("definition")).toHaveText("28");
+  const prescribed = page.getByRole("region", { name: "Submitted electronic prescription, synthetic: prescribed item 1", exact: true });
+  await expect(prescribed.locator("dl > div").filter({ has: page.getByText("Quantity", { exact: true }) }).getByRole("definition")).toHaveText("21");
   await page.getByRole("banner").getByRole("switch").setChecked(true);
   await expect(source).toContainText("SYN-AMOX500-GENERIC-21");
+  await expect(claim.locator("dl > div").filter({ has: page.getByText("Pack size dispensed", { exact: true }) }).getByRole("definition")).toHaveText("28");
+  await expect(prescribed.locator("dl > div").filter({ has: page.getByText("Quantity", { exact: true }) }).getByRole("definition")).toHaveText("21");
+  await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
   await expect(source.locator("figure")).toHaveCount(0);
   await page.getByRole("navigation", { name: "Case views", exact: true }).getByRole("link", { name: "Decision and audit record", exact: true }).click();
   await expect(page.getByText("No human decision recorded yet", { exact: true })).toBeVisible();

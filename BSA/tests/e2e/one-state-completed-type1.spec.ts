@@ -1,7 +1,9 @@
 import { expect, navigatePrimary, test } from "./fixtures";
-import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
-import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS } from "./paper-declaration-helpers";
+import { expectHumanRelease, readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
+import { DECLARATION_RECONCILIATION, PAPER_D_CAPTURE_FIELDS, openQueueCapture } from "./paper-declaration-helpers";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { operatorRadio, performDecision } from "./operator-action-helpers";
+import { assertInlineDecisionRecorded } from "./perspective-helpers";
 
 const D = "EX-24123";
 
@@ -24,7 +26,10 @@ for (const enabled of [false, true]) {
       expect(submitted.lifecycles[D].state).toBe("submitted");
       expect(submitted.records).toEqual(initial.records);
       expect(submitted.caseRevisions[D].slice(0, initial.caseRevisions[D].length)).toEqual(initial.caseRevisions[D]);
-      await action("Open actual Type 1 capture", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+      await action("Open actual Type 1 capture", "NHSBSA", async () => {
+        await navigatePrimary(page, "NHSBSA queue");
+        await openQueueCapture(page, D);
+      });
       const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
       for (const [name, value] of Object.entries(PAPER_D_CAPTURE_FIELDS)) {
         await action(`Supply or verify the actual captured ${name}`, "NHSBSA", async () => {
@@ -60,29 +65,37 @@ for (const enabled of [false, true]) {
       });
       expect(await readDomainState(page)).toEqual(confirmed);
       await action("Choose sufficient after complete human-supplied evidence", "NHSBSA", async () => {
-        await page.getByRole("radio", { name: enabled ? /^Accept the recommendation/ : /^Sufficient \(human choice\)/ }).check();
+        await operatorRadio(page, "ACCEPT").check();
         await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human checked the captured product, quantity, endorsement and prescriber.");
       });
+      const beforeRelease = await readDomainState(page);
+      expect(beforeRelease.operatorDrafts[D]).toMatchObject({
+        revision: submitted.caseRevisions[D].at(-1)!.number, outcome: "ACCEPT", appliedSuggestion: false,
+        note: "Human checked the captured product, quantity, endorsement and prescriber.",
+      });
+      expect(beforeRelease).toEqual({
+        ...confirmed, operatorDrafts: { ...confirmed.operatorDrafts, [D]: beforeRelease.operatorDrafts[D] },
+      });
       const decided = await action("Record the actual human decision before existing pricing", "NHSBSA", async () => {
-        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await performDecision(page, "ACCEPT", { releaseVerified: enabled });
         await expect(page).toHaveURL(/\/case\/EX-24123\/record$/);
       });
-      expect(decided.lifecycles[D].state).toBe("paid");
+      expectHumanRelease(beforeRelease, decided, D);
+      expect(decided.lifecycles[D].state).toBe("released_to_pricing");
       expect(decided.records).toHaveLength(initial.records.length + 1);
       expect(decided.records.at(-1)).toMatchObject({ caseId: D, decision: "ACCEPT", revision: submitted.caseRevisions[D].at(-1)!.number });
       expect(decided.itemProcesses[D].capture).toEqual(confirmed.itemProcesses[D].capture);
       expect(decided.lifecycles[D].history.slice(0, confirmed.lifecycles[D].history.length)).toEqual(confirmed.lifecycles[D].history);
       expect(decided.lifecycles[D].history.slice(confirmed.lifecycles[D].history.length)).toEqual([
-        expect.objectContaining({ actor: "operator", processStep: "type2_judgement" }),
-        expect.objectContaining({ actor: "code", processStep: "existing_pricing" }),
+        expect.objectContaining({ actor: "operator", processStep: "release_to_pricing", releaseOrigin: "human_decision" }),
       ]);
       for (const key of ["caseRevisions", "lifecycles", "itemProcesses", "itemVerification", "operatorDrafts", "pharmacyDrafts", "caseStates"] as const) {
         for (const id of Object.keys(initial[key])) {
           if (id !== D) expect(decided[key][id], `${key}: unrelated ${id} stays exact`).toEqual(initial[key][id]);
         }
       }
-      await action("Dismiss the human decision notification", "NHSBSA", async () => {
-        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      await action("Read the actual human decision and verify no stale notification", "NHSBSA", async () => {
+        await assertInlineDecisionRecorded(page, "ACCEPT");
       });
       await action("Read the human-decided item without claiming automatic-only work", "NHSBSA", async () => {
         await navigatePrimary(page, "NHSBSA queue");

@@ -5,6 +5,7 @@ import { captureJson, expect, staticRoutes, test as base } from "./fixtures";
 import { PROCESS_MONTH_DEFAULTS } from "../../src/lib/domain/baseline";
 import { TOUR_STOPS } from "../../src/lib/tour-navigation";
 import { prepareDecisionRecord } from "./lifecycle-helpers";
+import { openQueueCapture } from "./paper-declaration-helpers";
 
 const hosting = JSON.parse(readFileSync(new URL("../../../hosting.config.json", import.meta.url), "utf8")) as {
   globalHeaders: Record<string, string>;
@@ -180,17 +181,19 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
     test("capture timing has keyboard-controlled steps without confirming an item", async ({ page }, info) => {
       await page.goto("queue");
       await page.getByRole("banner").getByRole("switch").setChecked(true);
-      const capture = page.getByRole("region", { name: "Type 1 capture for EX-24123", exact: true });
+      const capture = await openQueueCapture(page);
       const product = capture.getByRole("textbox", { name: "Product code", exact: true });
       const originalProduct = await product.inputValue();
+      const timing = capture.getByText("Timing assumptions and routing", { exact: true });
+      await timing.press("Enter");
       const clock = capture.getByRole("status", { name: "Assumed confirmation time", exact: true });
-      await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds`);
+      await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds (estimate)`);
       await capture.getByRole("button", { name: "Restart timing illustration", exact: true }).press("Enter");
-      await expect(clock).toHaveText("0 seconds");
+      await expect(clock).toHaveText("0 seconds (estimate)");
       await capture.getByRole("button", { name: "Next timing step", exact: true }).press("Enter");
-      await expect(clock).toHaveText(`${(PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds / 2).toLocaleString("en-GB")} seconds`);
+      await expect(clock).toHaveText(`${(PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds / 2).toLocaleString("en-GB")} seconds (estimate)`);
       await capture.getByRole("button", { name: "Next timing step", exact: true }).press("Enter");
-      await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds`);
+      await expect(clock).toHaveText(`${PROCESS_MONTH_DEFAULTS.type1ConfirmSeconds.toLocaleString("en-GB")} seconds (estimate)`);
       await expect(product).toHaveValue(originalProduct);
       await expect(capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true })).not.toBeChecked();
       await expect(capture.getByRole("button", { name: "Confirm capture and continue to Type 2", exact: true })).toBeVisible();

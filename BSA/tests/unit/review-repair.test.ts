@@ -87,15 +87,13 @@ it.each(["NCSO JB 27/08/26", "NCSO JB", "BB JB"])("keeps received declaration ad
   declare(endorsement);
   const before = getDomainSnapshot();
   const html = capture();
-  const checkStart = html.indexOf('<div class="space-y-2 rounded-md border p-3 text-sm">');
-  expect(checkStart).toBeGreaterThan(0);
-  const check = html.slice(checkStart, html.indexOf("</div>", checkStart));
+  const check = section(html, 'aria-label="Original pharmacy declaration"');
   const narrative = paragraphs(check).filter((p) => !p.startsWith("Declared dispensing-month Tariff:"));
   expect(words(narrative.join(" "))).toBeLessThan(25);
   const label = text(html.match(/<label class="flex items-start gap-2 text-sm">([\s\S]*?)<\/label>/)![1]);
-  const explanation = paragraphs(html).find((p) => p.startsWith("Attestation,"))!;
+  const explanation = text(html.match(/<span class="text-xs text-muted-foreground">(Attestation,[\s\S]*?)<\/span>/)![1]);
   expect(words(`${label} ${explanation}`)).toBeLessThan(25);
-  expect(explanation).toContain("not proven image agreement");
+  expect(explanation).toContain("not image agreement");
   const footer = paragraphs(html).filter((p) => p.startsWith("Code routes"));
   expect(words(footer.join(" "))).toBeLessThan(25);
   expect(footer.join(" ")).toContain("a person decides");
@@ -154,9 +152,10 @@ it.each([
   store.arriveInQueue(id);
   store.setAgentEnabled(enabled);
   const html = expectOperatorProse(render(CasePackPage, `/case/${id}`));
-  for (const choice of ["Request information", "Refer back", "Escalate", "Reason (required)", "Record decision"]) expect(html).toContain(choice);
-  expect(html).toContain("No payment approval");
-  if (enabled) expect(html).toContain("Draft approval is optional");
+  for (const choice of ["Request information", "Refer back", "Escalate", "Reason (required)", "Release to pricing"]) expect(html).toContain(choice);
+  expect(html).not.toContain(">Record decision<");
+  if (enabled) expect(html).toContain(">Apply suggestion<");
+  else expect(html).toContain("experience only");
 });
 
 it("uses readable outcome labels and conditional manual EPS risk without prechecking Off", () => {

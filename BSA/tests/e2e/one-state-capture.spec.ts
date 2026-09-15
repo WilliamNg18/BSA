@@ -3,6 +3,8 @@ import type { Locator } from "@playwright/test";
 import { captureJson, expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence, type DomainAction, type DomainSnapshot } from "./one-state-helpers";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { openQueueCapture } from "./paper-declaration-helpers";
+import { operatorActionButtons, operatorAction, operatorRadio } from "./operator-action-helpers";
 
 const D = "EX-24123";
 const declaration = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26", prescriber: "Dr Demo (synthetic)" };
@@ -80,6 +82,7 @@ for (const enabled of [false, true]) {
         }
         await action("Open the actual capture lane", "NHSBSA", async () => {
           await navigatePrimary(page, "NHSBSA queue");
+          await openQueueCapture(page, D);
         });
         const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
         await expect(capture).toBeVisible();
@@ -93,7 +96,7 @@ for (const enabled of [false, true]) {
         }
         await expect(reconciled).toHaveCount(assisted ? 1 : 0);
         if (assisted) await expect(reconciled).not.toBeChecked();
-        await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+        await expect(operatorActionButtons(page)).toHaveCount(0);
 
         if (scenario === "reset draft" || scenario === "manual mode") {
           await fillCapture(action, capture, { productCode: "UNSAVED-SYNTHETIC" });
@@ -129,6 +132,7 @@ for (const enabled of [false, true]) {
               expect(await readDomainState(page), "Opening the modal cannot mutate domain state").toEqual(before);
               await page.getByRole("alertdialog", { name: "Reset demonstration?", exact: true })
                 .getByRole("button", { name: "Reset demonstration", exact: true }).click();
+              await openQueueCapture(page, D);
             });
             await expect(page.getByRole("banner").getByRole("switch")).not.toBeChecked();
             for (const label of Object.values(labels)) await expect(capture.getByRole("textbox", { name: label, exact: true })).toHaveValue("");
@@ -210,9 +214,10 @@ for (const enabled of [false, true]) {
           await expect(page.getByRole("alert")).toContainText("The agent abstained");
           await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();
           await expect(page.getByRole("alert").getByText("Missing prescriber.", { exact: true })).toBeVisible();
-          await expect(page.getByRole("radio", { name: /^Sufficient \(human choice\)/ })).toBeDisabled();
-          await expect(page.getByRole("radio", { name: /^Amend / })).toBeDisabled();
-          await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+          await expect(operatorAction(page, "ACCEPT")).toBeDisabled();
+          await expect(operatorRadio(page, "ACCEPT")).not.toBeChecked();
+          await expect(page.getByRole("region", { name: "Release record", exact: true })).toHaveCount(0);
+          expect((await readDomainState(page)).records).toEqual(confirmed.records);
         } else if (enabled && (corrected || scenario === "fresh unknown")) {
           await expect(page.getByRole("alert").filter({ hasText: "The agent abstained" })).toBeVisible();
           await expect(page.getByText("NOT RUN", { exact: true })).toBeVisible();

@@ -48,7 +48,7 @@ export async function assertHeaderAgent(page: Page, route: string, perspective: 
     } else if (route === "/#month") {
       await expectProcessMetrics(page, PROCESS_MONTH_DEFAULTS, enabled);
     } else if (route.startsWith("/case/")) {
-      const automaticRecord = route === "/case/EX-24107/trace";
+      const automaticRecord = ["/case/EX-24107/trace", "/case/EX-24107/record"].includes(route);
       await expect(page.getByRole("region", { name: "Assisted fields not recorded", exact: true })).toHaveCount(enabled || automaticRecord ? 0 : 1);
       if (automaticRecord) {
         await expect(page.getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);

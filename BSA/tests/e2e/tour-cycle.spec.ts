@@ -2,7 +2,8 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, navigatePrimary, test } from "./fixtures";
 import { LIFECYCLE_LABELS } from "../../src/lib/domain/lifecycle";
 import { PLAYABLE_CASES } from "../../src/lib/domain/cases";
-import { dismissDecisionNotification, openHistory } from "./perspective-helpers";
+import { assertInlineDecisionRecorded, openHistory } from "./perspective-helpers";
+import { humanReleaseLabel, operatorActionButtons, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 const stops = [
   { chapter: 1, label: "Real process", path: "/#scene" },
@@ -104,13 +105,18 @@ for (const enabled of [false, true]) {
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.submitted.pharmacy);
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
-    await page.getByRole("radio", { name: /^Refer back / }).check();
+    await operatorRadio(page, "REFER_BACK").check();
     await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-    if (enabled) await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Please add the dispensing date beside the initials");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    if (enabled) {
+      await expect(operatorDecision(page).locator("[data-suggestion-applied]")).toHaveCount(0);
+      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+      await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.in_review.nhsbsa.on);
+    }
+    await performDecision(page, "REFER_BACK");
     await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
-    await dismissDecisionNotification(page);
+    await assertInlineDecisionRecorded(page, "REFER_BACK");
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
     await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.referred_back.pharmacy);
     if (enabled) {
@@ -135,40 +141,41 @@ for (const enabled of [false, true]) {
     expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(priorRecords);
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await page.getByRole("button", { name: "Start review", exact: true }).click();
-    if (enabled) await expect(page.getByText("Sufficient: release to pricing once confirmed", { exact: true })).toBeVisible();
-    await page.getByRole("radio", { name: enabled ? /^Accept the recommendation \(as recommended\)/ : /^Sufficient \(human choice\)/ }).check();
+    if (enabled) await expect(operatorDecision(page).getByRole("region", { name: "Recommendation", exact: true }).getByText("Sufficient recommended", { exact: true })).toBeVisible();
+    await operatorRadio(page, "ACCEPT").check();
     await page.getByRole("textbox", { name: /^Reason/ }).fill("Human recheck confirms the corrected dispensing date");
-    await page.getByRole("button", { name: "Record decision", exact: true }).click();
+    await performDecision(page, "ACCEPT", { releaseVerified: enabled });
     await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
-    await dismissDecisionNotification(page);
+    await assertInlineDecisionRecorded(page, "ACCEPT");
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+    await expect(recorded.getByRole("status")).toHaveText(humanReleaseLabel(enabled, "pharmacy"));
     await openHistory(page);
     expect((await events.allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
-    await expect(events.nth(-2)).toContainText("Human decision recorded (synthetic).");
-    await expect(events.nth(-2).locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("operator");
-    await expect(events.last()).toContainText("Priced by NHSBSA's existing rules engine after human judgement");
-    await expect(events.last().locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("code");
-    await expect(page.getByRole("region", { name: "Existing pricing outcome", exact: true })).not.toContainText("no person involved");
+    await expect(events.filter({ hasText: "Human decision recorded (synthetic)." })).toHaveCount(1);
+    await expect(events.filter({ hasText: "Human decision recorded (synthetic)." })).toContainText("operator");
+    await expect(events.last()).toContainText("Human review complete; released to existing pricing. No payment calculated.");
+    await expect(events.last().locator("dl > div").filter({ has: page.getByText("Time / actor", { exact: true }) })).toContainText("operator");
+    await expect(recorded.getByRole("status")).not.toContainText("no operator action");
+    await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Paid on the normal schedule (synthetic).");
     const acceptedRecords = (await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text));
     expect(acceptedRecords.slice(0, priorRecords.length)).toEqual(priorRecords);
     expect(acceptedRecords).toHaveLength(priorRecords.length + 1);
     for (const mode of [!enabled, enabled]) {
       await page.getByRole("banner").getByRole("switch").setChecked(mode);
-      await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+      await expect(recorded.getByRole("status")).toHaveText(humanReleaseLabel(enabled, "pharmacy"));
       expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(acceptedRecords);
     }
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true })).toHaveCount(0);
+    await expect(operatorActionButtons(page)).toHaveCount(0);
+    await expect(operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
-    await expect(recorded.getByRole("status")).toHaveText(LIFECYCLE_LABELS.paid.pharmacy);
+    await expect(recorded.getByRole("status")).toHaveText(humanReleaseLabel(enabled, "pharmacy"));
     await openHistory(page);
     expect((await events.allTextContents()).slice(0, priorHistory.length)).toEqual(priorHistory);
     expect((await recordFields.allTextContents()).filter((text) => /DR-\d+/.test(text))).toEqual(acceptedRecords);
-    await expect(recorded).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
-    await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(LIFECYCLE_LABELS.paid.pharmacy);
+    await expect(recorded).toContainText(humanReleaseLabel(enabled, "pharmacy"));
+    await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText(humanReleaseLabel(enabled, "pharmacy"));
   });
 
   test(`submission receipts distinguish complete B from wrong-pack review: agent ${enabled}`, async ({ page }) => {
@@ -215,7 +222,7 @@ for (const enabled of [false, true]) {
     }
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(operatorActionButtons(page)).toHaveCount(0);
 
     await navigatePrimary(page, "Pharmacy check");
     const mismatch = page.getByRole("radio", { name: "Wrong pack size", exact: true });
@@ -247,7 +254,7 @@ for (const enabled of [false, true]) {
     await recorded.getByRole("link", { name: "View NHSBSA case", exact: true }).click();
     await expect(page).toHaveURL(/\/case\/SYN-FQ123-MISMATCH$/);
     await expect(page.getByRole("button", { name: "Start review", exact: true })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+    await expect(operatorActionButtons(page)).toHaveCount(0);
   });
 }
 

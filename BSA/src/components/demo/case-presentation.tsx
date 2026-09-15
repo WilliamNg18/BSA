@@ -120,10 +120,10 @@ export function OriginalPaperDeclaration({ declaration }: { declaration: PaperDe
   </PageSection>;
 }
 
-export function RawCaseFields({ c, contextLabel }: { c: ExceptionCase; contextLabel?: string }) {
+export function RawCaseFields({ c, compact = false, contextLabel }: { c: ExceptionCase; compact?: boolean; contextLabel?: string }) {
   const templateCaseId = useAppStore((s) => s.caseRevisions[c.id]?.at(-1)?.templateCaseId);
   const original = paperImageEvidence(c, templateCaseId).extracted;
-  return <div className="grid gap-4 grid-cols-2" data-manual-pack>
+  return <div className={`grid gap-4 ${compact ? "grid-cols-1" : "grid-cols-2"}`} data-manual-pack>
     <CaseSourceEvidence c={c} contextLabel={contextLabel} />
     <PageSection title="Original machine-captured fields">
       <dl className="grid gap-2">

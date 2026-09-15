@@ -1,6 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureJson, expect, test } from "./fixtures";
 import { startBReviewFromPharmacy } from "./pharmacy-scenario-helpers";
+import { decisionNote, operatorDecision, operatorRadio, performDecision } from "./operator-action-helpers";
 
 for (const [width, colorScheme] of [[1440, "light"]] as const) {
   test.describe(`claims resubmission comparison ${width} ${colorScheme}`, () => {
@@ -59,10 +60,12 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await startBReviewFromPharmacy(page);
       const flag = page.getByRole("banner").getByRole("switch");
       await flag.setChecked(true);
-      await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
-      await page.getByRole("checkbox", { name: "Approve this draft for the pharmacy", exact: true }).check();
-      await page.getByRole("textbox", { name: /^Reason/ }).fill("Human reviewed and approved the dispensing-date instruction");
-      await page.getByRole("button", { name: "Record decision", exact: true }).click();
+      await operatorDecision(page).getByRole("button", { name: "Apply suggestion", exact: true }).click();
+      await expect(operatorRadio(page, "REFER_BACK")).toBeChecked();
+      await expect(page.getByRole("combobox", { name: "RB code (required)", exact: true })).toHaveValue("SYN-NCSO");
+      expect((await decisionNote(page).inputValue()).trim().length).toBeGreaterThanOrEqual(8);
+      await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Awaiting operator");
+      await performDecision(page, "REFER_BACK");
       await page.getByRole("link", { name: "View pharmacy claim", exact: true }).click();
       await expect(page.getByRole("heading", { name: "Claim detail: EX-24112", exact: true })).toBeVisible();
       const history = page.getByRole("region", { name: "Shared case history", exact: true });

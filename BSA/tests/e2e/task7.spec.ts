@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { captureCheckpoint, captureJson, confirmReset, expect, staticRoutes, test } from "./fixtures";
-import { automaticCaseIds, cases, startDemonstrationReview } from "./operator-action-helpers";
+import { automaticCaseIds, cases, openAuditRecord, operatorAction, operatorDecision, operatorRadio, startDemonstrationReview } from "./operator-action-helpers";
 
 const surfaces = [
   ...["scene", "month", "pipeline", "cases", "two-places", "close"].map((chapter) => ({ name: `overview-${chapter}`, path: `./#${chapter}` })),
@@ -26,7 +26,7 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
             if (automaticCaseIds.some((id) => surface.name === `${id}-pack`)) {
               await expect(page.locator("[data-automatic-case]")).toContainText("existing rules engine");
               await expect(page.locator("[data-pack-assembly]")).toHaveCount(0);
-              await expect(page.getByRole("button", { name: "Record decision", exact: true })).toHaveCount(0);
+              await expect(operatorAction(page, "ACCEPT")).toHaveCount(0);
             } else {
               await expect(page.locator("[data-pack-assembly]")).toHaveAttribute("data-pack-assembly", "6");
             }
@@ -43,30 +43,32 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
   }
 }
 
-test("Task7 native replay and decision notices retain keyboard operation and Reset Off", async ({ page }, testInfo) => {
+test("Task7 explicit decision, inline errors and audit replay retain keyboard operation and Reset Off", async ({ page }, testInfo) => {
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   await page.getByRole("banner").getByRole("switch").setChecked(true);
-  await page.getByRole("radio", { name: /^Refer back / }).check();
-  const record = page.getByRole("button", { name: "Record decision", exact: true });
+  await operatorRadio(page, "REFER_BACK").check();
+  const record = operatorAction(page, "REFER_BACK");
   await record.focus();
   await page.keyboard.press("Enter");
-  const notices = page.getByRole("complementary", { name: "Decision notifications" });
-  const dismiss = notices.getByRole("button", { name: "Dismiss notification" });
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  const dismiss = page.getByRole("button", { name: "Dismiss notification", exact: true });
+  await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
+  await expect(operatorDecision(page).getByRole("alert")).toBeFocused();
   let axe = await new AxeBuilder({ page }).analyze();
   await captureJson(testInfo, "axe-notice-error", axe);
   expect(axe.violations).toEqual([]);
   await expect(dismiss).toHaveCount(0);
   await captureCheckpoint(page, testInfo, "notification-error-keyboard");
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  await expect(operatorDecision(page).getByRole("alert")).toBeFocused();
   await captureCheckpoint(page, testInfo, "notification-restored-record-focus");
   await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Operator reviewed the evidence");
   await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("SYN-NCSO");
   await record.press("Enter");
-  await expect(notices).toContainText("Human decision recorded");
+  await expect(page).toHaveURL(/\/case\/EX-24112$/);
+  await expect(page.getByRole("region", { name: "Shared case history", exact: true }).getByRole("status")).toHaveText("Action needed: correction required");
+  await expect(record).toHaveCount(0);
+  await openAuditRecord(page);
   await expect(page.getByRole("heading", { name: "Record DR-000873", exact: true })).toBeVisible();
   const replay = page.getByRole("combobox", { name: "Replay with", exact: true });
   await replay.focus();
@@ -79,8 +81,8 @@ test("Task7 native replay and decision notices retain keyboard operation and Res
   await captureJson(testInfo, "axe-notice-success-replay", axe);
   expect(axe.violations).toEqual([]);
   await captureCheckpoint(page, testInfo, "notification-success-july-replay");
-  // Programmatic dismissal must not steal focus from an unrelated field.
-  await dismiss.evaluate((button: HTMLButtonElement) => button.click());
+  // The explicit panel has no success toast; audit interaction must retain focus.
+  await expect(dismiss).toHaveCount(0);
   await expect(page.locator("[data-decision-notice]")).toHaveCount(0);
   await expect(replay).toBeFocused();
   await confirmReset(page);
@@ -92,14 +94,14 @@ test("Task7 inline decision errors focus the error and preserve publishing field
   await page.goto("case/EX-24112");
   await startDemonstrationReview(page);
   const reason = page.getByRole("textbox", { name: "Reason (required)", exact: true });
-  const record = page.getByRole("button", { name: "Record decision", exact: true });
+  const record = operatorAction(page, "ESCALATE");
   const dismiss = page.getByRole("button", { name: "Dismiss notification", exact: true });
   await reason.focus();
   // Publish without moving focus, as with a form's implicit submission.
   await record.evaluate((button: HTMLButtonElement) => button.click());
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeVisible();
+  await expect(operatorDecision(page).getByRole("alert")).toHaveText("Enter a reason of at least eight characters.");
   await expect(dismiss).toHaveCount(0);
-  await expect(page.getByRole("alert").filter({ hasText: "A reason of at least eight characters" })).toBeFocused();
+  await expect(operatorDecision(page).getByRole("alert")).toBeFocused();
   await expect(reason).toHaveValue("");
   await captureCheckpoint(page, testInfo, "notification-restored-field-focus");
   await record.press("Enter");

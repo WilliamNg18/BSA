@@ -2,6 +2,9 @@ import { expect, navigatePrimary, test } from "./fixtures";
 import { readDomainState, verifyPerspectiveEquivalence } from "./one-state-helpers";
 import { caseById } from "../../src/lib/domain/cases";
 import { choosePharmacyRadio } from "./pharmacy-scenario-helpers";
+import { openQueueCapture } from "./paper-declaration-helpers";
+import { decisionNote, operatorRadio, performDecision } from "./operator-action-helpers";
+import { assertInlineDecisionRecorded } from "./perspective-helpers";
 
 const B = "EX-24112";
 const D = "EX-24123";
@@ -27,13 +30,13 @@ for (const enabled of [false, true]) {
         await page.getByRole("button", { name: "Start review", exact: true }).click();
       });
       await action("Request information without silently correcting the source", "NHSBSA", async () => {
-        await page.getByRole("radio", { name: /^Request information / }).check();
+        await operatorRadio(page, "REQUEST_INFORMATION").check();
       });
       await action("Write the human confirmation request", "NHSBSA", async () => {
-        await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Please confirm the dispensing date against the original EPS endorsement");
+        await decisionNote(page, "REQUEST_INFORMATION").fill("Please confirm the dispensing date against the original EPS endorsement");
       });
       const requested = await action("Record one human request for information", "NHSBSA", async () => {
-        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await performDecision(page, "REQUEST_INFORMATION");
         await expect(page).toHaveURL(/\/case\/EX-24112\/record$/);
       });
       expect(requested.lifecycles[B].state).toBe("information_requested");
@@ -41,10 +44,10 @@ for (const enabled of [false, true]) {
       expect(requested.records.at(-1)).toMatchObject({ caseId: B, decision: "REQUEST_INFORMATION" });
       expect(requested.records.at(-1)?.approvedDraft).toBeUndefined();
       expect(requested.caseRevisions).toEqual(submitted.caseRevisions);
-      await action("Dismiss the human information-request notification", "NHSBSA", async () => {
-        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      await action("Read the actual recorded information request", "NHSBSA", async () => {
+        await assertInlineDecisionRecorded(page, "REQUEST_INFORMATION");
       });
-      expect(await readDomainState(page), "Dismissing a notification cannot change the recorded request").toEqual(requested);
+      expect(await readDomainState(page), "Reading the record cannot change the recorded request").toEqual(requested);
       await action("Navigate to pharmacy claims", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
       await action("Verify B's pharmacy for the new request", "Pharmacy", async () => {
         await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[B].pharmacyCode})`);
@@ -101,7 +104,10 @@ for (const enabled of [false, true]) {
   test(`one state: D capture history survives referral and a new paper revision, Agent ${enabled ? "On" : "Off"}`, async ({ page }, info) => {
     await verifyPerspectiveEquivalence(page, info, enabled, async (action) => {
       const initial = await readDomainState(page);
-      await action("Navigate to D Type 1 capture", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+      await action("Navigate to D Type 1 capture", "NHSBSA", async () => {
+        await navigatePrimary(page, "NHSBSA queue");
+        await openQueueCapture(page, D);
+      });
       const capture = page.getByRole("region", { name: `Type 1 capture for ${D}`, exact: true });
       if (enabled) await action("Explicitly reconcile the prior D declaration", "NHSBSA", async () => {
         await capture.getByRole("checkbox", { name: "I have reconciled the declaration with the available evidence, including the dispensing date", exact: true }).check();
@@ -121,7 +127,7 @@ for (const enabled of [false, true]) {
         await page.getByRole("link", { name: `Open ${D}`, exact: true }).click();
       });
       await action("Choose a human referral after capture", "NHSBSA", async () => {
-        await page.getByRole("radio", { name: /^Refer back / }).check();
+        await operatorRadio(page, "REFER_BACK").check();
       });
       await action("Select the actual missing-presentation code", "NHSBSA", async () => {
         await page.getByRole("combobox", { name: "RB code (required)", exact: true }).selectOption("RB2B");
@@ -130,17 +136,17 @@ for (const enabled of [false, true]) {
         await page.getByRole("textbox", { name: "Reason (required)", exact: true }).fill("Human requests pharmacy confirmation of the product presentation");
       });
       const referred = await action("Record the D referral without draft approval", "NHSBSA", async () => {
-        await page.getByRole("button", { name: "Record decision", exact: true }).click();
+        await performDecision(page, "REFER_BACK");
         await expect(page).toHaveURL(/\/case\/EX-24123\/record$/);
       });
       expect(referred.records).toHaveLength(initial.records.length + 1);
       expect(referred.records.at(-1)).toMatchObject({ caseId: D, decision: "REFER_BACK", rbCode: "RB2B" });
       expect(referred.records.at(-1)?.approvedDraft).toBeUndefined();
       expect(referred.itemProcesses[D].capture).toEqual(captured.itemProcesses[D].capture);
-      await action("Dismiss the human referral notification", "NHSBSA", async () => {
-        await page.getByRole("button", { name: "Dismiss notification", exact: true }).click();
+      await action("Read the actual recorded human referral", "NHSBSA", async () => {
+        await assertInlineDecisionRecorded(page, "REFER_BACK");
       });
-      expect(await readDomainState(page), "Dismissing a notification cannot change the referral or capture").toEqual(referred);
+      expect(await readDomainState(page), "Reading the record cannot change the referral or capture").toEqual(referred);
       await action("Navigate to the pharmacy D referral", "Pharmacy", async () => { await navigatePrimary(page, "Pharmacy claims"); });
       await action("Verify Hillcrest owns D without a selector", "Pharmacy", async () => {
         await expect(page.locator("[data-pharmacy-identity]")).toContainText(`Hillcrest Pharmacy (${initial.lifecycles[D].pharmacyCode})`);
@@ -178,7 +184,10 @@ for (const enabled of [false, true]) {
       expect(resubmitted.itemProcesses[D]).toMatchObject({ capture: null, routing: { outcome: "type1_capture", requiresHuman: true } });
       expect(resubmitted.lifecycles[D].history.slice(0, referred.lifecycles[D].history.length)).toEqual(referred.lifecycles[D].history);
       expect(resubmitted.lifecycles[D].history.filter((event) => event.capture).map((event) => event.capture)).toEqual([captured.itemProcesses[D].capture]);
-      await action("Read the new D capture lane without confirming it", "NHSBSA", async () => { await navigatePrimary(page, "NHSBSA queue"); });
+      await action("Read the new D capture lane without confirming it", "NHSBSA", async () => {
+        await navigatePrimary(page, "NHSBSA queue");
+        await openQueueCapture(page, D);
+      });
       await expect(capture).toBeVisible();
       await expect(page.locator(`[data-case-id="${D}"]`)).toHaveCount(0);
       await expect(capture.getByRole("heading", { name: "Human capture confirmed", exact: true })).toHaveCount(0);

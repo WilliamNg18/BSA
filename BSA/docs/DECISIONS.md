@@ -2089,3 +2089,65 @@ Tie-breakers: preserved history and human decisions.
 
 - Question: why was an existing approved referral not attributed in its untouched Recommendation card? Choice: an editable referral view supplies `correction` only when the displayed draft has no explicit purpose. The shared recommendation still determines approval from the actual current-revision record; new-submission drafts, unapproved records and earlier revisions cannot inherit approval. This is a read-only view projection, not an approval or draft write.
 - Question: what if that real attribution exists but is below the hand-off viewport? Choice: put the complete correction card immediately after the operator response and move its existing conditional approval statement to its header. Preserve the same paragraph, predicate, text and all card contents; neither a duplicate badge nor a relaxed visibility assertion is acceptable.
+
+## 2026-09-14: Task 33 operator controls use one human draft
+
+Where should Apply write? Use revision-bound `operatorDrafts` for the actual
+visible outcome, RB code and note, not page-local decision copies; one state
+and explicit human authority take precedence over presentation convenience.
+
+Does Off discard an applied suggestion? Start empty before any human drafting,
+but preserve subsequent human edits and Apply history when toggling; the
+one-state rule takes precedence over a destructive interpretation of empty.
+Off renders no new suggestion card or agent call in the action panel.
+
+When is a drafted response approved? Apply only copies fields and records the
+operator attribution. The subsequent Refer back or Request information click
+approves the exact applied note through G's guarded action; no hidden approval,
+release or invented fallback reason. Manual reasons retain eight characters.
+
+How are controls shared with the demonstration? Export
+`OperatorActionPanel({ caseId, compact? })` and retain
+`Type1Capture({ caseId, compact? })`. Compact capture omits timing controls;
+it retains the same image, immutable declaration, fields and confirmation.
+Use G's `getReleaseEligibility` for source validity in both modes, never a
+second UI gate. The visible note remains the human input to final release.
+
+What does Correct do? Enter a visibly named correction mode, focus Product
+code and invalidate reconciliation. Any field edit also invalidates it.
+The original declaration remains read-only beside the original paper image;
+unknown prescriber evidence is never inferred from the scan. Attestation is
+not proof of image agreement. Capture remains separate from Type 2 decisions.
+
+Where are automatic cases inspected? A disclosed actual-session automated
+count links to read-only case records, independently of monthly estimates.
+Only a recorded code-origin two-gate release says no operator action.
+Human releases show after operator review; historical sources remain visible
+in either header mode. No payment is calculated or approved.
+
+## 2026-09-14: Task 33 follows the four-case vision correction
+
+- Question: which queue items act? Chosen: G's authoritative playable set only, with C/F as fixed unclickable background; the newest four-case instruction wins.
+- Question: where does compact NHSBSA evidence live? Chosen: the same operator component exposes the actual source, captured fields and gathered evidence alongside advice; visible evidence authority wins over a suggestion-only demo.
+- Question: how is successful release demonstrated without an extra seeded recheck item? Chosen: B's real referral, pharmacy correction and resubmission; the shared live cycle wins over a fifth playable fixture.
+- Question: what does an automatic item's audit show without a human record? Chosen: the recorded existing-pricing outcome, not a manual comparison or an impossible request for a human decision; truthful human authority wins.
+- Question: how should repeated EPS comparison landmarks differ? Chosen: a meaningful Manual comparison context prefixes their accessible names, preserving every landmark and source value; accessibility and truthful context win over deleting roles or evidence.
+
+## 2026-09-15: Compact Type 1 evidence and editor placement
+
+- Question: how can compact capture avoid a narrow editor beside unused image space? Choice: place scan and immutable declaration together above a full-width editor; ordinary capture keeps its original layout. No facts, required controls or reconciliation checks are removed.
+- Question: can the demonstration use the inactive column's empty space? Choice: provide the read-only `Type1CaptureEvidence({ caseId })` export and an explicit compact-only `evidencePlacement="external"` option. D must render the same item's source comparison exactly once and retain one live capture form. Ordinary views ignore external placement.
+- Question: does the first viewport already pass? Choice: no. Actual 1440x1000 and 1280x1000 measurements place the compact panel at y692 beneath the real D/F chrome; Confirm ends at y1274/y1290 for the first candidate. Preserve that failed measurement, coordinate D's metadata layout and give the latest always-visible Recommendation content priority over shrinking or hiding facts.
+- Question: what does the complete D/R/O measurement establish? Choice: preserve the exact raw result. At 1280/1440x1000, Off Confirm ends at y787; On's mandatory visible Recommendation moves Confirm to y2078 and the document is 2169px high. All controls remain operable, one form remains, and no source or required advice is clipped. This is not an On first-viewport pass.
+- Question: when does the compact layout regression run? Choice: keep all four checks in `tests/integration/compact-type1-layout.spec.ts`, executed through `tests/e2e/compact-type1-layout.config.ts` after D's actual mount. O's merge intentionally precedes that mount; no skipped tests, reduced assertions or proxy geometry replace the separate integration run.
+
+## 2026-09-15: Concrete recommendations on operator surfaces
+
+- Question: where should operator advice come from? Choice: use R's shared read-only derivation and RecommendationCard on current operator, Type 1, trace and record surfaces, not a second local recommendation authority.
+- Question: can diagnostic Apply clear an unreadable item? Choice: only R's validated safe follow-up adapter may populate the current operator draft; the original abstention and failed checks remain visible and Release still uses the authoritative code gate.
+- Question: when is the card shown? Choice: every valid item surface shows one complete card while On, including before Start review and read-only outcomes. Off performs no new recommendation derivation; recorded-source cards remain explicitly pinned to their revision and record.
+- Question: is an escalated record a completed review? Choice: no. An open escalated operator case keeps current actionable advice; only a closed review uses the read-only recorded-source context.
+- Question: where does a received pharmacy answer appear? Choice: render the exact current revision's confirmation in a visible Pharmacy confirmation landmark before recommendation/playback content, in either mode. Do not infer captured facts from free text or require opening history; shared parents suppress only duplicate child copies.
+- Question: how does the followed item's queue state become visible without a hidden proxy? Choice: open its actual lane, put current work before background material and unrelated capture editors, and focus the real state leaf with minimal instant scrolling only when needed. Counts still include all actual items; navigation and filtering never change operational state. Verify with V's unchanged pre-click one-second deadline, viewport and cumulative-opacity checks.
+- Question: why did the first queue repair remain partially clipped? Choice: preserve the measured failure: the actual table cell was y945, height57, ending at1002 in a1000px viewport after a same-filter click. Explicit filter selections now request focus again, with a small viewport margin for the complete original cell; no span proxy, relaxed visibility ratio or deadline increase. Track actual target/lane changes separately without resetting a user's unchanged filter every render.
+- Question: why was a received answer above the viewport after Follow returned to its NHSBSA case? Choice: case routes need explicit entry focus because the chapter shell deliberately skips them. Focus the actual case heading without implicit scrolling, then align the complete case header below the existing sticky chrome. Run only on route/item changes, never field edits or mode changes; preserve the actual state, answer, card and unchanged one-second verifier.
