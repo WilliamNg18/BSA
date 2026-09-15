@@ -582,6 +582,22 @@ header centring, backup equality or clean offline recovery is claimed here.
 
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
 
+### Home scenario shortcuts can outlive the evidence they described
+
+The correctly dated paper B still received "Fix: add the date beside the
+initials" because Home keyed that advice on scenario B plus REFER_BACK.
+G `05fc421` already had the correct paper source and a negative V regression.
+The bounded F repair reads the actual unmet requirement labels instead; it
+does not change dates, source data, agent results or the retained regression.
+
+Step definitions also needed to follow the revised case channels. A paper B
+could not truthfully be the old EPS step, and an uncorrected strength error
+fails both gates rather than only format-independent reconciliation. The new
+real-action demo test acknowledges the correction before automatic EPS recheck,
+preserves paper history by deep value equality and checks navigation snapshots.
+Check plus 231 bounded units pass; 98 shared-suite failures and five S headline
+hits remain explicit. No browser timing, live result or backup is inferred.
+
 ### Task 40 Follow audit: new events must not fall through to old state labels
 
 At main `6418151`, Follow formats the actual last appended event and preserves

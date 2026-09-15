@@ -6,8 +6,8 @@ import { AppShell } from "../../src/components/app-shell";
 import { ConfirmDialogProvider } from "../../src/components/confirm-dialog";
 import { NotificationProvider } from "../../src/components/notification-provider";
 import { DEMO_STEPS, demoStepDestination } from "../../src/lib/domain/demo-steps";
-import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
-import { initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { caseById } from "../../src/lib/domain/cases";
 import { navigateDemoStep } from "../../src/lib/demo-navigation";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -28,21 +28,19 @@ function shell(path: string) {
 }
 
 describe("mounted desktop demo with real compact panels", () => {
-  it("hands the actual operator referral to step 9 after B has already been released", () => {
+  it("hands the actual strength referral to step 9 without changing the waiting paper case", () => {
     const state = () => useAppStore.getState();
     let path = "/";
     const go = (step: number) => navigateDemoStep(step, (destination) => { path = destination; });
     const b = "EX-24112", mismatch = "SYN-FQ123-MISMATCH";
     state().setAgentEnabled(true);
     go(4);
-    state().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, state().caseRevisions[b][0]), purpose: "new_submission" });
-    state().applySuggestedCorrection(b);
-    state().submitItem({ ...state().pharmacyDrafts[b], caseId: b, channel: "eps" });
-    expect(state().lifecycles[b].state).toBe("released_to_pricing");
+    const paperHistory = state().lifecycles[b];
+    expect(paperHistory.state).toBe("resubmitted");
+    const source = caseById(mismatch)!.epsPrescription!;
+    state().submitItem({ caseId: mismatch, channel: "eps", endorsementText: source.dispenserEndorsement, epsPrescription: source });
+    expect(state().itemVerification[mismatch]).toMatchObject({ gate1: "fail", gate2: "fail", released: false });
     go(5);
-    const source = state().caseRevisions[mismatch][0];
-    state().submitItem({ caseId: mismatch, channel: "eps", endorsementText: source.endorsementText, epsPrescription: source.epsPrescription });
-    expect(state().itemVerification[mismatch]).toMatchObject({ gate1: "pass", gate2: "fail", released: false });
     go(8);
     state().followCase(mismatch);
     state().arriveInQueue(mismatch);
@@ -63,9 +61,11 @@ describe("mounted desktop demo with real compact panels", () => {
     expect(strip).toContain(mismatch);
     expect(strip).toContain("EPS");
     state().applySuggestedCorrection(mismatch);
+    state().setCorrectionAcknowledgement(mismatch, state().caseRevisions[mismatch].at(-1)!.number, true);
     state().resubmit(mismatch);
-    expect(state().lifecycles[mismatch].state).toBe("resubmitted");
-    expect(state().lifecycles[b].state).toBe("released_to_pricing");
+    expect(state().lifecycles[mismatch].state).toBe("released_to_pricing");
+    expect(state().itemProcesses[mismatch].releaseOrigin).toBe("automatic_verification");
+    expect(state().lifecycles[b]).toStrictEqual(paperHistory);
     expect(state().demoStep).toBe(9);
     expect(state().followedCaseId).toBe(mismatch);
   });
@@ -174,18 +174,22 @@ describe("mounted desktop demo with real compact panels", () => {
     expect(html).not.toContain("Exit demo to correct");
   });
 
-  it("demonstrates the mismatch before offering a real correction of the submitted attempt", () => {
+  it("offers the pharmacy correction before Send and preserves the ignored mismatch for the NHSBSA step", () => {
     const state = useAppStore.getState();
     const caseId = "SYN-FQ123-MISMATCH";
-    state.setDemoStep(5);
+    state.setDemoStep(4);
     state.setAgentEnabled(true);
     const path = `/pharmacy?case=${caseId}&channel=eps`;
-    expect(shell(path)).not.toContain('data-pharmacy-action="apply-correction"');
-    const source = state.caseRevisions[caseId].at(-1)!;
-    state.submitItem({ caseId, channel: "eps", endorsementText: source.endorsementText, epsPrescription: source.epsPrescription });
-    expect(useAppStore.getState().itemVerification[caseId]).toMatchObject({ gate1: "pass", gate2: "fail", released: false });
-    const before = getDomainSnapshot();
     expect(shell(path)).toContain('data-pharmacy-action="apply-correction"');
+    const source = caseById(caseId)!.epsPrescription!;
+    state.submitItem({ caseId, channel: "eps", endorsementText: source.dispenserEndorsement, epsPrescription: source });
+    expect(useAppStore.getState().itemVerification[caseId]).toMatchObject({ gate1: "fail", gate2: "fail", released: false });
+    const before = getDomainSnapshot();
+    state.setDemoStep(5);
+    const html = shell(demoStepDestination(DEMO_STEPS[4]));
+    expect(html).toContain(`data-demo-live-case="${caseId}"`);
+    expect(html).toContain('data-operator-action-panel');
+    expect(html).not.toContain('data-pharmacy-action="apply-correction"');
     expect(getDomainSnapshot()).toEqual(before);
   });
 });
