@@ -2491,6 +2491,11 @@ U independently ran the mounted scanner at its pinned `941933f` source:
 four desktop cases passed with eight scoped axe analyses reporting zero
 violations. That is scoped geometry/accessibility evidence, not a complete
 visual or current-main live claim. O has not repeated that browser run.
+
+The additional O-owned human-recheck and queue-comparison migrations pass
+23 tests (3 and 20 respectively). They use actual acknowledged paper
+corrections and explicit unresolved capture, retaining state/history checks.
+These results are separate from the earlier 141-test selection.
 The R-owned legacy regression migration now passes 47 tests across the four
 existing recommendation files. Date-sensitive validation remains tested as an
 explicit edited EPS input, not a playable date-gap headline. Wrong-strength

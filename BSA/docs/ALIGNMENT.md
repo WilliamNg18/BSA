@@ -565,6 +565,11 @@ human capture linked to its original submission; O renders that record
 without a new capture form and without copying answer text into fields.
 Matching-only authority no longer receives a misleading missing-Tariff
 message in the case pack. Fresh check and 141 targeted tests pass.
+
+Human-recheck tests now verify the real corrected-paper prefill and
+acknowledgement rejection before explicit release. Queue-comparison tests
+use current unreadable-paper capture rather than a retired endorsement
+fixture. All 23 targeted tests pass with no state/history rewriting.
 R's four older owned recommendation files have now migrated: all 47 cases
 pass on the current source. W identified separate canonical G defects in
 strength trace reconciliation and proposed-rule attribution; these remain
