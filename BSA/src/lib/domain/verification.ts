@@ -81,7 +81,8 @@ export function evaluateItemVerification(
   ];
   if (needsClause && !strength) gate1Checks.push(check("Applicable requirements available", requirements.length > 0, clause?.id ?? "No clause"));
 
-  const confirmed = capture?.revision === revision.number ? capture : null;
+  const confirmed = capture && capture.revision <= revision.number &&
+    (capture.sourceRevision ?? capture.revision) === (revision.sourceRevision ?? revision.number) ? capture : null;
   const scan = revision.paperSource?.scan ?? original;
   const readable = scan.imageQuality >= QUALITY_THRESHOLD &&
     Math.min(scan.extracted.productConfidence, scan.extracted.quantityConfidence, scan.extracted.endorsementConfidence) >= QUALITY_THRESHOLD;
