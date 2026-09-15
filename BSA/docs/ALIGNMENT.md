@@ -413,3 +413,8 @@ G `c3f69f2` resolves the previously reported canonical strength authority and
 false-agreement defects. R consumes the repaired metadata directly; 85 targeted
 contracts and check pass. This supersedes the earlier unresolved canonical
 rows only for this published source, not for unverified deployments.
+
+R's operator trace audience assertions now have actual bounded browser proof:
+8/8 on clean `2df6549`, covering all four cases and 1280/1440 widths. The
+recorded audit URLs confirm port 4337; no hosted or screenshot-review result
+is inferred. Full integration/live rows remain unaligned until their own gates.

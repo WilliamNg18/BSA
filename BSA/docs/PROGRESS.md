@@ -2275,3 +2275,13 @@ consumes its typed provision/reading/image applicability directly; the temporary
 Card-context signal switch is removed. Check and 85 owned/current-runtime
 tests pass. The canonical trace no longer needs a Card-only correction, but
 whole-application migration, CI, deployment and live acceptance remain pending.
+
+The coordinator-allocated R development run on clean published `2df6549`
+passed all eight recommendation-trace cases in 42.3 seconds, one worker and
+zero retries. The built identity matched that SHA with `dirty: false`; every
+audit URL used `http://localhost:4337/`. Four cases at 1280/1440 verified Card
+On/Off, exact operator source facts, no correction proposals and all-rule axe.
+Eight unique axe reports have zero violations; the two strength reports each
+retain one incomplete finding. No screenshots were generated. Port 4337 is
+released. This closes bounded R development coverage only, not the failed
+whole integration suite, deployment, live acceptance or backup parity.

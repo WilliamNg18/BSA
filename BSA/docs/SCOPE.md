@@ -468,3 +468,7 @@ adding explicit operator-audience and no-proposed-preview assertions.
 
 Canonical signal applicability is now consumed from G, preserving all five
 visible signals and existing paper thresholds without audience-based overrides.
+
+Bounded R trace coverage executed on clean `2df6549`: 8/8 at the two desktop
+widths, zero retries, eight zero-violation axe reports. Two incomplete axe
+findings remain explicit. Full Task 39/40 release acceptance is still pending.

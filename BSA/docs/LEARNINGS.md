@@ -1429,3 +1429,11 @@ object-key count is no longer the signal count. Updated tests assert the five
 underlying facts and exactly five rendered rows, plus canonical non-applicability
 for typed strength records and the unchanged unreadable-paper quality threshold.
 The full owned/current-runtime selection passes 85 tests with check.
+
+On 15 September, clean `2df6549` was rebuilt and its build identity asserted
+before the allocated eight-case trace run. All eight passed in 42.3 seconds,
+with one worker and zero retries. The eight unique axe reports (excluding
+attachment copies) have zero violations. Both wrong-strength audits retain
+one incomplete finding; the other six have none. All report URLs are on
+localhost:4337, audit timestamps span 20:41:07Z to 20:41:40Z, no screenshots
+were produced, and the port was verified closed after the run.
