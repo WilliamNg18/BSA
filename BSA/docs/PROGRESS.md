@@ -6,6 +6,12 @@ ms.date: 2026-09-15
 
 ## B40 canonical verification branch integration
 
+G requested one further source-link regression: after D's actual Type 1 capture,
+an information-only response preserves the facade/capture but incorrectly routes
+back to Type 1. That targeted test fails on `4765770`; G is adding explicit
+source-revision linkage. This is a tenth pending negative assertion, separate
+from the nine note/image regressions and the previous passing matrix.
+
 Two additional integration defects are reproduced by nine new negative tests:
 missing-presentation paper notes can leak the correct `capsules` value through
 all four final communication APIs in Off and On, and the acknowledged paper

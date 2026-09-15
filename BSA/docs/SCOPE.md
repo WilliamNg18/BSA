@@ -6,6 +6,11 @@ ms.date: 2026-09-15
 
 # Scope register
 
+G's requested C1 information-response capture test now pins another concrete
+gap: unchanged submitted paper must retain its original human capture, not
+create a second Type 1 task. The new targeted assertion currently fails and
+awaits G's explicit source-revision linkage repair.
+
 B's additional negative proof is currently blocked by two G-owned C4/C5 defects:
 outbound presentation-value leakage and missing manufacturer text in the
 actual synthetic amendment scan. Nine failing regressions are published as
