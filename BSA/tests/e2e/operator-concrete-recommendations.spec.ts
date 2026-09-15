@@ -4,9 +4,9 @@ import { expect, test } from "./fixtures";
 test.use({ screenshot: "off" });
 
 for (const width of [1280, 1440]) {
-  test(`all four item surfaces show complete On advice and no Off card at ${width}`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 1000 });
-    for (const id of ["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"]) {
+  for (const id of ["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"]) {
+    test(`${id} item surfaces show complete On advice and no Off card at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 1000 });
       for (const suffix of ["", "/trace", "/record"]) {
         await page.goto(`/case/${id}${suffix}`);
         await page.getByRole("banner").getByRole("switch").setChecked(true);
@@ -23,8 +23,8 @@ for (const width of [1280, 1440]) {
         await page.getByRole("banner").getByRole("switch").setChecked(false);
         await expect(card).toHaveCount(0);
       }
-    }
-  });
+    });
+  }
 
   test(`operator Apply uses the displayed concrete date and draft without releasing at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
