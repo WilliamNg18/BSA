@@ -1725,6 +1725,12 @@ The earlier 139-pass/two-fail probe remains separate; the fresh nine-file
 run passes all 141 tests with check. U's pinned four-case scanner proof
 and eight scoped zero-violation axe results are separate from O's unexecuted
 audit/ready-release browsers and the still-pending backup recovery proof.
+
+The final two O-owned legacy unit files pass 23 tests after canonical-action
+migration. They retain rejection without acknowledgement, empty-reason
+release rejection, abstention protection and immutable queue observation.
+No failed historical run is rewritten, and no browser/deployment result
+is inferred from these focused unit checks.
 The first current-seed regression run failed 22 of 47 old tests: most still
 treated paper B as EPS or expected the former date-gap preset. The migrated
 run passes all 47, preserving invalid-input, unsupported-SP receipt, original

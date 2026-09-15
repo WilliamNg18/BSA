@@ -672,6 +672,10 @@ Source-linked Type1 confirmation and non-Tariff matching labels are O
 presentation consumers of G's canonical metadata. No source value, gate,
 capture authority or seeded draft is inferred by the UI. The four O audit
 and ready-release browser tests still require their own allocated execution.
+
+O also owns the current `human-recheck-view` and `queue-compare` unit
+compatibility updates. V owns the six other handed-off presentation unit
+files; no duplicate writer or protected-browser modification is introduced.
 ## Tasks 39/40 R audience scope
 
 In progress: explicit Card audience, pharmacy-only concrete value/preview,
