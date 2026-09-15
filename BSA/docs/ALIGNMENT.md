@@ -139,6 +139,11 @@ decimals, all perspectives, both toggle states, unchanged core totals and Reset.
 Only 30 pure units and affected-file lint have run at this checkpoint; the new
 same-store handoff is still pending. This is not a browser or live pass.
 
+The expanded 87-test arithmetic/evidence regression passes. A direct typecheck
+confirms the remaining application errors are the absent canonical mismatch
+field/setter, not unrelated interface errors. Tiny positive count formatting
+is now covered explicitly; browser and live gates remain pending.
+
 ## 2026-09-15: Task 39 W source comparison and integration boundary
 
 W inspected actual main `641815137b36ab3e925dcc98c4738d0b150a75d1`.

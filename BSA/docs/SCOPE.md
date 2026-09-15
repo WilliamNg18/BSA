@@ -62,6 +62,10 @@ The editor is optional and independent of core validation; invalid drafts remove
 only the mismatch estimate. G's canonical store action/Reset handoff and
 integration validation remain required before readiness or live acceptance.
 
+Positive fractional expected counts must remain visibly nonzero. The shared
+mismatch formatter uses significant digits and compact scientific notation
+for tiny values, without changing model arithmetic or existing figures.
+
 ## 2026-09-15: Task 39 W foundation, not live completion
 
 The latest owner brief replaces the playable EPS error with wrong strength:
