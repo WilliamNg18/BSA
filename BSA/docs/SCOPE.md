@@ -4,6 +4,11 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The two existing 1440 px claims keyboard checks now prepare current paper
+corrections and exercise real required accuracy acknowledgement. Their
+history, focus and axe obligations remain; discovery alone does not satisfy
+them. No new screenshot, browser lease or live acceptance run was added.
+
 The V six-file unit migration preserves 74 checks and the historical
 pure-domain regression cases. Current operational tests no longer fabricate
 date corrections, route readable B through Type 1, or treat capture as paper

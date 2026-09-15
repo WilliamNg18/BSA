@@ -4,6 +4,12 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+Claims keyboard assertions now reflect actual current paper fields, ACK
+gating and payload-edit invalidation, without changing their two leaf names.
+P's claim status must consume the current ItemProcess to match F's published
+ready-paper label. That source integration dependency is not waived by static
+typecheck/lint/discovery, and no browser result is claimed.
+
 V's assigned unit migration now preserves ACK, same-attempt history, Today
 audit and human paper release semantics. Exact P `b236e8d` resolves the two
 old EPS UI failures present on G `99abdd4`; the identical six tests reach

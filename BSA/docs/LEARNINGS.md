@@ -4,6 +4,18 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+The claims keyboard flow has an additional real tab stop: required accuracy
+acknowledgement precedes Resubmit. For current paper, On Apply focuses the
+changed manufacturer field rather than an already-correct endorsement date.
+Editing that field invalidates ACK but must not delete its historical event.
+Both old keyboard test names and axe checks remain, with typecheck, lint and
+two-test discovery passing; neither browser case has been executed by V.
+
+F's ready-paper label requires ItemProcess, not merely lifecycle state.
+Reading P `b236e8d` exposed a three-argument claim status call; P/F were
+notified so the actual UI can agree with the shared history. No source shim
+or looser expected label was introduced.
+
 Migrating setup rather than removing assertions reduced V's six-file baseline
 from 15 failures to three on G `99abdd4`. Real ACK actions preserve all prior
 paper attempts; a ready paper revision still requires explicit human release.

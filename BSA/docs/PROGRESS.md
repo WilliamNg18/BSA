@@ -4,6 +4,20 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+V migrated the two existing claims-resubmission keyboard checks to fresh
+brand-missing paper. Off fills the actual pharmacy record fields and requires
+keyboard ACK before Resubmit; On verifies brand Apply/focus, exact retained
+attempts, ACK preservation across mode flips and invalidation after a brand
+edit. Both existing axe assertions and leaf names remain. Typecheck, targeted
+lint and two-name discovery pass; no browser execution is claimed.
+
+The expected ready-paper status depends on F's process-aware presentation.
+P `b236e8d` still omits ItemProcess from its claim status call; V reported
+that integration gap rather than accepting the older awaiting-recheck label.
+The live build identity was independently refreshed at
+`2026-09-15T20:48:03.1763254Z`, serving clean main
+`5b75e5f7711bf599b02ff9fab752781fa0685b00`. This verifies identity only.
+
 ## V six-file canonical unit migration
 
 The six assigned files now exercise current paper/strength actions: actual

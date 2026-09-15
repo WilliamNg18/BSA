@@ -4,6 +4,10 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how does the Off keyboard test resubmit current paper? Choice: enter all required pharmacy-owned fields from the canonical supply record, then explicitly acknowledge accuracy and press Resubmit; tie-breaker: actual UI actions and no synthetic hidden correction.
+- Question: should an edited approved correction remain submit-enabled? Choice: assert that the payload change clears the current ACK and disables Resubmit while preserving historical Apply/ACK events and every attempt; tie-breaker: payload-bound consent and immutable history.
+- Question: may a generic awaiting-recheck label stand in for ready paper? Choice: require F's exact ready label and report P's missing process argument; tie-breaker: consistent same-item state, not a relaxed text predicate.
+
 - Question: how can V distinguish stale dependency failures from test defects without resolving others' source conflicts? Choice: run the identical six owned tests on an isolated exact published P checkout, with source/package diffs empty and no browser/build; tie-breaker: source-pinned evidence and no duplicate source writer.
 - Question: should a correctly dated B satisfy an old Home date-correction assertion? Choice: assert absence of that false instruction and keep the failure assigned to D; tie-breaker: current source truth, not a green legacy fixture.
 - Question: how is the discovered P/V four-case unit overlap resolved? Choice: retain P's two EPS labels, all retired-case negatives and actual-M landmarks, then add the explicit unavailable-EPS negative; tie-breaker: union meaningful assertions rather than overwrite owner work.
