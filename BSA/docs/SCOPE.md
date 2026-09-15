@@ -19,6 +19,9 @@ P's five focused accuracy-checkbox handler tests now pass in both modes,
 including invalidation and stale-input rejection. Wider canonical integration
 and existing pharmacy-suite migration remain open.
 
+The minimal explicit pharmacy Card audience adapter is published separately
+for R/G foundation integration; no shared Card edit or store fallback is used.
+
 ### G39/40 explicit-action checkpoint
 
 W/B pure foundations and revision-bound ACK/audit store controls are integrated

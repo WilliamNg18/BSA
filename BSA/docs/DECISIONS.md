@@ -2481,6 +2481,8 @@ Question: how should simultaneous pharmacy tiles become plausible? Choice: proje
 
 Question: how should the required checkbox be tested without a browser lease? Choice: execute its actual native-input callback against the canonical store and retain SSR as a separate read-only assertion, without claiming browser or timing acceptance; tie-breaker: exact evidence and owner-controlled browser slots.
 
+Question: how should P adopt R's fail-closed Card audience default? Choice: publish an isolated explicit pharmacy audience prop in the real shared pharmacy wrapper for early foundation import; tie-breaker: preserve genuine controls without exposing pharmacy proposals on NHSBSA screens.
+
 ## Tasks 39/40 R audience decisions
 
 - Question: which audience is safe when a Card caller omits context? Choice: operator, withholding pharmacy correction proposals but retaining exact read-only facts; tie-breaker: C5 authority.

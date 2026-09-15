@@ -22,6 +22,11 @@ Rendering it creates no draft/event; explicit checking calls G's setter,
 manual editing clears the binding, and stale callbacks surface the action
 error without changing state. This closes only the bounded consumer seam.
 
+P's actual shared recommendation wrapper now declares the pharmacy audience;
+an omitted caller remains safely operator-only. Local check and 24 focused
+consumer units passed; full partial-integration run retained 65 failures
+(1,665 passing), so canonical acceptance remains open.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Refreshed published-source snapshot after the B foundation

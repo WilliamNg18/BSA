@@ -18,6 +18,12 @@ without replacing the store or manufacturing acknowledgement metadata. Five
 focused tests passed, covering positive/negative binding and stale events.
 No browser was launched; source/handler checks are not a live verdict.
 
+R's new Card correctly defaults to the operator audience. The pharmacy wrapper
+must explicitly select pharmacy or its existing real Apply/invoice controls
+disappear. The isolated adapter preserves that boundary. Partial-integration
+check and 24 focused consumer units passed; full Vitest retained 65 failures
+and 1,665 passes, with existing ACK/scenario/audience migrations still pending.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
