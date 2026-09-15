@@ -4,6 +4,13 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Actual role separation needs both source implementation and consistent
+consumer selectors. V's ordered helper/ACK/response patches compose with A's
+final-state audit helper without changing production behavior. Integrated
+types, e2e lint and five harness tests pass on `0d13e19`, but this static
+evidence neither repairs O's observed focus/visibility failures nor proves
+that unrelated stale route and scenario expectations are correct.
+
 The assembled structural candidate now passes all 1,995 units across 116
 files and the full check on `612df97`. Its previous two failures were
 specific Apply-scope assertions, repaired by V without relaxing copy limits

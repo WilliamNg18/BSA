@@ -6,6 +6,15 @@ ms.date: 2026-09-15
 
 ## G assembled authority-panel checkpoint
 
+G additionally integrated A's ordered final-state audit-settlement handoff
+through `f5393f9`, then V's paper-scenario, ACK keyboard, response-history
+and sibling-Apply compatibility chain through `0d13e19`. These are narrow
+test/document patches, not runtime replacements. Both owners' existing
+changes are retained. Integrated typecheck, full e2e-file lint and the two
+new harness unit files (five tests) pass; four settlement test identities
+were discovered without execution. These checks do not clear the four
+retained D browser failures or the remaining legacy-scenario CI failures.
+
 The authorised single operator run on clean published `491a808` completed:
 six passed, four failed, no skips or retries, 67.16 seconds. Both EPS audit
 and all four ready-B cases passed, including unrestricted axe. All four D

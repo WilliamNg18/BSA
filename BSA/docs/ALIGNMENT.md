@@ -6,6 +6,13 @@ ms.date: 2026-09-15
 
 G integrated the isolated O structural, V assertion and O capture handoffs.
 
+The A settlement chain and V's ordered compatibility dependencies are now
+also composed through `0d13e19`, preserving prior migrations rather than
+replacing entire files. Integrated typecheck, e2e lint and five new harness
+tests pass. A's and V's independent evidence remains owner-attributed;
+G performed no additional browser run, and these locator patches do not
+resolve every classified historical CI failure.
+
 Fresh assembled browser evidence is not green: exact clean served `491a808`
 produced six passes and four failures in O's ten cases, one worker and no
 retries. Both widths fail D On focus retention and D Off full note visibility.

@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: how are overlapping A/V test handoffs composed? Choice: apply their explicitly offered chronological commits, preserve prior test migrations and union only the five tracking histories; stop for any substantive code conflict. Validate combined types, lint and harness tests without treating discovery or owner-only results as fresh G browser acceptance. Tie-breaker: narrow integration with retained evidence.
+
 - Question: how are the four actual D browser failures resolved? Choice: preserve the On focus and Off full-viewport requirements and hand the exact traces to O for source repair; do not focus or scroll in the test to conceal behavior, relax assertions, or claim unexecuted D axe checks. Tie-breaker: actual operator usability and source-pinned evidence.
 
 - Question: may a passing old-layout browser result certify the new sibling layout? Choice: no; run O's unchanged ten scenarios once on G's clean published assembled candidate after coordinator clearance, preserving full axe, focus, geometry and named 1440 px evidence. Tie-breaker: source-pinned proof without duplicate runs.

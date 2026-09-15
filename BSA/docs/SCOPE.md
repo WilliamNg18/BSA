@@ -16,6 +16,13 @@ failures. O receives the exact traces for source repair; G does not relax
 focus, full-viewport or accessibility assertions. The four D axe checks and
 named screenshots were not reached. Any repaired-candidate rerun needs a
 new coordinated lease; 4335 is released.
+
+The later A/V integration changes only tests, helpers and tracking records:
+wait for the genuine header final state before ordinary axe, select actual
+paper scenarios, use payload-bound ACK, preserve source-backed responses
+and target Apply in its real advice sibling. Timing primitives, runtime
+fades, rule authority and existing assertion thresholds remain unchanged.
+The remaining stale scenario expectations require their own explicit fixes.
 The advice-locator patch changes only test lookup scope, not action order,
 expectations, deadlines or source. It preserves native ordinary/state/live
 identities across the patch and excludes A's settlement hunk, O's new
