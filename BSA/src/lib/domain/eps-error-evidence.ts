@@ -1,0 +1,57 @@
+export const EPS_ERROR_EVIDENCE = {
+  verifiedOn: "2026-09-15",
+  study: {
+    citation: "Um IS, Clough A, Tan ECK. Dispensing error rates in pharmacy: a systematic review and meta-analysis. Research in Social and Administrative Pharmacy. 2024;20(1):1-9.",
+    doi: "10.1016/j.sapharm.2023.10.003",
+    url: "https://doi.org/10.1016/j.sapharm.2023.10.003",
+    verifiedAbstractUrl: "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml",
+    label: "study on dispensing errors, used to make the scenario realistic; not an NHSBSA claim statistic",
+    includedStudies: 62,
+    pooledPrevalencePercent: 1.6,
+    confidenceInterval95Percent: [1.2, 2.1],
+    searchPeriod: "January 2010 to September 2023",
+    searchPeriodMeaning: "Database search date range, not dates of all underlying dispensing events.",
+    chapterOneLine: "Dispensing errors are rare but real: a pooled 1.6 per cent across 62 studies.",
+    typeCountsVerified: false,
+    limitation: "Wrong-strength, wrong-medicine and wrong-quantity study counts and their ranking were not confirmed in the accessible abstract.",
+    context: "International pharmacy settings with heterogeneous denominators; not an NHSBSA or EPS claim-error rate.",
+  },
+  nhsbsa: {
+    title: "Endorsing correctly in EPS: actual medicinal product pack",
+    url: "https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack",
+    label: "public, NHSBSA",
+    location: "Opening paragraph and Reimbursement, paragraphs 1 and 2; unpaginated HTML.",
+    publicationDate: null,
+    quotation: "what you have endorsed and not what you have supplied",
+    automaticPricingQuotation: "our processing team will not need to review your submission",
+    scope: "When the selected actual medicinal product pack has a dm+d price, processing is automatic. Incorrect endorsements can also cause referred backs and payment delays.",
+  },
+} as const;
+
+export const EPS_STRENGTH_COPY = {
+  title: "EPS: wrong strength",
+  mismatch: "Strength mismatch: prescribed 10mg, selected 5mg",
+  suggestion: "Select Amlodipine 10mg tablets, 28",
+  rule: "Reimbursement follows the endorsed pack; the selection must match what was supplied and prescribed.",
+  ruleLabel: "Proposed matching check, informed by public NHSBSA endorsement guidance",
+  authorityLabel: "the agent verifies and advises; a person decides",
+  proof: "this is the proof the agent does not rubber-stamp",
+  today: "The selected 5mg pack has a dm+d price: priced by NHSBSA's existing rules engine, no person involved.",
+  todayReimbursement: "The pharmacy is reimbursed for the endorsed 5mg pack, not the actual supplied 10mg pack.",
+  todayVisibility: "In this synthetic scenario the mismatch is not surfaced by automatic pricing; audit or a later query could find it.",
+  on: "Gate 1 flags the strength mismatch. Apply suggested correction fills the 10mg pack; Send remains a separate human action.",
+  uncorrected: "An uncorrected Send fails Gate 2, creates an operator case and is never automatically released.",
+  corrected: "After correction, Send or acknowledged Resubmit is rechecked before release to existing pricing, no operator action.",
+  sourceCaption: "your agent's suggestion from your records",
+} as const;
+
+export const EPS_MISMATCH_ESTIMATE = {
+  inputLabel: "share of claims with a pack or strength mismatch",
+  defaultShare: 0.01,
+  inputClassification: "assumption",
+  rowLabel: "mismatches caught before pricing",
+  todayLabel: "none",
+  withClassification: "estimate",
+  todayBasis: "Synthetic comparison: no mismatch catch is modelled, not evidence of an observed zero rate.",
+  basis: "Total submitted-claim volume multiplied by the editable assumed share, not the 85,000 referral subset or the study prevalence. A separate, non-additive estimate.",
+} as const;

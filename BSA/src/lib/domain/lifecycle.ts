@@ -1,5 +1,6 @@
 /** Frozen cross-stream contracts. Synthetic session data, not payment authority. */
-import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, EpsPrescription, FieldProvenance, HumanDecision, ItemChannel, PaperDeclaration, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
+import type { DecisionRecord, DeclaredItemFields, EndorsementFacts, EpsPrescription, ExceptionCase, FieldProvenance, HumanDecision, ItemChannel, PaperDeclaration, PharmacyDeclaration, Recommendation, RoutingResult } from "./types";
+import type { CharacterRecognitionField } from "./paper-reconciliation";
 import type { DiagnosticFollowUp } from "./recommendations";
 
 export type LifecycleState = "submitted" | "in_review" | "information_requested" | "referred_back" | "resubmitted" | "paid" | "escalated" | "released_to_pricing";
@@ -26,6 +27,12 @@ export interface OperatorDecisionDraft {
   readonly appliedSuggestion: boolean;
 }
 
+/** Explicit human attestation to the exact corrected payload, not a UI preference. */
+export interface CorrectionAcknowledgement {
+  readonly revision: number;
+  readonly fingerprint: string;
+}
+
 export interface PharmacyCorrectionDraft {
   readonly revision: number;
   readonly channel?: ItemChannel;
@@ -35,8 +42,9 @@ export interface PharmacyCorrectionDraft {
   readonly paperDeclaration?: PaperDeclaration;
   readonly epsPrescription?: EpsPrescription;
   readonly appliedSuggestion: boolean;
-  readonly appliedFields?: readonly ("endorsementText" | "brandManufacturer" | "packSize" | "form")[];
+  readonly appliedFields?: readonly ("endorsementText" | "brandManufacturer" | "packSize" | "form" | "dispensedCode" | "typedProduct" | "quantity")[];
   readonly confirmation?: string;
+  readonly correctionAcknowledgement?: CorrectionAcknowledgement;
 }
 
 /** Human-invoked controls. The agent must never invoke these actions. */
@@ -46,6 +54,8 @@ export interface HumanActionSlice {
   pharmacyDrafts: Record<string, PharmacyCorrectionDraft>;
   setOperatorDraft: (caseId: string, draft: Pick<OperatorDecisionDraft, "revision" | "outcome" | "rbCode" | "note">) => void;
   setPharmacyDraft: (caseId: string, draft: Omit<PharmacyCorrectionDraft, "appliedSuggestion">) => void;
+  setCorrectionAcknowledgement: (caseId: string, expectedRevision: number, acknowledged: boolean) => void;
+  reopenForAudit: (caseId: string, expectedRevision: number, reason: string) => void;
   applySuggestionToDecision: (caseId: string) => void;
   releaseToPricing: (caseId: string, reason?: string) => void;
   referBack: (caseId: string, rbCode: string, note: string) => void;
@@ -73,9 +83,10 @@ export interface HistoryEvent {
   approvedDraft?: ApprovedDraft;
   channel?: ItemChannel;
   rbCode?: string;
-  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission" | "suggestion_applied" | "correction_applied" | "verification" | "release_to_pricing";
+  processStep?: "submission" | "automatic_pricing" | "existing_pricing" | "type1_capture" | "type2_judgement" | "referral" | "resubmission" | "suggestion_applied" | "correction_applied" | "correction_acknowledged" | "audit_reopened" | "verification" | "release_to_pricing";
   readonly verification?: ItemVerification;
   readonly releaseOrigin?: ReleaseOrigin;
+  readonly correctionAcknowledgement?: CorrectionAcknowledgement;
   /** Append-only human capture evidence; never edit the originating pharmacy attempt. */
   readonly capture?: Type1Capture;
   /** Snapshot of advice explicitly copied by a person, not recomputed on release. */
@@ -121,8 +132,16 @@ export interface CaseRevision {
   readonly paperDeclaration?: PaperDeclaration;
   /** Captured at explicit Send/Post, never inferred from a later header toggle. */
   readonly verificationEnabled?: boolean;
+  readonly correctionAcknowledgement?: CorrectionAcknowledgement;
+  readonly paperSource?: PaperSubmissionSource;
 }
 
+export interface PaperSubmissionSource {
+  readonly provenance: "original_scan" | "acknowledged_pharmacy_amendment";
+  readonly scan: ExceptionCase;
+  readonly fields: DeclaredItemFields;
+  readonly characterRecognition: readonly CharacterRecognitionField[];
+}
 export interface Type1Capture {
   readonly revision: number;
   readonly confirmedAt: string;
@@ -142,6 +161,7 @@ export interface ItemProcess {
   readonly capture: Type1Capture | null;
   readonly rbCode: string | null;
   readonly releaseOrigin?: ReleaseOrigin;
+  readonly readyToRelease?: boolean;
 }
 
 export interface ProcessSubmission {
@@ -154,6 +174,7 @@ export interface ProcessSubmission {
   epsPrescription?: EpsPrescription;
   paperDeclaration?: PaperDeclaration;
   precheck?: PharmacyPrecheckSnapshot;
+  correctionAcknowledgement?: CorrectionAcknowledgement;
 }
 
 export interface ConfirmType1Input {
@@ -238,7 +259,9 @@ function automaticReleaseVerified(event: HistoryEvent | undefined): boolean {
 }
 
 /** The no-operator label must never erase an actual operator release. */
-export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nhsbsa" | "both", enabled = false): string {
+export function itemStateLabel(row: CaseLifecycle, perspective: "pharmacy" | "nhsbsa" | "both", enabled = false, process?: ItemProcess): string {
+  if (row.state === "resubmitted" && process?.channel === "paper" && process.readyToRelease &&
+    row.history.at(-1)?.revision === process.revision) return "Resubmitted, ready to release";
   const release = row.state === "released_to_pricing"
     ? row.history.filter((event) => event.to === "released_to_pricing" &&
       (event.from !== event.to || event.processStep === "release_to_pricing" || event.releaseOrigin !== undefined)).at(-1) : undefined;
