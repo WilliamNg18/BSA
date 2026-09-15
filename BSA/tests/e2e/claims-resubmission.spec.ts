@@ -91,7 +91,7 @@ for (const [width, colorScheme] of [[1440, "light"]] as const) {
       await page.keyboard.press("Enter");
       await expect(marker).toHaveAttribute("data-pain-marker", "resolved");
       await expect(marker).toHaveText("Assisted: Ready; explicit resubmission required");
-      await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Changed fields highlighted; not sent.");
+      await expect(page.getByRole("region", { name: "Claim detail", exact: true })).toContainText("Highlighted; not sent.");
       await flag.setChecked(false);
       await expect(marker).toHaveAttribute("data-pain-marker", "open");
       await expect(page.getByRole("region", { name: "Claims precheck", exact: true })).toHaveCount(0);

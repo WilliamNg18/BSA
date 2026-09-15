@@ -35,6 +35,7 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
     <h2 className="font-semibold">Submission receipt</h2>
     <BoundaryTag cls={release || pricing ? humanRelease ? "human" : "deterministic" : "human"} />
     <p role="status">{release?.verification?.released ? "Paid on the normal schedule (synthetic)." : nextPath}</p>
+    {caseId === "EX-24123" && revision.channel === "paper" && !release && <p className="text-sm">Unreadable paper is never released automatically; an operator compares your declaration with the scan.</p>}
     <dl className="grid grid-cols-2 gap-3 text-sm">
       <KeyValue k="Receipt" v={`${caseId}:${revision.number}`} />
       <KeyValue k="Gate 1" v={verification.gate1} />

@@ -2071,3 +2071,16 @@ Tie-breakers: preserved history and human decisions.
 ## 2026-09-15: Requirement 4 Follow scope extension
 
 - Question: does synchronous Follow navigation prove the new one-second cross-side requirement? Choice: retain the existing one-store navigation and neutral action labels, add request/confirmation and unchanged diagnostic-event contract coverage, and leave all-four-case browser deadlines to V after R integration; no timing or new-paper-path pass is claimed from unit tests. Tie-breakers: truthful evidence, explicit human decisions and no duplicated operational state.
+
+## 2026-09-15: Concrete pharmacy recommendation mounts
+
+- Question: which preview drives Apply? Choice: render R's shared draft recommendation and invoke the shared correction action; no separate UI correction algorithm or automatic action on toggle.
+- Question: what do paper demo controls change? Choice: explicit complete/missing buttons prepare R's labelled synthetic declaration, including the visible demo prescriber. Scanner presentation reveals the retained poor image without rewriting it; Post and capture remain separate human actions.
+- Question: what is filled for an unknown invoice price? Choice: nothing. The actual invoice control focuses the authoritative endorsement field for manual entry; no claimed amount becomes invoice evidence.
+- Question: which fields are highlighted? Choice: R's before/after applied-field metadata, including restored original values; not an inference from the original source alone.
+- Question: how does the demo recognise shared-card controls? Choice: an optional pharmacy-only prop marks the real Apply and invoice-focus buttons. No proxy controls or weakened absence checks.
+
+## 2026-09-15: Current pharmacy communication visibility
+
+- Question: should an expanded recommendation push the operator's current question below the hand-off viewport? Choice: place the actual question, confirmation controls, sent answer and referral response near the claim state, before supporting evidence. Keep the full recommendation expanded and preserve every recorded word.
+- Question: how should a followed claim enter the viewport? Choice: focus its heading without browser nearest-edge scrolling, then align it below the measured sticky header. Repeat only for a case, state or revision change, never a draft edit or assistance toggle. The one-second assertion and its actual evidence nodes remain unchanged.
