@@ -84,7 +84,7 @@ export async function runTimedCaseJourney(
     originRequiredText: [{ locator: page.getByRole("region", { name: "Submission receipt", exact: true }).getByText(`${id}:2`, { exact: true }), text: `${id}:2` }],
     queue: queueTarget(automatic), destinationState: queueRow(automatic),
     destinationText: automatic ? `${id}: read-only record` : LIFECYCLE_LABELS.submitted.nhsbsa.on, stateMatch: "contains",
-    lastEventText: automatic ? enabled ? "Verified and released" : "Existing rules engine priced item" : enabled ? "Verification recorded" : "Pharmacy submitted item",
+    lastEventText: automatic ? enabled ? "Released to existing pricing" : "Existing rules engine priced item" : enabled ? "Verification recorded" : "Pharmacy submitted item",
   });
   await bothSides();
   if (automatic) {

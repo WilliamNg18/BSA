@@ -209,6 +209,36 @@ Check passed, the clean build identity matched the full commit, and port
 JSON report. This composed candidate is not latest main. The complete
 75-name local rehearsal and final hosted acceptance remain separate gates.
 
+### First complete 75-name local rehearsal
+
+The full local pre-integration run at clean
+`7d0d5f8ea5302af67b38b5666e197669582047ea` finished **73/75 passed** in
+19 minutes 6 seconds, one worker and no retries. All 75 names executed once,
+with no missing, unexpected or duplicate names. All 150 before/after identity
+checks passed against the same clean source. The 220 axe audits had zero
+violations; 147 retained incomplete findings. All 69 captured views were
+1440 px wide and remain **pending visual review**. Independent PNG byte
+checks matched all 69 recorded hashes and confirmed every actual pixel width
+was 1440; these metadata checks are not visual inspection.
+
+Both failing names are the Agent On, four-case/three-perspective timing
+checks, at 1280 and 1440 px. Each stopped at the first A/Both Send: the test
+expected the latest-event paragraph to say "Verified and released", whereas
+the actual documented event label is "Released to existing pricing". The
+independent verified origin-state assertion had already passed. F's
+read-only source review confirmed a stale test literal, not evidence of a
+slow application transition. The failed assertion exhausted the same
+1,000 ms budget at 1,023.8819 and 1,020.8673 ms.
+
+The test literal is corrected without changing the verified origin-state,
+release provenance, human-attribution, changed-event, visibility or deadline
+checks. The 132 passing timing records and two failures are not a complete
+On timing matrix: subsequent actions within both failed checks were not
+reached. Two targeted checks and then a fresh full 75-name run remain
+required. `req38-preintegration-75/checklist.json` and its traces retain the
+complete failed run. Port 4336 was released; this is not latest-main or
+hosted acceptance.
+
 ## Combined operator/pharmacy browser phase
 
 The first complete combined P/O run at clean `4efa7b8` passed 44 of 53 tests.
