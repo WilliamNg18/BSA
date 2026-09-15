@@ -57,6 +57,11 @@ study-only chapter 1 wording, same-store Reset and 1280/1440 browser coverage.
 The helper is implemented; consumer/state integration and exact-main live
 verification remain pending. This does not reopen historical Task 28.
 
+The chapter consumers and four 1280/1440 browser tests are now published WIP.
+The editor is optional and independent of core validation; invalid drafts remove
+only the mismatch estimate. G's canonical store action/Reset handoff and
+integration validation remain required before readiness or live acceptance.
+
 ## 2026-09-15: Task 39 W foundation, not live completion
 
 The latest owner brief replaces the playable EPS error with wrong strength:

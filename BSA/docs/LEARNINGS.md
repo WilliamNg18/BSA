@@ -136,6 +136,13 @@ The new helper retains fractional expected counts without inventing rounding
 or subtracting them from referral cohorts. W's 1.6% study context supplies no
 NHSBSA prevalence estimate. Consumer and live acceptance remain pending.
 
+Thirty isolated helper tests pass, including a percent-to-fraction underflow
+case. The first underflow fixture used a still-representable tiny decimal and
+correctly returned a tiny nonzero estimate; the fixture now tests a value that
+actually underflows during division by 100. The model was not weakened.
+Affected-file lint passes; rendered-state/browser coverage is authored only
+until the canonical-store handoff lands.
+
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
 at https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/.
