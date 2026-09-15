@@ -408,6 +408,13 @@ The exact one-state key inventory is extended with `mismatchSharePercent`,
 without dropping any authoritative fields. Earlier pending-store notes below
 describe the preceding checkpoint. Browser/live acceptance remains pending.
 
+The N-only browser contract subsequently passes 4/4 against clean `15f9562`
+on the explicit coordinator-leased port 4340. Tests exercise study provenance,
+default/edited/zero/100% and tiny positive counts, invalid drafts, Reset, all
+perspectives and both toggle states. Two axe reports have no violations or
+incomplete results. This is not acceptance of pending A/G/W/B UI integration or
+an observation of actual canonical main on the live service.
+
 | Requirement | Current evidence and remaining work |
 | --- | --- |
 | Study context separate from NHSBSA claim rates | W `fe0a521` supplies verified abstract copy and an explicit study-only label; no unverified wrong-strength ranking will be rendered |

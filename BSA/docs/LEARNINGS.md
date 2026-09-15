@@ -505,6 +505,14 @@ store edit/Reset/snapshot behaviour and unchanged old monthly totals.
 The earlier check failure and published pending-store status remain historical
 evidence; they are not counted as a clean first attempt.
 
+The desktop runner does not inherit per-call PowerShell environment assignments.
+An invocation missing `PLAYWRIGHT_PORT` used default 4173 rather than leased
+4340. Its four passing cases are preserved, but only the explicit corrected
+4340 invocation is cited as the requested diagnostic: 4/4, one worker, zero
+retries, unchanged deadlines, two clean axe reports and one inspected 1440 image.
+Both servers shut down and ports were confirmed released. No application source
+changed between the runs, and no duplicate test count or live claim is made.
+
 The existing monthly model uses a referral subset for its hours but exposes
 total submitted items separately. Reusing that subset for mismatch prevalence
 would understate the requested comparison. UI percentages and fractional

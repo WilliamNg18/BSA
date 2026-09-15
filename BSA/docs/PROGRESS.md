@@ -506,6 +506,16 @@ inventory now includes `mismatchSharePercent`. No N store edits were made.
 Browser lease is requested but no browser run or live acceptance is claimed.
 Final N scope must be reduced against actual canonical main after A/G merges.
 
+N's frozen-source desktop diagnostic on `15f9562` now passes all four requested
+cases at 1280/1440, one worker and zero retries. Both unrestricted axe reports
+have zero violations and zero incomplete results. The single named 1440 image
+was inspected: optional input, Today/With row, source qualifiers and unchanged
+core totals render without clipping. Ports are released and the source stayed
+clean. The first invocation accidentally used default port 4173 and passed;
+it is retained separately. The explicitly corrected leased-port 4340 run also
+passes 4/4 and is the cited development proof, not eight unique tests.
+These are branch diagnostics, not header acceptance, backup or live completion.
+
 N reactivated on main `6418151` for the additive mismatch estimate, not a rerun
 of Task 28. The pure helper consumes W's evidence constants, converts UI 1%
 to numeric share 0.01, and multiplies total submitted claims. Existing monthly

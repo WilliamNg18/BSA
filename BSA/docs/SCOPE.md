@@ -240,6 +240,12 @@ application store; Reset and exact snapshot-key coverage are included.
 This remains dependency-qualified WIP, not a merged/live release or backup.
 Browser execution and actual canonical-main reduction remain pending.
 
+Subsequent frozen `15f9562` verification passes the four N browser cases at
+1280/1440 and two axe audits with zero violations/incomplete results. The named
+1440 image was inspected. N browser development coverage is satisfied against
+G `4765770`; canonical-main reduction, dependency gates, merge, green deployment
+and exact live observation remain required before completion.
+
 The independent mismatch helper uses all submitted claims, not the referral
 subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
 With share times volume labelled estimate, unchanged existing totals, verified
