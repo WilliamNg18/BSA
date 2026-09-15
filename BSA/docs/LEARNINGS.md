@@ -6,6 +6,14 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 actual-source audit and foundation boundary
 
+G's paper integration exposed an incorrect `missing(observation.value)` test in
+the Type 1 predicate. A readable blank may have high extraction confidence:
+confidence describes the observation, not whether the mandatory field is filled.
+Both empty-string and null brand tests failed with Type 1 before the repair.
+Removing that value-completeness condition yields Type 2 field/rule referrals;
+the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
+The new result is 54 contract units plus check, not integrated live proof.
+
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
 operator projection. A poor source supported by human confirmation must disclose

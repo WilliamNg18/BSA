@@ -6,6 +6,8 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: B40 fidelity and communication contract choices
 
+- Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
+
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
 - Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.
 - Question: how does the Today wrong-strength round trip reopen? Choice: G must provide an explicit later audit/query action after existing pricing; an On-failure-then-Off toggle is not the required Today demonstration. Tie-breaker: latest owner clarification and truthful history.

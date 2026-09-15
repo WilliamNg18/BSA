@@ -66,6 +66,41 @@ it("requires current Type 1 confirmation before Type 2, without presenting confi
   expect(reconcilePaperEvidence({ ...input, capture: { ...capture, declarationReconciled: false } }).outcome).toBe("REQUEST_INFORMATION");
 });
 
+it.each(["", null])("routes a confidently readable blank brand (%s) to Type 2 referral, not Type 1", (blank) => {
+  const source = complete();
+  const result = reconcilePaperEvidence({
+    ...source,
+    declaration: { ...source.declaration, brandManufacturer: blank },
+    scan: { readable: true, fields: { ...source.scan.fields, brandManufacturer: blank } },
+    characterRecognition: source.characterRecognition.map((observation) => observation.field === "brandManufacturer"
+      ? { ...observation, value: blank, confidence: 0.99 } : observation),
+    tariffChecks: source.tariffChecks.map((check) => check.field === "brandManufacturer" ? { ...check, met: false } : check),
+    verification: { gate1: "fail", gate2: "fail", reconciled: false, released: false },
+  });
+  expect(result.requiresType1).toBe(false);
+  expect(result.outcome).toBe("REFER_BACK");
+  expect(result.note).toContain("Brand or manufacturer required for a generic with more than one supplier");
+  expect(result.evidence.characterRecognition[2]).toMatchObject({ value: blank, confidence: 0.99 });
+});
+
+it("refers both confidently blank brand and pack fields without inventing a Type 1 task", () => {
+  const source = complete();
+  const declaration = { ...source.declaration, brandManufacturer: "", packSize: null };
+  const result = reconcilePaperEvidence({
+    ...source, declaration, scan: { readable: true, fields: declaration },
+    characterRecognition: [
+      ...source.characterRecognition.map((observation) => observation.field === "brandManufacturer"
+        ? { ...observation, value: "", confidence: 0.99 } : observation),
+      { field: "packSize", value: null, confidence: 0.99 },
+    ],
+    tariffChecks: [...source.tariffChecks,
+      { field: "packSize", met: false, request: { rule: "required_field", field: "packSize" } }],
+  });
+  expect(result).toMatchObject({ requiresType1: false, outcome: "REFER_BACK", automaticRelease: false });
+  expect(result.note).toContain("Brand or manufacturer");
+  expect(result.note).toContain("Pack size");
+});
+
 it("a human capture cannot erase high-confidence contradictory scan or OCR", () => {
   const source = complete();
   const capture = { revision: 2, declarationReconciled: true, fields: source.declaration };
