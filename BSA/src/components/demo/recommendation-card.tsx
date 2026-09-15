@@ -25,6 +25,7 @@ export function RecommendationCard({
   return (
     <section aria-labelledby={headingId} className={cn("space-y-3 rounded-lg border p-4", compact && "p-3", className)} data-recommendation-case={r.caseId}>
       <Heading id={headingId} className="font-semibold">Recommendation</Heading>
+      {r.operatorApproved && <p className="text-sm">Operator-approved; the agent verified and advised.</p>}
       <p className="text-sm">{r.authorityLabel}</p>
       <dl className="grid grid-cols-2 gap-2 text-sm">
         <div><dt className="text-muted-foreground">Clause</dt><dd>{r.clause?.title ?? "Unavailable"}</dd></div>
@@ -79,7 +80,6 @@ export function RecommendationCard({
         <dt>Next step</dt><dd>{r.nextStep}</dd>
         <dt>Source provenance</dt><dd>{r.provenance}</dd>
       </dl>
-      {r.operatorApproved && <p className="text-sm">Operator-approved; the agent verified and advised.</p>}
       <SignalList signals={r.signals} compact={compact} />
       {onApply && r.context !== "recorded" && <Button type="button" variant="outline" data-pharmacy-action={pharmacyAction} onClick={onApply}>{applyLabel}</Button>}
     </section>

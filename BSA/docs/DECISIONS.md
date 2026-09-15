@@ -2084,3 +2084,8 @@ Tie-breakers: preserved history and human decisions.
 
 - Question: should an expanded recommendation push the operator's current question below the hand-off viewport? Choice: place the actual question, confirmation controls, sent answer and referral response near the claim state, before supporting evidence. Keep the full recommendation expanded and preserve every recorded word.
 - Question: how should a followed claim enter the viewport? Choice: focus its heading without browser nearest-edge scrolling, then align it below the measured sticky header. Repeat only for a case, state or revision change, never a draft edit or assistance toggle. The one-second assertion and its actual evidence nodes remain unchanged.
+
+## 2026-09-15: Untouched pharmacy correction context
+
+- Question: why was an existing approved referral not attributed in its untouched Recommendation card? Choice: an editable referral view supplies `correction` only when the displayed draft has no explicit purpose. The shared recommendation still determines approval from the actual current-revision record; new-submission drafts, unapproved records and earlier revisions cannot inherit approval. This is a read-only view projection, not an approval or draft write.
+- Question: what if that real attribution exists but is below the hand-off viewport? Choice: put the complete correction card immediately after the operator response and move its existing conditional approval statement to its header. Preserve the same paragraph, predicate, text and all card contents; neither a duplicate badge nor a relaxed visibility assertion is acceptable.
