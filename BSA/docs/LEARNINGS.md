@@ -25,6 +25,71 @@ subprocess test exceeded 5,000 ms (reported at 5,625 ms). All 52 tests in that
 file passed in a subsequent isolated 2.28-second run without edits. This is
 evidence of a run-sensitive deadline, not proof of a green full suite. No
 timeout, callback, application or unrelated tooling change was made.
+## 2026-09-15: EPS error evidence, primary-source verification
+
+Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic
+review and meta-analysis.* Research in Social and Administrative Pharmacy.
+2024;20(1):1-9. DOI
+<https://doi.org/10.1016/j.sapharm.2023.10.003>; PMID 37848350.
+The original indexed abstract/bibliography was acquired as HTTP 200 XML:
+<https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=37848350&retmode=xml>.
+It confirms 62 included studies and pooled dispensing-error prevalence 1.6%
+(95% CI 1.2-2.1). January 2010 to September 2023 is the database-search
+period, not the dates of every underlying dispensing event. Settings and
+denominators differ; reported heterogeneity is I-squared 100%.
+
+Wrong-strength 39/62, wrong-medication 44 and wrong-quantity 34 are **unverified**,
+not established by the accessible abstract. The abstract's 44 is hospital-
+setting studies, not a verified wrong-medication count. Publisher full text at
+<https://www.sciencedirect.com/science/article/pii/S1551741123004552> returned
+403; public publisher API returned metadata only, and full-text view returned
+401. No access barrier was bypassed and no third-party snippet was accepted
+as source verification. The requested error-type ranking is therefore not
+asserted on screen. These proposed counts would be studies reporting types,
+not prevalence rates, even if later confirmed.
+
+Exact study label: "study on dispensing errors, used to make the scenario
+realistic; not an NHSBSA claim statistic".
+
+NHS Business Services Authority, *Endorsing correctly in EPS: actual medicinal
+product pack*, n.d., verified 15 September 2026:
+<https://www.nhsbsa.nhs.uk/endorsing-correctly-eps-actual-medicinal-product-pack>.
+Direct HTTP 200 HTML. This is an unpaginated page, not a PDF. The opening
+paragraph confirms incorrect product/pack endorsements causing referred backs
+and payment delays. **Reimbursement**, paragraphs 1-2, explains that a selected
+AMPP with a dm+d price is processed automatically without processing-team
+review, and reimbursement follows what was endorsed, including an incorrect
+first pick-list selection, rather than what was supplied.
+
+Short verified quotations: "our processing team will not need to review your
+submission"; "what you have endorsed and not what you have supplied".
+Exact source label: "public, NHSBSA". The source does not provide a wrong-
+strength rate or describe this prototype's proposed two-gate matching check.
+
+W's implementation keeps the actual prescription/supply record separate from
+the selected claim. Its 33 focused units and `npm run check` pass. The missing
+TypeScript baseline was resolved by restoring the existing lockfile. No live,
+browser or backup result is inferred from these branch checks.
+## 2026-09-15: B40 actual-source audit and foundation boundary
+
+G's canonical ACK/audit checkpoint passes typecheck and 38 focused tests,
+including fabricated/stale/withdrawn acknowledgements, mode/perspective parity
+and explicit later audit reopening. The previous full source-foundation suite
+passed 1,630 tests in 93 files; that earlier pass predates new mandatory ACK
+enforcement and must not be reused as final consumer compatibility evidence.
+
+The first new-seed runtime pass has 12 successful actual-store tests. A paper
+amendment initially failed readiness because a known readable prescriber was
+dropped by draft initialisation. Preserving that existing source value, without
+inventing a value for unreadable paper, repaired the two-mode recheck tests.
+Earlier full-suite results do not cover the intentionally changed outcomes.
+G's paper integration exposed an incorrect `missing(observation.value)` test in
+the Type 1 predicate. A readable blank may have high extraction confidence:
+confidence describes the observation, not whether the mandatory field is filled.
+Both empty-string and null brand tests failed with Type 1 before the repair.
+Removing that value-completeness condition yields Type 2 field/rule referrals;
+the two-field brand/pack test and unreadable/low-confidence safeguards also pass.
+The new result is 54 contract units plus check, not integrated live proof.
 
 The source-provenance follow-up passed 51 focused units and check. Readable
 scan fields that are blank cannot be silently supplied by matching OCR or an
@@ -60,7 +125,37 @@ exact replica equality, stale/payload ACK rejection, value-leak guards,
 paper three-source conflicts/Type 1 ordering and all 36 channel/gate/reconciliation
 combinations. They do not claim actual store-action or browser completion.
 
+The subsequent coordinator clarification distinguishes three concepts:
+submitted/source facts can be visible to the operator; the proposed exact
+correction belongs only to the pharmacy; the outbound operator note must
+contain no proposed value. A pure assessment may carry a source-backed
+suggestion, but its shared presentation adapter must enforce those audiences.
+Likewise, a full Off wrong-strength round trip cannot be demonstrated by
+inventing an initial operator row: Today first prices the endorsed pack, and
+an actual human audit/query must reopen it. A mixed-mode response test does
+not establish that separate path. These are handoffs, not implemented or
+observed-live claims.
+
+W's implemented audience adapter now tests that distinction directly. The
+operator projection keeps prescribed 10mg/selected 5mg as factual evidence
+but serialises no correction patch, claim-line preview or suggested-selection
+label. Projection data is copied so it cannot mutate the source assessment.
+Four added cases pass, as do all 120 combined strength/evidence/headline and
+existing EPS/correction/recommendation/two-gate regressions and check. These
+existing gate regressions protect the current base, not the unmerged new
+mode-specific routing that G is implementing.
+
 ## 2026-09-15: Live-first policy adoption and the current evidence boundary
+
+### Task 39 N percent and denominator boundary
+
+The existing monthly model uses a referral subset for its hours but exposes
+total submitted items separately. Reusing that subset for mismatch prevalence
+would understate the requested comparison. UI percentages and fractional
+shares also differ by 100: default text 1 must become numeric 0.01, not 1.
+The new helper retains fractional expected counts without inventing rounding
+or subtracting them from referral cohorts. W's 1.6% study context supplies no
+NHSBSA prevalence estimate. Consumer and live acceptance remain pending.
 
 At adoption, a fresh remote-main lookup and live `/build-info.json` response
 both identified `08f4d399ca658cae2aaf16a10d4f9cae8431621f`, with `dirty: false`,
@@ -1210,6 +1305,15 @@ These are contract findings, not implemented or deployed acceptance.
 The additive field contract passes the existing consumer typecheck. This is
 useful for parallel module work but is not runtime enforcement: an optional
 acknowledgement type alone cannot prevent a stale or unacknowledged resubmission.
+
+Source preparation passes 43 targeted tests. Shape validity and reconciliation
+are different: a known 5mg selection may be structurally valid while disagreeing
+with a retained 10mg prescription and supply record. Reject malformed copies,
+but leave the genuine supported mismatch visible to the independent gates.
+
+A source-identity guard must compare semantic fields in a fixed order, not the
+caller's object-key insertion order. Legitimate reserialisation passes while
+changed prescribed quantity, source product or supply record still fails.
 
 CI `35006154532` found one callback-integrity unit failure in all four jobs.
 The unchanged original callback produced scanner hash `4542a736...` under

@@ -13,6 +13,24 @@ ms.date: 2026-09-15
 - Question: can high confidence turn null into a known blank? Choice: preserve B's explicit null/empty-string distinction and associate each displayed value with its source description; tie-breaker: truthful uncertainty rather than implied readability.
 - Question: may display rounding promote a confidence below one to certainty? Choice: retain sufficient decimal precision so it does not display as 100 per cent; tie-breaker: never improve source confidence through presentation.
 - Question: should an unchanged CLI subprocess deadline be relaxed after a loaded full run? Choice: retain the failed 1,700/1,701 result, rerun its 52-test file unchanged in isolation and keep full acceptance pending; tie-breaker: truthful validation without weakening unrelated tests.
+## 2026-09-15: Task 39 source-backed wrong-strength contract
+
+- Question: why replace the date headline? Choice: the owner's explicit new wrong-strength scenario makes a plausible, complete-looking pick-list error visible while keeping all current dates correct. Tie-breaker: newest instruction; historical audit evidence remains unchanged.
+- Question: which four cases remain? Choice: preserve A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123`; repurpose `EX-24112` as brand-missing paper, not a fifth item. G/B/W agreed; G alone changes canonical shared definitions.
+- Question: what does Apply correct? Choice: only selected `dispensedCode/dispensedName`, from the known catalogue pack corroborated by immutable prescription and actual supply records. Missing or disagreeing records yield no proposed value. Tie-breaker: source authority and no medicine advice.
+- Question: is the matching rule a retrieved Tariff clause? Choice: label it a proposed cross-record matching check informed by public NHSBSA endorsement guidance; do not invent a provision or claim that the source describes this proposed gate.
+- Question: may unconfirmed study counts appear as facts? Choice: publish confirmed 62 studies and pooled 1.6% (95% CI 1.2-2.1) only; disclose that 39/44/34 and the ranking were not verified. Tie-breaker: truthful primary-source evidence.
+- Question: what feeds the mismatch estimate? Choice: a separate editable 1% assumption over total submitted claims, not the 1.6% dispensing-study prevalence or the 85,000 referral subset. Today none is a synthetic comparison, not a measured zero.
+- Question: how can W supply the CI guard without breaking other owners' work? Choice: publish the strict standalone checker and its negative tests; V hooks it into the existing root check after coordinated active-source migration. No broad whitelist and no historic record rewrite.
+## 2026-09-15: B40 fidelity and communication contract choices
+
+- G integration: correction acknowledgement requires both exact current payload metadata and its explicit pharmacy event, preventing a fabricated fingerprint from substituting for the checkbox action; tie-breaker: real human authority.
+- G integration: Off wrong-strength audit is an explicit operator reopening that preserves previous pricing history, never an automatic mismatch check or navigation side effect; tie-breaker: the owner's specified Today behaviour.
+- G integration: pharmacy suggestions come from the pharmacy's own source records, not from an operator-approved value-containing note; communication approval remains separate provenance; tie-breaker: C5/C6 separation.
+- G integration: corrected paper creates a new acknowledged synthetic amendment scan/OCR snapshot rather than rewriting its earlier unreadable or blank source; the new paper still needs an operator release; tie-breaker: exact source fidelity and C6's one-press recheck.
+- G integration: the strength-case EPS contract contains no editable claim amount, so code validates a known selected pack price and the independent prescribed/supplied identity without inventing a payment amount during Apply; tie-breaker: no payment calculation.
+- G integration: keep N's optional mismatch input in the same store and exact domain snapshot, separate from the unchanged manual-loop defaults; tie-breaker: one state and non-additive assumptions.
+- Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 
 - Question: does human-confirmed poor paper establish agreement of the raw OCR columns? Choice: expose `human_confirmed_capture` as the effective reconciliation basis and retain unchanged low-confidence raw inputs; never call it raw-source agreement. Tie-breaker: source truth and explicit human authority.
 - Question: can a same-shaped scan from another case support fidelity? Choice: reject a template identity mismatch before constructing the replica. Tie-breaker: exact same-submission evidence.
@@ -25,8 +43,17 @@ ms.date: 2026-09-15
 - Question: may a paper recheck auto-release? Choice: never; successful paper reconciliation only recommends a human press, while corrected EPS with both gates passing may auto-release. Tie-breaker: newest explicit channel-specific instruction.
 - Question: how can a missing readable-paper field later agree? Choice: G records a new acknowledged pharmacy amendment/source snapshot on the new revision; earlier submission/scan evidence remains immutable. Tie-breaker: corrections originate only at the pharmacy, not NHSBSA.
 - Question: does passing the new foundation mean Task 40 is complete? Choice: report its 48 passing units and check separately; actual store actions, screens and live identity remain integration gates. Tie-breaker: exact evidence rather than proxy acceptance.
+- Question: may the operator card show W's proposed corrected pack? Choice: show source/submission facts on both sides, but the exact proposal and preview only in the pharmacy's own-records card. Operator advice and notes are field/rule based with no proposed value. Tie-breaker: coordinator's later explicit C5 override.
+- Question: how is the full Off wrong-strength cycle entered? Choice: automatic pricing as endorsed, then a real explicit human audit/query reopening owned by G, never a silently manufactured queue row or a toggle transition. An On failure followed by Off is additional mixed-mode coverage only. Tie-breaker: truthful Today mechanism and the latest coordinator instruction.
+- Question: where is the card audience split implemented? Choice: G requested one pure W helper returning copied facts/checks for both audiences and a proposal only for the pharmacy. Its discriminated operator result has `suggestion: null`; no duplicate store, outbound-note generator or routing function is introduced. Tie-breaker: one shared interpretation with explicit presentation authority.
 
 ## 2026-09-15: Live is the product; the local copy is a verified backup
+
+### Task 39 N optional numbers decisions
+
+- Question: which volume and units drive mismatches? Choice: total submitted claims times a fractional share; UI 1% converts to 0.01, independently of the study's 1.6%. Tie-breaker: explicit latest denominator and evidence authority.
+- Question: should the new assumption change the frozen referral estimate? Choice: use a separate optional result and independently validated draft in the same store, leaving all existing cohorts and hours unchanged until overlap is defined. Tie-breaker: preserve truthful accounting.
+- Question: what does Today none mean? Choice: no catch modelled in this synthetic comparison, never observed absence of real NHSBSA detection. Tie-breaker: governing principle and truthful provenance.
 
 Live is the product; local is a backup built from the same commit; any difference is a defect.
 
@@ -2449,7 +2476,11 @@ Question: who integrates Tasks 39/40 shared authority? Choice: G alone edits can
 
 Question: how are the wrong-strength sources separated? Choice: keep prescribed item fields immutable, add an independent `supplyRecord`, and treat `dispensedCode`/`dispensedName` as the claim selection; derive selected strength from the catalogue, never overwrite the prescribed strength during Apply; tie-breaker: faithful source reconciliation.
 
+Question: should submission shape validation reject a known wrong-strength selection before the demo gates see it? Choice: permit known independently selected products only when a separate supply record exists, while validating each product copy and guarding retained original fields against edits; tie-breaker: show the real mismatch without allowing source fabrication.
+
 Question: what binds correction acknowledgement? Choice: the current revision and canonical exact-payload fingerprint, excluding acknowledgement and presentation metadata; any payload edit or Apply invalidates acknowledgement; tie-breaker: explicit informed human action.
+
+Question: can a draft temporarily replace immutable prescription or supply evidence? Choice: validate retained sources on draft writes as well as submission, using fixed field ordering and leaving the claim selection editable; tie-breaker: recommendations must not corroborate a forged source.
 
 Question: should the new fourth scenario introduce a fifth playable identity? Choice: preserve the four IDs and repurpose `EX-24112` as correctly dated paper with missing brand evidence; retain historical fixtures independently; tie-breaker: the authorised four-case scope.
 

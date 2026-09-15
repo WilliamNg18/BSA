@@ -131,6 +131,7 @@ export type RequirementId =
   | "invoice_price"
   | "brand_manufacturer"
   | "pack_size"
+  | "selected_pack_matches"
   | "presentation";
 
 export interface Requirement {
@@ -223,6 +224,7 @@ export interface HistoryRecord {
 export interface ExceptionCase {
   id: string;
   scenario: "A" | "B" | "C" | "D" | "E" | "F";
+  readonly pharmacySupplyRecord?: DeclaredItemFields;
   title: string;
   purpose: string;
   pharmacy: { name: string; contractorCode: string };

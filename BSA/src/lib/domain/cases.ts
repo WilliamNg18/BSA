@@ -272,13 +272,60 @@ export const TWO_GATE_CASES: readonly ExceptionCase[] = [
   },
 ];
 
+const CURRENT_CASES: readonly ExceptionCase[] = [
+  { ...CASES[0], channel: "Electronic (EPS)" },
+  {
+    ...GENERIC_SUPPLY_CASE, id: "EX-24112", scenario: "B", channel: "Paper FP10",
+    title: "Paper endorsement: brand required",
+    purpose: "Correctly dated paper endorsement lacks the brand for a generic with several suppliers.",
+    routingReason: "Brand or manufacturer required for a generic with several suppliers",
+    extracted: { ...GENERIC_SUPPLY_CASE.extracted, endorsementText: "NCSO RK 21/08/26", dispensingDate: "2026-08-21" },
+    claim: { ...GENERIC_SUPPLY_CASE.claim, endorsementText: "NCSO RK 21/08/26", submittedVia: "FP34C batch" },
+    paperDeclaration: { typedProduct: "SYN-AMOX500-GENERIC-21", quantity: 21, endorsementText: "NCSO RK 21/08/26",
+      dispensingDate: "2026-08-21", declaredByPharmacy: true, brandManufacturer: "", packSize: 21, form: "capsules" },
+    pharmacySupplyRecord: { productCode: "SYN-AMOX500-GENERIC-21", quantity: 21, endorsementText: "NCSO RK 21/08/26",
+      prescriber: "Dr M Reyes (synthetic)", brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" },
+    readings: Array.from({ length: 3 }, () => readNcso(true, true, "NCSO RK 21/08/26", "Initialled and dated synthetic endorsement.")),
+    regions: [
+      { id: "item", label: "Prescribed item", x: 6, y: 34, w: 58, h: 9, text: "Amoxicillin 500mg capsules (generic synthetic) 21", confidence: 0.99 },
+      { id: "endorsement", label: "Endorsement", x: 68, y: 34, w: 28, h: 9, text: "NCSO RK 21/08/26; brand not supplied", confidence: 0.99 },
+    ],
+  },
+  {
+    ...CASES[1], id: "SYN-FQ123-MISMATCH", scenario: "E", channel: "Electronic (EPS)",
+    title: "Wrong strength selected",
+    purpose: "Prescription and pharmacy records identify 10mg; the claim selects a known 5mg pack.",
+    routingReason: "Explicit human audit or a proposed strength check",
+    imageQuality: 1, imageStyle: "printed", regions: [], readings: [],
+    extracted: { ...CASES[1].extracted, productText: "Amlodipine 10mg tablets", endorsementText: "", dispensingDate: "2026-08-21" },
+    claim: { productCode: "SYN-AMLO10-28", quantity: 28, amountClaimed: 0.82, endorsementText: "", submittedVia: "EPS claim message" },
+    epsPrescription: {
+      prescriber: { name: "Dr L Okafor (synthetic)", practice: "Hillcrest Practice (synthetic)" }, patientLabel: "Strength example (synthetic)",
+      prescriptionDate: "2026-08-21", dispensingDate: "2026-08-21",
+      items: [{ prescribedCode: "SYN-AMLO10-28", product: "Amlodipine 10mg tablets", strength: "10mg", form: "tablets",
+        quantity: 28, dose: "Synthetic placeholder, not clinical advice", dispensedCode: "SYN-AMLO5-28", dispensedName: "Amlodipine 5mg tablets" }],
+      prescriberEndorsement: "", dispenserEndorsement: "", exemptionStatus: "exempt", claimMessageState: "submitted",
+      supplyRecord: { productCode: "SYN-AMLO10-28", quantity: 28 },
+    },
+    initialState: "operator_review_required",
+  },
+  {
+    ...CASES[3], extracted: { ...CASES[3].extracted, endorsementText: "N?S? ~~ 27/08/26" },
+    regions: CASES[3].regions.map((region) => region.id === "endorsement" ? { ...region, text: "N?S? ~~ 27/08/26" } : region),
+    pharmacySupplyRecord: { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26",
+      prescriber: "Dr Example (synthetic demo declaration)" },
+    paperDeclaration: { typedProduct: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB 27/08/26",
+      dispensingDate: "2026-08-27", declaredByPharmacy: true },
+  },
+];
+
 /** The only operational identities in the current four-case demonstration. */
 export const PLAYABLE_CASE_IDS = Object.freeze(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"] as const);
 export function isPlayableCase(id: string | null | undefined): boolean {
   return typeof id === "string" && PLAYABLE_CASE_IDS.some((candidate) => candidate === id);
 }
 export const PLAYABLE_CASE_CHANNELS: Readonly<Record<typeof PLAYABLE_CASE_IDS[number], ItemChannel>> = Object.freeze({
-  "EX-24107": "eps", "EX-24112": "eps", "SYN-FQ123-MISMATCH": "eps", "EX-24123": "paper",
+  "EX-24107": "eps", "EX-24112": "paper", "SYN-FQ123-MISMATCH": "eps", "EX-24123": "paper",
 });
 export function playableCaseChannel(id: string): ItemChannel | null {
   const known = PLAYABLE_CASE_IDS.find((candidate) => candidate === id);
@@ -289,7 +336,7 @@ export const BACKGROUND_CASES: readonly ExceptionCase[] = Object.freeze(CASES.fi
 export function caseById(id: string | undefined): ExceptionCase | null {
   if (!id) return null;
   if (id === GENERIC_SUPPLY_CASE.id) return GENERIC_SUPPLY_CASE;
-  return CASES.find((c) => c.id === id) ?? TWO_GATE_CASES.find((c) => c.id === id) ?? null;
+  return CURRENT_CASES.find((c) => c.id === id) ?? CASES.find((c) => c.id === id) ?? TWO_GATE_CASES.find((c) => c.id === id) ?? null;
 }
 export const PLAYABLE_CASES: readonly ExceptionCase[] = Object.freeze(PLAYABLE_CASE_IDS.map((id) => {
   const c = caseById(id);
