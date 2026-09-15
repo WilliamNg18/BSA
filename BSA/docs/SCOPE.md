@@ -47,6 +47,11 @@ outbound presentation-value leakage and missing manufacturer text in the
 actual synthetic amendment scan. Nine failing regressions are published as
 explicit WIP evidence, not waived or described as passing. No task completion.
 
+F and O explicitly supplied bounded consumer/test handoffs, with O identifying
+the prerequisite U scanner commits. P imports those unchanged for coherent
+staging; their ownership and final acceptance remain separate. The only new P
+compatibility assertion follows the actual as-submitted Type 1 evidence block.
+
 B's new-canonical fidelity proof is now 25 real-store cases across the new
 four identities, including complete correction cycles in all three perspectives
 and both modes. The combined seven-file selection passes 91 units and check.

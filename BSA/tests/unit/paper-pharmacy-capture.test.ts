@@ -52,9 +52,11 @@ describe("paper pharmacy and Type 1 surfaces", () => {
   });
   it("requires unchecked human reconciliation beside the retained JB declaration and its declared prescriber", () => {
     useAppStore.getState().setAgentEnabled(true);
+    const before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));
     expect(html).toContain("NCSO JB 27/08/26");
-    expect(html).toContain("Declared dispensing date");
+    expect(html).toContain("As submitted by the pharmacy");
+    expect(html).toContain("2026-08-27");
     expect(html).toMatch(/Image (?:agreement remains unknown|unreadable; agreement unknown)/);
     expect(html).toContain("Received declaration requirement checks");
     expect(html).toContain("not read from the form");
@@ -62,6 +64,7 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).toContain('type="checkbox"');
     expect(html).not.toContain("checked=");
     expect(html).toContain("Confirm, not key");
+    expect(getDomainSnapshot()).toEqual(before);
   });
   it("preserves the ordinary paper variant without describing a readable image as unreadable", () => {
     const html = renderPaper("EX-24112");

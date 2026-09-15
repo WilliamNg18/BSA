@@ -87,6 +87,12 @@ V integrates exact published G `cdd436b` without modifying owner source.
 The earlier failure records below retain their original source boundaries.
 Dependency integration alone does not close those gates or verify the UI.
 
+The authorised F/U/O staging integration passes check, while full Vitest still
+has 122 failures (1,839 passing). A P-owned integration test now requires the
+actual as-submitted heading/date and unchanged domain snapshot rather than an
+obsolete duplicate date label. The subsequent three-file selection passes 30
+tests; it is not a replacement full-suite, browser or live verdict.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 B final bounded proof is pinned to G

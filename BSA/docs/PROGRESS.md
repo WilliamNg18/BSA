@@ -62,6 +62,14 @@ both streams' tracking records. Its published fixes supersede the earlier
 source checkpoint; independent negative regression reruns, consumer integration
 and browser/live acceptance remain distinct gates. No browser was launched.
 
+P's staging branch now imports the explicitly released F, U and O consumer
+commits without their model merges or backup lineage. Combined check passes.
+The full cross-view unit run remains 1,839 pass / 122 fail. O's subsequent
+two-file compatibility and P's date/source-label integration pass 30 targeted
+tests. The pharmacy test now reads the actual immutable submitted date instead
+of requiring the duplicate legacy declaration heading. No browser has started;
+4342 is queued behind the coordinator's existing lease, not yet allocated.
+
 ## B40 canonical verification branch integration
 
 **B-owned implementation and verification handoff:** 111 selected tests and
