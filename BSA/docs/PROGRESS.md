@@ -2043,3 +2043,14 @@ The updated focused suite passes 23 tests; isolated production proof is pending.
 Canonical report-path protection is also covered: a parent-directory alias
 cannot redirect the report into the verified backup. All 24 focused tests and
 typecheck pass; the production-container and live gates remain pending.
+
+## Task 40 O source preparation
+
+The full additions brief and B's fidelity/reconciliation/note contracts were
+read. O audited the current main case pack, Type1 and operator panel against
+published G/W/R/U seams; results are in ALIGNMENT. U's pure comparison and
+R's safe operator audience are published, but O will wire them only through
+G's functional submission/reconciliation and final-action contracts.
+No Task 40 UI implementation or browser acceptance is claimed in this audit.
+The backup verifier stays published and its clean recovery proof remains
+blocked on D's actual producer/container integration.

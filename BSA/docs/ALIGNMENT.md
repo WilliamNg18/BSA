@@ -139,3 +139,22 @@ check; a reachable existing server cannot be counted as fresh recovery.
 
 Both report and backup locations are compared as canonical filesystem paths
 before execution; report creation cannot add an unlisted file to the backup.
+
+## Task 40 operator-surface audit: main and published seams
+
+Read-only audit against main `641815137b36ab3e925dcc98c4738d0b150a75d1`;
+published dependencies below are WIP, not current-live acceptance.
+
+| Requirement | Current operator surface | Published seam and owner | Status |
+| --- | --- | --- | --- |
+| C1 exact submitted replica | Case pack uses `useLifecycleCase` projections and `RawCaseFields`; no canonical full-submission block is mounted | B submission fidelity, G canonical submission views, O insertion | Pending G functional facade and O wiring |
+| C4 three immutable paper sources | Existing Type1 source comparison is image/declaration plus editable capture, not the new three-column view | U `PaperScannerComparison`, PR #107; B reconciliation, G adapter | Pure component published; not mounted or browser-verified by O |
+| C5 field/rule-only outbound wording | O shares revision-bound drafts and retains a rejected final-action draft; it must consume the new safe canonical note | R audience projection, PR #106; B note contract; G final-action guard | No local note filter or second authority; integration pending |
+| C6 paper ready for explicit release | O already requires a human Release action; the new recheck-ready state/prefill must come from G | G routing/recheck actions, O state presentation | New scenario acceptance pending |
+| Explicit later EPS audit | Main's automatic/released case branches suppress the action panel | G `reopenForAudit` at `6054408`, with current revision and explicit reason; W source scenario | Canonical action published, O entry control pending |
+
+Other open delivery PRs inspected for ownership were W #102, S #103,
+header #104 and numbers #105. None supplies an O-owned case-pack/Type1
+mount. U's later provenance refinement and R's operator audience defaults
+must be preserved, not reconstructed locally. The old four-case proof does
+not establish the new wrong-strength and paper-incomplete round trips.

@@ -1186,3 +1186,12 @@ Lexical path comparison alone misses a backup reached through an aliased
 parent directory. The verifier now resolves the backup location before its
 report-containment check. A real junction/symlink fixture verifies rejection
 and absence of a created report; all 24 focused tests and typecheck pass.
+
+## Task 40 audit evidence boundary
+
+Main `6418151` and open W/S/header/numbers/R/U delivery PRs were inspected
+for O's integration seams. A published pure comparison component or note
+adapter is not a mounted operator workflow. Current projected case fields
+cannot stand in for the immutable original submission; confirmed human
+capture must not be described as agreement among unreliable raw sources.
+No new-source UI/browser outcome has been asserted by this audit.

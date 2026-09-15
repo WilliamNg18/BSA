@@ -2445,3 +2445,7 @@ Question: may an optional browser check silently appear as executed? Choice: no;
 Question: can an existing listener satisfy the backup startup probe? Choice: reject an occupied port before launching the child process, rather than treating another server's response as recovery evidence; tie-breaker: verify the exact requirement.
 
 Question: may filesystem aliases allow a report to be written inside the backup? Choice: compare canonical backup and report-directory paths before execution and reject containment; tie-breaker: preserve the exact verified artifact.
+
+Question: can projected current fields be relabelled as the pharmacy's submission? Choice: no; mount G's immutable submitted-revision replica and U's raw-source comparison separately from effective human capture; tie-breaker: source fidelity and one authority.
+
+Question: where do Task 40 note safety and later-audit decisions belong? Choice: consume G's guarded final actions and R's operator audience, preserving the visible draft on rejection; audit requires an explicit operator press, current revision and reason, never render/toggle detection; tie-breaker: explicit human authority.

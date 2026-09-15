@@ -293,3 +293,10 @@ an explicit failure, not a substitute for the clean-container startup test.
 
 The verifier must not alter its input backup, including through an aliased
 parent directory used in the report or backup path.
+
+Task 40 O owns operator action-panel, case-pack and Type1 presentation
+integration plus directly related shared wrapper exports/tests. G retains
+all domain/store authority, R the recommendation card/derivation, U the
+pure three-column component, and P pharmacy correction/acknowledgement.
+The compact scanner comparison requires a full-width evidence placement;
+it must not be compressed into the existing half-width editor.
