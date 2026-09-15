@@ -12,10 +12,12 @@ import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
 import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { useManualLoopMonth } from "@/hooks/use-manual-loop-month";
 import { useAppStore } from "@/lib/store";
+import { SubmittedCaseEvidence } from "@/components/demo/as-submitted-evidence";
 import type { CaseRevision, ConfirmType1Input } from "@/lib/domain/lifecycle";
 import type { ExceptionCase } from "@/lib/domain/types";
 import { QUALITY_THRESHOLD } from "@/lib/domain/rules";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
+import { captureForRevision } from "@/lib/domain/lifecycle-model";
 import { checkPaperDeclaration } from "@/lib/domain/paper-declaration";
 import {
   PAPER_DECLARATION_PROVENANCE,
@@ -25,20 +27,24 @@ import {
 } from "@/lib/domain/paper-capture";
 
 /** Q embeds this same store-connected surface in the lane and case pack. */
-export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline", showRecommendation = true, showConfirmation = true }: {
+export function Type1Capture({ caseId, compact = false, evidencePlacement = "inline", showRecommendation = true, showConfirmation = true, showSubmittedEvidence = true }: {
   caseId: string;
   compact?: boolean;
   evidencePlacement?: "inline" | "external";
   showRecommendation?: boolean;
   showConfirmation?: boolean;
+  showSubmittedEvidence?: boolean;
 }) {
   const c = useLifecycleCase(caseId);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.at(-1));
   const process = useAppStore((s) => s.itemProcesses[caseId]);
+  const lifecycle = useAppStore((s) => s.lifecycles[caseId]);
   const agentEnabled = useAppStore((s) => s.agentEnabled);
   const confirmType1 = useAppStore((s) => s.confirmType1);
   const heading = useRef<HTMLHeadingElement>(null);
-  const capture = process?.capture;
+  const capture = lifecycle && revision
+    ? captureForRevision(lifecycle, revision.number, revision.sourceRevision ?? revision.number)
+    : null;
   const previousCapture = useRef(capture);
   useEffect(() => {
     if (capture && capture !== previousCapture.current) heading.current?.focus();
@@ -48,11 +54,12 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
   if (!c || !revision || !process || process.revision !== revision.number) {
     return <p role="alert">Current capture evidence is unavailable. Reopen the item from the queue.</p>;
   }
-  if (capture?.revision === revision.number) {
+  if (capture) {
     return (
       <section aria-label={`Type 1 capture for ${caseId}`} className="space-y-3 rounded-xl border p-4">
         <h3 ref={heading} tabIndex={-1} className="font-semibold">Human capture confirmed</h3>
         {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
+        {!compact && showSubmittedEvidence && <SubmittedCaseEvidence caseId={caseId} />}
         {showRecommendation && <ItemRecommendationPanel caseId={caseId} compact={compact} />}
         <BoundaryTag cls="human" />
         <p className="text-sm">Revision {capture.revision}. Confirmed by {capture.operator} at <time dateTime={capture.confirmedAt}>{capture.confirmedAt}</time>.</p>
@@ -80,6 +87,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
   }
   return <>
     {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
+    {!compact && showSubmittedEvidence && <SubmittedCaseEvidence caseId={caseId} />}
     {showRecommendation && <ItemRecommendationPanel caseId={caseId} compact={compact} />}
     <CaptureForm
       key={`${caseId}:${revision.number}:${revision.at}:${agentEnabled}`}
@@ -88,7 +96,7 @@ export function Type1Capture({ caseId, compact = false, evidencePlacement = "inl
       agentEnabled={agentEnabled}
       confirmType1={confirmType1}
       compact={compact}
-      externalEvidence={compact && evidencePlacement === "external"}
+      externalEvidence={!compact || evidencePlacement === "external"}
     />
   </>;
 }
@@ -252,11 +260,11 @@ function CaptureForm({ c, revision, agentEnabled, confirmType1, compact, externa
           {!error && <p className="text-sm">{poorScan ? "Image unreadable; agreement unknown." : "Human capture or confirmation is required."}</p>}
         </div>
       ) : <PainMarker resolved={false} pain="No guidance, experience only" resolution="Human confirmation" />}
-      <div className={compact ? "grid min-w-0 grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-start gap-3" : "grid min-w-0 gap-4 lg:grid-cols-2"}>
+      <div className={compact ? "grid min-w-0 grid-cols-[minmax(0,2fr)_minmax(0,3fr)] items-start gap-3" : "grid min-w-0 gap-4"}>
         {!externalEvidence && <OriginalCaptureImage c={c} revision={revision} compact={compact} />}
         {compact && !externalEvidence && originalDeclaration}
         <form data-capture-editor={compact || undefined} onSubmit={submit} noValidate className={compact ? "col-span-2 min-w-0 space-y-2" : "min-w-0 space-y-3"}>
-          {!compact && originalDeclaration}
+          {!compact && !externalEvidence && originalDeclaration}
           {compact ? <div className="flex items-start justify-between gap-2">
             <div>
               <h4 className="text-sm font-medium">{correcting ? "Human corrections" : assisted ? "Confirm declared fields" : "Key what you can establish"}</h4>

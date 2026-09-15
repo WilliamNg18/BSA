@@ -4,6 +4,7 @@ import { CASES } from "../../src/lib/domain/cases";
 import { createEpsPrescription, EPS_SUPPLY_RULE } from "../../src/lib/domain/eps-check";
 import { complianceGate, evaluateRequirements } from "../../src/lib/domain/rules";
 import { TARIFF_VERSIONS } from "../../src/lib/domain/tariff";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 import type { ExceptionCase } from "../../src/lib/domain/types";
 
 function generic(): ExceptionCase {
@@ -32,7 +33,8 @@ describe("registered generic supply compliance boundary", () => {
     } } };
     const result = runAgent(c);
     expect(result).toMatchObject({ recommendation: "REFER_BACK", gate: { result: "PASS" }, clause: { id: "SYN-EPS-SUPPLY" } });
-    expect(result.draftToPharmacy).toContain("brand or manufacturer");
+    expect(result.draftToPharmacy).toBe(buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }]));
+    expect(result.draftToPharmacy).not.toContain(EPS_SUPPLY_RULE.brandManufacturer);
     expect(result.draftToPharmacy).not.toContain("initials");
     expect(result.trace.flatMap((step) => step.toolCalls).some((call) => call.tool === "read_image_region")).toBe(false);
   });

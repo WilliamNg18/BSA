@@ -15,17 +15,19 @@ import { useLifecycleCase } from "@/hooks/use-lifecycle-case";
 import { LifecycleHistory } from "@/components/demo/lifecycle-history";
 import { useAppStore } from "@/lib/store";
 import { caseViewState, permitsProposal } from "@/lib/case-presentation";
-import { CasePlayback, CaseSourceEvidence, MissingAssistedSlots, OriginalPaperDeclaration, RawCaseFields } from "@/components/demo/case-presentation";
+import { CasePlayback, CaseSourceEvidence, MissingAssistedSlots, RawCaseFields } from "@/components/demo/case-presentation";
 import { useCasePresentation } from "@/hooks/use-case-presentation";
 import { Type1Capture } from "@/components/demo/type1-capture";
 import { ManualTariffLookup } from "@/components/demo/case-presentation";
 import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 import { paperImageEvidence } from "@/lib/domain/capture-evidence";
 import { abstentionReasonLabel } from "@/lib/abstention-display";
-import { OperatorActionPanel } from "@/components/demo/operator-action-panel";
+import { OperatorActionPanel, OperatorAuditPanel } from "@/components/demo/operator-action-panel";
 import { ReleaseRecord } from "@/components/demo/release-record";
 import { ItemRecommendationPanel } from "@/components/demo/item-recommendation-panel";
 import { PharmacyConfirmation } from "@/components/demo/pharmacy-confirmation";
+import { AsSubmittedEvidence } from "@/components/demo/as-submitted-evidence";
+import { useSubmittedCase } from "@/hooks/use-submitted-case";
 
 export function CasePackPage() {
   const { id } = useParams();
@@ -42,6 +44,7 @@ function CasePackContent() {
   const lifecycle = useAppStore((s) => id ? s.lifecycles[id] : undefined);
   const process = useAppStore((s) => id ? s.itemProcesses[id] : undefined);
   const currentRevision = useAppStore((s) => id ? s.caseRevisions[id]?.at(-1) : undefined);
+  const submitted = useSubmittedCase(id ?? "");
   const revision = currentRevision?.number;
   const records = useAppStore((s) => s.records);
   const existing = useMemo(() => records.filter((r) => r.caseId === id), [records, id]);
@@ -62,7 +65,8 @@ function CasePackContent() {
   const automatic = currentProcess?.routing.outcome === "auto_priced";
   const released = lifecycle?.state === "released_to_pricing";
   const decided = !currentProcess || awaitingCapture || captureCompleted || automatic || lifecycle?.state !== "in_review" && lifecycle?.state !== "escalated";
-  const originalCapture = paperImageEvidence(c, currentRevision?.templateCaseId).extracted;
+  const originalCapture = submitted.submission?.paperScan?.extracted
+    ?? paperImageEvidence(c, currentRevision?.templateCaseId).extracted;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -74,14 +78,17 @@ function CasePackContent() {
       />
       <LifecycleHistory id={c.id} />
       <PharmacyConfirmation caseId={c.id} />
+      {submitted.error || !submitted.submission
+        ? <p role="alert">{submitted.error ?? "Submitted evidence is unavailable."}</p>
+        : <AsSubmittedEvidence submission={submitted.submission} reconciliation={submitted.reconciliation} />}
       {released && <ReleaseRecord caseId={c.id} />}
       {(automatic || released || captureCompleted) && <ItemRecommendationPanel caseId={c.id} />}
-      {!awaitingCapture && c.paperDeclaration && (agentEnabled || currentProcess?.capture?.declarationReconciled) && <OriginalPaperDeclaration declaration={c.paperDeclaration} />}
+      <OperatorAuditPanel caseId={c.id} />
       {currentProcess?.capture?.provenance === "pharmacy_declaration" && <p className="rounded-xl border p-4 text-sm">
         Human-confirmed fields: declared by the pharmacy, not read from the form. Original machine capture stays separate; proposed path.
       </p>}
       {!currentProcess && <p role="alert">Current routing metadata is unavailable. Decisions are disabled until the shared state is consistent.</p>}
-      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} showRecommendation={awaitingCapture} showConfirmation={false} />}
+      {(awaitingCapture || currentProcess?.capture) && <Type1Capture caseId={c.id} showRecommendation={awaitingCapture} showConfirmation={false} showSubmittedEvidence={false} />}
       {automatic && !released && <section className="space-y-2 rounded-xl border p-4" data-automatic-case>
         <BoundaryTag cls="deterministic" />
         <p>priced by NHSBSA's existing rules engine, no person involved</p>
@@ -188,20 +195,16 @@ function CasePackContent() {
                     ))}
                   </ul>
                 </section>
-                {showRecommendation && pack.draftToPharmacy && (
-                  <section data-prose="pharmacy draft" className="rounded-md border p-3">
-                    <h3 className="mb-1.5 flex items-center gap-2 text-sm font-semibold">Draft explanation to the pharmacy <BoundaryTag cls="agent" short /></h3>
-                    <blockquote className="rounded-md border-l-4 border-teal-600 bg-muted/40 p-3 text-sm">{pack.draftToPharmacy}</blockquote>
-                    <span className="mt-1 text-xs text-muted-foreground">Draft · Human review required</span>
-                  </section>
-                )}
               </CardContent>
             </Card>
           </PageSection>
           </>}
 
           {clock.revealed >= 3 && <>
-          <PageSection title="Applicable Drug Tariff provision" description={pack.clause ? `Version in force on the dispensing date: ${pack.tariffLabel}.` : "No provision could be retrieved for this endorsement type and date."}>
+          <PageSection title={pack.ruleAuthority === "proposed_cross_record_check" ? "Proposed matching-check authority" : "Applicable Drug Tariff provision"}
+            description={pack.ruleAuthority === "proposed_cross_record_check"
+              ? "Structured record comparison, not a retrieved monthly Tariff provision."
+              : pack.clause ? `Version in force on the dispensing date: ${pack.tariffLabel}.` : "No provision could be retrieved for this endorsement type and date."}>
             {pack.clause ? (
               <Card>
                 <CardHeader className="pb-2">
@@ -220,6 +223,8 @@ function CasePackContent() {
                   </ul>
                 </CardContent>
               </Card>
+            ) : pack.ruleAuthority === "proposed_cross_record_check" ? (
+              <p className="text-sm text-muted-foreground">A Tariff clause is not applicable to this matching check.</p>
             ) : (
               <p className="text-sm text-muted-foreground">No citation from memory; no recommendation without a retrieved provision.</p>
             )}
@@ -251,7 +256,7 @@ function CasePackContent() {
 
         <div className="space-y-6 xl:col-span-2">
           {clock.revealed >= 1 && <>
-          <CaseSourceEvidence c={c} />
+          {!submitted.submission?.paperScan && <CaseSourceEvidence c={c} />}
           <PageSection title="Original machine capture, product and claim">
             <dl className="grid gap-2">
               <KeyValue k="Product (capture)" v={`${originalCapture.productText} · confidence ${originalCapture.productConfidence.toFixed(2)}`} />

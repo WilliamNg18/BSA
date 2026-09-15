@@ -4,7 +4,486 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+The authorised EPS headline guard is now active in root checking and the
+existing four-shard CI verification path. Its scope remains executable
+source with only W's exact AST-selected NCSO requirement-text exception.
+Historical files outside `src` are retained, not reclassified as a new pass.
+Check and 67 targeted units pass; whole-suite/live gates are separate.
+
+G `e954aa1` closes the active-source headline migration dependency: V
+independently ran W's unchanged checker with zero findings. Root check/verify
+wiring may now be activated without a source waiver; live completion remains
+separate.
+
+Pharmacy-response migration retains nine checks; its obsolete seeded-manual
+case is now an explicit historical-referral/ready-paper check. C/F background,
+approval provenance, original attempts and Off-return history remain covered.
+Parent's prose-scope change requires real sibling panels, not a test-only
+exclusion or reduced mandatory advice.
+
+V's declaration assertions now use U/O's canonical scanner instead of the
+removed duplicate view, preserving exact source identity, endorsement,
+consent, footer and immutable-state checks. Remaining source failures stay
+open; no timing or visual evidence is inferred from unit success.
+
+F now owns the bounded Home/11-step source repair and, by explicit handoff,
+only the corresponding Home assertion block if needed. This does not transfer
+V's other unit files or waive the false-date negative.
+
+G `815278f` is now V's unified consumer dependency. N's schema/capture
+assertions and all owner code are preserved. New source versions require
+fresh verification; earlier P-stage results are not transferred to this head.
+
+The two existing 1440 px claims keyboard checks now prepare current paper
+corrections and exercise real required accuracy acknowledgement. Their
+history, focus and axe obligations remain; discovery alone does not satisfy
+them. No new screenshot, browser lease or live acceptance run was added.
+
+The V six-file unit migration preserves 74 checks and the historical
+pure-domain regression cases. Current operational tests no longer fabricate
+date corrections, route readable B through Type 1, or treat capture as paper
+release. Completion is still blocked by actual UI integration: G-base 71/74,
+published P-base 73/74, with Home's false B date instruction still rejected.
+
+G assigned V six unit migrations: case-presentation, four-case-baseline-ui,
+lifecycle-ui-bridge, process-presentation, review-repair and trace-closing.
+O confirmed no overlap. G/P/R/O/F/D/U's other files remain owner-controlled.
+
 # Scope register
+
+The remaining assembled-unit gap is narrowed to four operator-view compatibility
+checks after correcting the citation-denominator expectation. Proposed matching
+guidance is not counted as a retrieved Tariff provision. No release completion
+is claimed while these cases and exact-head CI/live gates remain pending.
+V's shared paper-selection adapter now covers D and brand-missing B using
+the actual P controls. Fresh B is posted as paper, not a retired EPS date
+scenario. This is phased test preparation: old consumer expectations, full
+cycles, timings and current-live coverage remain incomplete.
+
+The capture unrelated-global assertion now includes the actual
+`mismatchSharePercent` string draft. No new seed, snapshot filtering or
+domain mutation is introduced; N's schema-assertion hunk is untouched.
+
+The canonical migration's test-only ES2023 API incompatibility is repaired
+without widening the supported runtime; full assembled validation continues.
+
+G's twelve canonical regression files now pass 194 scoped tests with the
+authorised new outcomes. This completes that bounded migration, not Tasks
+39/40 release acceptance. The next gate is the exact assembled full suite and
+current-main deployment/live verification; no legacy source state was restored.
+
+## Temporary F ownership: Home and eleven-step case compatibility
+
+The coordinator assigned F the Home case-only slice, `step-layouts.tsx` case
+projections/current-label callers, presentation definitions in `demo-steps.ts`
+and directly related demo/Home units. G/N/S/V were notified before edits;
+N chapter 1/2 arithmetic, S design, header layout, shared store/types/seeds,
+source authority and D backup/workflows remain outside this change.
+
+The published repair retains eleven steps, all four IDs, actual Send/referral/
+ACK/re-check actions and complete history/navigation-purity assertions.
+Home shows current unmet requirements; steps 4/5 use one wrong-strength item
+on its two sides; step 9 uses paper B unless a real operator-step referral is
+being followed. Check and 231 bounded units pass. Shared migration failures,
+S headline integration, green deployment and observed live acceptance remain
+open; this checkpoint is not Task 39/40 completion.
+
+B's bounded contract/test handoff is ready: 111 selected tests and typecheck
+pass; check passed on the same canonical runtime before the test-only additions.
+The current store matrix has 27 cases, including C8's real historical authority
+and invalidation of capture on a new source. B does not declare the wider
+Task 40 product or live release complete.
+
+G's explicit source-revision repair now passes B's original capture-retention
+assertion unchanged. All 110 selected B/runtime tests and check pass on
+`99abdd4`, including the ten formerly failing assertions. This completes the
+bounded canonical defect verification, not the overall Task 40 live release.
+
+B now inherits merged main `5b75e5f`, including the master Tasks 25-40 rules
+and Part A. Its 72 header-policy units and typecheck pass. Two older demo-shell
+expectations require D's new seed/gate migration; B did not edit those tests.
+No live or browser validation was performed by B.
+
+G `cdd436b` repairs are verified: the nine exact C4/C5 negative checks pass
+without assertion changes. B's selected matrix remains 107/108 because an
+information-only paper response still creates a second Type 1 task. Check
+passes; source-link repair and master integration/live gates remain pending.
+
+G's requested C1 information-response capture test now pins another concrete
+gap: unchanged submitted paper must retain its original human capture, not
+create a second Type 1 task. The new targeted assertion currently fails and
+awaits G's explicit source-revision linkage repair.
+
+B's additional negative proof is currently blocked by two G-owned C4/C5 defects:
+outbound presentation-value leakage and missing manufacturer text in the
+actual synthetic amendment scan. Nine failing regressions are published as
+explicit WIP evidence, not waived or described as passing. No task completion.
+
+B's new-canonical fidelity proof is now 25 real-store cases across the new
+four identities, including complete correction cycles in all three perspectives
+and both modes. The combined seven-file selection passes 91 units and check.
+C1/C2/C6 have bounded branch-state evidence; C7's actual UI action timing and
+current-main deployment/live acceptance remain with V and the coordinator.
+
+The B verification branch now includes exact G `4765770` new runtime. Initial
+73/75 proof retained two stale extra-Type-1 test failures after paper amendments;
+those owned tests require migration before a new pass may be claimed.
+
+C1's B proof now includes all-four information-request/response transitions
+using actual store actions. A response is not a corrected claim submission,
+so the exact last submitted object remains unchanged. The 19 passing fidelity
+tests still run on G's pre-new-seed canonical snapshot, not final live scope.
+
+U40 integration now consumes G `4765770` and B `d581326`. Twenty-five scanner
+tests and typecheck pass against actual source facades and real store actions.
+Earlier WIP `e45e0be` has four green CI shards (`35015056421`), not later-source
+or deployed acceptance. O still owns full-width mounting and the coordinator
+owns browser leases, merge and observed live acceptance.
+
+The bounded SVG title fix preserves the source ID and accessible name while
+preventing React child warnings in O's mounted surface.
+
+Integrated `e12ca94` check and 26 scanner units pass. Its broad CI reports
+207 failures outside the new scanner files and remains blocked on coordinated
+domain/consumer migration; no broad-suite or live acceptance is claimed.
+
+Source-image fidelity includes original synthetic patient/pharmacy identity and
+empty regions left empty, distinct from uncertain printed source characters.
+
+G `cdd436b` now supplies visible immutable amendment regions. U verifies their
+actual brand/pack/form rendering through the canonical facade and human
+acknowledgement/resubmission path: 46 selected tests and typecheck pass.
+
+O's actual full-width mount is integrated for U's first scanner browser proof,
+not replaced by a pure renderer or new route. Four new checks cover two paper
+cases at both desktop widths; 1440-only screenshots and scoped axe are planned.
+Browser execution and live acceptance remain pending, with conditional
+coordinator lease 4341 and no parallel duplicate verification by O/V.
+
+Bounded U scanner browser acceptance now passes on clean `941933f`: four
+actual-route tests, eight scoped axe audits with zero violations, both desktop
+widths and both modes. Raw D evidence remains unchanged after capture. Evidence
+is source-pinned in `docs/screens/task40-scanner/941933f`; this does not establish
+full C7 transitions, two-image visual acceptance, hosted release or backup parity.
+
+The completed Part A header and G's later source-linked capture repairs are
+integrated; 63 targeted scanner/operator/runtime tests and typecheck pass.
+Prior `941933f` browser evidence is not relabelled as a later-head run.
+
+G's bounded test-only handoff covers two files: `paper-capture.test.ts` and
+`paper-declaration.test.ts`. Their 43 tests pass after active-source lookup and
+current all-paper human-release expectations are applied. Raw confidence,
+unknown-field, stale-revision and image-immutability checks remain intact.
+
+## B40 bounded foundation scope, 15 September
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+## B40 readable-blank scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
+The minimal explicit pharmacy Card audience adapter is published separately
+for R/G foundation integration; no shared Card edit or store fallback is used.
+### P Tasks 39/40 consumer checkpoint
+
+Owned scope: four-case pharmacy selectors, editable selected strength and paper
+supply facts, required current-payload acknowledgement, real submission actions,
+receipts and simultaneous actual-state workload columns. Shared domain/store,
+operator, header and verification harness files remain with their owners.
+Canonical integration, checks, browser acceptance, merge and observed green
+deployment remain pending; the UI checkpoint alone completes no requirement.
+
+P's five focused accuracy-checkbox handler tests now pass in both modes,
+including invalidation and stale-input rejection. Wider canonical integration
+and existing pharmacy-suite migration remain open.
+
+The minimal explicit pharmacy Card audience adapter is published separately
+for R/G foundation integration; no shared Card edit or store fallback is used.
+
+Actual new pharmacy control cycles now run against G's functional four-case
+contracts. Remaining source questions: an ordinary B new-submission preview
+must show its original incomplete scenario rather than the completed C8 seed,
+and source-backed missing paper pack/form corrections need canonical support.
+These are raised with G, not implemented as pharmacy-local domain forks.
+
+P owns the O-released minimal EPS message label/supply-fact clarification and
+compact channel guard. Neither change edits the operator case-pack source or
+canonical lifecycle. New focus targets map to actual existing pharmacy fields.
+
+The original-scenario and paper pack/form dependencies are resolved by G
+`cdd436b`, now consumed by P. No new-submission projection writes state on mount;
+an existing pharmacist draft takes precedence. Off paper still posts without
+an invented declaration and its later correction requires manual entry.
+
+P's eight existing UI-unit migrations and five newer suites pass all 140 tests,
+and check passes. The full shared integration is not green; other owned legacy
+consumers still need migration. G additionally hands P the two pharmacy-domain
+unit files `pharmacy.test.ts` and `pharmacy-correction-events.test.ts`; no other
+domain test or production ownership changes.
+
+Both handed-off pharmacy-domain suites are migrated. The owned pharmacy scope
+now has 194 passing tests in 15 suites; current check passes. Shared full-suite
+failures are not waived. No infrastructure, backup, workflow, operator or
+browser instrumentation work was added to P's scope.
+
+F and O explicitly supplied bounded consumer/test handoffs, with O identifying
+the prerequisite U scanner commits. P imports those unchanged for coherent
+staging; their ownership and final acceptance remain separate. The only new P
+compatibility assertion follows the actual as-submitted Type 1 evidence block.
+
+Current pharmacy readiness labels now consume F/G's canonical ItemProcess;
+old receipt status never borrows readiness from a later revision. No new
+readiness rule or operational state is introduced in the view.
+
+The granted P browser scope is complete: four bounded 1440 checks on clean
+`0c3969d`, with real controls and no store observer/mutation. Final Both/single
+perspective matrices, deadline coverage, independent accessibility/visual
+acceptance and hosted validation remain V/coordinator gates.
+
+The complete staged unit/check gate is now green: 1,990 tests in one run on
+`1b8ab30`, with no exclusions or weakened headline guard. This removes the
+previous local full-suite blocker, not the independent CI/live release gates.
+
+B's new-canonical fidelity proof is now 25 real-store cases across the new
+four identities, including complete correction cycles in all three perspectives
+and both modes. The combined seven-file selection passes 91 units and check.
+C1/C2/C6 have bounded branch-state evidence; C7's actual UI action timing and
+current-main deployment/live acceptance remain with V and the coordinator.
+
+The B verification branch now includes exact G `4765770` new runtime. Initial
+73/75 proof retained two stale extra-Type-1 test failures after paper amendments;
+those owned tests require migration before a new pass may be claimed.
+
+C1's B proof now includes all-four information-request/response transitions
+using actual store actions. A response is not a corrected claim submission,
+so the exact last submitted object remains unchanged. The 19 passing fidelity
+tests still run on G's pre-new-seed canonical snapshot, not final live scope.
+
+U40 integration now consumes G `4765770` and B `d581326`. Twenty-five scanner
+tests and typecheck pass against actual source facades and real store actions.
+Earlier WIP `e45e0be` has four green CI shards (`35015056421`), not later-source
+or deployed acceptance. O still owns full-width mounting and the coordinator
+owns browser leases, merge and observed live acceptance.
+
+The bounded SVG title fix preserves the source ID and accessible name while
+preventing React child warnings in O's mounted surface.
+
+Integrated `e12ca94` check and 26 scanner units pass. Its broad CI reports
+207 failures outside the new scanner files and remains blocked on coordinated
+domain/consumer migration; no broad-suite or live acceptance is claimed.
+
+Source-image fidelity includes original synthetic patient/pharmacy identity and
+empty regions left empty, distinct from uncertain printed source characters.
+
+## B40 bounded foundation scope, 15 September
+B's new real-store fidelity matrix covers all four currently seeded IDs and
+actual paper capture/referral/ACK/resubmission/release plus explicit EPS audit.
+Sixty-seven combined units and check pass on integrated G `9b41cc2`. New
+canonical seed/source semantics, wrong-strength corrected recheck and consumer
+UI remain integration gates. OCR Unknown and Blank now have distinct meanings
+shared with U; no source value is changed for presentation.
+
+B's validation branch incorporates exact G `9b41cc2` canonical actions before
+adding real-store fidelity regressions. This does not transfer ownership of
+shared implementation to B or claim new seeds/recheck flows are finished.
+
+## B40 readable-blank scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
+### F Task 40 cross-view checkpoint
+
+Current status: source audit published against main `6418151`; bounded consumer
+implementation uses published G `4765770` and has 53 passing owned units.
+The current status consumes canonical process metadata; historical transitions
+retain their own history prefixes without retroactive current-process readiness.
+G's `cdd436b` stale-readiness fix is consumed, with a real new-revision
+regression; merged-domain integration and final acceptance are still required.
+Check passes; the early full suite is not green (1,576 passed, 201 failed).
+V owns new C7 deadlines and
+cross-view acceptance. Complete only after the change reaches main, deployment
+is green and the actual live URL serves and demonstrates that commit.
+
+### G39/40 explicit-action checkpoint
+
+The activation candidate now includes bounded owner-authored consumer wiring,
+not a second store or transitional product. Original historical fixture values
+remain in archival modules. Source headline enforcement is still pending the
+D/S updates and full integration validation; no main/live completion is claimed.
+
+Current-source linking and seeded readiness provenance are implemented:
+information responses retain the same actual submission/capture, and seeded
+ready paper supports one real operator Release after Reset. These targeted
+repairs do not replace legacy consumer migration or current-main live proof.
+
+Strength matching now has explicit proposed/public-guidance authority, not an
+invented monthly Tariff clause. Current trace and both gates retain genuine
+disagreement; no self-corroborating equality or fabricated readings remain in
+the strength-specific path. The supporting check is a targeted result, not a
+blanket merge or live acceptance claim.
+
+The first full integration inventory is not green: 210 failed / 1,575 passed
+tests reflect changed outcomes, mandatory ACK and remaining consumer contracts.
+New targeted paper, source-image and note guards pass, but this is not release
+acceptance. Strength trace/rule-authority findings are active merge blockers.
+
+Functional checkpoint: the four new cases and channel-specific actual actions
+are wired. `EX-24112` has an acknowledged historical paper amendment awaiting
+human release, while complete EPS is Paid and wrong-strength EPS awaits pharmacy
+action. No navigation creates these states. Twelve targeted actual-store tests
+pass; complete current-consumer and live verification remain required.
+
+W/B pure foundations and revision-bound ACK/audit store controls are integrated
+as published WIP. Every corrected resubmission now requires accurate-current-
+payload acknowledgement in both modes. A human may explicitly reopen priced
+EPS for a later audit; toggling or navigating never does so. No new paper or
+strength workflow is declared live-complete from this checkpoint.
+
+## Tasks 39/40 shared-model integration: in progress
+
+U's reactivated Task 40 scope is the new read-only three-column scanner
+comparison, original-source image adapter, rendered units and desktop browser
+assertion helper. Historical Task 27 is not restarted. O owns full-width
+Type 1/case-pack insertion and G supplies the canonical source facade.
+Eighteen units and typecheck pass; actual desktop legibility, accessibility and
+observed deployed-main acceptance remain pending.
+
+U's bounded follow-up adds accessible per-value source descriptions and exact
+blank-versus-unknown confidence presentation. Twenty focused units pass;
+the first scanner checkpoint also passed check. Neither result is browser
+geometry, mounted functionality or live acceptance.
+
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
+The first additive contract checkpoint introduces independent pharmacy supply
+records and correction acknowledgement metadata without enabling new release
+behaviour. It is not a completed Task 39 or Task 40 implementation.
+
+Known mismatched EPS selections can now be represented for gate evaluation
+without rewriting the prescription or supply record. Paper supply fields are
+preserved across source-copy validation. This preparatory change does not claim
+the new wrong-strength scenario, acknowledgement or recheck flow is complete.
+
+Source identity is enforced on editable drafts as well as submissions.
+Acknowledgement metadata supplied through ordinary edits is cleared; an
+explicit acknowledgement action and runtime resubmission enforcement follow
+with B's module integration.
+
+The latest authorised scope replaces the active wrong-pack EPS example with
+prescribed/supplied 10mg versus selected 5mg claim evidence, and repurposes
+`EX-24112` as paper with a missing brand, not a missing date. Retain four IDs:
+`EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123`, and `EX-24112`.
+All active dates remain correct; C/F remain unclickable historical background.
+
+G alone integrates canonical state, types, lifecycle and seeds. W and B deliver
+isolated domain modules first; presentation owners follow the merged contracts.
+Required acceptance includes exact immutable submissions, independent captures,
+revision-bound correction acknowledgement, field/rule-only outbound notes,
+automatic eligible EPS rechecks and exclusively human paper releases.
+No task in this new scope is complete until merged, green-deployed and seen live.
+## Task 39 N optional numbers addition: WIP
+
+The independent mismatch helper uses all submitted claims, not the referral
+subset. Acceptance requires editable 1% = 0.01, Today none explicitly synthetic,
+With share times volume labelled estimate, unchanged existing totals, verified
+study-only chapter 1 wording, same-store Reset and 1280/1440 browser coverage.
+The helper is implemented; consumer/state integration and exact-main live
+verification remain pending. This does not reopen historical Task 28.
+
+The chapter consumers and four 1280/1440 browser tests are now published WIP.
+The editor is optional and independent of core validation; invalid drafts remove
+only the mismatch estimate. G's canonical store action/Reset handoff and
+integration validation remain required before readiness or live acceptance.
+
+Positive fractional expected counts must remain visibly nonzero. The shared
+mismatch formatter uses significant digits and compact scientific notation
+for tiny values, without changing model arithmetic or existing figures.
+The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
+paper case and scanner/field-only-referral boundaries. It reuses the G-approved
+isolated W/B foundation constants for the public NHSBSA quotation/link/check
+date and hypothetical/human-capture labels. Check and 1,714 units passed;
+the exact document parity and 14 FAQ topics are covered.
+
+The owner-authored foundation commits remain dependency history, not new
+S-authored domain behaviour. Actual G runtime integration, fresh exact-head
+CI and main/deployment/live observation remain pending. Do not treat WIP as
+the live product or an exact-main backup.
+
+## 2026-09-15: Task 39 W foundation, not live completion
+
+The latest owner brief replaces the playable EPS error with wrong strength:
+prescribed and actually supplied Amlodipine 10mg tablets, 28; selected claim
+Amlodipine 5mg tablets, 28; all other fields and dates correct. Today models
+automatic pricing of the selected priced pack; On must fail both independently
+performed gates while wrong. A source-backed Apply changes the selected claim
+only; a separate human Send or acknowledged Resubmit is required.
+
+This W increment supplies the pure check/correction, verified public-evidence
+copy and isolated source-headline guard with 33 passing focused units and check.
+G owns shared integration; B owns acknowledgement/fidelity/referral contracts;
+P/D/S/N/V own their consuming surfaces, calculations and browser evidence.
+The four IDs are A `EX-24107`, W `SYN-FQ123-MISMATCH`, D `EX-24123` and P
+`EX-24112` (paper, brand missing). Historical records are not rewritten.
+Source and passing units do not establish implemented lifecycle routing or
+live acceptance. No price, medicine-selection advice or NHSBSA error-rate
+estimate is introduced by this module.
+## B40 bounded foundation scope, 15 September
+
+The readable-blank repair covers C4's distinction between missing information
+and unreadable capture: a high-confidence empty brand/pack on readable paper is
+a referral problem, not invented Type 1 work. Unreadable/low-confidence cases
+retain Type 1 ordering. This 54-unit/check result does not establish the owning
+scanner UI, integrated paper lifecycle, browser timing or live acceptance.
+
+The follow-up preserves unreadable raw scan/OCR evidence even when a current
+human capture supports effective reconciliation. Its result explicitly names
+that basis instead of claiming raw three-way agreement. An acknowledged pharmacy
+amendment is labelled separately, and unrelated template scans are rejected.
+The new 51-unit/check result is bounded contract evidence, not C7 acceptance.
+
+New pure contracts cover C1 exact last-submission replication, C5 safe note
+generation and final-note validation, C6 revision/payload acknowledgement and
+EPS-only automatic recheck disposition, and C4 paper field/scan/hypothetical-OCR
+reconciliation. Explicit human capture stays separate from original submission.
+Canonical actions and historical seeds remain G-owned; C3/C7/C8 and the
+consumer UI/desktop/live proof remain integration obligations, not delivered
+behaviour from these standalone modules. This branch is published WIP, not a
+product or local backup. Current-main deployment observation remains required.
+The bounded foundation passed 48 units and check; these are not store-action
+or screen acceptance and do not satisfy the integrated C7 timing requirement.
+
+The later coordinator clarification narrows the card contract: proposed pack
+values and previews belong only to the pharmacy; operator findings may show
+the facts but advice and outbound notes name the field/rule without suggesting
+the correct value. Required Off round-trip coverage must start with actual
+Today pricing and a later explicit human audit/query reopening, not an invented
+queue row or a toggle-generated transition.
+
+W additionally supplies the G-requested pure audience adapter, preserving
+the existing evaluation/correction API. Source facts remain identical across
+the pharmacy/operator projections; a typed operator projection contains no
+proposed patch or preview. Four new authority regressions pass; consumer
+mounting and whole-flow live evidence are not claimed by these unit results.
 
 ## Part A candidate acceptance boundary
 
@@ -77,6 +556,25 @@ Stable active IDs remain `EX-24107`, `SYN-FQ123-MISMATCH`, `EX-24123` and
 `EX-24112`; the last becomes the paper-brand-missing example. C/F remain
 unclickable background. All source dates are correct; older incomplete-date
 examples remain only historical or Tariff-requirement regression evidence.
+## Stream S follow-up: Tasks 39-40
+
+S owns only the How it works reference, its full SYSTEM-DESIGN counterpart,
+related tests and this contemporaneous five-register status. W owns the
+canonical wrong-strength/public evidence module; B/G own scanner and submission
+authority. This published reference preparation does not implement their gates
+or change store, demo, operator or pharmacy controls.
+
+The staged reference adds the wrong-pick-list FAQ, W sequence, missing-brand
+paper case and scanner/field-only-referral boundaries. Reuse of W/B constants,
+the public NHSBSA quotation/link, foundation integration, exact-head CI and
+main/deployment/live observation remain pending. Do not treat WIP as the live
+product or an exact-main backup.
+
+The guard now also has an actual filesystem-walk regression, not just parser
+examples: nested source fails before headline migration and passes afterwards,
+while historical test material outside `src` is retained. W's 38 focused tests,
+typecheck and lint pass; exact earlier source `66579e7` passed all four PR CI
+shards in run `35012808974`. Integration/live obligations remain open.
 
 ## Live-first release and backup obligations
 
@@ -346,3 +844,104 @@ here identify the same commits, not additional unpushed work.
 No scope row is Not started. Owner-authorised work resumes from this preserved
 checkpoint. Do not merge empty checkpoint commits from completed streams as
 new features or claim a browser inventory is an executed pass.
+
+## Standing-rule backup: independent verifier boundary
+
+O's standalone verifier is test tooling, not a backup producer or a second
+release authority. It runs from outside the self-contained backup, uses only
+Node built-ins for file/HTTP checks, and can load Playwright from separately
+provided tooling. A successful offline claim requires no external network
+interfaces; a normal connected developer machine does not qualify.
+
+D retains backup core, root commands, workflow and deployed-artifact parity
+ownership. The clean offline container proof, actual recovery timing and
+main/live observation are still pending. No Azure deletion, recreation,
+provisioning, runtime feature change or browser-matrix replacement is included.
+
+Recovery requires a newly started backup process. A pre-existing listener is
+an explicit failure, not a substitute for the clean-container startup test.
+
+The verifier must not alter its input backup, including through an aliased
+parent directory used in the report or backup path.
+
+Task 40 O owns operator action-panel, case-pack and Type1 presentation
+integration plus directly related shared wrapper exports/tests. G retains
+all domain/store authority, R the recommendation card/derivation, U the
+pure three-column component, and P pharmacy correction/acknowledgement.
+The compact scanner comparison requires a full-width evidence placement;
+it must not be compressed into the existing half-width editor.
+
+O's existing unit migration retains all 66 cases and negative/state-equality
+checks. New `operator40-fidelity.spec.ts` contributes four ordinary desktop
+browser tests; V's existing browser/live files and protected state suite are
+not edited. Source discovery is not an executed browser pass.
+
+Source-linked Type1 confirmation and non-Tariff matching labels are O
+presentation consumers of G's canonical metadata. No source value, gate,
+capture authority or seeded draft is inferred by the UI. The four O audit
+and ready-release browser tests still require their own allocated execution.
+
+O also owns the current `human-recheck-view` and `queue-compare` unit
+compatibility updates. V owns the six other handed-off presentation unit
+files; no duplicate writer or protected-browser modification is introduced.
+## Tasks 39/40 R audience scope
+
+In progress: explicit Card audience, pharmacy-only concrete value/preview,
+field/rule-only operator draft notes and unmodified read-only source facts.
+R's new audience unit contracts cover the projection, default operator boundary,
+source identity and absence of fabricated approval. Existing canonical actions
+remain G-owned; P/O wire their real components. Full four-case integration,
+exact-head CI, main deployment and live observations are still required.
+
+Prepared paper correction values now use the same before/after draft contract
+as EPS supply values; R supplies no replacement source data or independent
+correction algorithm. Actual paper seed/source preparation stays with G.
+
+Current-source integration now includes wrong-strength correction, brand-missing
+paper, unreadable capture and ready-to-release paper. Every paper result requires
+the operator's press; hypothetical OCR and original scans are not changed by
+confirmed capture. These are tested working-branch contracts, not a live release.
+
+The previous date-gap recommendation tests now exercise current strength and
+paper-brand cases, while invalid dates, unknown provisions and unsupported
+invoice input remain negative contracts on an existing EPS item. No test
+weakens the independent source or release guards.
+
+Pinned recorded paper is additionally verified through a real acknowledged
+resubmission: the current revision may become ready for human release without
+changing the historical missing brand, scan, OCR or communication provenance.
+
+The Card differentiates retrieved Tariff authority from the proposed
+cross-record matching check. Its five structural signals remain visible, with
+non-applicable evidence explicitly labelled rather than fabricated as passed.
+
+R's bounded trace browser retains all eight identities and unrestricted axe,
+adding explicit operator-audience and no-proposed-preview assertions.
+
+Canonical signal applicability is now consumed from G, preserving all five
+visible signals and existing paper thresholds without audience-based overrides.
+O's compiled Task40 source includes immutable case evidence, operator audience,
+later-audit entry and paper-ready controls. It does not alter G's source,
+gate or final-action implementations. U remains owner of the scanner renderer.
+The ordinary source comparison is full-width; compact demo-shell placement
+belongs to D and cannot be inferred from this unmounted integration checkpoint.
+
+Bounded R trace coverage executed on clean `2df6549`: 8/8 at the two desktop
+widths, zero retries, eight zero-violation axe reports. Two incomplete axe
+findings remain explicit. Full Task 39/40 release acceptance is still pending.
+
+Ready-paper provenance now describes the completed reconciliation basis rather
+than promising a future check. This is a phase-copy repair only, not a new
+verification event, operator approval or release.
+
+O's executed four-test browser scope covers explicit later EPS audit and
+seeded paper one-press Release at1280/1440, with unrestricted axe. It does
+not replace U's scanner proof, V's strict timing/full-cycle procedure,
+latest-main hosted acceptance or clean offline recovery. Subsequent copy
+edits are not relabelled as the tested9d5502 artifact.
+
+The authority separation is a real layout change, not an exclusion of a
+nested card from the previous counter. Advice owns its Apply control;
+human disposition, reason, RB choice, state and error focus remain in the
+human panel. V owns existing locator migration; O owns the expanded ten-test
+operator regression file. No timing predicate or one-second clock changes.

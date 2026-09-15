@@ -57,7 +57,10 @@ describe("baseline source and synthetic default provenance", () => {
     const packs = ids.map((id) => runAgent(caseById(id)!));
     expect(BASELINE_PROVENANCE.assembly.ids).toEqual(ids);
     expect(BASELINE_DEFAULTS.assemblySeconds).toBe(packs.reduce((sum, p) => sum + p.assemblySeconds, 0) / packs.length);
-    expect(BASELINE_PROVENANCE.citations).toEqual({ numerator: 2, denominator: 2 });
+    expect(BASELINE_PROVENANCE.citations).toEqual({ numerator: 1, denominator: 2 });
+    expect(runAgent(caseById("SYN-FQ123-MISMATCH")!)).toMatchObject({
+      ruleAuthority: "proposed_cross_record_check", clause: null, citationValid: null,
+    });
     expect(runAgent(CASES[3]).clause).toBeNull();
     expect(runAgent(CASES[4]).agentInvoked).toBe(false);
     expect(runAgent(CASES[4]).clause).toBeNull();

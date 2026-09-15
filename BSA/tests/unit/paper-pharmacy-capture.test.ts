@@ -5,6 +5,7 @@ import { PaperPharmacyCapture } from "../../src/components/demo/paper-pharmacy-c
 import { Type1Capture } from "../../src/components/demo/type1-capture";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
 import { MemoryRouter } from "react-router-dom";
+import { PHARMACY_SUGGESTION_LABEL } from "../../src/lib/domain/referral-wording";
 
 vi.mock("../../src/lib/store", async (importOriginal) => {
   const actual = await importOriginal<typeof import("../../src/lib/store")>();
@@ -14,6 +15,8 @@ vi.mock("../../src/lib/store", async (importOriginal) => {
   ) };
 });
 beforeEach(() => useAppStore.getState().resetDemo());
+const renderPaper = (caseId: string, compact = false) => renderToStaticMarkup(createElement(MemoryRouter, null,
+  createElement(PaperPharmacyCapture, { caseId, compact })));
 
 describe("paper pharmacy and Type 1 surfaces", () => {
   it("has no declaration fields Off, with actual posting and truthful delayed manual-path narrative", () => {
@@ -37,7 +40,8 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     const before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(PaperPharmacyCapture));
     expect(html).toContain("Proposed: paper form and declaration");
-    expect(html).toContain("Load worked declaration");
+    expect(html).toContain("Declaration complete");
+    expect(html).toContain("Declaration missing information");
     expect(html).toContain("Post paper with declaration");
     expect(html).toContain("Deliberately poor scan");
     expect(html).toContain("Declared dispensing date");
@@ -46,27 +50,31 @@ describe("paper pharmacy and Type 1 surfaces", () => {
     expect(html).not.toContain("checked=");
     expect(getDomainSnapshot()).toEqual(before);
   });
-  it("requires an unchecked human reconciliation and missing prescriber beside the exact retained JB example", () => {
+  it("requires unchecked human reconciliation beside the retained JB declaration and its declared prescriber", () => {
     useAppStore.getState().setAgentEnabled(true);
+    const before = getDomainSnapshot();
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123" }));
     expect(html).toContain("NCSO JB 27/08/26");
-    expect(html).toContain("Declared dispensing date");
+    expect(html).toContain("As submitted by the pharmacy");
+    expect(html).toContain("2026-08-27");
     expect(html).toMatch(/Image (?:agreement remains unknown|unreadable; agreement unknown)/);
-    expect(html).toMatch(/[Ss]eparately established (?:prescriber )?evidence/);
     expect(html).toContain("Received declaration requirement checks");
     expect(html).toContain("not read from the form");
-    expect(html).toMatch(/<input(?=[^>]*id="[^"]*prescriber")(?=[^>]*value="")[^>]*>/);
+    expect(html).toContain("Dr Example (synthetic demo declaration)");
     expect(html).toContain('type="checkbox"');
     expect(html).not.toContain("checked=");
     expect(html).toContain("Confirm, not key");
+    expect(getDomainSnapshot()).toEqual(before);
   });
   it("preserves the ordinary paper variant without describing a readable image as unreadable", () => {
-    const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
-    expect(html).toContain("complete capture reaches existing pricing");
+    const html = renderPaper("EX-24112");
+    expect(html).toContain("Readable paper still requires operator review and release");
     expect(html).not.toContain("image cannot be read");
     useAppStore.getState().setAgentEnabled(true);
-    const assisted = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId: "EX-24112" }));
-    expect(assisted).toContain("Load complete paper declaration");
+    const assisted = renderPaper("EX-24112");
+    expect(assisted).toContain("Declaration complete");
+    expect(assisted).toContain("Declared brand or manufacturer");
+    expect(assisted).toContain("Declared pack size");
     expect(assisted).toContain("New demonstration attempt; history retained.");
     expect(assisted).not.toContain("Load worked declaration");
   });
@@ -85,11 +93,16 @@ describe("paper pharmacy and Type 1 surfaces", () => {
   it.each([false, true])("keeps explanatory submission and declaration-check panels below 25 words, agent=%s", (enabled) => {
     useAppStore.getState().setAgentEnabled(enabled);
     for (const caseId of ["EX-24123", "EX-24112"]) {
-      const html = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId }));
-      const compact = renderToStaticMarkup(createElement(PaperPharmacyCapture, { caseId, compact: true }));
-      const paragraphs = [...compact.matchAll(/<p[^>]*>(.*?)<\/p>/g)];
-      const prose = paragraphs.map((paragraph) => paragraph[1].replace(/<[^>]+>/g, "")).join(" ");
-      expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
+      const html = renderPaper(caseId);
+      const compact = renderPaper(caseId, true);
+      const receiptStart = compact.indexOf('<section aria-label="Submission receipt"');
+      const panels = receiptStart < 0 ? [compact] : [compact.slice(0, receiptStart), compact.slice(receiptStart)];
+      for (const panel of panels) {
+        const paragraphs = [...panel.matchAll(/<p[^>]*>(.*?)<\/p>/g)];
+        const prose = paragraphs.map((paragraph) => paragraph[1].replace(/<[^>]+>/g, ""))
+          .filter((text) => text !== PHARMACY_SUGGESTION_LABEL.replace("'", "&#x27;")).join(" ");
+        expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
+      }
       expect(html).not.toContain("will release");
     }
   });

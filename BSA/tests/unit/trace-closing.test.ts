@@ -3,7 +3,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CaseTracePage } from "@/pages/case-trace";
-import { CASES } from "@/lib/domain/cases";
 import { useAppStore } from "@/lib/store";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -38,19 +37,28 @@ describe("trace closing follows current routing authority", () => {
     }
   });
 
-  it.each([false, true])("completed human capture retains human attribution, Agent %s", (enabled) => {
+  it.each([false, true])("readable corrected paper requires explicit release without invented Type 1 capture, Agent %s", (enabled) => {
     const store = useAppStore.getState();
-    const b = CASES.find((item) => item.id === "EX-24112")!;
+    const id = "EX-24112";
     store.setAgentEnabled(enabled);
-    store.submitItem({ caseId: b.id, channel: "paper", endorsementText: "NCSO RK 21/08/26" });
-    store.confirmType1({
-      caseId: b.id, revision: useAppStore.getState().itemProcesses[b.id].revision,
-      fields: { productCode: b.extracted.productCode, quantity: b.extracted.quantity, endorsementText: "NCSO RK 21/08/26" },
-      provenance: "human_capture", declarationReconciled: false,
+    const ready = useAppStore.getState();
+    const revision = ready.caseRevisions[id].at(-1)!;
+    expect(ready.itemProcesses[id]).toMatchObject({
+      readyToRelease: true, routing: { outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null },
     });
+    expect(() => store.confirmType1({ caseId: id, revision: revision.number, fields: revision.declaration!.fields,
+      provenance: "human_capture", declarationReconciled: false })).toThrow("Capture requires");
+    expect(useAppStore.getState()).toBe(ready);
+    expect(ready.lifecycles[id].state).toBe("resubmitted");
+    expect(ready.itemVerification[id].released).toBe(false);
+    const pending = closing(id);
+    expect(pending).toContain("Open the operator case pack");
+    expect(pending).not.toContain("no further operator decision is needed.");
+    store.releaseToPricing(id, "Human checked the acknowledged paper evidence.");
     const before = useAppStore.getState();
-    expect(before.lifecycles[b.id].state).toBe("paid");
-    const html = closing(b.id);
+    expect(before.lifecycles[id].state).toBe("released_to_pricing");
+    expect(before.itemProcesses[id].releaseOrigin).toBe("human_decision");
+    const html = closing(id);
     expect(html).toContain("Human review is complete.");
     expect(html).toContain("no further operator decision is needed.");
     expect(html).not.toContain("no person involved");

@@ -20,7 +20,9 @@ describe("safe human diagnostic follow-up", () => {
     const before = getDomainSnapshot(), r = deriveRecommendation(store(), id);
     expect(r.kernelRecommendation).toBe("ABSTAIN");
     expect(r.diagnostic).toMatchObject({ kind: "safe_human_follow_up", outcome: "REFER_BACK", rbCode: "RB2B", provenance: "reconciliation_failed" });
-    expect(r.diagnostic?.note).toContain('Quantity: pharmacy declared "100"; human capture "50"');
+    expect(r.diagnostic?.findings.join(" ")).toContain('Quantity: pharmacy declared "100"; human capture "50"');
+    expect(r.diagnostic?.note).toContain("Quantity must agree");
+    expect(r.diagnostic?.note).not.toMatch(/\b100\b|\b50\b/);
     expect(r.operatorApplyAllowed).toBe(true);
     store().applySuggestionToDecision(id);
     expect(store().operatorDrafts[id]).toEqual({ ...r.operatorPreview, appliedSuggestion: true });
@@ -74,7 +76,7 @@ describe("safe human diagnostic follow-up", () => {
     store().confirmType1({ caseId: id, revision: 2, provenance: "human_capture", declarationReconciled: true,
       fields: { ...draft.declaration!.fields, prescriber: "" } });
     const r = deriveRecommendation(store(), id);
-    expect(r).toMatchObject({ outcome: "REQUEST_INFORMATION", diagnostic: { outcome: "REQUEST_INFORMATION" } });
+    expect(r).toMatchObject({ outcome: "REFER_BACK", diagnostic: { outcome: "REFER_BACK" } });
     expect(r.missing.join(" ")).toContain("Prescriber present");
     expect(r.operatorApplyAllowed).toBe(true);
     expect(getReleaseEligibility(id).allowed).toBe(false);
@@ -107,7 +109,8 @@ describe("safe human diagnostic follow-up", () => {
     const recommendation = deriveRecommendation(store(), id, { kind: "draft" });
     expect(recommendation).toMatchObject({ operatorApproved: false, kernelRecommendation: "ABSTAIN", diagnostic: null });
     expect(recommendation.signals).toMatchObject({ reconciliation: "not_established", sampleAgreement: { agree: 0, total: 0 } });
-    expect(recommendation.missing).toContain("Dated");
+    expect(recommendation.missing).toContain("Typed product identified");
+    expect(recommendation.missing).toContain("Typed quantity present");
     expect(recommendation.missing.join(" ")).not.toContain("50");
   });
 
@@ -171,7 +174,8 @@ describe("safe human diagnostic follow-up", () => {
     const draft = preparePaperDemoDraft(sessionCase(id)!, store().caseRevisions[id][0], variant);
     expect(draft).toMatchObject({ purpose: "new_submission", appliedSuggestion: false });
     expect(draft.declaration?.fields.prescriber).toBe("Dr Example (synthetic demo declaration)");
-    expect(draft.endorsementText).toBe(variant === "complete" ? "NCSO JB 27/08/26" : "NCSO JB");
+    expect(draft.endorsementText).toBe("NCSO JB 27/08/26");
+    expect(draft.paperDeclaration?.quantity).toBe(variant === "complete" ? 100 : null);
     expect(getDomainSnapshot()).toEqual(before);
   });
 });

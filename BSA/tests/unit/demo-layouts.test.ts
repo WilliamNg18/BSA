@@ -6,6 +6,7 @@ import { DemoStepLayout, type DemoTaskProps } from "../../src/components/demo/st
 import { DemoStrip } from "../../src/components/demo/demo-strip";
 import { DEMO_STEPS, demoStepDestination } from "../../src/lib/domain/demo-steps";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { EPS_STRENGTH_COPY } from "../../src/lib/domain/eps-error-evidence";
 
 vi.mock("@/lib/store", async (importOriginal) => {
   const original = await importOriginal<typeof import("@/lib/store")>();
@@ -131,5 +132,41 @@ describe("focused desktop step layouts", () => {
     expect(html).not.toContain("Manual correction and review");
     expect(html).not.toContain("Type 1 confirms");
     expect(html).not.toContain("Type 2 judges");
+  });
+
+  it.each([false, true])("pairs strength pharmacy and operator steps without changing the submitted evidence, Agent %s", (enabled) => {
+    useAppStore.getState().setAgentEnabled(enabled);
+    const before = getDomainSnapshot();
+    for (const [number, kind] of [[4, "submission"], [5, "operator"]] as const) {
+      const step = DEMO_STEPS[number - 1];
+      useAppStore.getState().setDemoStep(number);
+      const tasks: DemoTaskProps[] = [];
+      const html = render(demoStepDestination(step), (props) => {
+        tasks.push(props);
+        return createElement("span", null, "Current source task");
+      });
+      expect(tasks).toEqual([{ kind, caseId: "SYN-FQ123-MISMATCH", allowCorrection: true, channel: "eps" }]);
+      expect(html).toContain(EPS_STRENGTH_COPY.proof);
+      expect(html).not.toMatch(/missing date|format passes|wrong pack size/i);
+      if (number === 5) expect(html).not.toContain(EPS_STRENGTH_COPY.suggestion);
+      expect(getDomainSnapshot()).toEqual(before);
+    }
+  });
+
+  it.each([false, true])("follows the paper brand case with a matching paper comparison and ready label, Agent %s", (enabled) => {
+    const state = useAppStore.getState();
+    state.setDemoStep(1);
+    state.setAgentEnabled(enabled);
+    state.followCase("EX-24112");
+    const before = getDomainSnapshot();
+    for (const path of ["/case/EX-24112", "/pharmacy/claims?case=EX-24112"]) {
+      const html = render(path, (props) => createElement("span", null, props.caseId));
+      expect(html).toContain('data-demo-live-case="EX-24112"');
+      expect(html).toContain(enabled ? "Paper brand or manufacturer required" : "Operator-approved field and rule, not a proposed value");
+      expect(html).toContain("Resubmitted, ready to release");
+      expect(html).not.toContain("No scenario comparison");
+      expect(html).not.toContain(EPS_STRENGTH_COPY.suggestion);
+      expect(getDomainSnapshot()).toEqual(before);
+    }
   });
 });

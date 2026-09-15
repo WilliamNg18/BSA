@@ -13,7 +13,7 @@ import { HomePage } from "@/pages/home";
 import { ArchitecturePage } from "@/pages/architecture";
 import { ARCHITECTURE } from "@/lib/domain/content";
 import { TOOL_DEFINITIONS } from "@/lib/domain/tools";
-import { CASES } from "@/lib/domain/cases";
+import { caseById } from "@/lib/domain/cases";
 import { MANUAL_LOOP_MONTH_DEFAULTS, PROCESS_MONTH_DEFAULTS, formatBaselineNumber, formatProcessHours, formatProcessItems, monthModel, type ManualLoopMonthInputs } from "@/lib/domain/baseline";
 import { MANUAL_LOOP_METRICS } from "@/lib/domain/manual-loop-presentation";
 import { useAppStore } from "@/lib/store";
@@ -215,19 +215,41 @@ describe("whole-process presentation", () => {
     expect(useAppStore.getState()).toBe(before);
   });
 
+  it("shows the current unmet paper requirement, never a guessed date or corrected supplier value", () => {
+    const store = useAppStore.getState();
+    const id = "EX-24112", original = caseById(id)!;
+    store.setAgentEnabled(true);
+    store.submitItem({ caseId: id, channel: "paper", endorsementText: original.paperDeclaration!.endorsementText,
+      paperDeclaration: original.paperDeclaration });
+    const before = useAppStore.getState();
+    const card = tourCard(render(HomePage, "/#cases"), "B");
+    expect(card).toContain("Review requirement:");
+    expect(card).toContain("not met");
+    expect(card).not.toContain("Fix: add the date beside the initials.");
+    expect(card).not.toContain(original.pharmacySupplyRecord!.brandManufacturer);
+    expect(useAppStore.getState()).toBe(before);
+  });
+
   it.each([
-    { name: "B EPS Off", id: "EX-24112", scenario: "B", paper: false, enabled: false, declared: false },
+    { name: "Wrong-strength EPS Off after explicit audit", id: "SYN-FQ123-MISMATCH", scenario: "E", paper: false, enabled: false, declared: false },
     { name: "B readable paper Off", id: "EX-24112", scenario: "B", paper: true, enabled: false, declared: false },
     { name: "B readable paper undeclared On", id: "EX-24112", scenario: "B", paper: true, enabled: true, declared: false },
     { name: "D unreadable paper undeclared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: false },
     { name: "D unreadable paper declared On", id: "EX-24123", scenario: "D", paper: true, enabled: true, declared: true },
   ])("tour guidance reflects current source evidence: $name", ({ id, scenario, paper, enabled, declared }) => {
     const store = useAppStore.getState();
-    if (!declared) store.submitItem({
-      caseId: id, channel: paper ? "paper" : "eps",
-      endorsementText: paper ? "NCSO RK 21/08/26" : "NCSO RK",
-    });
+    const original = caseById(id)!;
     store.setAgentEnabled(enabled);
+    store.submitItem({
+      caseId: id, channel: paper ? "paper" : "eps",
+      endorsementText: original.paperDeclaration?.endorsementText ?? original.epsPrescription!.dispenserEndorsement,
+      ...(paper ? declared ? { declaration: store.caseRevisions[id].at(-1)!.declaration, paperDeclaration: original.paperDeclaration } : {}
+        : { epsPrescription: original.epsPrescription }),
+    });
+    if (!paper) {
+      expect(useAppStore.getState().lifecycles[id].state).toBe("paid");
+      store.reopenForAudit(id, useAppStore.getState().caseRevisions[id].at(-1)!.number, "Later audit queries the endorsed product.");
+    }
     const before = useAppStore.getState();
     const markup = render(HomePage, "/#cases");
     const card = tourCard(markup, scenario);
@@ -239,10 +261,19 @@ describe("whole-process presentation", () => {
       expect(card).not.toContain("Awaiting Type 1 capture");
       return;
     }
+    if (scenario === "B") {
+      expect(before.itemProcesses[id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
+      expect(card).toContain('data-case-routing="type2_endorsement"');
+      expect(card).toContain("Paper endorsement: brand required");
+      expect(card).not.toContain("data-case-capture");
+      expect(card).not.toContain("Unreadable paper");
+      expect(card).not.toContain("Awaiting Type 1 capture");
+      expect(card).not.toContain("Fix: add the date beside the initials.");
+      return;
+    }
     expect(card).toContain('data-case-capture="pending"');
     expect(card).toContain("Type 1 capture");
-    if (scenario === "B") expect(card).not.toContain("Unreadable paper");
-    else expect(card).toContain("Unreadable paper");
+    expect(card).toContain("Unreadable paper");
     if (declared) {
       expect(card).toContain("declared by the pharmacy, not read from the form");
       expect(card).toContain("Humans confirm compatible evidence");
@@ -260,33 +291,39 @@ describe("whole-process presentation", () => {
     expect(prose.trim().split(/\s+/).length).toBeLessThan(25);
   });
 
-  it.each([false, true])("retains human attribution after capture-only pricing without another action, Agent %s", (enabled) => {
+  it.each([false, true])("retains human capture attribution and requires an explicit paper release, Agent %s", (enabled) => {
     const store = useAppStore.getState();
+    const id = "EX-24123";
     store.setAgentEnabled(enabled);
-    store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: "NCSO RK 21/08/26" });
-    const revision = useAppStore.getState().caseRevisions["EX-24112"].at(-1)!;
-    const item = CASES.find((candidate) => candidate.id === "EX-24112")!;
+    const declaration = store.caseRevisions[id].at(-1)!.declaration!;
+    store.submitItem({ caseId: id, channel: "paper", endorsementText: declaration.fields.endorsementText, declaration });
+    const revision = useAppStore.getState().caseRevisions[id].at(-1)!;
     store.confirmType1({
-      caseId: "EX-24112", revision: revision.number,
-      fields: { productCode: item.extracted.productCode, quantity: item.extracted.quantity, endorsementText: "NCSO RK 21/08/26" },
+      caseId: id, revision: revision.number, fields: declaration.fields,
       provenance: "human_capture", declarationReconciled: true,
     });
     const state = useAppStore.getState();
-    expect(state.itemProcesses["EX-24112"].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: false });
-    expect(state.lifecycles["EX-24112"].state).toBe("paid");
+    expect(state.itemProcesses[id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
+    expect(state.lifecycles[id].state).toBe("in_review");
+    expect(state.itemVerification[id].released).toBe(false);
+    expect(state.lifecycles[id].history.at(-1)).toMatchObject({ actor: "operator", processStep: "type1_capture", revision: revision.number });
     for (const perspective of ["both", "pharmacy", "nhsbsa"] as const) {
       store.setPerspective(perspective);
       const before = useAppStore.getState();
       const markup = render(HomePage, "/#cases");
-      const card = tourCard(markup, "B");
-      expect(card).toContain('data-case-capture="complete"');
-      expect(card).toContain("Completed Type 1 capture");
-      expect(card).toContain("A person confirmed the captured fields");
+      const card = tourCard(markup, "D");
+      expect(card).toContain('data-case-routing="type2_endorsement"');
+      expect(card).not.toContain("data-case-capture");
+      expect(card).not.toContain("Completed Type 1 capture");
       expect(card).not.toContain("Awaiting Type 1 capture");
       expect(card).not.toContain("no person involved");
-      expect(card).not.toContain("Open case B");
-      expect(card).not.toContain("data-outcome");
+      if (perspective === "pharmacy") expect(card).not.toContain("Open case D");
+      else expect(card).toContain("Open case D");
       expect(useAppStore.getState()).toBe(before);
     }
+    store.releaseToPricing(id, "Human checked the captured paper before release.");
+    expect(useAppStore.getState().lifecycles[id].state).toBe("released_to_pricing");
+    expect(useAppStore.getState().itemProcesses[id].releaseOrigin).toBe("human_decision");
+    expect(useAppStore.getState().lifecycles[id].history.slice(0, -1)).toEqual(state.lifecycles[id].history);
   });
 });

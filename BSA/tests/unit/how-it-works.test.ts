@@ -4,7 +4,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { ArchitecturePage } from "../../src/pages/architecture";
-import { CASE_B_SEQUENCE, COMPONENT_FLOW, DESIGN_LABELS, DESIGN_SECTIONS, DESIGN_TITLE, systemDesignMarkdown } from "../../src/components/how-it-works/content";
+import { CASE_W_SEQUENCE, COMPONENT_FLOW, DESIGN_LABELS, DESIGN_SECTIONS, DESIGN_TITLE, PICK_LIST_SOURCE, systemDesignMarkdown } from "../../src/components/how-it-works/content";
+import { EPS_ERROR_EVIDENCE, EPS_STRENGTH_COPY } from "../../src/lib/domain/eps-error-evidence";
+import { PAPER_RECONCILIATION_LABELS } from "../../src/lib/domain/paper-reconciliation";
 import { REFERENCE_MAPPING } from "../../src/components/how-it-works/reference-mapping";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
 
@@ -24,10 +26,11 @@ describe("Task 37 system design reference", () => {
     expect(new Set(DESIGN_SECTIONS.map((section) => section.id)).size).toBe(DESIGN_SECTIONS.length);
   });
 
-  it("keeps every required FAQ topic, with thirteen separate answers", () => {
+  it("keeps every required FAQ topic, with fourteen separate answers", () => {
     expect(DESIGN_SECTIONS.find((section) => section.id === "questions")?.panels.map((panel) => panel.title)).toEqual([
       "Why not fine-tune a model?", "Why three samples?", "What if the Tariff changes mid-month?",
-      "What about EPS versus paper?", "How do you stop an invented clause?", "What happens when the agent is down?",
+      "What about EPS versus paper?", "How do you catch a wrong pick-list selection?",
+      "How do you stop an invented clause?", "What happens when the agent is down?",
       "How is this different from the existing rules engine?", "Who owns the prompts and corpus?",
       "How do you evaluate it?", "What does the CISO need to see?", "How does this reach 11,100 pharmacies?",
       "What is the smallest first step?", "What would make you stop?",
@@ -60,11 +63,60 @@ describe("Task 37 system design reference", () => {
     expect(html).toContain('aria-labelledby="components-title components-description"');
     expect(html).toContain('aria-labelledby="sequence-title sequence-description"');
     expect(COMPONENT_FLOW).toHaveLength(6);
-    expect(CASE_B_SEQUENCE).toHaveLength(11);
-    expect(html).not.toMatch(/<script|<iframe|https?:\/\//u);
-    for (const text of [...COMPONENT_FLOW, ...CASE_B_SEQUENCE]) {
+    expect(CASE_W_SEQUENCE).toHaveLength(11);
+    expect(html).not.toMatch(/<script|<iframe/u);
+    expect(html.match(/https?:\/\//gu)).toHaveLength(1);
+    for (const text of [...COMPONENT_FLOW, ...CASE_W_SEQUENCE]) {
       expect(html).toContain(text.replaceAll("&", "&amp;").replaceAll(">", "&gt;").replaceAll("'", "&#x27;").replaceAll('"', "&quot;"));
     }
+  });
+
+  it("describes independent wrong-strength evidence and removes the retired date case", () => {
+    const text = systemDesignMarkdown(REFERENCE_MAPPING);
+    const html = render();
+    for (const required of [
+      "prescribed 10 mg / 28", "actual supply 10 mg / 28", "selected 5 mg / 28 claim",
+      "Gate 1 flags strength", "Unchanged Send fails independent Gate 2",
+      EPS_STRENGTH_COPY.proof,
+      "If the selected 5 mg AMPP has a dm+d price",
+      "Paper missing brand · EX-24112", "Case W sequence: wrong-strength EPS",
+      "not an invented Tariff clause", "field-and-rule-only explanation",
+      "corrected EPS revision at both gates", "no operator action. Paper remains a separate human-final path",
+    ]) expect(text).toContain(required);
+    expect(html).toContain("SYN-FQ123-MISMATCH wrong-strength sequence");
+    expect(text).not.toMatch(/missing[- ]date|initialled, not dated|Gate 1 passes format/iu);
+    expect(html).not.toMatch(/missing[- ]date|initialled, not dated|Gate 1 passes format/iu);
+  });
+
+  it("separates hypothetical scanner output, human capture and pharmacy correction authority", () => {
+    const text = systemDesignMarkdown(REFERENCE_MAPPING);
+    for (const required of [
+      "scanner-captured values and per-field confidence", "actual scan",
+      "revision-bound Type 1 human capture", "Extracted by character recognition (hypothetical)",
+      PAPER_RECONCILIATION_LABELS.synthetic,
+      PAPER_RECONCILIATION_LABELS.humanCapture, PAPER_RECONCILIATION_LABELS.amendment,
+      "not a real character-recognition service or model result",
+      "Outbound NHSBSA notes contain the missing field and governing rule only.",
+      "pharmacy suggestion from its own records", "Paper always requires an explicit final operator Release",
+    ]) expect(text).toContain(required);
+  });
+
+  it("renders canonical public guidance without inventing a Tariff clause or study ranking", () => {
+    expect(PICK_LIST_SOURCE.url).toBe(EPS_ERROR_EVIDENCE.nhsbsa.url);
+    expect(PICK_LIST_SOURCE.quotation).toBe(EPS_ERROR_EVIDENCE.nhsbsa.quotation);
+    const html = render();
+    const text = systemDesignMarkdown(REFERENCE_MAPPING);
+    expect(html).toContain(`href="${EPS_ERROR_EVIDENCE.nhsbsa.url}"`);
+    expect(html).toContain(`dateTime="${EPS_ERROR_EVIDENCE.verifiedOn}"`);
+    for (const value of [
+      EPS_ERROR_EVIDENCE.nhsbsa.label, EPS_ERROR_EVIDENCE.nhsbsa.quotation,
+      EPS_ERROR_EVIDENCE.nhsbsa.scope, EPS_STRENGTH_COPY.ruleLabel,
+      "15 September 2026", "publication date not stated",
+    ]) {
+      expect(html).toContain(value);
+      expect(text).toContain(value);
+    }
+    expect(text).not.toMatch(/39 of 62|44 studies|34 studies|among the most reported|NHSBSA.{0,20}1\.6/iu);
   });
 
   it("does not change operational state or depend on assistance or perspective", () => {

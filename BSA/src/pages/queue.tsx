@@ -133,7 +133,7 @@ function QueueWorklist() {
       onBlurCapture={(event) => { if (event.relatedTarget instanceof Node && !event.currentTarget.contains(event.relatedTarget)) focusedCapture.current = null; }}>
       <summary className="cursor-pointer font-semibold">{row.id} · {row.c.pharmacy.name} · <span className="inline-flex items-center gap-1"><FileText aria-hidden="true" className="size-4" />Paper</span> · <span
         ref={(element) => stateRef(row.id, element)} tabIndex={-1} data-item-state
-        className="rounded-sm focus-visible:outline-2">{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled)}</span></summary>
+        className="rounded-sm focus-visible:outline-2">{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled, row.process)}</span></summary>
       <div className="mt-3 space-y-3">
         <Type1Capture caseId={row.id} />
         <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(row.id)}`}>Open {row.id}</Link></Button>
@@ -178,7 +178,7 @@ function QueueWorklist() {
             <TableCell className="whitespace-normal">{row.c.pharmacy.name}</TableCell>
             <TableCell><span className="inline-flex items-center gap-1">{row.process.channel === "eps" ? <Monitor aria-hidden="true" className="size-4" /> : <FileText aria-hidden="true" className="size-4" />}{row.process.channel === "eps" ? "EPS" : "Paper"}</span></TableCell>
             <TableCell ref={(element) => stateRef(row.id, element)} tabIndex={-1}
-              className="whitespace-normal focus-visible:outline-2" data-item-state>{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled)}</TableCell>
+              className="whitespace-normal focus-visible:outline-2" data-item-state>{itemStateLabel(row.lifecycle, "nhsbsa", agentEnabled, row.process)}</TableCell>
             <TableCell className="max-w-72 whitespace-normal">{row.process.routing.reason}{row.process.rbCode && <span className="block font-semibold">{row.process.rbCode}</span>}</TableCell>
             <TableCell className="max-w-64 whitespace-normal">{row.agentWork}</TableCell>
             <TableCell><Button asChild variant="outline" size="sm"><Link to={`/case/${encodeURIComponent(row.id)}`} aria-label={`Open ${row.id}`}>Open</Link></Button></TableCell>

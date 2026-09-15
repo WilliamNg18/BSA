@@ -19,7 +19,7 @@ import { preparePaperDemoDraft } from "@/lib/domain/pharmacy-correction";
 export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, controls = "correct-and-submit" }: {
   caseId?: string; compact?: boolean; controls?: "submit" | "correct-and-submit";
 }) {
-  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId, "paper");
+  const { c, revision, draft, original, enabled, result, canApply, suggestionError, validationError, error, act, update } = usePharmacyDraft(caseId, "paper", "new_submission");
   const [scannerShown, setScannerShown] = useState(false);
   if (!c || !revision || !draft || !original) return <p role="alert">Paper item unavailable.</p>;
   const poorScan = c.imageQuality < QUALITY_THRESHOLD;
@@ -29,7 +29,7 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
     <Button variant="outline" data-pharmacy-demo="scanner" aria-pressed={scannerShown} onClick={() => setScannerShown((shown) => !shown)}>
       Show the form as NHSBSA&apos;s scanner will see it
     </Button>
-    {scannerShown && <p role="status">image cannot be read</p>}
+    {scannerShown && <p role="status">{poorScan ? "image cannot be read" : "Readable synthetic paper"}</p>}
     {(!compact || scannerShown) && <PrescriptionForm c={paperImageEvidence(c, revision.templateCaseId)} />}
     <BoundaryTag cls="human" />
     <dl className="text-sm"><dt>Submission purpose</dt><dd>New demonstration attempt; history retained.</dd></dl>
@@ -38,9 +38,6 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
         <Button variant="outline" data-pharmacy-demo="complete" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "complete")))}>Declaration complete</Button>
         <Button variant="outline" data-pharmacy-demo="missing" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "missing")))}>Declaration missing information</Button>
       </div>
-      {!compact && <Button type="button" variant="outline" onClick={() => update(original)}>
-        {c.scenario === "D" ? "Load worked declaration" : "Load complete paper declaration"}
-      </Button>}
       <PharmacyDraftFields draft={draft} original={original} channel="paper" update={update} recommendationVisible />
       <PharmacyRecommendationPanel caseId={caseId} draft={draft} compact={compact}
         onApply={controls === "correct-and-submit" && canApply ? () => act(() => {
@@ -51,11 +48,11 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
         }) : undefined} />
       <PharmacyDraftCheck result={result} error={validationError || (result?.status === "missing" && !canApply ? suggestionError : "")} />
     </> : <p data-paper-narrative className="text-sm">{poorScan
-      ? "Type 1 keys; Type 2 judges. RB2B delays are illustrative, not inevitable."
-      : "Type 1 keys; complete capture reaches existing pricing."}</p>}
+      ? "Type 1 keys; Type 2 judges. Paper requires the operator's release; RB2B delays are illustrative, not inevitable."
+      : "Readable paper still requires operator review and release; incomplete endorsements can require pharmacy correction."}</p>}
     {!enabled && <PainMarker resolved={false} pain="Possible later correction" resolution="Declaration checked" />}
     <Button data-pharmacy-action="submit" onClick={() => act(() => {
-      const text = enabled ? draft.endorsementText : revision.endorsementText;
+      const text = enabled ? draft.endorsementText : original.endorsementText;
       useAppStore.getState().submitItem({
         caseId, revision: revision.number, channel: "paper", endorsementText: text,
         ...(enabled ? { declaration: draft.declaration, paperDeclaration: draft.paperDeclaration } : {}),

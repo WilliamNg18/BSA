@@ -12,7 +12,7 @@ import { HomePage } from "../../src/pages/home";
 import { NotificationContext } from "../../src/hooks/use-notification";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 import { runAgent } from "../../src/lib/domain/agent";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, caseById, playableCaseChannel } from "../../src/lib/domain/cases";
 import { abstentionReasonLabel } from "../../src/lib/abstention-display";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -87,7 +87,13 @@ it.each(["NCSO JB 27/08/26", "NCSO JB", "BB JB"])("keeps received declaration ad
   declare(endorsement);
   const before = getDomainSnapshot();
   const html = capture();
-  const check = section(html, 'aria-label="Original pharmacy declaration"');
+  const check = section(html, 'data-paper-source="declaration"');
+  expect(html.match(/aria-label="Paper scanner comparison"/g)).toHaveLength(1);
+  expect(html).not.toContain('aria-label="Original pharmacy declaration"');
+  expect(html).toContain(`data-as-submitted-revision="${before.caseRevisions["EX-24123"].at(-1)!.number}"`);
+  const submittedEndorsement = check.match(/<dt[^>]*>Endorsement<\/dt><dd[^>]*>([\s\S]*?)<\/dd>/)?.[1];
+  expect(submittedEndorsement).toBeDefined();
+  expect(text(submittedEndorsement!)).toBe(endorsement);
   const narrative = paragraphs(check).filter((p) => !p.startsWith("Declared dispensing-month Tariff:"));
   expect(words(narrative.join(" "))).toBeLessThan(25);
   const label = text(html.match(/<label class="flex items-start gap-2 text-sm">([\s\S]*?)<\/label>/)![1]);
@@ -148,9 +154,14 @@ it.each([
   { id: "SYN-FQ123-MISMATCH", enabled: false }, { id: "SYN-FQ123-MISMATCH", enabled: true },
 ])("keeps every operator choice and optional approval within one concise explanation: $id Agent $enabled", ({ id, enabled }) => {
   const store = useAppStore.getState();
-  store.submitItem({ caseId: id, channel: "eps", endorsementText: id === "EX-24112" ? "NCSO RK" : sessionCase(id)!.extracted.endorsementText });
-  store.arriveInQueue(id);
+  const c = caseById(id)!;
   store.setAgentEnabled(enabled);
+  store.submitItem({ caseId: id, channel: playableCaseChannel(id)!, endorsementText: c.extracted.endorsementText,
+    epsPrescription: c.epsPrescription, paperDeclaration: c.paperDeclaration });
+  if (id === "SYN-FQ123-MISMATCH" && !enabled) {
+    expect(useAppStore.getState().lifecycles[id].state).toBe("paid");
+    store.reopenForAudit(id, useAppStore.getState().caseRevisions[id].at(-1)!.number, "Later audit queries the endorsed product.");
+  } else store.arriveInQueue(id);
   const html = expectOperatorProse(render(CasePackPage, `/case/${id}`));
   for (const choice of ["Request information", "Refer back", "Escalate", "Reason (required)", "Release to pricing"]) expect(html).toContain(choice);
   expect(html).not.toContain(">Record decision<");
@@ -161,7 +172,8 @@ it.each([
 it("uses readable outcome labels and conditional manual EPS risk without prechecking Off", () => {
   useAppStore.getState().setAgentEnabled(true);
   const home = render(HomePage, "/#cases");
-  expect(home).toContain("Complete format, wrong pack");
+  expect(home).toContain("Wrong strength selected");
+  expect(home).not.toContain("Complete format, wrong pack");
   expect(home).not.toContain(">REQUEST_INFORMATION<");
   useAppStore.getState().setAgentEnabled(false);
   const before = getDomainSnapshot();

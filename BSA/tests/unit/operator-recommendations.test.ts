@@ -8,6 +8,8 @@ import { DecisionRecordPage } from "../../src/pages/decision-record";
 import { Type1Capture } from "../../src/components/demo/type1-capture";
 import { OperatorActionPanel } from "../../src/components/demo/operator-action-panel";
 import { getDomainSnapshot, useAppStore } from "../../src/lib/store";
+import { caseById } from "../../src/lib/domain/cases";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 import * as recommendations from "../../src/lib/domain/recommendations";
 
 vi.mock("@/lib/store", async (importOriginal) => {
@@ -27,6 +29,14 @@ function renderRoute(id: string, page: "pack" | "trace" | "record") {
     createElement(Routes, null, createElement(Route, { path: `/case/:id${suffix}`, element: createElement(component) }))));
 }
 
+function openPaperReview(enabled: boolean) {
+  const store = useAppStore.getState();
+  store.setAgentEnabled(enabled);
+  const paperDeclaration = caseById("EX-24112")!.paperDeclaration!;
+  store.submitItem({ caseId: "EX-24112", channel: "paper", endorsementText: paperDeclaration.endorsementText, paperDeclaration });
+  store.arriveInQueue("EX-24112");
+}
+
 describe("always-visible operator recommendations", () => {
   it.each(["EX-24107", "EX-24112", "SYN-FQ123-MISMATCH", "EX-24123"])("shows exactly one complete card on each %s case surface without mutation", (id) => {
     useAppStore.getState().setAgentEnabled(true);
@@ -34,7 +44,7 @@ describe("always-visible operator recommendations", () => {
     for (const page of ["pack", "trace", "record"] as const) {
       const html = renderRoute(id, page);
       expect(html.match(new RegExp(`data-recommendation-case="${id}"`, "g"))).toHaveLength(1);
-      for (const label of ["Tariff version", "Requirement results", "Recommended outcome", "Confidence signals",
+      for (const label of [id === "SYN-FQ123-MISMATCH" ? "Dispensing-month reference" : "Tariff version", "Requirement results", "Recommended outcome", "Confidence signals",
         "the agent verifies and advises; a person decides"]) expect(html).toContain(label);
     }
     expect(getDomainSnapshot()).toEqual(before);
@@ -59,18 +69,27 @@ describe("always-visible operator recommendations", () => {
     expect(getDomainSnapshot()).toEqual(before);
   });
 
-  it("shows the actual concrete date and preview before any human Apply", () => {
+  it("shows exact read-only strength facts and a safe field/rule note without a pharmacy target preview before Apply", () => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
-    store.arriveInQueue("EX-24112");
+    const caseId = "SYN-FQ123-MISMATCH";
+    const epsPrescription = caseById(caseId)!.epsPrescription!;
+    store.submitItem({ caseId, channel: "eps", endorsementText: epsPrescription.dispenserEndorsement, epsPrescription });
+    store.arriveInQueue(caseId);
     const before = getDomainSnapshot();
-    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OperatorActionPanel, { caseId: "EX-24112" })));
-    expect(html).toContain("21/08/2026");
-    expect(html).toContain("NCSO RK 21/08/26");
+    const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OperatorActionPanel, { caseId })));
+    expect(html).toContain('data-recommendation-audience="operator"');
+    expect(html).toContain("Read-only source facts");
+    expect(html).toContain("Amlodipine 10mg tablets, 28");
+    expect(html).toContain("Amlodipine 5mg tablets, 28");
+    for (const label of ["Prescribed", "Selected in claim", "Supplied record"]) expect(html).toContain(label);
+    expect(html).toContain(buildReferralNote([{ rule: "strength_matches_prescription" }]));
     expect(html).toContain("Operator draft preview");
+    for (const label of ["Suggested values", "Suggested pack", "Corrected preview", "Corrected claim line preview"]) {
+      expect(html).not.toContain(label);
+    }
     expect(html).toContain(">Apply suggestion</button>");
-    expect(before.operatorDrafts["EX-24112"]).toBeUndefined();
+    expect(before.operatorDrafts[caseId]).toBeUndefined();
     expect(getDomainSnapshot()).toEqual(before);
   });
 
@@ -99,9 +118,7 @@ describe("always-visible operator recommendations", () => {
 
   it("keeps an escalated case on actionable current advice rather than a read-only prior record", () => {
     const store = useAppStore.getState();
-    store.setAgentEnabled(true);
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
-    store.arriveInQueue("EX-24112");
+    openPaperReview(true);
     store.recordType2Decision({ caseId: "EX-24112", decision: "ESCALATE", reason: "Senior evidence review is required." });
     const html = renderToStaticMarkup(createElement(MemoryRouter, null, createElement(OperatorActionPanel, { caseId: "EX-24112" })));
     expect(html).toContain("Current revision");
@@ -110,11 +127,9 @@ describe("always-visible operator recommendations", () => {
 
   it.each([false, true])("shows the exact current pharmacy answer immediately on every case surface, Agent %s", (enabled) => {
     const store = useAppStore.getState();
-    store.setAgentEnabled(enabled);
-    store.submitItem({ caseId: "EX-24112", channel: "eps", endorsementText: "NCSO RK" });
-    store.arriveInQueue("EX-24112");
-    store.requestInformation("EX-24112", "Please confirm the endorsement date.");
-    const answer = "The pharmacy confirms the supplied date needs correction.";
+    openPaperReview(enabled);
+    store.requestInformation("EX-24112", "Please confirm the brand or manufacturer supplied.");
+    const answer = "The pharmacy confirms the supplied brand needs adding.";
     store.sendConfirmation("EX-24112", answer);
     const before = getDomainSnapshot();
     for (const page of ["pack", "trace", "record"] as const) {
@@ -132,8 +147,12 @@ describe("always-visible operator recommendations", () => {
     const store = useAppStore.getState();
     store.setAgentEnabled(true);
     const source = store.caseRevisions["EX-24123"].at(-1)!;
+    store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: source.endorsementText,
+      paperDeclaration: source.paperDeclaration,
+      declaration: { ...source.declaration!, fields: { ...source.declaration!.fields, prescriber: null } } });
+    const unknown = useAppStore.getState().caseRevisions["EX-24123"].at(-1)!;
     if (submitFirst) store.submitItem({ caseId: "EX-24123", channel: "paper", endorsementText: source.paperDeclaration!.endorsementText,
-      paperDeclaration: source.paperDeclaration, declaration: source.declaration });
+      paperDeclaration: unknown.paperDeclaration, declaration: unknown.declaration });
     const revision = useAppStore.getState().caseRevisions["EX-24123"].at(-1)!.number;
     store.confirmType1({ caseId: "EX-24123", revision, provenance: "human_capture", declarationReconciled: false,
       fields: { productCode: null, quantity: null, endorsementText: "", prescriber: null } });
@@ -144,7 +163,11 @@ describe("always-visible operator recommendations", () => {
     const html = renderToStaticMarkup(createElement(Type1Capture, { caseId: "EX-24123", compact: true }));
     expect(html).toContain('data-pharmacy-confirmation="EX-24123"');
     expect(html).toContain(answer);
-    expect(html).toMatch(/<input[^>]*id="[^"]*-prescriber"[^>]*value=""/);
+    expect(html).toContain("Human capture confirmed");
+    expect(html).not.toContain("<form");
+    expect(html).toMatch(/<dt[^>]*>Prescriber<\/dt><dd>Unreadable or absent<\/dd>/);
+    expect(before.itemProcesses["EX-24123"].capture?.fields.prescriber).toBeNull();
+    expect(before.itemProcesses["EX-24123"].capture?.fields.endorsementText).toBe("");
     expect(getDomainSnapshot()).toEqual(before);
   });
 });

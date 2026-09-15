@@ -35,7 +35,7 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true, context
     {dispenser && <section aria-label={contextLabel ? `${contextLabel}: Recorded dispenser claim` : "Recorded dispenser claim"} className="space-y-2 border-t pt-3">
       <h4 className="font-semibold">Dispenser&apos;s part</h4>
       <dl className="grid gap-3 text-sm grid-cols-2">
-        {prescription.items.map((item, index) => <KeyValue key={index} k="Product dispensed (synthetic)" v={`${item.dispensedCode} · ${item.dispensedName}`} />)}
+        {prescription.items.map((item, index) => <KeyValue key={index} k="Endorsed product and pack (synthetic)" v={`${item.dispensedCode} · ${item.dispensedName}`} />)}
         <KeyValue k="Dispenser endorsement" v={prescription.dispenserEndorsement || "None recorded"} />
         <KeyValue k="Dispensing date" v={prescription.dispensingDate} />
         <KeyValue k="Exemption status" v={prescription.exemptionStatus === "not_recorded" ? "Not recorded" : prescription.exemptionStatus === "exempt" ? "Exempt (synthetic)" : "Chargeable (synthetic)"} />
@@ -45,6 +45,13 @@ export function EpsPrescriptionMessage({ prescription, dispenser = true, context
           <KeyValue k="Pack size dispensed" v={prescription.supplyEvidence.packSize ?? "Not recorded"} />
           <KeyValue k="Form dispensed" v={prescription.supplyEvidence.form || "Not recorded"} />
         </>}
+      </dl>
+    </section>}
+    {prescription.supplyRecord && <section aria-label={contextLabel ? `${contextLabel}: Retained pharmacy supply record` : "Retained pharmacy supply record"} className="space-y-2 border-t pt-3">
+      <h4 className="font-semibold">Retained pharmacy supply record</h4>
+      <dl className="grid grid-cols-2 gap-3 text-sm">
+        <KeyValue k="Supplied product code" v={prescription.supplyRecord.productCode} />
+        <KeyValue k="Supplied quantity" v={prescription.supplyRecord.quantity} />
       </dl>
     </section>}
     <p className="text-xs text-muted-foreground">EPS has no image to read and no Type 1 capture.</p>

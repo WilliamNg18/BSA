@@ -8,6 +8,7 @@ const raw = B.extracted.endorsementText;
 const corrected = pharmacyDateCorrection(B, raw);
 const snapshot = (text: string) => pharmacySnapshot(text, B.extracted.dispensingDate, "scripted", checkPharmacy(B, text), "2026-09-12T12:00:00.000Z");
 const store = () => useAppStore.getState();
+const nextRevision = () => store().caseRevisions[B.id].at(-1)!.number + 1;
 beforeEach(() => {
   store().resetDemo();
   store().setAgentEnabled(true);
@@ -37,7 +38,7 @@ describe("human-applied pre-submission correction evidence", () => {
   });
 
   it("retains evidence across Agent/perspective changes and clears it only on Reset", () => {
-    store().recordPharmacyCorrection(B.id, snapshot(raw), snapshot(corrected), 2);
+    store().recordPharmacyCorrection(B.id, snapshot(raw), snapshot(corrected), nextRevision());
     const events = store().pharmacyCorrections;
     store().setAgentEnabled(false);
     store().setPerspective("pharmacy");
@@ -50,14 +51,15 @@ describe("human-applied pre-submission correction evidence", () => {
 
   it("rejects Off, stale, reversed or fabricated ready evidence", () => {
     const before = snapshot(raw), after = snapshot(corrected);
+    const revision = nextRevision();
     store().setAgentEnabled(false);
-    expect(() => store().recordPharmacyCorrection(B.id, before, after, 2)).toThrow(/correction/);
+    expect(() => store().recordPharmacyCorrection(B.id, before, after, revision)).toThrow(/correction/);
     store().setAgentEnabled(true);
-    expect(() => store().recordPharmacyCorrection(B.id, before, after, 3)).toThrow(/correction/);
-    expect(() => store().recordPharmacyCorrection(B.id, after, before, 2)).toThrow(/correction/);
-    expect(() => store().recordPharmacyCorrection(B.id, before, { ...after, checkedAt: "2026-09-11T12:00:00.000Z" }, 2)).toThrow(/correction/);
+    expect(() => store().recordPharmacyCorrection(B.id, before, after, revision + 1)).toThrow(/correction/);
+    expect(() => store().recordPharmacyCorrection(B.id, after, before, revision)).toThrow(/correction/);
+    expect(() => store().recordPharmacyCorrection(B.id, before, { ...after, checkedAt: "2026-09-11T12:00:00.000Z" }, revision)).toThrow(/correction/);
     const forged = { ...after, typedText: raw, facts: { ...after.facts!, quotedText: raw } };
-    expect(() => store().recordPharmacyCorrection(B.id, before, forged, 2)).toThrow(/correction/);
+    expect(() => store().recordPharmacyCorrection(B.id, before, forged, revision)).toThrow(/correction/);
     expect(store().pharmacyCorrections).toEqual([]);
   });
 });

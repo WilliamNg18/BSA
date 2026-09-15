@@ -16,9 +16,10 @@
     "test:a11y": "playwright test --config tests/e2e/accessibility-final.config.ts",
     "check:content": "node scripts/check-content.mjs",
     "check:source-copy": "node scripts/check-source-copy.mjs",
+    "check:eps-headlines": "node scripts/check-eps-headlines.mjs",
     "verify": "node scripts/verify.mjs",
     "test:content": "playwright test content.spec.ts --project=chromium --reporter=dot",
-    "check": "npm run check:source-copy && npm run typecheck && npm run lint && npm run build"
+    "check": "npm run check:source-copy && npm run check:eps-headlines && npm run typecheck && npm run lint && npm run build"
   },
   "engines": {
     "node": ">=20.19"

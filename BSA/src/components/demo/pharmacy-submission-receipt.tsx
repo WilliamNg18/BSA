@@ -6,6 +6,7 @@ import { NO_VERIFICATION, itemStateLabel } from "@/lib/domain/lifecycle";
 import { HILLCREST_PHARMACY } from "@/lib/domain/reference";
 import { formatProcessItems } from "@/lib/domain/baseline";
 import { EpsPrescriptionMessage } from "./eps-prescription-message";
+import { isPaperReadyToRelease } from "@/lib/domain/submission-views";
 
 export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = false }: {
   caseId: string; revisionNumber: number; compact?: boolean;
@@ -13,6 +14,7 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
   const row = useAppStore((s) => s.lifecycles[caseId]);
   const revision = useAppStore((s) => s.caseRevisions[caseId]?.find((r) => r.number === revisionNumber));
   const perspective = useAppStore((s) => s.perspective);
+  const process = useAppStore((s) => s.itemProcesses[caseId]);
   if (!row || !revision) return <p role="alert">Submission receipt unavailable.</p>;
   const events = row.history.filter((event) => event.revision === revisionNumber);
   const verification = events.filter((event) => event.verification).at(-1)?.verification ?? NO_VERIFICATION;
@@ -22,11 +24,13 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
   const built = events.some((event) => event.actor === "agent" && event.recommendationGate === "PASS" &&
     event.recommendation && ["SUFFICIENT", "REFER_BACK", "REQUEST_INFORMATION"].includes(event.recommendation));
   const humanRelease = release?.releaseOrigin === "human_decision" || release?.actor === "operator";
+  const readyPaper = process?.revision === revisionNumber && isPaperReadyToRelease(row, process);
   const nextPath = release
     ? itemStateLabel({ ...row, state: "released_to_pricing", history: events }, "nhsbsa")
     : pricing ? events.some((event) => event.actor === "operator") || pricing.processStep !== "automatic_pricing"
       ? "Priced by NHSBSA's existing rules engine after human review."
       : "priced by NHSBSA's existing rules engine, no person involved"
+    : readyPaper ? "Resubmitted, ready to release; an operator must press Release."
     : built ? "An operator will see a built case."
     : events.some((event) => event.processStep === "type1_capture")
       ? "Human capture recorded; human review pending."
@@ -35,7 +39,7 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
     <h2 className="font-semibold">Submission receipt</h2>
     <BoundaryTag cls={release || pricing ? humanRelease ? "human" : "deterministic" : "human"} />
     <p role="status">{release?.verification?.released ? "Paid on the normal schedule (synthetic)." : nextPath}</p>
-    {caseId === "EX-24123" && revision.channel === "paper" && !release && <p className="text-sm">Unreadable paper is never released automatically; an operator compares your declaration with the scan.</p>}
+    {revision.channel === "paper" && !release && <p className="text-sm">Paper is scanned at NHSBSA; release always requires the operator&apos;s press.</p>}
     <dl className="grid grid-cols-2 gap-3 text-sm">
       <KeyValue k="Receipt" v={`${caseId}:${revision.number}`} />
       <KeyValue k="Gate 1" v={verification.gate1} />
@@ -51,7 +55,7 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
           <KeyValue k="Check result" v={revision.precheck?.status ?? "not_checked"} />
           <KeyValue k="Check timestamp" v={revision.precheck?.checkedAt ?? "No checks performed"} />
           <KeyValue k="Version / clause" v={`${revision.precheck?.tariffVersion ?? "Not retrieved"} / ${revision.precheck?.clauseId ?? "Not retrieved"}`} />
-          <KeyValue k="Current item" v={itemStateLabel(row, "pharmacy")} />
+          <KeyValue k="Current item" v={itemStateLabel(row, "pharmacy", undefined, process)} />
         </dl>
         {revision.paperDeclaration && <section aria-label="Submitted pharmacy declaration" className="mt-3 space-y-2">
           <h3 className="font-semibold">Submitted pharmacy declaration</h3>
@@ -60,6 +64,9 @@ export function PharmacySubmissionReceipt({ caseId, revisionNumber, compact = fa
             <KeyValue k="Declared quantity" v={revision.paperDeclaration.quantity?.toString() ?? "Not declared"} />
             <KeyValue k="Declared endorsement" v={revision.paperDeclaration.endorsementText || "Not declared"} />
             <KeyValue k="Declared dispensing date" v={revision.paperDeclaration.dispensingDate || "Not declared"} />
+            <KeyValue k="Declared brand or manufacturer" v={revision.paperDeclaration.brandManufacturer || "Not declared"} />
+            <KeyValue k="Declared pack size" v={revision.paperDeclaration.packSize?.toString() ?? "Not declared"} />
+            <KeyValue k="Declared form" v={revision.paperDeclaration.form || "Not declared"} />
           </dl>
           <p className="text-xs">declared by the pharmacy, not read from the form</p>
         </section>}
