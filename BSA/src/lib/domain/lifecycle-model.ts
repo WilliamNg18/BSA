@@ -34,9 +34,10 @@ export function appendHistory(current: CaseLifecycle, event: HistoryEvent): Case
 }
 
 /** Human capture authority comes from its append-only event, not routing metadata. */
-export function captureForRevision(row: CaseLifecycle, revision: number): Type1Capture | null {
+export function captureForRevision(row: CaseLifecycle, revision: number, sourceRevision = row.history
+  .filter((event) => event.revision === revision && event.sourceRevision !== undefined).at(-1)?.sourceRevision ?? revision): Type1Capture | null {
   return row.history.filter((event) => event.actor === "operator" && event.processStep === "type1_capture" &&
-    event.capture?.revision === revision).at(-1)?.capture ?? null;
+    event.capture && event.capture.revision <= revision && (event.capture.sourceRevision ?? event.capture.revision) === sourceRevision).at(-1)?.capture ?? null;
 }
 
 function requireDate(date: string): void {
@@ -188,9 +189,9 @@ export function caseForLifecycle(
     c.readings = [facts, { ...facts }, { ...facts }];
     c.inCoverage = c.inCoverage && facts.type === "NCSO";
   }
-  const capture = lifecycles[caseId].history.filter((event) => event.capture?.revision === revision.number).at(-1)?.capture
+  const capture = captureForRevision(lifecycles[caseId], revision.number, revision.sourceRevision ?? revision.number)
     ?? itemProcesses?.[caseId]?.capture;
-  if (capture?.revision === revision.number) {
+  if (capture && capture.revision <= revision.number && (capture.sourceRevision ?? capture.revision) === (revision.sourceRevision ?? revision.number)) {
     return immutable({ ...c, capturedEvidence: {
       fields: capture.fields, provenance: capture.provenance === "pharmacy_declaration" ? "pharmacy_declaration" : "human_capture",
       declarationReconciled: capture.declarationReconciled, revision: capture.revision,

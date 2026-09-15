@@ -32,6 +32,11 @@ scanner UI, integrated paper lifecycle, browser timing or live acceptance.
 
 ### G39/40 explicit-action checkpoint
 
+Current-source linking and seeded readiness provenance are implemented:
+information responses retain the same actual submission/capture, and seeded
+ready paper supports one real operator Release after Reset. These targeted
+repairs do not replace legacy consumer migration or current-main live proof.
+
 Strength matching now has explicit proposed/public-guidance authority, not an
 invented monthly Tariff clause. Current trace and both gates retain genuine
 disagreement; no self-corroborating equality or fabricated readings remain in
