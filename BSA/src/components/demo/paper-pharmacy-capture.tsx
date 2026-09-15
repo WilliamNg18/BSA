@@ -26,7 +26,7 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
   const submitted = revision.kind !== "seed";
   return <section aria-label="Paper pharmacy submission" data-pharmacy-case={caseId} className="space-y-4">
     <h2 className="text-lg font-semibold">{enabled ? "Proposed: paper form and declaration" : "Paper prescription posted to NHSBSA"}</h2>
-    <Button variant="outline" aria-pressed={scannerShown} onClick={() => setScannerShown((shown) => !shown)}>
+    <Button variant="outline" data-pharmacy-demo="scanner" aria-pressed={scannerShown} onClick={() => setScannerShown((shown) => !shown)}>
       Show the form as NHSBSA&apos;s scanner will see it
     </Button>
     {scannerShown && <p role="status">image cannot be read</p>}
@@ -35,8 +35,8 @@ export function PaperPharmacyCapture({ caseId = "EX-24123", compact = false, con
     <dl className="text-sm"><dt>Submission purpose</dt><dd>New demonstration attempt; history retained.</dd></dl>
     {enabled ? <>
       <div className="flex flex-wrap gap-2" aria-label="Synthetic declaration preparation">
-        <Button variant="outline" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "complete")))}>Declaration complete</Button>
-        <Button variant="outline" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "missing")))}>Declaration missing information</Button>
+        <Button variant="outline" data-pharmacy-demo="complete" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "complete")))}>Declaration complete</Button>
+        <Button variant="outline" data-pharmacy-demo="missing" onClick={() => act(() => useAppStore.getState().setPharmacyDraft(caseId, preparePaperDemoDraft(c, revision, "missing")))}>Declaration missing information</Button>
       </div>
       {!compact && <Button type="button" variant="outline" onClick={() => update(original)}>
         {c.scenario === "D" ? "Load worked declaration" : "Load complete paper declaration"}
