@@ -22,6 +22,7 @@ ms.date: 2026-09-15
 - Question: does an information-only pharmacy answer replace As submitted? Choice: no; retain the last actual submission and separately record the response revision, requiring explicit source linkage in the scanner facade. Tie-breaker: no invented corrected claim or erased provenance.
 - Question: should B retain a second capture call after G's acknowledged paper amendment is already reconciled? Choice: test readiness and one final human Release instead; earlier capture and old scan remain immutable. Tie-breaker: the explicit corrected-paper contract, without unnecessary operator work.
 - Question: which source validates queue absence and payment presentation? Choice: assert the actual `staffLane` and `receiptPricingLabel` adapters after real actions, with no paper Paid receipt before the operator press. Tie-breaker: verify the required presentation contract rather than only a routing flag.
+- Question: who repairs newly reproduced canonical source/note defects? Choice: publish B's failing regression evidence and send G the exact repairs; do not patch the shared store or manufacture scan fields in U's renderer. Tie-breaker: one canonical owner and faithful source images.
 
 ## 2026-09-15: B40 readable-blank decision
 
