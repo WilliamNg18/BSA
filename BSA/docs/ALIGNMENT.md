@@ -4,6 +4,12 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+The V helper contract now follows P `74cd4a8`'s actual paper radios and Post
+control, with explicit case identity and no hidden draft mutation. Static
+helper tests are not DOM evidence. P's conflicting whole-branch merge was
+aborted; canonical source remains owner-controlled. B's newer nine-negative
+pass is separate from its still-failed 107/108 combined routing result.
+
 V's capture preservation list now protects `mismatchSharePercent`, closing
 the identified assertion omission without changing the producer or N's
 exact-key-list file. Execution of the migrated state matrix remains pending.

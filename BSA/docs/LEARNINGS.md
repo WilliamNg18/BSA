@@ -4,6 +4,20 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+Selecting only the Paper channel no longer establishes D: there are now two
+real paper scenarios. The helper explicitly selects the required radio and
+asserts its case ID. B setup no longer types a missing-date EPS endorsement;
+the real new-submission factory prepares the incomplete paper revision.
+Static AST checks protect selection, explicit Post and absence of hidden
+fixture writes, but do not verify UI rendering or the browser journey.
+
+All three static regressions, typecheck and targeted lint passed. No browser,
+server, screenshot or live acceptance run was used for this adapter patch.
+
+P's published branch uses cherry-picked canonical lineage and conflicts with
+V's exact G dependency in owner source. The attempted merge was aborted from
+a clean tree; no guessed source resolution was retained.
+
 The exact schema assertion and unrelated-global preservation assertion have
 different purposes. N owns the first; V added the new mismatch input to the
 second so a capture-induced change cannot pass simply because the field is

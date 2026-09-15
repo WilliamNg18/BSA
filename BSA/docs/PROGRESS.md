@@ -6,6 +6,23 @@ ms.date: 2026-09-15
 
 ## V canonical dependency integration
 
+V's pharmacy scenario helper now explicitly selects either real paper radio
+and verifies its item ID; the default remains unreadable D. Starting B uses
+P `74cd4a8`'s factory-backed brand-missing paper selection and explicit Post,
+without clearing fields, resetting state or writing through an observer.
+Static contracts protect these helper choices; browser execution and the
+remaining B consumer assertions are still pending.
+
+Typecheck, targeted helper/unit lint and all three static helper regressions
+passed with two workers. These results establish no browser pass.
+
+Importing P's whole branch encountered conflicting canonical source, so that
+merge was aborted without retaining any source resolution. The test adapter
+targets P's published contract; it does not claim the current V runtime has
+all P/O/F consumer changes. B `55f8d28` subsequently passed the original nine
+negative assertions, but its 107/108 combined result still fails D's
+capture/information-response routing. G owns that remaining repair.
+
 The V-owned Type 1 capture preservation check now compares
 `mismatchSharePercent` before and after capture, alongside the existing global
 inputs. N's exact-key assertion file, observer producer and complete snapshot

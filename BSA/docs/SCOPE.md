@@ -6,6 +6,11 @@ ms.date: 2026-09-15
 
 # Scope register
 
+V's shared paper-selection adapter now covers D and brand-missing B using
+the actual P controls. Fresh B is posted as paper, not a retired EPS date
+scenario. This is phased test preparation: old consumer expectations, full
+cycles, timings and current-live coverage remain incomplete.
+
 The capture unrelated-global assertion now includes the actual
 `mismatchSharePercent` string draft. No new seed, snapshot filtering or
 domain mutation is introduced; N's schema-assertion hunk is untouched.
