@@ -235,4 +235,22 @@ describe("submission fidelity through actual store actions", () => {
     expect(store().lifecycles[id].history.some((event) => event.actor === "pharmacy" &&
       event.revision === revision.number + 1 && event.processStep === "resubmission")).toBe(true);
   });
+
+  it("retains source-linked Type 1 evidence after an information-only paper response without a second capture", () => {
+    const id = "EX-24123";
+    store().setAgentEnabled(true);
+    submitCurrent(id);
+    const submission = currentReplica(id), revision = submission.asSubmitted;
+    store().confirmType1({ caseId: id, revision: revision.number, fields: revision.declaration!.fields,
+      provenance: "pharmacy_declaration", declarationReconciled: true });
+    const reconciled = getPaperReconciliation(store(), id);
+    expect(reconciled?.reconciliationBasis).toBe("human_confirmed_capture");
+    const captures = store().lifecycles[id].history.filter((event) => event.capture);
+    store().requestInformation(id, "Readable source evidence is required; please provide evidence for operator comparison.");
+    store().sendConfirmation(id, "Additional pharmacy evidence supplied; the submitted paper is unchanged.");
+    expect(currentReplica(id)).toEqual(submission);
+    expect(getPaperReconciliation(store(), id)).toEqual(reconciled);
+    expect(store().lifecycles[id].history.filter((event) => event.capture)).toEqual(captures);
+    expect(store().itemProcesses[id].routing.outcome).not.toBe("type1_capture");
+  });
 });
