@@ -38,6 +38,10 @@ export function PharmacyDraftFields({ draft, original, channel, update, correcti
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, quantity: e.target.value === "" ? null : Number(e.target.value) } })} /></label>
       <label className="grid gap-1">Declared dispensing date<Input type="date" value={paper.dispensingDate} aria-describedby={`${id}-origin`} className={highlight(original.paperDeclaration?.dispensingDate, paper.dispensingDate)}
         onChange={(e) => update({ ...draft, paperDeclaration: { ...paper, dispensingDate: e.target.value } })} /></label>
+      {correction && declaration && <label className="col-span-2 grid gap-1">Declared prescriber (synthetic)
+        <Input value={declaration.fields.prescriber ?? ""} aria-describedby={`${id}-origin`}
+          onChange={(e) => update({ ...draft, declaration: { ...declaration, fields: { ...declaration.fields, prescriber: e.target.value || null } } })} />
+      </label>}
     </div>}
     {channel === "paper" && !paper && declaration && <div className="grid grid-cols-2 gap-3">
       <label className="grid gap-1">Declared product code<Input value={declaration.fields.productCode ?? ""} aria-describedby={`${id}-origin`} className={highlight(original.declaration?.fields.productCode, declaration.fields.productCode)}

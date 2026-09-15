@@ -114,8 +114,8 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
   }
   await expect(panel().getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
   if (enabled) {
-    const suggestion = panel().getByRole("region", { name: "Suggestion", exact: true });
-    const draftedNote = await suggestion.locator("div").filter({ has: page.getByText("Drafted note", { exact: true }) }).last().locator("dd").innerText();
+    const suggestion = panel().getByRole("region", { name: "Recommendation", exact: true });
+    const draftedNote = await suggestion.getByText("Note", { exact: true }).locator("xpath=following-sibling::dd[1]").innerText();
     await action("Operator applies the suggestion into visible fields only", "NHSBSA", async () => {
       await panel().getByRole("button", { name: "Apply suggestion", exact: true }).click();
       await expect(panel().getByRole("radio", { name: "Refer back", exact: true })).toBeChecked();
@@ -126,7 +126,7 @@ export async function runFourCaseCycle(page: Page, scenario: PlayableCycle, enab
     });
     await sides("Suggestion applied, still awaiting decision", "in_review");
   } else {
-    await expect(panel().getByRole("region", { name: "Suggestion", exact: true })).toHaveCount(0);
+    await expect(panel().getByRole("region", { name: "Recommendation", exact: true })).toHaveCount(0);
     await action("Operator chooses referral without assistance", "NHSBSA", async () => {
       await panel().getByRole("radio", { name: "Refer back", exact: true }).check();
     });

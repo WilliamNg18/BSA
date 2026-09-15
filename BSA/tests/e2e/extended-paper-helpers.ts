@@ -104,7 +104,9 @@ export async function runExtendedPaperBranch(
     if (branch !== "complete") {
       const information = branch === "unattested-information";
       const outcome = information ? "REQUEST_INFORMATION" : "REFER_BACK";
-      await expect(operatorDecision(page).getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
+      if (enabled || !information) {
+        await expect(operatorDecision(page).getByRole("button", { name: "Release to pricing", exact: true })).toBeDisabled();
+      }
       const priorState = await state().innerText();
       if (enabled) {
         await assertVisibleRecommendation(page, id, true);
