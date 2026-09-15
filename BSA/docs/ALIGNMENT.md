@@ -4,6 +4,10 @@ description: Current main and in-flight branch drift, correction ownership and e
 ms.date: 2026-09-15
 ---
 
+G `4ac77a5` supplies the actual parent-approved sibling implementation.
+Earlier nested-layout totals stay historical; no assertion-only exclusion
+was used to establish this dependency.
+
 Exact G `d4f27ce` native discovery retains 1,062 ordinary, 44 state and 75
 live entries without duplicate IDs or executed results. This is not browser
 green, and pending O sibling-layout and current-case test migrations must
@@ -454,6 +458,25 @@ earlier verification is merged.
 No row is marked verified by this tracking update. The standalone headline
 guard must not gain whole-file exemptions or activate against an unmigrated
 runtime merely to create red foundation CI.
+
+Assembled candidate `d4f27ce` is locally green: complete check plus 1,990 unit
+tests across 116 files. Draft #110 remains incomplete pending the required
+operator-panel structure, browser CI and live-first release evidence. The
+coordinator's observed header-first main `5b75e5f` remains the live baseline,
+not this candidate.
+
+Citation alignment is explicit: the proposed strength matching check has no
+Tariff clause/citation and does not inflate the dated-provision counter. The
+strict headline guard now runs as part of shared verification; 314 selected
+baseline/guard/runner tests pass without broad exceptions.
+
+ES2022 compatibility is restored for the migrated capture test. This fixes a
+typecheck blocker only, not the pending full CI or live acceptance gates.
+
+Canonical legacy regression checkpoint: twelve G-owned files pass 194 tests
+after actual-action migration, and the integrated demo slice passes 231 tests.
+The retired-headline checker now has zero source findings. These scoped passes
+do not replace the pending full exact-head CI, deployment or live audit.
 
 ## Bounded Home and eleven-step compatibility over G `05fc421`
 
@@ -961,3 +984,26 @@ resubmission, wrong-strength manual audit and immutable unknown-prescriber
 submissions instead of retired seed assumptions. Safe operator-preview checks
 retain exact prescribed/selected/supplied facts while forbidding pharmacy-only
 target proposals. All 66 pass; no assertion or deadline is skipped.
+
+R's operator trace audience assertions now have actual bounded browser proof:
+8/8 on clean `2df6549`, covering all four cases and 1280/1440 widths. The
+recorded audit URLs confirm port 4337; no hosted or screenshot-review result
+is inferred. Full integration/live rows remain unaligned until their own gates.
+
+The reported ready-paper future-tense copy is corrected from the same canonical
+paper result: raw-source and human-confirmed bases have distinct completed
+wording, while new drafts retain the pending verification statement.
+
+O audit and ready-paper controls now have a pinned four-test local browser
+pass with full-page axe. The duplicate status instruction was shortened
+without altering the canonical paper summary, required reason or action.
+The existing D prose regression passes, while a separate aggregate of the
+seeded-ready wrapper plus its nested mandatory card still requires a
+per-panel scope decision. No text is hidden or excluded to assert a pass.
+
+The parent resolved that scope by requiring genuine sibling advice/human
+panels. O has implemented and structurally tested them: ready B and confirmed
+D, On and Off, retain all required copy while each applicable panel stays
+below25 prose/help words. The combined workspace can still exceed25, which
+the tests explicitly preserve; it is no longer represented as one bordered
+decision panel. Fresh browser/focus/geometry proof is pending.

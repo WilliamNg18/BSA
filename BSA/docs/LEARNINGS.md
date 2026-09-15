@@ -4,6 +4,10 @@ description: Append-only dated findings, repairs and verification evidence.
 ms.date: 2026-09-15
 ---
 
+G `4ac77a5` imports O's real advice/decision separation. The V merge changed
+no owner source and preserved both sides' document records; the remaining
+Apply failures are now locator migrations against an implemented structure.
+
 Playwright discovery JSON contains expected outcomes and placeholder statuses
 even though result arrays are empty. V records 1,062 ordinary, 44 state and
 75 live entries on exact G `d4f27ce` as discovery only, with zero execution
@@ -465,6 +469,25 @@ word replacement. Original CASES and HISTORY initializer text compares exactly
 against the preceding commit after line-ending normalisation. Seventy-seven
 targeted source/fidelity tests pass; the remaining headline findings are owner
 UI/reference copy, not permission to weaken the guard or rewrite history.
+
+The twelve-file canonical migration now passes 194 tests. The important
+boundary is not changing expectations in isolation: tests prepare valid current
+sources, acknowledge exact corrections and use the explicit human audit path
+after Today pricing. Historical data stays available without becoming a hidden
+operational case set.
+
+Runtime tests alone missed one `findLast` use outside the configured ES2022
+library. The assembled typecheck caught it; using `filter(...).at(-1)` repaired
+the test without a source change or library-target expansion.
+
+The final assembled migration exposed a stale citation expectation: both
+examples assemble evidence, but only the paper rule has a retrieved Tariff
+citation. Correcting that expectation and asserting proposed strength authority
+preserves, rather than weakens, the governance distinction.
+
+The assembled `d4f27ce` candidate passes check and all 1,990 units. This closes
+the local migration failures, not the separate structural-panel, browser-CI
+or live acceptance requirements. Draft #110 records those remaining boundaries.
 G's paper integration exposed an incorrect `missing(observation.value)` test in
 the Type 1 predicate. A readable blank may have high extraction confidence:
 confidence describes the observation, not whether the mandatory field is filled.
@@ -2076,3 +2099,40 @@ There are now 50 explanatory panels (maximum 54 prose words), 14 FAQs and a
 separate source disclosure. The shared-content documentation is exact.
 No browser or hosted run occurred; passing pure owner-foundation tests is
 not a claim that G's new store/seed/gates or the live product are integrated.
+
+On 15 September, clean `2df6549` was rebuilt and its build identity asserted
+before the allocated eight-case trace run. All eight passed in 42.3 seconds,
+with one worker and zero retries. The eight unique axe reports (excluding
+attachment copies) have zero violations. Both wrong-strength audits retain
+one incomplete finding; the other six have none. All report URLs are on
+localhost:4337, audit timestamps span 20:41:07Z to 20:41:40Z, no screenshots
+were produced, and the port was verified closed after the run.
+
+P's bounded browser observation found contradictory future-tense provenance
+below a successfully reconciled paper result. The repair uses existing
+`RELEASE_RECOMMENDED` and `reconciliationBasis`, not inferred approval. Tests
+cover ready raw sources, ready human capture and still-pending drafts;
+typecheck and all 48 selected recommendation tests pass.
+
+## O browser and copy evidence remain separately scoped
+
+The approved four-test O run at9d5502 passed in32.26278s with no retries,
+skips or flaky results; all four unrestricted axe assertions passed. The
+initial external identity request arrived after the runner stopped and was
+refused. A separately labelled Node-only check of the unchanged artifact
+returned HTTP200 and the clean9d5502 identity; no browser was rerun.
+
+V's exact two confirmed-paper prose cases pass after removing redundant
+status words. A new seeded-ready counter that aggregates the mandatory
+nested card with operator help still measures34 On-mode words. This is a
+different scope from the D fixture and is not called a pass or concealed by
+markup changes. The local browser evidence does not settle that copy
+interpretation or the outstanding deployed/offline acceptance gates.
+
+The aggregate copy failures were not resolved by dropping text or raising
+the threshold. The parent required real sibling panels; source tests now
+check both structural separation and cumulative prose/help within each.
+They also verify that the full mandatory copy remains in the workspace.
+Check and 53 targeted tests pass, with V's original two D cases passing
+separately. The ten changed-layout browser cases are inventory only, not
+an execution result; prior four-test9d5502 proof is not promoted.

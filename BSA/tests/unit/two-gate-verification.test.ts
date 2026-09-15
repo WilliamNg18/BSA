@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { caseById, PLAYABLE_CASE_IDS } from "../../src/lib/domain/cases";
+import { caseById, PLAYABLE_CASE_IDS, TWO_GATE_CASES } from "../../src/lib/domain/cases";
 import { historicalLifecycleFixtures } from "../../src/lib/domain/lifecycle-seed";
 import { NO_VERIFICATION, itemStateLabel, receiptPricingLabel } from "../../src/lib/domain/lifecycle";
 import { evaluateItemVerification } from "../../src/lib/domain/verification";
-import { checkPharmacyCorrection, initialisePharmacyDraft } from "../../src/lib/domain/pharmacy-correction";
+import { checkPharmacyCorrection, initialisePharmacyDraft, initialisePharmacySubmissionDraft, preparePaperDemoDraft } from "../../src/lib/domain/pharmacy-correction";
+import { buildReferralNote } from "../../src/lib/domain/referral-wording";
 import { getDomainSnapshot, getReleaseEligibility, sessionCase, useAppStore } from "../../src/lib/store";
 import * as agent from "../../src/lib/domain/agent";
 
@@ -13,17 +14,33 @@ beforeEach(() => store().resetDemo());
 function send(id: string, enabled: boolean) {
   store().setAgentEnabled(enabled);
   const revision = store().caseRevisions[id].at(-1)!;
-  const draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+  const draft = initialisePharmacySubmissionDraft(sessionCase(id)!, revision);
   store().submitItem({ ...draft, caseId: id, channel: draft.channel!, revision: revision.number });
 }
 
+function prepareBrandCorrection(enabled: boolean) {
+  send(b, enabled);
+  store().arriveInQueue(b);
+  store().referBack(b, "RB2B", buildReferralNote([{ rule: "brand_required_for_multiple_suppliers" }]));
+  const revision = store().caseRevisions[b].at(-1)!;
+  const draft = initialisePharmacyDraft(sessionCase(b)!, revision);
+  store().setPharmacyDraft(b, { ...draft, purpose: "correction",
+    paperDeclaration: { ...draft.paperDeclaration!, brandManufacturer: caseById(b)!.pharmacySupplyRecord!.brandManufacturer } });
+  store().setCorrectionAcknowledgement(b, revision.number, true);
+  return revision;
+}
+
 describe("authoritative two-gate source verification", () => {
-  it.each([false, true])("wrong-but-complete pack never releases, enabled=%s", (enabled) => {
+  it.each([false, true])("wrong strength prices Today but cannot pass operator audit or proposed verification, enabled=%s", (enabled) => {
     send(mismatch, enabled);
     expect(store().itemVerification[mismatch]).toEqual(enabled
-      ? { gate1: "pass", gate2: "fail", reconciled: false, released: false } : NO_VERIFICATION);
-    expect(store().itemProcesses[mismatch].routing).toMatchObject({ requiresHuman: true, pricingAuthority: null });
-    store().arriveInQueue(mismatch);
+      ? { gate1: "fail", gate2: "fail", reconciled: false, released: false } : NO_VERIFICATION);
+    expect(store().itemProcesses[mismatch].routing).toMatchObject({ requiresHuman: enabled, pricingAuthority: enabled ? null : "existing_rules_engine" });
+    if (enabled) store().arriveInQueue(mismatch);
+    else {
+      expect(store().lifecycles[mismatch].state).toBe("paid");
+      store().reopenForAudit(mismatch, store().caseRevisions[mismatch].at(-1)!.number, "Human audit queries the selected product.");
+    }
     expect(getReleaseEligibility(mismatch).allowed).toBe(false);
     expect(() => store().releaseToPricing(mismatch, "I choose to ignore the mismatched pack")).toThrow();
     expect(() => store().recordType2Decision({ caseId: mismatch, decision: "ACCEPT", reason: "Ignore the mismatch" })).toThrow();
@@ -57,7 +74,7 @@ describe("authoritative two-gate source verification", () => {
     expect(receiptPricingLabel(store().lifecycles[mismatch], 2)).toBeNull();
   });
 
-  it("missing date fails format and actual received requirements", () => {
+  it("missing paper brand fails format and actual received requirements despite correct dates", () => {
     send(b, true);
     expect(store().itemVerification[b]).toMatchObject({ gate1: "fail", gate2: "fail", released: false });
     expect(store().lifecycles[b].state).toBe("submitted");
@@ -118,7 +135,7 @@ describe("authoritative two-gate source verification", () => {
     expect(store().lifecycles[d].history.some((event) => event.capture)).toBe(false);
   });
 
-  it.each([false, true])("complete manual Off capture needs no proposed attestation; On still does, enabled=%s", (enabled) => {
+  it.each([false, true])("acknowledged readable amendments require release, not a second capture, enabled=%s", (enabled) => {
     store().setAgentEnabled(enabled);
     store().submitItem({ caseId: d, channel: "paper", endorsementText: caseById(d)!.extracted.endorsementText });
     const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB", prescriber: "Manually keyed synthetic prescriber" };
@@ -128,17 +145,20 @@ describe("authoritative two-gate source verification", () => {
       revision: 2, channel: "paper", purpose: "correction", endorsementText: "NCSO JB 27/08/26",
       paperDeclaration: { typedProduct: fields.productCode, quantity: fields.quantity,
         endorsementText: "NCSO JB 27/08/26", dispensingDate: "2026-08-27", declaredByPharmacy: true },
+      declaration: { fields: { ...fields, endorsementText: "NCSO JB 27/08/26" },
+        declaredAt: store().caseRevisions[d].at(-1)!.at, provenance: "pharmacy_declaration" },
     });
+    store().setCorrectionAcknowledgement(d, 2, true);
     store().resubmit(d);
-    store().confirmType1({ caseId: d, revision: 3, fields: { ...fields, endorsementText: "NCSO JB 27/08/26" },
-      provenance: "human_capture", declarationReconciled: false });
-    expect(getReleaseEligibility(d).allowed).toBe(!enabled);
-    if (enabled) expect(() => store().releaseToPricing(d, "No attestation was supplied.")).toThrow();
-    else {
-      store().releaseToPricing(d, "Manually keyed facts independently match the claim.");
-      expect(store().itemVerification[d]).toEqual({ ...NO_VERIFICATION, released: true });
-      expect(itemStateLabel(store().lifecycles[d], "nhsbsa")).toContain("after operator review");
-    }
+    expect(store().caseRevisions[d].at(-1)?.paperSource?.provenance).toBe("acknowledged_pharmacy_amendment");
+    expect(store().itemProcesses[d].capture).toBeNull();
+    expect(() => store().confirmType1({ caseId: d, revision: 3, fields: { ...fields, endorsementText: "NCSO JB 27/08/26" },
+      provenance: "human_capture", declarationReconciled: false })).toThrow("Type 1");
+    expect(getReleaseEligibility(d).allowed).toBe(true);
+    store().releaseToPricing(d, "Human checked the acknowledged amendment against the claim.");
+    expect(store().itemVerification[d]).toEqual(enabled
+      ? { gate1: "pass", gate2: "pass", reconciled: true, released: true } : { ...NO_VERIFICATION, released: true });
+    expect(itemStateLabel(store().lifecycles[d], "nhsbsa")).toContain("after operator review");
   });
 
   it("On submission can finish through actual Off manual capture without a hidden attestation requirement", () => {
@@ -177,17 +197,18 @@ describe("authoritative two-gate source verification", () => {
   });
 
   it("changing received EPS product and quantity does not rewrite its independent claim ledger", () => {
-    const original = initialisePharmacyDraft(sessionCase(b)!, store().caseRevisions[b][0]);
+    const id = "EX-24107";
+    const original = initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id][0]);
     const epsPrescription = { ...original.epsPrescription!, items: [{ ...original.epsPrescription!.items[0], quantity: 56 }],
-      dispenserEndorsement: "NCSO RK 21/08/26" };
+      dispenserEndorsement: original.endorsementText };
     store().setAgentEnabled(true);
-    store().submitItem({ caseId: b, channel: "eps", endorsementText: epsPrescription.dispenserEndorsement, epsPrescription });
-    expect(sessionCase(b)!.claim.quantity).toBe(28);
-    expect(store().itemVerification[b]).toMatchObject({ gate1: "pass", gate2: "fail", reconciled: false, released: false });
+    store().submitItem({ caseId: id, channel: "eps", endorsementText: epsPrescription.dispenserEndorsement, epsPrescription });
+    expect(sessionCase(id)!.claim.quantity).toBe(28);
+    expect(store().itemVerification[id]).toMatchObject({ gate1: "pass", gate2: "fail", reconciled: false, released: false });
   });
 
   it.each([0, 0.5, 2])("does not verify a generic claimed amount %s against a different known pack reference", (amountClaimed) => {
-    const original = caseById(mismatch)!, revision = store().caseRevisions[mismatch][0];
+    const original = TWO_GATE_CASES.find((c) => c.id === mismatch)!, revision = historicalLifecycleFixtures().caseRevisions[mismatch][0];
     const epsPrescription = { ...revision.epsPrescription!, supplyEvidence: { ...revision.epsPrescription!.supplyEvidence!, packSize: 21 } };
     const result = evaluateItemVerification({ ...original, claim: { ...original.claim, amountClaimed } }, { ...revision, epsPrescription }, true);
     expect(result.verification).toMatchObject({ gate1: "pass", gate2: "fail", reconciled: false, released: false });
@@ -250,27 +271,29 @@ describe("authoritative two-gate source verification", () => {
     expect(store().lifecycles[b].history.at(-1)?.actor).toBe("pharmacy");
     expect(checkPharmacyCorrection(sessionCase(b)!, revision, store().pharmacyDrafts[b]).status).toBe("ready");
     expect(store().caseRevisions[b].at(-1)).toBe(revision);
+    store().setCorrectionAcknowledgement(b, revision.number, true);
     store().resubmit(b);
-    expect(store().caseRevisions[b].at(-1)?.number).toBe(3);
+    expect(store().caseRevisions[b].at(-1)?.number).toBe(4);
     expect(store().itemVerification[b].released).toBe(false);
     store().arriveInQueue(b);
-    store().releaseToPricing(b, "Corrected date checked by the operator.");
+    store().releaseToPricing(b, "Corrected brand checked by the operator.");
     expect(itemStateLabel(store().lifecycles[b], "nhsbsa")).toContain("after operator review");
-    expect(receiptPricingLabel(store().lifecycles[b], 3)).toContain("after operator review");
-    expect(receiptPricingLabel(store().lifecycles[b], 3)).not.toContain("no operator action");
+    expect(receiptPricingLabel(store().lifecycles[b], 4)).toContain("after operator review");
+    expect(receiptPricingLabel(store().lifecycles[b], 4)).not.toContain("no operator action");
   });
 
-  it("generic correction fills actual source fields and never approves or submits from Apply", () => {
+  it("strength correction edits only the selected claim and never approves or submits from Apply", () => {
     const id = mismatch;
     store().setAgentEnabled(true);
     store().setPharmacyDraft(id, { ...initialisePharmacyDraft(sessionCase(id)!, store().caseRevisions[id][0]), purpose: "new_submission" });
     store().applySuggestedCorrection(id);
-    expect(store().pharmacyDrafts[id].epsPrescription?.supplyEvidence).toMatchObject({ brandManufacturer: "Demo manufacturer (synthetic)", packSize: 21, form: "capsules" });
-    expect(store().lifecycles[id].state).toBe("in_review");
+    expect(store().pharmacyDrafts[id].epsPrescription?.items[0]).toMatchObject({ dispensedCode: "SYN-AMLO10-28", dispensedName: "Amlodipine 10mg tablets" });
+    expect(store().pharmacyDrafts[id].epsPrescription?.supplyRecord).toEqual(store().caseRevisions[id][0].epsPrescription?.supplyRecord);
+    expect(store().lifecycles[id].state).toBe("referred_back");
     expect(store().caseRevisions[id]).toHaveLength(1);
     expect(store().pharmacyCorrections).toHaveLength(1);
     expect(store().pharmacyCorrections[0]).toMatchObject({
-      caseId: id, revision: 2, basis: "source_gap",
+      caseId: id, revision: 2, basis: "format_gap",
       sourceVerification: { before: { gate2: "fail" }, after: { gate2: "pass", released: false } },
     });
   });
@@ -298,13 +321,12 @@ describe("authoritative two-gate source verification", () => {
 
   it.each([false, true])("retains actual applied advice provenance on Release even after toggle Off=%s", (off) => {
     store().setAgentEnabled(true);
-    store().resubmitFromPharmacy(b, "NCSO RK 21/08/26");
     store().arriveInQueue(b);
     store().applySuggestionToDecision(b);
     const evidence = store().lifecycles[b].history.at(-1)!.appliedSuggestionEvidence!;
     expect(evidence.recommendation).toBe("SUFFICIENT");
     if (off) store().setAgentEnabled(false);
-    store().releaseToPricing(b, "Human checked the supplied corrected date.");
+    store().releaseToPricing(b, "Human checked the supplied corrected brand.");
     const record = store().records.at(-1)!;
     expect(record.recommendation).toBe("SUFFICIENT");
     expect(record.agentVersion).toBe(evidence.agentVersion);
@@ -326,31 +348,35 @@ describe("authoritative two-gate source verification", () => {
 
   it("explicit new-attempt Apply works on seeded B without approving its historical referral", () => {
     store().setAgentEnabled(true);
-    expect(() => store().applySuggestedCorrection(b)).toThrow("operator-approved");
-    const revision = store().caseRevisions[b][0];
-    store().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, revision), purpose: "new_submission" });
+    expect(() => store().applySuggestedCorrection(b)).toThrow("No supported correction");
+    const revision = store().caseRevisions[b].at(-1)!;
+    store().setPharmacyDraft(b, initialisePharmacySubmissionDraft(sessionCase(b)!, revision));
     store().applySuggestedCorrection(b);
-    expect(store().pharmacyDrafts[b].endorsementText).toContain("21/08/26");
+    expect(store().pharmacyDrafts[b].paperDeclaration?.brandManufacturer).toBe(caseById(b)!.pharmacySupplyRecord!.brandManufacturer);
     expect(store().pharmacyCorrections).toHaveLength(1);
-    expect(store().pharmacyCorrections[0]).toMatchObject({ caseId: b, revision: 2, before: { status: "missing" }, after: { status: "ready" } });
+    expect(store().pharmacyCorrections[0]).toMatchObject({ caseId: b, revision: 3, before: { status: "missing" }, after: { status: "ready" } });
     expect(store().records).toHaveLength(0);
-    expect(store().lifecycles[b].state).toBe("referred_back");
-    expect(store().caseRevisions[b][0]).toBe(revision);
+    expect(store().lifecycles[b].state).toBe("resubmitted");
+    expect(store().caseRevisions[b].at(-1)).toBe(revision);
     expect(() => store().resubmit(b)).toThrow("explicit new attempt");
-    store().submitItem({ ...store().pharmacyDrafts[b], caseId: b, channel: "eps" });
-    expect(store().lifecycles[b].state).toBe("released_to_pricing");
+    store().submitItem({ ...store().pharmacyDrafts[b], caseId: b, channel: "paper" });
+    expect(store().lifecycles[b].state).toBe("submitted");
+    expect(store().itemVerification[b].released).toBe(false);
   });
 
   it("shared Apply and the legacy correction recorder count the same next attempt only once", () => {
+    const id = "EX-24107";
     store().setAgentEnabled(true);
-    const revision = store().caseRevisions[b][0];
-    store().setPharmacyDraft(b, { ...initialisePharmacyDraft(sessionCase(b)!, revision), purpose: "new_submission" });
-    store().applySuggestedCorrection(b);
+    const revision = store().caseRevisions[id][0];
+    const draft = initialisePharmacySubmissionDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, endorsementText: "NCSO JB",
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO JB" } });
+    store().applySuggestedCorrection(id);
     const caught = store().pharmacyCorrections[0];
-    store().recordPharmacyCorrection(b, caught.before, caught.after, 2, { channel: "eps" });
+    store().recordPharmacyCorrection(id, caught.before, caught.after, 2, { channel: "eps" });
     expect(store().pharmacyCorrections).toHaveLength(1);
-    expect(store().caseRevisions[b][0]).toBe(revision);
-    expect(store().itemVerification[b]).toEqual(NO_VERIFICATION);
+    expect(store().caseRevisions[id][0]).toBe(revision);
+    expect(store().itemVerification[id]).toEqual(NO_VERIFICATION);
     store().setAgentEnabled(false);
     store().setPerspective("pharmacy");
     expect(store().pharmacyCorrections).toHaveLength(1);
@@ -359,12 +385,13 @@ describe("authoritative two-gate source verification", () => {
   });
 
   it("does not count a date-only improvement while required source facts remain invalid", () => {
+    const id = "EX-24107";
     store().setAgentEnabled(true);
-    const revision = store().caseRevisions[b][0], draft = initialisePharmacyDraft(sessionCase(b)!, revision);
-    store().setPharmacyDraft(b, { ...draft, purpose: "new_submission",
-      epsPrescription: { ...draft.epsPrescription!, prescriber: { ...draft.epsPrescription!.prescriber, name: "" } } });
-    store().applySuggestedCorrection(b);
-    expect(store().pharmacyDrafts[b].endorsementText).toContain("21/08/26");
+    const revision = store().caseRevisions[id][0], draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+    store().setPharmacyDraft(id, { ...draft, purpose: "new_submission", endorsementText: "NCSO JB",
+      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO JB", prescriber: { ...draft.epsPrescription!.prescriber, name: "" } } });
+    store().applySuggestedCorrection(id);
+    expect(store().pharmacyDrafts[id].endorsementText).toContain("14/08/26");
     expect(store().pharmacyCorrections).toHaveLength(0);
   });
 
@@ -380,10 +407,7 @@ describe("authoritative two-gate source verification", () => {
   });
 
   it.each([false, true])("shared resubmission records its actual precheck mode rather than a seed placeholder, enabled=%s", (enabled) => {
-    store().setAgentEnabled(enabled);
-    const revision = store().caseRevisions[b][0], draft = initialisePharmacyDraft(sessionCase(b)!, revision);
-    store().setPharmacyDraft(b, { ...draft, purpose: "correction", endorsementText: "NCSO RK 21/08/26",
-      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO RK 21/08/26" } });
+    const revision = prepareBrandCorrection(enabled);
     store().resubmit(b);
     const submitted = store().caseRevisions[b].at(-1)!;
     expect(submitted.kind).toBe("resubmission");
@@ -393,29 +417,30 @@ describe("authoritative two-gate source verification", () => {
     });
     if (enabled) expect(submitted.precheck?.checkedAt).toBeTruthy();
     else expect(submitted.precheck).toMatchObject({ facts: null, checks: [], checkedAt: null, clauseId: null, tariffVersion: null });
-    expect(store().caseRevisions[b][0]).toEqual(revision);
+    expect(store().caseRevisions[b].at(-2)).toEqual(revision);
   });
 
   it("retains the source for a text-only shared correction while recording its On check", () => {
     store().setAgentEnabled(true);
-    const original = store().caseRevisions[b][0];
-    store().setPharmacyDraft(b, { revision: 1, endorsementText: "NCSO RK 21/08/26" });
+    store().arriveInQueue(b);
+    store().referBack(b, "RB2B", buildReferralNote([{ rule: "sources_must_agree", field: "endorsementText" }]));
+    const original = store().caseRevisions[b].at(-1)!;
+    store().setPharmacyDraft(b, { revision: original.number, endorsementText: original.endorsementText });
+    store().setCorrectionAcknowledgement(b, original.number, true);
     store().resubmit(b);
     expect(store().caseRevisions[b].at(-1)).toMatchObject({
-      epsPrescription: { ...original.epsPrescription!, dispenserEndorsement: "NCSO RK 21/08/26" },
+      paperDeclaration: original.paperDeclaration,
       precheck: { mode: "scripted", status: "ready" },
     });
-    expect(store().caseRevisions[b][0]).toEqual(original);
+    expect(store().caseRevisions[b].at(-2)).toEqual(original);
   });
 
   it("same-state pharmacy preparation cannot erase a human release anchor", () => {
     store().setAgentEnabled(true);
-    store().resubmitFromPharmacy(b, "NCSO RK 21/08/26");
     store().arriveInQueue(b);
     store().releaseToPricing(b, "Human checked the current source facts.");
-    const revision = store().caseRevisions[b].at(-1)!, draft = initialisePharmacyDraft(sessionCase(b)!, revision);
-    store().setPharmacyDraft(b, { ...draft, purpose: "new_submission", endorsementText: "NCSO RK",
-      epsPrescription: { ...draft.epsPrescription!, dispenserEndorsement: "NCSO RK" } });
+    const revision = store().caseRevisions[b].at(-1)!, draft = initialisePharmacySubmissionDraft(sessionCase(b)!, revision);
+    store().setPharmacyDraft(b, draft);
     store().applySuggestedCorrection(b);
     expect(store().lifecycles[b].history.at(-1)?.processStep).toBe("correction_applied");
     expect(itemStateLabel(store().lifecycles[b], "nhsbsa")).toContain("after operator review");
@@ -440,11 +465,8 @@ describe("authoritative two-gate source verification", () => {
           };
           act("pharmacy", () => {
             if (id === d) {
-              const fields = { productCode: "SYN-COCOD-100", quantity: 100, endorsementText: "NCSO JB", prescriber: "Separately supplied synthetic prescriber" };
-              store().submitItem({ caseId: d, channel: "paper", endorsementText: fields.endorsementText,
-                paperDeclaration: { typedProduct: fields.productCode, quantity: 100, endorsementText: fields.endorsementText,
-                  dispensingDate: "2026-08-27", declaredByPharmacy: true },
-                declaration: { fields, declaredAt: "2026-09-14T12:00:00Z", provenance: "pharmacy_declaration" } });
+              const draft = preparePaperDemoDraft(sessionCase(d)!, store().caseRevisions[d].at(-1)!, "missing");
+              store().submitItem({ ...draft, caseId: d, channel: "paper" });
             } else send(id, enabled);
           });
           if (id === "EX-24107") {
@@ -456,27 +478,44 @@ describe("authoritative two-gate source verification", () => {
             store().confirmType1({ caseId: id, revision: revision.number, fields: revision.declaration!.fields,
               provenance: "pharmacy_declaration", declarationReconciled: true });
           };
-          act("nhsbsa", id === d ? capture : () => store().arriveInQueue(id));
-          if (enabled) act("nhsbsa", () => store().applySuggestionToDecision(id));
-          act("nhsbsa", () => store().referBack(id, id === b ? "SYN-NCSO" : "RB2B",
-            enabled ? store().operatorDrafts[id].note : "Please correct the missing or mismatched source facts."));
+          act("nhsbsa", id === d ? capture : () => {
+            if (id === mismatch && !enabled) store().reopenForAudit(id, store().caseRevisions[id].at(-1)!.number, "Human audit queries the selected product.");
+            else store().arriveInQueue(id);
+          });
+          act("nhsbsa", () => store().referBack(id, "RB2B", buildReferralNote([
+            id === b ? { rule: "brand_required_for_multiple_suppliers" } :
+              id === mismatch ? { rule: "strength_matches_prescription" } : { rule: "required_field", field: "productCode" },
+          ])));
           expect(store().lifecycles[id].state).toBe("referred_back");
           act("pharmacy", () => {
-            if (enabled) store().applySuggestedCorrection(id);
-            else {
-              const revision = store().caseRevisions[id].at(-1)!, draft = initialisePharmacyDraft(sessionCase(id)!, revision);
-              const endorsementText = id === mismatch ? "" : id === b ? "NCSO RK 21/08/26" : "NCSO JB 27/08/26";
-              store().setPharmacyDraft(id, { ...draft, endorsementText,
-                ...(draft.epsPrescription ? { epsPrescription: { ...draft.epsPrescription, dispenserEndorsement: endorsementText,
-                  ...(id === mismatch ? { supplyEvidence: { ...draft.epsPrescription.supplyEvidence!, packSize: 21 } } : {}) } } : {}),
-                ...(draft.paperDeclaration ? { paperDeclaration: { ...draft.paperDeclaration, endorsementText } } : {}) });
-            }
+            const revision = store().caseRevisions[id].at(-1)!, draft = initialisePharmacyDraft(sessionCase(id)!, revision);
+            const own = caseById(id)!.pharmacySupplyRecord;
+            store().setPharmacyDraft(id, { ...draft, purpose: "correction",
+              ...(draft.epsPrescription ? { epsPrescription: { ...draft.epsPrescription,
+                items: draft.epsPrescription.items.map((item) => ({ ...item, dispensedCode: "SYN-AMLO10-28", dispensedName: "Amlodipine 10mg tablets" })) } } : {}),
+              ...(draft.paperDeclaration ? { paperDeclaration: { ...draft.paperDeclaration,
+                typedProduct: own!.productCode!, quantity: own!.quantity,
+                ...(id === b ? { brandManufacturer: own!.brandManufacturer } : {}) } } : {}) });
           });
           expect(store().lifecycles[id].state).toBe("referred_back");
+          act("pharmacy", () => store().setCorrectionAcknowledgement(id, store().caseRevisions[id].at(-1)!.number, true));
           act("pharmacy", () => store().resubmit(id));
+          if (id === mismatch) {
+            expect(store().lifecycles[id].state).toBe(enabled ? "released_to_pricing" : "paid");
+            expect(store().itemProcesses[id].routing.requiresHuman).toBe(false);
+            return snapshots;
+          }
           expect(store().itemVerification[id].released).toBe(false);
-          act("nhsbsa", id === d ? capture : () => store().arriveInQueue(id));
-          if (enabled) act("nhsbsa", () => store().applySuggestionToDecision(id));
+          expect(store().caseRevisions[id].at(-1)?.paperSource?.provenance).toBe("acknowledged_pharmacy_amendment");
+          expect(store().itemProcesses[id].capture).toBeNull();
+          act("nhsbsa", () => store().arriveInQueue(id));
+          if (enabled) act("nhsbsa", () => {
+            if (id === d) {
+              const before = getDomainSnapshot();
+              expect(() => store().applySuggestionToDecision(id)).toThrow("No validated suggestion");
+              expect(getDomainSnapshot()).toEqual(before);
+            } else store().applySuggestionToDecision(id);
+          });
           act("nhsbsa", () => store().releaseToPricing(id, "Human checked the corrected source evidence."));
           expect(store().lifecycles[id].state).toBe("released_to_pricing");
           expect(store().itemProcesses[id].releaseOrigin).toBe("human_decision");

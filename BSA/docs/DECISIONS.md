@@ -4,6 +4,8 @@ description: Append-only decisions with reasons and rejected alternatives.
 ms.date: 2026-09-15
 ---
 
+- Question: may the pending advice scope change proceed? Choice: consume exact G `4ac77a5` with O's genuine sibling source, then assert both real panels and scope Apply to advice; tie-breaker: the parent's explicit structural prerequisite is now implemented.
+
 - Question: how is the next browser migration baseline established without an unleased run? Choice: native `--list` on exact clean G `d4f27ce`, retain every ID and assert empty result arrays, using the real guarded local configuration for live-name discovery; tie-breaker: exact inventory without execution or fabricated passes.
 - Question: does the discovery reporter's placeholder status imply an actual skip/pass? Choice: classify entries only as listed and record zero executions; tie-breaker: observed evidence, not expected outcomes.
 
@@ -96,6 +98,10 @@ ms.date: 2026-09-15
 - G correction: simultaneous ready/referral seeds include actual historical verification events and the same ready-decision draft as a real recheck, not status flags alone; tie-breaker: C8 truthful history and O's one-press release requirement.
 - G migration: move original case/history/lifecycle fixtures mechanically to archival modules and retain public historical exports, rather than falsifying old dates to satisfy current headline scope; tie-breaker: immutable evidence and the owner's new active-case requirements.
 - G integration: consume bounded owner-authored pharmacy, scanner, operator, recommendation, follow and numeric compatibility before activation; do not deploy new seeds under broken old controls or import unrelated backup work; tie-breaker: one coherent live product.
+- G migration: preserve historical requirement evidence as pure fixtures, but exercise new active outcomes through actual acknowledgement, audit, correction and release actions; no hidden old store or weakened gate restores obsolete behaviour; tie-breaker: current scope and executable authority.
+- G validation: replace a migrated test's unsupported `findLast` with the existing ES2022 array pattern, rather than changing compiler/runtime support to fit one assertion; tie-breaker: minimal compatibility repair.
+- G validation: count only a genuine validated Tariff citation, not the public-guidance-based proposed strength check, in the legacy citation numerator; tie-breaker: truthful rule authority without changing model arithmetic.
+- G publication: open the assembled integration as a draft after local check and 1,990 units pass, explicitly retaining structural, browser and live-release blockers rather than claiming branch completion; tie-breaker: live-first publication and honest incomplete work.
 - Question: is a confidently observed empty paper field unreadable? Choice: no; readable high-confidence blank brand/pack is missing information and goes to Type 2 referral, while absent or low-confidence extraction still requires Type 1. Tie-breaker: distinguish factual omission from capture uncertainty without creating unnecessary operator work.
 - Question: how should U render three paper sources without a second state authority? Choice: a pure component consuming B's replica/reconciliation through G's facade, mounted by O; tie-breaker: one state and source fidelity.
 - Question: can confirmed values improve the scanner column? Choice: draw only immutable source-region strings and original source date; display current human evidence below the three columns; tie-breaker: provenance and human authority.
@@ -2705,3 +2711,15 @@ Question: retain the date-based reference sequence or explain the new case? Choi
 Question: duplicate W/B evidence constants before G integrates them? Choice: publish bounded reference WIP and reuse the canonical modules after integration; tie-breaker: one authoritative evidence source, not a second bibliography or invented capture result.
 
 Question: may S finish citation integration before G's runtime merge? Choice: consume G's explicitly approved isolated W/B foundation commits unchanged, keep both sides of tracking conflicts, and import their canonical evidence/labels; actual built-runtime and live acceptance remain pending; tie-breaker: independent progress without competing domain implementations.
+- Question: what does the allocated eight-case trace pass establish? Choice: only source-pinned R development behaviour and axe results; retain incomplete findings and require separate full integration/main/live gates; tie-breaker: live-first evidence integrity.
+- Question: may successfully reconciled paper still say it will be verified? Choice: no; describe its actual recorded-source or human-capture reconciliation basis, retaining future wording only for pending drafts; tie-breaker: truthful phase and provenance.
+
+Question: how should the ready-paper status remain concise? Choice: retain the actual state label and use "Press Release.", preserving the explicit human action and unchanged prose limit; tie-breaker: clear, concise operator control.
+
+Question: can a copy counter justify shortening the mandated paper recommendation or hiding reason help? Choice: no; preserve both, record the nested-panel aggregate counterexample and resolve its actual per-panel scope before claiming copy compliance; tie-breaker: latest explicit content and truthful evidence.
+
+Question: how should the mandatory advice and human-help text coexist under the per-panel limit? Choice: genuinely separate sibling Recommendation and Operator decision panels, each visibly headed and independently counted below25; no advice remains nested inside the bordered human panel and no text is hidden; tie-breaker: the parent's superseding Task40 authority-separation decision.
+
+Question: where does Apply live after separation? Choice: in the actual advice card, still invoking the same guarded G action and focusing the same visible human note; final disposition controls remain in the human panel; tie-breaker: explicit authority and preserved functionality.
+
+Question: how is a rejected proposed-value note explained concisely? Choice: display a precise field/rule-and-accuracy message only after G's actual rejection, preserve the draft and unknown error text, and never validate or rewrite the note locally; tie-breaker: clear human help without a second authority.

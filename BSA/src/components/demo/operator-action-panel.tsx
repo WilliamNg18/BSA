@@ -17,6 +17,7 @@ import { RB_CODE_CATALOG } from "@/lib/domain/routing";
 import type { HumanDecision } from "@/lib/domain/types";
 import { getReleaseEligibility, useAppStore } from "@/lib/store";
 import { isPaperReadyToRelease } from "@/lib/domain/submission-views";
+import { operatorErrorMessage } from "@/lib/operator-error-message";
 
 const OUTCOMES: { value: HumanDecision; label: string }[] = [
   { value: "ACCEPT", label: "Sufficient (human choice)" },
@@ -94,11 +95,12 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
   const active = process.routing.outcome === "type2_endorsement" && process.routing.requiresHuman;
   if (!active || !["in_review", "escalated", "submitted", "resubmitted"].includes(lifecycle.state)) {
     const event = lifecycle.history.filter((entry) => entry.actor === "operator" && entry.revision === revision.number).at(-1);
-    return <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
-      <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
+    return <div className="space-y-4" data-operator-workspace={caseId}>
       {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
       {recommendationError && <p role="alert">{recommendationError}</p>}
-      {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} />}
+      {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} headingLevel={2} />}
+      <section aria-label="Operator decision" className="space-y-2 rounded-xl border p-4">
+      <h2 className="font-semibold">Read-only: not awaiting an operator decision</h2>
       {compact ? lifecycle.state === "released_to_pricing" ? <ReleaseRecord caseId={caseId} /> : <>
         <p>{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}</p>
         <dl className="grid gap-2 text-sm">
@@ -107,8 +109,9 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
           <div><dt className="font-medium">Recorded rule</dt><dd>{record?.clauseId ?? event?.clauseId ?? "Not recorded"} · {record?.tariffVersion ?? event?.tariffVersion ?? "Not recorded"}</dd></div>
         </dl>
       </> : <Button asChild variant="outline"><Link to={`/case/${encodeURIComponent(caseId)}/record`}>Open audit record</Link></Button>}
+      </section>
       {compact && <OperatorAuditPanel caseId={caseId} />}
-    </section>;
+    </div>;
   }
 
   const readyPaper = isPaperReadyToRelease(lifecycle, process);
@@ -121,7 +124,7 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
 
   function perform(action: () => void) {
     try { action(); setError(""); }
-    catch (cause) { setError(cause instanceof Error ? cause.message : "Action unavailable. Reopen the item."); }
+    catch (cause) { setError(operatorErrorMessage(cause)); }
   }
   function change(patch: Partial<Pick<OperatorDecisionDraft, "outcome" | "rbCode" | "note">>) {
     perform(() => setDraft(caseId, { revision: draft.revision, outcome: draft.outcome, rbCode: draft.rbCode, note: draft.note, ...patch }));
@@ -140,18 +143,12 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
     });
   }
 
-  return <section aria-label="Operator decision" data-operator-action-panel={caseId} data-compact={compact}
-    className="space-y-4 rounded-xl border border-orange-600 bg-card p-4">
-    <div className="flex items-center justify-between gap-2">
-      <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
-    </div>
+  return <div className="space-y-4" data-operator-workspace={caseId}>
     {showConfirmation && <PharmacyConfirmation caseId={caseId} />}
     {recommendationError && <p role="alert" className="text-sm text-destructive">{recommendationError}</p>}
-    {readyPaper && <p role="status">{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}. Paper still requires your Release press.</p>}
-    {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} applyLabel="Apply suggestion"
+    {recommendation && <RecommendationCard recommendation={recommendation} audience="operator" compact={compact} headingLevel={2} applyLabel="Apply suggestion"
       onApply={reviewing && recommendation.operatorApplyAllowed
         ? () => perform(() => { apply(caseId); noteRef.current?.focus(); }) : undefined} />}
-    {!agentEnabled && <p className="text-sm">experience only</p>}
     {compact && <details open className="space-y-3 rounded-lg border p-3">
       <summary className="cursor-pointer font-medium focus-visible:outline-2">Evidence and received source</summary>
       <RawCaseFields c={c} compact />
@@ -159,6 +156,13 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
         <dt className="font-medium">{evidence.field}</dt><dd>{evidence.value}</dd><dd className="text-xs">Source: {evidence.origin}</dd>
       </div>)}</dl>}
     </details>}
+    <section aria-label="Operator decision" data-operator-action-panel={caseId} data-compact={compact}
+      className="space-y-4 rounded-xl border border-orange-600 bg-card p-4">
+    <div className="flex items-center justify-between gap-2">
+      <h2 className="font-semibold">Operator decision</h2><BoundaryTag cls="human" />
+    </div>
+    {readyPaper && <p role="status">{itemStateLabel(lifecycle, "nhsbsa", agentEnabled, process)}. Press Release.</p>}
+    {!agentEnabled && <p className="text-sm">experience only</p>}
     {!reviewing ? <>
       <Button onClick={() => perform(() => arrive(caseId))}>Start review</Button>
       {error && <p ref={errorRef} tabIndex={-1} role="alert">{error}</p>}
@@ -203,5 +207,6 @@ function OperatorActions({ caseId, compact, showConfirmation }: { caseId: string
         <p className="mt-2 text-sm">{eligibility.reason}</p>
       </details>}
     </>}
-  </section>;
+    </section>
+  </div>;
 }

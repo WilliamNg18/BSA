@@ -268,7 +268,11 @@ export function deriveRecommendation(
       : sourceGap ? "Request the applicable provision and readable source evidence." : channel === "paper"
       ? (paper?.requiresType1 ?? (unreadable && !capture)) ? "Confirm or correct Type 1 capture, then Type 2 review; unreadable paper always requires operator release."
         : "Requires the operator's press because paper was scanned." : complete ? "Continue through the existing submission or review controls." : "Apply a supported correction, then make a separate human submission or decision.",
-    provenance: channel === "eps" ? "Typed EPS and retained claim ledger" : capture ? "Human-confirmed capture; original unreadable image retained"
+    provenance: channel === "eps" ? "Typed EPS and retained claim ledger"
+      : paperRelease ? paper.reconciliationBasis === "human_confirmed_capture"
+        ? "Pharmacy declaration reconciled with human-confirmed capture; original scan and hypothetical extraction retained."
+        : "Pharmacy declaration reconciled with the recorded scan and hypothetical extraction."
+      : capture ? "Human-confirmed capture; original unreadable image retained"
       : declared ? "declared by the pharmacy, not read from the form; will be verified against the scan at NHSBSA" : "Unverified image evidence",
     operatorApproved: Boolean((record ?? (context.kind === "current" || context.kind === "draft" && draft?.purpose === "correction" ? state.records.filter((entry) =>
       entry.caseId === caseId && (entry.revision ?? 1) === revision.number).at(-1) : undefined))?.approvedDraft),

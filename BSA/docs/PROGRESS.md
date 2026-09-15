@@ -4,6 +4,10 @@ description: Authoritative task checklist, commit references and actual validati
 ms.date: 2026-09-15
 ---
 
+V imports exact G `4ac77a5`, including O's published genuine sibling panels.
+Owner source is unchanged; only tracking conflicts were unioned. The two
+remaining V Apply assertions will now move to the actual advice panel.
+
 ## Exact G first-green native discovery
 
 On clean `d4f27ce8911536ac6977bd4a5ef7ac5fe8ec48cf`, native Playwright
@@ -455,6 +459,31 @@ consumer selection passes 66 tests. Historical case/history/lifecycle fixtures
 have been mechanically archived without changing their original values; 77
 targeted source/fidelity tests pass. Remaining retired headline literals are
 confined to D and S owner surfaces, with no guard exception added.
+
+The bounded G legacy-domain migration is complete: all 12 assigned files pass
+194 tests on the integrated source, using actual strength/audit, paper,
+acknowledgement and human-release actions. No hidden operational fixtures,
+source edits or skipped assertions were used to restore obsolete outcomes.
+F's four-file demo compatibility passes 231 tests and the standalone retired-
+headline guard now reports zero source violations. Full candidate validation,
+CI, deployment and observed live identity remain outstanding.
+
+The first assembled typecheck found one unsupported test-only `findLast` call.
+It now uses the repository's ES2022-compatible `filter(...).at(-1)` pattern;
+typecheck passes without changing target libraries or application behaviour.
+
+The assembled run now passes check with 1,983 unit passes and five remaining
+failures. One stale baseline expectation wrongly counted the proposed strength
+check as a Tariff citation; it now expects one genuine citation among two
+assembly examples and asserts the strength authority explicitly. The source
+headline guard is activated in shared verification. Baseline/guard/runner
+selection: 314 tests pass; four operator-region/prose compatibility cases remain.
+
+Those five failures are now repaired. Exact candidate `d4f27ce` passes the
+complete check and all 1,990 unit tests in 116 files. Draft #110 publishes the
+assembled integration for review; it is not merge-ready or a live product.
+O's required genuine advice/decision panel structure, exact-head browser CI,
+deployment and observed served SHA still gate completion.
 
 Reported paper/consumer defects are repaired in the next checkpoint: outbound
 notes protect presentation and pack aliases, amendment scans visibly contain
@@ -2973,3 +3002,55 @@ coherent run including those files, new fidelity/scanner checks and the backup
 verifier passed 132 tests across eight files; typecheck and targeted lint pass.
 Four new desktop browser regressions for audit and one-press paper Release
 are discovered but not executed. Their seeded-ready prerequisite is G-owned.
+
+The coordinator-allocated R development run on clean published `2df6549`
+passed all eight recommendation-trace cases in 42.3 seconds, one worker and
+zero retries. The built identity matched that SHA with `dirty: false`; every
+audit URL used `http://localhost:4337/`. Four cases at 1280/1440 verified Card
+On/Off, exact operator source facts, no correction proposals and all-rule axe.
+Eight unique axe reports have zero violations; the two strength reports each
+retain one incomplete finding. No screenshots were generated. Port 4337 is
+released. This closes bounded R development coverage only, not the failed
+whole integration suite, deployment, live acceptance or backup parity.
+
+P's actual ready-paper screen exposed future-tense provenance after successful
+reconciliation. R now derives completed provenance from the existing paper
+outcome and reconciliation basis, distinguishing recorded scan/OCR from
+human-confirmed capture. Draft text remains prospective. Typecheck and 48
+targeted recommendation tests pass; no source evidence or gates changed.
+
+## O focused operator browser result: source 9d5502
+
+The four allocated audit/ready-paper browser tests passed at clean published
+`9d5502cb08fc8ebf63af21652ea76b49a3130b63`: one worker, zero retries,
+32.26278 seconds, four unrestricted axe assertions with zero violations.
+Both 1280 and 1440 widths retain the exact submitted record through the
+explicit action. Portable evidence is in
+`docs/screens/task40-operator/9d5502/verification.json`.
+
+The runner had already stopped before an external identity probe; a brief
+Node-only server then verified the unchanged tested artifact as clean 9d5502.
+That is explicitly a post-run identity check, not an in-test observation or
+browser rerun. Port4333 was closed and released.
+
+The later duplicate status phrase is shortened to "Press Release." without
+changing roles, controls or the word limit. V's two exact confirmed-paper
+prose cases pass. A separate seeded-ready aggregate counter includes the
+mandatory nested Recommendation card and measures34 words; its per-panel
+interpretation remains unresolved. No full copy, activation or live pass is
+claimed, and the independent offline backup proof is still pending.
+
+## Task 40 authority-panel separation
+
+Under the parent's superseding layout decision, the actual Recommendation
+card and the bordered Operator decision controls are now separate sibling
+panels with visible level-two headings. No required recommendation text,
+state, reason help, source evidence or control is removed. Compact evidence
+also remains visible outside the human control panel.
+
+Check and 53 focused unit tests pass. The tests count each real panel,
+assert structural separation, retain the mandatory paper summary and verify
+that its workspace-wide text was not hidden to reduce the count. The old
+26/34 aggregate findings remain recorded. Ten desktop browser cases are
+discovered for the changed layout, including B-ready/D-confirmed in both
+modes and Apply-to-note focus; none has yet run on this layout.

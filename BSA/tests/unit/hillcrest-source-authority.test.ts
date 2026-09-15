@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { CASES } from "../../src/lib/domain/cases";
+import { CASES, caseById } from "../../src/lib/domain/cases";
 import { createEpsPrescription } from "../../src/lib/domain/eps-check";
 import { runAgent } from "../../src/lib/domain/agent";
 import { getDomainSnapshot, sessionCase, useAppStore } from "../../src/lib/store";
 
 const store = () => useAppStore.getState();
-const A = CASES[0], B = CASES[1], D = CASES[3];
+const A = CASES[0], B = caseById("EX-24112")!, D = caseById("EX-24123")!;
 beforeEach(() => store().resetDemo());
 
 describe("reviewed source authority boundaries", () => {
@@ -14,7 +14,6 @@ describe("reviewed source authority boundaries", () => {
       store().resetDemo();
       const id = B.id;
       store().setAgentEnabled(enabled);
-      store().resubmitFromPharmacy(id, "NCSO RK 21/08/26");
       store().arriveInQueue(id);
       store().recordType2Decision({ caseId: id, decision, reason: "Further human review of corrected evidence is required.", rbCode: "SYN-NCSO" });
       const pack = runAgent(sessionCase(id)!, { agentEnabled: enabled });
@@ -34,14 +33,14 @@ describe("reviewed source authority boundaries", () => {
     expect(store().itemProcesses[id].routing).toMatchObject({ outcome: "type1_capture", requiresHuman: true, pricingAuthority: null });
     expect(store().lifecycles[id].state).toBe("submitted");
     expect(runAgent(sessionCase(id)!)).not.toMatchObject({ state: "cleared_by_rules" });
-    store().confirmType1({ caseId: id, revision: 2, provenance: "human_capture", declarationReconciled: true,
+    store().confirmType1({ caseId: id, revision: store().caseRevisions[id].at(-1)!.number, provenance: "human_capture", declarationReconciled: true,
       fields: { productCode: "SYN-AMOX500-GENERIC-21", quantity: 21, endorsementText: "", prescriber: "Dr Demo (synthetic)" } });
     expect(() => store().recordType2Decision({ caseId: id, decision: "ACCEPT", reason: "Supply evidence still missing on paper." })).toThrow();
     expect(store().lifecycles[id].state).toBe("in_review");
   });
 
   it("omitting both source payloads cannot change the generic item's prescribed identity", () => {
-    const id = "SYN-FQ123-MISMATCH";
+    const id = B.id;
     store().submitItem({ caseId: id, channel: "paper", endorsementText: "" });
     expect(sessionCase(id)?.extracted.productCode).toBe("SYN-AMOX500-GENERIC-21");
     expect(store().itemProcesses[id].routing).toMatchObject({ outcome: "type2_endorsement", requiresHuman: true, pricingAuthority: null });
@@ -89,7 +88,6 @@ describe("reviewed source authority boundaries", () => {
   it.each([false, true])("the pending human recheck is also authoritative in its agent pack, enabled=%s", (enabled) => {
     const id = B.id;
     store().setAgentEnabled(enabled);
-    store().resubmitFromPharmacy(id, "NCSO RK 21/08/26");
     store().arriveInQueue(id);
     expect(store().itemProcesses[id].routing.requiresHuman).toBe(true);
     const pack = runAgent(sessionCase(id)!, { agentEnabled: enabled });
@@ -98,9 +96,10 @@ describe("reviewed source authority boundaries", () => {
     expect(pack.trace.map((step) => step.summary).join(" ")).not.toContain("no person involved");
     if (enabled) expect(pack).toMatchObject({ recommendation: "SUFFICIENT", gate: { result: "PASS" }, agentInvoked: true });
     else expect(pack).toMatchObject({ recommendation: "NONE", agentInvoked: false });
-    store().recordType2Decision({ caseId: id, decision: "ACCEPT", reason: "Human checked the corrected endorsement evidence." });
-    expect(sessionCase(id)).toMatchObject({ humanPricingConfirmed: true });
-    expect(sessionCase(id)?.requiresHumanRecheck).toBeUndefined();
+    store().releaseToPricing(id, "Human checked the corrected paper source.");
+    expect(store().lifecycles[id].state).toBe("released_to_pricing");
+    expect(store().itemProcesses[id].releaseOrigin).toBe("human_decision");
+    expect(store().caseRevisions[id].at(-1)?.paperDeclaration?.brandManufacturer).toBe(B.pharmacySupplyRecord!.brandManufacturer);
     const completed = runAgent(sessionCase(id)!, { agentEnabled: enabled });
     expect(completed.state).not.toBe("cleared_by_rules");
     expect(completed.trace.map((step) => step.summary).join(" ")).not.toContain("no person involved");

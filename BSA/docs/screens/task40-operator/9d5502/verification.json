@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "scope": "Four focused local operator browser regressions; not the full live checklist or offline backup proof",
+  "testedCommit": "9d5502cb08fc8ebf63af21652ea76b49a3130b63",
+  "origin": "http://localhost:4333",
+  "startTime": "2026-09-15T20:56:46.003Z",
+  "durationMs": 32262.78,
+  "workers": 1,
+  "retries": 0,
+  "passed": 4,
+  "failed": 0,
+  "skipped": 0,
+  "flaky": 0,
+  "tests": [
+    {
+      "title": "Task40 explicit later audit retains the exact submitted EPS message at 1280px",
+      "status": "passed",
+      "durationMs": 3700,
+      "retry": 0
+    },
+    {
+      "title": "Task40 ready paper uses its actual prepared decision and one operator Release at 1280px",
+      "status": "passed",
+      "durationMs": 3499,
+      "retry": 0
+    },
+    {
+      "title": "Task40 explicit later audit retains the exact submitted EPS message at 1440px",
+      "status": "passed",
+      "durationMs": 3304,
+      "retry": 0
+    },
+    {
+      "title": "Task40 ready paper uses its actual prepared decision and one operator Release at 1440px",
+      "status": "passed",
+      "durationMs": 3732,
+      "retry": 0
+    }
+  ],
+  "accessibility": {
+    "analyses": 4,
+    "scope": "Unrestricted AxeBuilder page analyses",
+    "violations": 0,
+    "evidence": "Each test's unrestricted analyze().violations equality assertion passed. Full axe result objects were not attached."
+  },
+  "identity": {
+    "scope": "Post-run HTTP check of the unchanged tested artifact, using a brief Node-only server; no browser rerun or rebuild",
+    "initialProbe": "Connection refused because the browser runner had already stopped its server",
+    "httpStatus": 200,
+    "commit": "9d5502cb08fc8ebf63af21652ea76b49a3130b63",
+    "builtAt": "2026-09-15T20:56:59.827Z",
+    "dirty": false
+  },
+  "portReleased": true,
+  "newNamedScreenshots": 0,
+  "limitations": [
+    "Does not repeat or replace U's scanner geometry evidence",
+    "Does not exercise V's strict timed full-cycle procedure",
+    "Does not prove deployment, latest-main live acceptance or clean offline recovery",
+    "Subsequent prose changes are not retrospectively assigned this run's identity"
+  ]
+}

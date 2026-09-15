@@ -4,6 +4,9 @@ description: Original eighteen rows plus five clarity tasks, with source-pinned 
 ms.date: 2026-09-15
 ---
 
+O's real sibling layout is available through G `4ac77a5`. V may now verify
+each actual panel and migrate Apply selectors without changing source or limits.
+
 The first-green G discovery baseline is 1,062 ordinary / 44 state / 75 live
 entries, with native identities retained and zero test execution. It starts
 the next compatibility comparison; the older scenario semantics are not
@@ -99,6 +102,24 @@ The observed live baseline is clean `641815137b36ab3e925dcc98c4738d0b150a75d1`
 at `2026-09-15T18:59:23.9424369Z`; #94's green CI does not establish these
 new contracts. Final completion requires Tasks 25-40 on main, green deployment,
 actual current-live acceptance and the assigned exact-backup evidence.
+
+Draft #110 now carries the complete assembled candidate. Check and 1,990 units
+pass on `d4f27ce`; the structural operator-panel requirement and remaining
+browser/main/deployment/live gates are still open. No backup or live release
+is inferred from this draft.
+
+The remaining assembled-unit gap is narrowed to four operator-view compatibility
+checks after correcting the citation-denominator expectation. Proposed matching
+guidance is not counted as a retrieved Tariff provision. No release completion
+is claimed while these cases and exact-head CI/live gates remain pending.
+
+The canonical migration's test-only ES2023 API incompatibility is repaired
+without widening the supported runtime; full assembled validation continues.
+
+G's twelve canonical regression files now pass 194 scoped tests with the
+authorised new outcomes. This completes that bounded migration, not Tasks
+39/40 release acceptance. The next gate is the exact assembled full suite and
+current-main deployment/live verification; no legacy source state was restored.
 
 ## Temporary F ownership: Home and eleven-step case compatibility
 
@@ -906,3 +927,23 @@ later-audit entry and paper-ready controls. It does not alter G's source,
 gate or final-action implementations. U remains owner of the scanner renderer.
 The ordinary source comparison is full-width; compact demo-shell placement
 belongs to D and cannot be inferred from this unmounted integration checkpoint.
+
+Bounded R trace coverage executed on clean `2df6549`: 8/8 at the two desktop
+widths, zero retries, eight zero-violation axe reports. Two incomplete axe
+findings remain explicit. Full Task 39/40 release acceptance is still pending.
+
+Ready-paper provenance now describes the completed reconciliation basis rather
+than promising a future check. This is a phase-copy repair only, not a new
+verification event, operator approval or release.
+
+O's executed four-test browser scope covers explicit later EPS audit and
+seeded paper one-press Release at1280/1440, with unrestricted axe. It does
+not replace U's scanner proof, V's strict timing/full-cycle procedure,
+latest-main hosted acceptance or clean offline recovery. Subsequent copy
+edits are not relabelled as the tested9d5502 artifact.
+
+The authority separation is a real layout change, not an exclusion of a
+nested card from the previous counter. Advice owns its Apply control;
+human disposition, reason, RB choice, state and error focus remain in the
+human panel. V owns existing locator migration; O owns the expanded ten-test
+operator regression file. No timing predicate or one-second clock changes.
