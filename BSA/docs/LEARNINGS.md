@@ -6,6 +6,11 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Part A shell investigation and pre-browser evidence
 
+Coordinator master `b005bbb` was adopted as `e4151f7`; MEMORY is byte-identical
+to that source and both independent status-section sets are retained.
+CI's remaining controls failure was a literal old-principle text expectation,
+now replaced with exact Outcome text plus Off absence, not a waived check.
+
 The synthetic disclosure is local React state in `components/app-shell.tsx`,
 not a persisted or operational store field. Removing it does not require a
 store migration. Put the Outcome in the existing measured sticky stack so

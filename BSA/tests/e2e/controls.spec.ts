@@ -192,7 +192,7 @@ test("product header retains working controls without presentation UI", async ({
   await expect(header.locator("svg.lucide-shield-check")).toBeVisible();
   await expect(page.getByRole("contentinfo")).toContainText("All data is synthetic");
   await expect(page.locator("[data-disclaimer]")).toHaveCount(0);
-  await expect(page.getByText("The agent gathers evidence and recommends. Deterministic code validates and calculates. A human decides.", { exact: false })).toBeVisible();
+  await expect(page.locator("[data-agent-outcome]")).toHaveText("Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides.");
   await expect(header.getByRole("switch")).toHaveCount(1);
   const nav = header.getByRole("navigation", { name: "Primary" });
   await expect(nav.getByRole("link", { name: "Overview", exact: true })).toBeVisible();
@@ -205,6 +205,7 @@ test("product header retains working controls without presentation UI", async ({
   await expect(header).not.toContainText("NHSBSA capability demonstration · synthetic data");
   await header.getByRole("switch", { name: "Agent: On", exact: true }).click();
   await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
+  await expect(page.locator("[data-agent-outcome]")).toHaveCount(0);
   await confirmReset(page);
   await expect(header.getByRole("switch", { name: "Agent: Off", exact: true })).not.toBeChecked();
   await expect(page.getByRole("alertdialog")).toHaveCount(0);

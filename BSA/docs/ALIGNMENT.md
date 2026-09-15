@@ -47,6 +47,9 @@ Initial #104 CI additionally caught the retired notice button in Task 13 and
 two tour-layout assumptions about the header's next sibling. Those assertions
 now use the surviving Agent control and optional Outcome height, retaining
 outside action/focus, menu and sticky-position coverage. Fresh CI is required.
+The coordinator's exact master MEMORY is adopted with both sets of five-doc
+sections preserved. A final CI-located controls assertion still expected the
+old global principle; it now expects the exact Outcome and Off absence.
 
 ## Latest Parts A-C verification register
 

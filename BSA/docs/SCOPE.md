@@ -31,6 +31,9 @@ exercise the surviving controls and optional Outcome height without dropping
 their focus, menu or pinned-layout assertions. New automatic screenshots are
 off at file scope; explicit 1440px captures remain.
 This is incomplete work, not a local alternative product or backup.
+Coordinator master `b005bbb` is adopted without changing its MEMORY or scope
+contracts. The final old-principle assertion in the product-header control
+test now verifies the exact Outcome and Off absence. No assertion is removed.
 
 ## Latest required scope: Tasks 25-40
 

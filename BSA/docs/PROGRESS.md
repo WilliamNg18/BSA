@@ -34,6 +34,12 @@ Main merge, normal green deployment and observation of the served SHA at
 https://bsa-bsa-demo-r2j2l3dxhtohy.azurewebsites.net/ remain pending.
 Owner actions for me: none.
 
+Coordinator master `b005bbb` is adopted as `e4151f7`, preserving both sets of
+tracking sections and exact MEMORY content. Initial CI's final missed old
+principle-text assertion is updated to the exact Outcome and Off absence.
+The source check/build and 176-case matrix inventory now pass; the retained
+initial CI and interrupted local matrix remain failed/incomplete evidence.
+
 ## Latest scope: Parts A-C and Tasks 25-40
 
 The 15 September addition is active and does not pause release/backup work.

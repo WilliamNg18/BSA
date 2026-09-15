@@ -6,6 +6,8 @@ ms.date: 2026-09-15
 
 ## 2026-09-15: Part A replaces the global notice, not source evidence
 
+- Question: how to integrate the master Parts A-C classification? Choice: adopt coordinator `b005bbb` with exact MEMORY and union the independent status sections; preserve Part A-only runtime ownership. Tie-breaker: newest scope authority without duplicating W/B domain implementation.
+
 - Question: retain the older mandatory amber notice? Choice: remove its bar, collapse control and local `disclaimerOpen` state; put exactly "All data is synthetic" once in the existing small muted footer, removing "Synthetic cases" duplication. Tie-breaker: the newest explicit Part A instruction supersedes the amber-bar constraint.
 - Question: does notice removal require a shared-store change? Choice: no; inspected main and active published contexts have only AppShell-local presentation state. Tie-breaker: one state and smaller scope; no domain mutation or G-owned file change.
 - Question: where and how does the principle appear? Choice: one exact "Outcome: the agent gathers evidence and recommends. Deterministic code validates and calculates. A person decides." line only On, directly below TopNav and before Follow/Demo controls, centred on actual content. Use normal 16px text, no clipping or scale transform, a 150ms opacity fade and a 100ms reduced-motion crossfade; remove the whole region Off after fading. Tie-breaker: the newest visible-outcome requirement without changing authority.
