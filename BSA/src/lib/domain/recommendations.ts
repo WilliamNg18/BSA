@@ -3,16 +3,17 @@ import type { CasePack, ExceptionCase, RequirementId, Signals, TariffClause } fr
 import { caseById } from "./cases";
 import { captureForRevision, caseForLifecycle, immutable, paperDeclarationFields, validateSubmissionSources } from "./lifecycle-model";
 import { runAgent } from "./agent";
-import { evaluateEpsSupply } from "./eps-check";
 import { initialisePharmacyDraft, previewPharmacyCorrection } from "./pharmacy-correction";
 import { interpretPharmacyText } from "./pharmacy-check";
-import { evaluateRequirements, QUALITY_THRESHOLD } from "./rules";
+import { QUALITY_THRESHOLD } from "./rules";
 import { versionForDate } from "./tariff";
 import { evaluateItemVerification } from "./verification";
 import { concreteSuggestions } from "./recommendation-suggestions";
 import { evaluateEpsStrength, type EpsStrengthAssessment } from "./eps-strength";
 import type { PaperReconciliation } from "./paper-reconciliation";
 import { operatorRecommendationNote } from "./recommendation-audience";
+import { evaluatePaperSubmission } from "./submission-views";
+import { REFERRAL_FIELD_LABELS } from "./referral-wording";
 
 export const RECOMMENDATION_AUTHORITY = "the agent verifies and advises; a person decides";
 
@@ -29,12 +30,12 @@ export type RecommendationContext =
   | { readonly kind: "recorded"; readonly revision: number; readonly recordId?: string };
 
 export interface ConcreteSuggestion {
-  readonly field: RequirementId;
+  readonly field: RequirementId | "product";
   readonly label: string;
   readonly value: string | number | null;
   readonly status: "available" | "needs-human-input";
   readonly source: string;
-  readonly focusTarget: "endorsementText" | "brandManufacturer" | "packSize" | "form" | "invoicePrice";
+  readonly focusTarget: "endorsementText" | "brandManufacturer" | "packSize" | "form" | "invoicePrice" | "typedProduct" | "quantity" | "dispensedCode";
 }
 
 export interface RecommendationRequirement {
@@ -131,7 +132,7 @@ export function deriveRecommendation(
   const draft = context.kind === "draft" ? state.pharmacyDrafts[caseId] ?? initialisePharmacyDraft(current, revision) : null;
   if (draft && draft.revision !== revision.number) throw new Error("Recommendation draft is stale.");
   const candidate = draft ? { ...revision, ...draft, number: revision.number } : revision;
-  const strength = candidate.epsPrescription ? evaluateEpsStrength(candidate.epsPrescription) : null;
+  const strength = candidate.epsPrescription?.supplyRecord ? evaluateEpsStrength(candidate.epsPrescription) : null;
   if (draft) {
     try {
       validateSubmissionSources({ ...candidate, precheck: undefined, caseId, revision: revision.number, channel: candidate.channel ?? "paper" }, revision.number);
@@ -150,7 +151,7 @@ export function deriveRecommendation(
         kernelRecommendation: "NONE", kernelGate: "NOT_RUN", diagnostic: null,
         sourceGap: error.message, nextStep: "Correct the invalid draft fields; no verification or approval has occurred.",
         provenance: "Unvalidated human draft", operatorApproved: false,
-        requiresOperatorRelease: candidate.channel === "paper" && original.imageQuality < QUALITY_THRESHOLD,
+        requiresOperatorRelease: candidate.channel === "paper",
         operatorApplyAllowed: false, operatorPreview: null, verification: null, sourceAssessment: null, authorityLabel: RECOMMENDATION_AUTHORITY,
       });
     }
@@ -160,6 +161,7 @@ export function deriveRecommendation(
   const date = candidate.epsPrescription?.dispensingDate ?? candidate.paperDeclaration?.dispensingDate ?? current.extracted.dispensingDate;
   const version = versionForDate(date);
   const channel = candidate.channel ?? (current.channel === "Electronic (EPS)" ? "eps" : "paper");
+  const paper = channel === "paper" && context.kind !== "draft" ? evaluatePaperSubmission(original, candidate, capture) : null;
   const declared = candidate.paperDeclaration ? paperDeclarationFields(candidate.paperDeclaration) : candidate.declaration?.fields;
   const text = draft?.endorsementText ?? (channel === "paper" ? capture?.fields.endorsementText ?? declared?.endorsementText : undefined) ?? candidate.endorsementText;
   const fields = { ...current.extracted, ...(channel === "paper" ? capture?.fields ?? declared : {}),
@@ -178,9 +180,16 @@ export function deriveRecommendation(
   const unsupportedSpecial = typedFacts.type === "UNKNOWN" && /^\s*SP\b/i.test(text);
   const clause = version?.clauses.find((entry) => unsupportedSpecial ? entry.endorsementType === "SP" : entry.id === clauseId) ?? null;
   const sourceKnown = channel === "eps" || Boolean(capture) || context.kind === "draft" || Boolean(declared);
-  const supply = candidate.epsPrescription ? evaluateEpsSupply(candidate.epsPrescription) : null;
-  const requirements: RecommendationRequirement[] = evaluateRequirements(clause, sourceKnown ? typedFacts : null, fields, supply?.checks)
-    .map(({ requirement, met }) => ({ id: requirement.id, label: requirement.label, status: met === null ? "not_established" : met ? "met" : "not_met" }));
+  const effectiveChecks = capture ? assessment.gate2Checks : assessment.gate1Checks;
+  const requirements: RecommendationRequirement[] = (clause?.requirements ?? []).map((requirement) => {
+    const checked = effectiveChecks.find((entry) => entry.name === requirement.label);
+    return { id: requirement.id, label: requirement.label,
+      status: !sourceKnown || !checked ? "not_established" : checked.pass ? "met" : "not_met" };
+  });
+  for (const [index, check] of (paper?.evidence.tariffChecks ?? []).entries()) {
+    if (check.met !== true) requirements.push({ id: `paper-${index}`, label: REFERRAL_FIELD_LABELS[check.field],
+      status: check.met === null ? "not_established" : "not_met", basis: "declared_format" });
+  }
   const sourceGap = !clause ? "Governing provision unavailable for this source and dispensing date."
     : unsupportedSpecial ? "Unsupported input: SP is outside validated coverage; manual review only." : null;
   if (sourceGap) requirements.push({ id: clause ? "coverage" : "provision", label: clause ? "Validated interpretation coverage" : "Applicable provision", status: "not_established" });
@@ -210,27 +219,32 @@ export function deriveRecommendation(
   const baseDraft = draft ?? initialisePharmacyDraft(current, revision);
   const preview = previewPharmacyCorrection(current, revision, baseDraft);
   const suggestions = concreteSuggestions(requirements, baseDraft, preview, date);
-  const ordinary = !unsupportedSpecial && pack.gate.result === "PASS" && (pack.recommendation !== "SUFFICIENT" || assessment.releaseEligible);
-  const safeNote = operatorRecommendationNote({ requirements, version: version?.version ?? null, ...(strength ? { strength } : {}) });
+  const paperRelease = paper?.outcome === "RELEASE_RECOMMENDED";
+  const ordinary = !unsupportedSpecial && !paper?.requiresType1 &&
+    (paperRelease || pack.gate.result === "PASS" && (pack.recommendation !== "SUFFICIENT" || assessment.releaseEligible && (!paper || paperRelease)));
+  const safeNote = operatorRecommendationNote({ requirements, version: version?.version ?? null,
+    ...(strength ? { strength } : {}), ...(paper ? { paper } : {}) });
   const fieldDisagreement = findings.some((finding) => finding.includes('"; '));
-  const diagnostic: DiagnosticFollowUp | null = !ordinary && findings.length ? {
+  const diagnostic: DiagnosticFollowUp | null = !ordinary && (findings.length || paper?.requests.length) ? {
     kind: "safe_human_follow_up", caseId, revision: revision.number,
-    outcome: fieldDisagreement ? "REFER_BACK" : "REQUEST_INFORMATION", rbCode: fieldDisagreement ? "RB2B" : "",
+    outcome: paper?.outcome === "REFER_BACK" || fieldDisagreement ? "REFER_BACK" : "REQUEST_INFORMATION",
+    rbCode: paper?.outcome === "REFER_BACK" || fieldDisagreement ? "RB2B" : "",
     note: safeNote,
     provenance: fieldDisagreement ? "reconciliation_failed" : "unverified",
     kernelRecommendation: pack.recommendation, kernelGate: pack.gate.result,
     clauseId: clause?.id ?? null, tariffVersion: version?.version ?? null, findings,
   } : null;
-  const complete = !sourceGap && missing.length === 0;
+  const complete = !sourceGap && missing.length === 0 && (!paper || paperRelease);
   const outcome = diagnostic?.outcome ?? (complete ? "COMPLETE" : sourceGap ? "ABSTAIN"
     : pack.recommendation === "REQUEST_INFORMATION" ? "REQUEST_INFORMATION" : "REFER_BACK");
   const clauseLabel = clause?.title.split(":")[0] ?? "Unavailable provision";
   return immutable({
     caseId, revision: revision.number, context: context.kind, dispensingDate: date,
     ...(strength ? { strength } : {}),
+    ...(paper ? { paper } : {}),
     clause, version: version?.version ?? null, versionLabel: version?.label ?? null, requirements, missing,
     suggestions: complete ? [] : suggestions, preview: complete ? null : preview, outcome,
-    summary: complete ? `Complete against ${clauseLabel}, Version ${version?.label}; nothing to add.` :
+    summary: paperRelease ? paper.summary : complete ? `Complete against ${clauseLabel}, Version ${version?.label}; nothing to add.` :
       diagnostic ? "Safe human follow-up; verification remains unsuccessful." : sourceGap ?? "Correction required before the submission is complete.",
     signals: { ...pack.signals, provisionFound: Boolean(clause), inCoverage: unsupportedSpecial ? false : pack.signals.inCoverage,
       sampleAgreement: context.kind === "draft" ? { agree: 0, total: 0 } : pack.signals.sampleAgreement,
@@ -239,23 +253,23 @@ export function deriveRecommendation(
     kernelGate: record ? record.recommendation === "ABSTAIN" || record.recommendation === "NONE" ? "NOT_RUN"
       : record.checks.length ? record.checks.every((entry) => entry.pass) ? "PASS" : "FAIL" : "NOT_RUN" : pack.gate.result, diagnostic, sourceGap,
     nextStep: unsupportedSpecial && clause ? "Enter the actual invoice evidence for manual review; this input cannot be verified for release."
-      : sourceGap ? "Request the applicable provision and readable source evidence." : unreadable
-      ? !capture ? "Confirm or correct Type 1 capture, then Type 2 review; unreadable paper always requires operator release."
-        : "Requires operator release because the scan could not be read." : complete ? "Continue through the existing submission or review controls." : "Apply a supported correction, then make a separate human submission or decision.",
+      : sourceGap ? "Request the applicable provision and readable source evidence." : channel === "paper"
+      ? (paper?.requiresType1 ?? (unreadable && !capture)) ? "Confirm or correct Type 1 capture, then Type 2 review; unreadable paper always requires operator release."
+        : "Requires the operator's press because paper was scanned." : complete ? "Continue through the existing submission or review controls." : "Apply a supported correction, then make a separate human submission or decision.",
     provenance: channel === "eps" ? "Typed EPS and retained claim ledger" : capture ? "Human-confirmed capture; original unreadable image retained"
       : declared ? "declared by the pharmacy, not read from the form; will be verified against the scan at NHSBSA" : "Unverified image evidence",
     operatorApproved: Boolean((record ?? (context.kind === "current" || context.kind === "draft" && draft?.purpose === "correction" ? state.records.filter((entry) =>
       entry.caseId === caseId && (entry.revision ?? 1) === revision.number).at(-1) : undefined))?.approvedDraft),
-    requiresOperatorRelease: unreadable,
+    requiresOperatorRelease: channel === "paper",
     operatorApplyAllowed: context.kind === "current" && ["in_review", "escalated"].includes(row.state) &&
-      (!unreadable || Boolean(capture)) && (ordinary || diagnostic !== null),
+      (!paper?.requiresType1 && (!unreadable || Boolean(capture))) && (ordinary || diagnostic !== null),
     operatorPreview: diagnostic ? {
       revision: revision.number, outcome: diagnostic.outcome, rbCode: diagnostic.rbCode, note: diagnostic.note,
     } : ordinary ? {
       revision: revision.number,
-      outcome: pack.recommendation === "SUFFICIENT" ? "ACCEPT" : pack.recommendation === "REFER_BACK" ? "REFER_BACK" : "REQUEST_INFORMATION",
+      outcome: paperRelease || pack.recommendation === "SUFFICIENT" ? "ACCEPT" : pack.recommendation === "REFER_BACK" ? "REFER_BACK" : "REQUEST_INFORMATION",
       rbCode: pack.recommendation === "REFER_BACK" ? current.scenario === "D" || current.epsPrescription?.supplyEvidence ? "RB2B" : "SYN-NCSO" : "",
-      note: pack.recommendation === "SUFFICIENT" ? pack.composite.reasons.join("; ") : safeNote,
+      note: paperRelease ? paper.summary : pack.recommendation === "SUFFICIENT" ? pack.composite.reasons.join("; ") : safeNote,
     } : null,
     verification: context.kind === "draft" ? null : history.filter((event) => event.revision === revision.number && event.verification).at(-1)?.verification ?? null,
     sourceAssessment: context.kind === "draft" ? null : assessment.verification,

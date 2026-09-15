@@ -2222,3 +2222,10 @@ brand/manufacturer, pack and form fields. Fifty targeted recommendation units
 and typecheck pass, including exact canonical operator-preview/Apply equality
 and pharmacy-only paper values. G's canonical source facade and corrected
 four-case seeds remain dependencies, not reconstructed state in R.
+
+G's functional `4765770` is now integrated into this working branch. R uses
+`evaluatePaperSubmission` with the selected immutable revision/capture, and
+the canonical shared correction helper for strength and paper values. Current
+four-case, audience and G runtime selection passes 29 tests plus typecheck.
+P's isolated explicit pharmacy audience prop is included; wider consumer
+migration and full CI/live acceptance remain pending.
