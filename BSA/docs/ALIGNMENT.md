@@ -35,6 +35,12 @@ for claims but cannot pretend the original brand-missing example is complete.
 G owns the new-submission factory; source-backed paper pack/form completion
 is also requested. Browser, fresh full suite and deployment remain open.
 
+The shared EPS evidence component no longer calls an endorsed 5mg selection
+the actually dispensed product. It separately displays unchanged supplied
+product/quantity. The compact channel mismatch negative renders an explicit
+alert without any enabled submission control or state change. Bounded P
+coverage is now 34 passing tests, not whole-app or viewport acceptance.
+
 ## 2026-09-15: B40 C1-C9 actual-main and published-stream audit
 
 ### Refreshed published-source snapshot after the B foundation

@@ -41,6 +41,13 @@ paper preview/Apply equality and human-only release. Paper Apply highlights
 restored fields using shared changed-field metadata. Existing pharmacy-unit
 migration continues separately; no browser or live completion is claimed.
 
+With R `88492d2`, 34 focused P tests pass. O released the shared EPS message
+label seam: selected claim data is now labelled endorsed product/pack, with
+the retained supply record displayed separately. Compact panels reject a
+wrong explicit case/channel instead of fabricating an EPS version of B.
+Apply-after-acknowledgement is covered and correctly disables Resubmit until
+the pharmacist confirms the changed payload again.
+
 ## 2026-09-15: W Task 39 domain and evidence handoff
 
 G integration checkpoint: W strength/evidence and B fidelity/ACK/note/paper

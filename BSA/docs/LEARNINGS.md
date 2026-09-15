@@ -32,6 +32,13 @@ actual acknowledgement callback and seven real submission/referral cycles.
 Paper display marks changes from G's actual appliedFields, including values
 restored to their original source values. No browser lease was used.
 
+The old shared EPS message label conflated selected/endorsed and supplied
+products, which becomes false in the wrong-strength example. A read-only label
+repair plus separate supply facts preserves the distinction without changing
+the record. Thirty-four focused P tests now pass; existing-suite migration
+remains active, so an intervening full check on a mid-edit test was not claimed
+as a stable result.
+
 ## 2026-09-15: EPS error evidence, primary-source verification
 
 Um IS, Clough A, Tan ECK. *Dispensing error rates in pharmacy: a systematic

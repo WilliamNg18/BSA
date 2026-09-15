@@ -56,6 +56,14 @@ beforeEach(() => {
   vi.stubGlobal("document", { getElementById: () => null });
 });
 
+it("rejects a mismatched compact case/channel instead of fabricating another submission", () => {
+  const before = getDomainSnapshot();
+  const html = render(createElement(PharmacySubmissionPanel, { caseId: paper, channel: "eps" }));
+  expect(html).toContain("This example requires its recorded submission channel.");
+  expect(controls.size).toBe(0);
+  expect(getDomainSnapshot()).toEqual(before);
+});
+
 it("the real strength Apply previews and writes only the 10mg selection before explicit Send", () => {
   s().setAgentEnabled(true);
   const before = getDomainSnapshot();
@@ -74,6 +82,24 @@ it("the real strength Apply previews and writes only the 10mg selection before e
   expect(s().lifecycles[strength].state).toBe("released_to_pricing");
   expect(s().itemVerification[strength]).toEqual({ gate1: "pass", gate2: "pass", reconciled: true, released: true });
   expect(s().lifecycles[strength].history.some((event) => event.actor === "pharmacy" && event.processStep === "submission")).toBe(true);
+});
+
+it("a real Apply invalidates earlier accuracy confirmation and requires a fresh acknowledgement", () => {
+  s().setAgentEnabled(true);
+  saveManual(strength, (draft) => draft);
+  acknowledge(strength);
+  const before = getDomainSnapshot();
+  claim(strength);
+  expect(controls.has("resubmit")).toBe(true);
+  click("apply-correction");
+  expect(s().pharmacyDrafts[strength].correctionAcknowledgement).toBeUndefined();
+  expect(s().caseRevisions).toEqual(before.caseRevisions);
+  claim(strength);
+  expect(controls.has("resubmit")).toBe(false);
+  expect(() => s().resubmit(strength)).toThrow("must be checked");
+  acknowledge(strength);
+  claim(strength);
+  expect(controls.has("resubmit")).toBe(true);
 });
 
 it.each([false, true])("real strength referral, correction, acknowledgement and Resubmit preserve source, mode=%s", (enabled) => {
